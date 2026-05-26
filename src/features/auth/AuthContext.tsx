@@ -15,13 +15,16 @@ interface AuthInternalCtx { updateUsername(n: string): void; resetProgress(): vo
 const AuthInternalContext = createContext<AuthInternalCtx>({ updateUsername: () => {}, resetProgress: () => {} });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [progress, setProgress] = useState<UserProgress | null>(null);
-
-  useEffect(() => {
+  const [currentUser, setCurrentUser] = useState<User | null>(() => {
     const id = localStorage.getItem(CUR_KEY);
-    if (id) { const u = getUsers().find(u => u.id === id) ?? null; setCurrentUser(u); if (u) setProgress(loadProgress(u.id)); }
-  }, []);
+    if (!id) return null;
+    return getUsers().find(u => u.id === id) ?? null;
+  });
+  const [progress, setProgress] = useState<UserProgress | null>(() => {
+    const id = localStorage.getItem(CUR_KEY);
+    if (!id) return null;
+    return loadProgress(id);
+  });
 
   const refreshProgress = useCallback(() => { if (currentUser) setProgress(loadProgress(currentUser.id)); }, [currentUser]);
 
