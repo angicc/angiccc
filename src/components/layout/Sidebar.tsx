@@ -1,8 +1,9 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, ScrollText, HelpCircle, MessageSquare, User, LogOut, Crown } from 'lucide-react';
+import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
+import { Logo } from '@/components/shared/Logo';
 import { cn } from '@/lib/utils';
 
 const NAV = [
@@ -23,7 +24,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
   return (
     <aside className={cn('flex flex-col w-60 shrink-0 border-r border-border bg-card h-screen sticky top-0', className)}>
       <div className="px-5 py-5 border-b border-border">
-        <span className="font-accent text-xl text-primary tracking-wide">Historify</span>
+        <Logo />
         <div className="mt-1.5 flex items-center gap-1.5">
           <Crown className={`w-3 h-3 ${tier === 'master' ? 'text-amber-400' : tier === 'pro' ? 'text-primary' : 'text-muted-foreground'}`} />
           <span className="text-xs text-muted-foreground">{tierLabel}</span>

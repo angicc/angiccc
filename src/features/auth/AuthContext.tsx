@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import type { User, UserProgress } from '@/types';
 import { loadProgress, createInitialProgress } from '@/features/progress/progressStore';
 
@@ -17,8 +17,18 @@ async function hashPassword(password: string): Promise<string> {
 interface AuthCtx { currentUser: User | null; progress: UserProgress | null; login(e: string, p: string): Promise<{success:boolean;error?:string}>; register(u: string, e: string, p: string): Promise<{success:boolean;error?:string}>; logout(): void; refreshProgress(): void; }
 const AuthContext = createContext<AuthCtx | null>(null);
 
-interface AuthInternalCtx { updateUsername(n: string): void; resetProgress(): void; }
-const AuthInternalContext = createContext<AuthInternalCtx>({ updateUsername: () => {}, resetProgress: () => {} });
+interface AuthInternalCtx {
+  updateUsername(n: string): void;
+  resetProgress(): void;
+  updateEmail(email: string, currentPassword: string): Promise<{success:boolean;error?:string}>;
+  updatePassword(currentPwd: string, newPwd: string): Promise<{success:boolean;error?:string}>;
+}
+const AuthInternalContext = createContext<AuthInternalCtx>({
+  updateUsername: () => {},
+  resetProgress: () => {},
+  updateEmail: async () => ({ success: false }),
+  updatePassword: async () => ({ success: false }),
+});
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
@@ -67,11 +77,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     saveUsers(users); setCurrentUser(users.find(u => u.id === currentUser.id)!);
   }, [currentUser]);
 
+  const updateEmail = useCallback(async (email: string, currentPassword: string) => {
+    if (!currentUser) return { success: false, error: 'Not logged in.' };
+    const users = getUsers();
+    if (users.some(u => u.email.toLowerCase() === email.toLowerCase() && u.id !== currentUser.id)) {
+      return { success: false, error: 'Email is already in use.' };
+    }
+    const user = users.find(u => u.id === currentUser.id)!;
+    const sha = await hashPassword(currentPassword);
+    const legacy = btoa(currentPassword);
+    if (user.passwordHash !== sha && user.passwordHash !== legacy) {
+      return { success: false, error: 'Current password is incorrect.' };
+    }
+    const updated = users.map(u => u.id === currentUser.id ? { ...u, email } : u);
+    saveUsers(updated);
+    setCurrentUser(updated.find(u => u.id === currentUser.id)!);
+    return { success: true };
+  }, [currentUser]);
+
+  const updatePassword = useCallback(async (currentPwd: string, newPwd: string) => {
+    if (!currentUser) return { success: false, error: 'Not logged in.' };
+    const users = getUsers();
+    const user = users.find(u => u.id === currentUser.id)!;
+    const sha = await hashPassword(currentPwd);
+    const legacy = btoa(currentPwd);
+    if (user.passwordHash !== sha && user.passwordHash !== legacy) {
+      return { success: false, error: 'Current password is incorrect.' };
+    }
+    const newHash = await hashPassword(newPwd);
+    saveUsers(users.map(u => u.id === currentUser.id ? { ...u, passwordHash: newHash } : u));
+    return { success: true };
+  }, [currentUser]);
+
   const resetProgress = useCallback(() => { if (currentUser) setProgress(createInitialProgress(currentUser.id)); }, [currentUser]);
 
   return (
     <AuthContext.Provider value={{ currentUser, progress, login, register, logout, refreshProgress }}>
-      <AuthInternalContext.Provider value={{ updateUsername, resetProgress }}>
+      <AuthInternalContext.Provider value={{ updateUsername, resetProgress, updateEmail, updatePassword }}>
         {children}
       </AuthInternalContext.Provider>
     </AuthContext.Provider>

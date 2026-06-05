@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
@@ -143,7 +144,7 @@ export default function TimelinePage() {
                       <h3 className="font-heading font-semibold leading-snug">{event.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{event.description}</p>
                       <Button size="sm" variant="outline" className="w-full" asChild>
-                        <a href={`/eras/${event.eraId}`}>Explore {ERAS.find(e => e.id === event.eraId)?.shortName} Era →</a>
+                        <Link to="/eras">Explore {ERAS.find(e => e.id === event.eraId)?.shortName} Era →</Link>
                       </Button>
                     </div>
                   </PopoverContent>

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Check, Crown, Zap, BookOpen, ArrowLeft, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,8 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { PLANS } from '@/features/subscription/plans';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { useAuth } from '@/features/auth/AuthContext';
+import { PaymentModal } from '@/components/shared/PaymentModal';
+import { Logo } from '@/components/shared/Logo';
 import { toast } from 'sonner';
 import type { SubscriptionTier } from '@/types';
 
@@ -16,21 +19,42 @@ export default function PricingPage() {
   const { currentUser } = useAuth();
   const { subscription, upgrade } = useSubscription();
   const tier = subscription?.tier ?? 'free';
+  const [payTarget, setPayTarget] = useState<{ id: SubscriptionTier; name: string; price: number } | null>(null);
 
   function handleSelect(id: SubscriptionTier) {
     if (!currentUser) { navigate('/register'); return; }
     if (tier === id) { toast.info('You are already on this plan.'); return; }
-    upgrade(id);
-    toast.success(id === 'free' ? 'Downgraded to Free plan.' : `Welcome to ${PLANS.find(p => p.id === id)?.name}!`);
+    const plan = PLANS.find(p => p.id === id)!;
+    if (id === 'free') {
+      upgrade('free');
+      toast.success('Downgraded to Free plan.');
+      navigate('/dashboard');
+      return;
+    }
+    setPayTarget({ id, name: plan.name, price: plan.price });
+  }
+
+  function handlePaySuccess() {
+    if (!payTarget) return;
+    upgrade(payTarget.id);
+    toast.success(`Welcome to ${payTarget.name}! Your features are now active.`);
+    setPayTarget(null);
     navigate('/dashboard');
   }
 
   return (
     <div className="min-h-screen bg-background scroll-pattern">
+      <PaymentModal
+        open={!!payTarget}
+        onClose={() => setPayTarget(null)}
+        planName={payTarget?.name ?? ''}
+        price={payTarget?.price ?? 0}
+        onSuccess={handlePaySuccess}
+      />
       <header className="border-b border-border/50 bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to={currentUser ? '/dashboard' : '/'} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="w-4 h-4" /> Back</Link>
-          <span className="font-accent text-lg text-primary">Historify</span>
+          <Logo />
           <div className="w-16" />
         </div>
       </header>
@@ -48,7 +72,7 @@ export default function PricingPage() {
                 {plan.badge && <div className="absolute -top-3 left-1/2 -translate-x-1/2"><Badge className="bg-primary text-primary-foreground px-3 py-1 text-xs"><Star className="w-3 h-3 mr-1" />{plan.badge}</Badge></div>}
                 {isCurrent && <div className="absolute -top-3 right-4"><Badge variant="secondary" className="text-xs">Current Plan</Badge></div>}
                 <CardHeader className="pb-4">
-                  <div className={`flex items-center gap-3 mb-3 ${plan.id === 'master' ? 'text-amber-400' : plan.id === 'pro' ? 'text-primary' : 'text-muted-foreground'}`}>{ICONS[plan.id]}<span className="font-heading text-xl font-bold text-foreground">{plan.name}</span></div>
+                  <div className={`flex items-center gap-3 mb-3 ${plan.id === 'master' ? 'text-amber-400' : plan.id === 'pro' ? 'text-primary' : 'text-muted-foreground'}`}>{ICONS[plan.id as SubscriptionTier]}<span className="font-heading text-xl font-bold text-foreground">{plan.name}</span></div>
                   <div className="flex items-baseline gap-1 mb-2">
                     {plan.price === 0 ? <span className="text-4xl font-bold font-heading">Free</span> : <><span className="text-4xl font-bold font-heading">${plan.price}</span><span className="text-muted-foreground text-sm">/month</span></>}
                   </div>

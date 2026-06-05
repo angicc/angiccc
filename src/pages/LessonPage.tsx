@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +13,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { markLessonComplete } from '@/features/progress/progressStore';
 import { getLessonById, getEraLessons } from '@/features/content/lessonsData';
 import { getEraById } from '@/features/content/erasData';
+import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
 
 export default function LessonPage() {
@@ -20,6 +22,9 @@ export default function LessonPage() {
   const navigate = useNavigate();
   const [xpAmt, setXpAmt] = useState(0);
   const [completed, setCompleted] = useState(false);
+  const [bookmarked, setBookmarked] = useState(() =>
+    currentUser && lessonId ? isBookmarked(currentUser.id, lessonId) : false
+  );
 
   const lesson = getLessonById(lessonId ?? '');
   const era = getEraById(eraId ?? '');
@@ -41,6 +46,13 @@ export default function LessonPage() {
       newAchievements.forEach(a => toast.success(`Achievement unlocked: ${a.title}!`));
       confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff','#fde68a'] });
     }
+  }
+
+  function handleBookmark() {
+    if (!currentUser) return;
+    const next = toggleBookmark(currentUser.id, lesson.id);
+    setBookmarked(next);
+    toast.success(next ? 'Lesson bookmarked!' : 'Bookmark removed.');
   }
 
   return (
@@ -68,6 +80,18 @@ export default function LessonPage() {
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="absolute top-4 right-4">
+            <button
+              onClick={handleBookmark}
+              className="p-2 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-colors"
+              title={bookmarked ? 'Remove bookmark' : 'Bookmark lesson'}
+            >
+              {bookmarked
+                ? <BookmarkCheck className="w-4 h-4 text-amber-400" />
+                : <Bookmark className="w-4 h-4 text-white/80" />
+              }
+            </button>
+          </div>
           <div className="absolute bottom-0 left-0 right-0 p-6">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <Badge variant="outline" className={`${era.color} border-current bg-black/40 backdrop-blur-sm text-xs`}>{era.shortName}</Badge>
@@ -83,12 +107,18 @@ export default function LessonPage() {
           {/* Main content */}
           <div className="lg:col-span-2 space-y-6">
             {lesson.sections.map((s, i) => (
-              <div key={i} className="space-y-3">
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.07, duration: 0.3 }}
+                className="space-y-3"
+              >
                 <h2 className="font-heading text-xl font-semibold">{s.heading}</h2>
                 <div className="text-muted-foreground leading-relaxed">
                   {s.body.split('\n\n').map((p, j) => <p key={j} className="mb-4 text-[0.95rem]">{p}</p>)}
                 </div>
-              </div>
+              </motion.div>
             ))}
             <Separator />
             <div className="flex items-center justify-between">
@@ -121,6 +151,14 @@ export default function LessonPage() {
             </Card>
             <Button variant="outline" size="sm" className="w-full gap-2" onClick={() => navigate(`/tutor?context=${encodeURIComponent(lesson.title)}`)}>
               <MessageSquare className="w-4 h-4" />Ask AI Tutor about this
+            </Button>
+            <Button
+              variant={bookmarked ? 'secondary' : 'outline'}
+              size="sm"
+              className="w-full gap-2"
+              onClick={handleBookmark}
+            >
+              {bookmarked ? <><BookmarkCheck className="w-4 h-4 text-amber-400" />Bookmarked</> : <><Bookmark className="w-4 h-4" />Save Lesson</>}
             </Button>
           </div>
         </div>
