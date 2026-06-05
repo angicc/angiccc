@@ -62,7 +62,7 @@ export default function QuizPage() {
     const finalScore = Math.round((finalCorrect / quiz.questions.length) * 100);
     const xp = finalCorrect * XP_REWARDS.QUIZ_CORRECT + (finalScore === 100 ? XP_REWARDS.QUIZ_PERFECT : 0);
     const attempt: QuizAttempt = { quizId: quiz.id, answers: ans, score: finalScore, xpEarned: xp, completedAt: new Date().toISOString() };
-    if (currentUser) { const { newAchievements } = recordQuizAttempt(currentUser.id, attempt, era.name); refreshProgress(); if (newAchievements.length > 0) { newAchievements.forEach(a => toast.success(`Achievement: ${a.title}!`)); confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff'] }); } if (finalScore === 100) { confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, colors: ['#f59e0b','#fbbf24','#fde68a','#ffffff'] }); } }
+    if (currentUser) { const { newAchievements } = recordQuizAttempt(currentUser.id, attempt, era.name); refreshProgress(); if (newAchievements.length > 0) { newAchievements.forEach(a => toast.success(`Achievement: ${a.title}!`)); confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff'] }); } if (finalScore >= quiz.passingScore) { confetti({ particleCount: finalScore === 100 ? 220 : 140, spread: finalScore === 100 ? 130 : 90, origin: { y: 0.5 }, colors: ['#f59e0b','#fbbf24','#fde68a','#ffffff','#10b981'] }); } }
     setXpAmt(xp); setPhase('done');
   }
 

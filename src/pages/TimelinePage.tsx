@@ -5,12 +5,18 @@ import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { getSortedTimeline } from '@/features/content/timelineData';
 import { ERAS } from '@/features/content/erasData';
+import { LESSONS } from '@/features/content/lessonsData';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { EraId, TimelineCategory } from '@/types';
+
+function firstLessonPath(eraId: string): string {
+  const lesson = LESSONS.filter(l => l.eraId === eraId).sort((a, b) => a.order - b.order)[0];
+  return lesson ? `/eras/${eraId}/lessons/${lesson.id}` : '/eras';
+}
 
 const ERA_COLORS: Record<EraId, string> = {
   ancient: 'bg-amber-400',
@@ -83,7 +89,7 @@ export default function TimelinePage() {
         )}
 
         {/* Era legend */}
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2 overflow-x-auto pb-1">
           {ERAS.map(e => (
             <button
               key={e.id}
@@ -144,7 +150,7 @@ export default function TimelinePage() {
                       <h3 className="font-heading font-semibold leading-snug">{event.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{event.description}</p>
                       <Button size="sm" variant="outline" className="w-full" asChild>
-                        <Link to="/eras">Explore {ERAS.find(e => e.id === event.eraId)?.shortName} Era →</Link>
+                        <Link to={firstLessonPath(event.eraId)}>Explore {ERAS.find(e => e.id === event.eraId)?.shortName} Era →</Link>
                       </Button>
                     </div>
                   </PopoverContent>

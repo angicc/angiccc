@@ -42,6 +42,7 @@ export default function LessonPage() {
     setXpAmt(lesson.xpReward);
     setCompleted(true);
     toast.success(`Lesson complete! +${lesson.xpReward} XP`);
+    confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff'] });
     if (newAchievements.length > 0) {
       newAchievements.forEach(a => toast.success(`Achievement unlocked: ${a.title}!`));
       confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff','#fde68a'] });

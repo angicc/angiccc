@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { Lock, ChevronRight, HelpCircle, Clock, Star } from 'lucide-react';
+import { Lock, ChevronRight, HelpCircle, Clock, Star, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -30,50 +30,94 @@ export default function ErasPage() {
 
         <motion.div variants={stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
           {ERAS.map(era => {
-            const eraLessons = LESSONS.filter(l => l.eraId === era.id).sort((a,b) => a.order - b.order);
+            const eraLessons = LESSONS.filter(l => l.eraId === era.id).sort((a, b) => a.order - b.order);
             const done = eraLessons.filter(l => progress?.completedLessons.includes(l.id)).length;
             const pct = eraLessons.length > 0 ? Math.round((done / eraLessons.length) * 100) : 0;
             const quizDone = progress?.completedQuizzes.includes(era.quizId);
             return (
               <motion.div key={era.id} variants={card}>
-                <Card className={`border-border hover:border-primary/40 hover:-translate-y-1 hover:shadow-lg transition-all duration-200 bg-gradient-to-br ${era.bgGradient}`}>
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg bg-background/50 ${era.color}`}><EraIcon icon={era.icon} className="w-5 h-5" /></div>
-                        <div>
-                          <h2 className="font-heading text-lg font-bold">{era.name}</h2>
-                          <p className="text-xs text-muted-foreground">{era.dateRange}</p>
-                        </div>
+                <Card className="border-border hover:border-primary/30 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 overflow-hidden bg-card">
+                  {/* Era Banner */}
+                  <div className={`h-28 bg-gradient-to-br ${era.bgGradient} relative flex items-end p-4`}>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute top-3 right-3 z-10">
+                      <Badge className="text-xs bg-black/50 backdrop-blur-sm text-white border-white/20 hover:bg-black/50">
+                        {done}/{eraLessons.length} complete
+                      </Badge>
+                    </div>
+                    <div className="relative z-10 flex items-center gap-3">
+                      <div className={`p-2.5 rounded-xl bg-black/40 backdrop-blur-sm ${era.color}`}>
+                        <EraIcon icon={era.icon} className="w-6 h-6" />
                       </div>
-                      <Badge variant="secondary" className="text-xs shrink-0">{done}/{eraLessons.length}</Badge>
+                      <div>
+                        <h2 className="font-heading text-xl font-bold text-white drop-shadow-md">{era.name}</h2>
+                        <p className="text-white/70 text-xs">{era.dateRange}</p>
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{era.description}</p>
-                    <div className="mt-3 space-y-1">
-                      <div className="flex justify-between text-xs text-muted-foreground"><span>Progress</span><span>{pct}%</span></div>
-                      <Progress value={pct} className="h-1.5" />
+                  </div>
+
+                  <CardContent className="p-4 space-y-4">
+                    <p className="text-sm text-muted-foreground leading-relaxed">{era.description}</p>
+
+                    {/* Progress */}
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between text-xs text-muted-foreground">
+                        <span>Progress</span>
+                        <span className="font-semibold text-foreground">{pct}%</span>
+                      </div>
+                      <Progress value={pct} className="h-2" />
                     </div>
-                  </CardHeader>
-                  <CardContent className="space-y-1.5">
-                    {eraLessons.map(lesson => {
-                      const locked = !canLesson(lesson.order);
-                      const complete = progress?.completedLessons.includes(lesson.id);
-                      return (
-                        <div key={lesson.id} className={`flex items-center justify-between p-2.5 rounded-lg border text-sm transition-all ${locked ? 'border-border/50 opacity-60' : 'border-border hover:border-primary/40 hover:bg-accent/30 cursor-pointer'} ${complete ? 'bg-primary/5 border-primary/20' : 'bg-background/40'}`}
-                          onClick={() => !locked && navigate(`/eras/${era.id}/lessons/${lesson.id}`)}>
-                          <div className="flex items-center gap-2 min-w-0">
-                            {locked ? <Lock className="w-3.5 h-3.5 text-muted-foreground shrink-0" /> : complete ? <span className="w-3.5 h-3.5 rounded-full bg-primary shrink-0 flex items-center justify-center text-primary-foreground" style={{fontSize:8}}>✓</span> : <ChevronRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />}
-                            <span className="truncate">{lesson.title}</span>
+
+                    {/* Lesson list */}
+                    <div className="space-y-2">
+                      {eraLessons.map(lesson => {
+                        const locked = !canLesson(lesson.order);
+                        const complete = progress?.completedLessons.includes(lesson.id);
+                        return (
+                          <div
+                            key={lesson.id}
+                            className={`flex items-center gap-3 p-3 rounded-lg border text-sm transition-all ${
+                              locked
+                                ? 'border-border/40 opacity-50 cursor-not-allowed'
+                                : complete
+                                ? 'border-primary/30 bg-primary/5 cursor-pointer hover:bg-primary/10 hover:border-primary/50'
+                                : 'border-border cursor-pointer hover:border-primary/40 hover:bg-accent/30'
+                            }`}
+                            onClick={() => !locked && navigate(`/eras/${era.id}/lessons/${lesson.id}`)}
+                          >
+                            <div className="shrink-0">
+                              {locked ? (
+                                <Lock className="w-4 h-4 text-muted-foreground" />
+                              ) : complete ? (
+                                <CheckCircle2 className="w-4 h-4 text-primary" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                              )}
+                            </div>
+                            <span className={`flex-1 min-w-0 truncate font-medium ${complete ? 'text-primary' : 'text-foreground'}`}>
+                              {lesson.title}
+                            </span>
+                            <div className="flex items-center gap-3 shrink-0 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />{lesson.estimatedMinutes}m
+                              </span>
+                              <span className="flex items-center gap-1 text-amber-400 font-medium">
+                                <Star className="w-3 h-3" />+{lesson.xpReward}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2 shrink-0 text-xs text-muted-foreground ml-2">
-                            <span className="flex items-center gap-0.5"><Clock className="w-3 h-3" />{lesson.estimatedMinutes}m</span>
-                            <span className="flex items-center gap-0.5"><Star className="w-3 h-3" />+{lesson.xpReward}</span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                    <Button variant={quizDone ? 'secondary' : 'outline'} size="sm" className="w-full mt-2 gap-2" onClick={() => navigate(`/eras/${era.id}/quiz`)}>
-                      <HelpCircle className="w-4 h-4" />{quizDone ? `Quiz Done — ${progress?.quizScores[era.quizId] ?? 0}%` : 'Take Quiz'}
+                        );
+                      })}
+                    </div>
+
+                    <Button
+                      variant={quizDone ? 'secondary' : 'default'}
+                      size="sm"
+                      className="w-full gap-2"
+                      onClick={() => navigate(`/eras/${era.id}/quiz`)}
+                    >
+                      <HelpCircle className="w-4 h-4" />
+                      {quizDone ? `Quiz Passed — ${progress?.quizScores[era.quizId] ?? 0}%` : 'Take Era Quiz'}
                     </Button>
                   </CardContent>
                 </Card>
