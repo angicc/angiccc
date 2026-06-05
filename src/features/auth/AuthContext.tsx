@@ -8,6 +8,12 @@ const CUR_KEY = 'historify:currentUserId';
 function getUsers(): User[] { const r = localStorage.getItem(USERS_KEY); return r ? JSON.parse(r) : []; }
 function saveUsers(u: User[]) { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
 
+async function hashPassword(password: string): Promise<string> {
+  const data = new TextEncoder().encode(password);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 interface AuthCtx { currentUser: User | null; progress: UserProgress | null; login(e: string, p: string): Promise<{success:boolean;error?:string}>; register(u: string, e: string, p: string): Promise<{success:boolean;error?:string}>; logout(): void; refreshProgress(): void; }
 const AuthContext = createContext<AuthCtx | null>(null);
 
@@ -29,9 +35,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const refreshProgress = useCallback(() => { if (currentUser) setProgress(loadProgress(currentUser.id)); }, [currentUser]);
 
   const login = useCallback(async (email: string, password: string) => {
-    const user = getUsers().find(u => u.email.toLowerCase() === email.toLowerCase());
+    const users = getUsers();
+    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
     if (!user) return { success: false, error: 'No account found with that email.' };
-    if (user.passwordHash !== btoa(password)) return { success: false, error: 'Incorrect password.' };
+    const sha = await hashPassword(password);
+    const legacy = btoa(password);
+    if (user.passwordHash !== sha && user.passwordHash !== legacy) return { success: false, error: 'Incorrect password.' };
+    if (user.passwordHash === legacy) {
+      saveUsers(users.map(u => u.id === user.id ? { ...u, passwordHash: sha } : u));
+    }
     localStorage.setItem(CUR_KEY, user.id); setCurrentUser(user); setProgress(loadProgress(user.id));
     return { success: true };
   }, []);
@@ -40,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const users = getUsers();
     if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) return { success: false, error: 'Email already registered.' };
     if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) return { success: false, error: 'Username already taken.' };
-    const newUser: User = { id: crypto.randomUUID(), username, email, passwordHash: btoa(password), avatarInitials: username.slice(0,2).toUpperCase(), createdAt: new Date().toISOString() };
+    const newUser: User = { id: crypto.randomUUID(), username, email, passwordHash: await hashPassword(password), avatarInitials: username.slice(0,2).toUpperCase(), createdAt: new Date().toISOString() };
     saveUsers([...users, newUser]);
     const p = createInitialProgress(newUser.id);
     localStorage.setItem(CUR_KEY, newUser.id); setCurrentUser(newUser); setProgress(p);

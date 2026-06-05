@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,6 +19,7 @@ export default function LessonPage() {
   const { currentUser, refreshProgress } = useAuth();
   const navigate = useNavigate();
   const [xpAmt, setXpAmt] = useState(0);
+  const [completed, setCompleted] = useState(false);
 
   const lesson = getLessonById(lessonId ?? '');
   const era = getEraById(eraId ?? '');
@@ -29,12 +31,16 @@ export default function LessonPage() {
   const next = idx < eraLessons.length - 1 ? eraLessons[idx + 1] : null;
 
   function handleComplete() {
-    if (!currentUser) return;
+    if (!currentUser || completed || !lesson) return;
     const { newAchievements } = markLessonComplete(currentUser.id, lesson.id, lesson.title);
     refreshProgress();
     setXpAmt(lesson.xpReward);
+    setCompleted(true);
     toast.success(`Lesson complete! +${lesson.xpReward} XP`);
-    if (newAchievements.length > 0) newAchievements.forEach(a => toast.success(`Achievement unlocked: ${a.title}!`));
+    if (newAchievements.length > 0) {
+      newAchievements.forEach(a => toast.success(`Achievement unlocked: ${a.title}!`));
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff','#fde68a'] });
+    }
   }
 
   return (
@@ -42,41 +48,59 @@ export default function LessonPage() {
       {xpAmt > 0 && <XPBadge amount={xpAmt} onDone={() => setXpAmt(0)} />}
       <div className="max-w-5xl mx-auto">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-          <Link to="/eras" className="hover:text-foreground">Eras</Link>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-5">
+          <Link to="/eras" className="hover:text-foreground transition-colors">Eras</Link>
           <ChevronRight className="w-3.5 h-3.5" />
           <span className={era.color}>{era.shortName}</span>
           <ChevronRight className="w-3.5 h-3.5" />
           <span className="text-foreground truncate">{lesson.title}</span>
         </div>
 
+        {/* Hero banner */}
+        <div className={`relative h-52 sm:h-64 rounded-2xl overflow-hidden mb-8 bg-gradient-to-br ${era.bgGradient} border border-border`}>
+          {lesson.imageUrl && (
+            <img
+              src={lesson.imageUrl}
+              alt=""
+              aria-hidden
+              className="absolute inset-0 w-full h-full object-cover opacity-50"
+              onError={e => e.currentTarget.remove()}
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
+              <Badge variant="outline" className={`${era.color} border-current bg-black/40 backdrop-blur-sm text-xs`}>{era.shortName}</Badge>
+              <span className="text-white/70 text-xs flex items-center gap-1"><Clock className="w-3 h-3" />{lesson.estimatedMinutes} min</span>
+              <span className="text-white/70 text-xs flex items-center gap-1"><Star className="w-3 h-3" />+{lesson.xpReward} XP</span>
+            </div>
+            <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">{lesson.title}</h1>
+            <p className="text-white/80 text-sm mt-1">{lesson.subtitle}</p>
+          </div>
+        </div>
+
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Main content */}
           <div className="lg:col-span-2 space-y-6">
-            <div>
-              <div className="flex flex-wrap items-center gap-2 mb-3">
-                <Badge variant="outline" className={`${era.color} border-current`}>{era.shortName}</Badge>
-                <span className="flex items-center gap-1 text-xs text-muted-foreground"><Clock className="w-3 h-3" />{lesson.estimatedMinutes} min</span>
-                <span className="flex items-center gap-1 text-xs text-muted-foreground"><Star className="w-3 h-3" />+{lesson.xpReward} XP</span>
-              </div>
-              <h1 className="font-heading text-3xl font-bold">{lesson.title}</h1>
-              <p className="text-muted-foreground mt-1">{lesson.subtitle}</p>
-            </div>
-            <Separator />
             {lesson.sections.map((s, i) => (
               <div key={i} className="space-y-3">
                 <h2 className="font-heading text-xl font-semibold">{s.heading}</h2>
-                <div className="lesson-prose text-muted-foreground leading-relaxed">
-                  {s.body.split('\n\n').map((p, j) => <p key={j} className="mb-4">{p}</p>)}
+                <div className="text-muted-foreground leading-relaxed">
+                  {s.body.split('\n\n').map((p, j) => <p key={j} className="mb-4 text-[0.95rem]">{p}</p>)}
                 </div>
               </div>
             ))}
             <Separator />
-            {/* Nav */}
             <div className="flex items-center justify-between">
-              {prev ? <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${prev.id}`)}><ArrowLeft className="w-4 h-4" />Previous</Button> : <div />}
-              <Button className="gap-2" onClick={handleComplete}><CheckCircle className="w-4 h-4" />Mark Complete</Button>
-              {next ? <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${next.id}`)}>Next<ArrowRight className="w-4 h-4" /></Button> : <Button variant="outline" size="sm" onClick={() => navigate(`/eras/${eraId}/quiz`)}>Take Quiz</Button>}
+              {prev
+                ? <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${prev.id}`)}><ArrowLeft className="w-4 h-4" />Previous</Button>
+                : <div />}
+              <Button className="gap-2" onClick={handleComplete} disabled={completed} variant={completed ? 'secondary' : 'default'}>
+                <CheckCircle className="w-4 h-4" />{completed ? 'Completed!' : 'Mark Complete'}
+              </Button>
+              {next
+                ? <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${next.id}`)}>Next<ArrowRight className="w-4 h-4" /></Button>
+                : <Button variant="outline" size="sm" onClick={() => navigate(`/eras/${eraId}/quiz`)}>Take Quiz</Button>}
             </div>
           </div>
 
@@ -85,7 +109,14 @@ export default function LessonPage() {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm">Key Facts</CardTitle></CardHeader>
               <CardContent>
-                <ul className="space-y-2">{lesson.keyFacts.map((f, i) => <li key={i} className="flex items-start gap-2 text-sm"><span className="text-primary mt-0.5">•</span><span className="text-muted-foreground">{f}</span></li>)}</ul>
+                <ul className="space-y-2.5">
+                  {lesson.keyFacts.map((f, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm">
+                      <span className="text-primary mt-0.5 font-bold">•</span>
+                      <span className="text-muted-foreground">{f}</span>
+                    </li>
+                  ))}
+                </ul>
               </CardContent>
             </Card>
             <Button variant="outline" size="sm" className="w-full gap-2" onClick={() => navigate(`/tutor?context=${encodeURIComponent(lesson.title)}`)}>

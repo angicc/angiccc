@@ -1,7 +1,7 @@
 import type { Lesson } from '@/types';
 
 export const LESSONS: Lesson[] = [
-  { id: 'ancient-01', eraId: 'ancient', order: 1, title: 'The First Civilizations', subtitle: 'Mesopotamia and Egypt', estimatedMinutes: 8, xpReward: 100,
+  { id: 'ancient-01', eraId: 'ancient', order: 1, title: 'The First Civilizations', subtitle: 'Mesopotamia and Egypt', estimatedMinutes: 8, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['Sumer invented writing (cuneiform) around 3100 BCE', 'The Egyptian Old Kingdom built the pyramids c.2686–2181 BCE', 'Hammurabi\'s Code (c.1754 BCE) is one of history\'s earliest legal codes', 'Both civilizations depended on river systems for agriculture'],
     relatedTimeline: ['t-cuneiform','t-pyramid','t-hammurabi'],
     sections: [
@@ -10,7 +10,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'Laws, Trade, and Legacy', body: 'The Babylonian king Hammurabi (r.1792–1750 BCE) united Mesopotamia and issued one of the world\'s earliest written legal codes. The Code of Hammurabi established punishments for crimes and regulated commerce, reflecting a society built on trade and legal order.\n\nBoth Egypt and Mesopotamia maintained extensive trade networks. Egyptian gold and grain flowed to the Levant; Mesopotamian merchants traded with the Indus Valley. These early civilizations established the blueprint for organized government, religion, agriculture, and urban life that all later societies would build upon.' },
     ] },
 
-  { id: 'ancient-02', eraId: 'ancient', order: 2, title: 'Classical Greece', subtitle: 'Democracy, Philosophy, and War', estimatedMinutes: 10, xpReward: 100,
+  { id: 'ancient-02', eraId: 'ancient', order: 2, title: 'Classical Greece', subtitle: 'Democracy, Philosophy, and War', estimatedMinutes: 10, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1554682641-a63e80d35768?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['Athens established the world\'s first democracy around 508 BCE', 'The Persian Wars (499–449 BCE) united the Greek city-states', 'Socrates, Plato, and Aristotle founded Western philosophy', 'Alexander the Great spread Greek culture from Egypt to India'],
     relatedTimeline: ['t-democracy','t-persian-wars','t-alexander'],
     sections: [
@@ -19,7 +19,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'The Philosophers', body: 'Classical Athens produced some of history\'s greatest thinkers. Socrates taught through questioning, challenging Athenians to examine their beliefs. His method—the Socratic method—remains central to education today. Socrates was sentenced to death in 399 BCE for "corrupting the youth."\n\nHis student Plato wrote dialogues exploring justice, beauty, and the ideal state. Plato\'s student Aristotle systematized logic, biology, ethics, and politics, tutoring the young Alexander of Macedon. Alexander the Great (r.336–323 BCE) conquered an empire stretching from Greece to Egypt and India, spreading Greek language and culture—Hellenism—across the ancient world.' },
     ] },
 
-  { id: 'ancient-03', eraId: 'ancient', order: 3, title: 'The Roman Republic and Empire', subtitle: 'From Seven Hills to World Dominion', estimatedMinutes: 12, xpReward: 100,
+  { id: 'ancient-03', eraId: 'ancient', order: 3, title: 'The Roman Republic and Empire', subtitle: 'From Seven Hills to World Dominion', estimatedMinutes: 12, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['Rome was founded as a republic around 509 BCE', 'Julius Caesar was assassinated on 15 March 44 BCE', 'At its height, the Roman Empire covered 5 million km²', 'The Western Roman Empire fell in 476 CE'],
     relatedTimeline: ['t-roman-republic','t-caesar','t-pax-romana','t-rome-fall'],
     sections: [
@@ -28,7 +28,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'Empire and the Pax Romana', body: 'Caesar\'s heir Octavian defeated his rivals and became Rome\'s first emperor as Augustus in 27 BCE. The Augustan age inaugurated the Pax Romana ("Roman Peace")—two centuries of relative stability, prosperity, and cultural achievement. The Roman road network, aqueducts, and legal system unified a vast empire from Britain to Mesopotamia.\n\nAt its height under Emperor Trajan (r.98–117 CE), Rome\'s empire covered 5 million square kilometers and held perhaps 70 million people. But overexpansion, economic strain, and military pressure from Germanic tribes and the Huns gradually weakened the empire. In 476 CE, the last Western Roman emperor was deposed, though the Eastern Roman (Byzantine) Empire survived for another thousand years.' },
     ] },
 
-  { id: 'ancient-04', eraId: 'ancient', order: 4, title: 'The Ancient East', subtitle: 'Persia, India, and China', estimatedMinutes: 9, xpReward: 100,
+  { id: 'ancient-04', eraId: 'ancient', order: 4, title: 'The Ancient East', subtitle: 'Persia, India, and China', estimatedMinutes: 9, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['The Achaemenid Persian Empire was the largest empire of the ancient world', 'Emperor Ashoka of India promoted Buddhist ethics across Asia', 'The Han Dynasty unified China and established the civil service exam', 'The Silk Road connected China to the Mediterranean by 100 BCE'],
     relatedTimeline: ['t-persia','t-ashoka','t-han','t-silk-road'],
     sections: [
@@ -37,7 +37,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'China and the Silk Road', body: 'China\'s Han Dynasty (206 BCE–220 CE) ruled one of the ancient world\'s most sophisticated civilizations. Emperor Wu (r.141–87 BCE) expanded the empire into Central Asia and established the Silk Road—a network of trade routes linking China to Rome. Silk, spices, and ideas flowed both ways along these routes.\n\nHan China developed paper, the seismograph, and cast iron. Confucian ethics shaped governance; the civil service examination system—admitting officials based on merit—was a revolutionary concept. When the Han Dynasty fell in 220 CE, China fragmented into rival kingdoms, but the Han model of unified imperial rule remained the ideal for all subsequent Chinese dynasties.' },
     ] },
 
-  { id: 'medieval-01', eraId: 'middle-ages', order: 1, title: 'The Fall of Rome and Early Middle Ages', subtitle: 'From Empire to Feudal Europe', estimatedMinutes: 8, xpReward: 100,
+  { id: 'medieval-01', eraId: 'middle-ages', order: 1, title: 'The Fall of Rome and Early Middle Ages', subtitle: 'From Empire to Feudal Europe', estimatedMinutes: 8, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['The Western Roman Empire fell in 476 CE', 'Charlemagne was crowned Holy Roman Emperor in 800 CE', 'Feudalism organized medieval society into lords and serfs', 'The Catholic Church preserved literacy and learning after Rome\'s fall'],
     relatedTimeline: ['t-rome-fall','t-charlemagne','t-feudalism'],
     sections: [
@@ -46,7 +46,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'Feudalism and Medieval Society', body: 'Medieval European society organized itself around feudalism—a hierarchical system of land ownership and military obligation. Kings granted land (fiefs) to nobles in exchange for military service. Nobles sublet land to knights; peasants (serfs) worked the land in exchange for protection. The manor—a self-sufficient estate—was the basic economic unit.\n\nThe Catholic Church stood apart from—and often above—this secular hierarchy. The Pope could excommunicate kings and interdict entire kingdoms. Monasteries preserved manuscripts, ran schools, and provided hospitals. This interweaving of religious and secular power defined medieval European civilization.' },
     ] },
 
-  { id: 'medieval-02', eraId: 'middle-ages', order: 2, title: 'The Crusades and the Islamic Golden Age', subtitle: 'Faith, Knowledge, and Conflict', estimatedMinutes: 10, xpReward: 100,
+  { id: 'medieval-02', eraId: 'middle-ages', order: 2, title: 'The Crusades and the Islamic Golden Age', subtitle: 'Faith, Knowledge, and Conflict', estimatedMinutes: 10, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1501769175405-6da70e1ba05c?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['Islam spread from Arabia across the Middle East and North Africa within 100 years of Muhammad\'s death', 'The Islamic Golden Age (8th–13th centuries) preserved and advanced Greek science', 'The First Crusade captured Jerusalem in 1099', 'The Crusades increased trade and cultural exchange between Europe and the East'],
     relatedTimeline: ['t-islam','t-golden-age','t-crusades','t-saladin'],
     sections: [
@@ -55,7 +55,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'The Crusades', body: 'In 1095, Pope Urban II called for a holy war to recapture Jerusalem from the Seljuk Turks. The First Crusade succeeded spectacularly—Jerusalem fell to Crusader forces in 1099 in a bloody massacre. Four Crusader states were established in the Holy Land. But Christian control proved fragile; Saladin, the Kurdish sultan of Egypt, retook Jerusalem in 1187.\n\nSeven major Crusades followed over two centuries. Though the Crusades ultimately failed militarily, they profoundly shaped both European and Islamic civilizations. They intensified trade with the East, introduced Europeans to Islamic scholarship and goods, and left deep, lasting religious hatreds that echoed for centuries.' },
     ] },
 
-  { id: 'medieval-03', eraId: 'middle-ages', order: 3, title: 'The Black Death and Late Medieval Crisis', subtitle: 'Plague, Revolt, and Cultural Change', estimatedMinutes: 8, xpReward: 100,
+  { id: 'medieval-03', eraId: 'middle-ages', order: 3, title: 'The Black Death and Late Medieval Crisis', subtitle: 'Plague, Revolt, and Cultural Change', estimatedMinutes: 8, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1467377791767-c929b5dc9a23?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['The Black Death killed 30–60% of Europe\'s population (1347–1353)', 'The plague originated in Central Asia and spread via trade routes', 'Labor shortages after the plague empowered surviving peasants', 'The crisis accelerated the end of feudalism and the rise of the Renaissance'],
     relatedTimeline: ['t-black-death','t-peasants-revolt'],
     sections: [
@@ -64,7 +64,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'Social and Cultural Consequences', body: 'The plague\'s aftermath transformed European society. With so many peasants dead, those who survived could demand higher wages and better conditions. Serfdom declined rapidly in Western Europe. The English Peasants\' Revolt of 1381 showed that the lower classes were no longer willing to accept their traditional station.\n\nThe Church, which had failed to explain or stop the catastrophe, lost prestige. Questioning of Church authority helped lay the groundwork for the Renaissance and later the Protestant Reformation. Perversely, the labor shortage accelerated technological innovation—labor-saving devices became more economically valuable, including the printing press.' },
     ] },
 
-  { id: 'earlymod-01', eraId: 'early-modern', order: 1, title: 'The Renaissance and Age of Exploration', subtitle: 'Rebirth of Ideas, Discovery of Worlds', estimatedMinutes: 10, xpReward: 100,
+  { id: 'earlymod-01', eraId: 'early-modern', order: 1, title: 'The Renaissance and Age of Exploration', subtitle: 'Rebirth of Ideas, Discovery of Worlds', estimatedMinutes: 10, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['The Renaissance began in Italian city-states in the 14th century', 'Humanism placed mankind, not God, at the center of intellectual inquiry', 'Columbus reached the Americas in 1492', 'The Columbian Exchange transformed both hemispheres'],
     relatedTimeline: ['t-renaissance','t-columbus','t-columbian-exchange'],
     sections: [
@@ -73,7 +73,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'The Age of Exploration', body: 'Portuguese sailors, seeking a sea route to Asia\'s spice trade, crept down the African coast through the 15th century. Vasco da Gama reached India in 1498. Meanwhile, Christopher Columbus, sailing for Spain, reached the Caribbean in 1492—believing he had found Asia. The "New World" he discovered would reshape global history.\n\nThe Columbian Exchange that followed transformed both hemispheres. Europeans brought horses, cattle, wheat, and devastating diseases (smallpox, measles) to the Americas; they returned with potatoes, tomatoes, maize, and tobacco. Indigenous American populations, lacking immunity to European diseases, collapsed by up to 90% within a century—one of history\'s greatest demographic catastrophes.' },
     ] },
 
-  { id: 'earlymod-02', eraId: 'early-modern', order: 2, title: 'The Protestant Reformation', subtitle: 'Religious Revolution and Wars of Faith', estimatedMinutes: 9, xpReward: 100,
+  { id: 'earlymod-02', eraId: 'early-modern', order: 2, title: 'The Protestant Reformation', subtitle: 'Religious Revolution and Wars of Faith', estimatedMinutes: 9, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1548248823-ce16a73b6d49?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['Martin Luther posted his 95 Theses in 1517', 'The Reformation split Western Christianity into Catholic and Protestant branches', 'The Thirty Years\' War (1618–1648) killed 8 million people', 'The Peace of Westphalia established the principle of national sovereignty'],
     relatedTimeline: ['t-luther','t-thirty-years-war','t-westphalia'],
     sections: [
@@ -82,7 +82,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'Wars of Religion and the Peace of Westphalia', body: 'The Reformation triggered generations of religious war. The Thirty Years\' War (1618–1648), which began as a religious conflict in the Holy Roman Empire, became a general European war that killed 8 million people and depopulated parts of Germany by a third. Armies devastated the countryside; famine and plague followed.\n\nThe Peace of Westphalia (1648) ended the war and established new principles: rulers could determine the religion of their territories, and states should not interfere in each other\'s internal affairs. These principles of sovereignty and non-interference became the foundation of the modern international state system.' },
     ] },
 
-  { id: 'earlymod-03', eraId: 'early-modern', order: 3, title: 'Scientific Revolution and Enlightenment', subtitle: 'Reason Reshapes the World', estimatedMinutes: 11, xpReward: 100,
+  { id: 'earlymod-03', eraId: 'early-modern', order: 3, title: 'Scientific Revolution and Enlightenment', subtitle: 'Reason Reshapes the World', estimatedMinutes: 11, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['Copernicus proposed heliocentrism in 1543', 'Newton\'s Principia (1687) established classical mechanics', 'Enlightenment thinkers challenged monarchies and the Church', 'The American and French Revolutions applied Enlightenment ideals'],
     relatedTimeline: ['t-copernicus','t-newton','t-enlightenment','t-french-revolution'],
     sections: [
@@ -91,7 +91,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'The Enlightenment', body: 'The Scientific Revolution\'s success inspired intellectuals to apply reason to society, government, and religion. French philosophes—Voltaire, Montesquieu, Rousseau, Diderot—questioned traditional authority, religious dogma, and absolute monarchy. Montesquieu\'s The Spirit of the Laws argued for separation of powers; Rousseau\'s Social Contract posited government legitimacy resting on popular consent.\n\nThese ideas traveled across the Atlantic. American founders like Jefferson drew directly on Enlightenment thought when writing the Declaration of Independence (1776). In France, Enlightenment ideas fueled revolutionary anger. When the French Revolution exploded in 1789, it swept away the monarchy, the aristocracy, and the Church\'s special privileges—remaking French society on Enlightenment principles.' },
     ] },
 
-  { id: 'modern-01', eraId: 'modern', order: 1, title: 'The Industrial Revolution', subtitle: 'Steam, Steel, and Social Change', estimatedMinutes: 10, xpReward: 100,
+  { id: 'modern-01', eraId: 'modern', order: 1, title: 'The Industrial Revolution', subtitle: 'Steam, Steel, and Social Change', estimatedMinutes: 10, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1565793979728-1e5f56e8b6fe?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['The Industrial Revolution began in Britain around 1760', 'Steam power transformed manufacturing, transport, and agriculture', 'Urbanization created new social classes—the factory owner and the industrial worker', 'By 1900, industrial nations dominated the globe'],
     relatedTimeline: ['t-steam-engine','t-railways','t-industrialization'],
     sections: [
@@ -100,7 +100,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'Social Consequences', body: 'Industrialization uprooted millions. Peasants migrated to industrial cities; by 1851, Britain was the world\'s first majority-urban nation. These cities were often overcrowded, polluted, and disease-ridden—cholera epidemics killed thousands. Yet industrialization also created wealth, lowered prices, and eventually raised living standards.\n\nNew social classes emerged: the industrial bourgeoisie (factory owners) and the proletariat (wage laborers). Karl Marx and Friedrich Engels, observing Manchester\'s squalor, wrote The Communist Manifesto (1848), arguing class struggle was history\'s engine. Trade unions organized; workers eventually won shorter hours, better pay, and political rights. By 1900, industrialization had spread across Europe, North America, and Japan—creating the modern world.' },
     ] },
 
-  { id: 'modern-02', eraId: 'modern', order: 2, title: 'The World Wars', subtitle: 'The Century of Total War', estimatedMinutes: 14, xpReward: 100,
+  { id: 'modern-02', eraId: 'modern', order: 2, title: 'The World Wars', subtitle: 'The Century of Total War', estimatedMinutes: 14, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1580130379624-3a069adbffc5?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['WWI (1914–1918) killed 20 million people and destroyed four empires', 'The Treaty of Versailles (1919) imposed harsh terms on Germany', 'WWII (1939–1945) was history\'s deadliest conflict, with 70–85 million dead', 'The Holocaust murdered 6 million Jews and millions of others'],
     relatedTimeline: ['t-wwi','t-versailles','t-wwii','t-holocaust'],
     sections: [
@@ -109,7 +109,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'World War II and the Holocaust', body: 'WWII was the most destructive conflict in human history. Germany conquered most of Europe by 1941; Japan seized vast swaths of Asia and the Pacific. Germany\'s invasion of the Soviet Union in June 1941 opened the largest land campaign in history. America entered the war after Japan\'s attack on Pearl Harbor in December 1941.\n\nThe Nazi regime systematically murdered 6 million Jews, along with Roma, disabled people, homosexuals, and political opponents—the Holocaust. Allied forces liberated the death camps in 1945. Germany surrendered in May 1945; Japan surrendered in August after the United States dropped atomic bombs on Hiroshima and Nagasaki. Between 70 and 85 million people had died—the bloodiest conflict in human history.' },
     ] },
 
-  { id: 'modern-03', eraId: 'modern', order: 3, title: 'The Cold War and Decolonization', subtitle: 'Two Superpowers, One Divided World', estimatedMinutes: 12, xpReward: 100,
+  { id: 'modern-03', eraId: 'modern', order: 3, title: 'The Cold War and Decolonization', subtitle: 'Two Superpowers, One Divided World', estimatedMinutes: 12, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1532375810709-75b1da00537c?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['The Cold War (1947–1991) was an ideological struggle between the USA and USSR', 'Both sides developed nuclear weapons capable of destroying civilization', 'Dozens of African and Asian nations gained independence in the 1950s–70s', 'The Soviet Union collapsed in 1991'],
     relatedTimeline: ['t-cold-war','t-korean-war','t-vietnam','t-decolonization','t-berlin-wall'],
     sections: [
@@ -118,7 +118,7 @@ export const LESSONS: Lesson[] = [
       { heading: 'Decolonization and the Soviet Collapse', body: 'While the superpowers competed, the European empires collapsed. India gained independence in 1947; dozens of African nations gained independence in the 1950s and 1960s. The process was often violent—France fought brutal wars in Vietnam and Algeria. Cold War competition complicated decolonization, as each superpower backed favored factions in newly independent nations.\n\nBy the 1980s, the Soviet economy was stagnating. Mikhail Gorbachev\'s reforms (glasnost and perestroika) unleashed forces he could not control. Eastern European nations broke free in 1989—the Berlin Wall fell on November 9. In 1991, the Soviet Union itself dissolved into 15 independent states. The Cold War was over.' },
     ] },
 
-  { id: 'modern-04', eraId: 'modern', order: 4, title: 'Globalization and the Contemporary World', subtitle: 'One Planet, Many Challenges', estimatedMinutes: 8, xpReward: 100,
+  { id: 'modern-04', eraId: 'modern', order: 4, title: 'Globalization and the Contemporary World', subtitle: 'One Planet, Many Challenges', estimatedMinutes: 8, xpReward: 100, imageUrl: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=70',
     keyFacts: ['The World Wide Web was invented by Tim Berners-Lee in 1989', 'Global trade as a share of GDP doubled between 1960 and 2000', 'September 11, 2001 transformed global politics and security', 'Climate change is the defining environmental challenge of the 21st century'],
     relatedTimeline: ['t-internet','t-9-11','t-climate'],
     sections: [

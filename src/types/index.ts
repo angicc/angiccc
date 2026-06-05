@@ -36,7 +36,7 @@ export interface Era {
 }
 export interface Lesson {
   id: string; eraId: EraId; order: number; title: string; subtitle: string;
-  estimatedMinutes: number; xpReward: number;
+  estimatedMinutes: number; xpReward: number; imageUrl?: string;
   sections: LessonSection[]; keyFacts: string[]; relatedTimeline: string[];
 }
 export interface LessonSection { heading: string; body: string; imageCaption?: string; }

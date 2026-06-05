@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle, ArrowRight, Trophy, RotateCcw } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -50,16 +51,18 @@ export default function QuizPage() {
   }
 
   function advance(ans = answers) {
+    if (!quiz) return;
     if (qIdx < quiz.questions.length - 1) { setQIdx(i => i + 1); setSelected(null); setPhase('question'); }
     else finish(ans);
   }
 
   function finish(ans: number[]) {
+    if (!quiz || !era) return;
     const finalCorrect = ans.filter((a, i) => a === quiz.questions[i].correctIndex).length;
     const finalScore = Math.round((finalCorrect / quiz.questions.length) * 100);
     const xp = finalCorrect * XP_REWARDS.QUIZ_CORRECT + (finalScore === 100 ? XP_REWARDS.QUIZ_PERFECT : 0);
     const attempt: QuizAttempt = { quizId: quiz.id, answers: ans, score: finalScore, xpEarned: xp, completedAt: new Date().toISOString() };
-    if (currentUser) { const { newAchievements } = recordQuizAttempt(currentUser.id, attempt, era.name); refreshProgress(); newAchievements.forEach(a => toast.success(`Achievement: ${a.title}!`)); }
+    if (currentUser) { const { newAchievements } = recordQuizAttempt(currentUser.id, attempt, era.name); refreshProgress(); if (newAchievements.length > 0) { newAchievements.forEach(a => toast.success(`Achievement: ${a.title}!`)); confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff'] }); } if (finalScore === 100) { confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, colors: ['#f59e0b','#fbbf24','#fde68a','#ffffff'] }); } }
     setXpAmt(xp); setPhase('done');
   }
 

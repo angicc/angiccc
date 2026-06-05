@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, Sun, Moon } from 'lucide-react';
+import { Menu, Sun, Moon, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -9,6 +9,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useTheme } from '@/components/ThemeProvider';
 import { LevelProgress } from '@/components/shared/LevelProgress';
 import { StreakBadge } from '@/components/shared/StreakBadge';
+import { SearchDialog } from '@/components/shared/SearchDialog';
 import { Sidebar } from './Sidebar';
 
 export function TopBar() {
@@ -16,35 +17,61 @@ export function TopBar() {
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setSearchOpen(true); }
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   return (
-    <header className="h-14 border-b border-border bg-card/60 backdrop-blur-sm flex items-center px-4 gap-4 shrink-0 sticky top-0 z-20">
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild><Button variant="ghost" size="icon" className="lg:hidden"><Menu className="w-5 h-5" /></Button></SheetTrigger>
-        <SheetContent side="left" className="p-0 w-60"><Sidebar onNavigate={() => setOpen(false)} /></SheetContent>
-      </Sheet>
-      <div className="flex-1" />
-      {progress && <StreakBadge streak={progress.streak} compact />}
-      {progress && <div className="hidden sm:block"><LevelProgress xp={progress.xp} compact /></div>}
-      <Button variant="ghost" size="icon" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-        {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-      </Button>
-      {currentUser && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="p-0 h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8"><AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">{currentUser.avatarInitials}</AvatarFallback></Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <div className="px-3 py-2"><p className="font-medium text-sm">{currentUser.username}</p><p className="text-xs text-muted-foreground truncate">{currentUser.email}</p></div>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate('/pricing')}>Manage Plan</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} className="text-destructive">Log Out</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
-    </header>
+    <>
+      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <header className="h-14 border-b border-border bg-card/60 backdrop-blur-sm flex items-center px-4 gap-3 shrink-0 sticky top-0 z-20">
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild><Button variant="ghost" size="icon" className="lg:hidden"><Menu className="w-5 h-5" /></Button></SheetTrigger>
+          <SheetContent side="left" className="p-0 w-60"><Sidebar onNavigate={() => setOpen(false)} /></SheetContent>
+        </Sheet>
+
+        <button
+          onClick={() => setSearchOpen(true)}
+          className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-muted/50 hover:bg-muted text-muted-foreground text-sm transition-colors"
+        >
+          <Search className="w-3.5 h-3.5" />
+          <span>Search…</span>
+          <kbd className="ml-2 text-xs bg-background px-1.5 py-0.5 rounded border border-border">Ctrl+K</kbd>
+        </button>
+        <Button variant="ghost" size="icon" className="sm:hidden" onClick={() => setSearchOpen(true)}>
+          <Search className="w-4 h-4" />
+        </Button>
+
+        <div className="flex-1" />
+        {progress && <StreakBadge streak={progress.streak} compact />}
+        {progress && <div className="hidden sm:block"><LevelProgress xp={progress.xp} compact /></div>}
+        <Button variant="ghost" size="icon" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        </Button>
+        {currentUser && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="p-0 h-8 w-8 rounded-full">
+                <Avatar className="h-8 w-8"><AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">{currentUser.avatarInitials}</AvatarFallback></Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <div className="px-3 py-2"><p className="font-medium text-sm">{currentUser.username}</p><p className="text-xs text-muted-foreground truncate">{currentUser.email}</p></div>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/pricing')}>Manage Plan</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} className="text-destructive">Log Out</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </header>
+    </>
   );
 }
