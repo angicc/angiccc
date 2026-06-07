@@ -23,6 +23,8 @@ import FlashcardsPage from '@/pages/FlashcardsPage';
 import NotesPage from '@/pages/NotesPage';
 import ProgressPage from '@/pages/ProgressPage';
 import SmartQuizPage from '@/pages/SmartQuizPage';
+import AppGuidePage from '@/pages/AppGuidePage';
+import ReportPage from '@/pages/ReportPage';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -46,6 +48,8 @@ function AnimatedRoutes() {
           <Route path="/progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
           <Route path="/smart-quiz" element={<ProtectedRoute><SmartQuizPage /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="/guide" element={<ProtectedRoute><AppGuidePage /></ProtectedRoute>} />
+          <Route path="/report" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </PageTransition>

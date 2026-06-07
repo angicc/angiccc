@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles } from 'lucide-react';
+import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useAuth } from '@/features/auth/AuthContext';
@@ -19,6 +19,8 @@ const NAV = [
   { to: '/progress', label: 'Progress', icon: BarChart2 },
   { to: '/smart-quiz', label: 'Smart Quiz', icon: Sparkles },
   { to: '/profile', label: 'Profile', icon: User },
+  { to: '/guide', label: 'App Guide', icon: HelpCircle },
+  { to: '/report', label: 'Report a Problem', icon: AlertTriangle },
 ];
 
 export function Sidebar({ className, onNavigate }: { className?: string; onNavigate?: () => void }) {

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from 'framer-motion';
-import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, MessageCircle, X, Send, Loader2 } from 'lucide-react';
+import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, MessageCircle, X, Send, Loader2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/shared/Logo';
@@ -74,6 +74,7 @@ const FEATURES = [
   { icon: Globe,      title: 'Leaderboard',            desc: 'Compete with learners worldwide, climb the XP rankings, and earn legendary status.',                       color: 'text-cyan-400',    bg: 'bg-cyan-400/10',    border: 'border-cyan-400/20'    },
   { icon: PenLine,    title: 'Personal Notes',         desc: 'Capture insights as you learn — notes are linked directly to lessons and eras for easy review.',          color: 'text-orange-400',  bg: 'bg-orange-400/10',  border: 'border-orange-400/20'  },
   { icon: BarChart2,  title: 'Progress Analytics',     desc: 'Track your learning journey with detailed charts, streak stats, and achievement milestones.',               color: 'text-teal-400',    bg: 'bg-teal-400/10',    border: 'border-teal-400/20'    },
+  { icon: Sparkles,   title: 'Smart Quiz',             desc: 'Adaptive AI-powered quiz that targets your weakest eras and auto-calibrates difficulty to your skill level.', color: 'text-violet-400',  bg: 'bg-violet-400/10',  border: 'border-violet-400/20'  },
 ];
 
 const IQ_QUESTIONS = [
@@ -114,63 +115,74 @@ function HistoryCanvas({ className = '' }: { className?: string }) {
     let W = (canvas.width  = canvas.offsetWidth);
     let H = (canvas.height = canvas.offsetHeight);
 
-    // Each particle has an x,y in "world space" and a z depth (0–900)
+    // Each particle: x,y world-space, z depth (0–900), color hue
     const particles = YEARS.map(text => ({
       text,
       x: (Math.random() - 0.5) * W * 2.5,
       y: (Math.random() - 0.5) * H * 2.5,
       z: Math.random() * 900,
-      vz: Math.random() * 1.2 + 0.4,   // flying toward viewer
+      vz: Math.random() * 1.2 + 0.4,
       baseSize: Math.random() * 3 + 9,
-      hue: Math.random() > 0.85 ? 200 : 38,   // mostly amber, rare blue
+      // 80% amber, 12% blue, 8% emerald
+      hue: Math.random() > 0.88 ? 200 : Math.random() > 0.92 ? 160 : 38,
     }));
 
     let raf: number;
 
     function draw() {
       ctx!.clearRect(0, 0, W, H);
-
-      // Sort back-to-front so closer particles render on top
       particles.sort((a, b) => b.z - a.z);
 
-      for (const p of particles) {
-        // Advance z (flying toward viewer)
+      // Update positions and compute screen coords
+      type Pt = { p: typeof particles[0]; sx: number; sy: number; opacity: number };
+      const pts: Pt[] = particles.map(p => {
         p.z -= p.vz;
-        if (p.z <= 0) {
-          // Reset to far distance
-          p.z = 900;
-          p.x = (Math.random() - 0.5) * W * 2.5;
-          p.y = (Math.random() - 0.5) * H * 2.5;
-        }
-
-        // Perspective projection
+        if (p.z <= 0) { p.z = 900; p.x = (Math.random() - 0.5) * W * 2.5; p.y = (Math.random() - 0.5) * H * 2.5; }
         const scale = FOCAL / (FOCAL + p.z);
         const sx = W / 2 + p.x * scale;
         const sy = H / 2 + p.y * scale;
-
-        // Skip off-screen
-        if (sx < -120 || sx > W + 120 || sy < -40 || sy > H + 40) continue;
-
-        const fontSize = p.baseSize * scale;
-        // Opacity rises as particle approaches
         const progress = 1 - p.z / 900;
         const opacity = Math.pow(progress, 1.5) * 0.45;
+        return { p, sx, sy, opacity };
+      });
+
+      // Draw constellation lines between close particles
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dist = Math.hypot(pts[i].sx - pts[j].sx, pts[i].sy - pts[j].sy);
+          if (dist < 110) {
+            const lineAlpha = (1 - dist / 110) * Math.min(pts[i].opacity, pts[j].opacity) * 0.5;
+            ctx!.save();
+            ctx!.globalAlpha = lineAlpha;
+            ctx!.strokeStyle = '#f59e0b';
+            ctx!.lineWidth = 0.5;
+            ctx!.beginPath();
+            ctx!.moveTo(pts[i].sx, pts[i].sy);
+            ctx!.lineTo(pts[j].sx, pts[j].sy);
+            ctx!.stroke();
+            ctx!.restore();
+          }
+        }
+      }
+
+      // Draw year labels
+      for (const { p, sx, sy, opacity } of pts) {
+        if (sx < -120 || sx > W + 120 || sy < -40 || sy > H + 40) continue;
+        const scale = FOCAL / (FOCAL + p.z);
+        const fontSize = p.baseSize * scale;
+        const color = p.hue === 200 ? 'rgba(96,165,250,1)' : p.hue === 160 ? 'rgba(52,211,153,1)' : 'rgba(245,158,11,1)';
 
         ctx!.save();
         ctx!.globalAlpha = opacity;
         ctx!.font = `${Math.max(fontSize, 7)}px monospace`;
-        ctx!.fillStyle = p.hue === 200 ? `rgba(96,165,250,1)` : `rgba(245,158,11,1)`;
+        ctx!.fillStyle = color;
 
-        // Subtle trail: draw a faded copy slightly behind
         if (p.z < 400) {
           const prevScale = FOCAL / (FOCAL + p.z + 8);
-          const px = W / 2 + p.x * prevScale;
-          const py = H / 2 + p.y * prevScale;
           ctx!.globalAlpha = opacity * 0.25;
-          ctx!.fillText(p.text, px, py);
+          ctx!.fillText(p.text, W / 2 + p.x * prevScale, H / 2 + p.y * prevScale);
           ctx!.globalAlpha = opacity;
         }
-
         ctx!.fillText(p.text, sx, sy);
         ctx!.restore();
       }
@@ -190,6 +202,58 @@ function HistoryCanvas({ className = '' }: { className?: string }) {
   return <canvas ref={ref} className={`absolute inset-0 w-full h-full pointer-events-none ${className}`} />;
 }
 
+// ── Clio Avatar (matches in-app AI Tutor) ────────────────────────────────────
+
+function ClioAvatar({ size = 60 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 80 80" width={size} height={size} xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+      <defs>
+        <radialGradient id="landingClioBg" cx="40%" cy="35%" r="70%">
+          <stop offset="0%" stopColor="#7c2d12" />
+          <stop offset="100%" stopColor="#1c0a02" />
+        </radialGradient>
+        <linearGradient id="landingClioRing" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#f59e0b" />
+          <stop offset="50%" stopColor="#fbbf24" />
+          <stop offset="100%" stopColor="#d97706" />
+        </linearGradient>
+      </defs>
+      <circle cx="40" cy="40" r="39" fill="none" stroke="url(#landingClioRing)" strokeWidth="2.5" />
+      <circle cx="40" cy="40" r="37" fill="url(#landingClioBg)" />
+      <ellipse cx="40" cy="20" rx="14" ry="9" fill="#3d1f08" />
+      <path d="M26 23 Q22 35 28 43" fill="#3d1f08" />
+      <path d="M54 23 Q58 35 52 43" fill="#3d1f08" />
+      <ellipse cx="40" cy="29" rx="11" ry="12" fill="#c8956c" />
+      <ellipse cx="40" cy="19" rx="12" ry="7" fill="#4a2c0a" />
+      <path d="M29 20 L32 14 L40 17 L48 14 L51 20" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinejoin="round" />
+      <circle cx="40" cy="16.5" r="2.5" fill="#f59e0b" />
+      <circle cx="32" cy="14" r="1.5" fill="#fbbf24" />
+      <circle cx="48" cy="14" r="1.5" fill="#fbbf24" />
+      <ellipse cx="36" cy="28" rx="2.3" ry="1.9" fill="#1a0a00" />
+      <ellipse cx="44" cy="28" rx="2.3" ry="1.9" fill="#1a0a00" />
+      <circle cx="36.8" cy="27.4" r="0.9" fill="white" opacity="0.85" />
+      <circle cx="44.8" cy="27.4" r="0.9" fill="white" opacity="0.85" />
+      <path d="M37 34 Q40 36.5 43 34" stroke="#a0604a" strokeWidth="1" fill="none" strokeLinecap="round" />
+      <path d="M27 41 Q40 38 53 41 L57 74 Q40 77 23 74 Z" fill="#5b21b6" opacity="0.85" />
+      <path d="M33 41 Q31 57 30 74" stroke="#7c3aed" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M47 41 Q49 57 50 74" stroke="#7c3aed" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <g transform="translate(42,50) rotate(-18)">
+        <rect x="0" y="0" width="20" height="13" rx="2" fill="#fef3c7" />
+        <ellipse cx="0" cy="6.5" rx="3.5" ry="6.5" fill="#d97706" />
+        <ellipse cx="20" cy="6.5" rx="3.5" ry="6.5" fill="#d97706" />
+        <line x1="3" y1="4.5" x2="17" y2="4.5" stroke="#78350f" strokeWidth="0.8" />
+        <line x1="3" y1="7.5" x2="17" y2="7.5" stroke="#78350f" strokeWidth="0.8" />
+        <line x1="3" y1="10.5" x2="17" y2="10.5" stroke="#78350f" strokeWidth="0.8" />
+      </g>
+      <circle cx="16" cy="23" r="2" fill="#f59e0b" opacity="0.9" />
+      <circle cx="64" cy="20" r="1.5" fill="#fbbf24" opacity="0.8" />
+      <circle cx="67" cy="52" r="2" fill="#f59e0b" opacity="0.65" />
+      <circle cx="13" cy="57" r="1.5" fill="#fbbf24" opacity="0.55" />
+      <path d="M16 23 L17.2 19.8 L20.4 19.8 L17.8 21.8 L18.6 25 L16 23.2 L13.4 25 L14.2 21.8 L11.6 19.8 L14.8 19.8 Z" fill="#f59e0b" opacity="0.8" />
+    </svg>
+  );
+}
+
 // ── Landing AI Chatbot ────────────────────────────────────────────────────────
 
 type ChatMsg = { role: 'user' | 'assistant'; text: string };
@@ -205,11 +269,12 @@ const CHAT_SUGGESTIONS = [
 function LandingChatbot() {
   const [open, setOpen]       = useState(false);
   const [msgs, setMsgs]       = useState<ChatMsg[]>([
-    { role: 'assistant', text: "Hi! I'm the Historify assistant. Ask me anything about the app or history! 🏛️" }
+    { role: 'assistant', text: "Hi! I'm Clio, your AI history guide. Ask me anything about Historify or world history!" }
   ]);
   const [input, setInput]     = useState('');
   const [loading, setLoading] = useState(false);
   const bottomRef             = useRef<HTMLDivElement>(null);
+  const inputRef              = useRef<HTMLInputElement>(null);
   const apiKey                = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [msgs]);
@@ -222,11 +287,10 @@ function LandingChatbot() {
     setLoading(true);
 
     if (!apiKey) {
-      // Graceful fallback without API key
       setTimeout(() => {
         setMsgs(prev => [...prev, {
           role: 'assistant',
-          text: "Clio AI isn't connected yet — add your VITE_ANTHROPIC_API_KEY to .env.local to enable live answers. Until then, explore the app at no cost with the Get Started button!"
+          text: "I'm not connected yet — add your VITE_ANTHROPIC_API_KEY to .env.local to enable live answers. Until then, explore Historify free with the Get Started button above!"
         }]);
         setLoading(false);
       }, 800);
@@ -255,47 +319,64 @@ function LandingChatbot() {
     setLoading(false);
   }, [msgs, loading, apiKey]);
 
+  function handleOpen() {
+    setOpen(o => !o);
+    setTimeout(() => inputRef.current?.focus(), 320);
+  }
+
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.88, y: 24 }}
+            initial={{ opacity: 0, scale: 0.88, y: 28 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.88, y: 24 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            className="mb-4 w-[340px] rounded-2xl border border-border bg-card shadow-2xl overflow-hidden flex flex-col"
-            style={{ maxHeight: 520 }}
+            exit={{ opacity: 0, scale: 0.88, y: 28 }}
+            transition={{ type: 'spring', stiffness: 280, damping: 26 }}
+            className="mb-4 w-[min(400px,calc(100vw-2rem))] rounded-2xl border border-border bg-card shadow-2xl shadow-black/30 overflow-hidden flex flex-col"
+            style={{ maxHeight: 560 }}
           >
             {/* Header */}
-            <div className="flex items-center gap-3 px-4 py-3 bg-primary/10 border-b border-border shrink-0">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                <Flame className="w-4 h-4 text-primary" />
-              </div>
+            <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-amber-950/60 to-violet-950/40 border-b border-border shrink-0">
+              <ClioAvatar size={40} />
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-sm">Historify Assistant</p>
-                <p className="text-xs text-muted-foreground">Ask about the app or history</p>
+                <p className="font-heading font-bold text-sm leading-tight">Clio</p>
+                <p className="text-xs text-muted-foreground">AI History Tutor · Historify</p>
               </div>
-              <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors">
+              <div className="flex items-center gap-1.5 mr-1">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-[10px] text-emerald-400 font-medium">{apiKey ? 'Live' : 'Demo'}</span>
+              </div>
+              <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-accent">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
+            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 min-h-0">
               {msgs.map((m, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  transition={{ duration: 0.22 }}
+                  className={`flex gap-2.5 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm leading-relaxed ${
+                  {m.role === 'assistant' && (
+                    <div className="shrink-0 mt-0.5"><ClioAvatar size={26} /></div>
+                  )}
+                  <div className={`max-w-[80%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
                     m.role === 'user'
                       ? 'bg-primary text-primary-foreground rounded-br-sm'
-                      : 'bg-muted text-foreground rounded-bl-sm'
+                      : 'bg-muted/80 text-foreground rounded-bl-sm border border-border/40'
                   }`}>
-                    {m.text || <span className="inline-flex gap-1 items-center"><motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1, repeat:Infinity }}>●</motion.span><motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1, repeat:Infinity, delay:0.2 }}>●</motion.span><motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1, repeat:Infinity, delay:0.4 }}>●</motion.span></span>}
+                    {m.text || (
+                      <span className="inline-flex gap-1 items-center h-4">
+                        <motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1.1, repeat:Infinity }}>●</motion.span>
+                        <motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1.1, repeat:Infinity, delay:0.2 }}>●</motion.span>
+                        <motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1.1, repeat:Infinity, delay:0.4 }}>●</motion.span>
+                      </span>
+                    )}
                   </div>
                 </motion.div>
               ))}
@@ -304,10 +385,10 @@ function LandingChatbot() {
 
             {/* Suggestions */}
             {msgs.length <= 1 && (
-              <div className="px-3 pb-2 flex flex-wrap gap-1.5 shrink-0">
+              <div className="px-4 pb-3 flex flex-wrap gap-1.5 shrink-0">
                 {CHAT_SUGGESTIONS.map(s => (
                   <button key={s} onClick={() => send(s)}
-                    className="text-xs px-2.5 py-1 rounded-full border border-border bg-muted/50 hover:bg-primary/10 hover:border-primary/40 transition-colors text-muted-foreground hover:text-foreground">
+                    className="text-xs px-2.5 py-1.5 rounded-full border border-border bg-muted/40 hover:bg-primary/10 hover:border-primary/40 transition-all duration-200 text-muted-foreground hover:text-foreground">
                     {s}
                   </button>
                 ))}
@@ -315,18 +396,19 @@ function LandingChatbot() {
             )}
 
             {/* Input */}
-            <div className="flex items-center gap-2 px-3 py-2.5 border-t border-border shrink-0">
+            <div className="flex items-center gap-2 px-4 py-3 border-t border-border bg-muted/20 shrink-0">
               <input
+                ref={inputRef}
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && !e.shiftKey && send(input)}
-                placeholder="Ask anything…"
-                className="flex-1 text-sm bg-transparent outline-none placeholder:text-muted-foreground/60"
+                placeholder="Ask Clio anything…"
+                className="flex-1 text-sm bg-transparent outline-none placeholder:text-muted-foreground/50 py-1"
               />
               <button
                 onClick={() => send(input)}
                 disabled={!input.trim() || loading}
-                className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-primary-foreground disabled:opacity-40 transition-opacity"
+                className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground disabled:opacity-35 transition-all hover:bg-primary/90 shrink-0"
               >
                 {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
               </button>
@@ -335,30 +417,30 @@ function LandingChatbot() {
         )}
       </AnimatePresence>
 
-      {/* Toggle button */}
+      {/* Toggle button — shows Clio avatar when closed */}
       <motion.button
-        onClick={() => setOpen(o => !o)}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.94 }}
-        className="w-14 h-14 rounded-full bg-primary shadow-lg shadow-primary/40 flex items-center justify-center text-primary-foreground relative"
+        onClick={handleOpen}
+        whileHover={{ scale: 1.07 }}
+        whileTap={{ scale: 0.93 }}
+        className="w-16 h-16 rounded-full shadow-xl shadow-black/30 flex items-center justify-center relative overflow-hidden border-2 border-amber-400/50 bg-gradient-to-br from-amber-950 to-violet-950"
       >
         <AnimatePresence mode="wait">
           {open ? (
-            <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
-              <X className="w-6 h-6" />
+            <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} className="absolute">
+              <X className="w-6 h-6 text-white" />
             </motion.span>
           ) : (
-            <motion.span key="chat" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
-              <MessageCircle className="w-6 h-6" />
+            <motion.span key="avatar" initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.6, opacity: 0 }} className="absolute">
+              <ClioAvatar size={52} />
             </motion.span>
           )}
         </AnimatePresence>
         {/* Pulse ring */}
         {!open && (
           <motion.span
-            className="absolute inset-0 rounded-full border-2 border-primary"
-            animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
+            className="absolute inset-0 rounded-full border-2 border-amber-400/60"
+            animate={{ scale: [1, 1.45], opacity: [0.7, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
           />
         )}
       </motion.button>
@@ -563,12 +645,12 @@ export default function LandingPage() {
                   animate={{ y: [0, -11, 0] }}
                   transition={{ duration: photo.floatDur, repeat: Infinity, ease: 'easeInOut', delay: photo.delay * 0.5 }}
                   whileHover={{ scale: 1.07, transition: { duration: 0.22 } }}
-                  className="w-40 rounded-xl overflow-hidden border border-border/60 shadow-2xl bg-card cursor-default"
+                  className="w-52 rounded-xl overflow-hidden border border-border/60 shadow-2xl bg-card cursor-default"
                 >
                   <img
-                    src={`https://images.unsplash.com/${photo.src}?auto=format&fit=crop&w=280&q=65`}
+                    src={`https://images.unsplash.com/${photo.src}?auto=format&fit=crop&w=320&q=65`}
                     alt={photo.label}
-                    className="w-full h-24 object-cover"
+                    className="w-full h-32 object-cover"
                     loading="lazy"
                   />
                   <div className="px-3 py-1.5 border-t border-border">
@@ -766,7 +848,7 @@ export default function LandingPage() {
           <h2 className="font-heading text-3xl font-bold mb-3">Everything You Need to Master History</h2>
           <p className="text-muted-foreground max-w-xl mx-auto">A complete learning system designed for curious, serious students of the past.</p>
         </motion.div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {FEATURES.map(({ icon: Icon, title, desc, color, bg, border }, i) => (
             <motion.div
               key={title}

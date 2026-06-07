@@ -6,7 +6,9 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { AppShell } from '@/components/layout/AppShell';
+import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
+import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { QUIZZES } from '@/features/quiz/quizData';
 import { ERAS } from '@/features/content/erasData';
 import { recordQuizAttempt } from '@/features/progress/progressStore';
@@ -80,6 +82,8 @@ type Phase = 'intro' | 'question' | 'explain' | 'done';
 
 export default function SmartQuizPage() {
   const { progress, currentUser, refreshProgress } = useAuth();
+  const { subscription } = useSubscription();
+  const tier = subscription?.tier ?? 'free';
 
   // Build flat question pool with era metadata
   const allQuestions = useMemo<QuestionWithMeta[]>(() =>
@@ -164,6 +168,29 @@ export default function SmartQuizPage() {
       })
       .map(q => ({ eraId: q.eraId, name: ERAS.find(e => e.id === q.eraId)?.shortName ?? '', score: progress.quizScores[q.id] }));
   }, [progress]);
+
+  if (tier === 'free') {
+    return (
+      <AppShell>
+        <div className="max-w-2xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
+            <div className="p-2 rounded-xl bg-violet-400/10">
+              <Sparkles className="w-5 h-5 text-violet-400" />
+            </div>
+            <div>
+              <h1 className="font-heading text-3xl font-bold">Smart Quiz</h1>
+              <p className="text-muted-foreground text-sm mt-0.5">Adaptive questions targeting your weakest areas</p>
+            </div>
+          </motion.div>
+          <UpgradePrompt
+            feature="Smart Quiz"
+            reason="Smart Quiz uses an adaptive algorithm that targets your weakest eras and calibrates difficulty to your performance level. Available on Pro Learner and above."
+            requiredTier="pro"
+          />
+        </div>
+      </AppShell>
+    );
+  }
 
   return (
     <AppShell>
