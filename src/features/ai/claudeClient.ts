@@ -10,15 +10,24 @@ Guidelines:
 - End with a thought-provoking question to encourage curiosity
 - If asked off-topic, gently redirect to history`;
 
+export const LANDING_SYSTEM_PROMPT = `You are the Historify assistant — a friendly, knowledgeable guide for the Historify history learning app.
+Answer questions about Historify's features, pricing, content, and how the app works.
+You can also answer general history questions to showcase the app's focus.
+Keep answers concise (2–4 sentences) and always be encouraging about learning history.
+If asked about lessons, mention specific eras: Ancient World, Middle Ages, Early Modern, Modern Era.
+Plans: Free ($0 / 4 lessons), Pro Learner ($10/mo / all lessons + AI Tutor), Master Student ($20/mo / unlimited AI + downloads).`;
+
 export async function* streamChatResponse(
   messages: { role: 'user' | 'assistant'; content: string }[],
-  lessonContext?: string
+  lessonContext?: string,
+  systemOverride?: string
 ): AsyncGenerator<string> {
   // NOTE: VITE_ANTHROPIC_API_KEY is exposed client-side. Use a server proxy in production.
   const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
   if (!apiKey) throw new Error('VITE_ANTHROPIC_API_KEY is not set. Add it to your .env file.');
 
-  const system = lessonContext ? `${SYSTEM_PROMPT}\n\nThe student is currently studying: ${lessonContext}` : SYSTEM_PROMPT;
+  const baseSystem = systemOverride ?? SYSTEM_PROMPT;
+  const system = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;
 
   const res = await fetch(API_URL, {
     method: 'POST',

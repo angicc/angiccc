@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Lock } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
 import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
@@ -15,23 +16,42 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { EraId, TimelineCategory } from '@/types';
 
+// Maps each timeline event to the lesson that covers it
+const EVENT_TO_LESSON: Record<string, string> = {
+  // Ancient
+  't-cuneiform':     'ancient-01', 't-hammurabi':   'ancient-01', 't-troy':      'ancient-02',
+  't-pyramid':       'ancient-05',
+  't-democracy':     'ancient-02', 't-persian-wars':'ancient-02', 't-parthenon': 'ancient-02', 't-alexander': 'ancient-02',
+  't-roman-republic':'ancient-03', 't-caesar':      'ancient-03', 't-pax-romana':'ancient-03', 't-rome-fall': 'ancient-03',
+  't-silk-road':     'ancient-04',
+  // Middle Ages
+  't-charlemagne':   'medieval-01', 't-hastings':   'medieval-01',
+  't-islam':         'medieval-02', 't-golden-age': 'medieval-02', 't-crusades':  'medieval-02',
+  't-black-death':   'medieval-03',
+  't-mongols':       'medieval-04', 't-magna-carta':'medieval-04',
+  // Early Modern
+  't-printing-press':'earlymod-01', 't-columbus':   'earlymod-01', 't-vasco':     'earlymod-01', 't-armada': 'earlymod-01',
+  't-luther':        'earlymod-02',
+  't-copernicus':    'earlymod-03', 't-galileo':    'earlymod-03', 't-newton':    'earlymod-03', 't-steam-engine': 'earlymod-03',
+  't-thirty-years-war':'earlymod-04', 't-westphalia':'earlymod-04', 't-glorious-revolution':'earlymod-04',
+  't-american-revolution':'earlymod-04', 't-french-revolution':'earlymod-04',
+  // Modern
+  't-napoleon':      'modern-05', 't-american-civil-war':'modern-05',
+  't-railways':      'modern-01', 't-communist-manifesto':'modern-01', 't-darwin': 'modern-01',
+  't-wwi':           'modern-02', 't-russian-revolution':'modern-02', 't-versailles':'modern-02',
+  't-great-depression':'modern-02', 't-wwii': 'modern-02', 't-holocaust':'modern-02', 't-hiroshima':'modern-02',
+  't-cold-war':      'modern-03', 't-decolonization':'modern-03', 't-moon':'modern-03', 't-berlin-wall':'modern-03',
+  't-internet':      'modern-04', 't-9-11': 'modern-04',
+};
+
 const ERA_COLORS: Record<EraId, string> = {
-  ancient: 'bg-amber-400',
-  'middle-ages': 'bg-blue-400',
-  'early-modern': 'bg-emerald-400',
-  modern: 'bg-rose-400',
+  ancient: 'bg-amber-400', 'middle-ages': 'bg-blue-400', 'early-modern': 'bg-emerald-400', modern: 'bg-rose-400',
 };
 const ERA_TEXT: Record<EraId, string> = {
-  ancient: 'text-amber-400',
-  'middle-ages': 'text-blue-400',
-  'early-modern': 'text-emerald-400',
-  modern: 'text-rose-400',
+  ancient: 'text-amber-400', 'middle-ages': 'text-blue-400', 'early-modern': 'text-emerald-400', modern: 'text-rose-400',
 };
 const ERA_GLOW: Record<EraId, string> = {
-  ancient: 'shadow-amber-400/40',
-  'middle-ages': 'shadow-blue-400/40',
-  'early-modern': 'shadow-emerald-400/40',
-  modern: 'shadow-rose-400/40',
+  ancient: 'shadow-amber-400/40', 'middle-ages': 'shadow-blue-400/40', 'early-modern': 'shadow-emerald-400/40', modern: 'shadow-rose-400/40',
 };
 const CATEGORIES: TimelineCategory[] = ['war','politics','science','culture','religion','exploration'];
 const CAT_ICON: Record<TimelineCategory, string> = {
@@ -39,7 +59,7 @@ const CAT_ICON: Record<TimelineCategory, string> = {
 };
 
 export default function TimelinePage() {
-  const { canTimeline } = useSubscription();
+  const { canTimeline, canLesson } = useSubscription();
   const { progress } = useAuth();
   const navigate = useNavigate();
   const [eraFilter, setEraFilter] = useState<EraId | 'all'>('all');
@@ -51,20 +71,21 @@ export default function TimelinePage() {
     (catFilter === 'all' || e.category === catFilter)
   );
 
-  function handleExploreEra(eraId: string) {
+  function handleExplore(eraId: string, eventId: string) {
+    const specificLessonId = EVENT_TO_LESSON[eventId];
+    if (specificLessonId) {
+      navigate(`/eras/${eraId}/lessons/${specificLessonId}`);
+      return;
+    }
+    // fallback: navigate to next uncompleted or first lesson in era
     const eraLessons = LESSONS.filter(l => l.eraId === eraId).sort((a, b) => a.order - b.order);
     if (eraLessons.length === 0) return;
-
-    const completedInEra = eraLessons.filter(l => progress?.completedLessons.includes(l.id));
-
-    if (completedInEra.length > 0) {
-      // Go to the next uncompleted lesson after the last completed one
-      const lastCompleted = completedInEra[completedInEra.length - 1];
-      const nextIdx = eraLessons.findIndex(l => l.id === lastCompleted.id) + 1;
-      const target = nextIdx < eraLessons.length ? eraLessons[nextIdx] : lastCompleted;
-      navigate(`/eras/${eraId}/lessons/${target.id}`);
+    const completed = eraLessons.filter(l => progress?.completedLessons.includes(l.id));
+    if (completed.length > 0) {
+      const lastIdx = eraLessons.findIndex(l => l.id === completed[completed.length - 1].id);
+      const next = lastIdx + 1 < eraLessons.length ? eraLessons[lastIdx + 1] : eraLessons[lastIdx];
+      navigate(`/eras/${eraId}/lessons/${next.id}`);
     } else {
-      // No lessons completed in this era yet — go to the first lesson
       navigate(`/eras/${eraId}/lessons/${eraLessons[0].id}`);
     }
   }
@@ -127,24 +148,29 @@ export default function TimelinePage() {
 
             {events.map((event) => {
               const isMajor = event.significance === 'major';
+              const lessonId = EVENT_TO_LESSON[event.id];
+              const lesson = lessonId ? LESSONS.find(l => l.id === lessonId) : null;
+              const locked = lesson ? !canLesson(lesson.order) : false;
+              const eraName = ERAS.find(e => e.id === event.eraId)?.shortName ?? '';
+
               return (
                 <Popover key={event.id}>
                   <PopoverTrigger asChild>
-                    <div className={`relative flex items-start gap-4 cursor-pointer group py-3.5 hover:bg-accent/30 rounded-lg px-2 -mx-2 transition-colors`}>
+                    <div className="relative flex items-start gap-4 cursor-pointer group py-3.5 hover:bg-accent/30 rounded-lg px-2 -mx-2 transition-colors">
                       <div className={`absolute left-[-1.65rem] mt-1.5 flex items-center justify-center transition-transform group-hover:scale-125 ${
                         isMajor
                           ? `w-5 h-5 -left-[1.85rem] rounded-full border-2 border-background ${ERA_COLORS[event.eraId]} shadow-md ${ERA_GLOW[event.eraId]}`
                           : `w-3 h-3 rounded-full border-2 border-background ${ERA_COLORS[event.eraId]}`
                       }`} />
-
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-xs font-mono text-muted-foreground tabular-nums">{event.displayYear}</span>
                           <Badge variant="outline" className={`text-xs px-1.5 py-0 border-current font-normal ${ERA_TEXT[event.eraId]}`}>
-                            {ERAS.find(e => e.id === event.eraId)?.shortName}
+                            {eraName}
                           </Badge>
                           <span className="text-xs text-muted-foreground">{CAT_ICON[event.category]} {event.category}</span>
                           {isMajor && <Badge variant="secondary" className="text-xs px-1.5 py-0">Major</Badge>}
+                          {locked && <Lock className="w-3 h-3 text-muted-foreground/60" />}
                         </div>
                         <p className={`mt-0.5 group-hover:text-primary transition-colors ${isMajor ? 'font-semibold text-sm' : 'text-sm text-muted-foreground'}`}>
                           {event.title}
@@ -152,27 +178,37 @@ export default function TimelinePage() {
                       </div>
                     </div>
                   </PopoverTrigger>
+
                   <PopoverContent className="w-[min(320px,calc(100vw-2rem))]" side="left" sideOffset={8} align="start">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-mono text-xs text-muted-foreground">{event.displayYear}</span>
-                        <Badge variant="outline" className={`text-xs ${ERA_TEXT[event.eraId]}`}>
-                          {ERAS.find(e => e.id === event.eraId)?.shortName}
-                        </Badge>
+                        <Badge variant="outline" className={`text-xs ${ERA_TEXT[event.eraId]}`}>{eraName}</Badge>
                         <Badge variant="outline" className="text-xs text-muted-foreground">
                           {CAT_ICON[event.category]} {event.category}
                         </Badge>
                       </div>
                       <h3 className="font-heading font-semibold leading-snug">{event.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{event.description}</p>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="w-full"
-                        onClick={() => handleExploreEra(event.eraId)}
-                      >
-                        Explore {ERAS.find(e => e.id === event.eraId)?.shortName} Era →
-                      </Button>
+
+                      {locked ? (
+                        <div className="flex items-start gap-2.5 p-3 rounded-xl bg-muted/60 border border-border">
+                          <Lock className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
+                          <div>
+                            <p className="text-xs font-semibold text-foreground">Lesson Locked</p>
+                            <p className="text-xs text-muted-foreground mt-0.5">Upgrade to Pro to access <span className="text-foreground font-medium">{lesson?.title}</span>.</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="w-full"
+                          onClick={() => handleExplore(event.eraId, event.id)}
+                        >
+                          {lesson ? `Go to: ${lesson.title.length > 28 ? lesson.title.slice(0, 28) + '…' : lesson.title} →` : `Explore ${eraName} Era →`}
+                        </Button>
+                      )}
                     </div>
                   </PopoverContent>
                 </Popover>
@@ -181,7 +217,6 @@ export default function TimelinePage() {
           </div>
         </ScrollArea>
       </div>
-
     </AppShell>
   );
 }

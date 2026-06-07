@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from 'framer-motion';
-import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle } from 'lucide-react';
+import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, MessageCircle, X, Send, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/shared/Logo';
+import { streamChatResponse, LANDING_SYSTEM_PROMPT } from '@/features/ai/claudeClient';
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
@@ -96,7 +97,7 @@ const IQ_QUESTIONS = [
   },
 ];
 
-// ── Floating year markers canvas ──────────────────────────────────────────────
+// ── 3D perspective year-marker canvas ────────────────────────────────────────
 
 function HistoryCanvas({ className = '' }: { className?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -108,44 +109,72 @@ function HistoryCanvas({ className = '' }: { className?: string }) {
     if (!ctx) return;
 
     const YEARS = ['3100 BCE','776 BCE','44 BCE','476 CE','622 CE','1066','1215','1347','1440','1492','1517','1687','1776','1789','1865','1914','1939','1969','1989','2001'];
+    const FOCAL = 600;   // perspective focal length
 
     let W = (canvas.width  = canvas.offsetWidth);
     let H = (canvas.height = canvas.offsetHeight);
 
+    // Each particle has an x,y in "world space" and a z depth (0–900)
     const particles = YEARS.map(text => ({
       text,
-      x: Math.random() * W,
-      y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.25,
-      vy: (Math.random() - 0.5) * 0.22,
-      opacity: Math.random() * 0.22 + 0.06,
-      target:  Math.random() * 0.28 + 0.05,
-      size:    Math.random() * 3.5  + 9,
-      phase:   Math.random() * Math.PI * 2,
+      x: (Math.random() - 0.5) * W * 2.5,
+      y: (Math.random() - 0.5) * H * 2.5,
+      z: Math.random() * 900,
+      vz: Math.random() * 1.2 + 0.4,   // flying toward viewer
+      baseSize: Math.random() * 3 + 9,
+      hue: Math.random() > 0.85 ? 200 : 38,   // mostly amber, rare blue
     }));
 
-    let t = 0;
     let raf: number;
 
     function draw() {
-      t += 0.007;
       ctx!.clearRect(0, 0, W, H);
+
+      // Sort back-to-front so closer particles render on top
+      particles.sort((a, b) => b.z - a.z);
+
       for (const p of particles) {
-        p.opacity += (p.target - p.opacity) * 0.018;
-        if (Math.abs(p.opacity - p.target) < 0.005) p.target = Math.random() * 0.28 + 0.05;
-        p.x += p.vx + Math.sin(t + p.phase) * 0.12;
-        p.y += p.vy + Math.cos(t * 0.9 + p.phase) * 0.1;
-        if (p.x < -80)    p.x = W + 10;
-        if (p.x > W + 80) p.x = -10;
-        if (p.y < -20)    p.y = H + 10;
-        if (p.y > H + 20) p.y = -10;
+        // Advance z (flying toward viewer)
+        p.z -= p.vz;
+        if (p.z <= 0) {
+          // Reset to far distance
+          p.z = 900;
+          p.x = (Math.random() - 0.5) * W * 2.5;
+          p.y = (Math.random() - 0.5) * H * 2.5;
+        }
+
+        // Perspective projection
+        const scale = FOCAL / (FOCAL + p.z);
+        const sx = W / 2 + p.x * scale;
+        const sy = H / 2 + p.y * scale;
+
+        // Skip off-screen
+        if (sx < -120 || sx > W + 120 || sy < -40 || sy > H + 40) continue;
+
+        const fontSize = p.baseSize * scale;
+        // Opacity rises as particle approaches
+        const progress = 1 - p.z / 900;
+        const opacity = Math.pow(progress, 1.5) * 0.45;
+
         ctx!.save();
-        ctx!.globalAlpha = p.opacity;
-        ctx!.font = `${p.size}px monospace`;
-        ctx!.fillStyle = '#f59e0b';
-        ctx!.fillText(p.text, p.x, p.y);
+        ctx!.globalAlpha = opacity;
+        ctx!.font = `${Math.max(fontSize, 7)}px monospace`;
+        ctx!.fillStyle = p.hue === 200 ? `rgba(96,165,250,1)` : `rgba(245,158,11,1)`;
+
+        // Subtle trail: draw a faded copy slightly behind
+        if (p.z < 400) {
+          const prevScale = FOCAL / (FOCAL + p.z + 8);
+          const px = W / 2 + p.x * prevScale;
+          const py = H / 2 + p.y * prevScale;
+          ctx!.globalAlpha = opacity * 0.25;
+          ctx!.fillText(p.text, px, py);
+          ctx!.globalAlpha = opacity;
+        }
+
+        ctx!.fillText(p.text, sx, sy);
         ctx!.restore();
       }
+
       raf = requestAnimationFrame(draw);
     }
     draw();
@@ -159,6 +188,182 @@ function HistoryCanvas({ className = '' }: { className?: string }) {
   }, []);
 
   return <canvas ref={ref} className={`absolute inset-0 w-full h-full pointer-events-none ${className}`} />;
+}
+
+// ── Landing AI Chatbot ────────────────────────────────────────────────────────
+
+type ChatMsg = { role: 'user' | 'assistant'; text: string };
+
+const CHAT_SUGGESTIONS = [
+  'What is Historify?',
+  'How many lessons are there?',
+  'What does the AI Tutor do?',
+  'Tell me about the Middle Ages lessons',
+  'What are the pricing plans?',
+];
+
+function LandingChatbot() {
+  const [open, setOpen]       = useState(false);
+  const [msgs, setMsgs]       = useState<ChatMsg[]>([
+    { role: 'assistant', text: "Hi! I'm the Historify assistant. Ask me anything about the app or history! 🏛️" }
+  ]);
+  const [input, setInput]     = useState('');
+  const [loading, setLoading] = useState(false);
+  const bottomRef             = useRef<HTMLDivElement>(null);
+  const apiKey                = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
+
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [msgs]);
+
+  const send = useCallback(async (text: string) => {
+    if (!text.trim() || loading) return;
+    const userMsg: ChatMsg = { role: 'user', text };
+    setMsgs(prev => [...prev, userMsg]);
+    setInput('');
+    setLoading(true);
+
+    if (!apiKey) {
+      // Graceful fallback without API key
+      setTimeout(() => {
+        setMsgs(prev => [...prev, {
+          role: 'assistant',
+          text: "Clio AI isn't connected yet — add your VITE_ANTHROPIC_API_KEY to .env.local to enable live answers. Until then, explore the app at no cost with the Get Started button!"
+        }]);
+        setLoading(false);
+      }, 800);
+      return;
+    }
+
+    const history = [...msgs, userMsg].map(m => ({ role: m.role, content: m.text }));
+    let reply = '';
+    setMsgs(prev => [...prev, { role: 'assistant', text: '' }]);
+    try {
+      for await (const chunk of streamChatResponse(history, undefined, LANDING_SYSTEM_PROMPT)) {
+        reply += chunk;
+        setMsgs(prev => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: 'assistant', text: reply };
+          return updated;
+        });
+      }
+    } catch {
+      setMsgs(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = { role: 'assistant', text: "Sorry, I couldn't connect right now. Try again in a moment!" };
+        return updated;
+      });
+    }
+    setLoading(false);
+  }, [msgs, loading, apiKey]);
+
+  return (
+    <div className="fixed bottom-6 right-6 z-50">
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.88, y: 24 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+            className="mb-4 w-[340px] rounded-2xl border border-border bg-card shadow-2xl overflow-hidden flex flex-col"
+            style={{ maxHeight: 520 }}
+          >
+            {/* Header */}
+            <div className="flex items-center gap-3 px-4 py-3 bg-primary/10 border-b border-border shrink-0">
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                <Flame className="w-4 h-4 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm">Historify Assistant</p>
+                <p className="text-xs text-muted-foreground">Ask about the app or history</p>
+              </div>
+              <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
+              {msgs.map((m, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm leading-relaxed ${
+                    m.role === 'user'
+                      ? 'bg-primary text-primary-foreground rounded-br-sm'
+                      : 'bg-muted text-foreground rounded-bl-sm'
+                  }`}>
+                    {m.text || <span className="inline-flex gap-1 items-center"><motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1, repeat:Infinity }}>●</motion.span><motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1, repeat:Infinity, delay:0.2 }}>●</motion.span><motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1, repeat:Infinity, delay:0.4 }}>●</motion.span></span>}
+                  </div>
+                </motion.div>
+              ))}
+              <div ref={bottomRef} />
+            </div>
+
+            {/* Suggestions */}
+            {msgs.length <= 1 && (
+              <div className="px-3 pb-2 flex flex-wrap gap-1.5 shrink-0">
+                {CHAT_SUGGESTIONS.map(s => (
+                  <button key={s} onClick={() => send(s)}
+                    className="text-xs px-2.5 py-1 rounded-full border border-border bg-muted/50 hover:bg-primary/10 hover:border-primary/40 transition-colors text-muted-foreground hover:text-foreground">
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Input */}
+            <div className="flex items-center gap-2 px-3 py-2.5 border-t border-border shrink-0">
+              <input
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && !e.shiftKey && send(input)}
+                placeholder="Ask anything…"
+                className="flex-1 text-sm bg-transparent outline-none placeholder:text-muted-foreground/60"
+              />
+              <button
+                onClick={() => send(input)}
+                disabled={!input.trim() || loading}
+                className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-primary-foreground disabled:opacity-40 transition-opacity"
+              >
+                {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Toggle button */}
+      <motion.button
+        onClick={() => setOpen(o => !o)}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.94 }}
+        className="w-14 h-14 rounded-full bg-primary shadow-lg shadow-primary/40 flex items-center justify-center text-primary-foreground relative"
+      >
+        <AnimatePresence mode="wait">
+          {open ? (
+            <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
+              <X className="w-6 h-6" />
+            </motion.span>
+          ) : (
+            <motion.span key="chat" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}>
+              <MessageCircle className="w-6 h-6" />
+            </motion.span>
+          )}
+        </AnimatePresence>
+        {/* Pulse ring */}
+        {!open && (
+          <motion.span
+            className="absolute inset-0 rounded-full border-2 border-primary"
+            animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
+          />
+        )}
+      </motion.button>
+    </div>
+  );
 }
 
 // ── 3D mouse-tilt card ────────────────────────────────────────────────────────
@@ -674,6 +879,9 @@ export default function LandingPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* ── Floating AI Chatbot ── */}
+      <LandingChatbot />
 
       {/* ── Footer ── */}
       <footer className="border-t border-border py-8">
