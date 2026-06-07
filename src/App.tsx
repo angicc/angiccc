@@ -20,6 +20,8 @@ import AiTutorPage from '@/pages/AiTutorPage';
 import ProfilePage from '@/pages/ProfilePage';
 import LeaderboardPage from '@/pages/LeaderboardPage';
 import FlashcardsPage from '@/pages/FlashcardsPage';
+import NotesPage from '@/pages/NotesPage';
+import ProgressPage from '@/pages/ProgressPage';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -39,6 +41,8 @@ function AnimatedRoutes() {
           <Route path="/tutor" element={<ProtectedRoute><AiTutorPage /></ProtectedRoute>} />
           <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
           <Route path="/flashcards" element={<ProtectedRoute><FlashcardsPage /></ProtectedRoute>} />
+          <Route path="/notes" element={<ProtectedRoute><NotesPage /></ProtectedRoute>} />
+          <Route path="/progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useTheme } from '@/components/ThemeProvider';
 import { LevelProgress } from '@/components/shared/LevelProgress';
@@ -18,6 +19,7 @@ export function TopBar() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -30,6 +32,18 @@ export function TopBar() {
   return (
     <>
       <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <AlertDialog open={logoutOpen} onOpenChange={setLogoutOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Log out of Historify?</AlertDialogTitle>
+            <AlertDialogDescription>Your progress is saved. You can log back in anytime.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => { logout(); navigate('/'); }}>Log Out</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <header className="h-14 border-b border-border bg-card/60 backdrop-blur-sm flex items-center px-4 gap-3 shrink-0 sticky top-0 z-20">
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild><Button variant="ghost" size="icon" className="lg:hidden"><Menu className="w-5 h-5" /></Button></SheetTrigger>
@@ -67,7 +81,7 @@ export function TopBar() {
               <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/pricing')}>Manage Plan</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} className="text-destructive">Log Out</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLogoutOpen(true)} className="text-destructive">Log Out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
