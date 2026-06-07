@@ -213,7 +213,7 @@ export default function ProfilePage() {
               </Card>
             </motion.div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[['Total XP', progress.xp.toLocaleString()], ['Level', progress.level], ['Lessons', `${progress.completedLessons.length}/14`], ['Streak', <StreakBadge key="s" streak={progress.streak} compact />]].map(([label, val]) => (
+              {[['Total XP', progress.xp.toLocaleString()], ['Level', progress.level], ['Lessons', `${progress.completedLessons.length}/${LESSONS.length}`], ['Streak', <StreakBadge key="s" streak={progress.streak} compact />]].map(([label, val]) => (
                 <Card key={String(label)}><CardContent className="pt-4 pb-3 text-center"><div className="text-lg font-bold font-heading">{val}</div><div className="text-xs text-muted-foreground mt-0.5">{label}</div></CardContent></Card>
               ))}
             </div>

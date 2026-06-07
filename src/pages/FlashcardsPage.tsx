@@ -167,7 +167,7 @@ export default function FlashcardsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 8 }}
                   transition={{ duration: 0.2 }}
-                  className="flex gap-3"
+                  className="flex flex-col sm:flex-row gap-3"
                 >
                   <Button
                     variant="outline"

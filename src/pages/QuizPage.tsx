@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { AppShell } from '@/components/layout/AppShell';
 import { XPBadge } from '@/components/shared/XPBadge';
+import { AchievementToast } from '@/components/shared/AchievementToast';
 import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
@@ -16,7 +17,7 @@ import { getQuizByEraId } from '@/features/quiz/quizData';
 import { getEraById } from '@/features/content/erasData';
 import { XP_REWARDS } from '@/features/progress/xpSystem';
 import { toast } from 'sonner';
-import type { QuizAttempt } from '@/types';
+import type { QuizAttempt, Achievement } from '@/types';
 
 type Phase = 'idle' | 'question' | 'explain' | 'done';
 
@@ -34,6 +35,7 @@ export default function QuizPage() {
   const [selected, setSelected] = useState<number | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
   const [xpAmt, setXpAmt] = useState(0);
+  const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
 
   if (!quiz || !era) return <AppShell><div className="text-center py-20 text-muted-foreground">Quiz not found.</div></AppShell>;
 
@@ -62,13 +64,14 @@ export default function QuizPage() {
     const finalScore = Math.round((finalCorrect / quiz.questions.length) * 100);
     const xp = finalCorrect * XP_REWARDS.QUIZ_CORRECT + (finalScore === 100 ? XP_REWARDS.QUIZ_PERFECT : 0);
     const attempt: QuizAttempt = { quizId: quiz.id, answers: ans, score: finalScore, xpEarned: xp, completedAt: new Date().toISOString() };
-    if (currentUser) { const { newAchievements } = recordQuizAttempt(currentUser.id, attempt, era.name); refreshProgress(); if (newAchievements.length > 0) { newAchievements.forEach(a => toast.success(`Achievement: ${a.title}!`)); confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff'] }); } if (finalScore >= quiz.passingScore) { confetti({ particleCount: finalScore === 100 ? 220 : 140, spread: finalScore === 100 ? 130 : 90, origin: { y: 0.5 }, colors: ['#f59e0b','#fbbf24','#fde68a','#ffffff','#10b981'] }); } }
+    if (currentUser) { const { newAchievements } = recordQuizAttempt(currentUser.id, attempt, era.name); refreshProgress(); if (newAchievements.length > 0) { setUnlockedAchievements(newAchievements); confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff'] }); } if (finalScore >= quiz.passingScore) { confetti({ particleCount: finalScore === 100 ? 220 : 140, spread: finalScore === 100 ? 130 : 90, origin: { y: 0.5 }, colors: ['#f59e0b','#fbbf24','#fde68a','#ffffff','#10b981'] }); } }
     setXpAmt(xp); setPhase('done');
   }
 
   return (
     <AppShell>
       {xpAmt > 0 && <XPBadge amount={xpAmt} onDone={() => setXpAmt(0)} />}
+      {unlockedAchievements.length > 0 && <AchievementToast achievements={unlockedAchievements} onDone={() => setUnlockedAchievements([])} />}
       <div className="max-w-2xl mx-auto">
         <div className="mb-6"><h1 className="font-heading text-3xl font-bold">{quiz.title}</h1><p className="text-muted-foreground mt-1 text-sm">{quiz.questions.length} questions · {quiz.xpPerCorrect} XP per correct answer</p></div>
 

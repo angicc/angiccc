@@ -94,22 +94,22 @@ export default function TimelinePage() {
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             {canTimeline() ? (
-              <>
+              <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
                 <Select value={eraFilter} onValueChange={v => setEraFilter(v as EraId | 'all')}>
-                  <SelectTrigger className="w-36 h-8 text-xs"><SelectValue placeholder="All Eras" /></SelectTrigger>
+                  <SelectTrigger className="w-32 sm:w-36 h-8 text-xs"><SelectValue placeholder="All Eras" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Eras</SelectItem>
                     {ERAS.map(e => <SelectItem key={e.id} value={e.id}>{e.shortName}</SelectItem>)}
                   </SelectContent>
                 </Select>
                 <Select value={catFilter} onValueChange={v => setCatFilter(v as TimelineCategory | 'all')}>
-                  <SelectTrigger className="w-36 h-8 text-xs"><SelectValue placeholder="All Categories" /></SelectTrigger>
+                  <SelectTrigger className="w-32 sm:w-36 h-8 text-xs"><SelectValue placeholder="All Categories" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Categories</SelectItem>
                     {CATEGORIES.map(c => <SelectItem key={c} value={c}>{CAT_ICON[c]} {c.charAt(0).toUpperCase() + c.slice(1)}</SelectItem>)}
                   </SelectContent>
                 </Select>
-              </>
+              </div>
             ) : (
               <div className="text-xs text-muted-foreground">Free: major events only</div>
             )}
@@ -167,7 +167,7 @@ export default function TimelinePage() {
                       </div>
                     </div>
                   </PopoverTrigger>
-                  <PopoverContent className="w-80" side="right">
+                  <PopoverContent className="w-[min(320px,calc(100vw-2rem))]" side="left" sideOffset={8} align="start">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-mono text-xs text-muted-foreground">{event.displayYear}</span>

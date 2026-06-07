@@ -14,7 +14,8 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { recordQuizAttempt } from '@/features/progress/progressStore';
 import { ERAS } from '@/features/content/erasData';
 import { LESSONS } from '@/features/content/lessonsData';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { OnboardingModal, hasCompletedOnboarding } from '@/components/shared/OnboardingModal';
 
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
 const fadeUp = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
@@ -23,6 +24,14 @@ export default function DashboardPage() {
   const { currentUser, progress, refreshProgress } = useAuth();
   const navigate = useNavigate();
   const [xpAmt, setXpAmt] = useState(0);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    if (currentUser && !hasCompletedOnboarding(currentUser.id)) {
+      setShowOnboarding(true);
+    }
+  }, [currentUser]);
+
   if (!progress || !currentUser) return null;
 
   const nextLesson = LESSONS.find(l => !progress.completedLessons.includes(l.id));
@@ -39,6 +48,7 @@ export default function DashboardPage() {
 
   return (
     <AppShell>
+      {showOnboarding && <OnboardingModal userId={currentUser.id} onDone={() => setShowOnboarding(false)} />}
       {xpAmt > 0 && <XPBadge amount={xpAmt} onDone={() => setXpAmt(0)} />}
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Welcome */}
@@ -58,7 +68,7 @@ export default function DashboardPage() {
           {[
             { label:'Total XP', value: progress.xp.toLocaleString(), icon: Star, color:'text-primary' },
             { label:'Level', value: progress.level, icon: Flame, color:'text-orange-400' },
-            { label:'Lessons Done', value:`${progress.completedLessons.length} / 14`, icon: BookOpen, color:'text-emerald-400' },
+            { label:'Lessons Done', value:`${progress.completedLessons.length} / ${LESSONS.length}`, icon: BookOpen, color:'text-emerald-400' },
             { label:'Quiz Avg', value: avgScore > 0 ? `${avgScore}%` : '—', icon: HelpCircle, color:'text-blue-400' },
           ].map(({ label, value, icon: Icon, color }) => (
             <motion.div key={label} variants={fadeUp}>

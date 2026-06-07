@@ -9,7 +9,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { AppShell } from '@/components/layout/AppShell';
 import { XPBadge } from '@/components/shared/XPBadge';
+import { AchievementToast } from '@/components/shared/AchievementToast';
 import { useAuth } from '@/features/auth/AuthContext';
+import type { Achievement } from '@/types';
 import { markLessonComplete } from '@/features/progress/progressStore';
 import { getLessonById, getEraLessons } from '@/features/content/lessonsData';
 import { getEraById } from '@/features/content/erasData';
@@ -22,6 +24,7 @@ export default function LessonPage() {
   const navigate = useNavigate();
   const [xpAmt, setXpAmt] = useState(0);
   const [completed, setCompleted] = useState(false);
+  const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
   const [bookmarked, setBookmarked] = useState(() =>
     currentUser && lessonId ? isBookmarked(currentUser.id, lessonId) : false
   );
@@ -44,7 +47,7 @@ export default function LessonPage() {
     toast.success(`Lesson complete! +${lesson.xpReward} XP`);
     confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff'] });
     if (newAchievements.length > 0) {
-      newAchievements.forEach(a => toast.success(`Achievement unlocked: ${a.title}!`));
+      setUnlockedAchievements(newAchievements);
       confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff','#fde68a'] });
     }
   }
@@ -59,6 +62,7 @@ export default function LessonPage() {
   return (
     <AppShell>
       {xpAmt > 0 && <XPBadge amount={xpAmt} onDone={() => setXpAmt(0)} />}
+      {unlockedAchievements.length > 0 && <AchievementToast achievements={unlockedAchievements} onDone={() => setUnlockedAchievements([])} />}
       <div className="max-w-5xl mx-auto">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-5">

@@ -13,7 +13,7 @@ export function xpToNextLevel(xp: number) {
 export const ACHIEVEMENTS: Achievement[] = [
   { id: 'first-lesson', title: 'First Steps', description: 'Complete your first lesson', icon: 'BookOpen', xpBonus: 50, condition: { type: 'lessons_complete', count: 1 } },
   { id: 'scholar', title: 'Scholar', description: 'Complete 5 lessons', icon: 'GraduationCap', xpBonus: 100, condition: { type: 'lessons_complete', count: 5 } },
-  { id: 'historian', title: 'Historian', description: 'Complete all 14 lessons', icon: 'Award', xpBonus: 500, condition: { type: 'lessons_complete', count: 14 } },
+  { id: 'historian', title: 'Historian', description: 'Complete all 18 lessons', icon: 'Award', xpBonus: 500, condition: { type: 'lessons_complete', count: 18 } },
   { id: 'quiz-ace', title: 'Quiz Ace', description: 'Score 100% on any quiz', icon: 'Trophy', xpBonus: 150, condition: { type: 'quiz_perfect' } },
   { id: 'streak-3', title: 'Dedicated', description: 'Maintain a 3-day streak', icon: 'Flame', xpBonus: 75, condition: { type: 'streak', days: 3 } },
   { id: 'streak-7', title: 'Unstoppable', description: 'Maintain a 7-day streak', icon: 'Zap', xpBonus: 200, condition: { type: 'streak', days: 7 } },
