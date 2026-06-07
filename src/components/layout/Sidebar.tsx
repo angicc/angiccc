@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy } from 'lucide-react';
+import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
@@ -12,6 +12,7 @@ const NAV = [
   { to: '/timeline', label: 'Timeline', icon: ScrollText },
   { to: '/tutor', label: 'AI Tutor', icon: MessageSquare },
   { to: '/leaderboard', label: 'Leaderboard', icon: Trophy },
+  { to: '/flashcards', label: 'Flashcards', icon: Layers },
   { to: '/profile', label: 'Profile', icon: User },
 ];
 

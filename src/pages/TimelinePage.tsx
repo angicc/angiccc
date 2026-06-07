@@ -1,8 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Lock, X } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
 import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
+import { useAuth } from '@/features/auth/AuthContext';
 import { getSortedTimeline } from '@/features/content/timelineData';
 import { ERAS } from '@/features/content/erasData';
 import { LESSONS } from '@/features/content/lessonsData';
@@ -13,9 +16,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { EraId, TimelineCategory } from '@/types';
 
-function firstLessonPath(eraId: string): string {
-  const lesson = LESSONS.filter(l => l.eraId === eraId).sort((a, b) => a.order - b.order)[0];
-  return lesson ? `/eras/${eraId}/lessons/${lesson.id}` : '/eras';
+interface LockedModal {
+  eraName: string;
+  lastPath: string | null;
 }
 
 const ERA_COLORS: Record<EraId, string> = {
@@ -43,14 +46,43 @@ const CAT_ICON: Record<TimelineCategory, string> = {
 
 export default function TimelinePage() {
   const { canTimeline } = useSubscription();
+  const { progress } = useAuth();
+  const navigate = useNavigate();
   const [eraFilter, setEraFilter] = useState<EraId | 'all'>('all');
   const [catFilter, setCatFilter] = useState<TimelineCategory | 'all'>('all');
+  const [locked, setLocked] = useState<LockedModal | null>(null);
 
   const all = getSortedTimeline().filter(e => e.significance === 'major' || canTimeline());
   const events = all.filter(e =>
     (eraFilter === 'all' || e.eraId === eraFilter) &&
     (catFilter === 'all' || e.category === catFilter)
   );
+
+  function handleExploreEra(eraId: string) {
+    const eraLessons = LESSONS.filter(l => l.eraId === eraId).sort((a, b) => a.order - b.order);
+    const eraName = ERAS.find(e => e.id === eraId)?.shortName ?? eraId;
+
+    const completedInEra = eraLessons.filter(l => progress?.completedLessons.includes(l.id));
+
+    if (completedInEra.length > 0) {
+      const lastCompleted = completedInEra[completedInEra.length - 1];
+      const nextIdx = eraLessons.findIndex(l => l.id === lastCompleted.id) + 1;
+      const target = nextIdx < eraLessons.length ? eraLessons[nextIdx] : lastCompleted;
+      navigate(`/eras/${eraId}/lessons/${target.id}`);
+      return;
+    }
+
+    // No completed lessons in this era — find last globally completed lesson
+    const allCompleted = progress?.completedLessons ?? [];
+    let lastGlobalPath: string | null = null;
+    if (allCompleted.length > 0) {
+      const lastId = allCompleted[allCompleted.length - 1];
+      const lastLesson = LESSONS.find(l => l.id === lastId);
+      if (lastLesson) lastGlobalPath = `/eras/${lastLesson.eraId}/lessons/${lastLesson.id}`;
+    }
+
+    setLocked({ eraName, lastPath: lastGlobalPath });
+  }
 
   return (
     <AppShell>
@@ -108,13 +140,12 @@ export default function TimelinePage() {
           <div className="relative pl-10 pr-4 space-y-0">
             <div className="absolute left-4 top-0 bottom-0 w-px bg-border" />
 
-            {events.map((event, i) => {
+            {events.map((event) => {
               const isMajor = event.significance === 'major';
               return (
                 <Popover key={event.id}>
                   <PopoverTrigger asChild>
                     <div className={`relative flex items-start gap-4 cursor-pointer group py-3.5 hover:bg-accent/30 rounded-lg px-2 -mx-2 transition-colors`}>
-                      {/* Timeline dot */}
                       <div className={`absolute left-[-1.65rem] mt-1.5 flex items-center justify-center transition-transform group-hover:scale-125 ${
                         isMajor
                           ? `w-5 h-5 -left-[1.85rem] rounded-full border-2 border-background ${ERA_COLORS[event.eraId]} shadow-md ${ERA_GLOW[event.eraId]}`
@@ -149,8 +180,13 @@ export default function TimelinePage() {
                       </div>
                       <h3 className="font-heading font-semibold leading-snug">{event.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{event.description}</p>
-                      <Button size="sm" variant="outline" className="w-full" asChild>
-                        <Link to={firstLessonPath(event.eraId)}>Explore {ERAS.find(e => e.id === event.eraId)?.shortName} Era →</Link>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => handleExploreEra(event.eraId)}
+                      >
+                        Explore {ERAS.find(e => e.id === event.eraId)?.shortName} Era →
                       </Button>
                     </div>
                   </PopoverContent>
@@ -160,6 +196,71 @@ export default function TimelinePage() {
           </div>
         </ScrollArea>
       </div>
+
+      {/* Locked Era Modal */}
+      <AnimatePresence>
+        {locked && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+            onClick={() => setLocked(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 16 }}
+              transition={{ type: 'spring', stiffness: 340, damping: 28 }}
+              className="relative bg-card border border-border rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl"
+              onClick={e => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setLocked(null)}
+                className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              <motion.div
+                animate={{ rotate: [0, -8, 8, -5, 5, 0], scale: [1, 1.1, 1.1, 1.05, 1] }}
+                transition={{ duration: 0.7, ease: 'easeInOut' }}
+                className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-amber-400/10 border border-amber-400/30"
+              >
+                <Lock className="w-8 h-8 text-amber-400" />
+              </motion.div>
+
+              <h2 className="font-heading text-xl font-bold mb-2">Era Locked</h2>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                Sorry, but you haven't unlocked the{' '}
+                <span className="text-foreground font-semibold">{locked.eraName}</span>{' '}
+                era yet. Complete earlier lessons to unlock it.
+              </p>
+
+              <div className="flex flex-col gap-2">
+                {locked.lastPath ? (
+                  <Button
+                    className="w-full"
+                    onClick={() => { setLocked(null); navigate(locked.lastPath!); }}
+                  >
+                    Continue Where You Left Off
+                  </Button>
+                ) : (
+                  <Button
+                    className="w-full"
+                    onClick={() => { setLocked(null); navigate('/eras'); }}
+                  >
+                    Go to Eras & Lessons
+                  </Button>
+                )}
+                <Button variant="ghost" size="sm" onClick={() => setLocked(null)}>
+                  Dismiss
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AppShell>
   );
 }

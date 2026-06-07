@@ -63,7 +63,7 @@ export default function PricingPage() {
           <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">Choose Your <span className="text-primary">Learning Plan</span></h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">From casual exploration to mastery-level study — a plan for every learner.</p>
         </div>
-        <div className="grid md:grid-cols-3 gap-6 items-start">
+        <div className="grid md:grid-cols-3 gap-6 items-stretch">
           {PLANS.map(plan => {
             const isCurrent = tier === plan.id;
             const isUp = ['free','pro','master'].indexOf(plan.id) > ['free','pro','master'].indexOf(tier);
