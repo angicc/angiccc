@@ -150,7 +150,7 @@ export default function AiTutorPage() {
 
   return (
     <AppShell>
-      <div className="max-w-3xl mx-auto flex flex-col h-[calc(100vh-7rem)]">
+      <div className="max-w-5xl mx-auto flex flex-col h-[calc(100vh-7rem)]">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -8 }}

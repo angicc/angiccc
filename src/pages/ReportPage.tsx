@@ -76,7 +76,7 @@ export default function ReportPage() {
 
   return (
     <AppShell>
-      <div className="max-w-2xl mx-auto space-y-6 pb-8">
+      <div className="max-w-4xl mx-auto space-y-6 pb-8">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-rose-400/10">

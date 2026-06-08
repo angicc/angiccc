@@ -72,7 +72,7 @@ export default function QuizPage() {
     <AppShell>
       {xpAmt > 0 && <XPBadge amount={xpAmt} onDone={() => setXpAmt(0)} />}
       {unlockedAchievements.length > 0 && <AchievementToast achievements={unlockedAchievements} onDone={() => setUnlockedAchievements([])} />}
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         <div className="mb-6"><h1 className="font-heading text-3xl font-bold">{quiz.title}</h1><p className="text-muted-foreground mt-1 text-sm">{quiz.questions.length} questions · {quiz.xpPerCorrect} XP per correct answer</p></div>
 
         {phase === 'idle' && (

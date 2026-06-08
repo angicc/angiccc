@@ -121,7 +121,7 @@ export default function FriendsPage() {
 
   return (
     <AppShell>
-      <div className="max-w-2xl mx-auto space-y-6">
+      <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-primary/10">
