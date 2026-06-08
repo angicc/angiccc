@@ -12,6 +12,13 @@ import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { ERAS } from '@/features/content/erasData';
 import { LESSONS } from '@/features/content/lessonsData';
 
+const ERA_PHOTOS: Record<string, string> = {
+  ancient:       'https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=700&q=60',
+  'middle-ages': 'https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&w=700&q=60',
+  'early-modern':'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=700&q=60',
+  modern:        'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=700&q=60',
+};
+
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.12 } } };
 const card = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 
@@ -39,7 +46,14 @@ export default function ErasPage() {
                 <Card className="h-full flex flex-col border-border hover:border-primary/30 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 overflow-hidden bg-card">
                   {/* Era Banner */}
                   <div className={`h-28 bg-gradient-to-br ${era.bgGradient} relative flex items-end p-4`}>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <img
+                      src={ERA_PHOTOS[era.id]}
+                      alt={era.name}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                     <div className="absolute top-3 right-3 z-10">
                       <Badge className="text-xs bg-black/50 backdrop-blur-sm text-white border-white/20 hover:bg-black/50">
                         {done}/{eraLessons.length} complete

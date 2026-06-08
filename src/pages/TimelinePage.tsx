@@ -20,7 +20,8 @@ import type { EraId, TimelineCategory } from '@/types';
 const EVENT_TO_LESSON: Record<string, string> = {
   // Ancient
   't-cuneiform':     'ancient-01', 't-hammurabi':   'ancient-01', 't-troy':      'ancient-02',
-  't-pyramid':       'ancient-05',
+  't-pyramid':       'ancient-05', 't-egypt-afterlife': 'ancient-05', 't-ramesses': 'ancient-05',
+  't-cyrus-great':   'ancient-04', 't-ashoka':     'ancient-04', 't-han-dynasty': 'ancient-04',
   't-democracy':     'ancient-02', 't-persian-wars':'ancient-02', 't-parthenon': 'ancient-02', 't-alexander': 'ancient-02',
   't-roman-republic':'ancient-03', 't-caesar':      'ancient-03', 't-pax-romana':'ancient-03', 't-rome-fall': 'ancient-03',
   't-silk-road':     'ancient-04',

@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Crown, Download, Bookmark, Shield, Bell, Mail, KeyRound, Smartphone, Eye, EyeOff, Clock, Star } from 'lucide-react';
+import { Crown, Download, Bookmark, Shield, Bell, Mail, KeyRound, Smartphone, Eye, EyeOff, Clock, Star, Camera, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -72,6 +72,30 @@ export default function ProfilePage() {
   const { subscription } = useSubscription();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
+
+  const avatarKey = currentUser ? `historify:avatar:${currentUser.id}` : '';
+  const [avatarUrl, setAvatarUrl] = useState<string>(() => localStorage.getItem(avatarKey) ?? '');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { toast.error('Image must be under 2 MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const url = ev.target?.result as string;
+      setAvatarUrl(url);
+      localStorage.setItem(avatarKey, url);
+      toast.success('Profile picture updated!');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeAvatar() {
+    setAvatarUrl('');
+    localStorage.removeItem(avatarKey);
+    toast.success('Profile picture removed.');
+  }
 
   const [newName, setNewName] = useState(currentUser?.username ?? '');
 
@@ -197,7 +221,18 @@ export default function ProfilePage() {
               <Card>
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-4 mb-5">
-                    <Avatar className="h-16 w-16"><AvatarFallback className="bg-primary/20 text-primary text-2xl font-bold">{currentUser.avatarInitials}</AvatarFallback></Avatar>
+                    <div className="relative group">
+                      <Avatar className="h-16 w-16">
+                        {avatarUrl && <AvatarImage src={avatarUrl} alt={currentUser.username} />}
+                        <AvatarFallback className="bg-primary/20 text-primary text-2xl font-bold">{currentUser.avatarInitials}</AvatarFallback>
+                      </Avatar>
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                      >
+                        <Camera className="w-5 h-5 text-white" />
+                      </button>
+                    </div>
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
                         <h1 className="font-heading text-xl font-bold">{currentUser.username}</h1>
@@ -271,6 +306,31 @@ export default function ProfilePage() {
 
           {/* ── Settings ── */}
           <TabsContent value="settings" className="space-y-4 mt-4">
+            {/* Hidden file input */}
+            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
+
+            {/* Profile Picture */}
+            <Card>
+              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Camera className="w-4 h-4" />Profile Picture</CardTitle></CardHeader>
+              <CardContent className="flex items-center gap-4">
+                <Avatar className="h-16 w-16">
+                  {avatarUrl && <AvatarImage src={avatarUrl} alt={currentUser.username} />}
+                  <AvatarFallback className="bg-primary/20 text-primary text-2xl font-bold">{currentUser.avatarInitials}</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col gap-2">
+                  <Button size="sm" variant="outline" className="gap-2" onClick={() => fileInputRef.current?.click()}>
+                    <Camera className="w-3.5 h-3.5" />{avatarUrl ? 'Change Photo' : 'Upload Photo'}
+                  </Button>
+                  {avatarUrl && (
+                    <Button size="sm" variant="ghost" className="gap-2 text-destructive hover:text-destructive" onClick={removeAvatar}>
+                      <Trash2 className="w-3.5 h-3.5" />Remove
+                    </Button>
+                  )}
+                  <p className="text-xs text-muted-foreground">JPG, PNG or GIF · max 2 MB</p>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Display name */}
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Mail className="w-4 h-4" />Display Name</CardTitle></CardHeader>

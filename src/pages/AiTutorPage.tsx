@@ -214,11 +214,11 @@ export default function AiTutorPage() {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="w-full text-xs h-auto py-2.5 text-left justify-start gap-2 hover:border-primary/50 hover:bg-primary/5 transition-all"
+                            className="w-full text-xs h-auto py-3 text-left justify-start gap-2 hover:border-primary/50 hover:bg-primary/5 transition-all whitespace-normal"
                             onClick={() => send(s.text)}
                           >
-                            <s.icon className="w-3.5 h-3.5 text-primary shrink-0" />
-                            <span className="text-left leading-snug">{s.text}</span>
+                            <s.icon className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                            <span className="text-left leading-snug break-words min-w-0">{s.text}</span>
                           </Button>
                         </motion.div>
                       ))}
