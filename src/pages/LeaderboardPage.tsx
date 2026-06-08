@@ -6,18 +6,23 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { AppShell } from '@/components/layout/AppShell';
 import { useAuth } from '@/features/auth/AuthContext';
 import { calculateLevel } from '@/features/progress/xpSystem';
+import { getVideoXp } from '@/features/videoReview/videoReviewStore';
+import { getChessRank } from '@/features/ranks/chessRanks';
+
+// videoXp is worth 2× regular XP on the leaderboard
+const leaderScore = (xp: number, videoXp: number) => xp + videoXp * 2;
 
 const MOCK_USERS = [
-  { id: 'm1', username: 'HistoriaClio',    xp: 5840, country: '🇩🇪', streak: 62 },
-  { id: 'm2', username: 'ChronoMaster',   xp: 5210, country: '🇫🇷', streak: 44 },
-  { id: 'm3', username: 'TimeTraveler99', xp: 4780, country: '🇬🇧', streak: 38 },
-  { id: 'm4', username: 'AncientScholar', xp: 4120, country: '🇮🇹', streak: 27 },
-  { id: 'm5', username: 'MedievalMind',   xp: 3650, country: '🇪🇸', streak: 19 },
-  { id: 'm6', username: 'RenaissanceKid', xp: 3200, country: '🇵🇹', streak: 15 },
-  { id: 'm7', username: 'EmpireBuilder',  xp: 2750, country: '🇯🇵', streak: 11 },
-  { id: 'm8', username: 'RevolutionR',    xp: 2100, country: '🇧🇷', streak: 8  },
-  { id: 'm9', username: 'WarChronicler',  xp: 1620, country: '🇰🇷', streak: 5  },
-  { id: 'm10', username: 'NewExplorer',   xp: 980,  country: '🇦🇺', streak: 3  },
+  { id: 'm1', username: 'HistoriaClio',    xp: 5840, country: '🇩🇪', streak: 62, videoXp: 2200 },
+  { id: 'm2', username: 'ChronoMaster',   xp: 5210, country: '🇫🇷', streak: 44, videoXp: 1800 },
+  { id: 'm3', username: 'TimeTraveler99', xp: 4780, country: '🇬🇧', streak: 38, videoXp: 1400 },
+  { id: 'm4', username: 'AncientScholar', xp: 4120, country: '🇮🇹', streak: 27, videoXp: 900 },
+  { id: 'm5', username: 'MedievalMind',   xp: 3650, country: '🇪🇸', streak: 19, videoXp: 600 },
+  { id: 'm6', username: 'RenaissanceKid', xp: 3200, country: '🇵🇹', streak: 15, videoXp: 350 },
+  { id: 'm7', username: 'EmpireBuilder',  xp: 2750, country: '🇯🇵', streak: 11, videoXp: 150 },
+  { id: 'm8', username: 'RevolutionR',    xp: 2100, country: '🇧🇷', streak: 8,  videoXp: 80  },
+  { id: 'm9', username: 'WarChronicler',  xp: 1620, country: '🇰🇷', streak: 5,  videoXp: 30  },
+  { id: 'm10', username: 'NewExplorer',   xp: 980,  country: '🇦🇺', streak: 3,  videoXp: 0   },
 ];
 
 const RANK_STYLES = [
@@ -35,10 +40,12 @@ export default function LeaderboardPage() {
   const userLevel = progress?.level ?? 1;
   const userStreak = progress?.streak ?? 0;
 
+  const userVideoXp = currentUser ? getVideoXp(currentUser.id) : 0;
+
   const allUsers = [
     ...MOCK_USERS,
-    { id: 'real', username: currentUser?.username ?? 'You', xp: userXP, country: '⭐', streak: userStreak },
-  ].sort((a, b) => b.xp - a.xp);
+    { id: 'real', username: currentUser?.username ?? 'You', xp: userXP, country: '⭐', streak: userStreak, videoXp: userVideoXp },
+  ].sort((a, b) => leaderScore(b.xp, b.videoXp ?? 0) - leaderScore(a.xp, a.videoXp ?? 0));
 
   const userRank = allUsers.findIndex(u => u.id === 'real') + 1;
 
@@ -76,7 +83,7 @@ export default function LeaderboardPage() {
                       </AvatarFallback>
                     </Avatar>
                     <p className={`font-semibold text-xs truncate ${isYou ? 'text-primary' : ''}`}>{u?.username}</p>
-                    <p className={`font-bold text-sm font-heading mt-0.5 ${s.label}`}>{u?.xp.toLocaleString()} XP</p>
+                    <p className={`font-bold text-sm font-heading mt-0.5 ${s.label}`}>{leaderScore(u?.xp ?? 0, u?.videoXp ?? 0).toLocaleString()} pts</p>
                     <Badge variant="outline" className="text-xs mt-1">#{actualRank}</Badge>
                   </CardContent>
                 </Card>
@@ -133,7 +140,8 @@ export default function LeaderboardPage() {
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <span className="flex items-center gap-0.5"><Flame className="w-3 h-3 text-orange-400" />{u.streak}d</span>
                       <Badge variant={isYou ? 'default' : 'secondary'} className="text-xs">Lv {level}</Badge>
-                      <span className="font-medium text-foreground w-20 text-right">{u.xp.toLocaleString()} XP</span>
+                      {(() => { const r = getChessRank(u.videoXp ?? 0); return <span title={r.name} className={`text-base leading-none ${r.color}`}>{r.icon}</span>; })()}
+                      <span className="font-medium text-foreground w-24 text-right">{leaderScore(u.xp, u.videoXp ?? 0).toLocaleString()} pts</span>
                     </div>
                   </motion.div>
                 );

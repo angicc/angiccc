@@ -28,10 +28,15 @@ export default function RegisterPage() {
 
   async function onSubmit(v: V) {
     setLoading(true);
-    const r = await register(v.username, v.email, v.password);
-    setLoading(false);
-    if (r.success) { toast.success('Account created! Welcome to Historify.'); navigate('/dashboard'); }
-    else form.setError('root', { message: r.error });
+    try {
+      const r = await register(v.username, v.email, v.password);
+      if (r.success) { toast.success('Account created! Welcome to Historify.'); navigate('/dashboard'); }
+      else form.setError('root', { message: r.error });
+    } catch {
+      form.setError('root', { message: 'Account creation failed. Please try again.' });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

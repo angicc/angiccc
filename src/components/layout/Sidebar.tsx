@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit } from 'lucide-react';
+import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { Logo } from '@/components/shared/Logo';
 import { xpToNextLevel } from '@/features/progress/xpSystem';
+import { getVideoXp } from '@/features/videoReview/videoReviewStore';
+import { getChessRank } from '@/features/ranks/chessRanks';
 import { cn } from '@/lib/utils';
 
 const NAV = [
@@ -19,6 +23,7 @@ const NAV = [
   { to: '/progress', label: 'Progress', icon: BarChart2 },
   { to: '/smart-quiz', label: 'Smart Quiz', icon: Sparkles },
   { to: '/essay', label: 'Essay Challenge', icon: FileEdit },
+  { to: '/video-review', label: 'Video Review', icon: Film },
   { to: '/profile', label: 'Profile', icon: User },
   { to: '/guide', label: 'App Guide', icon: HelpCircle },
   { to: '/report', label: 'Report a Problem', icon: AlertTriangle },
@@ -26,21 +31,44 @@ const NAV = [
 
 export function Sidebar({ className, onNavigate }: { className?: string; onNavigate?: () => void }) {
   const navigate = useNavigate();
-  const { logout, progress } = useAuth();
+  const { logout, progress, currentUser } = useAuth();
   const { subscription } = useSubscription();
   const tier = subscription?.tier ?? 'free';
   const tierLabel = { free: 'Free', pro: 'Pro Learner', master: 'Master Student' }[tier];
   const xpInfo = progress ? xpToNextLevel(progress.xp) : null;
 
+  const avatarKey = currentUser ? `historify:avatar:${currentUser.id}` : '';
+  const [avatarUrl] = useState<string>(() => (avatarKey ? localStorage.getItem(avatarKey) ?? '' : ''));
+  const videoXp = currentUser ? getVideoXp(currentUser.id) : 0;
+  const rank = getChessRank(videoXp);
+
   return (
     <aside className={cn('flex flex-col w-60 shrink-0 border-r border-border bg-card h-screen sticky top-0', className)}>
-      {/* Logo */}
-      <div className="px-5 py-5 border-b border-border">
+      {/* Logo + user identity */}
+      <div className="px-4 py-4 border-b border-border space-y-3">
         <Logo />
-        <div className="mt-1.5 flex items-center gap-1.5">
-          <Crown className={`w-3 h-3 ${tier === 'master' ? 'text-amber-400' : tier === 'pro' ? 'text-primary' : 'text-muted-foreground'}`} />
-          <span className="text-xs text-muted-foreground">{tierLabel}</span>
-        </div>
+        {currentUser && (
+          <div className="flex items-center gap-2.5">
+            <Avatar className="h-8 w-8 shrink-0">
+              {avatarUrl && <AvatarImage src={avatarUrl} alt={currentUser.username} />}
+              <AvatarFallback className="bg-primary/20 text-primary text-xs font-bold">
+                {currentUser.avatarInitials}
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0">
+              <p className="text-xs font-semibold truncate">{currentUser.username}</p>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <Crown className={`w-3 h-3 ${tier === 'master' ? 'text-amber-400' : tier === 'pro' ? 'text-primary' : 'text-muted-foreground'}`} />
+                <span className="text-[10px] text-muted-foreground truncate">{tierLabel}</span>
+              </div>
+            </div>
+            {/* Chess rank */}
+            <div className={`ml-auto shrink-0 flex flex-col items-center px-1.5 py-1 rounded-lg border ${rank.borderColor} ${rank.bgColor}`}>
+              <span className="text-sm leading-none">{rank.icon}</span>
+              <span className={`text-[9px] font-bold mt-0.5 ${rank.color}`}>{rank.name}</span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Nav links */}

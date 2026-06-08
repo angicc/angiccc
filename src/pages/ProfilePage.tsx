@@ -24,6 +24,8 @@ import { ACHIEVEMENTS } from '@/features/progress/xpSystem';
 import { getBookmarks } from '@/features/bookmarks/bookmarkStore';
 import { LESSONS } from '@/features/content/lessonsData';
 import { ERAS } from '@/features/content/erasData';
+import { getVideoXp } from '@/features/videoReview/videoReviewStore';
+import { getChessRank, getXpToNextRank } from '@/features/ranks/chessRanks';
 import { toast } from 'sonner';
 
 const ERA_COLOR: Record<string, string> = {
@@ -130,6 +132,10 @@ export default function ProfilePage() {
   if (!currentUser || !progress) return null;
   const tier = subscription?.tier ?? 'free';
   const tierLabel: Record<string, string> = { free:'Free', pro:'Pro Learner', master:'Master Student' };
+
+  const videoXp = getVideoXp(currentUser.id);
+  const chessRank = getChessRank(videoXp);
+  const rankProgress = getXpToNextRank(videoXp);
 
   const bookmarkedLessons = LESSONS.filter(l => getBookmarks(currentUser.id).includes(l.id));
 
@@ -252,6 +258,27 @@ export default function ProfilePage() {
                 <Card key={String(label)}><CardContent className="pt-4 pb-3 text-center"><div className="text-lg font-bold font-heading">{val}</div><div className="text-xs text-muted-foreground mt-0.5">{label}</div></CardContent></Card>
               ))}
             </div>
+            {/* Chess Rank */}
+            <Card className={`border ${chessRank.borderColor} ${chessRank.bgColor}`}>
+              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2">
+                <span className="text-lg">{chessRank.icon}</span>
+                Historical Rank: <span className={chessRank.color}>{chessRank.name}</span>
+              </CardTitle></CardHeader>
+              <CardContent className="space-y-2">
+                <p className="text-xs text-muted-foreground">{chessRank.desc}</p>
+                <p className="text-xs text-muted-foreground">Inspired by: <span className="text-foreground font-medium">{chessRank.historicalFigure}</span></p>
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>Video XP: <span className={`font-bold ${chessRank.color}`}>{videoXp.toLocaleString()}</span></span>
+                  {rankProgress ? <span>Next rank in <span className="font-medium text-foreground">{(rankProgress.needed - rankProgress.current).toLocaleString()} XP</span></span> : <span className={`font-bold ${chessRank.color}`}>MAX RANK</span>}
+                </div>
+                {rankProgress && (
+                  <div className="h-1.5 bg-border rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full transition-all duration-700 bg-amber-500`} style={{ width: `${rankProgress.pct}%` }} />
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center justify-between">Current Plan <Button size="sm" variant="outline" onClick={() => navigate('/pricing')}>Change Plan</Button></CardTitle></CardHeader>
               <CardContent className="flex items-center gap-3">

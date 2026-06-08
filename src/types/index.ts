@@ -22,6 +22,7 @@ export interface UserProgress {
   lastActivityDate: string; completedLessons: string[]; completedQuizzes: string[];
   quizScores: Record<string, number>; achievements: string[];
   recentActivity: ActivityEvent[]; aiMessageCount: number;
+  videoXp?: number;
 }
 export interface ActivityEvent {
   type: 'lesson_complete' | 'quiz_complete' | 'achievement_unlock' | 'ai_chat';

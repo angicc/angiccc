@@ -9,9 +9,15 @@ function getUsers(): User[] { const r = localStorage.getItem(USERS_KEY); return 
 function saveUsers(u: User[]) { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
 
 async function hashPassword(password: string): Promise<string> {
-  const data = new TextEncoder().encode(password);
-  const buf = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  // crypto.subtle requires HTTPS; fall back to btoa on plain HTTP (e.g. local network)
+  try {
+    if (typeof crypto !== 'undefined' && crypto.subtle) {
+      const data = new TextEncoder().encode(password);
+      const buf = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+  } catch { /* fall through */ }
+  return btoa(unescape(encodeURIComponent(password)));
 }
 
 interface AuthCtx { currentUser: User | null; progress: UserProgress | null; login(e: string, p: string): Promise<{success:boolean;error?:string}>; register(u: string, e: string, p: string): Promise<{success:boolean;error?:string}>; logout(): void; refreshProgress(): void; }

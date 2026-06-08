@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from 'framer-motion';
-import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, MessageCircle, X, Send, Loader2, Sparkles } from 'lucide-react';
+import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, MessageCircle, X, Send, Loader2, Sparkles, Film, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/shared/Logo';
@@ -75,6 +75,8 @@ const FEATURES = [
   { icon: PenLine,    title: 'Personal Notes',         desc: 'Capture insights as you learn — notes are linked directly to lessons and eras for easy review.',          color: 'text-orange-400',  bg: 'bg-orange-400/10',  border: 'border-orange-400/20'  },
   { icon: BarChart2,  title: 'Progress Analytics',     desc: 'Track your learning journey with detailed charts, streak stats, and achievement milestones.',               color: 'text-teal-400',    bg: 'bg-teal-400/10',    border: 'border-teal-400/20'    },
   { icon: Sparkles,   title: 'Smart Quiz',             desc: 'Adaptive AI-powered quiz that targets your weakest eras and auto-calibrates difficulty to your skill level.', color: 'text-violet-400',  bg: 'bg-violet-400/10',  border: 'border-violet-400/20'  },
+  { icon: Film,       title: 'Video Review Challenge', desc: 'Watch a curated history video every 12 hours. Write your analysis. Clio grades every sentence live and awards Video XP.', color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/20'    },
+  { icon: Shield,     title: 'Historical Chess Ranks', desc: 'Earn Video XP to climb 10 ranks — from Pawn to Alexander the Great. Your rank dominates the Leaderboard.', color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
 ];
 
 const IQ_QUESTIONS = [
@@ -708,6 +710,29 @@ export default function LandingPage() {
             </motion.div>
           </motion.div>
         </div>
+      </section>
+
+      {/* ── Mobile photo cards strip ── */}
+      <section className="lg:hidden overflow-x-auto flex gap-4 px-4 py-5 scrollbar-none border-b border-border bg-card/50">
+        {HERO_PHOTOS.map((photo, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.1, duration: 0.5 }}
+            className="shrink-0 w-40 rounded-xl overflow-hidden border border-border/60 shadow-lg bg-card"
+          >
+            <img
+              src={`https://images.unsplash.com/${photo.src}?auto=format&fit=crop&w=320&q=65`}
+              alt={photo.label}
+              className="w-full h-24 object-cover"
+              loading="lazy"
+            />
+            <div className="px-2.5 py-1.5 border-t border-border">
+              <p className="text-xs font-semibold text-foreground">{photo.label}</p>
+            </div>
+          </motion.div>
+        ))}
       </section>
 
       {/* ── Stats strip ── */}
