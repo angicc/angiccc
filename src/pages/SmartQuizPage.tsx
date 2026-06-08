@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
-import { Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw, Brain, Target, Trophy, ChevronRight } from 'lucide-react';
+import { Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw, Brain, Target, Trophy, ChevronRight, MessageSquare } from 'lucide-react';
+import { streamChatResponse } from '@/features/ai/claudeClient';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -101,6 +102,28 @@ export default function SmartQuizPage() {
   const [selected, setSelected] = useState<number | null>(null);
   const [answers, setAnswers] = useState<boolean[]>([]);
   const [xpEarned, setXpEarned] = useState(0);
+  const [clioRec, setClioRec] = useState('');
+  const [clioLoading, setClioLoading] = useState(false);
+
+  async function getClioRecommendation(scoreVal: number, eraBreakdownData: Array<{name: string; correct: number; total: number}>) {
+    setClioLoading(true);
+    setClioRec('');
+    const weakest = eraBreakdownData
+      .map(e => ({ name: e.name, pct: Math.round((e.correct / e.total) * 100) }))
+      .sort((a, b) => a.pct - b.pct)
+      .slice(0, 2);
+
+    const prompt = `A student just completed a Smart Quiz in a history learning app. They scored ${scoreVal}%. Their weakest eras were: ${weakest.map(w => `${w.name} (${w.pct}%)`).join(', ')}. Give a 2-sentence personalized next-step recommendation as Clio, their AI history tutor. Be encouraging but specific. Address them directly as "you".`;
+
+    try {
+      for await (const chunk of streamChatResponse([{ role: 'user', content: prompt }])) {
+        setClioRec(prev => prev + chunk);
+      }
+    } catch {
+      setClioRec('Great effort! Focus on reviewing the eras where you struggled and retry those lessons for maximum growth.');
+    }
+    setClioLoading(false);
+  }
 
   function startSession() {
     const q = selectAdaptiveQuestions(allQuestions, progress?.quizScores ?? {}, SESSION_SIZE);
@@ -109,6 +132,8 @@ export default function SmartQuizPage() {
     setSelected(null);
     setAnswers([]);
     setXpEarned(0);
+    setClioRec('');
+    setClioLoading(false);
     setPhase('question');
   }
 
@@ -121,20 +146,31 @@ export default function SmartQuizPage() {
 
   function advance() {
     if (qIdx + 1 >= session.length) {
-      const correct = [...answers, selected === session[qIdx].correctIndex].filter(Boolean).length;
+      const finalAnswers = [...answers, selected === session[qIdx].correctIndex];
+      const correct = finalAnswers.filter(Boolean).length;
       const xp = correct * 15;
+      const scoreVal = Math.round((correct / session.length) * 100);
       setXpEarned(xp);
       if (currentUser) {
         const attempt: QuizAttempt = {
-          quizId: 'smart-quiz', score: Math.round((correct / session.length) * 100),
+          quizId: 'smart-quiz', score: scoreVal,
           completedAt: new Date().toISOString(), xpEarned: xp,
-          answers: session.map((q, i) => answers[i] ? q.correctIndex : -1),
+          answers: session.map((q, i) => finalAnswers[i] ? q.correctIndex : -1),
         };
         recordQuizAttempt(currentUser.id, attempt, 'Smart Quiz');
         refreshProgress();
         toast.success(`Smart Quiz complete! +${xp} XP earned`);
       }
+      // Build era breakdown for Clio recommendation
+      const map: Record<string, { name: string; correct: number; total: number }> = {};
+      session.forEach((q, i) => {
+        if (!map[q.eraId]) map[q.eraId] = { name: q.eraName, correct: 0, total: 0 };
+        map[q.eraId].total++;
+        if (finalAnswers[i]) map[q.eraId].correct++;
+      });
+      const eraBreakdownData = Object.values(map);
       setPhase('done');
+      getClioRecommendation(scoreVal, eraBreakdownData);
     } else {
       setQIdx(i => i + 1);
       setSelected(null);
@@ -385,6 +421,21 @@ export default function SmartQuizPage() {
                       })}
                     </div>
                   )}
+
+                  {/* Clio Recommendation */}
+                  <div className="p-3.5 rounded-xl border border-primary/20 bg-primary/5 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4 text-primary shrink-0" />
+                      <span className="text-xs font-semibold text-primary">Clio's Recommendation</span>
+                    </div>
+                    {clioLoading ? (
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <span className="animate-pulse">Clio is thinking...</span>
+                      </div>
+                    ) : clioRec ? (
+                      <p className="text-xs text-muted-foreground leading-relaxed">{clioRec}</p>
+                    ) : null}
+                  </div>
 
                   <div className="flex gap-2">
                     <Button className="flex-1 gap-2" onClick={startSession}>

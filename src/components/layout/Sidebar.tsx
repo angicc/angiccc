@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film } from 'lucide-react';
+import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -18,6 +18,7 @@ const NAV = [
   { to: '/timeline', label: 'Timeline', icon: ScrollText },
   { to: '/tutor', label: 'AI Tutor', icon: MessageSquare },
   { to: '/leaderboard', label: 'Leaderboard', icon: Trophy },
+  { to: '/friends', label: 'Friends', icon: Users },
   { to: '/flashcards', label: 'Flashcards', icon: Layers },
   { to: '/notes', label: 'My Notes', icon: PenLine },
   { to: '/progress', label: 'Progress', icon: BarChart2 },
@@ -43,29 +44,29 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
   const rank = getChessRank(videoXp);
 
   return (
-    <aside className={cn('flex flex-col w-60 shrink-0 border-r border-border bg-card h-screen sticky top-0', className)}>
+    <aside className={cn('flex flex-col w-64 shrink-0 border-r border-border bg-card h-screen sticky top-0', className)}>
       {/* Logo + user identity */}
-      <div className="px-4 py-4 border-b border-border space-y-3">
+      <div className="px-4 py-5 border-b border-border space-y-3">
         <Logo />
         {currentUser && (
           <div className="flex items-center gap-2.5">
-            <Avatar className="h-8 w-8 shrink-0">
+            <Avatar className="h-12 w-12 shrink-0">
               {avatarUrl && <AvatarImage src={avatarUrl} alt={currentUser.username} />}
-              <AvatarFallback className="bg-primary/20 text-primary text-xs font-bold">
+              <AvatarFallback className="bg-primary/20 text-primary text-sm font-semibold">
                 {currentUser.avatarInitials}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0">
-              <p className="text-xs font-semibold truncate">{currentUser.username}</p>
+              <p className="text-sm font-bold truncate">{currentUser.username}</p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <Crown className={`w-3 h-3 ${tier === 'master' ? 'text-amber-400' : tier === 'pro' ? 'text-primary' : 'text-muted-foreground'}`} />
-                <span className="text-[10px] text-muted-foreground truncate">{tierLabel}</span>
+                <span className="text-xs text-muted-foreground truncate">{tierLabel}</span>
               </div>
             </div>
             {/* Chess rank */}
             <div className={`ml-auto shrink-0 flex flex-col items-center px-1.5 py-1 rounded-lg border ${rank.borderColor} ${rank.bgColor}`}>
-              <span className="text-sm leading-none">{rank.icon}</span>
-              <span className={`text-[9px] font-bold mt-0.5 ${rank.color}`}>{rank.name}</span>
+              <span className="text-base leading-none">{rank.icon}</span>
+              <span className={`text-[11px] font-bold mt-0.5 ${rank.color}`}>{rank.name}</span>
             </div>
           </div>
         )}
@@ -125,7 +126,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={() => { onNavigate?.(); setTimeout(() => { logout(); navigate('/'); }, 100); }}>
+              <AlertDialogAction onClick={() => { logout(); navigate('/'); onNavigate?.(); }}>
                 Log Out
               </AlertDialogAction>
             </AlertDialogFooter>
