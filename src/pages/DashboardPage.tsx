@@ -40,6 +40,7 @@ export default function DashboardPage() {
     : 0;
 
   function handleDailyXP(xp: number) {
+    if (!currentUser) return;
     const attempt = { quizId: 'daily', answers: [0], score: 100, xpEarned: xp, completedAt: new Date().toISOString() };
     recordQuizAttempt(currentUser.id, attempt, 'Daily Challenge');
     refreshProgress();

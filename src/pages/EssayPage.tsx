@@ -118,9 +118,9 @@ export default function EssayPage() {
             </div>
           </motion.div>
           <UpgradePrompt
-            feature="AI Essay Challenge"
-            reason="Write a historical essay on any topic and get an instant AI-powered grade with detailed feedback on accuracy, argument quality, depth, and specific historical facts — available on Pro Learner and above."
-            requiredTier="pro"
+            title="AI Essay Challenge"
+            description="Write a historical essay on any topic and get an instant AI-powered grade with detailed feedback on accuracy, argument quality, depth, and specific historical facts — available on Pro Learner and above."
+            requiredPlan="pro"
           />
         </div>
       </AppShell>

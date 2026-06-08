@@ -128,7 +128,7 @@ export default function SmartQuizPage() {
         const attempt: QuizAttempt = {
           quizId: 'smart-quiz', score: Math.round((correct / session.length) * 100),
           completedAt: new Date().toISOString(), xpEarned: xp,
-          answers: session.map((q, i) => ({ questionId: q.id, selectedIndex: answers[i] ? q.correctIndex : -1, correct: !!answers[i] })),
+          answers: session.map((q, i) => answers[i] ? q.correctIndex : -1),
         };
         recordQuizAttempt(currentUser.id, attempt, 'Smart Quiz');
         refreshProgress();
@@ -183,9 +183,9 @@ export default function SmartQuizPage() {
             </div>
           </motion.div>
           <UpgradePrompt
-            feature="Smart Quiz"
-            reason="Smart Quiz uses an adaptive algorithm that targets your weakest eras and calibrates difficulty to your performance level. Available on Pro Learner and above."
-            requiredTier="pro"
+            title="Smart Quiz"
+            description="Smart Quiz uses an adaptive algorithm that targets your weakest eras and calibrates difficulty to your performance level. Available on Pro Learner and above."
+            requiredPlan="pro"
           />
         </div>
       </AppShell>

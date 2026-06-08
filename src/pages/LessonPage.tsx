@@ -53,7 +53,7 @@ export default function LessonPage() {
   }
 
   function handleBookmark() {
-    if (!currentUser) return;
+    if (!currentUser || !lesson) return;
     const next = toggleBookmark(currentUser.id, lesson.id);
     setBookmarked(next);
     toast.success(next ? 'Lesson bookmarked!' : 'Bookmark removed.');
