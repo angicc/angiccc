@@ -611,58 +611,10 @@ export default function LandingPage() {
 
       {/* ── Hero ── */}
       <section className="relative overflow-hidden min-h-[90vh] flex items-center">
-        {/* Drifting year markers */}
-        <HistoryCanvas className="opacity-55" />
-
-        {/* Animated gradient blobs */}
-        <motion.div
-          className="absolute top-[-8%] left-[-4%] w-[520px] h-[520px] rounded-full bg-primary/8 blur-3xl pointer-events-none"
-          animate={{ x: [0, 28, 0], y: [0, 18, 0] }}
-          transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute bottom-[-6%] right-[-4%] w-[460px] h-[460px] rounded-full bg-amber-900/12 blur-3xl pointer-events-none"
-          animate={{ x: [0, -22, 0], y: [0, -14, 0] }}
-          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute top-[40%] left-[35%] w-[360px] h-[360px] rounded-full bg-blue-900/8 blur-3xl pointer-events-none"
-          animate={{ x: [0, 14, 0], y: [0, 22, 0] }}
-          transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
-        />
-
-        {/* Floating historical photo cards (desktop only) */}
-        <div className="absolute inset-0 hidden lg:block pointer-events-none">
-          {HERO_PHOTOS.map((photo, idx) => (
-            <motion.div
-              key={idx}
-              className="absolute pointer-events-auto"
-              style={{ top: photo.top, left: photo.left, right: photo.right }}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: photo.delay, duration: 0.9 }}
-            >
-              <div style={{ transform: `rotate(${photo.rot}deg)` }}>
-                <motion.div
-                  animate={{ y: [0, -11, 0] }}
-                  transition={{ duration: photo.floatDur, repeat: Infinity, ease: 'easeInOut', delay: photo.delay * 0.5 }}
-                  whileHover={{ scale: 1.07, transition: { duration: 0.22 } }}
-                  className="w-52 rounded-xl overflow-hidden border border-border/60 shadow-2xl bg-card cursor-default"
-                >
-                  <img
-                    src={`https://images.unsplash.com/${photo.src}?auto=format&fit=crop&w=320&q=65`}
-                    alt={photo.label}
-                    className="w-full h-32 object-cover"
-                    loading="lazy"
-                  />
-                  <div className="px-3 py-1.5 border-t border-border">
-                    <p className="text-xs font-semibold text-foreground">{photo.label}</p>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* Tank GIF background */}
+        <img src="https://media.giphy.com/media/QR7SyBe7tQfPq/giphy.gif" alt="" className="absolute inset-0 w-full h-full object-cover" style={{zIndex:0}} />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/70 z-[1]" />
 
         {/* Hero copy */}
         <div className="relative z-10 max-w-6xl mx-auto px-4 py-32 text-center w-full">
@@ -675,17 +627,17 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.1 }}
-            className="font-heading text-5xl md:text-7xl font-bold leading-tight mb-6"
+            className="font-heading text-5xl md:text-7xl font-bold leading-tight mb-6 text-white"
           >
-            5,000 Years of History.<br /><span className="text-primary">In Your Hands.</span>
+            5,000 Years of History.<br /><span className="text-amber-400">In Your Hands.</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-muted-foreground text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="text-white/80 text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
           >
-            Master world history from ancient civilizations to the modern era — guided lessons, interactive timeline, and your personal AI tutor <span className="text-primary font-medium">Clio</span>.
+            Master world history from ancient civilizations to the modern era — guided lessons, interactive timeline, and your personal AI tutor <span className="text-amber-400 font-medium">Clio</span>.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -706,33 +658,10 @@ export default function LandingPage() {
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }} className="mt-16 flex justify-center">
             <motion.div animate={{ y: [0, 7, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}>
-              <ChevronDown className="w-5 h-5 text-muted-foreground/40" />
+              <ChevronDown className="w-5 h-5 text-white/40" />
             </motion.div>
           </motion.div>
         </div>
-      </section>
-
-      {/* ── Mobile photo cards strip ── */}
-      <section className="lg:hidden overflow-x-auto flex gap-4 px-4 py-5 scrollbar-none border-b border-border bg-card/50">
-        {HERO_PHOTOS.map((photo, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1, duration: 0.5 }}
-            className="shrink-0 w-40 rounded-xl overflow-hidden border border-border/60 shadow-lg bg-card"
-          >
-            <img
-              src={`https://images.unsplash.com/${photo.src}?auto=format&fit=crop&w=320&q=65`}
-              alt={photo.label}
-              className="w-full h-24 object-cover"
-              loading="lazy"
-            />
-            <div className="px-2.5 py-1.5 border-t border-border">
-              <p className="text-xs font-semibold text-foreground">{photo.label}</p>
-            </div>
-          </motion.div>
-        ))}
       </section>
 
       {/* ── Stats strip ── */}

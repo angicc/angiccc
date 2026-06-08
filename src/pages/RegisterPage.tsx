@@ -40,9 +40,11 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background scroll-pattern flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8"><Link to="/" className="font-accent text-2xl text-primary">Historify</Link></div>
+    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
+      <img src="https://media.giphy.com/media/QR7SyBe7tQfPq/giphy.gif" alt="" className="absolute inset-0 w-full h-full object-cover" />
+      <div className="absolute inset-0 bg-black/75" />
+      <div className="w-full max-w-md relative z-10">
+        <div className="text-center mb-8"><Link to="/" className="font-accent text-3xl font-bold text-primary">Historify</Link></div>
         <Card>
           <CardHeader className="text-center"><CardTitle className="font-heading text-2xl">Begin Your Journey</CardTitle><CardDescription>Create your free account — no credit card required</CardDescription></CardHeader>
           <CardContent>

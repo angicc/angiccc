@@ -25,3 +25,6 @@ dist-ssr
 
 # TypeScript build cache
 *.tsbuildinfo
+
+# Claude Code internal files
+.claude/

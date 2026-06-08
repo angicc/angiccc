@@ -125,7 +125,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={() => { logout(); navigate('/'); onNavigate?.(); }}>
+              <AlertDialogAction onClick={() => { onNavigate?.(); setTimeout(() => { logout(); navigate('/'); }, 100); }}>
                 Log Out
               </AlertDialogAction>
             </AlertDialogFooter>
