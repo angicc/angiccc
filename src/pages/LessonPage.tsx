@@ -17,8 +17,10 @@ import { getLessonById, getEraLessons } from '@/features/content/lessonsData';
 import { getEraById } from '@/features/content/erasData';
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function LessonPage() {
+  const { t } = useLanguage();
   const { eraId, lessonId } = useParams<{ eraId: string; lessonId: string }>();
   const { currentUser, refreshProgress } = useAuth();
   const navigate = useNavigate();
@@ -128,21 +130,21 @@ export default function LessonPage() {
             <Separator />
             <div className="flex items-center justify-between">
               {prev
-                ? <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${prev.id}`)}><ArrowLeft className="w-4 h-4" />Previous</Button>
+                ? <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${prev.id}`)}><ArrowLeft className="w-4 h-4" />{t.btn_back}</Button>
                 : <div />}
               <Button className="gap-2" onClick={handleComplete} disabled={completed} variant={completed ? 'secondary' : 'default'}>
-                <CheckCircle className="w-4 h-4" />{completed ? 'Completed!' : 'Mark Complete'}
+                <CheckCircle className="w-4 h-4" />{completed ? t.lesson_already_done : t.lesson_complete_btn}
               </Button>
               {next
-                ? <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${next.id}`)}>Next<ArrowRight className="w-4 h-4" /></Button>
-                : <Button variant="outline" size="sm" onClick={() => navigate(`/eras/${eraId}/quiz`)}>Take Quiz</Button>}
+                ? <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${next.id}`)}>{ t.btn_next}<ArrowRight className="w-4 h-4" /></Button>
+                : <Button variant="outline" size="sm" onClick={() => navigate(`/eras/${eraId}/quiz`)}>{t.lesson_take_quiz}</Button>}
             </div>
           </div>
 
           {/* Sidebar */}
           <div className="space-y-4">
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-sm">Key Facts</CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-sm">{t.lesson_key_facts}</CardTitle></CardHeader>
               <CardContent>
                 <ul className="space-y-2.5">
                   {lesson.keyFacts.map((f, i) => (
@@ -155,7 +157,7 @@ export default function LessonPage() {
               </CardContent>
             </Card>
             <Button variant="outline" size="sm" className="w-full gap-2" onClick={() => navigate(`/tutor?context=${encodeURIComponent(lesson.title)}`)}>
-              <MessageSquare className="w-4 h-4" />Ask AI Tutor about this
+              <MessageSquare className="w-4 h-4" />{t.lesson_discuss}
             </Button>
             <Button
               variant={bookmarked ? 'secondary' : 'outline'}

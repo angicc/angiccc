@@ -10,6 +10,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { calculateLevel } from '@/features/progress/xpSystem';
 import { getVideoXp } from '@/features/videoReview/videoReviewStore';
 import { getChessRank } from '@/features/ranks/chessRanks';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // videoXp is worth 2× regular XP on the leaderboard
 const leaderScore = (xp: number, videoXp: number) => xp + videoXp * 2;
@@ -39,6 +40,7 @@ const row = { hidden: { opacity: 0, x: -16 }, visible: { opacity: 1, x: 0, trans
 interface UserEntry { id: string; username: string; xp: number; country: string; streak: number; videoXp?: number; }
 
 function UserProfileModal({ user, rank, onClose }: { user: UserEntry | null; rank: number; onClose: () => void }) {
+  const { t } = useLanguage();
   if (!user) return null;
   const level = calculateLevel(user.xp);
   const rank_ = getChessRank(user.videoXp ?? 0);
@@ -65,9 +67,9 @@ function UserProfileModal({ user, rank, onClose }: { user: UserEntry | null; ran
           {/* Stats */}
           <div className="grid grid-cols-3 gap-2 text-center">
             {[
-              { label: 'Rank', value: `#${rank}` },
-              { label: 'Level', value: `Lv ${level}` },
-              { label: 'Streak', value: `${user.streak}d` },
+              { label: t.lb_your_rank, value: `#${rank}` },
+              { label: t.lb_level, value: `Lv ${level}` },
+              { label: t.lb_streak, value: `${user.streak}d` },
             ].map(s => (
               <div key={s.label} className="p-2 rounded-lg border border-border bg-muted/20">
                 <div className="font-bold text-sm">{s.value}</div>
@@ -76,9 +78,9 @@ function UserProfileModal({ user, rank, onClose }: { user: UserEntry | null; ran
             ))}
           </div>
           <div className="space-y-1 text-xs text-muted-foreground">
-            <div className="flex justify-between"><span>Regular XP</span><span className="font-medium text-foreground">{user.xp.toLocaleString()} XP</span></div>
-            <div className="flex justify-between"><span>Video XP</span><span className="font-medium text-foreground">{(user.videoXp ?? 0).toLocaleString()} XP</span></div>
-            <div className="flex justify-between border-t border-border pt-1 mt-1"><span className="font-semibold">Leaderboard Score</span><span className="font-bold text-primary">{score.toLocaleString()} pts</span></div>
+            <div className="flex justify-between"><span>{t.lb_xp_regular}</span><span className="font-medium text-foreground">{user.xp.toLocaleString()} XP</span></div>
+            <div className="flex justify-between"><span>{t.lb_xp_video}</span><span className="font-medium text-foreground">{(user.videoXp ?? 0).toLocaleString()} XP</span></div>
+            <div className="flex justify-between border-t border-border pt-1 mt-1"><span className="font-semibold">{t.lb_score}</span><span className="font-bold text-primary">{score.toLocaleString()} {t.lbl_pts}</span></div>
           </div>
         </div>
       </DialogContent>
@@ -87,6 +89,7 @@ function UserProfileModal({ user, rank, onClose }: { user: UserEntry | null; ran
 }
 
 export default function LeaderboardPage() {
+  const { t } = useLanguage();
   const { currentUser, progress } = useAuth();
   const userXP = progress?.xp ?? 0;
   const userLevel = progress?.level ?? 1;
@@ -112,9 +115,9 @@ export default function LeaderboardPage() {
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
           <h1 className="font-heading text-3xl font-bold flex items-center gap-3">
             <Trophy className="w-7 h-7 text-amber-400" />
-            Leaderboard
+            {t.lb_title}
           </h1>
-          <p className="text-muted-foreground text-sm mt-1">Top learners ranked by total XP earned.</p>
+          <p className="text-muted-foreground text-sm mt-1">{t.lb_subtitle}</p>
         </motion.div>
 
         {/* Top 3 podium */}
@@ -143,7 +146,7 @@ export default function LeaderboardPage() {
                       </AvatarFallback>
                     </Avatar>
                     <p className={`font-semibold text-xs truncate ${isYou ? 'text-primary' : ''}`}>{u?.username}</p>
-                    <p className={`font-bold text-sm font-heading mt-0.5 ${s.label}`}>{leaderScore(u?.xp ?? 0, u?.videoXp ?? 0).toLocaleString()} pts</p>
+                    <p className={`font-bold text-sm font-heading mt-0.5 ${s.label}`}>{leaderScore(u?.xp ?? 0, u?.videoXp ?? 0).toLocaleString()} {t.lbl_pts}</p>
                     <Badge variant="outline" className="text-xs mt-1">#{actualRank}</Badge>
                   </CardContent>
                 </Card>
@@ -163,7 +166,7 @@ export default function LeaderboardPage() {
                   <AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">{currentUser?.avatarInitials ?? 'Y'}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-primary">{currentUser?.username} <span className="text-xs text-muted-foreground">(You)</span></p>
+                  <p className="text-sm font-medium text-primary">{currentUser?.username} <span className="text-xs text-muted-foreground">{t.lb_you}</span></p>
                 </div>
                 <div className="flex items-center gap-4 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1"><Star className="w-3 h-3 text-primary" />{userXP.toLocaleString()} XP</span>
@@ -177,7 +180,7 @@ export default function LeaderboardPage() {
 
         {/* Full rankings */}
         <Card>
-          <CardHeader className="pb-3"><CardTitle className="text-sm">Full Rankings</CardTitle></CardHeader>
+          <CardHeader className="pb-3"><CardTitle className="text-sm">{t.lb_full_rankings}</CardTitle></CardHeader>
           <CardContent className="p-0">
             <motion.div variants={stagger} initial="hidden" animate="visible">
               {allUsers.map((u, i) => {
@@ -200,13 +203,13 @@ export default function LeaderboardPage() {
                       </AvatarFallback>
                     </Avatar>
                     <p className={`flex-1 text-sm font-medium ${isYou ? 'text-primary' : ''}`}>
-                      {u.username}{isYou && <span className="text-xs text-muted-foreground ml-1">(You)</span>}
+                      {u.username}{isYou && <span className="text-xs text-muted-foreground ml-1">{t.lb_you}</span>}
                     </p>
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
                       <span className="flex items-center gap-0.5"><Flame className="w-3 h-3 text-orange-400" />{u.streak}d</span>
                       <Badge variant={isYou ? 'default' : 'secondary'} className="text-xs">Lv {level}</Badge>
                       {(() => { const r = getChessRank(u.videoXp ?? 0); return <span title={r.name} className={`text-base leading-none ${r.color}`}>{r.icon}</span>; })()}
-                      <span className="font-medium text-foreground w-24 text-right">{leaderScore(u.xp, u.videoXp ?? 0).toLocaleString()} pts</span>
+                      <span className="font-medium text-foreground w-24 text-right">{leaderScore(u.xp, u.videoXp ?? 0).toLocaleString()} {t.lbl_pts}</span>
                     </div>
                   </motion.div>
                 );

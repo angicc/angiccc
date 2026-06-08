@@ -29,13 +29,13 @@ const ERAS_SHOWCASE = [
     name: 'Middle Ages', range: '500 – 1500 CE',
     color: 'text-blue-400', bg: 'from-blue-900/30 to-blue-950/60', border: 'border-blue-500/30',
     photo: 'photo-1548690312-e3b507d8c110',
-    lessons: ['Fall of Rome & Early Middle Ages', 'Crusades & Islamic Golden Age', 'The Black Death', 'Medieval Economy & Trade Guilds'],
+    lessons: ['Fall of Rome & Early Middle Ages', 'Crusades & Islamic Golden Age', 'The Black Death', 'Medieval Economy & Trade Guilds', 'The Mongol Empire', 'Medieval Japan: Samurai & Shoguns'],
   },
   {
     name: 'Early Modern', range: '1500 – 1800 CE',
     color: 'text-emerald-400', bg: 'from-emerald-900/30 to-emerald-950/60', border: 'border-emerald-500/30',
     photo: 'photo-1516483638261-f4dbaf036963',
-    lessons: ['Renaissance & Age of Exploration', 'The Protestant Reformation', 'Scientific Revolution', 'Age of Absolutism & Louis XIV'],
+    lessons: ['Renaissance & Age of Exploration', 'The Protestant Reformation', 'Scientific Revolution', 'Age of Absolutism & Louis XIV', 'The Transatlantic Slave Trade', 'The Ottoman Empire: Suleiman the Magnificent'],
   },
   {
     name: 'Modern Era', range: '1800 – Present',
@@ -52,7 +52,7 @@ const TESTIMONIALS = [
 ];
 
 const STATS = [
-  { label: 'Lessons',        value: 20,   suffix: '+' },
+  { label: 'Lessons',        value: 24,   suffix: '+' },
   { label: 'Timeline Events', value: 50,  suffix: '+' },
   { label: 'Quiz Questions',  value: 80,  suffix: '+' },
   { label: 'XP to Earn',     value: 5000, suffix: '+' },
@@ -66,7 +66,7 @@ const HISTORICAL_QUOTES = [
 ];
 
 const FEATURES = [
-  { icon: BookOpen,   title: '20 In-Depth Lessons',   desc: 'Expert-written lessons from Ancient Egypt to the Digital Age, packed with rich historical context.',      color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
+  { icon: BookOpen,   title: '24 In-Depth Lessons',   desc: 'Expert-written lessons from Ancient Egypt to the Digital Age, packed with rich historical context.',      color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
   { icon: Brain,      title: 'AI Tutor — Clio',        desc: 'Ask your personal AI tutor anything about history and get clear, scholarly answers instantly.',            color: 'text-blue-400',    bg: 'bg-blue-400/10',    border: 'border-blue-400/20'    },
   { icon: ScrollText, title: 'Interactive Timeline',   desc: 'Explore 50+ pivotal events on a visual timeline, filterable by era and category.',                         color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
   { icon: HelpCircle, title: 'Quizzes & XP',           desc: 'Test knowledge with 80+ quiz questions, earn XP, level up, and unlock achievements.',                      color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/20'    },

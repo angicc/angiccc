@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Lock, ChevronRight, HelpCircle, Clock, Star, CheckCircle2 } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -25,14 +26,15 @@ const card = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, trans
 export default function ErasPage() {
   const { progress } = useAuth();
   const { canLesson } = useSubscription();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   return (
     <AppShell>
       <div className="max-w-5xl mx-auto space-y-6">
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-          <h1 className="font-heading text-3xl font-bold">Eras & Lessons</h1>
-          <p className="text-muted-foreground mt-1">Choose an era to explore its lessons and take the quiz.</p>
+          <h1 className="font-heading text-3xl font-bold">{t.eras_title}</h1>
+          <p className="text-muted-foreground mt-1">{t.eras_subtitle}</p>
         </motion.div>
 
         <motion.div variants={stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
@@ -56,7 +58,7 @@ export default function ErasPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                     <div className="absolute top-3 right-3 z-10">
                       <Badge className="text-xs bg-black/50 backdrop-blur-sm text-white border-white/20 hover:bg-black/50">
-                        {done}/{eraLessons.length} complete
+                        {done}/{eraLessons.length} {t.eras_completed}
                       </Badge>
                     </div>
                     <div className="relative z-10 flex items-center gap-3">
@@ -76,7 +78,7 @@ export default function ErasPage() {
                     {/* Progress */}
                     <div className="space-y-1.5">
                       <div className="flex justify-between text-xs text-muted-foreground">
-                        <span>Progress</span>
+                        <span>{t.prog_title}</span>
                         <span className="font-semibold text-foreground">{pct}%</span>
                       </div>
                       <Progress value={pct} className="h-2" />
@@ -131,7 +133,7 @@ export default function ErasPage() {
                       onClick={() => navigate(`/eras/${era.id}/quiz`)}
                     >
                       <HelpCircle className="w-4 h-4" />
-                      {quizDone ? `Quiz Passed — ${progress?.quizScores[era.quizId] ?? 0}%` : 'Take Era Quiz'}
+                      {quizDone ? `${t.eras_quiz_label} — ${progress?.quizScores[era.quizId] ?? 0}%` : t.eras_take_quiz}
                     </Button>
                   </CardContent>
                 </Card>

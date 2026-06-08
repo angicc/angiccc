@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, HelpCircle, Flame, Star, ArrowRight, Clock } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,7 @@ const fadeUp = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, tra
 
 export default function DashboardPage() {
   const { currentUser, progress, refreshProgress } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [xpAmt, setXpAmt] = useState(0);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -57,7 +59,7 @@ export default function DashboardPage() {
           className="p-6 rounded-xl border border-border bg-card">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="font-heading text-2xl font-bold">Welcome back, <span className="text-primary">{currentUser?.username}</span>!</h1>
+              <h1 className="font-heading text-2xl font-bold">{t.dash_welcome} <span className="text-primary">{currentUser?.username}</span>!</h1>
               <StreakBadge streak={progress.streak} />
             </div>
             <LevelProgress xp={progress.xp} className="sm:w-56" />
@@ -67,10 +69,10 @@ export default function DashboardPage() {
         {/* Stats */}
         <motion.div variants={stagger} initial="hidden" animate="visible" className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { label:'Total XP', value: progress.xp.toLocaleString(), icon: Star, color:'text-primary' },
-            { label:'Level', value: progress.level, icon: Flame, color:'text-orange-400' },
-            { label:'Lessons Done', value:`${progress.completedLessons.length} / ${LESSONS.length}`, icon: BookOpen, color:'text-emerald-400' },
-            { label:'Quiz Avg', value: avgScore > 0 ? `${avgScore}%` : '—', icon: HelpCircle, color:'text-blue-400' },
+            { label: t.dash_total_xp, value: progress.xp.toLocaleString(), icon: Star, color:'text-primary' },
+            { label: t.dash_level, value: progress.level, icon: Flame, color:'text-orange-400' },
+            { label: t.dash_lessons_done, value:`${progress.completedLessons.length} / ${LESSONS.length}`, icon: BookOpen, color:'text-emerald-400' },
+            { label: t.dash_quiz_avg, value: avgScore > 0 ? `${avgScore}%` : '—', icon: HelpCircle, color:'text-blue-400' },
           ].map(({ label, value, icon: Icon, color }) => (
             <motion.div key={label} variants={fadeUp}>
               <Card className="hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
@@ -89,7 +91,7 @@ export default function DashboardPage() {
           <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.4 }} className="lg:col-span-2 space-y-4">
             {nextLesson && (
               <Card className="border-primary/30 bg-primary/5 hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3"><CardTitle className="text-base">Continue Learning</CardTitle></CardHeader>
+                <CardHeader className="pb-3"><CardTitle className="text-base">{t.dash_continue}</CardTitle></CardHeader>
                 <CardContent className="flex items-center justify-between gap-4">
                   <div>
                     <p className="font-semibold">{nextLesson.title}</p>
@@ -100,7 +102,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <Button size="sm" className="shrink-0 gap-1" onClick={() => navigate(`/eras/${nextLesson.eraId}/lessons/${nextLesson.id}`)}>
-                    Continue <ArrowRight className="w-3 h-3" />
+                    {t.btn_continue} <ArrowRight className="w-3 h-3" />
                   </Button>
                 </CardContent>
               </Card>
@@ -111,17 +113,17 @@ export default function DashboardPage() {
 
             {/* Recent activity */}
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-base">Recent Activity</CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-base">{t.dash_recent}</CardTitle></CardHeader>
               <CardContent>
                 {progress.recentActivity.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No activity yet — start your first lesson!</p>
+                  <p className="text-sm text-muted-foreground">{t.dash_no_activity}</p>
                 ) : (
                   <ScrollArea className="h-48">
                     <div className="space-y-2 pr-3">
                       {progress.recentActivity.slice(0,10).map((e,i) => (
                         <div key={i} className="flex items-center justify-between text-sm py-1.5 border-b border-border/50 last:border-0">
                           <span className="text-muted-foreground truncate pr-2">{e.title}</span>
-                          {e.xpGained > 0 && <Badge variant="secondary" className="shrink-0 text-xs">+{e.xpGained} XP</Badge>}
+                          {e.xpGained > 0 && <Badge variant="secondary" className="shrink-0 text-xs">+{e.xpGained} {t.dash_xp_label}</Badge>}
                         </div>
                       ))}
                     </div>
@@ -134,7 +136,7 @@ export default function DashboardPage() {
           {/* Era progress */}
           <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.4 }}>
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-base">Progress by Era</CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-base">{t.dash_era_progress}</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 {ERAS.map(era => {
                   const done = era.lessonIds.filter(id => progress.completedLessons.includes(id)).length;

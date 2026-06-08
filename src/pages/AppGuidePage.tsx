@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { BookOpen, Brain, ScrollText, Sparkles, Layers, BarChart2, PenLine, Crown, ArrowRight, CheckCircle2, Trophy, Flame, User, FileEdit, Film } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
@@ -150,6 +151,7 @@ const FAQ = [
 ];
 
 export default function AppGuidePage() {
+  const { t } = useLanguage();
   return (
     <AppShell>
       <div className="max-w-5xl mx-auto space-y-8 pb-8">
@@ -160,8 +162,8 @@ export default function AppGuidePage() {
               <BookOpen className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h1 className="font-heading text-3xl font-bold">App Guide</h1>
-              <p className="text-muted-foreground text-sm mt-0.5">Everything you need to know to get the most out of Historify</p>
+              <h1 className="font-heading text-3xl font-bold">{t.guide_title}</h1>
+              <p className="text-muted-foreground text-sm mt-0.5">{t.guide_subtitle}</p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2 pt-1">
@@ -177,7 +179,7 @@ export default function AppGuidePage() {
               <div className="flex items-start gap-3">
                 <Flame className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                 <div>
-                  <p className="font-semibold text-sm mb-1">Quick Start</p>
+                  <p className="font-semibold text-sm mb-1">{t.guide_quick_start}</p>
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     New here? Start by completing a lesson in the <strong>Eras & Lessons</strong> section, then take the era quiz to earn XP. Once you have a feel for the app, upgrade to Pro to unlock all 18 lessons and the AI Tutor.
                   </p>

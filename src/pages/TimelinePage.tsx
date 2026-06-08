@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import { Lock } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
@@ -62,6 +63,7 @@ const CAT_ICON: Record<TimelineCategory, string> = {
 export default function TimelinePage() {
   const { canTimeline, canLesson } = useSubscription();
   const { progress } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [eraFilter, setEraFilter] = useState<EraId | 'all'>('all');
   const [catFilter, setCatFilter] = useState<TimelineCategory | 'all'>('all');

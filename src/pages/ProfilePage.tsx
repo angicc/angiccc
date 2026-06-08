@@ -27,6 +27,7 @@ import { ERAS } from '@/features/content/erasData';
 import { getVideoXp } from '@/features/videoReview/videoReviewStore';
 import { getChessRank, getXpToNextRank } from '@/features/ranks/chessRanks';
 import { toast } from 'sonner';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ERA_COLOR: Record<string, string> = {
   ancient: 'text-amber-400', 'middle-ages': 'text-blue-400',
@@ -69,6 +70,7 @@ function FakeQRCode() {
 }
 
 export default function ProfilePage() {
+  const { t } = useLanguage();
   const { currentUser, progress, logout } = useAuth();
   const { updateUsername, resetProgress, updateEmail, updatePassword } = useAuthInternal();
   const { subscription } = useSubscription();
@@ -215,10 +217,10 @@ export default function ProfilePage() {
       <div className="max-w-5xl mx-auto space-y-6">
         <Tabs defaultValue="overview">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="achievements">Achievements</TabsTrigger>
+            <TabsTrigger value="overview">{t.prof_overview}</TabsTrigger>
+            <TabsTrigger value="achievements">{t.prof_achievements}</TabsTrigger>
             <TabsTrigger value="bookmarks">Bookmarks</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="settings">{t.prof_settings}</TabsTrigger>
           </TabsList>
 
           {/* ── Overview ── */}

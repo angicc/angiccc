@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/features/auth/AuthContext';
 import { toast } from 'sonner';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 type Category = 'bug' | 'feature' | 'content' | 'other';
 type Priority = 'low' | 'medium' | 'high';
@@ -36,6 +37,7 @@ function saveReport(r: Report) {
 }
 
 export default function ReportPage() {
+  const { t } = useLanguage();
   const { currentUser } = useAuth();
   const [category, setCategory]     = useState<Category | null>(null);
   const [priority, setPriority]     = useState<Priority>('medium');
@@ -83,8 +85,8 @@ export default function ReportPage() {
             <AlertTriangle className="w-5 h-5 text-rose-400" />
           </div>
           <div>
-            <h1 className="font-heading text-3xl font-bold">Report a Problem</h1>
-            <p className="text-muted-foreground text-sm mt-0.5">Help us improve Historify — every report matters</p>
+            <h1 className="font-heading text-3xl font-bold">{t.report_title}</h1>
+            <p className="text-muted-foreground text-sm mt-0.5">{t.report_subtitle}</p>
           </div>
         </motion.div>
 

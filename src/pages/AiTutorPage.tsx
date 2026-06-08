@@ -12,6 +12,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { recordAiMessage } from '@/features/progress/progressStore';
 import { streamChatResponse } from '@/features/ai/claudeClient';
+import { useLanguage } from '@/contexts/LanguageContext';
 import type { ChatMessage } from '@/types';
 
 const SUGGESTIONS = [
@@ -114,6 +115,7 @@ const CLIO_GIF = 'https://media.giphy.com/media/cLr9ItoqnmxEMfTaWA/giphy.gif';
 export default function AiTutorPage() {
   const { currentUser, refreshProgress } = useAuth();
   const { canAI, trackAiMessage } = useSubscription();
+  const { t } = useLanguage();
   const [params] = useSearchParams();
   const context = params.get('context') ?? undefined;
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -177,7 +179,7 @@ export default function AiTutorPage() {
           </div>
           {messages.length > 0 && (
             <Button variant="ghost" size="sm" className="gap-2" onClick={() => setMessages([])}>
-              <RotateCcw className="w-4 h-4" />New Chat
+              <RotateCcw className="w-4 h-4" />{t.tutor_new_chat}
             </Button>
           )}
         </motion.div>
@@ -191,9 +193,9 @@ export default function AiTutorPage() {
               src={CLIO_GIF}
               alt=""
               aria-hidden
-              className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
+              className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
             />
-            <div className="absolute inset-0 bg-card/75 pointer-events-none" />
+            <div className="absolute inset-0 bg-card/55 pointer-events-none" />
             <div className="relative z-10">
             <AnimatePresence>
               {messages.length === 0 && (
@@ -212,9 +214,9 @@ export default function AiTutorPage() {
                     <ClioAvatar size={96} />
                   </motion.div>
                   <div>
-                    <h2 className="font-heading text-2xl font-semibold">Hello, I'm Clio!</h2>
+                    <h2 className="font-heading text-2xl font-semibold">{t.tutor_hello}</h2>
                     <p className="text-muted-foreground text-sm mt-2 max-w-sm leading-relaxed mx-auto">
-                      I am the Muse of History — your guide through the ages. Ask me about any civilization, war, discovery, or era and I'll bring the past to life.
+                      {t.tutor_desc}
                     </p>
                   </div>
                   {allowed && (
@@ -285,7 +287,7 @@ export default function AiTutorPage() {
             <Textarea
               value={input}
               onChange={e => setInput(e.target.value)}
-              placeholder={allowed ? 'Ask Clio about any moment in history…' : 'Upgrade to use the AI Tutor'}
+              placeholder={allowed ? t.tutor_placeholder : t.tutor_upgrade_msg}
               className="min-h-[2.5rem] max-h-32 resize-none"
               rows={1}
               disabled={!allowed || loading}

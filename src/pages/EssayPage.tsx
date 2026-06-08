@@ -12,6 +12,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { streamChatResponse } from '@/features/ai/claudeClient';
 import { toast } from 'sonner';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const TOPICS = [
   'What caused the fall of the Western Roman Empire?',
@@ -87,6 +88,7 @@ function ScoreBar({ label, value, color }: { label: string; value: number; color
 }
 
 export default function EssayPage() {
+  const { t } = useLanguage();
   const { currentUser } = useAuth();
   const { subscription, canAI } = useSubscription();
   const tier = subscription?.tier ?? 'free';
@@ -104,7 +106,7 @@ export default function EssayPage() {
 
   const { allowed } = canAI();
 
-  if (tier === 'free') {
+  if (tier !== 'master') {
     return (
       <AppShell>
         <div className="max-w-3xl mx-auto">
@@ -113,14 +115,14 @@ export default function EssayPage() {
               <PenLine className="w-5 h-5 text-orange-400" />
             </div>
             <div>
-              <h1 className="font-heading text-3xl font-bold">AI Essay Challenge</h1>
-              <p className="text-muted-foreground text-sm mt-0.5">Write a historical essay — Clio grades it in real-time</p>
+              <h1 className="font-heading text-3xl font-bold">{t.essay_title}</h1>
+              <p className="text-muted-foreground text-sm mt-0.5">{t.essay_subtitle}</p>
             </div>
           </motion.div>
           <UpgradePrompt
-            title="AI Essay Challenge"
-            description="Write a historical essay on any topic and get an instant AI-powered grade with detailed feedback on accuracy, argument quality, depth, and specific historical facts — available on Pro Learner and above."
-            requiredPlan="pro"
+            title={t.essay_title}
+            description={t.essay_master_only}
+            requiredPlan="master"
           />
         </div>
       </AppShell>
@@ -173,10 +175,10 @@ export default function EssayPage() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-heading text-3xl font-bold">AI Essay Challenge</h1>
+              <h1 className="font-heading text-3xl font-bold">{t.essay_title}</h1>
               <Badge variant="outline" className="text-xs text-primary border-primary/30">Pro</Badge>
             </div>
-            <p className="text-muted-foreground text-sm mt-0.5">Write a historical essay — Clio grades it instantly</p>
+            <p className="text-muted-foreground text-sm mt-0.5">{t.essay_subtitle}</p>
           </div>
         </motion.div>
 
@@ -186,7 +188,7 @@ export default function EssayPage() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-primary" />Choose a Topic
+                  <BookOpen className="w-4 h-4 text-primary" />{t.essay_topic_label}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -212,7 +214,7 @@ export default function EssayPage() {
                         : 'border-dashed border-border hover:border-violet-400/30 hover:bg-accent/30 text-muted-foreground'
                     }`}
                   >
-                    <Sparkles className="w-3.5 h-3.5 inline mr-1.5" />Write on your own topic…
+                    <Sparkles className="w-3.5 h-3.5 inline mr-1.5" />{t.essay_custom}
                   </button>
                 </div>
                 {topic === 'custom' && (
@@ -233,7 +235,7 @@ export default function EssayPage() {
                 <CardTitle className="text-sm flex items-center gap-2">
                   <PenLine className="w-4 h-4 text-orange-400" />Your Essay
                   <span className={`ml-auto text-xs font-normal ${wordCount < 80 ? 'text-muted-foreground' : wordCount > 600 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                    {wordCount} / 80–600 words
+                    {wordCount} / 80–600 {t.essay_words}
                   </span>
                 </CardTitle>
               </CardHeader>
@@ -247,7 +249,7 @@ export default function EssayPage() {
                   ref={textareaRef}
                   value={essay}
                   onChange={e => setEssay(e.target.value)}
-                  placeholder="Write your essay here. Aim for 150–400 words. Include specific historical facts, dates, and examples to earn a higher score…"
+                  placeholder={t.essay_write_label}
                   rows={12}
                   className="w-full px-3 py-3 rounded-xl border border-border bg-background text-sm outline-none focus:border-primary/60 transition-colors placeholder:text-muted-foreground/40 resize-none leading-relaxed"
                 />
@@ -268,7 +270,7 @@ export default function EssayPage() {
                       <Sparkles className="w-5 h-5 text-primary" />
                     </motion.div>
                     <div>
-                      <p className="text-sm font-medium">Clio is grading your essay…</p>
+                      <p className="text-sm font-medium">{t.essay_grading}</p>
                       <p className="text-xs text-muted-foreground">Analyzing accuracy, argument quality, and depth</p>
                     </div>
                   </div>
@@ -282,7 +284,7 @@ export default function EssayPage() {
               disabled={!canSubmit || grading}
               onClick={handleGrade}
             >
-              {grading ? 'Grading…' : <><Send className="w-4 h-4" />Submit for AI Grading</>}
+              {grading ? t.essay_grading : <><Send className="w-4 h-4" />{t.essay_grade_btn}</>}
             </Button>
             {!canSubmit && !grading && (
               <p className="text-center text-xs text-muted-foreground">
@@ -362,7 +364,7 @@ export default function EssayPage() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <Brain className="w-4 h-4 text-violet-400" />Clio's Feedback
+                  <Brain className="w-4 h-4 text-violet-400" />{t.essay_feedback}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -372,7 +374,7 @@ export default function EssayPage() {
 
             <div className="flex gap-3">
               <Button className="flex-1 gap-2" onClick={reset}>
-                <RotateCcw className="w-4 h-4" />Write Another Essay
+                <RotateCcw className="w-4 h-4" />{t.essay_new}
               </Button>
               <Link to="/eras" className="flex-1">
                 <Button variant="outline" className="w-full gap-2">

@@ -11,6 +11,7 @@ import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { streamChatResponse } from '@/features/ai/claudeClient';
+import { useLanguage } from '@/contexts/LanguageContext';
 import {
   getCurrentVideo, getTimeUntilNextVideo, hasReviewedCurrentVideo,
   markCurrentVideoReviewed, getVideoXp, addVideoXp, formatCountdown,
@@ -82,6 +83,7 @@ function useCountdown() {
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function VideoReviewPage() {
+  const { t } = useLanguage();
   const { currentUser } = useAuth();
   const { subscription } = useSubscription();
   const tier = subscription?.tier ?? 'free';
@@ -93,11 +95,11 @@ export default function VideoReviewPage() {
           <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
             <div className="p-2 rounded-xl bg-rose-400/10"><Film className="w-5 h-5 text-rose-400" /></div>
             <div>
-              <h1 className="font-heading text-3xl font-bold">Video Review Challenge</h1>
-              <p className="text-muted-foreground text-sm mt-0.5">Watch history. Write your verdict. Earn Video XP.</p>
+              <h1 className="font-heading text-3xl font-bold">{t.vr_title}</h1>
+              <p className="text-muted-foreground text-sm mt-0.5">{t.vr_subtitle}</p>
             </div>
           </motion.div>
-          <UpgradePrompt title="Video Review Challenge" description="Watch curated educational history videos, write your analysis, and get live sentence-by-sentence grading from Clio. Earn special Video XP to climb the Historical Chess Ranks — exclusively available on the Master Student plan." requiredPlan="master" />
+          <UpgradePrompt title={t.vr_title} description={t.vr_master_only} requiredPlan="master" />
         </div>
       </AppShell>
     );
@@ -108,6 +110,7 @@ export default function VideoReviewPage() {
 
 // ── Inner component (Pro/Master only) ────────────────────────────────────────
 function VideoReviewInner({ userId }: { userId: string }) {
+  const { t } = useLanguage();
   const countdown = useCountdown();
   const [video] = useState<HistoryVideo>(() => getCurrentVideo());
   const [alreadyReviewed] = useState(() => hasReviewedCurrentVideo(userId));
@@ -184,8 +187,8 @@ ${review}`;
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-xl bg-rose-400/10"><Film className="w-5 h-5 text-rose-400" /></div>
             <div>
-              <h1 className="font-heading text-3xl font-bold">Video Review Challenge</h1>
-              <p className="text-muted-foreground text-sm mt-0.5">Watch · Analyse · Earn Video XP</p>
+              <h1 className="font-heading text-3xl font-bold">{t.vr_title}</h1>
+              <p className="text-muted-foreground text-sm mt-0.5">{t.vr_subtitle}</p>
             </div>
           </div>
           {/* Chess rank badge */}
@@ -230,7 +233,7 @@ ${review}`;
                 <div>
                   <h3 className="font-heading font-bold text-lg">You've reviewed today's video!</h3>
                   <p className="text-muted-foreground text-sm mt-1">
-                    A new video unlocks in <span className="text-foreground font-medium">{formatCountdown(countdown)}</span>.
+                    {t.vr_next_in} <span className="text-foreground font-medium">{formatCountdown(countdown)}</span>.
                   </p>
                 </div>
                 <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
@@ -281,7 +284,7 @@ ${review}`;
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm flex items-center gap-2">
                     <ChevronRight className="w-4 h-4 text-primary" />
-                    Write Your Review
+                    {t.vr_review_label}
                   </CardTitle>
                   <p className="text-xs text-muted-foreground mt-1">
                     Identify the video's <strong>main motive or argument</strong>. Use specific historical details from the video. Minimum 80 words. Clio will grade every sentence.
@@ -292,7 +295,7 @@ ${review}`;
                     ref={textareaRef}
                     value={review}
                     onChange={e => setReview(e.target.value)}
-                    placeholder="The main argument of this video is... The key historical evidence presented was... I found the most significant point to be..."
+                    placeholder={t.vr_write_analysis}
                     className="min-h-[160px] resize-none text-sm"
                   />
                   <div className="flex items-center justify-between text-xs">
@@ -306,7 +309,7 @@ ${review}`;
                     disabled={!canSubmit || grading}
                     onClick={handleGrade}
                   >
-                    {grading ? <><Loader2 className="w-4 h-4 animate-spin" /> Clio is reading your review…</> : <><Send className="w-4 h-4" /> Submit for Grading</>}
+                    {grading ? <><Loader2 className="w-4 h-4 animate-spin" /> {t.vr_grading}</> : <><Send className="w-4 h-4" /> {t.vr_submit}</>}
                   </Button>
                 </CardContent>
               </Card>
@@ -320,7 +323,7 @@ ${review}`;
             <Card className="border-primary/20 bg-primary/5">
               <CardContent className="pt-6 pb-6 text-center space-y-3">
                 <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto" />
-                <p className="text-sm font-medium">Clio is analysing your review…</p>
+                <p className="text-sm font-medium">{t.vr_grading}</p>
                 <p className="text-xs text-muted-foreground">Reading sentence by sentence — results appear shortly</p>
               </CardContent>
             </Card>

@@ -13,6 +13,7 @@ import { ERAS } from '@/features/content/erasData';
 import { LESSONS } from '@/features/content/lessonsData';
 import { ACHIEVEMENTS } from '@/features/progress/xpSystem';
 import { QUIZZES } from '@/features/quiz/quizData';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ERA_COLORS: Record<string, string> = {
   ancient: '#f59e0b',
@@ -25,6 +26,7 @@ const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.07 } }
 const fadeUp = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 
 export default function ProgressPage() {
+  const { t } = useLanguage();
   const { progress } = useAuth();
   const { subscription } = useSubscription();
   const tier = subscription?.tier ?? 'free';
@@ -83,18 +85,18 @@ export default function ProgressPage() {
             <BarChart2 className="w-5 h-5 text-blue-400" />
           </div>
           <div>
-            <h1 className="font-heading text-3xl font-bold">Progress & Analytics</h1>
-            <p className="text-muted-foreground text-sm mt-0.5">Your learning journey at a glance</p>
+            <h1 className="font-heading text-3xl font-bold">{t.prog_title}</h1>
+            <p className="text-muted-foreground text-sm mt-0.5">{t.prog_subtitle}</p>
           </div>
         </motion.div>
 
         {/* Stat cards */}
         <motion.div variants={stagger} initial="hidden" animate="visible" className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { label: 'Total XP', value: progress.xp.toLocaleString(), icon: Star, color: 'text-primary' },
-            { label: 'Level', value: progress.level, icon: Flame, color: 'text-orange-400' },
-            { label: 'Streak', value: `${progress.streak}d`, icon: Target, color: 'text-rose-400' },
-            { label: 'Achievements', value: `${unlockedCount}/${totalAchievements}`, icon: Trophy, color: 'text-amber-400' },
+            { label: t.prog_xp_total, value: progress.xp.toLocaleString(), icon: Star, color: 'text-primary' },
+            { label: t.prog_current_level, value: progress.level, icon: Flame, color: 'text-orange-400' },
+            { label: t.prog_streak, value: `${progress.streak}d`, icon: Target, color: 'text-rose-400' },
+            { label: t.prog_achievements, value: `${unlockedCount}/${totalAchievements}`, icon: Trophy, color: 'text-amber-400' },
           ].map(({ label, value, icon: Icon, color }) => (
             <motion.div key={label} variants={fadeUp}>
               <Card className="hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">

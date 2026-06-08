@@ -11,6 +11,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { LESSONS } from '@/features/content/lessonsData';
 import { ERAS } from '@/features/content/erasData';
 import { toast } from 'sonner';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Note {
   id: string;
@@ -36,6 +37,7 @@ function saveNotes(userId: string, notes: Note[]) {
 }
 
 export default function NotesPage() {
+  const { t } = useLanguage();
   const { currentUser } = useAuth();
   const [notes, setNotes] = useState<Note[]>([]);
   const [composing, setComposing] = useState(false);
@@ -85,7 +87,7 @@ export default function NotesPage() {
               <PenLine className="w-5 h-5 text-amber-400" />
             </div>
             <div>
-              <h1 className="font-heading text-3xl font-bold">My Notes</h1>
+              <h1 className="font-heading text-3xl font-bold">{t.notes_title}</h1>
               <p className="text-muted-foreground text-sm mt-0.5">{notes.length} note{notes.length !== 1 ? 's' : ''} saved</p>
             </div>
           </div>

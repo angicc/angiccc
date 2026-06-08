@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { LESSONS } from '@/features/content/lessonsData';
 import { ERAS } from '@/features/content/erasData';
 import type { EraId } from '@/types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Flashcard {
   id: string;
@@ -40,6 +41,7 @@ const ERA_COLOR: Record<string, string> = {
 const ALL_CARDS = buildFlashcards();
 
 export default function FlashcardsPage() {
+  const { t } = useLanguage();
   const [eraFilter, setEraFilter] = useState<EraId | 'all'>('all');
   const [deck, setDeck] = useState(() => [...ALL_CARDS].sort(() => Math.random() - 0.5));
   const [idx, setIdx] = useState(0);

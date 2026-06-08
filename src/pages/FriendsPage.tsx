@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Users, Search, UserPlus, UserCheck, Clock, X, Check } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -46,6 +47,7 @@ function saveJSON<T>(key: string, data: T) {
 }
 
 export default function FriendsPage() {
+  const { t } = useLanguage();
   const { currentUser } = useAuth();
   const userId = currentUser?.id ?? '';
 
@@ -128,8 +130,8 @@ export default function FriendsPage() {
             <Users className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h1 className="font-heading text-3xl font-bold">Friends</h1>
-            <p className="text-muted-foreground text-sm mt-0.5">Connect with other history learners</p>
+            <h1 className="font-heading text-3xl font-bold">{t.fr_title}</h1>
+            <p className="text-muted-foreground text-sm mt-0.5">{t.fr_subtitle}</p>
           </div>
         </div>
 
@@ -144,7 +146,7 @@ export default function FriendsPage() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                placeholder="Search by username..."
+                placeholder={t.fr_search}
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 className="pl-9"
@@ -182,9 +184,9 @@ export default function FriendsPage() {
                         className="gap-1.5 shrink-0"
                       >
                         {alreadySent ? (
-                          <><Clock className="w-3.5 h-3.5" /> Sent</>
+                          <><Clock className="w-3.5 h-3.5" /> {t.fr_pending}</>
                         ) : (
-                          <><UserPlus className="w-3.5 h-3.5" /> Add</>
+                          <><UserPlus className="w-3.5 h-3.5" /> {t.fr_add}</>
                         )}
                       </Button>
                     </div>
@@ -203,19 +205,19 @@ export default function FriendsPage() {
         <Tabs defaultValue="friends">
           <TabsList className="w-full">
             <TabsTrigger value="friends" className="flex-1 gap-1.5">
-              <UserCheck className="w-4 h-4" /> Friends
+              <UserCheck className="w-4 h-4" /> {t.fr_tab_friends}
               {friends.length > 0 && (
                 <Badge variant="secondary" className="ml-1 text-xs px-1.5 py-0">{friends.length}</Badge>
               )}
             </TabsTrigger>
             <TabsTrigger value="requests" className="flex-1 gap-1.5">
-              <UserPlus className="w-4 h-4" /> Requests
+              <UserPlus className="w-4 h-4" /> {t.fr_tab_requests}
               {received.length > 0 && (
                 <Badge variant="secondary" className="ml-1 text-xs px-1.5 py-0 bg-primary/20 text-primary">{received.length}</Badge>
               )}
             </TabsTrigger>
             <TabsTrigger value="sent" className="flex-1 gap-1.5">
-              <Clock className="w-4 h-4" /> Sent
+              <Clock className="w-4 h-4" /> {t.fr_tab_sent}
               {sentIds.length > 0 && (
                 <Badge variant="secondary" className="ml-1 text-xs px-1.5 py-0">{sentIds.length}</Badge>
               )}
@@ -229,7 +231,7 @@ export default function FriendsPage() {
                 {friends.length === 0 ? (
                   <div className="text-center py-8 space-y-2">
                     <Users className="w-10 h-10 text-muted-foreground/40 mx-auto" />
-                    <p className="text-sm text-muted-foreground">No friends yet. Search for users above!</p>
+                    <p className="text-sm text-muted-foreground">{t.fr_no_friends}</p>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -280,7 +282,7 @@ export default function FriendsPage() {
                 {received.length === 0 ? (
                   <div className="text-center py-8 space-y-2">
                     <UserPlus className="w-10 h-10 text-muted-foreground/40 mx-auto" />
-                    <p className="text-sm text-muted-foreground">No incoming friend requests</p>
+                    <p className="text-sm text-muted-foreground">{t.fr_no_requests}</p>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -302,7 +304,7 @@ export default function FriendsPage() {
                             className="gap-1.5"
                             onClick={() => acceptRequest(req)}
                           >
-                            <Check className="w-3.5 h-3.5" /> Accept
+                            <Check className="w-3.5 h-3.5" /> {t.fr_accept}
                           </Button>
                           <Button
                             size="sm"
@@ -310,7 +312,7 @@ export default function FriendsPage() {
                             className="gap-1.5"
                             onClick={() => declineRequest(req)}
                           >
-                            <X className="w-3.5 h-3.5" /> Decline
+                            <X className="w-3.5 h-3.5" /> {t.fr_decline}
                           </Button>
                         </div>
                       </div>
@@ -328,7 +330,7 @@ export default function FriendsPage() {
                 {sentIds.length === 0 ? (
                   <div className="text-center py-8 space-y-2">
                     <Clock className="w-10 h-10 text-muted-foreground/40 mx-auto" />
-                    <p className="text-sm text-muted-foreground">No pending sent requests</p>
+                    <p className="text-sm text-muted-foreground">{t.fr_no_sent}</p>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -349,7 +351,7 @@ export default function FriendsPage() {
                               <p className="text-xs text-muted-foreground">Request pending</p>
                             </div>
                           </div>
-                          <Badge variant="outline" className="text-xs text-muted-foreground shrink-0">Pending</Badge>
+                          <Badge variant="outline" className="text-xs text-muted-foreground shrink-0">{t.fr_pending}</Badge>
                         </div>
                       );
                     })}

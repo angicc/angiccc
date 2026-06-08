@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw, Brain, Target, Trophy, ChevronRight, MessageSquare } from 'lucide-react';
+import { Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw, Brain, Target, Trophy, ChevronRight, MessageSquare, BarChart2, Star } from 'lucide-react';
 import { streamChatResponse } from '@/features/ai/claudeClient';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,8 @@ import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { QUIZZES } from '@/features/quiz/quizData';
 import { ERAS } from '@/features/content/erasData';
 import { recordQuizAttempt } from '@/features/progress/progressStore';
+import { getSmartQuizStats, recordSmartQuizSession } from '@/features/smartQuiz/smartQuizStats';
+import { useLanguage } from '@/contexts/LanguageContext';
 import type { QuizAttempt } from '@/types';
 import { toast } from 'sonner';
 
@@ -84,6 +86,7 @@ type Phase = 'intro' | 'question' | 'explain' | 'done';
 export default function SmartQuizPage() {
   const { progress, currentUser, refreshProgress } = useAuth();
   const { subscription } = useSubscription();
+  const { t } = useLanguage();
   const tier = subscription?.tier ?? 'free';
 
   // Build flat question pool with era metadata
@@ -176,7 +179,7 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
         refreshProgress();
         toast.success(`Smart Quiz complete! +${xp} XP earned`);
       }
-      // Build era breakdown for Clio recommendation
+      // Build era breakdown for Clio recommendation and stats
       const map: Record<string, { name: string; correct: number; total: number }> = {};
       session.forEach((q, i) => {
         if (!map[q.eraId]) map[q.eraId] = { name: q.eraName, correct: 0, total: 0 };
@@ -184,6 +187,20 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
         if (finalAnswers[i]) map[q.eraId].correct++;
       });
       const eraBreakdownData = Object.values(map);
+      // Record stats
+      if (currentUser) {
+        const eraBreakdownForStats: Record<string, { correct: number; total: number }> = {};
+        Object.entries(map).forEach(([eraId, d]) => {
+          eraBreakdownForStats[eraId] = { correct: d.correct, total: d.total };
+        });
+        recordSmartQuizSession(currentUser.id, {
+          date: new Date().toISOString(),
+          score: correct,
+          total: SESSION_SIZE,
+          xpEarned: xp,
+          eraBreakdown: eraBreakdownForStats,
+        });
+      }
       setPhase('done');
       getClioRecommendation(scoreVal, eraBreakdownData);
     } else {
@@ -229,12 +246,12 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
               <Sparkles className="w-5 h-5 text-violet-400" />
             </div>
             <div>
-              <h1 className="font-heading text-3xl font-bold">Smart Quiz</h1>
-              <p className="text-muted-foreground text-sm mt-0.5">Adaptive questions targeting your weakest areas</p>
+              <h1 className="font-heading text-3xl font-bold">{t.sq_title}</h1>
+              <p className="text-muted-foreground text-sm mt-0.5">{t.sq_subtitle}</p>
             </div>
           </motion.div>
           <UpgradePrompt
-            title="Smart Quiz"
+            title={t.sq_title}
             description="Smart Quiz uses an adaptive algorithm that targets your weakest eras and calibrates difficulty to your performance level. Available on Pro Learner and above."
             requiredPlan="pro"
           />
@@ -252,8 +269,8 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
             <Sparkles className="w-5 h-5 text-violet-400" />
           </div>
           <div>
-            <h1 className="font-heading text-3xl font-bold">Smart Quiz</h1>
-            <p className="text-muted-foreground text-sm mt-0.5">Adaptive questions targeting your weakest areas</p>
+            <h1 className="font-heading text-3xl font-bold">{t.sq_title}</h1>
+            <p className="text-muted-foreground text-sm mt-0.5">{t.sq_subtitle}</p>
           </div>
         </motion.div>
 
@@ -302,10 +319,91 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
                   )}
 
                   <Button className="w-full gap-2" size="lg" onClick={startSession}>
-                    Start Smart Quiz <ArrowRight className="w-4 h-4" />
+                    {t.sq_start} <ArrowRight className="w-4 h-4" />
                   </Button>
                 </CardContent>
               </Card>
+
+              {/* ── Statistics Card ── */}
+              {(() => {
+                if (!currentUser) return null;
+                const stats = getSmartQuizStats(currentUser.id);
+                const sessions = stats.sessions;
+                if (sessions.length === 0) {
+                  return (
+                    <Card>
+                      <CardContent className="pt-5 pb-5">
+                        <div className="flex items-center gap-2 mb-3">
+                          <BarChart2 className="w-4 h-4 text-violet-400" />
+                          <p className="font-semibold text-sm">{t.sq_stats_title}</p>
+                        </div>
+                        <p className="text-muted-foreground text-sm text-center py-4">{t.sq_no_sessions}</p>
+                      </CardContent>
+                    </Card>
+                  );
+                }
+                const avgScore = Math.round(sessions.reduce((a, s) => a + (s.score / s.total) * 100, 0) / sessions.length);
+                const bestScore = Math.max(...sessions.map(s => s.score));
+                const totalXp = sessions.reduce((a, s) => a + s.xpEarned, 0);
+                // Cumulative era breakdown
+                const eraAgg: Record<string, { correct: number; total: number }> = {};
+                sessions.forEach(s => {
+                  Object.entries(s.eraBreakdown).forEach(([eraId, d]) => {
+                    if (!eraAgg[eraId]) eraAgg[eraId] = { correct: 0, total: 0 };
+                    eraAgg[eraId].correct += d.correct;
+                    eraAgg[eraId].total += d.total;
+                  });
+                });
+                const eraRows = Object.entries(eraAgg).map(([eraId, d]) => ({
+                  eraId, name: ERAS.find(e => e.id === eraId)?.shortName ?? eraId,
+                  pct: Math.round((d.correct / d.total) * 100), correct: d.correct, total: d.total,
+                }));
+                return (
+                  <Card>
+                    <CardContent className="pt-5 pb-5 space-y-4">
+                      <div className="flex items-center gap-2">
+                        <BarChart2 className="w-4 h-4 text-violet-400" />
+                        <p className="font-semibold text-sm">{t.sq_stats_title}</p>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {[
+                          { label: t.sq_sessions, value: sessions.length, icon: Brain, color: 'text-violet-400' },
+                          { label: t.sq_avg_score, value: `${avgScore}%`, icon: Target, color: 'text-blue-400' },
+                          { label: t.sq_best_score, value: `${bestScore}/${SESSION_SIZE}`, icon: Trophy, color: 'text-amber-400' },
+                          { label: t.sq_total_xp, value: `+${totalXp}`, icon: Star, color: 'text-primary' },
+                        ].map(({ label, value, icon: Icon, color }) => (
+                          <div key={label} className="text-center p-3 rounded-xl border border-border bg-muted/20 space-y-1">
+                            <Icon className={`w-4 h-4 ${color} mx-auto`} />
+                            <div className="font-bold text-sm font-heading">{value}</div>
+                            <div className="text-[10px] text-muted-foreground">{label}</div>
+                          </div>
+                        ))}
+                      </div>
+                      {eraRows.length > 0 && (
+                        <div className="space-y-2">
+                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{t.sq_era_breakdown}</p>
+                          {eraRows.map(er => (
+                            <div key={er.eraId}>
+                              <div className="flex justify-between text-xs mb-1">
+                                <span className={ERA_COLOR[er.eraId]?.split(' ')[0] ?? 'text-foreground'}>{er.name}</span>
+                                <span className="text-muted-foreground">{er.correct}/{er.total} · {er.pct}%</span>
+                              </div>
+                              <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
+                                <motion.div
+                                  className={`h-full rounded-full ${er.pct >= 75 ? 'bg-emerald-400' : er.pct >= 50 ? 'bg-amber-400' : 'bg-rose-400'}`}
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${er.pct}%` }}
+                                  transition={{ duration: 0.7, ease: 'easeOut' }}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })()}
             </motion.div>
           )}
 
