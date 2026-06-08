@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Crown, Flame, Star } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AppShell } from '@/components/layout/AppShell';
 import { useAuth } from '@/features/auth/AuthContext';
 import { calculateLevel } from '@/features/progress/xpSystem';
@@ -34,6 +36,56 @@ const RANK_STYLES = [
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.06 } } };
 const row = { hidden: { opacity: 0, x: -16 }, visible: { opacity: 1, x: 0, transition: { duration: 0.35 } } };
 
+interface UserEntry { id: string; username: string; xp: number; country: string; streak: number; videoXp?: number; }
+
+function UserProfileModal({ user, rank, onClose }: { user: UserEntry | null; rank: number; onClose: () => void }) {
+  if (!user) return null;
+  const level = calculateLevel(user.xp);
+  const rank_ = getChessRank(user.videoXp ?? 0);
+  const score = leaderScore(user.xp, user.videoXp ?? 0);
+
+  return (
+    <Dialog open={!!user} onOpenChange={v => { if (!v) onClose(); }}>
+      <DialogContent className="max-w-sm">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <span className="text-lg">{user.country}</span>
+            {user.username}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          {/* Rank badge */}
+          <div className={`flex items-center gap-3 p-3 rounded-xl border ${rank_.borderColor} ${rank_.bgColor}`}>
+            <span className="text-2xl">{rank_.icon}</span>
+            <div>
+              <p className={`font-bold text-sm ${rank_.color}`}>{rank_.name}</p>
+              <p className="text-xs text-muted-foreground">{rank_.desc}</p>
+            </div>
+          </div>
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-2 text-center">
+            {[
+              { label: 'Rank', value: `#${rank}` },
+              { label: 'Level', value: `Lv ${level}` },
+              { label: 'Streak', value: `${user.streak}d` },
+            ].map(s => (
+              <div key={s.label} className="p-2 rounded-lg border border-border bg-muted/20">
+                <div className="font-bold text-sm">{s.value}</div>
+                <div className="text-[10px] text-muted-foreground">{s.label}</div>
+              </div>
+            ))}
+          </div>
+          <div className="space-y-1 text-xs text-muted-foreground">
+            <div className="flex justify-between"><span>Regular XP</span><span className="font-medium text-foreground">{user.xp.toLocaleString()} XP</span></div>
+            <div className="flex justify-between"><span>Video XP</span><span className="font-medium text-foreground">{(user.videoXp ?? 0).toLocaleString()} XP</span></div>
+            <div className="flex justify-between border-t border-border pt-1 mt-1"><span className="font-semibold">Leaderboard Score</span><span className="font-bold text-primary">{score.toLocaleString()} pts</span></div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export default function LeaderboardPage() {
   const { currentUser, progress } = useAuth();
   const userXP = progress?.xp ?? 0;
@@ -48,6 +100,9 @@ export default function LeaderboardPage() {
   ].sort((a, b) => leaderScore(b.xp, b.videoXp ?? 0) - leaderScore(a.xp, a.videoXp ?? 0));
 
   const userRank = allUsers.findIndex(u => u.id === 'real') + 1;
+
+  const [selectedUser, setSelectedUser] = useState<UserEntry | null>(null);
+  const [selectedRank, setSelectedRank] = useState(0);
 
   return (
     <AppShell>
@@ -73,6 +128,8 @@ export default function LeaderboardPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: i === 1 ? -12 : 0 }}
                 transition={{ delay: 0.1 + i * 0.1, duration: 0.4 }}
+                className={!isYou ? 'cursor-pointer' : undefined}
+                onClick={() => { if (!isYou) { setSelectedUser(u!); setSelectedRank(actualRank); } }}
               >
                 <Card className={`border ${s.bg} text-center ${i === 1 ? 'scale-105' : ''}`}>
                   <CardContent className="pt-4 pb-3">
@@ -125,7 +182,8 @@ export default function LeaderboardPage() {
                   <motion.div
                     key={u.id}
                     variants={row}
-                    className={`flex items-center gap-3 px-4 py-3 border-b border-border/50 last:border-0 transition-colors ${isYou ? 'bg-primary/5' : 'hover:bg-accent/30'}`}
+                    className={`flex items-center gap-3 px-4 py-3 border-b border-border/50 last:border-0 transition-colors ${isYou ? 'bg-primary/5' : 'hover:bg-accent/30 cursor-pointer'}`}
+                    onClick={() => { if (!isYou) { setSelectedUser(u); setSelectedRank(rank); } }}
                   >
                     <span className={`font-mono text-sm w-7 shrink-0 ${rank <= 3 ? RANK_STYLES[rank-1].label : 'text-muted-foreground'}`}>#{rank}</span>
                     <span className="text-base">{u.country}</span>
@@ -150,6 +208,7 @@ export default function LeaderboardPage() {
           </CardContent>
         </Card>
       </div>
+      <UserProfileModal user={selectedUser} rank={selectedRank} onClose={() => setSelectedUser(null)} />
     </AppShell>
   );
 }
