@@ -74,13 +74,13 @@ export default function LessonPage() {
         </div>
 
         {/* Hero banner */}
-        <div className={`relative h-52 sm:h-64 rounded-2xl overflow-hidden mb-8 bg-gradient-to-br ${era.bgGradient} border border-border`}>
+        <div className={`relative h-72 sm:h-80 md:h-96 rounded-2xl overflow-hidden mb-8 bg-gradient-to-br ${era.bgGradient} border border-border`}>
           {lesson.imageUrl && (
             <img
               src={lesson.imageUrl}
               alt=""
               aria-hidden
-              className="absolute inset-0 w-full h-full object-cover opacity-50"
+              className="absolute inset-0 w-full h-full object-cover opacity-75"
               onError={e => e.currentTarget.remove()}
             />
           )}

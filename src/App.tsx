@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/features/auth/AuthContext';
 import { SubscriptionProvider } from '@/features/subscription/SubscriptionContext';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 import { ProtectedRoute } from '@/features/auth/ProtectedRoute';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { PageTransition } from '@/components/shared/PageTransition';
@@ -69,10 +70,12 @@ function App() {
       <ThemeProvider defaultTheme="dark" storageKey="historify-theme">
         <AuthProvider>
           <SubscriptionProvider>
-            <BrowserRouter>
-              <AnimatedRoutes />
-            </BrowserRouter>
-            <Toaster />
+            <LanguageProvider>
+              <BrowserRouter>
+                <AnimatedRoutes />
+              </BrowserRouter>
+              <Toaster />
+            </LanguageProvider>
           </SubscriptionProvider>
         </AuthProvider>
       </ThemeProvider>

@@ -28,7 +28,7 @@ const DIFF_COLOR: Record<string, string> = {
   hard: 'text-rose-400 bg-rose-400/10 border-rose-400/30',
 };
 
-const SESSION_SIZE = 10;
+const SESSION_SIZE = 15;
 
 type QuestionWithMeta = {
   id: string; question: string; options: string[]; correctIndex: number;
@@ -58,9 +58,9 @@ function selectAdaptiveQuestions(
     : 0;
 
   const diffWeight = (d: string) => {
-    if (avgScore < 40)  return d === 'easy' ? 2.5 : d === 'medium' ? 1.0 : 0.3;
-    if (avgScore < 70)  return d === 'easy' ? 1.0 : d === 'medium' ? 2.0 : 1.0;
-    return d === 'easy' ? 0.5 : d === 'medium' ? 1.5 : 2.5;  // high scorers → harder
+    if (avgScore < 40)  return d === 'easy' ? 2.0 : d === 'medium' ? 1.2 : 0.5;
+    if (avgScore < 70)  return d === 'easy' ? 0.8 : d === 'medium' ? 2.0 : 1.5;
+    return d === 'easy' ? 0.3 : d === 'medium' ? 1.2 : 3.0;  // high scorers → mostly hard
   };
 
   // Assign weights and shuffle using weighted random
@@ -113,7 +113,22 @@ export default function SmartQuizPage() {
       .sort((a, b) => a.pct - b.pct)
       .slice(0, 2);
 
-    const prompt = `A student just completed a Smart Quiz in a history learning app. They scored ${scoreVal}%. Their weakest eras were: ${weakest.map(w => `${w.name} (${w.pct}%)`).join(', ')}. Give a 2-sentence personalized next-step recommendation as Clio, their AI history tutor. Be encouraging but specific. Address them directly as "you".`;
+    const strongEras = eraBreakdownData
+      .map(e => ({ name: e.name, pct: Math.round((e.correct / e.total) * 100) }))
+      .filter(e => e.pct >= 75)
+      .map(e => e.name);
+
+    const prompt = `You are Clio, an AI history tutor with deep knowledge and an encouraging but scholarly personality. A student just completed a 15-question adaptive Smart Quiz and scored ${scoreVal}%.
+
+Era breakdown: ${eraBreakdownData.map(e => `${e.name}: ${Math.round((e.correct/e.total)*100)}% (${e.correct}/${e.total})`).join(', ')}.
+${weakest.length > 0 ? `Weakest areas: ${weakest.map(w => `${w.name} (${w.pct}%)`).join(', ')}.` : ''}
+${strongEras.length > 0 ? `Strong areas: ${strongEras.join(', ')}.` : ''}
+
+Write a 3-sentence personalized recommendation directly to the student:
+1. Acknowledge their specific performance with precision (mention the exact score and one strength if any).
+2. Give a concrete, actionable next step targeting their weakest era — name a specific concept, event, or lesson to revisit.
+3. End with a motivating, historically-flavored insight that connects their weak area to why history matters.
+Address the student as "you". Be specific, warm, and scholarly. Do NOT use bullet points.`;
 
     try {
       for await (const chunk of streamChatResponse([{ role: 'user', content: prompt }])) {
@@ -252,8 +267,8 @@ export default function SmartQuizPage() {
                   <div className="grid grid-cols-3 gap-3">
                     {[
                       { icon: Brain,  color: 'text-violet-400 bg-violet-400/10', label: 'Adaptive',   desc: 'Questions target your weak spots' },
-                      { icon: Target, color: 'text-rose-400 bg-rose-400/10',     label: '10 Questions', desc: 'Drawn from all 4 eras' },
-                      { icon: Trophy, color: 'text-amber-400 bg-amber-400/10',   label: 'Earn XP',    desc: '+15 XP per correct answer' },
+                      { icon: Target, color: 'text-rose-400 bg-rose-400/10',     label: '15 Questions', desc: 'Drawn from all 4 eras' },
+                      { icon: Trophy, color: 'text-amber-400 bg-amber-400/10',   label: 'Earn XP',    desc: '+15 XP per correct · up to +225 XP' },
                     ].map(({ icon: Icon, color, label, desc }) => (
                       <div key={label} className="text-center space-y-1.5 p-3 rounded-xl border border-border">
                         <div className={`w-9 h-9 rounded-xl ${color} flex items-center justify-center mx-auto`}>
@@ -422,20 +437,62 @@ export default function SmartQuizPage() {
                     </div>
                   )}
 
-                  {/* Clio Recommendation */}
-                  <div className="p-3.5 rounded-xl border border-primary/20 bg-primary/5 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <MessageSquare className="w-4 h-4 text-primary shrink-0" />
-                      <span className="text-xs font-semibold text-primary">Clio's Recommendation</span>
-                    </div>
-                    {clioLoading ? (
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <span className="animate-pulse">Clio is thinking...</span>
-                      </div>
-                    ) : clioRec ? (
-                      <p className="text-xs text-muted-foreground leading-relaxed">{clioRec}</p>
-                    ) : null}
-                  </div>
+                  {/* Clio Recommendation — 3D flip reveal */}
+                  <AnimatePresence>
+                    {(clioLoading || clioRec) && (
+                      <motion.div
+                        key="clio-rec"
+                        initial={{ opacity: 0, rotateX: -60, scale: 0.92, y: 20 }}
+                        animate={{ opacity: 1, rotateX: 0, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ type: 'spring', stiffness: 120, damping: 18, duration: 0.6 }}
+                        style={{ transformPerspective: 900, transformOrigin: 'top center' }}
+                        className="rounded-xl border border-primary/30 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent overflow-hidden"
+                      >
+                        {/* Header bar */}
+                        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-primary/15 bg-primary/8">
+                          <motion.div
+                            animate={{ rotate: [0, 10, -10, 0] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                          >
+                            <MessageSquare className="w-4 h-4 text-primary shrink-0" />
+                          </motion.div>
+                          <span className="text-xs font-bold text-primary tracking-wide uppercase">Clio's Recommendation</span>
+                          {clioLoading && (
+                            <motion.div
+                              className="ml-auto flex gap-1"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                            >
+                              {[0,1,2].map(i => (
+                                <motion.div
+                                  key={i}
+                                  className="w-1.5 h-1.5 rounded-full bg-primary/60"
+                                  animate={{ scale: [1, 1.5, 1], opacity: [0.4, 1, 0.4] }}
+                                  transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.2 }}
+                                />
+                              ))}
+                            </motion.div>
+                          )}
+                        </div>
+                        {/* Body */}
+                        <div className="px-4 py-3">
+                          {clioLoading && !clioRec ? (
+                            <p className="text-xs text-muted-foreground italic">Clio is analysing your performance…</p>
+                          ) : (
+                            <motion.p
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.4 }}
+                              className="text-sm text-foreground/85 leading-relaxed"
+                            >
+                              {clioRec}
+                            </motion.p>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
                   <div className="flex gap-2">
                     <Button className="flex-1 gap-2" onClick={startSession}>

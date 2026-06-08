@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Trophy, Crown, Flame, Star } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AppShell } from '@/components/layout/AppShell';
 import { useAuth } from '@/features/auth/AuthContext';
@@ -93,6 +93,8 @@ export default function LeaderboardPage() {
   const userStreak = progress?.streak ?? 0;
 
   const userVideoXp = currentUser ? getVideoXp(currentUser.id) : 0;
+  const avatarKey = currentUser ? `historify:avatar:${currentUser.id}` : '';
+  const [avatarUrl] = useState(() => (avatarKey ? localStorage.getItem(avatarKey) ?? '' : ''));
 
   const allUsers = [
     ...MOCK_USERS,
@@ -135,8 +137,9 @@ export default function LeaderboardPage() {
                   <CardContent className="pt-4 pb-3">
                     {s.icon}
                     <Avatar className="h-10 w-10 mx-auto my-2">
+                      {isYou && avatarUrl && <AvatarImage src={avatarUrl} alt={currentUser?.username ?? ''} />}
                       <AvatarFallback className="bg-primary/20 text-primary text-sm font-bold">
-                        {u?.country ?? '?'}
+                        {isYou ? (currentUser?.avatarInitials ?? '?') : (u?.country ?? '?')}
                       </AvatarFallback>
                     </Avatar>
                     <p className={`font-semibold text-xs truncate ${isYou ? 'text-primary' : ''}`}>{u?.username}</p>
@@ -155,7 +158,10 @@ export default function LeaderboardPage() {
             <Card className="border-primary/40 bg-primary/5">
               <CardContent className="py-3 px-4 flex items-center gap-3">
                 <span className="font-mono text-sm text-primary font-bold w-8">#{userRank}</span>
-                <Avatar className="h-8 w-8"><AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">{currentUser?.avatarInitials ?? 'Y'}</AvatarFallback></Avatar>
+                <Avatar className="h-8 w-8">
+                  {avatarUrl && <AvatarImage src={avatarUrl} alt={currentUser?.username ?? ''} />}
+                  <AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">{currentUser?.avatarInitials ?? 'Y'}</AvatarFallback>
+                </Avatar>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-primary">{currentUser?.username} <span className="text-xs text-muted-foreground">(You)</span></p>
                 </div>
@@ -188,8 +194,9 @@ export default function LeaderboardPage() {
                     <span className={`font-mono text-sm w-7 shrink-0 ${rank <= 3 ? RANK_STYLES[rank-1].label : 'text-muted-foreground'}`}>#{rank}</span>
                     <span className="text-base">{u.country}</span>
                     <Avatar className="h-7 w-7 shrink-0">
+                      {isYou && avatarUrl && <AvatarImage src={avatarUrl} alt={currentUser?.username ?? ''} />}
                       <AvatarFallback className={`text-xs font-semibold ${isYou ? 'bg-primary/20 text-primary' : 'bg-secondary text-secondary-foreground'}`}>
-                        {u.username.slice(0,2).toUpperCase()}
+                        {isYou ? (currentUser?.avatarInitials ?? 'Y') : u.username.slice(0,2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <p className={`flex-1 text-sm font-medium ${isYou ? 'text-primary' : ''}`}>

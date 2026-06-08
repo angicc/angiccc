@@ -6,34 +6,36 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Logo } from '@/components/shared/Logo';
 import { xpToNextLevel } from '@/features/progress/xpSystem';
 import { getVideoXp } from '@/features/videoReview/videoReviewStore';
 import { getChessRank } from '@/features/ranks/chessRanks';
 import { cn } from '@/lib/utils';
 
-const NAV = [
-  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { to: '/eras', label: 'Eras & Lessons', icon: BookOpen },
-  { to: '/timeline', label: 'Timeline', icon: ScrollText },
-  { to: '/tutor', label: 'AI Tutor', icon: MessageSquare },
-  { to: '/leaderboard', label: 'Leaderboard', icon: Trophy },
-  { to: '/friends', label: 'Friends', icon: Users },
-  { to: '/flashcards', label: 'Flashcards', icon: Layers },
-  { to: '/notes', label: 'My Notes', icon: PenLine },
-  { to: '/progress', label: 'Progress', icon: BarChart2 },
-  { to: '/smart-quiz', label: 'Smart Quiz', icon: Sparkles },
-  { to: '/essay', label: 'Essay Challenge', icon: FileEdit },
-  { to: '/video-review', label: 'Video Review', icon: Film },
-  { to: '/profile', label: 'Profile', icon: User },
-  { to: '/guide', label: 'App Guide', icon: HelpCircle },
-  { to: '/report', label: 'Report a Problem', icon: AlertTriangle },
+const NAV_KEYS = [
+  { to: '/dashboard',   key: 'nav_dashboard'   as const, icon: LayoutDashboard },
+  { to: '/eras',        key: 'nav_eras'        as const, icon: BookOpen },
+  { to: '/timeline',    key: 'nav_timeline'    as const, icon: ScrollText },
+  { to: '/tutor',       key: 'nav_tutor'       as const, icon: MessageSquare },
+  { to: '/leaderboard', key: 'nav_leaderboard' as const, icon: Trophy },
+  { to: '/friends',     key: 'nav_friends'     as const, icon: Users },
+  { to: '/flashcards',  key: 'nav_flashcards'  as const, icon: Layers },
+  { to: '/notes',       key: 'nav_notes'       as const, icon: PenLine },
+  { to: '/progress',    key: 'nav_progress'    as const, icon: BarChart2 },
+  { to: '/smart-quiz',  key: 'nav_smart_quiz'  as const, icon: Sparkles },
+  { to: '/essay',       key: 'nav_essay'       as const, icon: FileEdit },
+  { to: '/video-review',key: 'nav_video_review'as const, icon: Film },
+  { to: '/profile',     key: 'nav_profile'     as const, icon: User },
+  { to: '/guide',       key: 'nav_guide'       as const, icon: HelpCircle },
+  { to: '/report',      key: 'nav_report'      as const, icon: AlertTriangle },
 ];
 
 export function Sidebar({ className, onNavigate }: { className?: string; onNavigate?: () => void }) {
   const navigate = useNavigate();
   const { logout, progress, currentUser } = useAuth();
   const { subscription } = useSubscription();
+  const { t } = useLanguage();
   const tier = subscription?.tier ?? 'free';
   const tierLabel = { free: 'Free', pro: 'Pro Learner', master: 'Master Student' }[tier];
   const xpInfo = progress ? xpToNextLevel(progress.xp) : null;
@@ -74,10 +76,10 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
 
       {/* Nav links */}
       <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
-        {NAV.map(({ to, label, icon: Icon }) => (
+        {NAV_KEYS.map(({ to, key, icon: Icon }) => (
           <NavLink key={to} to={to} onClick={onNavigate}
             className={({ isActive }) => cn('flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors', isActive ? 'bg-primary/15 text-primary font-medium border-r-2 border-primary' : 'text-muted-foreground hover:text-foreground hover:bg-accent')}>
-            <Icon className="w-4 h-4 shrink-0" />{label}
+            <Icon className="w-4 h-4 shrink-0" />{t[key]}
           </NavLink>
         ))}
       </nav>
@@ -108,20 +110,20 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
       <div className="px-3 py-3 border-t border-border space-y-1">
         {tier === 'free' && (
           <NavLink to="/pricing" onClick={onNavigate} className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm bg-primary/10 text-primary hover:bg-primary/20 transition-colors mb-1">
-            <Crown className="w-4 h-4 shrink-0" />Upgrade Plan
+            <Crown className="w-4 h-4 shrink-0" />{t.nav_upgrade}
           </NavLink>
         )}
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="ghost" size="sm" className="w-full justify-start gap-3 text-muted-foreground px-3 py-2 h-auto font-normal">
-              <LogOut className="w-4 h-4 shrink-0" />Log Out
+              <LogOut className="w-4 h-4 shrink-0" />{t.nav_logout}
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Log out of Historify?</AlertDialogTitle>
+              <AlertDialogTitle>{t.logout_title}</AlertDialogTitle>
               <AlertDialogDescription>
-                Your progress is saved. You can log back in anytime.
+                {t.logout_desc}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

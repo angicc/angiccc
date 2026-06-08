@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Send, RotateCcw, Sword, Globe, BookOpen, Scroll, Sparkles, Landmark } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -108,6 +109,8 @@ function TypingIndicator() {
   );
 }
 
+const CLIO_GIF = 'https://media.giphy.com/media/cLr9ItoqnmxEMfTaWA/giphy.gif';
+
 export default function AiTutorPage() {
   const { currentUser, refreshProgress } = useAuth();
   const { canAI, trackAiMessage } = useSubscription();
@@ -117,6 +120,9 @@ export default function AiTutorPage() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  const avatarKey = currentUser ? `historify:avatar:${currentUser.id}` : '';
+  const [avatarUrl] = useState(() => (avatarKey ? localStorage.getItem(avatarKey) ?? '' : ''));
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
@@ -179,7 +185,16 @@ export default function AiTutorPage() {
         {!allowed && <UpgradePrompt description={reason} requiredPlan={reason?.includes('Master') ? 'master' : 'pro'} />}
 
         <div className="flex-1 min-h-0 flex flex-col">
-          <ScrollArea className="flex-1 border border-border rounded-xl bg-card/60 backdrop-blur-sm p-4">
+          <ScrollArea className="flex-1 border border-border rounded-xl overflow-hidden relative p-4">
+            {/* Cinematic GIF background */}
+            <img
+              src={CLIO_GIF}
+              alt=""
+              aria-hidden
+              className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
+            />
+            <div className="absolute inset-0 bg-card/75 pointer-events-none" />
+            <div className="relative z-10">
             <AnimatePresence>
               {messages.length === 0 && (
                 <motion.div
@@ -241,9 +256,12 @@ export default function AiTutorPage() {
                     {msg.role === 'assistant' ? (
                       <div className="shrink-0 mt-0.5"><ClioAvatar size={28} /></div>
                     ) : (
-                      <div className="w-7 h-7 shrink-0 mt-0.5 rounded-full bg-secondary flex items-center justify-center text-xs font-semibold text-secondary-foreground">
-                        {currentUser?.avatarInitials ?? 'U'}
-                      </div>
+                      <Avatar className="w-7 h-7 shrink-0 mt-0.5">
+                        {avatarUrl && <AvatarImage src={avatarUrl} alt={currentUser?.username ?? ''} />}
+                        <AvatarFallback className="bg-secondary text-xs font-semibold text-secondary-foreground">
+                          {currentUser?.avatarInitials ?? 'U'}
+                        </AvatarFallback>
+                      </Avatar>
                     )}
                     <div
                       className={`max-w-[80%] rounded-xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
@@ -259,6 +277,7 @@ export default function AiTutorPage() {
               </AnimatePresence>
               <AnimatePresence>{loading && <TypingIndicator />}</AnimatePresence>
               <div ref={bottomRef} />
+            </div>
             </div>
           </ScrollArea>
 
