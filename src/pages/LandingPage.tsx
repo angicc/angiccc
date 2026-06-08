@@ -52,7 +52,7 @@ const TESTIMONIALS = [
 ];
 
 const STATS = [
-  { label: 'Lessons',        value: 18,   suffix: '+' },
+  { label: 'Lessons',        value: 20,   suffix: '+' },
   { label: 'Timeline Events', value: 50,  suffix: '+' },
   { label: 'Quiz Questions',  value: 80,  suffix: '+' },
   { label: 'XP to Earn',     value: 5000, suffix: '+' },
@@ -66,7 +66,7 @@ const HISTORICAL_QUOTES = [
 ];
 
 const FEATURES = [
-  { icon: BookOpen,   title: '18 In-Depth Lessons',   desc: 'Expert-written lessons from Ancient Egypt to the Digital Age, packed with rich historical context.',      color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
+  { icon: BookOpen,   title: '20 In-Depth Lessons',   desc: 'Expert-written lessons from Ancient Egypt to the Digital Age, packed with rich historical context.',      color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
   { icon: Brain,      title: 'AI Tutor — Clio',        desc: 'Ask your personal AI tutor anything about history and get clear, scholarly answers instantly.',            color: 'text-blue-400',    bg: 'bg-blue-400/10',    border: 'border-blue-400/20'    },
   { icon: ScrollText, title: 'Interactive Timeline',   desc: 'Explore 50+ pivotal events on a visual timeline, filterable by era and category.',                         color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
   { icon: HelpCircle, title: 'Quizzes & XP',           desc: 'Test knowledge with 80+ quiz questions, earn XP, level up, and unlock achievements.',                      color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/20'    },

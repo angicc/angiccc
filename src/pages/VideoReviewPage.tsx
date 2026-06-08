@@ -86,7 +86,7 @@ export default function VideoReviewPage() {
   const { subscription } = useSubscription();
   const tier = subscription?.tier ?? 'free';
 
-  if (tier === 'free') {
+  if (tier !== 'master') {
     return (
       <AppShell>
         <div className="max-w-2xl mx-auto">
@@ -97,7 +97,7 @@ export default function VideoReviewPage() {
               <p className="text-muted-foreground text-sm mt-0.5">Watch history. Write your verdict. Earn Video XP.</p>
             </div>
           </motion.div>
-          <UpgradePrompt title="Video Review Challenge" description="Watch curated educational history videos, write your analysis, and get live sentence-by-sentence grading from Clio. Earn special Video XP to climb the Historical Chess Ranks — available on Pro Learner and above." requiredPlan="pro" />
+          <UpgradePrompt title="Video Review Challenge" description="Watch curated educational history videos, write your analysis, and get live sentence-by-sentence grading from Clio. Earn special Video XP to climb the Historical Chess Ranks — exclusively available on the Master Student plan." requiredPlan="master" />
         </div>
       </AppShell>
     );

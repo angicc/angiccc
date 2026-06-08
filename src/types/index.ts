@@ -60,5 +60,7 @@ export interface ChatSession { id: string; messages: ChatMessage[]; createdAt: s
 export type AchievementCondition =
   | { type: 'lessons_complete'; count: number } | { type: 'quiz_perfect'; eraId?: EraId }
   | { type: 'streak'; days: number } | { type: 'xp_total'; amount: number }
-  | { type: 'all_eras_started' } | { type: 'ai_messages'; count: number };
+  | { type: 'all_eras_started' } | { type: 'ai_messages'; count: number }
+  | { type: 'all_quizzes_perfect' } | { type: 'quizzes_perfect_count'; count: number }
+  | { type: 'era_lessons_complete'; eraId: EraId; count: number };
 export interface Achievement { id: string; title: string; description: string; icon: string; xpBonus: number; condition: AchievementCondition; }

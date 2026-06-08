@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { BookOpen, Brain, ScrollText, Sparkles, Layers, BarChart2, PenLine, Crown, ArrowRight, CheckCircle2, Trophy, Flame, User } from 'lucide-react';
+import { BookOpen, Brain, ScrollText, Sparkles, Layers, BarChart2, PenLine, Crown, ArrowRight, CheckCircle2, Trophy, Flame, User, FileEdit, Film } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { Badge } from '@/components/ui/badge';
@@ -115,6 +115,30 @@ const STEPS = [
     link: '/progress',
     linkLabel: 'View Progress',
   },
+  {
+    step: 10,
+    icon: FileEdit,
+    color: 'text-violet-400',
+    bg: 'bg-violet-400/10',
+    border: 'border-violet-400/30',
+    title: 'Essay Challenge',
+    desc: 'Put your historical knowledge to the test with a timed essay challenge. Clio grades your essay live with detailed analysis on argument, evidence, depth, and writing quality.',
+    tips: ['Available on Pro and Master plans', 'Essays are graded by Clio — strict but constructive', 'Choose from multiple historical topics', 'Earn XP proportional to your grade (A = max XP)'],
+    link: '/essay',
+    linkLabel: 'Try Essay Challenge',
+  },
+  {
+    step: 11,
+    icon: Film,
+    color: 'text-rose-400',
+    bg: 'bg-rose-400/10',
+    border: 'border-rose-400/30',
+    title: 'Video Review Challenge',
+    desc: 'Watch a curated educational history video (≤10 min), then write your analysis identifying the main motive or argument. Clio grades your review sentence-by-sentence with a live 3D animation.',
+    tips: ['Exclusive to Master Student plan', 'A new video unlocks every 12 hours', 'Earn special Video XP — separate from regular XP', 'Video XP advances your Historical Chess Rank', 'Chess Rank gives 2× advantage on the Leaderboard'],
+    link: '/video-review',
+    linkLabel: 'Open Video Review',
+  },
 ];
 
 const FAQ = [
@@ -141,7 +165,7 @@ export default function AppGuidePage() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2 pt-1">
-            <Badge variant="outline" className="text-xs border-primary/30 text-primary">9 Features</Badge>
+            <Badge variant="outline" className="text-xs border-primary/30 text-primary">11 Features</Badge>
             <Badge variant="outline" className="text-xs">Free & Pro plans</Badge>
           </div>
         </motion.div>

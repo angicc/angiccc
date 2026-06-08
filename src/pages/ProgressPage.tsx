@@ -190,7 +190,7 @@ export default function ProgressPage() {
                     {Object.keys(progress.quizScores).length === 0 ? (
                       <p className="text-sm text-muted-foreground text-center py-8">Complete a quiz to see your scores here.</p>
                     ) : (
-                      <ResponsiveContainer width="100%" height={160}>
+                      <ResponsiveContainer width="100%" height={200}>
                         <BarChart data={eraData.filter(e => e.quiz > 0)} barSize={28}>
                           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                           <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} />
@@ -214,7 +214,7 @@ export default function ProgressPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ResponsiveContainer width="100%" height={180}>
+                    <ResponsiveContainer width="100%" height={200}>
                       <RadarChart data={radarData}>
                         <PolarGrid stroke="rgba(255,255,255,0.07)" />
                         <PolarAngleAxis dataKey="era" tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} />

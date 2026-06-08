@@ -11,15 +11,25 @@ export function xpToNextLevel(xp: number) {
 }
 
 export const ACHIEVEMENTS: Achievement[] = [
-  { id: 'first-lesson', title: 'First Steps', description: 'Complete your first lesson', icon: 'BookOpen', xpBonus: 50, condition: { type: 'lessons_complete', count: 1 } },
-  { id: 'scholar', title: 'Scholar', description: 'Complete 5 lessons', icon: 'GraduationCap', xpBonus: 100, condition: { type: 'lessons_complete', count: 5 } },
-  { id: 'historian', title: 'Historian', description: 'Complete all 18 lessons', icon: 'Award', xpBonus: 500, condition: { type: 'lessons_complete', count: 18 } },
-  { id: 'quiz-ace', title: 'Quiz Ace', description: 'Score 100% on any quiz', icon: 'Trophy', xpBonus: 150, condition: { type: 'quiz_perfect' } },
-  { id: 'streak-3', title: 'Dedicated', description: 'Maintain a 3-day streak', icon: 'Flame', xpBonus: 75, condition: { type: 'streak', days: 3 } },
-  { id: 'streak-7', title: 'Unstoppable', description: 'Maintain a 7-day streak', icon: 'Zap', xpBonus: 200, condition: { type: 'streak', days: 7 } },
-  { id: 'xp-1000', title: 'Knowledge Seeker', description: 'Earn 1,000 XP', icon: 'Star', xpBonus: 100, condition: { type: 'xp_total', amount: 1000 } },
-  { id: 'ai-curious', title: 'Curious Mind', description: 'Ask the AI Tutor 10 questions', icon: 'MessageSquare', xpBonus: 75, condition: { type: 'ai_messages', count: 10 } },
-  { id: 'explorer', title: 'Explorer', description: 'Start lessons in all 4 eras', icon: 'Map', xpBonus: 100, condition: { type: 'all_eras_started' } },
+  { id: 'first-lesson',  title: 'First Steps',       description: 'Complete your first lesson',                     icon: 'BookOpen',      xpBonus: 50,  condition: { type: 'lessons_complete', count: 1 } },
+  { id: 'scholar',       title: 'Scholar',            description: 'Complete 5 lessons',                            icon: 'GraduationCap', xpBonus: 100, condition: { type: 'lessons_complete', count: 5 } },
+  { id: 'lessons-10',   title: 'Devoted Student',     description: 'Complete 10 lessons',                           icon: 'BookMarked',    xpBonus: 200, condition: { type: 'lessons_complete', count: 10 } },
+  { id: 'lessons-15',   title: 'Seasoned Learner',    description: 'Complete 15 lessons',                           icon: 'Scroll',        xpBonus: 350, condition: { type: 'lessons_complete', count: 15 } },
+  { id: 'historian',    title: 'Historian',            description: 'Complete all 20 lessons',                       icon: 'Award',         xpBonus: 500, condition: { type: 'lessons_complete', count: 20 } },
+  { id: 'quiz-ace',     title: 'Quiz Ace',             description: 'Score 100% on any quiz',                        icon: 'Trophy',        xpBonus: 150, condition: { type: 'quiz_perfect' } },
+  { id: 'quiz-3-ace',   title: 'Triple Crown',         description: 'Score 100% on 3 different era quizzes',         icon: 'Crown',         xpBonus: 300, condition: { type: 'quizzes_perfect_count', count: 3 } },
+  { id: 'quiz-all',     title: 'Grand Master',         description: 'Score 100% on all 4 era quizzes',               icon: 'Medal',         xpBonus: 600, condition: { type: 'all_quizzes_perfect' } },
+  { id: 'streak-3',     title: 'Dedicated',            description: 'Maintain a 3-day streak',                       icon: 'Flame',         xpBonus: 75,  condition: { type: 'streak', days: 3 } },
+  { id: 'streak-7',     title: 'Unstoppable',          description: 'Maintain a 7-day streak',                       icon: 'Zap',           xpBonus: 200, condition: { type: 'streak', days: 7 } },
+  { id: 'streak-14',    title: 'Iron Will',            description: 'Maintain a 14-day streak',                      icon: 'Shield',        xpBonus: 400, condition: { type: 'streak', days: 14 } },
+  { id: 'streak-30',    title: 'Legend',               description: 'Maintain a 30-day streak',                      icon: 'Gem',           xpBonus: 1000, condition: { type: 'streak', days: 30 } },
+  { id: 'xp-1000',      title: 'Knowledge Seeker',     description: 'Earn 1,000 XP',                                 icon: 'Star',          xpBonus: 100, condition: { type: 'xp_total', amount: 1000 } },
+  { id: 'xp-5000',      title: 'Knowledge Addict',     description: 'Earn 5,000 XP',                                 icon: 'Sparkles',      xpBonus: 250, condition: { type: 'xp_total', amount: 5000 } },
+  { id: 'xp-10000',     title: 'Knowledge Titan',      description: 'Earn 10,000 XP',                                icon: 'Diamond',       xpBonus: 500, condition: { type: 'xp_total', amount: 10000 } },
+  { id: 'ai-curious',   title: 'Curious Mind',         description: 'Ask the AI Tutor 10 questions',                 icon: 'MessageSquare', xpBonus: 75,  condition: { type: 'ai_messages', count: 10 } },
+  { id: 'ai-philosopher', title: 'Philosopher',        description: 'Ask the AI Tutor 50 questions',                 icon: 'Brain',         xpBonus: 200, condition: { type: 'ai_messages', count: 50 } },
+  { id: 'explorer',     title: 'Explorer',             description: 'Start lessons in all 4 eras',                   icon: 'Map',           xpBonus: 100, condition: { type: 'all_eras_started' } },
+  { id: 'ancient-master', title: 'Ancient Scholar',   description: 'Complete all Ancient era lessons',               icon: 'Scroll',        xpBonus: 200, condition: { type: 'era_lessons_complete', eraId: 'ancient', count: 5 } },
 ];
 
 export function checkAchievements(progress: UserProgress): Achievement[] {
@@ -34,5 +44,8 @@ function meetsCondition(c: AchievementCondition, p: UserProgress): boolean {
     case 'xp_total': return p.xp >= c.amount;
     case 'all_eras_started': return ['ancient','medieval','earlymod','modern'].every(prefix => p.completedLessons.some(id => id.startsWith(prefix)));
     case 'ai_messages': return (p.aiMessageCount ?? 0) >= c.count;
+    case 'all_quizzes_perfect': return Object.values(p.quizScores).filter(s => s >= 100).length >= 4;
+    case 'quizzes_perfect_count': return Object.values(p.quizScores).filter(s => s >= 100).length >= c.count;
+    case 'era_lessons_complete': return p.completedLessons.filter(id => id.startsWith(c.eraId.replace('middle-ages','medieval').replace('early-modern','earlymod'))).length >= c.count;
   }
 }
