@@ -8,6 +8,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Logo } from '@/components/shared/Logo';
+import { LogoutScreen } from '@/components/shared/LogoutScreen';
 import { xpToNextLevel } from '@/features/progress/xpSystem';
 import { getVideoXp } from '@/features/videoReview/videoReviewStore';
 import { getChessRank } from '@/features/ranks/chessRanks';
@@ -41,6 +42,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
   const tierLabel = { free: 'Free', pro: 'Pro Learner', master: 'Master Student' }[tier];
   const xpInfo = progress ? xpToNextLevel(progress.xp) : null;
 
+  const [loggingOut, setLoggingOut] = useState(false);
   const avatarKey = currentUser ? `historify:avatar:${currentUser.id}` : '';
   const [avatarUrl] = useState<string>(() => (avatarKey ? localStorage.getItem(avatarKey) ?? '' : ''));
   const videoXp = currentUser ? getVideoXp(currentUser.id) : 0;
@@ -92,7 +94,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
             <div className="flex items-center justify-between text-xs">
               <span className="text-muted-foreground flex items-center gap-1">
                 <Flame className="w-3 h-3 text-orange-400" />
-                {progress.streak}d streak
+                {progress.streak}{t.sidebar_streak}
               </span>
               <span className="text-primary font-semibold">Lv.{progress.level}</span>
             </div>
@@ -128,14 +130,18 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={() => { logout(); navigate('/'); onNavigate?.(); }}>
-                Log Out
+              <AlertDialogCancel>{t.btn_cancel}</AlertDialogCancel>
+              <AlertDialogAction onClick={() => {
+                setLoggingOut(true);
+                setTimeout(() => { logout(); navigate('/'); onNavigate?.(); }, 2200);
+              }}>
+                {t.nav_logout}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </div>
+      {loggingOut && <LogoutScreen />}
     </aside>
   );
 }

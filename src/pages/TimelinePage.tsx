@@ -59,6 +59,10 @@ const CATEGORIES: TimelineCategory[] = ['war','politics','science','culture','re
 const CAT_ICON: Record<TimelineCategory, string> = {
   war: '⚔️', politics: '🏛️', science: '🔭', culture: '🎭', religion: '✝️', exploration: '🗺️',
 };
+const CAT_LABEL: Record<TimelineCategory, 'cat_war' | 'cat_politics' | 'cat_science' | 'cat_culture' | 'cat_religion' | 'cat_exploration'> = {
+  war: 'cat_war', politics: 'cat_politics', science: 'cat_science',
+  culture: 'cat_culture', religion: 'cat_religion', exploration: 'cat_exploration',
+};
 
 export default function TimelinePage() {
   const { canTimeline, canLesson } = useSubscription();
@@ -98,35 +102,35 @@ export default function TimelinePage() {
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="font-heading text-3xl font-bold">Historical Timeline</h1>
-            <p className="text-muted-foreground text-sm mt-1">From 3100 BCE to the present day · {events.length} events</p>
+            <h1 className="font-heading text-3xl font-bold">{t.tl_title}</h1>
+            <p className="text-muted-foreground text-sm mt-1">{t.tl_subtitle} · {events.length} {t.tl_events}</p>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             {canTimeline() ? (
               <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
                 <Select value={eraFilter} onValueChange={v => setEraFilter(v as EraId | 'all')}>
-                  <SelectTrigger className="w-32 sm:w-36 h-8 text-xs"><SelectValue placeholder="All Eras" /></SelectTrigger>
+                  <SelectTrigger className="w-32 sm:w-36 h-8 text-xs"><SelectValue placeholder={t.tl_all_eras} /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Eras</SelectItem>
+                    <SelectItem value="all">{t.tl_all_eras}</SelectItem>
                     {ERAS.map(e => <SelectItem key={e.id} value={e.id}>{e.shortName}</SelectItem>)}
                   </SelectContent>
                 </Select>
                 <Select value={catFilter} onValueChange={v => setCatFilter(v as TimelineCategory | 'all')}>
-                  <SelectTrigger className="w-32 sm:w-36 h-8 text-xs"><SelectValue placeholder="All Categories" /></SelectTrigger>
+                  <SelectTrigger className="w-32 sm:w-36 h-8 text-xs"><SelectValue placeholder={t.tl_all_categories} /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
-                    {CATEGORIES.map(c => <SelectItem key={c} value={c}>{CAT_ICON[c]} {c.charAt(0).toUpperCase() + c.slice(1)}</SelectItem>)}
+                    <SelectItem value="all">{t.tl_all_categories}</SelectItem>
+                    {CATEGORIES.map(c => <SelectItem key={c} value={c}>{CAT_ICON[c]} {t[CAT_LABEL[c]]}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
             ) : (
-              <div className="text-xs text-muted-foreground">Free: major events only</div>
+              <div className="text-xs text-muted-foreground">{t.tl_free_only}</div>
             )}
           </div>
         </div>
 
         {!canTimeline() && (
-          <UpgradePrompt compact title="Timeline Filters" description="Upgrade to Pro to filter by era and category, and see all timeline events." />
+          <UpgradePrompt compact title={t.tl_filter_title} description={t.tl_filter_desc} />
         )}
 
         {/* Era legend */}
@@ -171,8 +175,8 @@ export default function TimelinePage() {
                           <Badge variant="outline" className={`text-xs px-1.5 py-0 border-current font-normal ${ERA_TEXT[event.eraId]}`}>
                             {eraName}
                           </Badge>
-                          <span className="text-xs text-muted-foreground">{CAT_ICON[event.category]} {event.category}</span>
-                          {isMajor && <Badge variant="secondary" className="text-xs px-1.5 py-0">Major</Badge>}
+                          <span className="text-xs text-muted-foreground">{CAT_ICON[event.category]} {t[CAT_LABEL[event.category]]}</span>
+                          {isMajor && <Badge variant="secondary" className="text-xs px-1.5 py-0">{t.tl_major}</Badge>}
                           {locked && <Lock className="w-3 h-3 text-muted-foreground/60" />}
                         </div>
                         <p className={`mt-0.5 group-hover:text-primary transition-colors ${isMajor ? 'font-semibold text-sm' : 'text-sm text-muted-foreground'}`}>
@@ -188,7 +192,7 @@ export default function TimelinePage() {
                         <span className="font-mono text-xs text-muted-foreground">{event.displayYear}</span>
                         <Badge variant="outline" className={`text-xs ${ERA_TEXT[event.eraId]}`}>{eraName}</Badge>
                         <Badge variant="outline" className="text-xs text-muted-foreground">
-                          {CAT_ICON[event.category]} {event.category}
+                          {CAT_ICON[event.category]} {t[CAT_LABEL[event.category]]}
                         </Badge>
                       </div>
                       <h3 className="font-heading font-semibold leading-snug">{event.title}</h3>
@@ -198,8 +202,8 @@ export default function TimelinePage() {
                         <div className="flex items-start gap-2.5 p-3 rounded-xl bg-muted/60 border border-border">
                           <Lock className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                           <div>
-                            <p className="text-xs font-semibold text-foreground">Lesson Locked</p>
-                            <p className="text-xs text-muted-foreground mt-0.5">Upgrade to Pro to access <span className="text-foreground font-medium">{lesson?.title}</span>.</p>
+                            <p className="text-xs font-semibold text-foreground">{t.tl_lesson_locked}</p>
+                            <p className="text-xs text-muted-foreground mt-0.5">{t.tl_lesson_locked_pro} <span className="text-foreground font-medium">{lesson?.title}</span>.</p>
                           </div>
                         </div>
                       ) : (
@@ -209,7 +213,7 @@ export default function TimelinePage() {
                           className="w-full"
                           onClick={() => handleExplore(event.eraId, event.id)}
                         >
-                          {lesson ? `Go to: ${lesson.title.length > 28 ? lesson.title.slice(0, 28) + '…' : lesson.title} →` : `Explore ${eraName} Era →`}
+                          {lesson ? `${t.tl_go_to} ${lesson.title.length > 28 ? lesson.title.slice(0, 28) + '…' : lesson.title} →` : `${t.tl_explore_era}: ${eraName} →`}
                         </Button>
                       )}
                     </div>

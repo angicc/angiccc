@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from 'framer-motion';
-import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, MessageCircle, X, Send, Loader2, Sparkles, Film, Shield } from 'lucide-react';
+import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, MessageCircle, X, Send, Loader2, Sparkles, Film, Shield, Scale } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/shared/Logo';
@@ -77,6 +77,8 @@ const FEATURES = [
   { icon: Sparkles,   title: 'Smart Quiz',             desc: 'Adaptive AI-powered quiz that targets your weakest eras and auto-calibrates difficulty to your skill level.', color: 'text-violet-400',  bg: 'bg-violet-400/10',  border: 'border-violet-400/20'  },
   { icon: Film,       title: 'Video Review Challenge', desc: 'Watch a curated history video every 12 hours. Write your analysis. Clio grades every sentence live and awards Video XP.', color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/20'    },
   { icon: Shield,     title: 'Historical Chess Ranks', desc: 'Earn Video XP to climb 10 ranks — from Pawn to Alexander the Great. Your rank dominates the Leaderboard.', color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
+  { icon: Scale,   title: 'Debate a Philosopher',    desc: 'Challenge Socrates, Nietzsche, Kant and more in daily philosophical debates. Make them concede and earn XP. One philosopher per day.', color: 'text-violet-400', bg: 'bg-violet-400/10', border: 'border-violet-400/20' },
+  { icon: PenLine, title: 'AI Essay Challenge',       desc: 'Write historical essays graded live by Clio — accuracy, argument quality, and depth all scored. Exclusive to Master Student.', color: 'text-orange-400', bg: 'bg-orange-400/10', border: 'border-orange-400/20' },
 ];
 
 const IQ_QUESTIONS = [
@@ -866,9 +868,9 @@ export default function LandingPage() {
           <p className="text-muted-foreground mb-8">Start free. Upgrade when you're ready.</p>
           <div className="grid sm:grid-cols-3 gap-4 mb-8">
             {[
-              { plan: 'Free',           price: '$0',     desc: '4 intro lessons · Basic quiz',                icon: BookOpen, highlight: false },
-              { plan: 'Pro Learner',    price: '$10/mo', desc: 'All lessons · AI Tutor · Full timeline',      icon: Zap,      highlight: true  },
-              { plan: 'Master Student', price: '$20/mo', desc: 'Unlimited AI · Downloads · Priority support', icon: Crown,    highlight: false },
+              { plan: 'Free',           price: '$0',     desc: '4 intro lessons · Clio AI 5/day · Leaderboard',                           icon: BookOpen, highlight: false },
+              { plan: 'Pro Learner',    price: '$10/mo', desc: 'All lessons · AI Tutor 50/mo · Timeline · Debate a Philosopher',           icon: Zap,      highlight: true  },
+              { plan: 'Master Student', price: '$20/mo', desc: 'Unlimited AI · Essay Challenge · Video Review · Downloads',                icon: Crown,    highlight: false },
             ].map(({ plan, price, desc, icon: Icon, highlight }, i) => (
               <motion.div
                 key={plan}
