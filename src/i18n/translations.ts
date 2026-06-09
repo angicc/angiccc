@@ -50,6 +50,10 @@ type TranslationKeys = {
   // ── Timeline ───────────────────────────────────────────────────
   tl_title: string; tl_subtitle: string; tl_events: string;
   tl_all_eras: string; tl_all_categories: string; tl_open_lesson: string;
+  tl_major: string; tl_free_only: string; tl_filter_title: string; tl_filter_desc: string;
+  tl_lesson_locked: string; tl_lesson_locked_pro: string; tl_go_to: string; tl_explore_era: string;
+  // Category labels
+  cat_war: string; cat_politics: string; cat_science: string; cat_culture: string; cat_religion: string; cat_exploration: string;
   // ── AI Tutor ───────────────────────────────────────────────────
   tutor_hello: string; tutor_desc: string; tutor_placeholder: string;
   tutor_new_chat: string; tutor_upgrade_msg: string;
@@ -124,6 +128,7 @@ type TranslationKeys = {
   debate_pro_only: string; debate_won_title: string; debate_won_desc: string;
   debate_already_won: string; debate_next_in: string; debate_starters: string;
   debate_start_arg: string;
+  debate_continue_btn: string;
   // ── AI Tutor extended ─────────────────────────────────────────
   tutor_subtitle: string;
   sugg_1: string; sugg_2: string; sugg_3: string; sugg_4: string; sugg_5: string; sugg_6: string;
@@ -138,6 +143,11 @@ type TranslationKeys = {
   prog_adv_analytics_desc: string; prog_no_quiz: string; prog_no_xp: string;
   prog_quiz_score_chart: string; prog_xp_activity_graph: string; prog_knowledge_radar_chart: string;
   prog_upgrade_cta: string;
+  // Sidebar / common extras
+  sidebar_streak: string;
+  // Pricing extras
+  pricing_faq: string; pricing_cur_btn: string; pricing_upgrade_to: string;
+  pricing_downgrade_free: string; pricing_switch_to: string;
 };
 
 type Translations = Record<Language, TranslationKeys>;
@@ -319,6 +329,16 @@ export const T: Translations = {
     prog_no_xp: 'Start learning to see your XP history here.',
     prog_quiz_score_chart: 'Quiz Score Chart', prog_xp_activity_graph: 'XP Activity Graph',
     prog_knowledge_radar_chart: 'Knowledge Radar', prog_upgrade_cta: 'Upgrade to Pro — $10/mo',
+    // Timeline extras
+    tl_major: 'Major', tl_free_only: 'Free plan: major events only',
+    tl_filter_title: 'Timeline Filters', tl_filter_desc: 'Upgrade to Pro to filter by era and category, and see all timeline events.',
+    tl_lesson_locked: 'Lesson Locked', tl_lesson_locked_pro: 'Upgrade to Pro to access',
+    tl_go_to: 'Go to:', tl_explore_era: 'Explore Era',
+    cat_war: 'War', cat_politics: 'Politics', cat_science: 'Science', cat_culture: 'Culture', cat_religion: 'Religion', cat_exploration: 'Exploration',
+    debate_continue_btn: 'Continue Debate',
+    sidebar_streak: 'd streak',
+    pricing_faq: 'Frequently Asked Questions', pricing_cur_btn: 'Current Plan',
+    pricing_upgrade_to: 'Upgrade to', pricing_downgrade_free: 'Downgrade to Free', pricing_switch_to: 'Switch to',
   },
 
   es: {
@@ -476,6 +496,15 @@ export const T: Translations = {
     prog_no_xp: 'Comienza a aprender para ver tu historial de XP aquí.',
     prog_quiz_score_chart: 'Gráfico de Puntuaciones', prog_xp_activity_graph: 'Gráfico de Actividad XP',
     prog_knowledge_radar_chart: 'Radar de Conocimiento', prog_upgrade_cta: 'Actualizar a Pro — $10/mes',
+    tl_major: 'Principal', tl_free_only: 'Plan gratuito: solo eventos principales',
+    tl_filter_title: 'Filtros de Línea de Tiempo', tl_filter_desc: 'Actualiza a Pro para filtrar por era y categoría, y ver todos los eventos.',
+    tl_lesson_locked: 'Lección Bloqueada', tl_lesson_locked_pro: 'Actualiza a Pro para acceder',
+    tl_go_to: 'Ir a:', tl_explore_era: 'Explorar Era',
+    cat_war: 'Guerra', cat_politics: 'Política', cat_science: 'Ciencia', cat_culture: 'Cultura', cat_religion: 'Religión', cat_exploration: 'Exploración',
+    debate_continue_btn: 'Continuar Debate',
+    sidebar_streak: 'd racha',
+    pricing_faq: 'Preguntas Frecuentes', pricing_cur_btn: 'Plan Actual',
+    pricing_upgrade_to: 'Actualizar a', pricing_downgrade_free: 'Bajar a Gratis', pricing_switch_to: 'Cambiar a',
   },
 
   ru: {
@@ -633,6 +662,15 @@ export const T: Translations = {
     prog_no_xp: 'Начните учиться, чтобы увидеть историю XP.',
     prog_quiz_score_chart: 'График Результатов', prog_xp_activity_graph: 'График Активности XP',
     prog_knowledge_radar_chart: 'Радар Знаний', prog_upgrade_cta: 'Обновить до Pro — $10/мес',
+    tl_major: 'Крупное', tl_free_only: 'Бесплатный план: только крупные события',
+    tl_filter_title: 'Фильтры Хронологии', tl_filter_desc: 'Обновите до Pro для фильтрации по эпохе и категории и просмотра всех событий.',
+    tl_lesson_locked: 'Урок Заблокирован', tl_lesson_locked_pro: 'Обновите до Pro для доступа',
+    tl_go_to: 'Перейти:', tl_explore_era: 'Изучить Эпоху',
+    cat_war: 'Война', cat_politics: 'Политика', cat_science: 'Наука', cat_culture: 'Культура', cat_religion: 'Религия', cat_exploration: 'Исследования',
+    debate_continue_btn: 'Продолжить Дискуссию',
+    sidebar_streak: ' дн.',
+    pricing_faq: 'Часто Задаваемые Вопросы', pricing_cur_btn: 'Текущий план',
+    pricing_upgrade_to: 'Обновить до', pricing_downgrade_free: 'Снизить до Бесплатного', pricing_switch_to: 'Переключить на',
   },
 
   mk: {
@@ -790,5 +828,14 @@ export const T: Translations = {
     prog_no_xp: 'Започни со учење за да ја видиш историјата на XP овде.',
     prog_quiz_score_chart: 'Графикон на Резултати', prog_xp_activity_graph: 'Графикон на XP Активност',
     prog_knowledge_radar_chart: 'Радар на Знаење', prog_upgrade_cta: 'Надгради на Pro — $10/месец',
+    tl_major: 'Главно', tl_free_only: 'Бесплатен план: само главни настани',
+    tl_filter_title: 'Филтри на Временска Линија', tl_filter_desc: 'Надгради на Pro за филтрирање по епоха и категорија, и преглед на сите настани.',
+    tl_lesson_locked: 'Лекцијата е Заклучена', tl_lesson_locked_pro: 'Надгради на Pro за пристап',
+    tl_go_to: 'Оди на:', tl_explore_era: 'Истражи Епоха',
+    cat_war: 'Војна', cat_politics: 'Политика', cat_science: 'Наука', cat_culture: 'Култура', cat_religion: 'Религија', cat_exploration: 'Истражување',
+    debate_continue_btn: 'Продолжи со Дебата',
+    sidebar_streak: 'д серија',
+    pricing_faq: 'Најчесто Поставувани Прашања', pricing_cur_btn: 'Тековен план',
+    pricing_upgrade_to: 'Надгради на', pricing_downgrade_free: 'Намали на Бесплатно', pricing_switch_to: 'Префрли на',
   },
 };

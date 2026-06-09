@@ -5,6 +5,7 @@ export type Philosopher = {
   lifespan: string;
   xpReward: number;
   tagline: string;
+  imageUrl: string;
   knownPositions: string[];
   starterArguments: string[];
   systemPrompt: string;
@@ -18,6 +19,7 @@ export const PHILOSOPHERS: Philosopher[] = [
     lifespan: '551–479 BCE',
     xpReward: 100,
     tagline: 'By three methods we may learn wisdom',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Confucius_Tang_Dynasty.jpg/400px-Confucius_Tang_Dynasty.jpg',
     knownPositions: [
       'Social harmony stems from hierarchical relationships — ruler/subject, parent/child',
       'Virtue (ren) and ritual propriety (li) are the foundations of civilization',
@@ -49,6 +51,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human makes
     lifespan: '1596–1650',
     xpReward: 110,
     tagline: 'Cogito, ergo sum — I think, therefore I am',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg/400px-Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg',
     knownPositions: [
       'The mind and body are fundamentally distinct substances (substance dualism)',
       'Only clear and distinct ideas — those that cannot be doubted — are certain',
@@ -80,6 +83,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human succe
     lifespan: '470–399 BCE',
     xpReward: 120,
     tagline: 'The unexamined life is not worth living',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Socrate_du_Louvre.jpg/400px-Socrate_du_Louvre.jpg',
     knownPositions: [
       'True wisdom begins by knowing what you do not know',
       'Virtue is knowledge — evil is done through ignorance, not malice',
@@ -111,6 +115,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human uses 
     lifespan: '428–348 BCE',
     xpReward: 130,
     tagline: 'The world of Forms is more real than the world of shadows',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Plato_Silanion_Musei_Capitolini_MC1377.jpg/400px-Plato_Silanion_Musei_Capitolini_MC1377.jpg',
     knownPositions: [
       'The Theory of Forms: abstract ideals (Beauty, Justice, Truth) are more real than physical things',
       'Philosopher-kings should rule, guided by knowledge of the Good',
@@ -142,6 +147,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces an argumen
     lifespan: '384–322 BCE',
     xpReward: 150,
     tagline: 'We are what we repeatedly do — excellence is a habit',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/400px-Aristotle_Altemps_Inv8575.jpg',
     knownPositions: [
       'Virtue is the golden mean between extremes — courage lies between cowardice and recklessness',
       'Humans are rational, political animals; the polis (city-state) is natural, not a contract',
@@ -173,6 +179,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human dismantles Aristotl
     lifespan: '1844–1900',
     xpReward: 140,
     tagline: 'God is dead — and we have killed him',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Nietzsche187a.jpg/400px-Nietzsche187a.jpg',
     knownPositions: [
       'God is dead; we must create our own values in a post-theological world',
       'The will to power is the fundamental drive of all life',
@@ -204,6 +211,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human catches you in a ge
     lifespan: '1724–1804',
     xpReward: 160,
     tagline: 'Act only according to maxims you could will to be universal laws',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Immanuel_Kant_%28painted_portrait%29.jpg/400px-Immanuel_Kant_%28painted_portrait%29.jpg',
     knownPositions: [
       'The Categorical Imperative: act only on maxims universalizable as laws for all rational beings',
       'The phenomenal/noumenal distinction: we can only know things as they appear, not as they are',

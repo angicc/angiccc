@@ -13,6 +13,7 @@ import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { addBonusXp } from '@/features/progress/progressStore';
 import { streamChatResponse } from '@/features/ai/claudeClient';
 import { getTodaysPhilosopher, getTimeUntilNextPhilosopher, hasWonTodaysDebate, recordDebateWin } from '@/features/philosopher/philosophersData';
+import type { Philosopher } from '@/features/philosopher/philosophersData';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { toast } from 'sonner';
 import type { ChatMessage } from '@/types';
@@ -43,8 +44,24 @@ function TypingIndicator() {
   );
 }
 
-function PhilosopherAvatar({ name, size = 28 }: { name: string; size?: number }) {
-  const initial = name[0];
+function PhilosopherAvatar({ philosopher, size = 28 }: { philosopher: Philosopher; size?: number }) {
+  const [imgError, setImgError] = useState(false);
+  if (philosopher.imageUrl && !imgError) {
+    return (
+      <div
+        className="rounded-full overflow-hidden shrink-0 border-2 border-violet-500/40"
+        style={{ width: size, height: size }}
+      >
+        <img
+          src={philosopher.imageUrl}
+          alt={philosopher.name}
+          className="w-full h-full object-cover object-top"
+          onError={() => setImgError(true)}
+        />
+      </div>
+    );
+  }
+  const initial = philosopher.name[0];
   return (
     <div
       className="rounded-full flex items-center justify-center shrink-0 bg-gradient-to-br from-violet-800 to-purple-950 border border-violet-500/40 font-heading font-bold text-violet-200"
@@ -143,7 +160,7 @@ export default function DebatePhilosopherPage() {
               animate={{ filter: ['drop-shadow(0 0 6px #7c3aed88)', 'drop-shadow(0 0 14px #7c3aedcc)', 'drop-shadow(0 0 6px #7c3aed88)'] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <PhilosopherAvatar name={philosopher.name} size={52} />
+              <PhilosopherAvatar philosopher={philosopher} size={52} />
             </motion.div>
             <div>
               <div className="flex items-center gap-2">
@@ -164,8 +181,8 @@ export default function DebatePhilosopherPage() {
           <ScrollArea className="flex-1 border border-border rounded-xl overflow-hidden relative p-4">
             {/* GIF background */}
             <img src={PHIL_GIF} alt="" aria-hidden
-              className="absolute inset-0 w-full h-full object-cover opacity-15 pointer-events-none" />
-            <div className="absolute inset-0 bg-card/60 pointer-events-none" />
+              className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none" />
+            <div className="absolute inset-0 bg-card/25 pointer-events-none" />
             <div className="relative z-10">
 
               <AnimatePresence>
@@ -173,7 +190,7 @@ export default function DebatePhilosopherPage() {
                   <motion.div key="intro" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.35 }}
                     className="flex flex-col items-center gap-6 py-8 text-center">
                     <motion.div animate={{ scale: [1, 1.04, 1] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}>
-                      <PhilosopherAvatar name={philosopher.name} size={96} />
+                      <PhilosopherAvatar philosopher={philosopher} size={96} />
                     </motion.div>
 
                     {/* Philosopher card */}
@@ -266,7 +283,7 @@ export default function DebatePhilosopherPage() {
                         {t.debate_next_in}: {countdown}
                       </div>
                       <Button className="w-full" onClick={() => setWon(false)}>
-                        <RotateCcw className="w-4 h-4 mr-2" />Continue Debate
+                        <RotateCcw className="w-4 h-4 mr-2" />{t.debate_continue_btn}
                       </Button>
                     </motion.div>
                   </motion.div>
@@ -283,7 +300,7 @@ export default function DebatePhilosopherPage() {
                       className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'items-start'}`}
                     >
                       {msg.role === 'assistant' ? (
-                        <div className="shrink-0 mt-0.5"><PhilosopherAvatar name={philosopher.name} size={28} /></div>
+                        <div className="shrink-0 mt-0.5"><PhilosopherAvatar philosopher={philosopher} size={28} /></div>
                       ) : (
                         <div className="w-7 h-7 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold text-primary">
                           {currentUser?.avatarInitials ?? 'U'}
