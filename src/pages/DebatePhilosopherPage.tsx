@@ -10,7 +10,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
-import { addBonusXp } from '@/features/progress/progressStore';
+import { recordDebateWinInProgress } from '@/features/progress/progressStore';
 import { streamChatResponse } from '@/features/ai/claudeClient';
 import { getTodaysPhilosopher, getTimeUntilNextPhilosopher, hasWonTodaysDebate, recordDebateWin } from '@/features/philosopher/philosophersData';
 import type { Philosopher } from '@/features/philosopher/philosophersData';
@@ -120,7 +120,7 @@ export default function DebatePhilosopherPage() {
 
       if (concedeDetected && currentUser && !alreadyWon) {
         const xp = philosopher.xpReward;
-        addBonusXp(currentUser.id, xp, `Defeated ${philosopher.name} in debate`);
+        recordDebateWinInProgress(currentUser.id, xp, philosopher.name);
         recordDebateWin(currentUser.id, philosopher.id, xp);
         refreshProgress();
         setWon(true);

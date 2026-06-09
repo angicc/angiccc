@@ -67,6 +67,17 @@ function unlockAchievements(p: UserProgress): Achievement[] {
 
 function addActivity(p: UserProgress, e: ActivityEvent) { p.recentActivity.unshift(e); if (p.recentActivity.length > 20) p.recentActivity = p.recentActivity.slice(0, 20); }
 
+export function recordDebateWinInProgress(userId: string, amount: number, philosopherName: string): { progress: UserProgress; newAchievements: Achievement[] } {
+  const p = loadProgress(userId);
+  p.debateWins = (p.debateWins ?? 0) + 1;
+  p.xp += amount; p.level = calculateLevel(p.xp);
+  addActivity(p, { type: 'quiz_complete', title: `Defeated ${philosopherName} in debate`, xpGained: amount, timestamp: new Date().toISOString() });
+  updateStreak(p);
+  const newAchievements = unlockAchievements(p);
+  saveProgress(p);
+  return { progress: p, newAchievements };
+}
+
 export function addBonusXp(userId: string, amount: number, title: string): { progress: UserProgress; newAchievements: Achievement[] } {
   const p = loadProgress(userId);
   p.xp += amount; p.level = calculateLevel(p.xp);

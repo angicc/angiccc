@@ -283,9 +283,9 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
                 <CardContent className="pt-6 pb-5 space-y-4">
                   <div className="grid grid-cols-3 gap-3">
                     {[
-                      { icon: Brain,  color: 'text-violet-400 bg-violet-400/10', label: 'Adaptive',   desc: 'Questions target your weak spots' },
-                      { icon: Target, color: 'text-rose-400 bg-rose-400/10',     label: '15 Questions', desc: 'Drawn from all 4 eras' },
-                      { icon: Trophy, color: 'text-amber-400 bg-amber-400/10',   label: 'Earn XP',    desc: '+15 XP per correct · up to +225 XP' },
+                      { icon: Brain,  color: 'text-violet-400 bg-violet-400/10', label: t.quiz_adaptive,      desc: t.sq_adaptive_desc },
+                      { icon: Target, color: 'text-rose-400 bg-rose-400/10',     label: t.sq_questions_label, desc: t.sq_questions_desc },
+                      { icon: Trophy, color: 'text-amber-400 bg-amber-400/10',   label: t.quiz_earn_xp,       desc: t.sq_xp_desc },
                     ].map(({ icon: Icon, color, label, desc }) => (
                       <div key={label} className="text-center space-y-1.5 p-3 rounded-xl border border-border">
                         <div className={`w-9 h-9 rounded-xl ${color} flex items-center justify-center mx-auto`}>
@@ -299,7 +299,7 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
 
                   {weakAreas.length > 0 && (
                     <div className="p-3 rounded-xl bg-muted/40 border border-border space-y-2">
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Detected Weak Areas</p>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{t.sq_weak_title}</p>
                       <div className="flex flex-wrap gap-2">
                         {weakAreas.map(w => (
                           <div key={w.eraId} className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border ${ERA_COLOR[w.eraId] ?? 'border-border text-muted-foreground'}`}>
@@ -308,13 +308,13 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
                           </div>
                         ))}
                       </div>
-                      <p className="text-xs text-muted-foreground">The algorithm will prioritize these areas this session.</p>
+                      <p className="text-xs text-muted-foreground">{t.sq_algorithm}</p>
                     </div>
                   )}
 
                   {weakAreas.length === 0 && (
                     <div className="p-3 rounded-xl bg-primary/5 border border-primary/20 text-sm text-muted-foreground">
-                      <span className="text-foreground font-medium">No weak areas detected yet.</span> Complete some era quizzes and the algorithm will target your weakest topics.
+                      {t.sq_no_weak}
                     </div>
                   )}
 
@@ -460,7 +460,7 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
                             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                           )}
                           <span className="text-xs font-semibold">
-                            {selected === q.correctIndex ? 'Correct!' : 'Not quite.'}
+                            {selected === q.correctIndex ? t.quiz_correct : t.quiz_incorrect}
                           </span>
                         </div>
                         <p className="text-xs text-muted-foreground leading-relaxed">{q.explanation}</p>
@@ -470,12 +470,12 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
 
                   {phase === 'question' && (
                     <Button className="w-full" size="sm" disabled={selected === null} onClick={submitAnswer}>
-                      Submit Answer
+                      {t.quiz_submit_answer}
                     </Button>
                   )}
                   {phase === 'explain' && (
                     <Button className="w-full gap-1.5" size="sm" onClick={advance}>
-                      {qIdx + 1 >= session.length ? 'See Results' : 'Next Question'} <ChevronRight className="w-3.5 h-3.5" />
+                      {qIdx + 1 >= session.length ? t.btn_see_results : t.btn_next_question} <ChevronRight className="w-3.5 h-3.5" />
                     </Button>
                   )}
                 </CardContent>
@@ -500,19 +500,16 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
                 <CardContent className="pt-6 pb-5 space-y-5">
                   <div className="text-center space-y-2">
                     <div className="font-heading text-5xl font-bold text-primary">{score}%</div>
-                    <div className="text-muted-foreground text-sm">{correctCount}/{session.length} correct · +{xpEarned} XP earned</div>
+                    <div className="text-muted-foreground text-sm">{correctCount}/{session.length} {t.sq_correct_label} · +{xpEarned} {t.lbl_xp} {t.dash_xp_label === 'XP' ? 'earned' : ''}</div>
                     <div className="text-xs text-muted-foreground">
-                      {score >= 90 ? '🏆 Outstanding! You\'re mastering history.' :
-                       score >= 70 ? '✅ Great work! Keep up the momentum.' :
-                       score >= 50 ? '📚 Good effort — review the weak areas below.' :
-                       '💡 Keep studying — every attempt makes you stronger.'}
+                      {score >= 90 ? t.sq_outstanding : score >= 70 ? t.sq_great : score >= 50 ? t.sq_good : t.sq_keep_going}
                     </div>
                   </div>
 
                   {/* Era breakdown */}
                   {eraBreakdown.length > 0 && (
                     <div className="space-y-2">
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Performance by Era</p>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{t.sq_perf_era}</p>
                       {eraBreakdown.map(e => {
                         const pct = Math.round((e.correct / e.total) * 100);
                         return (
@@ -555,7 +552,7 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
                           >
                             <MessageSquare className="w-4 h-4 text-primary shrink-0" />
                           </motion.div>
-                          <span className="text-xs font-bold text-primary tracking-wide uppercase">Clio's Recommendation</span>
+                          <span className="text-xs font-bold text-primary tracking-wide uppercase">{t.quiz_clio_rec}</span>
                           {clioLoading && (
                             <motion.div
                               className="ml-auto flex gap-1"
@@ -576,7 +573,7 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
                         {/* Body */}
                         <div className="px-4 py-3">
                           {clioLoading && !clioRec ? (
-                            <p className="text-xs text-muted-foreground italic">Clio is analysing your performance…</p>
+                            <p className="text-xs text-muted-foreground italic">{t.quiz_clio_thinking}</p>
                           ) : (
                             <motion.p
                               initial={{ opacity: 0 }}
@@ -594,10 +591,10 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
 
                   <div className="flex gap-2">
                     <Button className="flex-1 gap-2" onClick={startSession}>
-                      <RotateCcw className="w-4 h-4" /> New Session
+                      <RotateCcw className="w-4 h-4" /> {t.sq_new}
                     </Button>
                     <Button variant="outline" className="flex-1" onClick={() => setPhase('intro')}>
-                      Back to Intro
+                      {t.sq_back_intro}
                     </Button>
                   </div>
                 </CardContent>

@@ -15,7 +15,8 @@ export const ACHIEVEMENTS: Achievement[] = [
   { id: 'scholar',       title: 'Scholar',            description: 'Complete 5 lessons',                            icon: 'GraduationCap', xpBonus: 100, condition: { type: 'lessons_complete', count: 5 } },
   { id: 'lessons-10',   title: 'Devoted Student',     description: 'Complete 10 lessons',                           icon: 'BookMarked',    xpBonus: 200, condition: { type: 'lessons_complete', count: 10 } },
   { id: 'lessons-15',   title: 'Seasoned Learner',    description: 'Complete 15 lessons',                           icon: 'Scroll',        xpBonus: 350, condition: { type: 'lessons_complete', count: 15 } },
-  { id: 'historian',    title: 'Historian',            description: 'Complete all 20 lessons',                       icon: 'Award',         xpBonus: 500, condition: { type: 'lessons_complete', count: 20 } },
+  { id: 'historian',    title: 'Historian',            description: 'Complete 20 lessons',                           icon: 'Award',         xpBonus: 500, condition: { type: 'lessons_complete', count: 20 } },
+  { id: 'lessons-25',  title: 'Grand Historian',      description: 'Complete 25 lessons',                           icon: 'GraduationCap', xpBonus: 750, condition: { type: 'lessons_complete', count: 25 } },
   { id: 'quiz-ace',     title: 'Quiz Ace',             description: 'Score 100% on any quiz',                        icon: 'Trophy',        xpBonus: 150, condition: { type: 'quiz_perfect' } },
   { id: 'quiz-3-ace',   title: 'Triple Crown',         description: 'Score 100% on 3 different era quizzes',         icon: 'Crown',         xpBonus: 300, condition: { type: 'quizzes_perfect_count', count: 3 } },
   { id: 'quiz-all',     title: 'Grand Master',         description: 'Score 100% on all 4 era quizzes',               icon: 'Medal',         xpBonus: 600, condition: { type: 'all_quizzes_perfect' } },
@@ -29,7 +30,12 @@ export const ACHIEVEMENTS: Achievement[] = [
   { id: 'ai-curious',   title: 'Curious Mind',         description: 'Ask the AI Tutor 10 questions',                 icon: 'MessageSquare', xpBonus: 75,  condition: { type: 'ai_messages', count: 10 } },
   { id: 'ai-philosopher', title: 'Philosopher',        description: 'Ask the AI Tutor 50 questions',                 icon: 'Brain',         xpBonus: 200, condition: { type: 'ai_messages', count: 50 } },
   { id: 'explorer',     title: 'Explorer',             description: 'Start lessons in all 4 eras',                   icon: 'Map',           xpBonus: 100, condition: { type: 'all_eras_started' } },
-  { id: 'ancient-master', title: 'Ancient Scholar',   description: 'Complete all Ancient era lessons',               icon: 'Scroll',        xpBonus: 200, condition: { type: 'era_lessons_complete', eraId: 'ancient', count: 5 } },
+  { id: 'ancient-master', title: 'Ancient Scholar',   description: 'Complete all Ancient era lessons',               icon: 'Scroll',        xpBonus: 200, condition: { type: 'era_lessons_complete', eraId: 'ancient', count: 6 } },
+  { id: 'medieval-master', title: 'Medieval Knight', description: 'Complete all Middle Ages lessons',                icon: 'Shield',        xpBonus: 200, condition: { type: 'era_lessons_complete', eraId: 'middle-ages', count: 6 } },
+  { id: 'earlymod-master', title: 'Renaissance Mind', description: 'Complete all Early Modern lessons',              icon: 'Compass',       xpBonus: 200, condition: { type: 'era_lessons_complete', eraId: 'early-modern', count: 7 } },
+  { id: 'modern-master', title: 'Modern Thinker',    description: 'Complete all Modern Era lessons',                 icon: 'Zap',           xpBonus: 200, condition: { type: 'era_lessons_complete', eraId: 'modern', count: 7 } },
+  { id: 'debate-first',  title: 'Philosopher Slayer', description: 'Win your first philosopher debate',              icon: 'Swords',        xpBonus: 150, condition: { type: 'debate_wins', count: 1 } },
+  { id: 'debate-master', title: 'Master Debater',    description: 'Win 5 philosopher debates',                       icon: 'Crown',         xpBonus: 400, condition: { type: 'debate_wins', count: 5 } },
 ];
 
 export function checkAchievements(progress: UserProgress): Achievement[] {
@@ -47,5 +53,6 @@ function meetsCondition(c: AchievementCondition, p: UserProgress): boolean {
     case 'all_quizzes_perfect': return Object.values(p.quizScores).filter(s => s >= 100).length >= 4;
     case 'quizzes_perfect_count': return Object.values(p.quizScores).filter(s => s >= 100).length >= c.count;
     case 'era_lessons_complete': return p.completedLessons.filter(id => id.startsWith(c.eraId.replace('middle-ages','medieval').replace('early-modern','earlymod'))).length >= c.count;
+    case 'debate_wins': return (p.debateWins ?? 0) >= c.count;
   }
 }

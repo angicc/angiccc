@@ -35,7 +35,7 @@ const ERAS_SHOWCASE = [
     name: 'Early Modern', range: '1500 – 1800 CE',
     color: 'text-emerald-400', bg: 'from-emerald-900/30 to-emerald-950/60', border: 'border-emerald-500/30',
     photo: 'photo-1516483638261-f4dbaf036963',
-    lessons: ['Renaissance & Age of Exploration', 'The Protestant Reformation', 'Scientific Revolution', 'Age of Absolutism & Louis XIV', 'The Transatlantic Slave Trade', 'The Ottoman Empire: Suleiman the Magnificent'],
+    lessons: ['Renaissance & Age of Exploration', 'The Protestant Reformation', 'Scientific Revolution', 'Age of Absolutism & Louis XIV', 'The Transatlantic Slave Trade', 'The Ottoman Empire: Suleiman the Magnificent', 'The Age of Revolution: America & France'],
   },
   {
     name: 'Modern Era', range: '1800 – Present',

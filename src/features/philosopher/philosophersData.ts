@@ -239,15 +239,15 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human constructs a truly 
 ];
 
 export function getTodaysPhilosopher(): Philosopher {
-  const dayIndex = Math.floor(Date.now() / 86400000) % PHILOSOPHERS.length;
-  return PHILOSOPHERS[dayIndex];
+  const periodIndex = Math.floor(Date.now() / 43200000) % PHILOSOPHERS.length;
+  return PHILOSOPHERS[periodIndex];
 }
 
 export function getTimeUntilNextPhilosopher(): number {
-  const msPerDay = 86400000;
+  const msPeriod = 43200000;
   const currentMs = Date.now();
-  const nextDayMs = (Math.floor(currentMs / msPerDay) + 1) * msPerDay;
-  return nextDayMs - currentMs;
+  const nextPeriodMs = (Math.floor(currentMs / msPeriod) + 1) * msPeriod;
+  return nextPeriodMs - currentMs;
 }
 
 const WIN_KEY = (uid: string) => `historify:debate:won:${uid}`;
@@ -256,12 +256,12 @@ export function hasWonTodaysDebate(userId: string): boolean {
   const raw = localStorage.getItem(WIN_KEY(userId));
   if (!raw) return false;
   const record = JSON.parse(raw) as { dayNumber: number };
-  return record.dayNumber === Math.floor(Date.now() / 86400000);
+  return record.dayNumber === Math.floor(Date.now() / 43200000);
 }
 
 export function recordDebateWin(userId: string, philosopherId: string, xpEarned: number): void {
   localStorage.setItem(WIN_KEY(userId), JSON.stringify({
-    dayNumber: Math.floor(Date.now() / 86400000),
+    dayNumber: Math.floor(Date.now() / 43200000),
     philosopherId,
     xpEarned,
   }));

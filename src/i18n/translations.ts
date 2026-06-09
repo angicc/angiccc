@@ -93,6 +93,7 @@ type TranslationKeys = {
   sq_no_sessions: string; sq_correct_label: string;
   sq_perf_era: string; sq_new: string; sq_back_intro: string;
   sq_outstanding: string; sq_great: string; sq_good: string; sq_keep_going: string;
+  sq_questions_desc: string; sq_correct_xp: string;
   // ── Essay ──────────────────────────────────────────────────────
   essay_title: string; essay_subtitle: string; essay_topic_label: string;
   essay_custom: string; essay_write_label: string; essay_words: string;
@@ -261,6 +262,8 @@ export const T: Translations = {
     sq_great: '✅ Great work! Keep up the momentum.',
     sq_good: '📚 Good effort — review the weak areas below.',
     sq_keep_going: '💡 Keep studying — every attempt makes you stronger.',
+    sq_questions_desc: 'Drawn from all 4 eras',
+    sq_correct_xp: 'correct · +{xp} XP earned',
     // Essay
     essay_title: 'AI Essay Challenge', essay_subtitle: 'Write a historical essay — Clio grades it in real-time',
     essay_topic_label: 'Choose a Topic', essay_custom: 'Custom topic…',
@@ -284,7 +287,7 @@ export const T: Translations = {
     prof_plan: 'Current Plan', prof_upgrade: 'Upgrade', prof_member_since: 'Member since',
     // App Guide
     guide_title: 'App Guide', guide_subtitle: 'Everything you need to know to get the most out of Historify',
-    guide_features: '11 Features', guide_quick_start: 'Quick Start',
+    guide_features: '12 Features', guide_quick_start: 'Quick Start',
     guide_faq_title: 'Frequently Asked Questions', guide_start_lesson: 'Start a Lesson',
     guide_see_plans: 'See Plans', guide_cta_title: 'Ready to begin your journey?',
     guide_cta_desc: 'Head to the Dashboard to see your progress at a glance, or jump straight into a lesson.',
@@ -434,6 +437,8 @@ export const T: Translations = {
     sq_great: '✅ ¡Muy bien! Mantén el impulso.',
     sq_good: '📚 Buen esfuerzo — repasa las áreas débiles.',
     sq_keep_going: '💡 Sigue estudiando — cada intento te hace más fuerte.',
+    sq_questions_desc: 'Extraídas de las 4 eras',
+    sq_correct_xp: 'correctas · +{xp} XP ganado',
     essay_title: 'Desafío de Ensayo IA', essay_subtitle: 'Escribe un ensayo histórico — Clio lo evalúa en tiempo real',
     essay_topic_label: 'Elige un Tema', essay_custom: 'Tema personalizado…',
     essay_write_label: 'Escribe tu ensayo (80–600 palabras)…', essay_words: 'palabras',
@@ -453,7 +458,7 @@ export const T: Translations = {
     prof_save: 'Guardar Cambios', prof_username: 'Nombre de Usuario', prof_email: 'Correo',
     prof_plan: 'Plan Actual', prof_upgrade: 'Actualizar', prof_member_since: 'Miembro desde',
     guide_title: 'Guía de la App', guide_subtitle: 'Todo lo que necesitas saber para aprovechar Historify al máximo',
-    guide_features: '11 Funciones', guide_quick_start: 'Inicio Rápido',
+    guide_features: '12 Funciones', guide_quick_start: 'Inicio Rápido',
     guide_faq_title: 'Preguntas Frecuentes', guide_start_lesson: 'Iniciar una Lección',
     guide_see_plans: 'Ver Planes', guide_cta_title: '¿Listo para comenzar tu viaje?',
     guide_cta_desc: 'Ve al Panel para ver tu progreso de un vistazo, o ve directamente a una lección.',
@@ -600,6 +605,8 @@ export const T: Translations = {
     sq_great: '✅ Хорошая работа! Продолжайте в том же духе.',
     sq_good: '📚 Неплохо — повторите слабые области.',
     sq_keep_going: '💡 Продолжайте учиться — каждая попытка делает вас сильнее.',
+    sq_questions_desc: 'Из всех 4 эпох',
+    sq_correct_xp: 'верно · +{xp} XP получено',
     essay_title: 'Эссе-Задание с ИИ', essay_subtitle: 'Напишите историческое эссе — Клио оценит его в реальном времени',
     essay_topic_label: 'Выберите Тему', essay_custom: 'Своя тема…',
     essay_write_label: 'Напишите эссе (80–600 слов)…', essay_words: 'слов',
@@ -619,7 +626,7 @@ export const T: Translations = {
     prof_save: 'Сохранить Изменения', prof_username: 'Имя пользователя', prof_email: 'Почта',
     prof_plan: 'Текущий план', prof_upgrade: 'Обновить', prof_member_since: 'Участник с',
     guide_title: 'Руководство', guide_subtitle: 'Всё, что нужно знать для работы с Historify',
-    guide_features: '11 Функций', guide_quick_start: 'Быстрый Старт',
+    guide_features: '12 Функций', guide_quick_start: 'Быстрый Старт',
     guide_faq_title: 'Часто Задаваемые Вопросы', guide_start_lesson: 'Начать Урок',
     guide_see_plans: 'Посмотреть Планы', guide_cta_title: 'Готовы начать своё путешествие?',
     guide_cta_desc: 'Перейдите в Панель, чтобы увидеть прогресс, или сразу начните урок.',
@@ -766,6 +773,8 @@ export const T: Translations = {
     sq_great: '✅ Одлична работа! Одржи го замавот.',
     sq_good: '📚 Добар напор — прегледај ги слабите области.',
     sq_keep_going: '💡 Продолжи со учење — секој обид те прави посилен.',
+    sq_questions_desc: 'Од сите 4 епохи',
+    sq_correct_xp: 'точно · +{xp} XP освоено',
     essay_title: 'ВИ Есеј Предизвик', essay_subtitle: 'Напиши историски есеј — Клио го оценува во реално време',
     essay_topic_label: 'Избери Тема', essay_custom: 'Сопствена тема…',
     essay_write_label: 'Напиши го твојот есеј (80–600 зборови)…', essay_words: 'зборови',
@@ -785,7 +794,7 @@ export const T: Translations = {
     prof_save: 'Зачувај Промени', prof_username: 'Корисничко Име', prof_email: 'Е-пошта',
     prof_plan: 'Тековен план', prof_upgrade: 'Надгради', prof_member_since: 'Член од',
     guide_title: 'Водич за Апликацијата', guide_subtitle: 'Сè што треба да знаеш за да го извлечеш максимумот од Historify',
-    guide_features: '11 Функции', guide_quick_start: 'Брз Старт',
+    guide_features: '12 Функции', guide_quick_start: 'Брз Старт',
     guide_faq_title: 'Често Поставувани Прашања', guide_start_lesson: 'Започни Лекција',
     guide_see_plans: 'Погледни Планови', guide_cta_title: 'Подготвен/а да го започнеш патувањето?',
     guide_cta_desc: 'Оди на Контролната Табла за да го видиш напредокот, или веднаш започни лекција.',
