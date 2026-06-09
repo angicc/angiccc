@@ -83,7 +83,7 @@ export default function PricingPage() {
                 <CardContent className="flex flex-col flex-1 gap-6">
                   <ul className="space-y-3 flex-1">{plan.features.map(f => <li key={f} className="flex items-start gap-2 text-sm"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>{f}</span></li>)}</ul>
                   <Button className="w-full" variant={plan.id === 'pro' ? 'default' : plan.id === 'master' ? 'outline' : 'secondary'} onClick={() => handleSelect(plan.id as SubscriptionTier)} disabled={isCurrent}>
-                    {isCurrent ? 'Current Plan' : isUp ? `Upgrade to ${plan.name}` : plan.price === 0 ? 'Downgrade to Free' : `Switch to ${plan.name}`}
+                    {isCurrent ? t.pricing_cur_btn : isUp ? `${t.pricing_upgrade_to} ${plan.name}` : plan.price === 0 ? t.pricing_downgrade_free : `${t.pricing_switch_to} ${plan.name}`}
                   </Button>
                 </CardContent>
               </Card>
@@ -91,7 +91,7 @@ export default function PricingPage() {
           })}
         </div>
         <div className="mt-20">
-          <h2 className="font-heading text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+          <h2 className="font-heading text-2xl font-bold text-center mb-8">{t.pricing_faq}</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {[
               { q:'Can I cancel at any time?', a:'Yes. Downgrade to Free anytime from your profile settings — no lock-in.' },
