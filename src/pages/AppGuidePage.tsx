@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { BookOpen, Brain, ScrollText, Sparkles, Layers, BarChart2, PenLine, Crown, ArrowRight, CheckCircle2, Trophy, Flame, User, FileEdit, Film } from 'lucide-react';
+import { BookOpen, Brain, ScrollText, Sparkles, Layers, BarChart2, PenLine, Crown, ArrowRight, CheckCircle2, Trophy, Flame, User, FileEdit, Film, Scale } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { Badge } from '@/components/ui/badge';
@@ -130,6 +130,18 @@ const STEPS = [
   },
   {
     step: 11,
+    icon: Scale,
+    color: 'text-violet-400',
+    bg: 'bg-violet-400/10',
+    border: 'border-violet-400/30',
+    title: 'Debate a Philosopher',
+    desc: 'One philosopher is featured per day (resets every 24 hours). Engage them in vigorous philosophical debate — they have pre-loaded arguments and a strong command of their own philosophy. Make them concede to earn XP.',
+    tips: ['Available on Pro Learner and above', 'A new philosopher appears every day', 'Earn XP by making the philosopher concede', 'Greater philosophers yield more XP', 'Use pre-loaded starter arguments or write your own'],
+    link: '/debate',
+    linkLabel: 'Open Debate',
+  },
+  {
+    step: 12,
     icon: Film,
     color: 'text-rose-400',
     bg: 'bg-rose-400/10',
@@ -167,7 +179,7 @@ export default function AppGuidePage() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2 pt-1">
-            <Badge variant="outline" className="text-xs border-primary/30 text-primary">11 Features</Badge>
+            <Badge variant="outline" className="text-xs border-primary/30 text-primary">12 Features</Badge>
             <Badge variant="outline" className="text-xs">Free & Pro plans</Badge>
           </div>
         </motion.div>

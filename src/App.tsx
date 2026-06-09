@@ -29,6 +29,7 @@ import ReportPage from '@/pages/ReportPage';
 import EssayPage from '@/pages/EssayPage';
 import VideoReviewPage from '@/pages/VideoReviewPage';
 import FriendsPage from '@/pages/FriendsPage';
+import DebatePhilosopherPage from '@/pages/DebatePhilosopherPage';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -57,6 +58,7 @@ function AnimatedRoutes() {
           <Route path="/essay" element={<ProtectedRoute><EssayPage /></ProtectedRoute>} />
           <Route path="/video-review" element={<ProtectedRoute><VideoReviewPage /></ProtectedRoute>} />
           <Route path="/friends" element={<ProtectedRoute><FriendsPage /></ProtectedRoute>} />
+          <Route path="/debate" element={<ProtectedRoute><DebatePhilosopherPage /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </PageTransition>

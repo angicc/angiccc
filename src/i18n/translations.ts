@@ -12,6 +12,7 @@ type TranslationKeys = {
   nav_dashboard: string; nav_eras: string; nav_timeline: string; nav_tutor: string;
   nav_leaderboard: string; nav_friends: string; nav_flashcards: string; nav_notes: string;
   nav_progress: string; nav_smart_quiz: string; nav_essay: string; nav_video_review: string;
+  nav_debate: string;
   nav_profile: string; nav_guide: string; nav_report: string;
   nav_upgrade: string; nav_logout: string;
   logout_title: string; logout_desc: string;
@@ -117,6 +118,26 @@ type TranslationKeys = {
   pricing_title: string; pricing_subtitle: string; pricing_current: string;
   pricing_select: string; pricing_month: string; pricing_free_label: string;
   pricing_back: string;
+  // ── Philosopher Debate ─────────────────────────────────────────
+  debate_title: string; debate_subtitle: string; debate_today: string;
+  debate_xp_reward: string; debate_placeholder: string; debate_new_round: string;
+  debate_pro_only: string; debate_won_title: string; debate_won_desc: string;
+  debate_already_won: string; debate_next_in: string; debate_starters: string;
+  debate_start_arg: string;
+  // ── AI Tutor extended ─────────────────────────────────────────
+  tutor_subtitle: string;
+  sugg_1: string; sugg_2: string; sugg_3: string; sugg_4: string; sugg_5: string; sugg_6: string;
+  // ── Essay extended ────────────────────────────────────────────
+  essay_tip_1: string; essay_tip_2: string; essay_tip_3: string; essay_tip_4: string;
+  essay_score_breakdown: string; essay_strong_points: string; essay_missing_points: string;
+  essay_accuracy: string; essay_argument_quality: string; essay_depth_detail: string;
+  essay_overall: string; essay_study_more: string; essay_your_essay: string;
+  // ── Progress extended ─────────────────────────────────────────
+  prog_lessons_by_era: string; prog_quiz_by_era: string; prog_knowledge_radar: string;
+  prog_xp_timeline: string; prog_radar_desc: string; prog_adv_analytics_title: string;
+  prog_adv_analytics_desc: string; prog_no_quiz: string; prog_no_xp: string;
+  prog_quiz_score_chart: string; prog_xp_activity_graph: string; prog_knowledge_radar_chart: string;
+  prog_upgrade_cta: string;
 };
 
 type Translations = Record<Language, TranslationKeys>;
@@ -128,6 +149,7 @@ export const T: Translations = {
     nav_tutor: 'AI Tutor', nav_leaderboard: 'Leaderboard', nav_friends: 'Friends',
     nav_flashcards: 'Flashcards', nav_notes: 'My Notes', nav_progress: 'Progress',
     nav_smart_quiz: 'Smart Quiz', nav_essay: 'Essay Challenge', nav_video_review: 'Video Review',
+    nav_debate: 'Debate a Philosopher',
     nav_profile: 'Profile', nav_guide: 'App Guide', nav_report: 'Report a Problem',
     nav_upgrade: 'Upgrade Plan', nav_logout: 'Log Out',
     logout_title: 'Log out of Historify?', logout_desc: 'Your progress is saved. You can log back in anytime.',
@@ -266,6 +288,37 @@ export const T: Translations = {
     pricing_title: 'Choose Your Learning Plan', pricing_subtitle: 'From casual exploration to mastery-level study — a plan for every learner.',
     pricing_current: 'Current Plan', pricing_select: 'Get Started', pricing_month: '/month',
     pricing_free_label: 'Free', pricing_back: 'Back',
+    // Debate
+    debate_title: 'Debate a Philosopher', debate_subtitle: 'Challenge history\'s greatest thinkers',
+    debate_today: 'Today\'s Philosopher', debate_xp_reward: 'XP if you win',
+    debate_placeholder: 'Present your philosophical argument…',
+    debate_new_round: 'New Round', debate_pro_only: 'Philosopher Debate is available on Pro Learner and above.',
+    debate_won_title: 'You won the debate!', debate_won_desc: 'has conceded to your argument.',
+    debate_already_won: 'You already defeated today\'s philosopher!',
+    debate_next_in: 'New philosopher in', debate_starters: 'Opening Arguments',
+    debate_start_arg: 'Challenge this position',
+    // AI Tutor extended
+    tutor_subtitle: 'AI History Tutor · Muse of History',
+    sugg_1: 'What caused the fall of the Roman Empire?', sugg_2: 'Explain the Crusades in simple terms',
+    sugg_3: 'Why was the Renaissance important?', sugg_4: 'How did WWI lead to WWII?',
+    sugg_5: 'Who were the greatest ancient philosophers?', sugg_6: 'What was the Silk Road and why did it matter?',
+    // Essay extended
+    essay_tip_1: 'Include specific dates', essay_tip_2: 'Name key figures',
+    essay_tip_3: 'State a clear argument', essay_tip_4: 'Use historical evidence',
+    essay_score_breakdown: 'Score Breakdown', essay_strong_points: 'Strong Points',
+    essay_missing_points: 'Missing Points', essay_accuracy: 'Historical Accuracy',
+    essay_argument_quality: 'Argument Quality', essay_depth_detail: 'Depth & Detail',
+    essay_overall: 'Overall', essay_study_more: 'Study More', essay_your_essay: 'Your Essay',
+    // Progress extended
+    prog_lessons_by_era: 'Lessons by Era', prog_quiz_by_era: 'Quiz Scores by Era',
+    prog_knowledge_radar: 'Knowledge Radar', prog_xp_timeline: 'XP Activity Timeline',
+    prog_radar_desc: 'Combined lesson completion + quiz score per era',
+    prog_adv_analytics_title: 'Advanced Analytics — Pro Learner',
+    prog_adv_analytics_desc: 'Upgrade to unlock interactive quiz score charts, XP activity graphs, a Knowledge Radar showing your strengths per era, and detailed achievement analysis.',
+    prog_no_quiz: 'Complete a quiz to see your scores here.',
+    prog_no_xp: 'Start learning to see your XP history here.',
+    prog_quiz_score_chart: 'Quiz Score Chart', prog_xp_activity_graph: 'XP Activity Graph',
+    prog_knowledge_radar_chart: 'Knowledge Radar', prog_upgrade_cta: 'Upgrade to Pro — $10/mo',
   },
 
   es: {
@@ -273,6 +326,7 @@ export const T: Translations = {
     nav_tutor: 'Tutor IA', nav_leaderboard: 'Clasificación', nav_friends: 'Amigos',
     nav_flashcards: 'Tarjetas', nav_notes: 'Mis Notas', nav_progress: 'Progreso',
     nav_smart_quiz: 'Quiz Inteligente', nav_essay: 'Desafío de Ensayo', nav_video_review: 'Revisión de Vídeo',
+    nav_debate: 'Debate con un Filósofo',
     nav_profile: 'Perfil', nav_guide: 'Guía de la App', nav_report: 'Reportar Problema',
     nav_upgrade: 'Actualizar Plan', nav_logout: 'Cerrar Sesión',
     logout_title: '¿Cerrar sesión en Historify?', logout_desc: 'Tu progreso está guardado. Puedes iniciar sesión de nuevo en cualquier momento.',
@@ -391,6 +445,37 @@ export const T: Translations = {
     pricing_title: 'Elige tu Plan de Aprendizaje', pricing_subtitle: 'Desde exploración casual hasta estudio avanzado — un plan para cada estudiante.',
     pricing_current: 'Plan Actual', pricing_select: 'Comenzar', pricing_month: '/mes',
     pricing_free_label: 'Gratis', pricing_back: 'Volver',
+    // Debate
+    debate_title: 'Debate con un Filósofo', debate_subtitle: 'Desafía a los grandes pensadores de la historia',
+    debate_today: 'Filósofo de Hoy', debate_xp_reward: 'XP si ganas',
+    debate_placeholder: 'Presenta tu argumento filosófico…',
+    debate_new_round: 'Nueva Ronda', debate_pro_only: 'El Debate con Filósofo está disponible en Pro Learner y superior.',
+    debate_won_title: '¡Ganaste el debate!', debate_won_desc: 'ha cedido ante tu argumento.',
+    debate_already_won: '¡Ya derrotaste al filósofo de hoy!',
+    debate_next_in: 'Nuevo filósofo en', debate_starters: 'Argumentos Iniciales',
+    debate_start_arg: 'Desafiar esta posición',
+    // AI Tutor extended
+    tutor_subtitle: 'Tutora IA de Historia · Musa de la Historia',
+    sugg_1: '¿Qué causó la caída del Imperio Romano?', sugg_2: 'Explica las Cruzadas en términos simples',
+    sugg_3: '¿Por qué fue importante el Renacimiento?', sugg_4: '¿Cómo llevó la Primera Guerra Mundial a la Segunda?',
+    sugg_5: '¿Quiénes fueron los grandes filósofos de la antigüedad?', sugg_6: '¿Qué fue la Ruta de la Seda y por qué importó?',
+    // Essay extended
+    essay_tip_1: 'Incluye fechas específicas', essay_tip_2: 'Nombra figuras clave',
+    essay_tip_3: 'Plantea un argumento claro', essay_tip_4: 'Usa evidencia histórica',
+    essay_score_breakdown: 'Desglose de Puntuación', essay_strong_points: 'Puntos Fuertes',
+    essay_missing_points: 'Puntos Omitidos', essay_accuracy: 'Precisión Histórica',
+    essay_argument_quality: 'Calidad del Argumento', essay_depth_detail: 'Profundidad y Detalle',
+    essay_overall: 'Total', essay_study_more: 'Estudiar Más', essay_your_essay: 'Tu Ensayo',
+    // Progress extended
+    prog_lessons_by_era: 'Lecciones por Era', prog_quiz_by_era: 'Puntuaciones de Quiz por Era',
+    prog_knowledge_radar: 'Radar de Conocimiento', prog_xp_timeline: 'Línea de Tiempo de XP',
+    prog_radar_desc: 'Completación de lecciones + puntuación de quiz por era',
+    prog_adv_analytics_title: 'Analíticas Avanzadas — Pro Learner',
+    prog_adv_analytics_desc: 'Actualiza para desbloquear gráficos interactivos de puntuaciones, historial de XP, radar de conocimiento por era y análisis de logros.',
+    prog_no_quiz: 'Completa un quiz para ver tus puntuaciones aquí.',
+    prog_no_xp: 'Comienza a aprender para ver tu historial de XP aquí.',
+    prog_quiz_score_chart: 'Gráfico de Puntuaciones', prog_xp_activity_graph: 'Gráfico de Actividad XP',
+    prog_knowledge_radar_chart: 'Radar de Conocimiento', prog_upgrade_cta: 'Actualizar a Pro — $10/mes',
   },
 
   ru: {
@@ -398,6 +483,7 @@ export const T: Translations = {
     nav_tutor: 'ИИ-Наставник', nav_leaderboard: 'Рейтинг', nav_friends: 'Друзья',
     nav_flashcards: 'Карточки', nav_notes: 'Мои Заметки', nav_progress: 'Прогресс',
     nav_smart_quiz: 'Умная Викторина', nav_essay: 'Эссе-Задание', nav_video_review: 'Обзор Видео',
+    nav_debate: 'Дискуссия с Философом',
     nav_profile: 'Профиль', nav_guide: 'Руководство', nav_report: 'Сообщить об ошибке',
     nav_upgrade: 'Обновить план', nav_logout: 'Выйти',
     logout_title: 'Выйти из Historify?', logout_desc: 'Ваш прогресс сохранён. Вы можете войти снова в любое время.',
@@ -516,6 +602,37 @@ export const T: Translations = {
     pricing_title: 'Выберите свой учебный план', pricing_subtitle: 'От лёгкого изучения до мастерства — план для каждого.',
     pricing_current: 'Текущий план', pricing_select: 'Начать', pricing_month: '/мес',
     pricing_free_label: 'Бесплатно', pricing_back: 'Назад',
+    // Debate
+    debate_title: 'Дискуссия с Философом', debate_subtitle: 'Бросьте вызов великим мыслителям истории',
+    debate_today: 'Философ Дня', debate_xp_reward: 'XP за победу',
+    debate_placeholder: 'Представьте свой философский аргумент…',
+    debate_new_round: 'Новый Раунд', debate_pro_only: 'Дискуссия с философом доступна в планах Pro и Master.',
+    debate_won_title: 'Вы выиграли дискуссию!', debate_won_desc: 'признал вашу правоту.',
+    debate_already_won: 'Вы уже победили сегодняшнего философа!',
+    debate_next_in: 'Новый философ через', debate_starters: 'Вступительные Аргументы',
+    debate_start_arg: 'Оспорить эту позицию',
+    // AI Tutor extended
+    tutor_subtitle: 'ИИ-Наставник по Истории · Муза Истории',
+    sugg_1: 'Что стало причиной падения Римской империи?', sugg_2: 'Объясните Крестовые походы простыми словами',
+    sugg_3: 'Почему Ренессанс был так важен?', sugg_4: 'Как Первая мировая привела ко Второй?',
+    sugg_5: 'Кто были величайшие философы древности?', sugg_6: 'Что такое Шёлковый путь и почему он важен?',
+    // Essay extended
+    essay_tip_1: 'Укажите конкретные даты', essay_tip_2: 'Назовите ключевые фигуры',
+    essay_tip_3: 'Сформулируйте чёткий аргумент', essay_tip_4: 'Используйте исторические факты',
+    essay_score_breakdown: 'Разбивка Оценок', essay_strong_points: 'Сильные Стороны',
+    essay_missing_points: 'Упущенные Моменты', essay_accuracy: 'Историческая Точность',
+    essay_argument_quality: 'Качество Аргументации', essay_depth_detail: 'Глубина и Детали',
+    essay_overall: 'Итого', essay_study_more: 'Учиться дальше', essay_your_essay: 'Ваше Эссе',
+    // Progress extended
+    prog_lessons_by_era: 'Уроки по Эпохам', prog_quiz_by_era: 'Результаты Викторин по Эпохам',
+    prog_knowledge_radar: 'Радар Знаний', prog_xp_timeline: 'История Активности XP',
+    prog_radar_desc: 'Прохождение уроков + результат викторины по эпохам',
+    prog_adv_analytics_title: 'Расширенная Аналитика — Pro',
+    prog_adv_analytics_desc: 'Обновите план для доступа к интерактивным графикам, радару знаний и анализу достижений.',
+    prog_no_quiz: 'Пройдите викторину, чтобы увидеть результаты.',
+    prog_no_xp: 'Начните учиться, чтобы увидеть историю XP.',
+    prog_quiz_score_chart: 'График Результатов', prog_xp_activity_graph: 'График Активности XP',
+    prog_knowledge_radar_chart: 'Радар Знаний', prog_upgrade_cta: 'Обновить до Pro — $10/мес',
   },
 
   mk: {
@@ -523,6 +640,7 @@ export const T: Translations = {
     nav_tutor: 'ВИ Тутор', nav_leaderboard: 'Рангирање', nav_friends: 'Пријатели',
     nav_flashcards: 'Картички', nav_notes: 'Мои Белешки', nav_progress: 'Напредок',
     nav_smart_quiz: 'Паметен Квиз', nav_essay: 'Есеј Предизвик', nav_video_review: 'Видео Преглед',
+    nav_debate: 'Дебата со Филозоф',
     nav_profile: 'Профил', nav_guide: 'Водич за Апликацијата', nav_report: 'Пријави Проблем',
     nav_upgrade: 'Надгради го Планот', nav_logout: 'Одјави се',
     logout_title: 'Одјавување од Historify?', logout_desc: 'Твојот напредок е зачуван. Можеш да се најавиш повторно во секое време.',
@@ -641,5 +759,36 @@ export const T: Translations = {
     pricing_title: 'Избери го твојот план за учење', pricing_subtitle: 'Од лесно истражување до напредно учење — план за секој ученик.',
     pricing_current: 'Тековен план', pricing_select: 'Почни', pricing_month: '/месец',
     pricing_free_label: 'Бесплатно', pricing_back: 'Назад',
+    // Debate
+    debate_title: 'Дебата со Филозоф', debate_subtitle: 'Предизвикај ги најголемите мислители во историјата',
+    debate_today: 'Денешен Филозоф', debate_xp_reward: 'XP ако победиш',
+    debate_placeholder: 'Претстави го твојот филозофски аргумент…',
+    debate_new_round: 'Нова Рунда', debate_pro_only: 'Дебатата со Филозоф е достапна на Pro Learner и повисоко.',
+    debate_won_title: 'Го победи дебатата!', debate_won_desc: 'го признал твојот аргумент.',
+    debate_already_won: 'Веќе го победи денешниот филозоф!',
+    debate_next_in: 'Нов филозоф за', debate_starters: 'Вовдни Аргументи',
+    debate_start_arg: 'Оспори ја оваа позиција',
+    // AI Tutor extended
+    tutor_subtitle: 'ВИ Тутор по Историја · Муза на Историјата',
+    sugg_1: 'Што предизвика падот на Римската Империја?', sugg_2: 'Објасни ги Крстоносните Походи едноставно',
+    sugg_3: 'Зошто Ренесансата беше важна?', sugg_4: 'Како Првата светска војна доведе до Втората?',
+    sugg_5: 'Кои беа најголемите антички филозофи?', sugg_6: 'Што беше Патот на Свилата и зошто беше важен?',
+    // Essay extended
+    essay_tip_1: 'Вклучи конкретни датуми', essay_tip_2: 'Именувај клучни личности',
+    essay_tip_3: 'Наведи јасен аргумент', essay_tip_4: 'Користи историски докази',
+    essay_score_breakdown: 'Распределба на Резултати', essay_strong_points: 'Силни Точки',
+    essay_missing_points: 'Недостасувачки Точки', essay_accuracy: 'Историска Точност',
+    essay_argument_quality: 'Квалитет на Аргументот', essay_depth_detail: 'Длабочина и Детали',
+    essay_overall: 'Вкупно', essay_study_more: 'Учи Повеќе', essay_your_essay: 'Твојот Есеј',
+    // Progress extended
+    prog_lessons_by_era: 'Лекции по Епохи', prog_quiz_by_era: 'Резултати по Квизови по Епохи',
+    prog_knowledge_radar: 'Радар на Знаење', prog_xp_timeline: 'Временска Линија на XP Активност',
+    prog_radar_desc: 'Комбинирано завршување лекции + резултат на квиз по епоха',
+    prog_adv_analytics_title: 'Напредна Аналитика — Pro Learner',
+    prog_adv_analytics_desc: 'Надгради за да отклучиш интерактивни графикони, XP историја, Радар на Знаење и анализа на достигнувања.',
+    prog_no_quiz: 'Заврши квиз за да ги видиш своите резултати овде.',
+    prog_no_xp: 'Започни со учење за да ја видиш историјата на XP овде.',
+    prog_quiz_score_chart: 'Графикон на Резултати', prog_xp_activity_graph: 'Графикон на XP Активност',
+    prog_knowledge_radar_chart: 'Радар на Знаење', prog_upgrade_cta: 'Надгради на Pro — $10/месец',
   },
 };

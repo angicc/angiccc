@@ -115,7 +115,7 @@ export default function ProgressPage() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-primary" />Lessons by Era
+                <BookOpen className="w-4 h-4 text-primary" />{t.prog_lessons_by_era}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -150,16 +150,16 @@ export default function ProgressPage() {
                     <Lock className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-heading font-bold text-lg mb-2">Advanced Analytics — Pro Learner</h3>
+                    <h3 className="font-heading font-bold text-lg mb-2">{t.prog_adv_analytics_title}</h3>
                     <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed">
-                      Upgrade to unlock interactive quiz score charts, XP activity graphs, a Knowledge Radar showing your strengths per era, and detailed achievement analysis.
+                      {t.prog_adv_analytics_desc}
                     </p>
                   </div>
                   <div className="grid sm:grid-cols-3 gap-3 max-w-lg mx-auto text-left">
                     {[
-                      { icon: BarChart2,   label: 'Quiz Score Chart',    desc: 'Visual breakdown of your quiz performance by era' },
-                      { icon: TrendingUp,  label: 'XP Activity Graph',   desc: 'See your XP earnings over time as an area chart' },
-                      { icon: Brain,       label: 'Knowledge Radar',     desc: 'Radar chart mapping your mastery across all 4 eras' },
+                      { icon: BarChart2,   label: t.prog_quiz_score_chart,    desc: t.prog_quiz_by_era },
+                      { icon: TrendingUp,  label: t.prog_xp_activity_graph,   desc: t.prog_xp_timeline },
+                      { icon: Brain,       label: t.prog_knowledge_radar_chart, desc: t.prog_radar_desc },
                     ].map(({ icon: Icon, label, desc }) => (
                       <div key={label} className="p-3 rounded-xl border border-border bg-card space-y-1.5 opacity-60">
                         <Icon className="w-4 h-4 text-primary" />
@@ -170,7 +170,7 @@ export default function ProgressPage() {
                   </div>
                   <Link to="/pricing">
                     <Button size="sm" className="gap-2 mt-2">
-                      <Crown className="w-4 h-4" /> Upgrade to Pro — $10/mo
+                      <Crown className="w-4 h-4" /> {t.prog_upgrade_cta}
                     </Button>
                   </Link>
                 </div>
@@ -185,12 +185,12 @@ export default function ProgressPage() {
                 <Card>
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm flex items-center gap-2">
-                      <Trophy className="w-4 h-4 text-amber-400" />Quiz Scores by Era
+                      <Trophy className="w-4 h-4 text-amber-400" />{t.prog_quiz_by_era}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     {Object.keys(progress.quizScores).length === 0 ? (
-                      <p className="text-sm text-muted-foreground text-center py-8">Complete a quiz to see your scores here.</p>
+                      <p className="text-sm text-muted-foreground text-center py-8">{t.prog_no_quiz}</p>
                     ) : (
                       <ResponsiveContainer width="100%" height={200}>
                         <BarChart data={eraData.filter(e => e.quiz > 0)} barSize={28}>
@@ -211,7 +211,7 @@ export default function ProgressPage() {
                 <Card>
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm flex items-center gap-2">
-                      <Brain className="w-4 h-4 text-violet-400" />Knowledge Radar
+                      <Brain className="w-4 h-4 text-violet-400" />{t.prog_knowledge_radar}
                       <Badge variant="outline" className="text-[10px] text-violet-400 border-violet-400/30 ml-auto">Pro</Badge>
                     </CardTitle>
                   </CardHeader>
@@ -223,7 +223,7 @@ export default function ProgressPage() {
                         <Radar name="Mastery" dataKey="score" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.25} />
                       </RadarChart>
                     </ResponsiveContainer>
-                    <p className="text-[10px] text-muted-foreground text-center mt-1">Combined lesson completion + quiz score per era</p>
+                    <p className="text-[10px] text-muted-foreground text-center mt-1">{t.prog_radar_desc}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -234,13 +234,13 @@ export default function ProgressPage() {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 text-primary" />XP Activity Timeline
+                    <TrendingUp className="w-4 h-4 text-primary" />{t.prog_xp_timeline}
                     <Badge variant="outline" className="text-[10px] text-primary border-primary/30 ml-auto">Pro</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {activityData.length === 0 ? (
-                    <p className="text-sm text-muted-foreground text-center py-8">Start learning to see your XP history here.</p>
+                    <p className="text-sm text-muted-foreground text-center py-8">{t.prog_no_xp}</p>
                   ) : (
                     <ResponsiveContainer width="100%" height={160}>
                       <AreaChart data={activityData}>
@@ -267,7 +267,7 @@ export default function ProgressPage() {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-amber-400" />Achievements — {unlockedCount}/{totalAchievements} Unlocked
+                    <Trophy className="w-4 h-4 text-amber-400" />{t.prog_achievements} — {unlockedCount}/{totalAchievements} {t.prog_unlocked}
                     <Badge variant="outline" className="text-[10px] text-amber-400 border-amber-400/30 ml-auto">Pro</Badge>
                   </CardTitle>
                 </CardHeader>

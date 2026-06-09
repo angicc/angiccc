@@ -174,10 +174,7 @@ export default function EssayPage() {
             <PenLine className="w-5 h-5 text-orange-400" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-heading text-3xl font-bold">{t.essay_title}</h1>
-              <Badge variant="outline" className="text-xs text-primary border-primary/30">Pro</Badge>
-            </div>
+            <h1 className="font-heading text-3xl font-bold">{t.essay_title}</h1>
             <p className="text-muted-foreground text-sm mt-0.5">{t.essay_subtitle}</p>
           </div>
         </motion.div>
@@ -233,7 +230,7 @@ export default function EssayPage() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <PenLine className="w-4 h-4 text-orange-400" />Your Essay
+                  <PenLine className="w-4 h-4 text-orange-400" />{t.essay_your_essay}
                   <span className={`ml-auto text-xs font-normal ${wordCount < 80 ? 'text-muted-foreground' : wordCount > 600 ? 'text-rose-400' : 'text-emerald-400'}`}>
                     {wordCount} / 80–600 {t.essay_words}
                   </span>
@@ -254,10 +251,10 @@ export default function EssayPage() {
                   className="w-full px-3 py-3 rounded-xl border border-border bg-background text-sm outline-none focus:border-primary/60 transition-colors placeholder:text-muted-foreground/40 resize-none leading-relaxed"
                 />
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-400" />Include specific dates</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-400" />Name key figures</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-400" />State a clear argument</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-400" />Use historical evidence</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-400" />{t.essay_tip_1}</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-400" />{t.essay_tip_2}</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-400" />{t.essay_tip_3}</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-400" />{t.essay_tip_4}</span>
                 </div>
               </CardContent>
             </Card>
@@ -311,16 +308,16 @@ export default function EssayPage() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <Target className="w-4 h-4 text-primary" />Score Breakdown
+                  <Target className="w-4 h-4 text-primary" />{t.essay_score_breakdown}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ScoreBar label="Historical Accuracy" value={result.accuracy} color="#f59e0b" />
-                <ScoreBar label="Argument Quality" value={result.argument} color="#60a5fa" />
-                <ScoreBar label="Depth & Detail" value={result.depth} color="#34d399" />
+                <ScoreBar label={t.essay_accuracy} value={result.accuracy} color="#f59e0b" />
+                <ScoreBar label={t.essay_argument_quality} value={result.argument} color="#60a5fa" />
+                <ScoreBar label={t.essay_depth_detail} value={result.depth} color="#34d399" />
                 <div className="pt-2 border-t border-border">
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="font-semibold">Overall</span>
+                    <span className="font-semibold">{t.essay_overall}</span>
                     <span className="font-semibold">{Math.round((result.accuracy + result.argument + result.depth) / 3 * 10)}%</span>
                   </div>
                   <Progress value={Math.round((result.accuracy + result.argument + result.depth) / 3 * 10)} className="h-2" />
@@ -333,7 +330,7 @@ export default function EssayPage() {
               <Card className="border-emerald-400/20">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-xs flex items-center gap-2 text-emerald-400">
-                    <CheckCircle2 className="w-3.5 h-3.5" />Strong Points
+                    <CheckCircle2 className="w-3.5 h-3.5" />{t.essay_strong_points}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 pt-0">
@@ -347,7 +344,7 @@ export default function EssayPage() {
               <Card className="border-amber-400/20">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-xs flex items-center gap-2 text-amber-400">
-                    <AlertCircle className="w-3.5 h-3.5" />Missing Points
+                    <AlertCircle className="w-3.5 h-3.5" />{t.essay_missing_points}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 pt-0">
@@ -378,7 +375,7 @@ export default function EssayPage() {
               </Button>
               <Link to="/eras" className="flex-1">
                 <Button variant="outline" className="w-full gap-2">
-                  <BookOpen className="w-4 h-4" />Study More
+                  <BookOpen className="w-4 h-4" />{t.essay_study_more}
                 </Button>
               </Link>
             </div>

@@ -15,14 +15,7 @@ import { streamChatResponse } from '@/features/ai/claudeClient';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { ChatMessage } from '@/types';
 
-const SUGGESTIONS = [
-  { icon: Landmark, text: 'What caused the fall of the Roman Empire?' },
-  { icon: Globe, text: 'Explain the Crusades in simple terms' },
-  { icon: BookOpen, text: 'Why was the Renaissance important?' },
-  { icon: Scroll, text: 'How did WWI lead to WWII?' },
-  { icon: Sparkles, text: 'Who were the greatest ancient philosophers?' },
-  { icon: Sword, text: 'What was the Silk Road and why did it matter?' },
-];
+const SUGGESTION_ICONS = [Landmark, Globe, BookOpen, Scroll, Sparkles, Sword];
 
 function ClioAvatar({ size = 60 }: { size?: number }) {
   return (
@@ -116,6 +109,14 @@ export default function AiTutorPage() {
   const { currentUser, refreshProgress } = useAuth();
   const { canAI, trackAiMessage } = useSubscription();
   const { t } = useLanguage();
+  const SUGGESTIONS = [
+    { icon: SUGGESTION_ICONS[0], text: t.sugg_1 },
+    { icon: SUGGESTION_ICONS[1], text: t.sugg_2 },
+    { icon: SUGGESTION_ICONS[2], text: t.sugg_3 },
+    { icon: SUGGESTION_ICONS[3], text: t.sugg_4 },
+    { icon: SUGGESTION_ICONS[4], text: t.sugg_5 },
+    { icon: SUGGESTION_ICONS[5], text: t.sugg_6 },
+  ];
   const [params] = useSearchParams();
   const context = params.get('context') ?? undefined;
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -174,7 +175,7 @@ export default function AiTutorPage() {
             </motion.div>
             <div>
               <h1 className="font-heading text-2xl font-bold">Clio</h1>
-              <p className="text-muted-foreground text-sm">AI History Tutor · Muse of History</p>
+              <p className="text-muted-foreground text-sm">{t.tutor_subtitle}</p>
             </div>
           </div>
           {messages.length > 0 && (
@@ -193,9 +194,9 @@ export default function AiTutorPage() {
               src={CLIO_GIF}
               alt=""
               aria-hidden
-              className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
+              className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
             />
-            <div className="absolute inset-0 bg-card/55 pointer-events-none" />
+            <div className="absolute inset-0 bg-card/40 pointer-events-none" />
             <div className="relative z-10">
             <AnimatePresence>
               {messages.length === 0 && (

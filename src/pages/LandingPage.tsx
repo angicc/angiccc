@@ -23,7 +23,7 @@ const ERAS_SHOWCASE = [
     name: 'Ancient World', range: '3000 BCE – 500 CE',
     color: 'text-amber-400', bg: 'from-amber-900/30 to-amber-950/60', border: 'border-amber-500/30',
     photo: 'photo-1568322445389-f64ac2515020',
-    lessons: ['The First Civilizations', 'Classical Greece', 'The Roman Empire', 'The Ancient East', 'Ancient Egypt & Pharaohs'],
+    lessons: ['The First Civilizations', 'Classical Greece', 'The Roman Empire', 'The Ancient East', 'Ancient Egypt & Pharaohs', 'The Phoenicians: Masters of the Sea'],
   },
   {
     name: 'Middle Ages', range: '500 – 1500 CE',
@@ -41,7 +41,7 @@ const ERAS_SHOWCASE = [
     name: 'Modern Era', range: '1800 – Present',
     color: 'text-rose-400', bg: 'from-rose-900/30 to-rose-950/60', border: 'border-rose-500/30',
     photo: 'photo-1477959858617-67f85cf4f1df',
-    lessons: ['The Industrial Revolution', 'The World Wars', 'Cold War & Decolonization', 'Globalization', 'Age of Imperialism'],
+    lessons: ['The Industrial Revolution', 'The World Wars', 'Cold War & Decolonization', 'Globalization', 'Age of Imperialism', 'The Yugoslav Wars', 'The Macedonian Struggle'],
   },
 ];
 

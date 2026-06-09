@@ -23,9 +23,10 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
 
   const tier = subscription?.tier ?? 'free';
   const used = subscription?.aiMessagesUsedThisMonth ?? 0;
+  const usedToday = subscription?.aiMessagesUsedToday ?? 0;
 
   return (
-    <SubContext.Provider value={{ subscription, upgrade, trackAiMessage, canLesson: o => canAccessLesson(tier, o), canAI: () => canUseAI(tier, used), canDownload: () => canDownload(tier), canAdvancedStats: () => canAdvancedStats(tier), canTimeline: () => canFilterTimeline(tier), canExplanations: () => canSeeExplanations(tier), refreshSubscription }}>
+    <SubContext.Provider value={{ subscription, upgrade, trackAiMessage, canLesson: o => canAccessLesson(tier, o), canAI: () => canUseAI(tier, used, usedToday), canDownload: () => canDownload(tier), canAdvancedStats: () => canAdvancedStats(tier), canTimeline: () => canFilterTimeline(tier), canExplanations: () => canSeeExplanations(tier), refreshSubscription }}>
       {children}
     </SubContext.Provider>
   );
