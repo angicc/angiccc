@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film, Users, Scale } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -8,7 +8,6 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Logo } from '@/components/shared/Logo';
-import { LogoutScreen } from '@/components/shared/LogoutScreen';
 import { xpToNextLevel } from '@/features/progress/xpSystem';
 import { getVideoXp } from '@/features/videoReview/videoReviewStore';
 import { getChessRank } from '@/features/ranks/chessRanks';
@@ -34,15 +33,13 @@ const NAV_KEYS = [
 ];
 
 export function Sidebar({ className, onNavigate }: { className?: string; onNavigate?: () => void }) {
-  const navigate = useNavigate();
-  const { logout, progress, currentUser } = useAuth();
+  const { progress, currentUser, startLogout } = useAuth();
   const { subscription } = useSubscription();
   const { t } = useLanguage();
   const tier = subscription?.tier ?? 'free';
   const tierLabel = { free: 'Free', pro: 'Pro Learner', master: 'Master Student' }[tier];
   const xpInfo = progress ? xpToNextLevel(progress.xp) : null;
 
-  const [loggingOut, setLoggingOut] = useState(false);
   const avatarKey = currentUser ? `historify:avatar:${currentUser.id}` : '';
   const [avatarUrl] = useState<string>(() => (avatarKey ? localStorage.getItem(avatarKey) ?? '' : ''));
   const videoXp = currentUser ? getVideoXp(currentUser.id) : 0;
@@ -132,8 +129,8 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
             <AlertDialogFooter>
               <AlertDialogCancel>{t.btn_cancel}</AlertDialogCancel>
               <AlertDialogAction onClick={() => {
-                setLoggingOut(true);
-                setTimeout(() => { logout(); navigate('/'); onNavigate?.(); }, 2200);
+                startLogout();
+                onNavigate?.();
               }}>
                 {t.nav_logout}
               </AlertDialogAction>
@@ -141,7 +138,6 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
           </AlertDialogContent>
         </AlertDialog>
       </div>
-      {loggingOut && <LogoutScreen />}
     </aside>
   );
 }

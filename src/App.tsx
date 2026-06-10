@@ -2,12 +2,13 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { AnimatePresence } from 'framer-motion';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/ThemeProvider';
-import { AuthProvider } from '@/features/auth/AuthContext';
+import { AuthProvider, useAuth } from '@/features/auth/AuthContext';
 import { SubscriptionProvider } from '@/features/subscription/SubscriptionContext';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { ProtectedRoute } from '@/features/auth/ProtectedRoute';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { PageTransition } from '@/components/shared/PageTransition';
+import { LogoutScreen } from '@/components/shared/LogoutScreen';
 import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
@@ -30,6 +31,11 @@ import EssayPage from '@/pages/EssayPage';
 import VideoReviewPage from '@/pages/VideoReviewPage';
 import FriendsPage from '@/pages/FriendsPage';
 import DebatePhilosopherPage from '@/pages/DebatePhilosopherPage';
+
+function LogoutOverlay() {
+  const { loggingOut } = useAuth();
+  return <LogoutScreen show={loggingOut} />;
+}
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -75,6 +81,7 @@ function App() {
             <LanguageProvider>
               <BrowserRouter>
                 <AnimatedRoutes />
+                <LogoutOverlay />
               </BrowserRouter>
               <Toaster />
             </LanguageProvider>

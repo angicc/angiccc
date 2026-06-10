@@ -117,6 +117,7 @@ type TranslationKeys = {
   guide_start_lesson: string; guide_see_plans: string;
   guide_cta_title: string; guide_cta_desc: string; guide_dashboard: string;
   guide_start_learning: string; guide_step: string;
+  guide_free_pro: string; guide_qs_desc: string;
   // ── Report ─────────────────────────────────────────────────────
   report_title: string; report_subtitle: string; report_placeholder: string;
   report_submit: string; report_thanks: string; report_type: string;
@@ -294,6 +295,7 @@ export const T: Translations = {
     guide_see_plans: 'See Plans', guide_cta_title: 'Ready to begin your journey?',
     guide_cta_desc: 'Head to the Dashboard to see your progress at a glance, or jump straight into a lesson.',
     guide_dashboard: 'Dashboard', guide_start_learning: 'Start Learning', guide_step: 'Step',
+    guide_free_pro: 'Free & Pro plans', guide_qs_desc: 'New here? Start by completing a lesson in the Eras & Lessons section, then take the era quiz to earn XP. Once you have a feel for the app, upgrade to Pro to unlock all 18 lessons and the AI Tutor.',
     // Report
     report_title: 'Report a Problem', report_subtitle: 'Help us improve Historify',
     report_placeholder: 'Describe the problem you encountered…',
@@ -466,6 +468,7 @@ export const T: Translations = {
     guide_see_plans: 'Ver Planes', guide_cta_title: '¿Listo para comenzar tu viaje?',
     guide_cta_desc: 'Ve al Panel para ver tu progreso de un vistazo, o ve directamente a una lección.',
     guide_dashboard: 'Panel', guide_start_learning: 'Comenzar a Aprender', guide_step: 'Paso',
+    guide_free_pro: 'Planes Gratuito y Pro', guide_qs_desc: '¿Eres nuevo? Comienza completando una lección en la sección Eras y Lecciones, luego haz el quiz de era para ganar XP. Una vez que conozcas la app, actualiza a Pro para desbloquear todas las 18 lecciones y el Tutor IA.',
     report_title: 'Reportar un Problema', report_subtitle: 'Ayúdanos a mejorar Historify',
     report_placeholder: 'Describe el problema que encontraste…',
     report_submit: 'Enviar Reporte', report_thanks: '¡Gracias! Tu reporte ha sido recibido.',
@@ -635,6 +638,7 @@ export const T: Translations = {
     guide_see_plans: 'Посмотреть Планы', guide_cta_title: 'Готовы начать своё путешествие?',
     guide_cta_desc: 'Перейдите в Панель, чтобы увидеть прогресс, или сразу начните урок.',
     guide_dashboard: 'Панель', guide_start_learning: 'Начать учёбу', guide_step: 'Шаг',
+    guide_free_pro: 'Бесплатный и Pro', guide_qs_desc: 'Впервые здесь? Начните с урока в разделе «Эпохи и Уроки», затем пройдите викторину по эпохе, чтобы получить XP. Освоившись с приложением, обновитесь до Pro для доступа ко всем 18 урокам и Наставнику.',
     report_title: 'Сообщить об ошибке', report_subtitle: 'Помогите нам улучшить Historify',
     report_placeholder: 'Опишите проблему, с которой вы столкнулись…',
     report_submit: 'Отправить', report_thanks: 'Спасибо! Ваш отчёт получен.',
@@ -804,6 +808,7 @@ export const T: Translations = {
     guide_see_plans: 'Погледни Планови', guide_cta_title: 'Подготвен/а да го започнеш патувањето?',
     guide_cta_desc: 'Оди на Контролната Табла за да го видиш напредокот, или веднаш започни лекција.',
     guide_dashboard: 'Контролна Табла', guide_start_learning: 'Започни со Учење', guide_step: 'Чекор',
+    guide_free_pro: 'Бесплатен и Pro план', guide_qs_desc: 'Нов/а си? Почни со завршување на лекција во делот Епохи и Лекции, потоа направи квиз за да освоиш XP. Откако ќе се запознаеш со апликацијата, надгради на Pro за да ги отклучиш сите 18 лекции и ВИ Туторот.',
     report_title: 'Пријави Проблем', report_subtitle: 'Помогни ни да го подобриме Historify',
     report_placeholder: 'Опиши го проблемот со кој се сретна…',
     report_submit: 'Испрати Пријава', report_thanks: 'Благодариме! Твојата пријава е примена.',
@@ -818,7 +823,7 @@ export const T: Translations = {
     debate_new_round: 'Нова Рунда', debate_pro_only: 'Дебатата со Филозоф е достапна на Pro Learner и повисоко.',
     debate_won_title: 'Го победи дебатата!', debate_won_desc: 'го признал твојот аргумент.',
     debate_already_won: 'Веќе го победи денешниот филозоф!',
-    debate_next_in: 'Нов филозоф за', debate_starters: 'Вовдни Аргументи',
+    debate_next_in: 'Нов филозоф за', debate_starters: 'Воведни Аргументи',
     debate_start_arg: 'Оспори ја оваа позиција',
     // AI Tutor extended
     tutor_subtitle: 'ВИ Тутор по Историја · Муза на Историјата',

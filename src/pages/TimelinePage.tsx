@@ -9,6 +9,7 @@ import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { useAuth } from '@/features/auth/AuthContext';
 import { getSortedTimeline } from '@/features/content/timelineData';
 import { ERAS } from '@/features/content/erasData';
+import { getTranslatedEra } from '@/i18n/contentTranslations';
 import { LESSONS } from '@/features/content/lessonsData';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
@@ -67,7 +68,7 @@ const CAT_LABEL: Record<TimelineCategory, 'cat_war' | 'cat_politics' | 'cat_scie
 export default function TimelinePage() {
   const { canTimeline, canLesson } = useSubscription();
   const { progress } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [eraFilter, setEraFilter] = useState<EraId | 'all'>('all');
   const [catFilter, setCatFilter] = useState<TimelineCategory | 'all'>('all');
@@ -112,7 +113,7 @@ export default function TimelinePage() {
                   <SelectTrigger className="w-32 sm:w-36 h-8 text-xs"><SelectValue placeholder={t.tl_all_eras} /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">{t.tl_all_eras}</SelectItem>
-                    {ERAS.map(e => <SelectItem key={e.id} value={e.id}>{e.shortName}</SelectItem>)}
+                    {ERAS.map(e => <SelectItem key={e.id} value={e.id}>{getTranslatedEra(e, language).shortName}</SelectItem>)}
                   </SelectContent>
                 </Select>
                 <Select value={catFilter} onValueChange={v => setCatFilter(v as TimelineCategory | 'all')}>
@@ -135,17 +136,20 @@ export default function TimelinePage() {
 
         {/* Era legend */}
         <div className="flex flex-wrap gap-2 overflow-x-auto pb-1">
-          {ERAS.map(e => (
-            <button
-              key={e.id}
-              onClick={() => setEraFilter(canTimeline() ? (eraFilter === e.id ? 'all' : e.id as EraId) : eraFilter)}
-              className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border transition-all ${eraFilter === e.id ? 'border-current bg-current/10' : 'border-border hover:border-current/50'} ${ERA_TEXT[e.id as EraId]}`}
-            >
-              <span className={`w-2 h-2 rounded-full ${ERA_COLORS[e.id as EraId]}`} />
-              {e.shortName}
-              <span className="text-muted-foreground">· {e.dateRange}</span>
-            </button>
-          ))}
+          {ERAS.map(e => {
+            const tEra = getTranslatedEra(e, language);
+            return (
+              <button
+                key={e.id}
+                onClick={() => setEraFilter(canTimeline() ? (eraFilter === e.id ? 'all' : e.id as EraId) : eraFilter)}
+                className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border transition-all ${eraFilter === e.id ? 'border-current bg-current/10' : 'border-border hover:border-current/50'} ${ERA_TEXT[e.id as EraId]}`}
+              >
+                <span className={`w-2 h-2 rounded-full ${ERA_COLORS[e.id as EraId]}`} />
+                {tEra.shortName}
+                <span className="text-muted-foreground">· {tEra.dateRange}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Timeline */}
@@ -158,7 +162,8 @@ export default function TimelinePage() {
               const lessonId = EVENT_TO_LESSON[event.id];
               const lesson = lessonId ? LESSONS.find(l => l.id === lessonId) : null;
               const locked = lesson ? !canLesson(lesson.order) : false;
-              const eraName = ERAS.find(e => e.id === event.eraId)?.shortName ?? '';
+              const eraRaw = ERAS.find(e => e.id === event.eraId);
+              const eraName = eraRaw ? getTranslatedEra(eraRaw, language).shortName : '';
 
               return (
                 <Popover key={event.id}>

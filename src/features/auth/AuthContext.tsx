@@ -20,7 +20,7 @@ async function hashPassword(password: string): Promise<string> {
   return btoa(unescape(encodeURIComponent(password)));
 }
 
-interface AuthCtx { currentUser: User | null; progress: UserProgress | null; login(e: string, p: string): Promise<{success:boolean;error?:string}>; register(u: string, e: string, p: string): Promise<{success:boolean;error?:string}>; logout(): void; refreshProgress(): void; }
+interface AuthCtx { currentUser: User | null; progress: UserProgress | null; login(e: string, p: string): Promise<{success:boolean;error?:string}>; register(u: string, e: string, p: string): Promise<{success:boolean;error?:string}>; logout(): void; refreshProgress(): void; loggingOut: boolean; startLogout(): void; }
 const AuthContext = createContext<AuthCtx | null>(null);
 
 interface AuthInternalCtx {
@@ -47,6 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!id) return null;
     return loadProgress(id);
   });
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const refreshProgress = useCallback(() => { if (currentUser) setProgress(loadProgress(currentUser.id)); }, [currentUser]);
 
@@ -76,6 +77,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = useCallback(() => { localStorage.removeItem(CUR_KEY); setCurrentUser(null); setProgress(null); }, []);
+
+  const startLogout = useCallback(() => {
+    setLoggingOut(true);
+    setTimeout(() => {
+      logout();
+      setLoggingOut(false);
+    }, 2200);
+  }, [logout]);
 
   const updateUsername = useCallback((name: string) => {
     if (!currentUser) return;
@@ -118,7 +127,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const resetProgress = useCallback(() => { if (currentUser) setProgress(createInitialProgress(currentUser.id)); }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, progress, login, register, logout, refreshProgress }}>
+    <AuthContext.Provider value={{ currentUser, progress, login, register, logout, refreshProgress, loggingOut, startLogout }}>
       <AuthInternalContext.Provider value={{ updateUsername, resetProgress, updateEmail, updatePassword }}>
         {children}
       </AuthInternalContext.Provider>
