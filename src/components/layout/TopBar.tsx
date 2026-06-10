@@ -16,7 +16,7 @@ import { Sidebar } from './Sidebar';
 import { LANGUAGE_LABELS, type Language } from '@/i18n/translations';
 
 export function TopBar() {
-  const { currentUser, progress, logout } = useAuth();
+  const { currentUser, progress, startLogout } = useAuth();
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
   const navigate = useNavigate();
@@ -53,7 +53,7 @@ export function TopBar() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t.btn_cancel}</AlertDialogCancel>
-            <AlertDialogAction onClick={() => { logout(); navigate('/'); }}>{t.nav_logout}</AlertDialogAction>
+            <AlertDialogAction onClick={() => { startLogout(); }}>{t.nav_logout}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

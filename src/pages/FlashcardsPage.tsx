@@ -8,6 +8,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { LESSONS } from '@/features/content/lessonsData';
 import { ERAS } from '@/features/content/erasData';
+import { getTranslatedEra } from '@/i18n/contentTranslations';
 import type { EraId } from '@/types';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -15,7 +16,6 @@ interface Flashcard {
   id: string;
   eraId: string;
   lessonTitle: string;
-  front: string;
   back: string;
 }
 
@@ -25,7 +25,6 @@ function buildFlashcards(): Flashcard[] {
       id: `${lesson.id}-${i}`,
       eraId: lesson.eraId,
       lessonTitle: lesson.title,
-      front: `Key Fact — ${lesson.title}`,
       back: fact,
     }))
   );
@@ -41,7 +40,7 @@ const ERA_COLOR: Record<string, string> = {
 const ALL_CARDS = buildFlashcards();
 
 export default function FlashcardsPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [eraFilter, setEraFilter] = useState<EraId | 'all'>('all');
   const [deck, setDeck] = useState(() => [...ALL_CARDS].sort(() => Math.random() - 0.5));
   const [idx, setIdx] = useState(0);
@@ -69,7 +68,8 @@ export default function FlashcardsPage() {
   function markKnown() { setKnown(p => new Set([...p, card.id])); goNext(); }
   function markReview() { setReview(p => new Set([...p, card.id])); goNext(); }
 
-  const eraLabel = ERAS.find(e => e.id === card?.eraId)?.shortName ?? '';
+  const eraRaw = ERAS.find(e => e.id === card?.eraId);
+  const eraLabel = eraRaw ? getTranslatedEra(eraRaw, language).shortName : '';
   const colorClass = ERA_COLOR[card?.eraId ?? ''] ?? 'text-muted-foreground border-border';
 
   return (
@@ -82,22 +82,22 @@ export default function FlashcardsPage() {
               <Layers className="w-5 h-5 text-violet-400" />
             </div>
             <div>
-              <h1 className="font-heading text-3xl font-bold">Flashcards</h1>
-              <p className="text-muted-foreground text-sm mt-0.5">Reinforce key facts from every lesson</p>
+              <h1 className="font-heading text-3xl font-bold">{t.flash_title}</h1>
+              <p className="text-muted-foreground text-sm mt-0.5">{t.flash_subtitle}</p>
             </div>
           </div>
           <Button variant="outline" size="sm" onClick={shuffle} className="gap-2">
-            <RotateCcw className="w-4 h-4" />Shuffle
+            <RotateCcw className="w-4 h-4" />{t.flash_shuffle}
           </Button>
         </motion.div>
 
         {/* Controls */}
         <div className="flex items-center gap-3">
           <Select value={eraFilter} onValueChange={v => { setEraFilter(v as EraId | 'all'); setIdx(0); setFlipped(false); }}>
-            <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder="All Eras" /></SelectTrigger>
+            <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder={t.flash_all_eras} /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Eras</SelectItem>
-              {ERAS.map(e => <SelectItem key={e.id} value={e.id}>{e.shortName}</SelectItem>)}
+              <SelectItem value="all">{t.flash_all_eras}</SelectItem>
+              {ERAS.map(e => <SelectItem key={e.id} value={e.id}>{getTranslatedEra(e, language).shortName}</SelectItem>)}
             </SelectContent>
           </Select>
           <div className="flex-1">
@@ -111,12 +111,12 @@ export default function FlashcardsPage() {
         {/* Stats row */}
         <div className="flex gap-4 text-xs">
           <span className="flex items-center gap-1.5 text-emerald-400">
-            <CheckCircle className="w-3.5 h-3.5" />{known.size} known
+            <CheckCircle className="w-3.5 h-3.5" />{known.size} {t.flash_known_label}
           </span>
           <span className="flex items-center gap-1.5 text-rose-400">
-            <XCircle className="w-3.5 h-3.5" />{review.size} to review
+            <XCircle className="w-3.5 h-3.5" />{review.size} {t.flash_review_label}
           </span>
-          <span className="text-muted-foreground">{remaining} remaining</span>
+          <span className="text-muted-foreground">{remaining} {t.flash_remaining}</span>
         </div>
 
         {/* Card */}
@@ -143,10 +143,10 @@ export default function FlashcardsPage() {
                   </Badge>
                   <div>
                     <p className="text-xs text-muted-foreground mb-2">{card.lessonTitle}</p>
-                    <p className="font-heading text-2xl font-semibold leading-snug">{card.front}</p>
+                    <p className="font-heading text-2xl font-semibold leading-snug">{t.flash_key_fact}</p>
                   </div>
                   <p className="text-xs text-muted-foreground border border-border/50 rounded-full px-4 py-1.5">
-                    Click to reveal
+                    {t.flash_tap_flip}
                   </p>
                 </div>
 
@@ -155,7 +155,7 @@ export default function FlashcardsPage() {
                   className="absolute inset-0 min-h-72 rounded-2xl border border-primary/40 bg-gradient-to-br from-primary/8 to-primary/3 p-8 flex flex-col items-center justify-center text-center gap-5 shadow-lg"
                   style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                 >
-                  <Badge variant="outline" className="text-xs text-primary border-primary/40">Answer</Badge>
+                  <Badge variant="outline" className="text-xs text-primary border-primary/40">{t.flash_answer}</Badge>
                   <p className="text-base leading-relaxed font-medium max-w-sm">{card.back}</p>
                 </div>
               </motion.div>
@@ -176,14 +176,14 @@ export default function FlashcardsPage() {
                     className="flex-1 gap-2 border-rose-500/40 text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/60"
                     onClick={e => { e.stopPropagation(); markReview(); }}
                   >
-                    <XCircle className="w-4 h-4" />Need Review
+                    <XCircle className="w-4 h-4" />{t.flash_review_again}
                   </Button>
                   <Button
                     variant="outline"
                     className="flex-1 gap-2 border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/60"
                     onClick={e => { e.stopPropagation(); markKnown(); }}
                   >
-                    <CheckCircle className="w-4 h-4" />Got It!
+                    <CheckCircle className="w-4 h-4" />{t.flash_knew}
                   </Button>
                 </motion.div>
               )}
@@ -191,14 +191,14 @@ export default function FlashcardsPage() {
           </>
         ) : (
           <div className="min-h-72 rounded-2xl border border-border bg-card flex items-center justify-center text-muted-foreground">
-            No cards available for this filter.
+            {t.flash_no_cards}
           </div>
         )}
 
         {/* Navigation */}
         <div className="flex items-center justify-between">
           <Button variant="outline" size="sm" onClick={goPrev} disabled={idx === 0} className="gap-2">
-            <ChevronLeft className="w-4 h-4" />Previous
+            <ChevronLeft className="w-4 h-4" />{t.flash_prev}
           </Button>
           {/* Dot navigation */}
           <div className="flex gap-1 overflow-hidden max-w-32">
@@ -216,7 +216,7 @@ export default function FlashcardsPage() {
             })}
           </div>
           <Button variant="outline" size="sm" onClick={goNext} disabled={idx >= filtered.length - 1} className="gap-2">
-            Next<ChevronRight className="w-4 h-4" />
+            {t.flash_next}<ChevronRight className="w-4 h-4" />
           </Button>
         </div>
 
@@ -228,12 +228,12 @@ export default function FlashcardsPage() {
             className="p-6 rounded-xl border border-primary/40 bg-primary/5 text-center space-y-3"
           >
             <div className="text-2xl">🎉</div>
-            <p className="font-heading font-semibold">Deck Complete!</p>
+            <p className="font-heading font-semibold">{t.flash_done}</p>
             <p className="text-sm text-muted-foreground">
-              {known.size} known · {review.size} to review
+              {known.size} {t.flash_known_label} · {review.size} {t.flash_review_label}
             </p>
             <Button size="sm" onClick={shuffle} className="gap-2">
-              <RotateCcw className="w-4 h-4" />Shuffle & Restart
+              <RotateCcw className="w-4 h-4" />{t.flash_restart}
             </Button>
           </motion.div>
         )}

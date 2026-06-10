@@ -71,7 +71,7 @@ function FakeQRCode() {
 
 export default function ProfilePage() {
   const { t } = useLanguage();
-  const { currentUser, progress, logout } = useAuth();
+  const { currentUser, progress, startLogout } = useAuth();
   const { updateUsername, resetProgress, updateEmail, updatePassword } = useAuthInternal();
   const { subscription } = useSubscription();
   const { theme, setTheme } = useTheme();
@@ -219,7 +219,7 @@ export default function ProfilePage() {
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">{t.prof_overview}</TabsTrigger>
             <TabsTrigger value="achievements">{t.prof_achievements}</TabsTrigger>
-            <TabsTrigger value="bookmarks">Bookmarks</TabsTrigger>
+            <TabsTrigger value="bookmarks">{t.prof_bookmarks}</TabsTrigger>
             <TabsTrigger value="settings">{t.prof_settings}</TabsTrigger>
           </TabsList>
 
@@ -256,7 +256,7 @@ export default function ProfilePage() {
               </Card>
             </motion.div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[['Total XP', progress.xp.toLocaleString()], ['Level', progress.level], ['Lessons', `${progress.completedLessons.length}/${LESSONS.length}`], ['Streak', <StreakBadge key="s" streak={progress.streak} compact />]].map(([label, val]) => (
+              {[[t.prog_xp_total, progress.xp.toLocaleString()], [t.dash_level, progress.level], [t.prog_lessons, `${progress.completedLessons.length}/${LESSONS.length}`], [t.prog_streak, <StreakBadge key="s" streak={progress.streak} compact />]].map(([label, val]) => (
                 <Card key={String(label)}><CardContent className="pt-4 pb-3 text-center"><div className="text-lg font-bold font-heading">{val}</div><div className="text-xs text-muted-foreground mt-0.5">{label}</div></CardContent></Card>
               ))}
             </div>
@@ -264,7 +264,7 @@ export default function ProfilePage() {
             <Card className={`border ${chessRank.borderColor} ${chessRank.bgColor}`}>
               <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2">
                 <span className="text-lg">{chessRank.icon}</span>
-                Historical Rank: <span className={chessRank.color}>{chessRank.name}</span>
+                {t.prof_historical_rank}: <span className={chessRank.color}>{chessRank.name}</span>
               </CardTitle></CardHeader>
               <CardContent className="space-y-2">
                 <p className="text-xs text-muted-foreground">{chessRank.desc}</p>
@@ -282,7 +282,7 @@ export default function ProfilePage() {
             </Card>
 
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center justify-between">Current Plan <Button size="sm" variant="outline" onClick={() => navigate('/pricing')}>Change Plan</Button></CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center justify-between">{t.prof_plan} <Button size="sm" variant="outline" onClick={() => navigate('/pricing')}>{t.prof_change_plan}</Button></CardTitle></CardHeader>
               <CardContent className="flex items-center gap-3">
                 <Crown className={`w-5 h-5 ${tier === 'master' ? 'text-amber-400' : tier === 'pro' ? 'text-primary' : 'text-muted-foreground'}`} />
                 <span className="font-medium">{tierLabel[tier]}</span>
@@ -306,8 +306,8 @@ export default function ProfilePage() {
             {bookmarkedLessons.length === 0 ? (
               <div className="text-center py-16 text-muted-foreground">
                 <Bookmark className="w-10 h-10 mx-auto mb-3 opacity-30" />
-                <p className="font-medium">No bookmarks yet</p>
-                <p className="text-sm mt-1">Tap the bookmark icon on any lesson to save it here.</p>
+                <p className="font-medium">{t.prof_no_bookmarks}</p>
+                <p className="text-sm mt-1">{t.prof_no_bookmarks_hint}</p>
               </div>
             ) : (
               <div className="space-y-2">
@@ -450,22 +450,36 @@ export default function ProfilePage() {
 
             {/* Danger zone */}
             <Card className="border-destructive/30">
-              <CardHeader className="pb-2"><CardTitle className="text-sm text-destructive">Danger Zone</CardTitle></CardHeader>
+              <CardHeader className="pb-2"><CardTitle className="text-sm text-destructive">{t.prof_danger_zone}</CardTitle></CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div><p className="font-medium text-sm">Reset All Progress</p><p className="text-xs text-muted-foreground">Clears XP, lessons, and quiz scores permanently.</p></div>
+                  <div><p className="font-medium text-sm">{t.prof_reset_title}</p><p className="text-xs text-muted-foreground">{t.prof_reset_desc}</p></div>
                   <AlertDialog>
-                    <AlertDialogTrigger asChild><Button variant="destructive" size="sm">Reset</Button></AlertDialogTrigger>
+                    <AlertDialogTrigger asChild><Button variant="destructive" size="sm">{t.prof_reset_btn}</Button></AlertDialogTrigger>
                     <AlertDialogContent>
-                      <AlertDialogHeader><AlertDialogTitle>Reset all progress?</AlertDialogTitle><AlertDialogDescription>This will permanently delete all your XP, completed lessons, quiz scores, and achievements. This action cannot be undone.</AlertDialogDescription></AlertDialogHeader>
-                      <AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction className="bg-destructive text-destructive-foreground" onClick={() => { resetProgress(); toast.success('Progress reset.'); }}>Yes, reset everything</AlertDialogAction></AlertDialogFooter>
+                      <AlertDialogHeader><AlertDialogTitle>{t.prof_reset_confirm}</AlertDialogTitle><AlertDialogDescription>{t.prof_reset_confirm_desc}</AlertDialogDescription></AlertDialogHeader>
+                      <AlertDialogFooter><AlertDialogCancel>{t.btn_cancel}</AlertDialogCancel><AlertDialogAction className="bg-destructive text-destructive-foreground" onClick={() => { resetProgress(); toast.success('Progress reset.'); }}>{t.prof_reset_yes}</AlertDialogAction></AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
                 </div>
               </CardContent>
             </Card>
 
-            <Button variant="outline" className="w-full text-destructive border-destructive/30 hover:bg-destructive/10" onClick={() => { logout(); navigate('/'); }}>Log Out</Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline" className="w-full text-destructive border-destructive/30 hover:bg-destructive/10">{t.nav_logout}</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t.logout_title}</AlertDialogTitle>
+                  <AlertDialogDescription>{t.logout_desc}</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t.btn_cancel}</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => startLogout()}>{t.nav_logout}</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </TabsContent>
         </Tabs>
       </div>

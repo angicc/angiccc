@@ -12,19 +12,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 type Category = 'bug' | 'feature' | 'content' | 'other';
 type Priority = 'low' | 'medium' | 'high';
 
-const CATEGORIES: { id: Category; icon: React.ElementType; label: string; desc: string; color: string; bg: string; border: string }[] = [
-  { id: 'bug',     icon: Bug,          label: 'Bug Report',       desc: 'Something is broken or not working correctly',      color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/40'    },
-  { id: 'feature', icon: Lightbulb,    label: 'Feature Request',  desc: 'Suggest a new feature or improvement',              color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/40'   },
-  { id: 'content', icon: FileText,     label: 'Content Issue',    desc: 'Incorrect or missing historical information',       color: 'text-blue-400',    bg: 'bg-blue-400/10',    border: 'border-blue-400/40'    },
-  { id: 'other',   icon: MessageSquare,label: 'Other',            desc: 'General feedback or anything else',                 color: 'text-violet-400',  bg: 'bg-violet-400/10',  border: 'border-violet-400/40'  },
-];
-
-const PRIORITIES: { id: Priority; label: string; color: string; bg: string }[] = [
-  { id: 'low',    label: 'Low',    color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
-  { id: 'medium', label: 'Medium', color: 'text-amber-400',   bg: 'bg-amber-400/10'   },
-  { id: 'high',   label: 'High',   color: 'text-rose-400',    bg: 'bg-rose-400/10'    },
-];
-
 type Report = { id: string; category: Category; priority: Priority; subject: string; description: string; userId: string; submittedAt: string };
 
 function loadReports(): Report[] {
@@ -46,6 +33,19 @@ export default function ReportPage() {
   const [submitted, setSubmitted]   = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
+  const CATEGORIES: { id: Category; icon: React.ElementType; label: string; desc: string; color: string; bg: string; border: string }[] = [
+    { id: 'bug',     icon: Bug,          label: t.report_cat_bug,     desc: t.report_cat_bug_desc,     color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/40'    },
+    { id: 'feature', icon: Lightbulb,    label: t.report_cat_feature, desc: t.report_cat_feature_desc, color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/40'   },
+    { id: 'content', icon: FileText,     label: t.report_cat_content, desc: t.report_cat_content_desc, color: 'text-blue-400',    bg: 'bg-blue-400/10',    border: 'border-blue-400/40'    },
+    { id: 'other',   icon: MessageSquare,label: t.report_cat_other,   desc: t.report_cat_other_desc,   color: 'text-violet-400',  bg: 'bg-violet-400/10',  border: 'border-violet-400/40'  },
+  ];
+
+  const PRIORITIES: { id: Priority; label: string; color: string; bg: string }[] = [
+    { id: 'low',    label: t.report_pri_low,    color: 'text-emerald-400', bg: 'bg-emerald-400/10' },
+    { id: 'medium', label: t.report_pri_medium, color: 'text-amber-400',   bg: 'bg-amber-400/10'   },
+    { id: 'high',   label: t.report_pri_high,   color: 'text-rose-400',    bg: 'bg-rose-400/10'    },
+  ];
+
   const canSubmit = category && subject.trim().length >= 3 && description.trim().length >= 10;
 
   function handleSubmit() {
@@ -64,7 +64,7 @@ export default function ReportPage() {
       saveReport(report);
       setSubmitted(true);
       setSubmitting(false);
-      toast.success('Report submitted — thank you for the feedback!');
+      toast.success(t.report_thanks);
     }, 800);
   }
 
@@ -91,22 +91,17 @@ export default function ReportPage() {
         </motion.div>
 
         {submitted ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-          >
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
             <Card className="border-emerald-400/30">
               <CardContent className="pt-8 pb-8 text-center space-y-4">
                 <div className="w-14 h-14 rounded-full bg-emerald-400/10 flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-7 h-7 text-emerald-400" />
                 </div>
                 <div>
-                  <h2 className="font-heading text-xl font-bold mb-2">Report Submitted</h2>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    Thank you for taking the time to report this. Your feedback helps us make Historify better for everyone.
-                  </p>
+                  <h2 className="font-heading text-xl font-bold mb-2">{t.report_submitted_title}</h2>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{t.report_submitted_msg}</p>
                 </div>
-                <Button onClick={reset} variant="outline" size="sm">Submit Another Report</Button>
+                <Button onClick={reset} variant="outline" size="sm">{t.report_another}</Button>
               </CardContent>
             </Card>
           </motion.div>
@@ -116,8 +111,8 @@ export default function ReportPage() {
             <Card>
               <CardContent className="pt-5 pb-4 space-y-3">
                 <div>
-                  <p className="font-semibold text-sm mb-0.5">Category <span className="text-rose-400">*</span></p>
-                  <p className="text-muted-foreground text-xs">What type of issue are you reporting?</p>
+                  <p className="font-semibold text-sm mb-0.5">{t.report_category_label} <span className="text-rose-400">*</span></p>
+                  <p className="text-muted-foreground text-xs">{t.report_category_hint}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   {CATEGORIES.map(cat => (
@@ -145,8 +140,8 @@ export default function ReportPage() {
             <Card>
               <CardContent className="pt-5 pb-4 space-y-3">
                 <div>
-                  <p className="font-semibold text-sm mb-0.5">Priority</p>
-                  <p className="text-muted-foreground text-xs">How severely does this affect your experience?</p>
+                  <p className="font-semibold text-sm mb-0.5">{t.report_priority_label}</p>
+                  <p className="text-muted-foreground text-xs">{t.report_priority_hint}</p>
                 </div>
                 <div className="flex gap-2">
                   {PRIORITIES.map(p => (
@@ -170,8 +165,8 @@ export default function ReportPage() {
             <Card>
               <CardContent className="pt-5 pb-4 space-y-3">
                 <div>
-                  <p className="font-semibold text-sm mb-0.5">Subject <span className="text-rose-400">*</span></p>
-                  <p className="text-muted-foreground text-xs">A brief title for the issue</p>
+                  <p className="font-semibold text-sm mb-0.5">{t.report_subject_label} <span className="text-rose-400">*</span></p>
+                  <p className="text-muted-foreground text-xs">{t.report_subject_hint}</p>
                 </div>
                 <input
                   value={subject}
@@ -188,13 +183,13 @@ export default function ReportPage() {
             <Card>
               <CardContent className="pt-5 pb-4 space-y-3">
                 <div>
-                  <p className="font-semibold text-sm mb-0.5">Description <span className="text-rose-400">*</span></p>
-                  <p className="text-muted-foreground text-xs">Describe the issue in detail. Include steps to reproduce if it's a bug.</p>
+                  <p className="font-semibold text-sm mb-0.5">{t.report_desc_label} <span className="text-rose-400">*</span></p>
+                  <p className="text-muted-foreground text-xs">{t.report_desc_hint}</p>
                 </div>
                 <textarea
                   value={description}
                   onChange={e => setDescription(e.target.value)}
-                  placeholder="Please describe the issue in as much detail as possible. For bugs, tell us: what you did, what happened, and what you expected to happen."
+                  placeholder={t.report_placeholder}
                   rows={5}
                   maxLength={1000}
                   className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm outline-none focus:border-primary/60 transition-colors placeholder:text-muted-foreground/50 resize-none leading-relaxed"
@@ -211,11 +206,11 @@ export default function ReportPage() {
                 </Badge>
               )}
               <Badge variant="outline" className="text-xs">
-                Priority: {PRIORITIES.find(p => p.id === priority)?.label}
+                {t.report_priority_badge} {PRIORITIES.find(p => p.id === priority)?.label}
               </Badge>
               {currentUser && (
                 <Badge variant="outline" className="text-xs">
-                  Submitted as: {currentUser.email}
+                  {currentUser.email}
                 </Badge>
               )}
             </div>
@@ -228,15 +223,15 @@ export default function ReportPage() {
               onClick={handleSubmit}
             >
               {submitting ? (
-                <>Submitting…</>
+                <>{t.report_submitting}</>
               ) : (
-                <><Send className="w-4 h-4" /> Submit Report</>
+                <><Send className="w-4 h-4" /> {t.report_submit_btn}</>
               )}
             </Button>
 
             {!canSubmit && (
               <p className="text-center text-xs text-muted-foreground">
-                Please select a category, add a subject (3+ chars), and a description (10+ chars) to submit.
+                {t.report_placeholder}
               </p>
             )}
           </motion.div>

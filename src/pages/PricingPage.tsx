@@ -12,11 +12,12 @@ import { Logo } from '@/components/shared/Logo';
 import { toast } from 'sonner';
 import type { SubscriptionTier } from '@/types';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getTranslatedPlanFeatures } from '@/i18n/planTranslations';
 
 const ICONS: Record<SubscriptionTier, React.ReactNode> = { free: <BookOpen className="w-6 h-6" />, pro: <Zap className="w-6 h-6" />, master: <Crown className="w-6 h-6" /> };
 
 export default function PricingPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const { subscription, upgrade } = useSubscription();
@@ -76,12 +77,12 @@ export default function PricingPage() {
                 <CardHeader className="pb-4">
                   <div className={`flex items-center gap-3 mb-3 ${plan.id === 'master' ? 'text-amber-400' : plan.id === 'pro' ? 'text-primary' : 'text-muted-foreground'}`}>{ICONS[plan.id as SubscriptionTier]}<span className="font-heading text-xl font-bold text-foreground">{plan.name}</span></div>
                   <div className="flex items-baseline gap-1 mb-2">
-                    {plan.price === 0 ? <span className="text-4xl font-bold font-heading">Free</span> : <><span className="text-4xl font-bold font-heading">${plan.price}</span><span className="text-muted-foreground text-sm">/month</span></>}
+                    {plan.price === 0 ? <span className="text-4xl font-bold font-heading">{t.pricing_price_free}</span> : <><span className="text-4xl font-bold font-heading">${plan.price}</span><span className="text-muted-foreground text-sm">{t.pricing_month}</span></>}
                   </div>
                   <p className="text-muted-foreground text-sm">{plan.description}</p>
                 </CardHeader>
                 <CardContent className="flex flex-col flex-1 gap-6">
-                  <ul className="space-y-3 flex-1">{plan.features.map(f => <li key={f} className="flex items-start gap-2 text-sm"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>{f}</span></li>)}</ul>
+                  <ul className="space-y-3 flex-1">{(getTranslatedPlanFeatures(plan.id, language) ?? plan.features).map(f => <li key={f} className="flex items-start gap-2 text-sm"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>{f}</span></li>)}</ul>
                   <Button className="w-full" variant={plan.id === 'pro' ? 'default' : plan.id === 'master' ? 'outline' : 'secondary'} onClick={() => handleSelect(plan.id as SubscriptionTier)} disabled={isCurrent}>
                     {isCurrent ? t.pricing_cur_btn : isUp ? `${t.pricing_upgrade_to} ${plan.name}` : plan.price === 0 ? t.pricing_downgrade_free : `${t.pricing_switch_to} ${plan.name}`}
                   </Button>
@@ -94,10 +95,10 @@ export default function PricingPage() {
           <h2 className="font-heading text-2xl font-bold text-center mb-8">{t.pricing_faq}</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {[
-              { q:'Can I cancel at any time?', a:'Yes. Downgrade to Free anytime from your profile settings — no lock-in.' },
-              { q:'What happens to my progress if I downgrade?', a:'All your XP, achievements, and completed lessons are saved forever regardless of plan.' },
-              { q:'Is payment secure?', a:'In this demo, plan selection is simulated. Production payments would use Stripe with full PCI compliance.' },
-              { q:'What counts as an AI message?', a:'Each message you send to the AI Tutor counts as one. Tutor responses do not count against your limit.' },
+              { q: t.pricing_faq_q1, a: t.pricing_faq_a1 },
+              { q: t.pricing_faq_q2, a: t.pricing_faq_a2 },
+              { q: t.pricing_faq_q3, a: t.pricing_faq_a3 },
+              { q: t.pricing_faq_q4, a: t.pricing_faq_a4 },
             ].map(({ q, a }) => (
               <div key={q} className="p-5 rounded-lg border border-border bg-card">
                 <h3 className="font-semibold mb-2 text-sm">{q}</h3>

@@ -151,6 +151,35 @@ type TranslationKeys = {
   // Pricing extras
   pricing_faq: string; pricing_cur_btn: string; pricing_upgrade_to: string;
   pricing_downgrade_free: string; pricing_switch_to: string;
+  // Pricing FAQ
+  pricing_faq_q1: string; pricing_faq_a1: string;
+  pricing_faq_q2: string; pricing_faq_a2: string;
+  pricing_faq_q3: string; pricing_faq_a3: string;
+  pricing_faq_q4: string; pricing_faq_a4: string;
+  pricing_price_free: string;
+  // Report page details
+  report_cat_bug: string; report_cat_bug_desc: string;
+  report_cat_feature: string; report_cat_feature_desc: string;
+  report_cat_content: string; report_cat_content_desc: string;
+  report_cat_other: string; report_cat_other_desc: string;
+  report_pri_low: string; report_pri_medium: string; report_pri_high: string;
+  report_category_label: string; report_category_hint: string;
+  report_priority_label: string; report_priority_hint: string;
+  report_subject_label: string; report_subject_hint: string;
+  report_desc_label: string; report_desc_hint: string;
+  report_submit_btn: string; report_submitting: string;
+  report_submitted_title: string; report_submitted_msg: string;
+  report_another: string; report_priority_badge: string;
+  // Profile extras
+  prof_bookmarks: string; prof_no_bookmarks: string; prof_no_bookmarks_hint: string;
+  prof_historical_rank: string; prof_change_plan: string;
+  prof_danger_zone: string;
+  prof_reset_title: string; prof_reset_desc: string;
+  prof_reset_confirm: string; prof_reset_confirm_desc: string; prof_reset_yes: string;
+  // Flashcards extras
+  flash_shuffle: string; flash_answer: string; flash_no_cards: string;
+  // Profile reset button
+  prof_reset_btn: string;
 };
 
 type Translations = Record<Language, TranslationKeys>;
@@ -346,6 +375,31 @@ export const T: Translations = {
     sidebar_streak: 'd streak',
     pricing_faq: 'Frequently Asked Questions', pricing_cur_btn: 'Current Plan',
     pricing_upgrade_to: 'Upgrade to', pricing_downgrade_free: 'Downgrade to Free', pricing_switch_to: 'Switch to',
+    pricing_faq_q1: 'Can I cancel at any time?', pricing_faq_a1: 'Yes. Downgrade to Free anytime from your profile settings — no lock-in.',
+    pricing_faq_q2: 'What happens to my progress if I downgrade?', pricing_faq_a2: 'All your XP, achievements, and completed lessons are saved forever regardless of plan.',
+    pricing_faq_q3: 'Is payment secure?', pricing_faq_a3: 'In this demo, plan selection is simulated. Production payments would use Stripe with full PCI compliance.',
+    pricing_faq_q4: 'What counts as an AI message?', pricing_faq_a4: 'Each message you send to the AI Tutor counts as one. Tutor responses do not count against your limit.',
+    pricing_price_free: 'Free',
+    report_cat_bug: 'Bug Report', report_cat_bug_desc: 'Something is broken or not working correctly',
+    report_cat_feature: 'Feature Request', report_cat_feature_desc: 'Suggest a new feature or improvement',
+    report_cat_content: 'Content Issue', report_cat_content_desc: 'Incorrect or missing historical information',
+    report_cat_other: 'Other', report_cat_other_desc: 'General feedback or anything else',
+    report_pri_low: 'Low', report_pri_medium: 'Medium', report_pri_high: 'High',
+    report_category_label: 'Category', report_category_hint: 'What type of issue are you reporting?',
+    report_priority_label: 'Priority', report_priority_hint: 'How severely does this affect your experience?',
+    report_subject_label: 'Subject', report_subject_hint: 'A brief title for the issue',
+    report_desc_label: 'Description', report_desc_hint: "Describe the issue in detail. Include steps to reproduce if it's a bug.",
+    report_submit_btn: 'Submit Report', report_submitting: 'Submitting…',
+    report_submitted_title: 'Report Submitted', report_submitted_msg: 'Thank you for taking the time to report this. Your feedback helps us make Historify better for everyone.',
+    report_another: 'Submit Another Report', report_priority_badge: 'Priority:',
+    prof_bookmarks: 'Bookmarks', prof_no_bookmarks: 'No bookmarks yet', prof_no_bookmarks_hint: 'Tap the bookmark icon on any lesson to save it here.',
+    prof_historical_rank: 'Historical Rank', prof_change_plan: 'Change Plan',
+    prof_danger_zone: 'Danger Zone',
+    prof_reset_title: 'Reset All Progress', prof_reset_desc: 'Clears XP, lessons, and quiz scores permanently.',
+    prof_reset_confirm: 'Reset all progress?', prof_reset_confirm_desc: 'This will permanently delete all your XP, completed lessons, quiz scores, and achievements. This action cannot be undone.',
+    prof_reset_yes: 'Yes, reset everything',
+    flash_shuffle: 'Shuffle', flash_answer: 'Answer', flash_no_cards: 'No cards available for this filter.',
+    prof_reset_btn: 'Reset',
   },
 
   es: {
@@ -516,6 +570,31 @@ export const T: Translations = {
     sidebar_streak: 'd racha',
     pricing_faq: 'Preguntas Frecuentes', pricing_cur_btn: 'Plan Actual',
     pricing_upgrade_to: 'Actualizar a', pricing_downgrade_free: 'Bajar a Gratis', pricing_switch_to: 'Cambiar a',
+    pricing_faq_q1: '¿Puedo cancelar en cualquier momento?', pricing_faq_a1: 'Sí. Reduce a Gratis desde la configuración de tu perfil — sin compromiso.',
+    pricing_faq_q2: '¿Qué pasa con mi progreso si bajo de plan?', pricing_faq_a2: 'Todo tu XP, logros y lecciones completadas se guardan para siempre sin importar el plan.',
+    pricing_faq_q3: '¿Es seguro el pago?', pricing_faq_a3: 'En esta demo, la selección de plan es simulada. Los pagos de producción usarían Stripe con pleno cumplimiento PCI.',
+    pricing_faq_q4: '¿Qué cuenta como mensaje de IA?', pricing_faq_a4: 'Cada mensaje que envías al Tutor IA cuenta como uno. Las respuestas del Tutor no cuentan contra tu límite.',
+    pricing_price_free: 'Gratis',
+    report_cat_bug: 'Reporte de Error', report_cat_bug_desc: 'Algo está roto o no funciona correctamente',
+    report_cat_feature: 'Solicitud de Función', report_cat_feature_desc: 'Sugerir una nueva función o mejora',
+    report_cat_content: 'Problema de Contenido', report_cat_content_desc: 'Información histórica incorrecta o faltante',
+    report_cat_other: 'Otro', report_cat_other_desc: 'Comentarios generales o cualquier otra cosa',
+    report_pri_low: 'Baja', report_pri_medium: 'Media', report_pri_high: 'Alta',
+    report_category_label: 'Categoría', report_category_hint: '¿Qué tipo de problema estás reportando?',
+    report_priority_label: 'Prioridad', report_priority_hint: '¿Cuánto afecta esto tu experiencia?',
+    report_subject_label: 'Asunto', report_subject_hint: 'Un breve título para el problema',
+    report_desc_label: 'Descripción', report_desc_hint: 'Describe el problema en detalle.',
+    report_submit_btn: 'Enviar Reporte', report_submitting: 'Enviando…',
+    report_submitted_title: 'Reporte Enviado', report_submitted_msg: 'Gracias por tomarte el tiempo de reportarlo. Tu feedback nos ayuda a mejorar Historify para todos.',
+    report_another: 'Enviar Otro Reporte', report_priority_badge: 'Prioridad:',
+    prof_bookmarks: 'Marcadores', prof_no_bookmarks: 'Aún no hay marcadores', prof_no_bookmarks_hint: 'Toca el icono de marcador en cualquier lección para guardarlo aquí.',
+    prof_historical_rank: 'Rango Histórico', prof_change_plan: 'Cambiar Plan',
+    prof_danger_zone: 'Zona de Peligro',
+    prof_reset_title: 'Restablecer Todo el Progreso', prof_reset_desc: 'Borra XP, lecciones y puntuaciones permanentemente.',
+    prof_reset_confirm: '¿Restablecer todo el progreso?', prof_reset_confirm_desc: 'Esto eliminará permanentemente todo tu XP, lecciones completadas, puntuaciones y logros. Esta acción no se puede deshacer.',
+    prof_reset_yes: 'Sí, restablecer todo',
+    flash_shuffle: 'Barajar', flash_answer: 'Respuesta', flash_no_cards: 'No hay tarjetas disponibles para este filtro.',
+    prof_reset_btn: 'Restablecer',
   },
 
   ru: {
@@ -686,6 +765,31 @@ export const T: Translations = {
     sidebar_streak: ' дн.',
     pricing_faq: 'Часто Задаваемые Вопросы', pricing_cur_btn: 'Текущий план',
     pricing_upgrade_to: 'Обновить до', pricing_downgrade_free: 'Снизить до Бесплатного', pricing_switch_to: 'Переключить на',
+    pricing_faq_q1: 'Можно ли отменить в любое время?', pricing_faq_a1: 'Да. Снизьте до бесплатного плана в настройках профиля — без обязательств.',
+    pricing_faq_q2: 'Что будет с прогрессом при снижении плана?', pricing_faq_a2: 'Весь ваш XP, достижения и пройденные уроки сохраняются навсегда независимо от плана.',
+    pricing_faq_q3: 'Безопасна ли оплата?', pricing_faq_a3: 'В этом демо выбор плана симулируется. Реальные платежи использовали бы Stripe с полным соответствием PCI.',
+    pricing_faq_q4: 'Что считается сообщением ИИ?', pricing_faq_a4: 'Каждое сообщение Наставнику ИИ считается одним. Ответы Наставника не учитываются.',
+    pricing_price_free: 'Бесплатно',
+    report_cat_bug: 'Сообщение об ошибке', report_cat_bug_desc: 'Что-то сломано или не работает',
+    report_cat_feature: 'Запрос функции', report_cat_feature_desc: 'Предложить новую функцию или улучшение',
+    report_cat_content: 'Проблема с контентом', report_cat_content_desc: 'Неверная или отсутствующая историческая информация',
+    report_cat_other: 'Другое', report_cat_other_desc: 'Общий отзыв или что-то ещё',
+    report_pri_low: 'Низкая', report_pri_medium: 'Средняя', report_pri_high: 'Высокая',
+    report_category_label: 'Категория', report_category_hint: 'Какой тип проблемы вы сообщаете?',
+    report_priority_label: 'Приоритет', report_priority_hint: 'Насколько сильно это влияет на ваш опыт?',
+    report_subject_label: 'Тема', report_subject_hint: 'Краткое описание проблемы',
+    report_desc_label: 'Описание', report_desc_hint: 'Опишите проблему подробно.',
+    report_submit_btn: 'Отправить отчёт', report_submitting: 'Отправка…',
+    report_submitted_title: 'Отчёт отправлен', report_submitted_msg: 'Спасибо, что нашли время сообщить об этом. Ваш отзыв помогает нам улучшить Historify.',
+    report_another: 'Отправить ещё один отчёт', report_priority_badge: 'Приоритет:',
+    prof_bookmarks: 'Закладки', prof_no_bookmarks: 'Закладок пока нет', prof_no_bookmarks_hint: 'Нажмите значок закладки на любом уроке, чтобы сохранить его здесь.',
+    prof_historical_rank: 'Исторический Ранг', prof_change_plan: 'Изменить план',
+    prof_danger_zone: 'Опасная зона',
+    prof_reset_title: 'Сбросить весь прогресс', prof_reset_desc: 'Удаляет XP, уроки и результаты навсегда.',
+    prof_reset_confirm: 'Сбросить весь прогресс?', prof_reset_confirm_desc: 'Это безвозвратно удалит весь ваш XP, пройденные уроки, результаты и достижения.',
+    prof_reset_yes: 'Да, сбросить всё',
+    flash_shuffle: 'Перемешать', flash_answer: 'Ответ', flash_no_cards: 'Карточки для этого фильтра не найдены.',
+    prof_reset_btn: 'Сбросить',
   },
 
   mk: {
@@ -856,5 +960,30 @@ export const T: Translations = {
     sidebar_streak: 'д серија',
     pricing_faq: 'Најчесто Поставувани Прашања', pricing_cur_btn: 'Тековен план',
     pricing_upgrade_to: 'Надгради на', pricing_downgrade_free: 'Намали на Бесплатно', pricing_switch_to: 'Префрли на',
+    pricing_faq_q1: 'Можам ли да откажам во секое време?', pricing_faq_a1: 'Да. Намали на Бесплатен во поставките на профилот — без обврски.',
+    pricing_faq_q2: 'Што ќе се случи со мојот напредок ако го намалам планот?', pricing_faq_a2: 'Целиот твој XP, достигнувања и завршени лекции се зачувани засекогаш без оглед на планот.',
+    pricing_faq_q3: 'Дали плаќањето е безбедно?', pricing_faq_a3: 'Во оваа демо-верзија, изборот на план е симулиран. Реалните плаќања би користеле Stripe.',
+    pricing_faq_q4: 'Што се смета за порака на ВИ?', pricing_faq_a4: 'Секоја порака до ВИ Туторот се брои. Одговорите на Туторот не се бројат.',
+    pricing_price_free: 'Бесплатно',
+    report_cat_bug: 'Пријава на Грешка', report_cat_bug_desc: 'Нешто е скршено или не работи правилно',
+    report_cat_feature: 'Барање за Функција', report_cat_feature_desc: 'Предложи нова функција или подобрување',
+    report_cat_content: 'Проблем со Содржина', report_cat_content_desc: 'Неточни или недостасувачки историски информации',
+    report_cat_other: 'Друго', report_cat_other_desc: 'Општи повратни информации или нешто друго',
+    report_pri_low: 'Ниска', report_pri_medium: 'Средна', report_pri_high: 'Висока',
+    report_category_label: 'Категорија', report_category_hint: 'Каков вид на проблем пријавуваш?',
+    report_priority_label: 'Приоритет', report_priority_hint: 'Колку силно ова влијае на твоето искуство?',
+    report_subject_label: 'Предмет', report_subject_hint: 'Краток наслов за проблемот',
+    report_desc_label: 'Опис', report_desc_hint: 'Опиши го проблемот детално.',
+    report_submit_btn: 'Испрати Пријава', report_submitting: 'Испраќање…',
+    report_submitted_title: 'Пријавата е Испратена', report_submitted_msg: 'Благодариме за пријавувањето. Твоите повратни информации ни помагаат да го подобриме Historify.',
+    report_another: 'Испрати Уште Една Пријава', report_priority_badge: 'Приоритет:',
+    prof_bookmarks: 'Обележувачи', prof_no_bookmarks: 'Сè уште нема обележувачи', prof_no_bookmarks_hint: 'Допри ја иконата за обележување на секоја лекција за да ја зачуваш тука.',
+    prof_historical_rank: 'Историски Ранг', prof_change_plan: 'Промени план',
+    prof_danger_zone: 'Опасна Зона',
+    prof_reset_title: 'Ресетирај го Целиот Напредок', prof_reset_desc: 'Ги брише XP, лекциите и резултатите засекогаш.',
+    prof_reset_confirm: 'Ресетирање на целиот напредок?', prof_reset_confirm_desc: 'Ова ќе го избрише засекогаш целиот твој XP, завршени лекции, резултати и достигнувања. Оваа акција не може да се поврати.',
+    prof_reset_yes: 'Да, ресетирај сè',
+    flash_shuffle: 'Измешај', flash_answer: 'Одговор', flash_no_cards: 'Нема картички за овој филтер.',
+    prof_reset_btn: 'Ресетирај',
   },
 };

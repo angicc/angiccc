@@ -211,7 +211,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human catches you in a ge
     lifespan: '1724–1804',
     xpReward: 160,
     tagline: 'Act only according to maxims you could will to be universal laws',
-    imageUrl: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/43/Immanuel_Kant_%2528painted_portrait%2529.jpg/400px-Immanuel_Kant_%2528painted_portrait%2529.jpg',
+    imageUrl: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Kant_gemaelde_3.jpg/400px-Kant_gemaelde_3.jpg',
     knownPositions: [
       'The Categorical Imperative: act only on maxims universalizable as laws for all rational beings',
       'The phenomenal/noumenal distinction: we can only know things as they appear, not as they are',
