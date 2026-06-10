@@ -15,12 +15,13 @@ import type { Achievement } from '@/types';
 import { markLessonComplete } from '@/features/progress/progressStore';
 import { getLessonById, getEraLessons } from '@/features/content/lessonsData';
 import { getEraById } from '@/features/content/erasData';
+import { getTranslatedLesson } from '@/i18n/contentTranslations';
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function LessonPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { eraId, lessonId } = useParams<{ eraId: string; lessonId: string }>();
   const { currentUser, refreshProgress } = useAuth();
   const navigate = useNavigate();
@@ -31,11 +32,13 @@ export default function LessonPage() {
     currentUser && lessonId ? isBookmarked(currentUser.id, lessonId) : false
   );
 
-  const lesson = getLessonById(lessonId ?? '');
+  const rawLesson = getLessonById(lessonId ?? '');
+  const lesson = rawLesson ? getTranslatedLesson(rawLesson, language) : undefined;
   const era = getEraById(eraId ?? '');
   if (!lesson || !era) return <AppShell><div className="text-center py-20 text-muted-foreground">Lesson not found.</div></AppShell>;
 
-  const eraLessons = getEraLessons(eraId ?? '');
+  const eraLessonsRaw = getEraLessons(eraId ?? '');
+  const eraLessons = eraLessonsRaw.map(l => getTranslatedLesson(l, language));
   const idx = eraLessons.findIndex(l => l.id === lessonId);
   const prev = idx > 0 ? eraLessons[idx - 1] : null;
   const next = idx < eraLessons.length - 1 ? eraLessons[idx + 1] : null;
@@ -68,7 +71,7 @@ export default function LessonPage() {
       <div className="max-w-5xl mx-auto">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-5">
-          <Link to="/eras" className="hover:text-foreground transition-colors">Eras</Link>
+          <Link to="/eras" className="hover:text-foreground transition-colors">{t.lesson_eras_breadcrumb}</Link>
           <ChevronRight className="w-3.5 h-3.5" />
           <span className={era.color}>{era.shortName}</span>
           <ChevronRight className="w-3.5 h-3.5" />
@@ -165,7 +168,7 @@ export default function LessonPage() {
               className="w-full gap-2"
               onClick={handleBookmark}
             >
-              {bookmarked ? <><BookmarkCheck className="w-4 h-4 text-amber-400" />Bookmarked</> : <><Bookmark className="w-4 h-4" />Save Lesson</>}
+              {bookmarked ? <><BookmarkCheck className="w-4 h-4 text-amber-400" />{t.lesson_bookmarked}</> : <><Bookmark className="w-4 h-4" />{t.lesson_save}</>}
             </Button>
           </div>
         </div>

@@ -56,6 +56,7 @@ function PhilosopherAvatar({ philosopher, size = 28 }: { philosopher: Philosophe
           src={philosopher.imageUrl}
           alt={philosopher.name}
           className="w-full h-full object-cover object-top"
+          referrerPolicy="no-referrer"
           onError={() => setImgError(true)}
         />
       </div>

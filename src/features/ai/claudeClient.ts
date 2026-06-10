@@ -24,7 +24,7 @@ export async function* streamChatResponse(
 ): AsyncGenerator<string> {
   // NOTE: VITE_ANTHROPIC_API_KEY is exposed client-side. Use a server proxy in production.
   const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
-  if (!apiKey) throw new Error('VITE_ANTHROPIC_API_KEY is not set. Add it to your .env file.');
+  if (!apiKey) throw new Error('VITE_ANTHROPIC_API_KEY is not set. Create a .env.local file in your project root containing: VITE_ANTHROPIC_API_KEY=your_key_here');
 
   const baseSystem = systemOverride ?? SYSTEM_PROMPT;
   const system = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;

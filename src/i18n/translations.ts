@@ -39,6 +39,7 @@ type TranslationKeys = {
   lesson_key_facts: string; lesson_min_read: string; lesson_complete_btn: string;
   lesson_already_done: string; lesson_next: string; lesson_prev: string;
   lesson_take_quiz: string; lesson_discuss: string; lesson_notes_title: string;
+  lesson_bookmarked: string; lesson_save: string; lesson_eras_breadcrumb: string;
   // ── Quiz ───────────────────────────────────────────────────────
   quiz_correct: string; quiz_incorrect: string; quiz_score: string; quiz_xp_earned: string;
   quiz_performance_by_era: string; quiz_clio_rec: string; quiz_clio_thinking: string;
@@ -192,6 +193,7 @@ export const T: Translations = {
     lesson_next: 'Next Lesson', lesson_prev: 'Previous Lesson',
     lesson_take_quiz: 'Take Era Quiz', lesson_discuss: 'Discuss with Clio',
     lesson_notes_title: 'My Notes',
+    lesson_bookmarked: 'Bookmarked', lesson_save: 'Save Lesson', lesson_eras_breadcrumb: 'Eras',
     // Quiz
     quiz_correct: 'Correct!', quiz_incorrect: 'Not quite.', quiz_score: 'Score',
     quiz_xp_earned: 'XP earned', quiz_performance_by_era: 'Performance by Era',
@@ -377,6 +379,7 @@ export const T: Translations = {
     lesson_next: 'Siguiente Lección', lesson_prev: 'Lección Anterior',
     lesson_take_quiz: 'Hacer Quiz de Era', lesson_discuss: 'Comentar con Clio',
     lesson_notes_title: 'Mis Notas',
+    lesson_bookmarked: 'Guardada', lesson_save: 'Guardar Lección', lesson_eras_breadcrumb: 'Eras',
     quiz_correct: '¡Correcto!', quiz_incorrect: 'No del todo.', quiz_score: 'Puntuación',
     quiz_xp_earned: 'XP ganado', quiz_performance_by_era: 'Rendimiento por Era',
     quiz_clio_rec: 'Recomendación de Clio', quiz_clio_thinking: 'Clio está pensando…',
@@ -545,6 +548,7 @@ export const T: Translations = {
     lesson_next: 'Следующий Урок', lesson_prev: 'Предыдущий Урок',
     lesson_take_quiz: 'Пройти Викторину', lesson_discuss: 'Обсудить с Клио',
     lesson_notes_title: 'Мои Заметки',
+    lesson_bookmarked: 'Сохранено', lesson_save: 'Сохранить Урок', lesson_eras_breadcrumb: 'Эпохи',
     quiz_correct: 'Правильно!', quiz_incorrect: 'Не совсем.', quiz_score: 'Счёт',
     quiz_xp_earned: 'XP получено', quiz_performance_by_era: 'Результаты по Эпохам',
     quiz_clio_rec: 'Рекомендация Клио', quiz_clio_thinking: 'Клио думает…',
@@ -713,6 +717,7 @@ export const T: Translations = {
     lesson_next: 'Следна Лекција', lesson_prev: 'Претходна Лекција',
     lesson_take_quiz: 'Направи Квиз за Епохата', lesson_discuss: 'Разговарај со Клио',
     lesson_notes_title: 'Мои Белешки',
+    lesson_bookmarked: 'Зачувана', lesson_save: 'Зачувај Лекција', lesson_eras_breadcrumb: 'Епохи',
     quiz_correct: 'Точно!', quiz_incorrect: 'Не е точно.', quiz_score: 'Резултат',
     quiz_xp_earned: 'XP освоено', quiz_performance_by_era: 'Резултати по Епохи',
     quiz_clio_rec: 'Препорака на Клио', quiz_clio_thinking: 'Клио размислува…',

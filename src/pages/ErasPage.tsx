@@ -12,6 +12,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { ERAS } from '@/features/content/erasData';
 import { LESSONS } from '@/features/content/lessonsData';
+import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslations';
 
 const ERA_PHOTOS: Record<string, string> = {
   ancient:       'https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=700&q=60',
@@ -26,7 +27,7 @@ const card = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, trans
 export default function ErasPage() {
   const { progress } = useAuth();
   const { canLesson } = useSubscription();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
 
   return (
@@ -38,7 +39,8 @@ export default function ErasPage() {
         </motion.div>
 
         <motion.div variants={stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
-          {ERAS.map(era => {
+          {ERAS.map(rawEra => {
+            const era = getTranslatedEra(rawEra, language);
             const eraLessons = LESSONS.filter(l => l.eraId === era.id).sort((a, b) => a.order - b.order);
             const done = eraLessons.filter(l => progress?.completedLessons.includes(l.id)).length;
             const pct = eraLessons.length > 0 ? Math.round((done / eraLessons.length) * 100) : 0;
@@ -111,7 +113,7 @@ export default function ErasPage() {
                               )}
                             </div>
                             <span className={`flex-1 min-w-0 truncate font-medium ${complete ? 'text-primary' : 'text-foreground'}`}>
-                              {lesson.title}
+                              {getTranslatedLesson(lesson, language).title}
                             </span>
                             <div className="flex items-center gap-3 shrink-0 text-xs text-muted-foreground">
                               <span className="flex items-center gap-1">
