@@ -180,6 +180,24 @@ type TranslationKeys = {
   flash_shuffle: string; flash_answer: string; flash_no_cards: string;
   // Profile reset button
   prof_reset_btn: string;
+  // Profile Settings section
+  prof_picture: string; prof_change_photo: string; prof_upload_photo_btn: string; prof_remove_photo_btn: string;
+  prof_display_name: string; prof_save_btn: string;
+  prof_change_email: string; prof_current_email: string; prof_new_email: string; prof_cur_password: string; prof_update_email: string; prof_updating: string;
+  prof_change_password: string; prof_new_password: string; prof_confirm_password: string; prof_update_password: string;
+  prof_min_chars: string; prof_repeat_pwd: string;
+  prof_2fa_title: string; prof_2fa_enabled_msg: string; prof_2fa_disabled_msg: string;
+  prof_2fa_enabled_desc: string; prof_2fa_disabled_desc: string;
+  prof_2fa_disable: string; prof_2fa_enable: string;
+  prof_notif_title: string; prof_notif_reminders: string; prof_notif_reminders_desc: string;
+  prof_notif_achievements: string; prof_notif_achievements_desc: string;
+  prof_notif_weekly: string; prof_notif_weekly_desc: string;
+  prof_dark_mode: string;
+  prof_setup_2fa: string; prof_2fa_scan: string; prof_2fa_enter_code: string; prof_2fa_verify: string; prof_2fa_backup: string;
+  // Map feature
+  lesson_map: string;
+  map_key_locations: string;
+  map_zoom_hint: string;
 };
 
 type Translations = Record<Language, TranslationKeys>;
@@ -400,6 +418,23 @@ export const T: Translations = {
     prof_reset_yes: 'Yes, reset everything',
     flash_shuffle: 'Shuffle', flash_answer: 'Answer', flash_no_cards: 'No cards available for this filter.',
     prof_reset_btn: 'Reset',
+    // Profile Settings
+    prof_picture: 'Profile Picture', prof_change_photo: 'Change Photo', prof_upload_photo_btn: 'Upload Photo', prof_remove_photo_btn: 'Remove',
+    prof_display_name: 'Display Name', prof_save_btn: 'Save',
+    prof_change_email: 'Change Email', prof_current_email: 'Current:', prof_new_email: 'New Email', prof_cur_password: 'Current Password', prof_update_email: 'Update Email', prof_updating: 'Updating…',
+    prof_change_password: 'Change Password', prof_new_password: 'New Password', prof_confirm_password: 'Confirm New Password', prof_update_password: 'Update Password',
+    prof_min_chars: 'Min. 6 chars', prof_repeat_pwd: 'Repeat password',
+    prof_2fa_title: 'Two-Factor Authentication', prof_2fa_enabled_msg: '2FA is enabled', prof_2fa_disabled_msg: '2FA is disabled',
+    prof_2fa_enabled_desc: 'Your account is secured with an authenticator app.', prof_2fa_disabled_desc: 'Add an extra layer of security to your account.',
+    prof_2fa_disable: 'Disable', prof_2fa_enable: 'Enable',
+    prof_notif_title: 'Notification Preferences', prof_notif_reminders: 'Lesson Reminders', prof_notif_reminders_desc: 'Get reminded to keep your learning streak.',
+    prof_notif_achievements: 'Achievement Alerts', prof_notif_achievements_desc: 'Notify when you unlock a new achievement.',
+    prof_notif_weekly: 'Weekly Progress Digest', prof_notif_weekly_desc: 'A summary of your weekly learning activity.',
+    prof_dark_mode: 'Dark Mode',
+    prof_setup_2fa: 'Set Up 2FA', prof_2fa_scan: 'Scan the QR code with an authenticator app (Google Authenticator, Authy, etc.).', prof_2fa_enter_code: 'Enter the 6-digit code from your app', prof_2fa_verify: 'Verify & Enable', prof_2fa_backup: 'Backup codes (save these somewhere safe):',
+    lesson_map: 'Historical Map',
+    map_key_locations: 'Key Locations',
+    map_zoom_hint: 'Scroll to zoom · Drag to pan',
   },
 
   es: {
@@ -595,6 +630,23 @@ export const T: Translations = {
     prof_reset_yes: 'Sí, restablecer todo',
     flash_shuffle: 'Barajar', flash_answer: 'Respuesta', flash_no_cards: 'No hay tarjetas disponibles para este filtro.',
     prof_reset_btn: 'Restablecer',
+    // Profile Settings
+    prof_picture: 'Foto de Perfil', prof_change_photo: 'Cambiar Foto', prof_upload_photo_btn: 'Subir Foto', prof_remove_photo_btn: 'Eliminar',
+    prof_display_name: 'Nombre de Usuario', prof_save_btn: 'Guardar',
+    prof_change_email: 'Cambiar Email', prof_current_email: 'Actual:', prof_new_email: 'Nuevo Email', prof_cur_password: 'Contraseña Actual', prof_update_email: 'Actualizar Email', prof_updating: 'Actualizando…',
+    prof_change_password: 'Cambiar Contraseña', prof_new_password: 'Nueva Contraseña', prof_confirm_password: 'Confirmar Nueva Contraseña', prof_update_password: 'Actualizar Contraseña',
+    prof_min_chars: 'Mín. 6 caracteres', prof_repeat_pwd: 'Repetir contraseña',
+    prof_2fa_title: 'Autenticación de Dos Factores', prof_2fa_enabled_msg: '2FA está activado', prof_2fa_disabled_msg: '2FA está desactivado',
+    prof_2fa_enabled_desc: 'Tu cuenta está protegida con una app autenticadora.', prof_2fa_disabled_desc: 'Añade una capa extra de seguridad a tu cuenta.',
+    prof_2fa_disable: 'Desactivar', prof_2fa_enable: 'Activar',
+    prof_notif_title: 'Preferencias de Notificación', prof_notif_reminders: 'Recordatorios de Lección', prof_notif_reminders_desc: 'Recibe recordatorios para mantener tu racha de aprendizaje.',
+    prof_notif_achievements: 'Alertas de Logros', prof_notif_achievements_desc: 'Notificar cuando desbloquees un nuevo logro.',
+    prof_notif_weekly: 'Resumen Semanal de Progreso', prof_notif_weekly_desc: 'Un resumen de tu actividad de aprendizaje semanal.',
+    prof_dark_mode: 'Modo Oscuro',
+    prof_setup_2fa: 'Configurar 2FA', prof_2fa_scan: 'Escanea el código QR con una app autenticadora (Google Authenticator, Authy, etc.).', prof_2fa_enter_code: 'Introduce el código de 6 dígitos de tu app', prof_2fa_verify: 'Verificar y Activar', prof_2fa_backup: 'Códigos de respaldo (guárdalos en un lugar seguro):',
+    lesson_map: 'Mapa Histórico',
+    map_key_locations: 'Ubicaciones Clave',
+    map_zoom_hint: 'Desplaza para zoom · Arrastra para mover',
   },
 
   ru: {
@@ -790,6 +842,23 @@ export const T: Translations = {
     prof_reset_yes: 'Да, сбросить всё',
     flash_shuffle: 'Перемешать', flash_answer: 'Ответ', flash_no_cards: 'Карточки для этого фильтра не найдены.',
     prof_reset_btn: 'Сбросить',
+    // Profile Settings
+    prof_picture: 'Фото профиля', prof_change_photo: 'Изменить фото', prof_upload_photo_btn: 'Загрузить фото', prof_remove_photo_btn: 'Удалить',
+    prof_display_name: 'Имя пользователя', prof_save_btn: 'Сохранить',
+    prof_change_email: 'Изменить email', prof_current_email: 'Текущий:', prof_new_email: 'Новый email', prof_cur_password: 'Текущий пароль', prof_update_email: 'Обновить email', prof_updating: 'Обновление…',
+    prof_change_password: 'Изменить пароль', prof_new_password: 'Новый пароль', prof_confirm_password: 'Подтвердить новый пароль', prof_update_password: 'Обновить пароль',
+    prof_min_chars: 'Мин. 6 символов', prof_repeat_pwd: 'Повторите пароль',
+    prof_2fa_title: 'Двухфакторная аутентификация', prof_2fa_enabled_msg: '2FA включена', prof_2fa_disabled_msg: '2FA отключена',
+    prof_2fa_enabled_desc: 'Ваш аккаунт защищён приложением-аутентификатором.', prof_2fa_disabled_desc: 'Добавьте дополнительный уровень защиты для вашего аккаунта.',
+    prof_2fa_disable: 'Отключить', prof_2fa_enable: 'Включить',
+    prof_notif_title: 'Настройки уведомлений', prof_notif_reminders: 'Напоминания об уроках', prof_notif_reminders_desc: 'Получайте напоминания для поддержания серии обучения.',
+    prof_notif_achievements: 'Оповещения о достижениях', prof_notif_achievements_desc: 'Уведомлять при разблокировке нового достижения.',
+    prof_notif_weekly: 'Еженедельный отчёт о прогрессе', prof_notif_weekly_desc: 'Сводка вашей учебной активности за неделю.',
+    prof_dark_mode: 'Тёмный режим',
+    prof_setup_2fa: 'Настроить 2FA', prof_2fa_scan: 'Отсканируйте QR-код с помощью приложения-аутентификатора (Google Authenticator, Authy и др.).', prof_2fa_enter_code: 'Введите 6-значный код из приложения', prof_2fa_verify: 'Подтвердить и включить', prof_2fa_backup: 'Резервные коды (сохраните их в надёжном месте):',
+    lesson_map: 'Историческая карта',
+    map_key_locations: 'Ключевые места',
+    map_zoom_hint: 'Прокрутите для масштаба · Перетащите для перемещения',
   },
 
   mk: {
@@ -985,5 +1054,22 @@ export const T: Translations = {
     prof_reset_yes: 'Да, ресетирај сè',
     flash_shuffle: 'Измешај', flash_answer: 'Одговор', flash_no_cards: 'Нема картички за овој филтер.',
     prof_reset_btn: 'Ресетирај',
+    // Profile Settings
+    prof_picture: 'Профилна Слика', prof_change_photo: 'Промени Фотографија', prof_upload_photo_btn: 'Прикачи Фотографија', prof_remove_photo_btn: 'Отстрани',
+    prof_display_name: 'Прикажано Ime', prof_save_btn: 'Зачувај',
+    prof_change_email: 'Промени Е-пошта', prof_current_email: 'Тековна:', prof_new_email: 'Нова Е-пошта', prof_cur_password: 'Тековна Лозинка', prof_update_email: 'Ажурирај Е-пошта', prof_updating: 'Ажурирање…',
+    prof_change_password: 'Промени Лозинка', prof_new_password: 'Нова Лозинка', prof_confirm_password: 'Потврди Нова Лозинка', prof_update_password: 'Ажурирај Лозинка',
+    prof_min_chars: 'Мин. 6 знаци', prof_repeat_pwd: 'Повтори лозинка',
+    prof_2fa_title: 'Двофакторна Автентикација', prof_2fa_enabled_msg: '2FA е овозможена', prof_2fa_disabled_msg: '2FA е оневозможена',
+    prof_2fa_enabled_desc: 'Твојата сметка е заштитена со апликација за автентикација.', prof_2fa_disabled_desc: 'Додај дополнителен слој на безбедност на твојата сметка.',
+    prof_2fa_disable: 'Оневозможи', prof_2fa_enable: 'Овозможи',
+    prof_notif_title: 'Претпочитања за Известувања', prof_notif_reminders: 'Потсетници за Лекции', prof_notif_reminders_desc: 'Добивај потсетници за одржување на твојата серија на учење.',
+    prof_notif_achievements: 'Предупредувања за Достигнувања', prof_notif_achievements_desc: 'Известувај кога ќе отклучиш ново достигнување.',
+    prof_notif_weekly: 'Неделен Преглед на Напредок', prof_notif_weekly_desc: 'Резиме на твојата неделна активност на учење.',
+    prof_dark_mode: 'Темен Режим',
+    prof_setup_2fa: 'Постави 2FA', prof_2fa_scan: 'Скенирај го QR кодот со апликација за автентикација (Google Authenticator, Authy, итн.).', prof_2fa_enter_code: 'Внеси го 6-цифрениот код од твојата апликација', prof_2fa_verify: 'Верификувај и Овозможи', prof_2fa_backup: 'Резервни кодови (зачувај ги на безбедно место):',
+    lesson_map: 'Историска Карта',
+    map_key_locations: 'Клучни Локации',
+    map_zoom_hint: 'Скролувај за зум · Влечи за движење',
   },
 };

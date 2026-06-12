@@ -192,20 +192,20 @@ export default function ProfilePage() {
       {/* 2FA Setup Dialog */}
       <Dialog open={show2FASetup} onOpenChange={v => { setShow2FASetup(v); setTwoFaCode(''); }}>
         <DialogContent className="max-w-sm">
-          <DialogHeader><DialogTitle className="flex items-center gap-2"><Smartphone className="w-4 h-4" />Set Up 2FA</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle className="flex items-center gap-2"><Smartphone className="w-4 h-4" />{t.prof_setup_2fa}</DialogTitle></DialogHeader>
           <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">Scan the QR code with an authenticator app (Google Authenticator, Authy, etc.).</p>
+            <p className="text-sm text-muted-foreground">{t.prof_2fa_scan}</p>
             <div className="flex justify-center"><FakeQRCode /></div>
             <div className="p-3 rounded-lg bg-muted text-xs font-mono text-center break-all select-all text-muted-foreground">
               JBSWY3DPEHPK3PXP (demo secret)
             </div>
             <div>
-              <Label className="text-xs mb-1 block">Enter the 6-digit code from your app</Label>
+              <Label className="text-xs mb-1 block">{t.prof_2fa_enter_code}</Label>
               <Input value={twoFaCode} onChange={e => setTwoFaCode(e.target.value.replace(/\D/g,'').slice(0,6))} placeholder="123456" maxLength={6} className="font-mono tracking-widest text-center text-lg" />
             </div>
-            <Button className="w-full" onClick={enable2FA}>Verify & Enable</Button>
+            <Button className="w-full" onClick={enable2FA}>{t.prof_2fa_verify}</Button>
             <div className="space-y-2">
-              <p className="text-xs text-muted-foreground font-medium">Backup codes (save these somewhere safe):</p>
+              <p className="text-xs text-muted-foreground font-medium">{t.prof_2fa_backup}</p>
               <div className="grid grid-cols-3 gap-1.5">
                 {backupCodes.map(c => <code key={c} className="text-xs bg-muted rounded px-2 py-1 text-center font-mono">{c}</code>)}
               </div>
@@ -340,7 +340,7 @@ export default function ProfilePage() {
 
             {/* Profile Picture */}
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Camera className="w-4 h-4" />Profile Picture</CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Camera className="w-4 h-4" />{t.prof_picture}</CardTitle></CardHeader>
               <CardContent className="flex items-center gap-4">
                 <Avatar className="h-16 w-16">
                   {avatarUrl && <AvatarImage src={avatarUrl} alt={currentUser.username} />}
@@ -348,11 +348,11 @@ export default function ProfilePage() {
                 </Avatar>
                 <div className="flex flex-col gap-2">
                   <Button size="sm" variant="outline" className="gap-2" onClick={() => fileInputRef.current?.click()}>
-                    <Camera className="w-3.5 h-3.5" />{avatarUrl ? 'Change Photo' : 'Upload Photo'}
+                    <Camera className="w-3.5 h-3.5" />{avatarUrl ? t.prof_change_photo : t.prof_upload_photo_btn}
                   </Button>
                   {avatarUrl && (
                     <Button size="sm" variant="ghost" className="gap-2 text-destructive hover:text-destructive" onClick={removeAvatar}>
-                      <Trash2 className="w-3.5 h-3.5" />Remove
+                      <Trash2 className="w-3.5 h-3.5" />{t.prof_remove_photo_btn}
                     </Button>
                   )}
                   <p className="text-xs text-muted-foreground">JPG, PNG or GIF · max 2 MB</p>
@@ -362,33 +362,33 @@ export default function ProfilePage() {
 
             {/* Display name */}
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Mail className="w-4 h-4" />Display Name</CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Mail className="w-4 h-4" />{t.prof_display_name}</CardTitle></CardHeader>
               <CardContent className="flex gap-3">
-                <Input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Username" className="max-w-xs" />
-                <Button onClick={saveName}>Save</Button>
+                <Input value={newName} onChange={e => setNewName(e.target.value)} placeholder={t.prof_username} className="max-w-xs" />
+                <Button onClick={saveName}>{t.prof_save_btn}</Button>
               </CardContent>
             </Card>
 
             {/* Change email */}
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Mail className="w-4 h-4" />Change Email</CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Mail className="w-4 h-4" />{t.prof_change_email}</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                <div className="text-xs text-muted-foreground">Current: <span className="text-foreground">{currentUser.email}</span></div>
+                <div className="text-xs text-muted-foreground">{t.prof_current_email} <span className="text-foreground">{currentUser.email}</span></div>
                 <div className="grid sm:grid-cols-2 gap-3">
-                  <div><Label className="text-xs mb-1 block">New Email</Label><Input value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="new@email.com" type="email" /></div>
-                  <div><Label className="text-xs mb-1 block">Current Password</Label><Input value={emailPassword} onChange={e => setEmailPassword(e.target.value)} placeholder="Verify identity" type="password" /></div>
+                  <div><Label className="text-xs mb-1 block">{t.prof_new_email}</Label><Input value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="new@email.com" type="email" /></div>
+                  <div><Label className="text-xs mb-1 block">{t.prof_cur_password}</Label><Input value={emailPassword} onChange={e => setEmailPassword(e.target.value)} placeholder="Verify identity" type="password" /></div>
                 </div>
                 <Button size="sm" onClick={saveEmail} disabled={emailLoading || !newEmail || !emailPassword}>
-                  {emailLoading ? 'Updating…' : 'Update Email'}
+                  {emailLoading ? t.prof_updating : t.prof_update_email}
                 </Button>
               </CardContent>
             </Card>
 
             {/* Change password */}
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><KeyRound className="w-4 h-4" />Change Password</CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><KeyRound className="w-4 h-4" />{t.prof_change_password}</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                <div><Label className="text-xs mb-1 block">Current Password</Label>
+                <div><Label className="text-xs mb-1 block">{t.prof_cur_password}</Label>
                   <div className="relative max-w-xs">
                     <Input value={curPwd} onChange={e => setCurPwd(e.target.value)} type={showPwd ? 'text' : 'password'} placeholder="••••••••" />
                     <button className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground" onClick={() => setShowPwd(p => !p)}>
@@ -397,38 +397,38 @@ export default function ProfilePage() {
                   </div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3">
-                  <div><Label className="text-xs mb-1 block">New Password</Label><Input value={newPwd} onChange={e => setNewPwd(e.target.value)} type="password" placeholder="Min. 6 chars" /></div>
-                  <div><Label className="text-xs mb-1 block">Confirm New Password</Label><Input value={confPwd} onChange={e => setConfPwd(e.target.value)} type="password" placeholder="Repeat password" /></div>
+                  <div><Label className="text-xs mb-1 block">{t.prof_new_password}</Label><Input value={newPwd} onChange={e => setNewPwd(e.target.value)} type="password" placeholder={t.prof_min_chars} /></div>
+                  <div><Label className="text-xs mb-1 block">{t.prof_confirm_password}</Label><Input value={confPwd} onChange={e => setConfPwd(e.target.value)} type="password" placeholder={t.prof_repeat_pwd} /></div>
                 </div>
                 <Button size="sm" onClick={savePassword} disabled={pwdLoading || !curPwd || !newPwd || !confPwd}>
-                  {pwdLoading ? 'Updating…' : 'Update Password'}
+                  {pwdLoading ? t.prof_updating : t.prof_update_password}
                 </Button>
               </CardContent>
             </Card>
 
             {/* 2FA */}
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Smartphone className="w-4 h-4" />Two-Factor Authentication</CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Smartphone className="w-4 h-4" />{t.prof_2fa_title}</CardTitle></CardHeader>
               <CardContent className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-sm">{twoFaEnabled ? '2FA is enabled' : '2FA is disabled'}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{twoFaEnabled ? 'Your account is secured with an authenticator app.' : 'Add an extra layer of security to your account.'}</p>
+                  <p className="text-sm">{twoFaEnabled ? t.prof_2fa_enabled_msg : t.prof_2fa_disabled_msg}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{twoFaEnabled ? t.prof_2fa_enabled_desc : t.prof_2fa_disabled_desc}</p>
                 </div>
                 {twoFaEnabled
-                  ? <Button size="sm" variant="outline" onClick={disable2FA} className="text-destructive border-destructive/30">Disable</Button>
-                  : <Button size="sm" onClick={() => setShow2FASetup(true)} className="gap-1.5"><Shield className="w-3.5 h-3.5" />Enable</Button>
+                  ? <Button size="sm" variant="outline" onClick={disable2FA} className="text-destructive border-destructive/30">{t.prof_2fa_disable}</Button>
+                  : <Button size="sm" onClick={() => setShow2FASetup(true)} className="gap-1.5"><Shield className="w-3.5 h-3.5" />{t.prof_2fa_enable}</Button>
                 }
               </CardContent>
             </Card>
 
             {/* Notifications */}
             <Card>
-              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Bell className="w-4 h-4" />Notification Preferences</CardTitle></CardHeader>
+              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Bell className="w-4 h-4" />{t.prof_notif_title}</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 {([
-                  { key: 'lessonReminders', label: 'Lesson Reminders', desc: 'Get reminded to keep your learning streak.' },
-                  { key: 'achievements', label: 'Achievement Alerts', desc: 'Notify when you unlock a new achievement.' },
-                  { key: 'weeklyDigest', label: 'Weekly Progress Digest', desc: 'A summary of your weekly learning activity.' },
+                  { key: 'lessonReminders', label: t.prof_notif_reminders, desc: t.prof_notif_reminders_desc },
+                  { key: 'achievements', label: t.prof_notif_achievements, desc: t.prof_notif_achievements_desc },
+                  { key: 'weeklyDigest', label: t.prof_notif_weekly, desc: t.prof_notif_weekly_desc },
                 ] as const).map(({ key, label, desc }) => (
                   <div key={key} className="flex items-center justify-between">
                     <div><p className="text-sm font-medium">{label}</p><p className="text-xs text-muted-foreground">{desc}</p></div>
@@ -441,7 +441,7 @@ export default function ProfilePage() {
             {/* Appearance */}
             <Card>
               <CardContent className="pt-5 flex items-center justify-between">
-                <Label htmlFor="dark-mode" className="cursor-pointer">Dark Mode</Label>
+                <Label htmlFor="dark-mode" className="cursor-pointer">{t.prof_dark_mode}</Label>
                 <Switch id="dark-mode" checked={theme === 'dark'} onCheckedChange={c => setTheme(c ? 'dark' : 'light')} />
               </CardContent>
             </Card>

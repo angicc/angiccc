@@ -10,6 +10,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { getSortedTimeline } from '@/features/content/timelineData';
 import { ERAS } from '@/features/content/erasData';
 import { getTranslatedEra } from '@/i18n/contentTranslations';
+import { getTranslatedTimelineEvent } from '@/i18n/timelineTranslations';
 import { LESSONS } from '@/features/content/lessonsData';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
@@ -158,6 +159,7 @@ export default function TimelinePage() {
             <div className="absolute left-4 top-0 bottom-0 w-px bg-border" />
 
             {events.map((event) => {
+              const tEvent = getTranslatedTimelineEvent(event, language);
               const isMajor = event.significance === 'major';
               const lessonId = EVENT_TO_LESSON[event.id];
               const lesson = lessonId ? LESSONS.find(l => l.id === lessonId) : null;
@@ -185,7 +187,7 @@ export default function TimelinePage() {
                           {locked && <Lock className="w-3 h-3 text-muted-foreground/60" />}
                         </div>
                         <p className={`mt-0.5 group-hover:text-primary transition-colors ${isMajor ? 'font-semibold text-sm' : 'text-sm text-muted-foreground'}`}>
-                          {event.title}
+                          {tEvent.title}
                         </p>
                       </div>
                     </div>
@@ -200,8 +202,8 @@ export default function TimelinePage() {
                           {CAT_ICON[event.category]} {t[CAT_LABEL[event.category]]}
                         </Badge>
                       </div>
-                      <h3 className="font-heading font-semibold leading-snug">{event.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{event.description}</p>
+                      <h3 className="font-heading font-semibold leading-snug">{tEvent.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{tEvent.description}</p>
 
                       {locked ? (
                         <div className="flex items-start gap-2.5 p-3 rounded-xl bg-muted/60 border border-border">

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Map } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -19,6 +19,15 @@ import { getTranslatedLesson } from '@/i18n/contentTranslations';
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { HistoricalMapModal } from '@/components/shared/HistoricalMapModal';
+
+function proxyImageUrl(url: string): string {
+  if (!url) return url;
+  if (url.startsWith('https://upload.wikimedia.org/')) {
+    return `https://wsrv.nl/?url=${url.replace('https://', '')}`;
+  }
+  return url;
+}
 
 export default function LessonPage() {
   const { t, language } = useLanguage();
@@ -31,6 +40,7 @@ export default function LessonPage() {
   const [bookmarked, setBookmarked] = useState(() =>
     currentUser && lessonId ? isBookmarked(currentUser.id, lessonId) : false
   );
+  const [mapOpen, setMapOpen] = useState(false);
 
   const rawLesson = getLessonById(lessonId ?? '');
   const lesson = rawLesson ? getTranslatedLesson(rawLesson, language) : undefined;
@@ -66,6 +76,7 @@ export default function LessonPage() {
 
   return (
     <AppShell>
+      <HistoricalMapModal lessonId={lessonId ?? ''} lessonTitle={lesson.title} open={mapOpen} onOpenChange={setMapOpen} />
       {xpAmt > 0 && <XPBadge amount={xpAmt} onDone={() => setXpAmt(0)} />}
       {unlockedAchievements.length > 0 && <AchievementToast achievements={unlockedAchievements} onDone={() => setUnlockedAchievements([])} />}
       <div className="max-w-5xl mx-auto">
@@ -82,7 +93,7 @@ export default function LessonPage() {
         <div className={`relative h-72 sm:h-80 md:h-96 rounded-2xl overflow-hidden mb-8 bg-gradient-to-br ${era.bgGradient} border border-border`}>
           {lesson.imageUrl && (
             <img
-              src={lesson.imageUrl}
+              src={proxyImageUrl(lesson.imageUrl)}
               alt=""
               aria-hidden
               className="absolute inset-0 w-full h-full object-cover opacity-75"
@@ -169,6 +180,14 @@ export default function LessonPage() {
               onClick={handleBookmark}
             >
               {bookmarked ? <><BookmarkCheck className="w-4 h-4 text-amber-400" />{t.lesson_bookmarked}</> : <><Bookmark className="w-4 h-4" />{t.lesson_save}</>}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full gap-2"
+              onClick={() => setMapOpen(true)}
+            >
+              <Map className="w-4 h-4" />{t.lesson_map}
             </Button>
           </div>
         </div>
