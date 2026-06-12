@@ -1,7 +1,14 @@
 import type { Language } from './translations';
 import type { Era } from '@/types';
+import { ANCIENT_MEDIEVAL_BODY_TRANS } from './lessonBodyTranslations_1';
+import { EARLYMOD_MODERN_BODY_TRANS } from './lessonBodyTranslations_2';
 
 type ContentLang = Exclude<Language, 'en'>;
+
+const BODY_TRANS: Record<string, Partial<Record<ContentLang, string[]>>> = {
+  ...ANCIENT_MEDIEVAL_BODY_TRANS,
+  ...EARLYMOD_MODERN_BODY_TRANS,
+};
 
 interface EraContent { name: string; shortName: string; dateRange: string; description: string; }
 interface LessonContent { title: string; subtitle: string; keyFacts: string[]; sectionHeadings: string[]; }
@@ -183,6 +190,7 @@ export function getTranslatedLesson<T extends { id: string; title: string; subti
     sections: lesson.sections.map((s, i) => ({
       ...s,
       heading: trans.sectionHeadings[i] ?? s.heading,
+      body: BODY_TRANS[lesson.id]?.[lang as ContentLang]?.[i] ?? s.body,
     })),
   };
 }
