@@ -115,7 +115,6 @@ export function HistoricalMapModal({ lessonId, lessonTitle, open, onOpenChange }
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging.current || e.touches.length !== 1) return;
-    e.preventDefault();
     const dx = e.touches[0].clientX - lastMouse.current.x;
     const dy = e.touches[0].clientY - lastMouse.current.y;
     lastMouse.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -143,8 +142,8 @@ export function HistoricalMapModal({ lessonId, lessonTitle, open, onOpenChange }
         {/* Interactive map */}
         <div
           ref={containerRef}
-          className="relative bg-[#1a2a4a] overflow-hidden select-none"
-          style={{ height: '420px', cursor: isDragging.current ? 'grabbing' : 'grab' }}
+          className="relative bg-[#1a2a4a] overflow-hidden select-none cursor-grab active:cursor-grabbing"
+          style={{ height: '420px', touchAction: 'none' }}
           onWheel={handleWheel}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
