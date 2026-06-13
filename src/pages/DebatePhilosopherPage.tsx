@@ -74,7 +74,7 @@ function PhilosopherAvatar({ philosopher, size = 28 }: { philosopher: Philosophe
 }
 
 export default function DebatePhilosopherPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { currentUser, refreshProgress } = useAuth();
   const { subscription } = useSubscription();
   const tier = subscription?.tier ?? 'free';
@@ -234,7 +234,7 @@ export default function DebatePhilosopherPage() {
                           <div className="text-left">
                             <p className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wider">{t.debate_starters}</p>
                             <div className="space-y-2">
-                              {philosopher.starterArguments.map((arg, i) => (
+                              {((language !== 'en' && philosopher.starterArgumentsI18n?.[language as 'es' | 'ru' | 'mk']) || philosopher.starterArguments).map((arg, i) => (
                                 <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }}>
                                   <Button variant="outline" size="sm"
                                     className="w-full text-xs h-auto py-2.5 text-left justify-start gap-2 hover:border-violet-400/50 hover:bg-violet-400/5 transition-all whitespace-normal"

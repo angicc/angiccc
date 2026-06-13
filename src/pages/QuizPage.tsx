@@ -39,7 +39,7 @@ export default function QuizPage() {
   const [xpAmt, setXpAmt] = useState(0);
   const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
 
-  if (!quiz || !era) return <AppShell><div className="text-center py-20 text-muted-foreground">Quiz not found.</div></AppShell>;
+  if (!quiz || !era) return <AppShell><div className="text-center py-20 text-muted-foreground">{t.quiz_not_found}</div></AppShell>;
 
   const q = quiz.questions[qIdx];
   const score = Math.round((answers.filter((a, i) => a === quiz.questions[i].correctIndex).length / quiz.questions.length) * 100);
@@ -81,8 +81,8 @@ export default function QuizPage() {
           <Card className={`bg-gradient-to-br ${era.bgGradient} border-border`}>
             <CardContent className="flex flex-col items-center text-center gap-4 py-12">
               <Trophy className={`w-12 h-12 ${era.color}`} />
-              <div><h2 className="font-heading text-xl font-bold">{era.name} {t.quiz_era_title}</h2><p className="text-muted-foreground text-sm mt-1">Test your knowledge of {era.dateRange}</p></div>
-              <div className="text-sm text-muted-foreground">Passing score: {quiz.passingScore}% · Max XP: {quiz.questions.length * quiz.xpPerCorrect + XP_REWARDS.QUIZ_PERFECT}</div>
+              <div><h2 className="font-heading text-xl font-bold">{era.name} {t.quiz_era_title}</h2><p className="text-muted-foreground text-sm mt-1">{t.quiz_test_knowledge.replace('{era}', era.dateRange)}</p></div>
+              <div className="text-sm text-muted-foreground">{t.quiz_passing_score.replace('{score}', String(quiz.passingScore)).replace('{xp}', String(quiz.questions.length * quiz.xpPerCorrect + XP_REWARDS.QUIZ_PERFECT))}</div>
               <Button size="lg" onClick={start}>{t.btn_start}</Button>
             </CardContent>
           </Card>
@@ -91,7 +91,7 @@ export default function QuizPage() {
         {(phase === 'question' || phase === 'explain') && (
           <div className="space-y-4">
             <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <span>Question {qIdx + 1} of {quiz.questions.length}</span>
+              <span>{t.quiz_question_of.replace('{n}', String(qIdx + 1)).replace('{total}', String(quiz.questions.length))}</span>
               <Badge variant="outline" className="text-xs">{q.difficulty}</Badge>
             </div>
             <Progress value={((qIdx) / quiz.questions.length) * 100} className="h-1.5" />
@@ -115,7 +115,7 @@ export default function QuizPage() {
                   );
                 })}
                 {phase === 'explain' && canExplanations() && <div className="p-3 rounded-lg bg-muted/50 text-sm text-muted-foreground mt-2"><strong className="text-foreground">{t.quiz_explanation}: </strong>{q.explanation}</div>}
-                {phase === 'explain' && !canExplanations() && <UpgradePrompt compact description="Upgrade to Pro to see answer explanations." />}
+                {phase === 'explain' && !canExplanations() && <UpgradePrompt compact description={t.quiz_upgrade_explanations} />}
                 <Button className="w-full gap-2 mt-2" disabled={selected === null && phase === 'question'} onClick={() => phase === 'question' ? submitAnswer() : advance()}>
                   {phase === 'question' ? t.quiz_submit_answer : qIdx < quiz.questions.length - 1 ? <><span>{t.btn_next}</span><ArrowRight className="w-4 h-4" /></> : t.btn_see_results}
                 </Button>

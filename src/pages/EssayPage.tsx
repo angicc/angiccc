@@ -285,9 +285,9 @@ export default function EssayPage() {
             </Button>
             {!canSubmit && !grading && (
               <p className="text-center text-xs text-muted-foreground">
-                {!activeTopic ? 'Select a topic above' :
-                 wordCount < 80 ? `Write at least ${80 - wordCount} more words` :
-                 wordCount > 600 ? 'Essay is too long (max 600 words)' : ''}
+                {!activeTopic ? t.essay_select_topic :
+                 wordCount < 80 ? t.essay_write_more.replace('{n}', String(80 - wordCount)) :
+                 wordCount > 600 ? t.essay_too_long : ''}
               </p>
             )}
           </motion.div>

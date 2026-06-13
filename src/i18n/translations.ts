@@ -48,6 +48,9 @@ type TranslationKeys = {
   quiz_era_title: string; quiz_complete: string; quiz_passed: string; quiz_failed: string;
   quiz_retake: string; quiz_submit_answer: string; quiz_explanation: string;
   quiz_correct_label: string;
+  quiz_test_knowledge: string; quiz_passing_score: string; quiz_question_of: string;
+  quiz_upgrade_explanations: string; quiz_not_found: string;
+  sq_clio_fallback: string; sq_upgrade_desc: string;
   // ── Timeline ───────────────────────────────────────────────────
   tl_title: string; tl_subtitle: string; tl_events: string;
   tl_all_eras: string; tl_all_categories: string; tl_open_lesson: string;
@@ -198,6 +201,15 @@ type TranslationKeys = {
   lesson_map: string;
   map_key_locations: string;
   map_zoom_hint: string;
+  // Timeline Territory Map
+  nav_timeline_map: string;
+  tmap_title: string;
+  tmap_subtitle: string;
+  tmap_select_topic: string;
+  // Essay extras
+  essay_select_topic: string;
+  essay_write_more: string;
+  essay_too_long: string;
 };
 
 type Translations = Record<Language, TranslationKeys>;
@@ -252,6 +264,13 @@ export const T: Translations = {
     quiz_failed: 'Keep Practising', quiz_retake: 'Retake Quiz',
     quiz_submit_answer: 'Submit Answer', quiz_explanation: 'Explanation',
     quiz_correct_label: 'correct',
+    quiz_test_knowledge: 'Test your knowledge of {era}',
+    quiz_passing_score: 'Passing score: {score}% · Max XP: {xp}',
+    quiz_question_of: 'Question {n} of {total}',
+    quiz_upgrade_explanations: 'Upgrade to Pro to see answer explanations.',
+    quiz_not_found: 'Quiz not found.',
+    sq_clio_fallback: 'Great effort! Focus on reviewing the eras where you struggled and retry those lessons for maximum growth.',
+    sq_upgrade_desc: 'Smart Quiz uses an adaptive algorithm that targets your weakest eras and calibrates difficulty to your performance level. Available on Pro Learner and above.',
     // Timeline
     tl_title: 'Historical Timeline', tl_subtitle: 'From 3100 BCE to the present day',
     tl_events: 'events', tl_all_eras: 'All Eras', tl_all_categories: 'All Categories',
@@ -337,7 +356,7 @@ export const T: Translations = {
     prof_plan: 'Current Plan', prof_upgrade: 'Upgrade', prof_member_since: 'Member since',
     // App Guide
     guide_title: 'App Guide', guide_subtitle: 'Everything you need to know to get the most out of Historify',
-    guide_features: '12 Features', guide_quick_start: 'Quick Start',
+    guide_features: '13 Features', guide_quick_start: 'Quick Start',
     guide_faq_title: 'Frequently Asked Questions', guide_start_lesson: 'Start a Lesson',
     guide_see_plans: 'See Plans', guide_cta_title: 'Ready to begin your journey?',
     guide_cta_desc: 'Head to the Dashboard to see your progress at a glance, or jump straight into a lesson.',
@@ -435,6 +454,13 @@ export const T: Translations = {
     lesson_map: 'Historical Map',
     map_key_locations: 'Key Locations',
     map_zoom_hint: 'Scroll to zoom · Drag to pan',
+    nav_timeline_map: 'Territory Map',
+    tmap_title: 'Timeline Territory Map',
+    tmap_subtitle: 'Explore real geographic territories for each historical period',
+    tmap_select_topic: 'Select a topic to view its territory',
+    essay_select_topic: 'Select a topic above',
+    essay_write_more: 'Write at least {n} more words',
+    essay_too_long: 'Essay is too long (max 600 words)',
   },
 
   es: {
@@ -479,6 +505,13 @@ export const T: Translations = {
     quiz_era_title: 'Quiz', quiz_complete: 'Quiz Completado', quiz_passed: '¡Aprobado!',
     quiz_failed: 'Sigue Practicando', quiz_retake: 'Repetir Quiz',
     quiz_submit_answer: 'Enviar Respuesta', quiz_explanation: 'Explicación', quiz_correct_label: 'correcto',
+    quiz_test_knowledge: 'Pon a prueba tu conocimiento de {era}',
+    quiz_passing_score: 'Puntuación mínima: {score}% · XP máximo: {xp}',
+    quiz_question_of: 'Pregunta {n} de {total}',
+    quiz_upgrade_explanations: 'Actualiza a Pro para ver las explicaciones de respuestas.',
+    quiz_not_found: 'Quiz no encontrado.',
+    sq_clio_fallback: '¡Buen esfuerzo! Concéntrate en revisar las eras donde tuviste dificultades y vuelve a intentar esas lecciones.',
+    sq_upgrade_desc: 'El Quiz Inteligente usa un algoritmo adaptativo que apunta a tus eras más débiles y calibra la dificultad según tu nivel. Disponible en Pro Learner y superior.',
     tl_title: 'Línea de Tiempo Histórica', tl_subtitle: 'Desde 3100 a.C. hasta hoy',
     tl_events: 'eventos', tl_all_eras: 'Todas las Eras', tl_all_categories: 'Todas las Categorías',
     tl_open_lesson: 'Abrir Lección',
@@ -552,7 +585,7 @@ export const T: Translations = {
     prof_save: 'Guardar Cambios', prof_username: 'Nombre de Usuario', prof_email: 'Correo',
     prof_plan: 'Plan Actual', prof_upgrade: 'Actualizar', prof_member_since: 'Miembro desde',
     guide_title: 'Guía de la App', guide_subtitle: 'Todo lo que necesitas saber para aprovechar Historify al máximo',
-    guide_features: '12 Funciones', guide_quick_start: 'Inicio Rápido',
+    guide_features: '13 Funciones', guide_quick_start: 'Inicio Rápido',
     guide_faq_title: 'Preguntas Frecuentes', guide_start_lesson: 'Iniciar una Lección',
     guide_see_plans: 'Ver Planes', guide_cta_title: '¿Listo para comenzar tu viaje?',
     guide_cta_desc: 'Ve al Panel para ver tu progreso de un vistazo, o ve directamente a una lección.',
@@ -647,6 +680,13 @@ export const T: Translations = {
     lesson_map: 'Mapa Histórico',
     map_key_locations: 'Ubicaciones Clave',
     map_zoom_hint: 'Desplaza para zoom · Arrastra para mover',
+    nav_timeline_map: 'Mapa de Territorios',
+    tmap_title: 'Mapa de Territorios Históricos',
+    tmap_subtitle: 'Explora territorios geográficos reales de cada período histórico',
+    tmap_select_topic: 'Selecciona un tema para ver su territorio',
+    essay_select_topic: 'Selecciona un tema arriba',
+    essay_write_more: 'Escribe al menos {n} palabras más',
+    essay_too_long: 'El ensayo es demasiado largo (máx. 600 palabras)',
   },
 
   ru: {
@@ -691,6 +731,13 @@ export const T: Translations = {
     quiz_era_title: 'Викторина', quiz_complete: 'Викторина завершена', quiz_passed: 'Пройдено!',
     quiz_failed: 'Продолжай практиковаться', quiz_retake: 'Пройти снова',
     quiz_submit_answer: 'Ответить', quiz_explanation: 'Объяснение', quiz_correct_label: 'верно',
+    quiz_test_knowledge: 'Проверь свои знания о {era}',
+    quiz_passing_score: 'Проходной балл: {score}% · Макс. XP: {xp}',
+    quiz_question_of: 'Вопрос {n} из {total}',
+    quiz_upgrade_explanations: 'Обновитесь до Pro, чтобы видеть объяснения ответов.',
+    quiz_not_found: 'Викторина не найдена.',
+    sq_clio_fallback: 'Отличная работа! Сосредоточься на повторении эпох, где ты испытывал трудности, и повтори те уроки для максимального роста.',
+    sq_upgrade_desc: 'Умная Викторина использует адаптивный алгоритм, который нацелен на твои слабые эпохи и калибрует сложность по твоему уровню. Доступно на Pro Learner и выше.',
     tl_title: 'Историческая Хронология', tl_subtitle: 'С 3100 г. до н.э. по сегодняшний день',
     tl_events: 'событий', tl_all_eras: 'Все Эпохи', tl_all_categories: 'Все Категории',
     tl_open_lesson: 'Открыть Урок',
@@ -764,7 +811,7 @@ export const T: Translations = {
     prof_save: 'Сохранить Изменения', prof_username: 'Имя пользователя', prof_email: 'Почта',
     prof_plan: 'Текущий план', prof_upgrade: 'Обновить', prof_member_since: 'Участник с',
     guide_title: 'Руководство', guide_subtitle: 'Всё, что нужно знать для работы с Historify',
-    guide_features: '12 Функций', guide_quick_start: 'Быстрый Старт',
+    guide_features: '13 Функций', guide_quick_start: 'Быстрый Старт',
     guide_faq_title: 'Часто Задаваемые Вопросы', guide_start_lesson: 'Начать Урок',
     guide_see_plans: 'Посмотреть Планы', guide_cta_title: 'Готовы начать своё путешествие?',
     guide_cta_desc: 'Перейдите в Панель, чтобы увидеть прогресс, или сразу начните урок.',
@@ -859,6 +906,13 @@ export const T: Translations = {
     lesson_map: 'Историческая карта',
     map_key_locations: 'Ключевые места',
     map_zoom_hint: 'Прокрутите для масштаба · Перетащите для перемещения',
+    nav_timeline_map: 'Карта Территорий',
+    tmap_title: 'Карта Исторических Территорий',
+    tmap_subtitle: 'Исследуйте реальные географические территории каждого исторического периода',
+    tmap_select_topic: 'Выберите тему, чтобы увидеть её территорию',
+    essay_select_topic: 'Выберите тему выше',
+    essay_write_more: 'Напишите ещё не менее {n} слов',
+    essay_too_long: 'Эссе слишком длинное (макс. 600 слов)',
   },
 
   mk: {
@@ -903,6 +957,13 @@ export const T: Translations = {
     quiz_era_title: 'Квиз', quiz_complete: 'Квизот е завршен', quiz_passed: 'Положено!',
     quiz_failed: 'Продолжи со вежбање', quiz_retake: 'Направи го повторно',
     quiz_submit_answer: 'Потврди Одговор', quiz_explanation: 'Објаснување', quiz_correct_label: 'точно',
+    quiz_test_knowledge: 'Тестирај го своето знаење за {era}',
+    quiz_passing_score: 'Минимален резултат: {score}% · Макс. XP: {xp}',
+    quiz_question_of: 'Прашање {n} од {total}',
+    quiz_upgrade_explanations: 'Надгради на Pro за да ги гледаш објаснувањата на одговорите.',
+    quiz_not_found: 'Квизот не е пронајден.',
+    sq_clio_fallback: 'Добар напор! Фокусирај се на прегледување на епохите каде имаш тешкотии и повтори ги тие лекции за максимален напредок.',
+    sq_upgrade_desc: 'Паметниот Квиз користи адаптивен алгоритам кој ги таргетира твоите слаби епохи и ја калибрира тежината според твоето ниво. Достапно на Pro Learner и повисоко.',
     tl_title: 'Историска Временска Линија', tl_subtitle: 'Од 3100 г.п.н.е. до денес',
     tl_events: 'настани', tl_all_eras: 'Сите Епохи', tl_all_categories: 'Сите Категории',
     tl_open_lesson: 'Отвори Лекција',
@@ -976,7 +1037,7 @@ export const T: Translations = {
     prof_save: 'Зачувај Промени', prof_username: 'Корисничко Име', prof_email: 'Е-пошта',
     prof_plan: 'Тековен план', prof_upgrade: 'Надгради', prof_member_since: 'Член од',
     guide_title: 'Водич за Апликацијата', guide_subtitle: 'Сè што треба да знаеш за да го извлечеш максимумот од Historify',
-    guide_features: '12 Функции', guide_quick_start: 'Брз Старт',
+    guide_features: '13 Функции', guide_quick_start: 'Брз Старт',
     guide_faq_title: 'Често Поставувани Прашања', guide_start_lesson: 'Започни Лекција',
     guide_see_plans: 'Погледни Планови', guide_cta_title: 'Подготвен/а да го започнеш патувањето?',
     guide_cta_desc: 'Оди на Контролната Табла за да го видиш напредокот, или веднаш започни лекција.',
@@ -1071,5 +1132,12 @@ export const T: Translations = {
     lesson_map: 'Историска Карта',
     map_key_locations: 'Клучни Локации',
     map_zoom_hint: 'Скролувај за зум · Влечи за движење',
+    nav_timeline_map: 'Карта на Територии',
+    tmap_title: 'Карта на Историски Територии',
+    tmap_subtitle: 'Истражи реални географски територии за секој историски период',
+    tmap_select_topic: 'Избери тема за да ја видиш нејзината територија',
+    essay_select_topic: 'Избери тема погоре',
+    essay_write_more: 'Напиши уште најмалку {n} зборови',
+    essay_too_long: 'Есејот е предолг (макс. 600 зборови)',
   },
 };

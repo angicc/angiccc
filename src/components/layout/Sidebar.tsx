@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film, Users, Scale } from 'lucide-react';
+import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film, Users, Scale, Globe2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -16,7 +16,8 @@ import { cn } from '@/lib/utils';
 const NAV_KEYS = [
   { to: '/dashboard',   key: 'nav_dashboard'   as const, icon: LayoutDashboard },
   { to: '/eras',        key: 'nav_eras'        as const, icon: BookOpen },
-  { to: '/timeline',    key: 'nav_timeline'    as const, icon: ScrollText },
+  { to: '/timeline',     key: 'nav_timeline'     as const, icon: ScrollText },
+  { to: '/timeline-map', key: 'nav_timeline_map' as const, icon: Globe2 },
   { to: '/tutor',       key: 'nav_tutor'       as const, icon: MessageSquare },
   { to: '/leaderboard', key: 'nav_leaderboard' as const, icon: Trophy },
   { to: '/friends',     key: 'nav_friends'     as const, icon: Users },

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { BookOpen, Brain, ScrollText, Sparkles, Layers, BarChart2, PenLine, Crown, ArrowRight, CheckCircle2, Trophy, Flame, User, FileEdit, Film, Scale } from 'lucide-react';
+import { BookOpen, Brain, ScrollText, Sparkles, Layers, BarChart2, PenLine, Crown, ArrowRight, CheckCircle2, Trophy, Flame, User, FileEdit, Film, Scale, Globe2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +21,7 @@ const STEP_VISUALS = [
   { icon: FileEdit, color: 'text-violet-400',  bg: 'bg-violet-400/10',  border: 'border-violet-400/30' },
   { icon: Scale,    color: 'text-violet-400',  bg: 'bg-violet-400/10',  border: 'border-violet-400/30' },
   { icon: Film,     color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/30' },
+  { icon: Globe2,   color: 'text-sky-400',     bg: 'bg-sky-400/10',     border: 'border-sky-400/30' },
 ];
 
 export default function AppGuidePage() {

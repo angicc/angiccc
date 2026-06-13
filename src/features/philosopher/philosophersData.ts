@@ -8,6 +8,11 @@ export type Philosopher = {
   imageUrl: string;
   knownPositions: string[];
   starterArguments: string[];
+  starterArgumentsI18n?: {
+    es?: string[];
+    ru?: string[];
+    mk?: string[];
+  };
   systemPrompt: string;
 };
 
@@ -19,7 +24,7 @@ export const PHILOSOPHERS: Philosopher[] = [
     lifespan: '551–479 BCE',
     xpReward: 100,
     tagline: 'By three methods we may learn wisdom',
-    imageUrl: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Confucius_Tang_Dynasty.jpg/400px-Confucius_Tang_Dynasty.jpg',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Confucius_Tang_Dynasty.jpg/400px-Confucius_Tang_Dynasty.jpg',
     knownPositions: [
       'Social harmony stems from hierarchical relationships — ruler/subject, parent/child',
       'Virtue (ren) and ritual propriety (li) are the foundations of civilization',
@@ -31,6 +36,23 @@ export const PHILOSOPHERS: Philosopher[] = [
       'Ritual propriety without inner conviction is mere hypocrisy',
       'A government that depends on the ruler\'s virtue alone is inherently unstable',
     ],
+    starterArgumentsI18n: {
+      es: [
+        'Las jerarquías rígidas suprimen el potencial humano en lugar de cultivarlo',
+        'La propiedad ritual sin convicción interior es mera hipocresía',
+        'Un gobierno que depende únicamente de la virtud del gobernante es intrínsecamente inestable',
+      ],
+      ru: [
+        'Жёсткие иерархии подавляют человеческий потенциал вместо того, чтобы его развивать',
+        'Ритуальная благопристойность без внутренних убеждений — лишь лицемерие',
+        'Правительство, опирающееся только на добродетель правителя, по природе нестабильно',
+      ],
+      mk: [
+        'Крутите хиерархии го потиснуваат човечкиот потенцијал наместо да го развиваат',
+        'Ритуалната пристојност без внатрешно убедување е само лицемерство',
+        'Влада која зависи само од добродетелта на владетелот е по природа нестабилна',
+      ],
+    },
     systemPrompt: `You are Confucius (Kong Qiu, 551–479 BCE), the great Chinese philosopher and teacher. You speak with measured wisdom, use analogies, and reference virtue, ritual, and the Way (Dao) frequently. You believe deeply in the transformative power of education, ritual propriety (li), and benevolence (ren).
 
 YOUR CORE POSITIONS (defend these vigorously):
@@ -51,7 +73,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human makes
     lifespan: '1596–1650',
     xpReward: 110,
     tagline: 'Cogito, ergo sum — I think, therefore I am',
-    imageUrl: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/73/Frans_Hals_-_Portret_van_Ren%25C3%25A9_Descartes.jpg/400px-Frans_Hals_-_Portret_van_Ren%25C3%25A9_Descartes.jpg',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg/400px-Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg',
     knownPositions: [
       'The mind and body are fundamentally distinct substances (substance dualism)',
       'Only clear and distinct ideas — those that cannot be doubted — are certain',
@@ -63,6 +85,23 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human makes
       'If mind and body are entirely distinct, how do they interact at all?',
       'Your ontological argument proves only that we can conceive of a perfect being, not that one exists',
     ],
+    starterArgumentsI18n: {
+      es: [
+        'El cogito es circular — asume un "yo" pensante para probar la existencia de un "yo" pensante',
+        'Si la mente y el cuerpo son completamente distintos, ¿cómo interactúan entre sí?',
+        'Tu argumento ontológico solo prueba que podemos concebir un ser perfecto, no que realmente exista',
+      ],
+      ru: [
+        'Когито порочен по кругу — он предполагает мыслящее «я», чтобы доказать существование мыслящего «я»',
+        'Если разум и тело полностью раздельны, как они вообще взаимодействуют?',
+        'Ваш онтологический аргумент доказывает лишь, что мы можем вообразить совершенное существо, но не то, что оно существует',
+      ],
+      mk: [
+        'Когито е кружен — претпоставува мислечко „јас" за да го докаже постоењето на мислечко „јас"',
+        'Ако умот и телото се сосема различни, како воопшто комуницираат?',
+        'Твојот онтолошки аргумент докажува само дека можеме да замислиме совршено суштество, не дека навистина постои',
+      ],
+    },
     systemPrompt: `You are René Descartes (1596–1650), French mathematician and father of modern philosophy. You speak with calm, methodical precision. You are confident in reason's power and the mathematical method applied to philosophy.
 
 YOUR CORE POSITIONS (defend vigorously):
@@ -83,7 +122,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human succe
     lifespan: '470–399 BCE',
     xpReward: 120,
     tagline: 'The unexamined life is not worth living',
-    imageUrl: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Socrate_du_Louvre.jpg/400px-Socrate_du_Louvre.jpg',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Socrate_du_Louvre.jpg/400px-Socrate_du_Louvre.jpg',
     knownPositions: [
       'True wisdom begins by knowing what you do not know',
       'Virtue is knowledge — evil is done through ignorance, not malice',
@@ -95,6 +134,23 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human succe
       'Your method only destroys positions — it never establishes what is truly good',
       'Claiming to know nothing while constantly teaching contradicts itself',
     ],
+    starterArgumentsI18n: {
+      es: [
+        'Si la virtud es conocimiento, ¿por qué las personas instruidas cometen maldades constantemente?',
+        'Tu método solo destruye posiciones — nunca establece qué es verdaderamente bueno',
+        'Afirmar que no sabes nada mientras enseñas constantemente se contradice a sí mismo',
+      ],
+      ru: [
+        'Если добродетель — это знание, почему образованные люди постоянно творят зло?',
+        'Ваш метод только разрушает позиции — он никогда не устанавливает, что поистине благо',
+        'Утверждать, что ничего не знаешь, постоянно при этом поучая, само по себе противоречиво',
+      ],
+      mk: [
+        'Ако доблеста е знаење, зошто образованите луѓе постојано прават зло?',
+        'Твојот метод само ги уништува позициите — никогаш не воспоставува што е вистински добро',
+        'Тврдењето дека не знаеш ништо додека постојано поучуваш е само по себе противречност',
+      ],
+    },
     systemPrompt: `You are Socrates of Athens (470–399 BCE), the great gadfly of democracy. You debate through relentless questioning — the elenchus — exposing contradictions. You have never written anything down; you speak in conversation alone.
 
 YOUR CORE POSITIONS (defend through questioning, not assertion):
@@ -115,7 +171,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human uses 
     lifespan: '428–348 BCE',
     xpReward: 130,
     tagline: 'The world of Forms is more real than the world of shadows',
-    imageUrl: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/88/Plato_Silanion_Musei_Capitolini_MC1377.jpg/400px-Plato_Silanion_Musei_Capitolini_MC1377.jpg',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Plato_Silanion_Musei_Capitolini_MC1377.jpg/400px-Plato_Silanion_Musei_Capitolini_MC1377.jpg',
     knownPositions: [
       'The Theory of Forms: abstract ideals (Beauty, Justice, Truth) are more real than physical things',
       'Philosopher-kings should rule, guided by knowledge of the Good',
@@ -127,6 +183,23 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human uses 
       'Philosopher-kings would have no incentive to leave the world of contemplation to govern',
       'Your allegory of the cave assumes those in the cave cannot figure out reality themselves',
     ],
+    starterArgumentsI18n: {
+      es: [
+        'Si las Formas son originales perfectos, ¿qué explica la Forma de las Formas — el problema del Tercer Hombre?',
+        'Los filósofos-reyes no tendrían incentivo para dejar el mundo de la contemplación y gobernar',
+        'Tu alegoría de la caverna asume que quienes están en ella no pueden descubrir la realidad por sí mismos',
+      ],
+      ru: [
+        'Если Формы — совершенные оригиналы, что объясняет Форму Форм — проблема «Третьего человека»?',
+        'У философов-царей не было бы стимула покидать мир созерцания ради управления государством',
+        'Ваша аллегория пещеры предполагает, что узники не могут самостоятельно разобраться в реальности',
+      ],
+      mk: [
+        'Ако Формите се совршени оригинали, што го објаснува Формата на Формите — проблемот на Третиот Човек?',
+        'Филозофите-кралеви немаа стимул да го напуштат светот на контемплација за да управуваат',
+        'Твојата алегорија за пештерата претпоставува дека луѓето во неа не можат сами да ја откријат реалноста',
+      ],
+    },
     systemPrompt: `You are Plato (428–348 BCE), Athenian philosopher, student of Socrates, and founder of the Academy. You write in dialogues, believe in transcendent Forms, and argue for the philosopher-king.
 
 YOUR CORE POSITIONS (defend passionately):
@@ -147,7 +220,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces an argumen
     lifespan: '384–322 BCE',
     xpReward: 150,
     tagline: 'We are what we repeatedly do — excellence is a habit',
-    imageUrl: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/400px-Aristotle_Altemps_Inv8575.jpg',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/400px-Aristotle_Altemps_Inv8575.jpg',
     knownPositions: [
       'Virtue is the golden mean between extremes — courage lies between cowardice and recklessness',
       'Humans are rational, political animals; the polis (city-state) is natural, not a contract',
@@ -159,6 +232,23 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces an argumen
       'If the polis is natural, how do you justify slavery as anything but a convenient fiction?',
       'Your four causes smuggle teleology (purpose) into nature without justification',
     ],
+    starterArgumentsI18n: {
+      es: [
+        'Tu "punto medio" no ofrece una forma principiada de determinar el medio en ninguna situación concreta',
+        'Si la polis es natural, ¿cómo justificas la esclavitud como algo distinto de una ficción conveniente?',
+        'Tus cuatro causas introducen subrepticiamente la teleología en la naturaleza sin justificación',
+      ],
+      ru: [
+        'Ваше «золотое сечение» не даёт принципиального способа определить середину в конкретной ситуации',
+        'Если полис естественен, как вы оправдываете рабство иначе, чем удобной фикцией?',
+        'Ваши четыре причины тайно вводят телеологию (цель) в природу без обоснования',
+      ],
+      mk: [
+        'Твојата „златна средина" не нуди принципиелен начин за одредување на средината во конкретна ситуација',
+        'Ако полисот е природен, kako го оправдуваш ропството инаку освен како погодна фикција?',
+        'Твоите четири причини тивко воведуваат телеологија во природата без оправдување',
+      ],
+    },
     systemPrompt: `You are Aristotle (384–322 BCE), the Stagirite — student of Plato, tutor of Alexander the Great, founder of the Lyceum. You are encyclopedic, empirical, and confident in reason's ability to systematize all knowledge.
 
 YOUR CORE POSITIONS (defend rigorously):
@@ -179,7 +269,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human dismantles Aristotl
     lifespan: '1844–1900',
     xpReward: 140,
     tagline: 'God is dead — and we have killed him',
-    imageUrl: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Nietzsche187a.jpg/400px-Nietzsche187a.jpg',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Nietzsche187a.jpg/400px-Nietzsche187a.jpg',
     knownPositions: [
       'God is dead; we must create our own values in a post-theological world',
       'The will to power is the fundamental drive of all life',
@@ -191,6 +281,23 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human dismantles Aristotl
       'The Übermensch is a concept so vague it can justify any atrocity when appropriated by power',
       'Declaring God dead doesn\'t solve the problem of meaning — it just makes it worse',
     ],
+    starterArgumentsI18n: {
+      es: [
+        'Si todos los valores los crea la voluntad de poder, tu propia filosofía no tiene autoridad sobre los demás',
+        'El Übermensch es un concepto tan vago que puede justificar cualquier atrocidad cuando el poder lo apropia',
+        'Declarar que Dios ha muerto no resuelve el problema del significado — solo lo empeora',
+      ],
+      ru: [
+        'Если все ценности созданы волей к власти, ваша собственная философия не имеет авторитета над другими',
+        'Сверхчеловек — настолько расплывчатое понятие, что оно может оправдать любые злодеяния, когда его присваивает власть',
+        'Объявление Бога мёртвым не решает проблему смысла — оно лишь усугубляет её',
+      ],
+      mk: [
+        'Ако сите вредности ги создава волјата за моќ, твојата сопствена филозофија нема авторитет над другите',
+        'Натчовекот е толку нејасен концепт що може да оправда секоја злосторба кога ја присвои власта',
+        'Прогласувањето на Бога за мртов не го решава проблемот на смислата — само го влошува',
+      ],
+    },
     systemPrompt: `You are Friedrich Nietzsche (1844–1900), the hammer of morality and prophet of the Übermensch. You write with fire, aphorisms, and a hammer. You are provocative, radical, and deeply earnest beneath the bravado.
 
 YOUR CORE POSITIONS (defend with passion and wit):
@@ -211,7 +318,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human catches you in a ge
     lifespan: '1724–1804',
     xpReward: 160,
     tagline: 'Act only according to maxims you could will to be universal laws',
-    imageUrl: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Kant_gemaelde_3.jpg/400px-Kant_gemaelde_3.jpg',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Kant_gemaelde_3.jpg/400px-Kant_gemaelde_3.jpg',
     knownPositions: [
       'The Categorical Imperative: act only on maxims universalizable as laws for all rational beings',
       'The phenomenal/noumenal distinction: we can only know things as they appear, not as they are',
@@ -223,6 +330,23 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human catches you in a ge
       'The noumenal world is defined as unknowable, yet you claim to know it exists — a contradiction',
       'Basing morality purely on reason ignores the emotional foundations that make ethics possible',
     ],
+    starterArgumentsI18n: {
+      es: [
+        'El Imperativo Categórico da respuestas contradictorias cuando los deberes entran en conflicto — p. ej., mentir para salvar una vida',
+        'El mundo nouménico se define como incognoscible, pero afirmas saber que existe — una contradicción',
+        'Basar la moral puramente en la razón ignora los fundamentos emocionales que hacen posible la ética',
+      ],
+      ru: [
+        'Категорический императив даёт противоречивые ответы при конфликте обязанностей — например, ложь ради спасения жизни',
+        'Ноуменальный мир определён как непознаваемый, но вы утверждаете, что знаете о его существовании — противоречие',
+        'Основание морали исключительно на разуме игнорирует эмоциональные основания, делающие этику возможной',
+      ],
+      mk: [
+        'Категоричниот Императив дава спротивставени одговори кога должностите се во конфликт — на пр. лажење за да се спаси живот',
+        'Ноуменалниот свет е дефиниран како несознатлив, а сепак тврдиш дека знаеш дека постои — противречност',
+        'Засновувањето на моралот исклучиво на разумот ги игнорира емоционалните основи кои ја прават етиката можна',
+      ],
+    },
     systemPrompt: `You are Immanuel Kant (1724–1804), the philosopher of Königsberg who achieved the "Copernican Revolution" in philosophy. You are systematic, precise, and uncompromising in your demands for rational consistency.
 
 YOUR CORE POSITIONS (defend with rigorous precision):

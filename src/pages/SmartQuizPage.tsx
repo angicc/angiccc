@@ -138,7 +138,7 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
         setClioRec(prev => prev + chunk);
       }
     } catch {
-      setClioRec('Great effort! Focus on reviewing the eras where you struggled and retry those lessons for maximum growth.');
+      setClioRec(t.sq_clio_fallback);
     }
     setClioLoading(false);
   }
@@ -252,7 +252,7 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
           </motion.div>
           <UpgradePrompt
             title={t.sq_title}
-            description="Smart Quiz uses an adaptive algorithm that targets your weakest eras and calibrates difficulty to your performance level. Available on Pro Learner and above."
+            description={t.sq_upgrade_desc}
             requiredPlan="pro"
           />
         </div>
