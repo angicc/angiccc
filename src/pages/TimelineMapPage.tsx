@@ -1,112 +1,380 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { AppShell } from '@/components/layout/AppShell';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { TERRITORY_TOPICS, type TerritoryTopic } from '@/features/content/timelineTerritoryData';
+import { useAuth } from '@/features/auth/AuthContext';
+import { addBonusXp } from '@/features/progress/progressStore';
+import { TERRITORY_TOPICS, type TerritoryTopic, type MarkerType } from '@/features/content/timelineTerritoryData';
 import type { Language } from '@/i18n/translations';
-import { Map as MapIcon, ChevronRight } from 'lucide-react';
+import {
+  Map as MapIcon, ChevronRight, Layers, Palette, BookOpen, HelpCircle, Play, Pause,
+  SkipBack, SkipForward, ChevronDown, X, Trophy, Swords, Building2, Anchor, Gem, Landmark,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
 
-const ERA_COLORS = {
-  ancient:      'text-amber-400',
-  medieval:     'text-blue-400',
-  'early-modern': 'text-emerald-400',
-  modern:       'text-rose-400',
-} as const;
+// ─── Constants ────────────────────────────────────────────────────────────────
 
-const ERA_BG = {
-  ancient:      'bg-amber-400/10',
-  medieval:     'bg-blue-400/10',
-  'early-modern': 'bg-emerald-400/10',
-  modern:       'bg-rose-400/10',
-} as const;
-
-const ERA_BORDER = {
-  ancient:      'border-amber-400/40',
-  medieval:     'border-blue-400/40',
-  'early-modern': 'border-emerald-400/40',
-  modern:       'border-rose-400/40',
-} as const;
+const ERA_COLORS = { ancient: 'text-amber-400', medieval: 'text-blue-400', 'early-modern': 'text-emerald-400', modern: 'text-rose-400' } as const;
+const ERA_BG    = { ancient: 'bg-amber-400/10', medieval: 'bg-blue-400/10', 'early-modern': 'bg-emerald-400/10', modern: 'bg-rose-400/10' } as const;
+const ERA_BORDER= { ancient: 'border-amber-400/40', medieval: 'border-blue-400/40', 'early-modern': 'border-emerald-400/40', modern: 'border-rose-400/40' } as const;
 
 const ERA_LABELS: Record<string, Record<Language, string>> = {
-  ancient:        { en: 'Ancient World',  es: 'Mundo Antiguo',       ru: 'Древний Мир',          mk: 'Античко Доба' },
-  medieval:       { en: 'Middle Ages',    es: 'Edad Media',           ru: 'Средние Века',          mk: 'Среден Век' },
-  'early-modern': { en: 'Early Modern',   es: 'Época Moderna Temprana', ru: 'Раннее Новое Время', mk: 'Рано Модерно Доба' },
-  modern:         { en: 'Modern Era',     es: 'Era Moderna',          ru: 'Современная Эпоха',    mk: 'Модерна Ера' },
+  ancient:        { en: 'Ancient World',  es: 'Mundo Antiguo',          ru: 'Древний Мир',          mk: 'Античко Доба' },
+  medieval:       { en: 'Middle Ages',    es: 'Edad Media',              ru: 'Средние Века',          mk: 'Среден Век' },
+  'early-modern': { en: 'Early Modern',   es: 'Época Moderna Temprana',  ru: 'Раннее Новое Время',   mk: 'Рано Модерно Доба' },
+  modern:         { en: 'Modern Era',     es: 'Era Moderna',             ru: 'Современная Эпоха',    mk: 'Модерна Ера' },
 };
+
+interface CartographicStyle {
+  id: string;
+  nameKey: keyof Record<string, string>;
+  url: string;
+  attribution: string;
+  filter: string;
+  subdomains?: string;
+}
+
+const CART_STYLES: CartographicStyle[] = [
+  {
+    id: 'dark',
+    nameKey: 'tmap_style_dark',
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+    filter: '',
+  },
+  {
+    id: 'parchment',
+    nameKey: 'tmap_style_parchment',
+    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+    filter: 'sepia(75%) brightness(0.85) contrast(0.88) saturate(0.8)',
+  },
+  {
+    id: 'military',
+    nameKey: 'tmap_style_military',
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+    filter: 'hue-rotate(100deg) saturate(1.3) brightness(0.75)',
+  },
+  {
+    id: 'terrain',
+    nameKey: 'tmap_style_terrain',
+    url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+    attribution: '&copy; <a href="https://opentopomap.org/">OpenTopoMap</a>',
+    filter: '',
+    subdomains: 'abc',
+  },
+  {
+    id: 'clean',
+    nameKey: 'tmap_style_clean',
+    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+    filter: '',
+  },
+  {
+    id: 'satellite',
+    nameKey: 'tmap_style_satellite',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    attribution: '&copy; <a href="https://www.esri.com/">Esri</a>',
+    filter: '',
+    subdomains: undefined,
+  },
+];
+
+type MapMode = 'explore' | 'story' | 'quiz';
+type LayerKey = 'territory' | 'capitals' | 'cities' | 'battles' | 'ports' | 'resources' | 'routes';
+
+const MARKER_COLORS: Record<MarkerType, string> = {
+  capital:   '#fbbf24',
+  city:      '#60a5fa',
+  battle:    '#ef4444',
+  port:      '#34d399',
+  resource:  '#a78bfa',
+  landmark:  '#f97316',
+};
+
+const MARKER_ICONS: Record<MarkerType, string> = {
+  capital:  '★',
+  city:     '●',
+  battle:   '⚔',
+  port:     '⚓',
+  resource: '◆',
+  landmark: '▲',
+};
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function getTitle(topic: TerritoryTopic, language: Language): string {
   if (language === 'en') return topic.title;
   return topic.titleI18n[language as Exclude<Language, 'en'>] ?? topic.title;
 }
 
-function makeMarkerIcon(name: string) {
+function makeMarkerIcon(marker: { name: string; type: MarkerType }, activeStyle: string) {
+  const color = MARKER_COLORS[marker.type];
+  const icon  = MARKER_ICONS[marker.type];
+  const isDark = activeStyle === 'dark' || activeStyle === 'military';
+  const labelBg = isDark ? 'rgba(0,0,0,0.85)' : 'rgba(255,255,255,0.92)';
+  const labelColor = isDark ? '#fff' : '#111';
+  const size = marker.type === 'capital' ? 16 : marker.type === 'battle' ? 15 : 12;
+
   return L.divIcon({
-    html: `<div style="display:flex;flex-direction:column;align-items:center">
-      <div style="background:#ef4444;border:2px solid white;border-radius:50%;width:12px;height:12px;box-shadow:0 1px 4px rgba(0,0,0,.6)"></div>
-      <div style="background:rgba(0,0,0,.75);color:white;font-size:10px;font-weight:600;padding:1px 5px;border-radius:4px;white-space:nowrap;margin-top:2px;font-family:sans-serif;box-shadow:0 1px 3px rgba(0,0,0,.5)">${name}</div>
+    html: `<div style="display:flex;flex-direction:column;align-items:center;cursor:pointer">
+      <div style="background:${color};border:2.5px solid white;border-radius:50%;width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.6);font-size:${size * 0.55}px;color:white;line-height:1">${icon}</div>
+      <div style="background:${labelBg};color:${labelColor};font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;white-space:nowrap;margin-top:2px;font-family:system-ui,sans-serif;box-shadow:0 1px 4px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,0.2)">${marker.name}</div>
     </div>`,
     className: '',
-    iconAnchor: [6, 6],
+    iconAnchor: [size / 2, size],
     iconSize: undefined as unknown as L.PointExpression,
   });
 }
 
+function buildQuizOptions(correct: TerritoryTopic, all: TerritoryTopic[], language: Language): string[] {
+  const distractors = all
+    .filter(t => t.id !== correct.id)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3)
+    .map(t => getTitle(t, language));
+  const options = [...distractors, getTitle(correct, language)].sort(() => Math.random() - 0.5);
+  return options;
+}
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
 export default function TimelineMapPage() {
   const { t, language } = useLanguage();
-  const [selected, setSelected] = useState<TerritoryTopic | null>(null);
-  const mapRef = useRef<L.Map | null>(null);
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const markersRef = useRef<L.Layer[]>([]);
+  const { currentUser, refreshProgress } = useAuth();
 
-  // Initialize Leaflet once
+  const [selected, setSelected]       = useState<TerritoryTopic | null>(null);
+  const [mode, setMode]               = useState<MapMode>('explore');
+  const [styleId, setStyleId]         = useState('dark');
+  const [showLayerPanel, setShowLayerPanel] = useState(false);
+  const [showStylePanel, setShowStylePanel] = useState(false);
+  const [layers, setLayers]           = useState<Record<LayerKey, boolean>>({
+    territory: true, capitals: true, cities: true, battles: true, ports: true, resources: true, routes: true,
+  });
+
+  // Story mode
+  const [storyIdx, setStoryIdx]       = useState(0);
+  const [storyPlaying, setStoryPlaying] = useState(false);
+  const storyTimerRef                 = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Quiz mode
+  const [quizOptions, setQuizOptions] = useState<string[]>([]);
+  const [quizTopic, setQuizTopic]     = useState<TerritoryTopic | null>(null);
+  const [quizAnswered, setQuizAnswered] = useState<number | null>(null);
+  const [quizScore, setQuizScore]     = useState(0);
+  const [quizTotal, setQuizTotal]     = useState(0);
+
+  // Map refs
+  const mapRef            = useRef<L.Map | null>(null);
+  const containerRef      = useRef<HTMLDivElement>(null);
+  const tileRef           = useRef<L.TileLayer | null>(null);
+  const layerGroupRef     = useRef<L.LayerGroup | null>(null);
+  const storyMarkerRef    = useRef<L.Marker | null>(null);
+
+  // ── Init map ────────────────────────────────────────────────────────────────
   useEffect(() => {
-    if (!mapContainerRef.current || mapRef.current) return;
-
-    const map = L.map(mapContainerRef.current, {
-      center: [30, 20],
-      zoom: 2,
-      zoomControl: true,
-      scrollWheelZoom: true,
-    });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 18,
-    }).addTo(map);
-
+    if (!containerRef.current || mapRef.current) return;
+    const map = L.map(containerRef.current, { center: [30, 20], zoom: 2, zoomControl: true, scrollWheelZoom: true });
+    const style = CART_STYLES.find(s => s.id === 'dark')!;
+    const tile = L.tileLayer(style.url, { attribution: style.attribution, maxZoom: 18 });
+    tile.addTo(map);
+    tileRef.current = tile;
+    layerGroupRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
     return () => { map.remove(); mapRef.current = null; };
   }, []);
 
-  // Update markers + fly when selection changes
+  // ── Tile layer swap on style change ────────────────────────────────────────
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
+    const style = CART_STYLES.find(s => s.id === styleId)!;
+    if (tileRef.current) { map.removeLayer(tileRef.current); }
+    const opts: L.TileLayerOptions = { attribution: style.attribution, maxZoom: 18 };
+    if (style.subdomains) opts.subdomains = style.subdomains;
+    const tile = L.tileLayer(style.url, opts);
+    tile.addTo(map);
+    tileRef.current = tile;
+    // Apply CSS filter to map container
+    if (containerRef.current) {
+      containerRef.current.style.filter = style.filter;
+    }
+  }, [styleId]);
 
-    markersRef.current.forEach(l => map.removeLayer(l));
-    markersRef.current = [];
-
+  // ── Render map layers when topic/layers/style changes ──────────────────────
+  const renderLayers = useCallback(() => {
+    const map = mapRef.current;
+    const lg  = layerGroupRef.current;
+    if (!map || !lg) return;
+    lg.clearLayers();
     if (!selected) return;
 
-    map.flyTo(selected.center, selected.zoom, { duration: 1.2 });
+    // Polygons
+    if (layers.territory && selected.polygons) {
+      selected.polygons.forEach(poly => {
+        const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
+        L.polygon(latlngs, {
+          color: poly.color,
+          weight: 2.5,
+          fillColor: poly.color,
+          fillOpacity: poly.fillOpacity ?? 0.2,
+          dashArray: undefined,
+        }).bindTooltip(poly.label ?? '', { permanent: false, direction: 'center', className: 'leaflet-tooltip-custom' }).addTo(lg);
+      });
+    }
 
+    // Routes
+    if (layers.routes && selected.routes) {
+      selected.routes.forEach(route => {
+        const color = route.type === 'trade' ? '#f59e0b' : route.type === 'military' ? '#ef4444' : '#a78bfa';
+        const dash  = route.type === 'trade' ? '8,6' : route.type === 'religious' ? '4,8' : undefined;
+        L.polyline(route.points.map(([lat, lng]) => [lat, lng] as [number, number]), {
+          color: route.color ?? color,
+          weight: 2.5,
+          dashArray: dash,
+          opacity: 0.8,
+        }).bindPopup(`<strong>${route.name}</strong><br/><em style="font-size:11px;color:#888">${route.type}</em>`).addTo(lg);
+      });
+    }
+
+    // Markers
     selected.markers.forEach(m => {
-      const marker = L.marker([m.lat, m.lng], { icon: makeMarkerIcon(m.name) })
-        .bindPopup(`<strong style="font-size:13px">${m.name}</strong>${m.note ? `<br/><span style="font-size:11px;color:#555">${m.note}</span>` : ''}`)
-        .addTo(map);
-      markersRef.current.push(marker);
+      const typeVisible: Record<MarkerType, LayerKey> = {
+        capital: 'capitals', city: 'cities', battle: 'battles',
+        port: 'ports', resource: 'resources', landmark: 'cities',
+      };
+      const layerKey = typeVisible[m.type];
+      if (!layers[layerKey]) return;
+
+      const marker = L.marker([m.lat, m.lng], { icon: makeMarkerIcon(m, styleId) })
+        .bindPopup(`
+          <div style="min-width:180px">
+            <div style="font-size:11px;font-weight:700;color:${MARKER_COLORS[m.type]};text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">${MARKER_ICONS[m.type]} ${m.type}</div>
+            <strong style="font-size:13px">${m.name}</strong>
+            ${m.year ? `<div style="font-size:10px;color:#888;margin:2px 0">${m.year < 0 ? Math.abs(m.year) + ' BCE' : m.year + ' CE'}</div>` : ''}
+            ${m.note ? `<div style="font-size:11px;color:#666;margin-top:4px;line-height:1.5">${m.note}</div>` : ''}
+          </div>
+        `)
+        .addTo(lg);
+      (marker as unknown as { _tmapType: string })._tmapType = m.type;
     });
+  }, [selected, layers, styleId]);
+
+  useEffect(() => {
+    renderLayers();
+  }, [renderLayers]);
+
+  // Fly to topic on selection
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !selected) return;
+    map.flyTo(selected.center, selected.zoom, { duration: 1.4, easeLinearity: 0.3 });
+    setStoryIdx(0);
+    setStoryPlaying(false);
+    if (mode === 'quiz') startNewQuiz(selected);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
+  // ── Story mode ──────────────────────────────────────────────────────────────
+  const storyMarkers = selected?.markers ?? [];
+
+  useEffect(() => {
+    if (mode !== 'story' || !selected || storyMarkers.length === 0) return;
+    const m = storyMarkers[storyIdx];
+    const map = mapRef.current;
+    if (!map) return;
+
+    if (storyMarkerRef.current) { map.removeLayer(storyMarkerRef.current); storyMarkerRef.current = null; }
+
+    const marker = L.marker([m.lat, m.lng], { icon: makeMarkerIcon(m, styleId), zIndexOffset: 1000 })
+      .addTo(map);
+    marker.openPopup();
+    storyMarkerRef.current = marker;
+    map.flyTo([m.lat, m.lng], Math.max(selected.zoom, 6), { duration: 1.0 });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storyIdx, mode]);
+
+  useEffect(() => {
+    if (storyTimerRef.current) clearTimeout(storyTimerRef.current);
+    if (storyPlaying && mode === 'story' && storyMarkers.length > 0) {
+      storyTimerRef.current = setTimeout(() => {
+        setStoryIdx(i => (i + 1) % storyMarkers.length);
+      }, 4500);
+    }
+    return () => { if (storyTimerRef.current) clearTimeout(storyTimerRef.current); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storyPlaying, storyIdx, mode]);
+
+  // ── Quiz mode ────────────────────────────────────────────────────────────────
+  function startNewQuiz(topic?: TerritoryTopic | null) {
+    const pool = topic ? [topic] : TERRITORY_TOPICS;
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    setQuizTopic(pick);
+    setQuizOptions(buildQuizOptions(pick, TERRITORY_TOPICS, language));
+    setQuizAnswered(null);
+
+    const map = mapRef.current;
+    const lg = layerGroupRef.current;
+    if (!map || !lg) return;
+    lg.clearLayers();
+    if (pick.polygons) {
+      pick.polygons.forEach(poly => {
+        const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
+        L.polygon(latlngs, { color: '#6366f1', weight: 2.5, fillColor: '#6366f1', fillOpacity: 0.35 }).addTo(lg);
+      });
+    }
+    map.flyTo(pick.center, pick.zoom, { duration: 1.2 });
+  }
+
+  function handleQuizAnswer(idx: number) {
+    if (quizAnswered !== null || !quizTopic) return;
+    setQuizAnswered(idx);
+    setQuizTotal(q => q + 1);
+    const correct = quizOptions[idx] === getTitle(quizTopic, language);
+    if (correct) {
+      setQuizScore(s => s + 1);
+      if (currentUser) {
+        addBonusXp(currentUser.id, 50, 'Map Quiz');
+        refreshProgress();
+      }
+      toast.success(t.tmap_quiz_correct);
+    } else {
+      toast.error(`${t.tmap_quiz_wrong} ${getTitle(quizTopic, language)}`);
+    }
+  }
+
+  // Mode switch cleanup
+  useEffect(() => {
+    setStoryPlaying(false);
+    setStoryIdx(0);
+    if (storyMarkerRef.current && mapRef.current) {
+      mapRef.current.removeLayer(storyMarkerRef.current);
+      storyMarkerRef.current = null;
+    }
+    if (mode === 'quiz') startNewQuiz(selected);
+    else renderLayers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
+
   const eras = ['ancient', 'medieval', 'early-modern', 'modern'] as const;
+  const currentStyle = CART_STYLES.find(s => s.id === styleId)!;
+
+  const storyCurrentMarker = storyMarkers[storyIdx];
 
   return (
     <AppShell compact>
       <div className="h-full flex overflow-hidden">
-        {/* ── Left panel ── */}
-        <div className="w-60 sm:w-72 shrink-0 border-r border-border bg-card/95 backdrop-blur-sm flex flex-col overflow-hidden">
+
+        {/* ════════════════════════════════════════════════════
+            LEFT PANEL
+        ════════════════════════════════════════════════════ */}
+        <div className="w-60 sm:w-72 shrink-0 border-r border-border bg-card/95 backdrop-blur-sm flex flex-col overflow-hidden z-10">
+
           {/* Header */}
           <div className="px-3 pt-4 pb-3 border-b border-border">
             <div className="flex items-center gap-2 mb-0.5">
@@ -114,7 +382,28 @@ export default function TimelineMapPage() {
               <h1 className="font-heading font-bold text-sm leading-tight">{t.tmap_title}</h1>
             </div>
             <p className="text-[11px] text-muted-foreground leading-snug">{t.tmap_subtitle}</p>
+
+            {/* Mode selector */}
+            <div className="flex gap-1 mt-2">
+              {(['explore', 'story', 'quiz'] as MapMode[]).map(m => (
+                <button
+                  key={m}
+                  onClick={() => setMode(m)}
+                  className={cn('flex-1 text-[10px] font-semibold py-1 rounded-md transition-all capitalize', mode === m ? 'bg-primary text-primary-foreground' : 'bg-muted/40 text-muted-foreground hover:bg-muted/70')}
+                >
+                  {m === 'explore' ? t.tmap_explore : m === 'story' ? t.tmap_story : t.tmap_quiz}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* Quiz score strip */}
+          {mode === 'quiz' && quizTotal > 0 && (
+            <div className="px-3 py-2 bg-primary/5 border-b border-border flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">{t.tmap_quiz_score}</span>
+              <span className="font-bold text-primary">{quizScore}/{quizTotal}</span>
+            </div>
+          )}
 
           {/* Topic list */}
           <div className="flex-1 overflow-y-auto p-2 space-y-3">
@@ -131,7 +420,7 @@ export default function TimelineMapPage() {
                       return (
                         <button
                           key={topic.id}
-                          onClick={() => setSelected(isActive ? null : topic)}
+                          onClick={() => setSelected(isActive && mode !== 'quiz' ? null : topic)}
                           className={cn(
                             'w-full text-left px-2.5 py-2 rounded-lg text-xs transition-all flex items-center gap-2 group',
                             isActive
@@ -139,11 +428,11 @@ export default function TimelineMapPage() {
                               : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                           )}
                         >
-                          <ChevronRight className={cn(
-                            'w-3 h-3 shrink-0 transition-transform',
-                            isActive ? 'rotate-90' : 'group-hover:translate-x-0.5'
-                          )} />
-                          <span className="leading-snug">{getTitle(topic, language)}</span>
+                          <ChevronRight className={cn('w-3 h-3 shrink-0 transition-transform', isActive ? 'rotate-90' : 'group-hover:translate-x-0.5')} />
+                          <span className="leading-snug flex-1">{getTitle(topic, language)}</span>
+                          {topic.markers.length > 0 && (
+                            <span className="text-[9px] text-muted-foreground/60 shrink-0">{topic.markers.length}</span>
+                          )}
                         </button>
                       );
                     })}
@@ -152,30 +441,233 @@ export default function TimelineMapPage() {
               );
             })}
           </div>
+
+          {/* Layer legend */}
+          {selected && mode === 'explore' && (
+            <div className="px-3 py-2 border-t border-border">
+              <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground mb-1.5">{t.tmap_layers}</p>
+              <div className="grid grid-cols-2 gap-0.5">
+                {(Object.entries(MARKER_COLORS) as [MarkerType, string][]).map(([type, color]) => (
+                  <div key={type} className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                    <span style={{ color, fontSize: 11 }}>{MARKER_ICONS[type]}</span>
+                    <span className="capitalize">{type === 'landmark' ? 'Landmark' : type}</span>
+                  </div>
+                ))}
+                <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                  <span style={{ color: '#f59e0b', fontSize: 11 }}>─ ─</span>
+                  <span>Trade</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                  <span style={{ color: '#ef4444', fontSize: 11 }}>───</span>
+                  <span>Military</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* ── Map panel ── */}
+        {/* ════════════════════════════════════════════════════
+            MAP PANEL
+        ════════════════════════════════════════════════════ */}
         <div className="flex-1 relative">
-          {/* Leaflet container fills everything */}
-          <div ref={mapContainerRef} className="absolute inset-0 z-0" />
 
-          {/* Topic info overlay (top-right) */}
-          {selected && (
-            <div className="absolute top-3 right-3 max-w-[260px] z-[1000] bg-black/80 backdrop-blur-md text-white p-3 rounded-xl text-xs shadow-xl border border-white/10 pointer-events-none">
-              <div className={cn('text-[10px] font-bold uppercase tracking-wide mb-1', ERA_COLORS[selected.era])}>
+          {/* Leaflet container */}
+          <div ref={containerRef} className="absolute inset-0 z-0" />
+
+          {/* ── TOP-RIGHT: Style + Layer controls ──────────── */}
+          <div className="absolute top-3 right-3 z-[1000] flex flex-col gap-2 items-end">
+
+            {/* Style switcher button */}
+            <div className="relative">
+              <button
+                onClick={() => { setShowStylePanel(s => !s); setShowLayerPanel(false); }}
+                className="flex items-center gap-1.5 bg-black/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/15 shadow-lg hover:bg-black/90 transition-all"
+              >
+                <Palette className="w-3.5 h-3.5" />
+                {(t as Record<string, string>)[currentStyle.nameKey] ?? currentStyle.nameKey}
+                <ChevronDown className={cn('w-3 h-3 transition-transform', showStylePanel ? 'rotate-180' : '')} />
+              </button>
+
+              {showStylePanel && (
+                <div className="absolute top-8 right-0 bg-black/90 backdrop-blur-md rounded-xl border border-white/15 shadow-xl overflow-hidden min-w-[160px]">
+                  {CART_STYLES.map(s => (
+                    <button
+                      key={s.id}
+                      onClick={() => { setStyleId(s.id); setShowStylePanel(false); }}
+                      className={cn('w-full text-left text-xs px-3 py-2 transition-colors flex items-center gap-2', styleId === s.id ? 'bg-primary/30 text-primary font-semibold' : 'text-white/80 hover:bg-white/10')}
+                    >
+                      {styleId === s.id && <span className="text-primary">✓</span>}
+                      {(t as Record<string, string>)[s.nameKey] ?? s.id}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Layer toggle button */}
+            {selected && mode === 'explore' && (
+              <div className="relative">
+                <button
+                  onClick={() => { setShowLayerPanel(s => !s); setShowStylePanel(false); }}
+                  className="flex items-center gap-1.5 bg-black/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/15 shadow-lg hover:bg-black/90 transition-all"
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  {t.tmap_layers}
+                  <ChevronDown className={cn('w-3 h-3 transition-transform', showLayerPanel ? 'rotate-180' : '')} />
+                </button>
+
+                {showLayerPanel && (
+                  <div className="absolute top-8 right-0 bg-black/90 backdrop-blur-md rounded-xl border border-white/15 shadow-xl p-3 min-w-[180px] space-y-1.5">
+                    <button onClick={() => setShowLayerPanel(false)} className="absolute top-2 right-2 text-white/40 hover:text-white"><X className="w-3 h-3" /></button>
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-white/40 mb-2">{t.tmap_layers}</p>
+                    {(Object.entries(layers) as [LayerKey, boolean][]).map(([key, on]) => {
+                      const label = (t as Record<string, string>)[`tmap_layer_${key}`] ?? key;
+                      const colors: Record<LayerKey, string> = {
+                        territory: '#6366f1', capitals: '#fbbf24', cities: '#60a5fa',
+                        battles: '#ef4444', ports: '#34d399', resources: '#a78bfa', routes: '#f59e0b',
+                      };
+                      return (
+                        <button
+                          key={key}
+                          onClick={() => setLayers(l => ({ ...l, [key]: !l[key] }))}
+                          className={cn('w-full flex items-center gap-2.5 text-xs rounded-md px-2 py-1.5 transition-all', on ? 'text-white' : 'text-white/30')}
+                        >
+                          <div className={cn('w-3 h-3 rounded-sm border-2 flex items-center justify-center shrink-0 transition-all')} style={{ borderColor: colors[key], background: on ? colors[key] : 'transparent' }}>
+                            {on && <span style={{ fontSize: 8, color: 'white' }}>✓</span>}
+                          </div>
+                          {label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* ── SELECTED TOPIC INFO (top-left below header) ─ */}
+          {selected && mode === 'explore' && (
+            <div className="absolute top-3 left-3 max-w-[240px] z-[1000] bg-black/80 backdrop-blur-md text-white p-3 rounded-xl text-xs shadow-xl border border-white/10 pointer-events-none">
+              <div className={cn('text-[9px] font-bold uppercase tracking-widest mb-1', ERA_COLORS[selected.era])}>
                 {ERA_LABELS[selected.era][language]} · {selected.period}
               </div>
-              <p className="font-semibold text-sm leading-snug mb-1.5">{getTitle(selected, language)}</p>
-              <p className="text-white/75 leading-relaxed">{selected.description}</p>
+              <p className="font-bold text-sm leading-snug mb-1">{getTitle(selected, language)}</p>
+              <p className="text-white/70 leading-relaxed text-[11px]">{selected.description}</p>
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                <Badge variant="outline" className="text-[9px] border-white/20 text-white/60 h-4 px-1.5">
+                  {selected.markers.length} {t.tmap_markers}
+                </Badge>
+                {selected.polygons && (
+                  <Badge variant="outline" className="text-[9px] border-white/20 text-white/60 h-4 px-1.5">
+                    {t.tmap_layer_territory}
+                  </Badge>
+                )}
+                {selected.routes && (
+                  <Badge variant="outline" className="text-[9px] border-white/20 text-white/60 h-4 px-1.5">
+                    {selected.routes.length} {t.tmap_layer_routes}
+                  </Badge>
+                )}
+              </div>
             </div>
           )}
 
-          {/* Hint when nothing selected */}
-          {!selected && (
+          {/* ── STORY MODE PANEL ─────────────────────────── */}
+          {mode === 'story' && selected && storyCurrentMarker && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[90%] max-w-lg bg-black/85 backdrop-blur-md text-white p-4 rounded-2xl border border-white/15 shadow-2xl">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-full shrink-0 flex items-center justify-center text-base border-2 border-white/30"
+                  style={{ background: MARKER_COLORS[storyCurrentMarker.type] + '33', borderColor: MARKER_COLORS[storyCurrentMarker.type] }}>
+                  {MARKER_ICONS[storyCurrentMarker.type]}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <span className="font-bold text-sm">{storyCurrentMarker.name}</span>
+                    {storyCurrentMarker.year && (
+                      <span className="text-white/50 text-[10px]">
+                        {storyCurrentMarker.year < 0 ? Math.abs(storyCurrentMarker.year) + ' BCE' : storyCurrentMarker.year + ' CE'}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-white/75 text-xs leading-relaxed">{storyCurrentMarker.note ?? storyCurrentMarker.name}</p>
+                  <p className="text-white/30 text-[10px] mt-1">{storyIdx + 1} / {storyMarkers.length}</p>
+                </div>
+              </div>
+              {/* Controls */}
+              <div className="flex items-center justify-center gap-3 mt-3">
+                <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-white/70 hover:text-white hover:bg-white/10" onClick={() => setStoryIdx(i => (i - 1 + storyMarkers.length) % storyMarkers.length)}>
+                  <SkipBack className="w-4 h-4" />
+                </Button>
+                <Button size="sm" className="h-8 px-5 gap-2 text-xs" onClick={() => setStoryPlaying(p => !p)}>
+                  {storyPlaying ? <><Pause className="w-3.5 h-3.5" />{t.tmap_story_pause}</> : <><Play className="w-3.5 h-3.5" />{t.tmap_story_play}</>}
+                </Button>
+                <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-white/70 hover:text-white hover:bg-white/10" onClick={() => setStoryIdx(i => (i + 1) % storyMarkers.length)}>
+                  <SkipForward className="w-4 h-4" />
+                </Button>
+              </div>
+              {/* Progress bar */}
+              <div className="h-1 bg-white/10 rounded-full mt-3 overflow-hidden">
+                <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${((storyIdx + 1) / storyMarkers.length) * 100}%` }} />
+              </div>
+            </div>
+          )}
+
+          {/* Story mode — no topic selected */}
+          {mode === 'story' && !selected && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[1000]">
-              <div className="bg-black/60 backdrop-blur-sm text-white text-sm px-4 py-3 rounded-xl text-center border border-white/15 shadow-xl">
-                <MapIcon className="w-5 h-5 mx-auto mb-1.5 text-primary" />
-                <p className="font-medium">{t.tmap_select_topic}</p>
+              <div className="bg-black/70 backdrop-blur-sm text-white text-sm px-5 py-4 rounded-2xl text-center border border-white/15 shadow-xl max-w-xs">
+                <BookOpen className="w-6 h-6 mx-auto mb-2 text-primary" />
+                <p className="font-semibold mb-1">{t.tmap_story}</p>
+                <p className="text-white/60 text-xs">{t.tmap_select_topic}</p>
+              </div>
+            </div>
+          )}
+
+          {/* ── QUIZ MODE PANEL ──────────────────────────── */}
+          {mode === 'quiz' && quizTopic && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[92%] max-w-lg bg-black/88 backdrop-blur-md text-white p-4 rounded-2xl border border-white/15 shadow-2xl">
+              <div className="flex items-center gap-2 mb-3">
+                <HelpCircle className="w-4 h-4 text-primary shrink-0" />
+                <p className="font-semibold text-sm">{t.tmap_quiz_q}</p>
+                {quizTotal > 0 && <span className="ml-auto text-xs text-white/50">{quizScore}/{quizTotal}</span>}
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {quizOptions.map((opt, idx) => {
+                  const correctAns = getTitle(quizTopic, language);
+                  const isCorrect = opt === correctAns;
+                  const isSelected = quizAnswered === idx;
+                  let cls = 'border-white/20 hover:border-white/50 hover:bg-white/10 text-white/80';
+                  if (quizAnswered !== null) {
+                    if (isCorrect) cls = 'border-emerald-500 bg-emerald-500/20 text-emerald-300 font-semibold';
+                    else if (isSelected) cls = 'border-red-500 bg-red-500/15 text-red-300';
+                    else cls = 'border-white/10 text-white/30';
+                  }
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => handleQuizAnswer(idx)}
+                      disabled={quizAnswered !== null}
+                      className={cn('border rounded-xl text-xs font-medium px-3 py-2.5 text-left transition-all leading-snug', cls)}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
+              {quizAnswered !== null && (
+                <Button size="sm" className="w-full mt-3 gap-2" onClick={() => startNewQuiz(selected ?? undefined)}>
+                  <Trophy className="w-3.5 h-3.5" />{t.tmap_quiz_next}
+                </Button>
+              )}
+            </div>
+          )}
+
+          {/* Hint when nothing selected in explore mode */}
+          {!selected && mode === 'explore' && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[1000]">
+              <div className="bg-black/65 backdrop-blur-sm text-white text-sm px-5 py-4 rounded-2xl text-center border border-white/15 shadow-xl max-w-xs">
+                <MapIcon className="w-6 h-6 mx-auto mb-2 text-primary" />
+                <p className="font-semibold mb-1">{t.tmap_select_topic}</p>
+                <p className="text-white/55 text-xs">22 historical territories across 4 eras</p>
               </div>
             </div>
           )}

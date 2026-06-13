@@ -206,6 +206,15 @@ type TranslationKeys = {
   tmap_title: string;
   tmap_subtitle: string;
   tmap_select_topic: string;
+  tmap_layers: string; tmap_style: string; tmap_explore: string; tmap_story: string; tmap_quiz: string;
+  tmap_layer_territory: string; tmap_layer_capitals: string; tmap_layer_cities: string;
+  tmap_layer_battles: string; tmap_layer_ports: string; tmap_layer_resources: string; tmap_layer_routes: string;
+  tmap_style_dark: string; tmap_style_parchment: string; tmap_style_military: string;
+  tmap_style_terrain: string; tmap_style_clean: string; tmap_style_satellite: string;
+  tmap_quiz_q: string; tmap_quiz_correct: string; tmap_quiz_wrong: string;
+  tmap_quiz_xp: string; tmap_quiz_next: string; tmap_quiz_score: string;
+  tmap_story_play: string; tmap_story_pause: string; tmap_story_prev: string; tmap_story_next: string;
+  tmap_markers: string; tmap_period: string;
   // Essay extras
   essay_select_topic: string;
   essay_write_more: string;
@@ -458,6 +467,15 @@ export const T: Translations = {
     tmap_title: 'Timeline Territory Map',
     tmap_subtitle: 'Explore real geographic territories for each historical period',
     tmap_select_topic: 'Select a topic to view its territory',
+    tmap_layers: 'Layers', tmap_style: 'Map Style', tmap_explore: 'Explore', tmap_story: 'Story', tmap_quiz: 'Quiz',
+    tmap_layer_territory: 'Territory', tmap_layer_capitals: 'Capitals', tmap_layer_cities: 'Cities',
+    tmap_layer_battles: 'Battles', tmap_layer_ports: 'Ports', tmap_layer_resources: 'Resources', tmap_layer_routes: 'Routes',
+    tmap_style_dark: 'Classic Dark', tmap_style_parchment: 'Parchment', tmap_style_military: 'Military',
+    tmap_style_terrain: 'Terrain', tmap_style_clean: 'Clean Light', tmap_style_satellite: 'Satellite',
+    tmap_quiz_q: 'Which territory/empire is shown?', tmap_quiz_correct: 'Correct! +50 XP', tmap_quiz_wrong: 'Incorrect — it was',
+    tmap_quiz_xp: '+50 XP', tmap_quiz_next: 'Next Question', tmap_quiz_score: 'Score',
+    tmap_story_play: 'Play', tmap_story_pause: 'Pause', tmap_story_prev: 'Prev', tmap_story_next: 'Next',
+    tmap_markers: 'markers', tmap_period: 'Period',
     essay_select_topic: 'Select a topic above',
     essay_write_more: 'Write at least {n} more words',
     essay_too_long: 'Essay is too long (max 600 words)',
@@ -684,6 +702,15 @@ export const T: Translations = {
     tmap_title: 'Mapa de Territorios Históricos',
     tmap_subtitle: 'Explora territorios geográficos reales de cada período histórico',
     tmap_select_topic: 'Selecciona un tema para ver su territorio',
+    tmap_layers: 'Capas', tmap_style: 'Estilo de Mapa', tmap_explore: 'Explorar', tmap_story: 'Historia', tmap_quiz: 'Quiz',
+    tmap_layer_territory: 'Territorio', tmap_layer_capitals: 'Capitales', tmap_layer_cities: 'Ciudades',
+    tmap_layer_battles: 'Batallas', tmap_layer_ports: 'Puertos', tmap_layer_resources: 'Recursos', tmap_layer_routes: 'Rutas',
+    tmap_style_dark: 'Oscuro Clásico', tmap_style_parchment: 'Pergamino', tmap_style_military: 'Militar',
+    tmap_style_terrain: 'Terreno', tmap_style_clean: 'Limpio', tmap_style_satellite: 'Satélite',
+    tmap_quiz_q: '¿Qué territorio/imperio se muestra?', tmap_quiz_correct: '¡Correcto! +50 XP', tmap_quiz_wrong: 'Incorrecto — era',
+    tmap_quiz_xp: '+50 XP', tmap_quiz_next: 'Siguiente Pregunta', tmap_quiz_score: 'Puntuación',
+    tmap_story_play: 'Reproducir', tmap_story_pause: 'Pausa', tmap_story_prev: 'Anterior', tmap_story_next: 'Siguiente',
+    tmap_markers: 'marcadores', tmap_period: 'Período',
     essay_select_topic: 'Selecciona un tema arriba',
     essay_write_more: 'Escribe al menos {n} palabras más',
     essay_too_long: 'El ensayo es demasiado largo (máx. 600 palabras)',
@@ -910,6 +937,15 @@ export const T: Translations = {
     tmap_title: 'Карта Исторических Территорий',
     tmap_subtitle: 'Исследуйте реальные географические территории каждого исторического периода',
     tmap_select_topic: 'Выберите тему, чтобы увидеть её территорию',
+    tmap_layers: 'Слои', tmap_style: 'Стиль Карты', tmap_explore: 'Исследовать', tmap_story: 'История', tmap_quiz: 'Викторина',
+    tmap_layer_territory: 'Территория', tmap_layer_capitals: 'Столицы', tmap_layer_cities: 'Города',
+    tmap_layer_battles: 'Сражения', tmap_layer_ports: 'Порты', tmap_layer_resources: 'Ресурсы', tmap_layer_routes: 'Маршруты',
+    tmap_style_dark: 'Тёмный Классик', tmap_style_parchment: 'Пергамент', tmap_style_military: 'Военный',
+    tmap_style_terrain: 'Рельеф', tmap_style_clean: 'Светлый', tmap_style_satellite: 'Спутник',
+    tmap_quiz_q: 'Какая территория/империя показана?', tmap_quiz_correct: 'Правильно! +50 XP', tmap_quiz_wrong: 'Неверно — это был(а)',
+    tmap_quiz_xp: '+50 XP', tmap_quiz_next: 'Следующий вопрос', tmap_quiz_score: 'Счёт',
+    tmap_story_play: 'Играть', tmap_story_pause: 'Пауза', tmap_story_prev: 'Назад', tmap_story_next: 'Далее',
+    tmap_markers: 'маркеров', tmap_period: 'Период',
     essay_select_topic: 'Выберите тему выше',
     essay_write_more: 'Напишите ещё не менее {n} слов',
     essay_too_long: 'Эссе слишком длинное (макс. 600 слов)',
@@ -1136,6 +1172,15 @@ export const T: Translations = {
     tmap_title: 'Карта на Историски Територии',
     tmap_subtitle: 'Истражи реални географски територии за секој историски период',
     tmap_select_topic: 'Избери тема за да ја видиш нејзината територија',
+    tmap_layers: 'Слоеви', tmap_style: 'Стил на Карта', tmap_explore: 'Истражи', tmap_story: 'Приказна', tmap_quiz: 'Квиз',
+    tmap_layer_territory: 'Територија', tmap_layer_capitals: 'Главни Градови', tmap_layer_cities: 'Градови',
+    tmap_layer_battles: 'Битки', tmap_layer_ports: 'Пристаништа', tmap_layer_resources: 'Ресурси', tmap_layer_routes: 'Рути',
+    tmap_style_dark: 'Класична Темна', tmap_style_parchment: 'Пергамент', tmap_style_military: 'Воена',
+    tmap_style_terrain: 'Рељеф', tmap_style_clean: 'Чиста Светла', tmap_style_satellite: 'Сателит',
+    tmap_quiz_q: 'Која територија/империја е прикажана?', tmap_quiz_correct: 'Точно! +50 XP', tmap_quiz_wrong: 'Неточно — тоа беше',
+    tmap_quiz_xp: '+50 XP', tmap_quiz_next: 'Следно Прашање', tmap_quiz_score: 'Резултат',
+    tmap_story_play: 'Пушти', tmap_story_pause: 'Пауза', tmap_story_prev: 'Претходно', tmap_story_next: 'Следно',
+    tmap_markers: 'маркери', tmap_period: 'Период',
     essay_select_topic: 'Избери тема погоре',
     essay_write_more: 'Напиши уште најмалку {n} зборови',
     essay_too_long: 'Есејот е предолг (макс. 600 зборови)',

@@ -92,8 +92,10 @@ export default function LessonPage() {
               src={proxyImageUrl(lesson.imageUrl)}
               alt=""
               aria-hidden
+              referrerPolicy="no-referrer"
+              crossOrigin="anonymous"
               className="absolute inset-0 w-full h-full object-cover opacity-75"
-              onError={e => e.currentTarget.remove()}
+              onError={e => e.currentTarget.style.display = 'none'}
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
