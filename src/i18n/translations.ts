@@ -215,6 +215,11 @@ type TranslationKeys = {
   tmap_quiz_xp: string; tmap_quiz_next: string; tmap_quiz_score: string;
   tmap_story_play: string; tmap_story_pause: string; tmap_story_prev: string; tmap_story_next: string;
   tmap_markers: string; tmap_period: string;
+  tmap_perspective: string; tmap_perspective_all: string; tmap_perspective_military: string;
+  tmap_perspective_trade: string; tmap_perspective_scholar: string;
+  tmap_year: string; tmap_what_if: string; tmap_pro_only: string;
+  tmap_what_if_desc: string; tmap_year_range: string; tmap_animate: string;
+  tmap_causality: string; tmap_territories_hint: string;
   // Essay extras
   essay_select_topic: string;
   essay_write_more: string;
@@ -476,6 +481,11 @@ export const T: Translations = {
     tmap_quiz_xp: '+50 XP', tmap_quiz_next: 'Next Question', tmap_quiz_score: 'Score',
     tmap_story_play: 'Play', tmap_story_pause: 'Pause', tmap_story_prev: 'Prev', tmap_story_next: 'Next',
     tmap_markers: 'markers', tmap_period: 'Period',
+    tmap_perspective: 'View', tmap_perspective_all: 'All', tmap_perspective_military: 'Military',
+    tmap_perspective_trade: 'Trade', tmap_perspective_scholar: 'Scholar',
+    tmap_year: 'Year', tmap_what_if: 'What If?', tmap_pro_only: 'Territory Map requires a Pro plan',
+    tmap_what_if_desc: 'Explore counterfactual history', tmap_year_range: 'Year range', tmap_animate: 'Animate',
+    tmap_causality: 'Historical context', tmap_territories_hint: 'historical territories across 4 eras',
     essay_select_topic: 'Select a topic above',
     essay_write_more: 'Write at least {n} more words',
     essay_too_long: 'Essay is too long (max 600 words)',
@@ -711,6 +721,11 @@ export const T: Translations = {
     tmap_quiz_xp: '+50 XP', tmap_quiz_next: 'Siguiente Pregunta', tmap_quiz_score: 'Puntuación',
     tmap_story_play: 'Reproducir', tmap_story_pause: 'Pausa', tmap_story_prev: 'Anterior', tmap_story_next: 'Siguiente',
     tmap_markers: 'marcadores', tmap_period: 'Período',
+    tmap_perspective: 'Vista', tmap_perspective_all: 'Todo', tmap_perspective_military: 'Militar',
+    tmap_perspective_trade: 'Comercio', tmap_perspective_scholar: 'Académico',
+    tmap_year: 'Año', tmap_what_if: '¿Qué Pasaría Si?', tmap_pro_only: 'El Mapa de Territorios requiere un plan Pro',
+    tmap_what_if_desc: 'Explora la historia contrafactual', tmap_year_range: 'Rango de años', tmap_animate: 'Animar',
+    tmap_causality: 'Contexto histórico', tmap_territories_hint: 'territorios históricos en 4 eras',
     essay_select_topic: 'Selecciona un tema arriba',
     essay_write_more: 'Escribe al menos {n} palabras más',
     essay_too_long: 'El ensayo es demasiado largo (máx. 600 palabras)',
@@ -946,6 +961,11 @@ export const T: Translations = {
     tmap_quiz_xp: '+50 XP', tmap_quiz_next: 'Следующий вопрос', tmap_quiz_score: 'Счёт',
     tmap_story_play: 'Играть', tmap_story_pause: 'Пауза', tmap_story_prev: 'Назад', tmap_story_next: 'Далее',
     tmap_markers: 'маркеров', tmap_period: 'Период',
+    tmap_perspective: 'Вид', tmap_perspective_all: 'Все', tmap_perspective_military: 'Военный',
+    tmap_perspective_trade: 'Торговля', tmap_perspective_scholar: 'Учёный',
+    tmap_year: 'Год', tmap_what_if: 'А что если?', tmap_pro_only: 'Карта территорий требует план Pro',
+    tmap_what_if_desc: 'Исследуйте контрфактическую историю', tmap_year_range: 'Диапазон лет', tmap_animate: 'Анимация',
+    tmap_causality: 'Исторический контекст', tmap_territories_hint: 'исторических территорий в 4 эпохах',
     essay_select_topic: 'Выберите тему выше',
     essay_write_more: 'Напишите ещё не менее {n} слов',
     essay_too_long: 'Эссе слишком длинное (макс. 600 слов)',
@@ -1181,6 +1201,11 @@ export const T: Translations = {
     tmap_quiz_xp: '+50 XP', tmap_quiz_next: 'Следно Прашање', tmap_quiz_score: 'Резултат',
     tmap_story_play: 'Пушти', tmap_story_pause: 'Пауза', tmap_story_prev: 'Претходно', tmap_story_next: 'Следно',
     tmap_markers: 'маркери', tmap_period: 'Период',
+    tmap_perspective: 'Поглед', tmap_perspective_all: 'Сите', tmap_perspective_military: 'Воен',
+    tmap_perspective_trade: 'Трговија', tmap_perspective_scholar: 'Научен',
+    tmap_year: 'Година', tmap_what_if: 'Што ако?', tmap_pro_only: 'Картата на Територии бара Pro план',
+    tmap_what_if_desc: 'Истражи контрафактуална историја', tmap_year_range: 'Временски опсег', tmap_animate: 'Анимирај',
+    tmap_causality: 'Историски контекст', tmap_territories_hint: 'историски територии низ 4 епохи',
     essay_select_topic: 'Избери тема погоре',
     essay_write_more: 'Напиши уште најмалку {n} зборови',
     essay_too_long: 'Есејот е предолг (макс. 600 зборови)',

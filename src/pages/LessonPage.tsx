@@ -93,7 +93,6 @@ export default function LessonPage() {
               alt=""
               aria-hidden
               referrerPolicy="no-referrer"
-              crossOrigin="anonymous"
               className="absolute inset-0 w-full h-full object-cover opacity-75"
               onError={e => e.currentTarget.style.display = 'none'}
             />

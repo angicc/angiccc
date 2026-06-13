@@ -73,6 +73,20 @@ function PhilosopherAvatar({ philosopher, size = 28 }: { philosopher: Philosophe
   );
 }
 
+function UserAvatar({ user }: { user: { id: string; avatarInitials: string } | null }) {
+  const avatarUrl = user ? (localStorage.getItem(`historify:avatar:${user.id}`) ?? '') : '';
+  if (avatarUrl) {
+    return (
+      <img src={avatarUrl} alt="" className="w-7 h-7 rounded-full object-cover border border-primary/30 shrink-0 mt-0.5" />
+    );
+  }
+  return (
+    <div className="w-7 h-7 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold text-primary">
+      {user?.avatarInitials ?? 'U'}
+    </div>
+  );
+}
+
 export default function DebatePhilosopherPage() {
   const { t, language } = useLanguage();
   const { currentUser, refreshProgress } = useAuth();
@@ -303,9 +317,7 @@ export default function DebatePhilosopherPage() {
                       {msg.role === 'assistant' ? (
                         <div className="shrink-0 mt-0.5"><PhilosopherAvatar philosopher={philosopher} size={28} /></div>
                       ) : (
-                        <div className="w-7 h-7 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold text-primary">
-                          {currentUser?.avatarInitials ?? 'U'}
-                        </div>
+                        <UserAvatar user={currentUser} />
                       )}
                       <div className={`max-w-[80%] rounded-xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
                         msg.role === 'user'

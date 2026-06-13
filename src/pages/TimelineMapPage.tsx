@@ -4,6 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import { AppShell } from '@/components/layout/AppShell';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/features/auth/AuthContext';
+import { useSubscription } from '@/features/subscription/SubscriptionContext';
+import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { addBonusXp } from '@/features/progress/progressStore';
 import { TERRITORY_TOPICS, type TerritoryTopic, type MarkerType } from '@/features/content/timelineTerritoryData';
 import type { Language } from '@/i18n/translations';
@@ -147,6 +149,7 @@ function buildQuizOptions(correct: TerritoryTopic, all: TerritoryTopic[], langua
 export default function TimelineMapPage() {
   const { t, language } = useLanguage();
   const { currentUser, refreshProgress } = useAuth();
+  const { canTerritoryMap } = useSubscription();
 
   const [selected, setSelected]       = useState<TerritoryTopic | null>(null);
   const [mode, setMode]               = useState<MapMode>('explore');
@@ -365,6 +368,19 @@ export default function TimelineMapPage() {
   const currentStyle = CART_STYLES.find(s => s.id === styleId)!;
 
   const storyCurrentMarker = storyMarkers[storyIdx];
+
+  if (!canTerritoryMap()) {
+    return (
+      <AppShell>
+        <div className="max-w-lg mx-auto py-20">
+          <UpgradePrompt
+            title={t.tmap_pro_only}
+            description={`${t.tmap_territories_hint}`}
+          />
+        </div>
+      </AppShell>
+    );
+  }
 
   return (
     <AppShell compact>
@@ -667,7 +683,7 @@ export default function TimelineMapPage() {
               <div className="bg-black/65 backdrop-blur-sm text-white text-sm px-5 py-4 rounded-2xl text-center border border-white/15 shadow-xl max-w-xs">
                 <MapIcon className="w-6 h-6 mx-auto mb-2 text-primary" />
                 <p className="font-semibold mb-1">{t.tmap_select_topic}</p>
-                <p className="text-white/55 text-xs">22 historical territories across 4 eras</p>
+                <p className="text-white/55 text-xs">{t.tmap_territories_hint}</p>
               </div>
             </div>
           )}

@@ -7,6 +7,7 @@ interface SubCtx {
   subscription: UserSubscription | null; upgrade(t: SubscriptionTier): void; trackAiMessage(): void;
   canLesson(order: number): boolean; canAI(): { allowed: boolean; reason?: string };
   canDownload(): boolean; canAdvancedStats(): boolean; canTimeline(): boolean; canExplanations(): boolean;
+  canTerritoryMap(): boolean;
   refreshSubscription(): void;
 }
 const SubContext = createContext<SubCtx | null>(null);
@@ -26,7 +27,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   const usedToday = subscription?.aiMessagesUsedToday ?? 0;
 
   return (
-    <SubContext.Provider value={{ subscription, upgrade, trackAiMessage, canLesson: o => canAccessLesson(tier, o), canAI: () => canUseAI(tier, used, usedToday), canDownload: () => canDownload(tier), canAdvancedStats: () => canAdvancedStats(tier), canTimeline: () => canFilterTimeline(tier), canExplanations: () => canSeeExplanations(tier), refreshSubscription }}>
+    <SubContext.Provider value={{ subscription, upgrade, trackAiMessage, canLesson: o => canAccessLesson(tier, o), canAI: () => canUseAI(tier, used, usedToday), canDownload: () => canDownload(tier), canAdvancedStats: () => canAdvancedStats(tier), canTimeline: () => canFilterTimeline(tier), canExplanations: () => canSeeExplanations(tier), canTerritoryMap: () => tier !== 'free', refreshSubscription }}>
       {children}
     </SubContext.Provider>
   );

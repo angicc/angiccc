@@ -16,6 +16,7 @@ import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { recordQuizAttempt } from '@/features/progress/progressStore';
 import { getQuizByEraId } from '@/features/quiz/quizData';
 import { getEraById } from '@/features/content/erasData';
+import { getTranslatedQuestion } from '@/i18n/quizTranslations';
 import { XP_REWARDS } from '@/features/progress/xpSystem';
 import { toast } from 'sonner';
 import type { QuizAttempt, Achievement } from '@/types';
@@ -26,7 +27,7 @@ export default function QuizPage() {
   const { eraId } = useParams<{ eraId: string }>();
   const { currentUser, refreshProgress } = useAuth();
   const { canExplanations } = useSubscription();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
 
   const era = getEraById(eraId ?? '');
@@ -42,6 +43,10 @@ export default function QuizPage() {
   if (!quiz || !era) return <AppShell><div className="text-center py-20 text-muted-foreground">{t.quiz_not_found}</div></AppShell>;
 
   const q = quiz.questions[qIdx];
+  const qTrans = q ? getTranslatedQuestion(q.id, language) : null;
+  const qText = qTrans?.question ?? q?.question ?? '';
+  const qOptions = qTrans?.options ?? q?.options ?? [];
+  const qExplanation = qTrans?.explanation ?? q?.explanation ?? '';
   const score = Math.round((answers.filter((a, i) => a === quiz.questions[i].correctIndex).length / quiz.questions.length) * 100);
   const correct = answers.filter((a, i) => a === quiz.questions[i].correctIndex).length;
 
@@ -96,9 +101,9 @@ export default function QuizPage() {
             </div>
             <Progress value={((qIdx) / quiz.questions.length) * 100} className="h-1.5" />
             <Card>
-              <CardHeader><CardTitle className="font-heading text-lg leading-snug">{q.question}</CardTitle></CardHeader>
+              <CardHeader><CardTitle className="font-heading text-lg leading-snug">{qText}</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {q.options.map((opt, i) => {
+                {qOptions.map((opt, i) => {
                   const isSelected = selected === i;
                   const isCorrect = i === q.correctIndex;
                   const showResult = phase === 'explain';
@@ -114,7 +119,7 @@ export default function QuizPage() {
                     </div>
                   );
                 })}
-                {phase === 'explain' && canExplanations() && <div className="p-3 rounded-lg bg-muted/50 text-sm text-muted-foreground mt-2"><strong className="text-foreground">{t.quiz_explanation}: </strong>{q.explanation}</div>}
+                {phase === 'explain' && canExplanations() && <div className="p-3 rounded-lg bg-muted/50 text-sm text-muted-foreground mt-2"><strong className="text-foreground">{t.quiz_explanation}: </strong>{qExplanation}</div>}
                 {phase === 'explain' && !canExplanations() && <UpgradePrompt compact description={t.quiz_upgrade_explanations} />}
                 <Button className="w-full gap-2 mt-2" disabled={selected === null && phase === 'question'} onClick={() => phase === 'question' ? submitAnswer() : advance()}>
                   {phase === 'question' ? t.quiz_submit_answer : qIdx < quiz.questions.length - 1 ? <><span>{t.btn_next}</span><ArrowRight className="w-4 h-4" /></> : t.btn_see_results}
