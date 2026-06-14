@@ -9,6 +9,7 @@ import { ProtectedRoute } from '@/features/auth/ProtectedRoute';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { PageTransition } from '@/components/shared/PageTransition';
 import { LogoutScreen } from '@/components/shared/LogoutScreen';
+import { BetaGate } from '@/components/BetaGate';
 import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
@@ -77,6 +78,7 @@ function AnimatedRoutes() {
 function App() {
   return (
     <ErrorBoundary>
+      <BetaGate>
       <ThemeProvider defaultTheme="dark" storageKey="historify-theme">
         <AuthProvider>
           <SubscriptionProvider>
@@ -90,6 +92,7 @@ function App() {
           </SubscriptionProvider>
         </AuthProvider>
       </ThemeProvider>
+      </BetaGate>
     </ErrorBoundary>
   );
 }
