@@ -85,6 +85,7 @@ type TranslationKeys = {
   notes_title: string; notes_subtitle: string; notes_placeholder: string;
   notes_save: string; notes_saved: string; notes_select: string;
   notes_empty: string; notes_search: string; notes_all_eras: string; notes_words: string;
+  notes_new_note: string; notes_deleted: string; notes_none: string; notes_none_filter: string; notes_hint: string; notes_untitled: string; notes_count: string;
   // ── Progress ───────────────────────────────────────────────────
   prog_title: string; prog_subtitle: string; prog_xp_total: string;
   prog_current_level: string; prog_streak: string; prog_lessons: string;
@@ -330,6 +331,7 @@ export const T: Translations = {
     notes_select: 'Select a lesson from the list to view or edit your note.',
     notes_empty: 'No lessons found.', notes_search: 'Search lessons…',
     notes_all_eras: 'All Eras', notes_words: 'words',
+    notes_new_note: 'New Note', notes_deleted: 'Note deleted.', notes_none: 'No notes yet', notes_none_filter: 'No notes for this era', notes_hint: 'Click "+ New Note" to capture your thoughts as you learn.', notes_untitled: 'Untitled Note', notes_count: 'notes saved',
     // Progress
     prog_title: 'Progress', prog_subtitle: 'Your learning journey at a glance',
     prog_xp_total: 'Total XP', prog_current_level: 'Current Level',
@@ -584,6 +586,7 @@ export const T: Translations = {
     notes_select: 'Selecciona una lección de la lista para ver o editar tu nota.',
     notes_empty: 'No se encontraron lecciones.', notes_search: 'Buscar lecciones…',
     notes_all_eras: 'Todas las Eras', notes_words: 'palabras',
+    notes_new_note: 'Nueva Nota', notes_deleted: 'Nota eliminada.', notes_none: 'Aún no hay notas', notes_none_filter: 'Sin notas para esta era', notes_hint: 'Haz clic en "+ Nueva Nota" para capturar tus pensamientos mientras aprendes.', notes_untitled: 'Nota sin Título', notes_count: 'notas guardadas',
     prog_title: 'Progreso', prog_subtitle: 'Tu viaje de aprendizaje de un vistazo',
     prog_xp_total: 'XP Total', prog_current_level: 'Nivel Actual',
     prog_streak: 'Racha de Días', prog_lessons: 'Lecciones Completadas',
@@ -829,6 +832,7 @@ export const T: Translations = {
     notes_select: 'Выберите урок из списка, чтобы просмотреть или редактировать заметку.',
     notes_empty: 'Уроки не найдены.', notes_search: 'Поиск уроков…',
     notes_all_eras: 'Все Эпохи', notes_words: 'слов',
+    notes_new_note: 'Новая Заметка', notes_deleted: 'Заметка удалена.', notes_none: 'Заметок пока нет', notes_none_filter: 'Нет заметок для этой эпохи', notes_hint: 'Нажмите «+ Новая Заметка», чтобы записывать мысли во время учёбы.', notes_untitled: 'Заметка без названия', notes_count: 'заметок сохранено',
     prog_title: 'Прогресс', prog_subtitle: 'Ваш учебный путь с первого взгляда',
     prog_xp_total: 'Всего XP', prog_current_level: 'Текущий Уровень',
     prog_streak: 'Дней подряд', prog_lessons: 'Уроков пройдено',
@@ -1074,6 +1078,7 @@ export const T: Translations = {
     notes_select: 'Избери лекција од листата за да ја видиш или уредиш белешката.',
     notes_empty: 'Не се пронајдени лекции.', notes_search: 'Пребарај лекции…',
     notes_all_eras: 'Сите Епохи', notes_words: 'зборови',
+    notes_new_note: 'Нова Белешка', notes_deleted: 'Белешката е избришана.', notes_none: 'Сè уште нема белешки', notes_none_filter: 'Нема белешки за оваа епоха', notes_hint: 'Кликни на "+ Нова Белешка" за да ги зачуваш своите мисли додека учиш.', notes_untitled: 'Белешка без наслов', notes_count: 'белешки зачувани',
     prog_title: 'Напредок', prog_subtitle: 'Твоето патување на учење на прв поглед',
     prog_xp_total: 'Вкупно XP', prog_current_level: 'Тековно Ниво',
     prog_streak: 'Серија Денови', prog_lessons: 'Завршени Лекции',
@@ -1197,7 +1202,7 @@ export const T: Translations = {
     prof_reset_btn: 'Ресетирај',
     // Profile Settings
     prof_picture: 'Профилна Слика', prof_change_photo: 'Промени Фотографија', prof_upload_photo_btn: 'Прикачи Фотографија', prof_remove_photo_btn: 'Отстрани',
-    prof_display_name: 'Прикажано Ime', prof_save_btn: 'Зачувај',
+    prof_display_name: 'Прикажано Име', prof_save_btn: 'Зачувај',
     prof_change_email: 'Промени Е-пошта', prof_current_email: 'Тековна:', prof_new_email: 'Нова Е-пошта', prof_cur_password: 'Тековна Лозинка', prof_update_email: 'Ажурирај Е-пошта', prof_updating: 'Ажурирање…',
     prof_change_password: 'Промени Лозинка', prof_new_password: 'Нова Лозинка', prof_confirm_password: 'Потврди Нова Лозинка', prof_update_password: 'Ажурирај Лозинка',
     prof_min_chars: 'Мин. 6 знаци', prof_repeat_pwd: 'Повтори лозинка',

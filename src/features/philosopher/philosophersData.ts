@@ -889,3 +889,124 @@ export function recordDebateWin(userId: string, philosopherId: string, xpEarned:
     xpEarned,
   }));
 }
+
+// ── Philosopher Era & Tagline Translations ──────────────────────────────────
+type PhilosopherLang = 'es' | 'ru' | 'mk';
+
+export const PHILOSOPHER_ERA_I18N: Record<string, Partial<Record<PhilosopherLang, string>>> = {
+  'confucius':      { es: 'China Antigua', ru: 'Древний Китай', mk: 'Антички Кина' },
+  'descartes':      { es: 'Europa Moderna Temprana', ru: 'Раннее Новое Время в Европе', mk: 'Рана Модерна Европа' },
+  'socrates':       { es: 'Atenas Clásica', ru: 'Классические Афины', mk: 'Класична Атина' },
+  'plato':          { es: 'Atenas Clásica', ru: 'Классические Афины', mk: 'Класична Атина' },
+  'aristotle':      { es: 'Grecia Clásica', ru: 'Классическая Греция', mk: 'Класична Грција' },
+  'nietzsche':      { es: 'Alemania Moderna', ru: 'Современная Германия', mk: 'Модерна Германија' },
+  'kant':           { es: 'Alemania Ilustrada', ru: 'Германское Просвещение', mk: 'Просветителска Германија' },
+  'hegel':          { es: 'Idealismo Alemán', ru: 'Немецкий Идеализм', mk: 'Германски Идеализам' },
+  'marx':           { es: 'Alemania Moderna', ru: 'Современная Германия', mk: 'Модерна Германија' },
+  'rousseau':       { es: 'Francia Ilustrada', ru: 'Французское Просвещение', mk: 'Просветителска Франција' },
+  'voltaire':       { es: 'Francia Ilustrada', ru: 'Французское Просвещение', mk: 'Просветителска Франција' },
+  'locke':          { es: 'Ilustración Inglesa', ru: 'Английское Просвещение', mk: 'Англиско Просветителство' },
+  'hobbes':         { es: 'Era de la Guerra Civil Inglesa', ru: 'Эпоха Английской Гражданской Войны', mk: 'Ера на Англиската Граѓанска Војна' },
+  'hume':           { es: 'Ilustración Escocesa', ru: 'Шотландское Просвещение', mk: 'Шкотско Просветителство' },
+  'machiavelli':    { es: 'Italia Renacentista', ru: 'Ренессансная Италия', mk: 'Ренесансна Италија' },
+  'epicurus':       { es: 'Grecia Helenística', ru: 'Эллинистическая Греция', mk: 'Хеленистичка Грција' },
+  'marcus-aurelius':{ es: 'Estoicismo Romano', ru: 'Римский Стоицизм', mk: 'Римски Стоицизам' },
+};
+
+export const PHILOSOPHER_TAGLINE_I18N: Record<string, Partial<Record<PhilosopherLang, string>>> = {
+  'confucius': {
+    es: 'Por tres métodos podemos aprender sabiduría',
+    ru: 'Тремя путями можно прийти к мудрости',
+    mk: 'Со три методи можеме да научиме мудрост',
+  },
+  'descartes': {
+    es: 'Cogito, ergo sum — Pienso, luego existo',
+    ru: 'Cogito, ergo sum — Я мыслю, следовательно, я существую',
+    mk: 'Cogito, ergo sum — Мислам, значи постојам',
+  },
+  'socrates': {
+    es: 'La vida no examinada no merece ser vivida',
+    ru: 'Непрожитая жизнь — не стоит того, чтобы её жить',
+    mk: 'Неиспитаниот живот не вреди да се живее',
+  },
+  'plato': {
+    es: 'El mundo de las Formas es más real que el mundo de las sombras',
+    ru: 'Мир Форм реальнее мира теней',
+    mk: 'Светот на Формите е поверодостоен од светот на сенките',
+  },
+  'aristotle': {
+    es: 'Somos lo que repetidamente hacemos — la excelencia es un hábito',
+    ru: 'Мы есть то, что мы делаем регулярно — совершенство есть привычка',
+    mk: 'Ние сме тоа што постојано го правиме — извонредноста е навика',
+  },
+  'nietzsche': {
+    es: 'Dios ha muerto — y nosotros lo hemos matado',
+    ru: 'Бог мёртв — и мы его убили',
+    mk: 'Бог е мртов — и ние го убивме',
+  },
+  'kant': {
+    es: 'Actúa solo según máximas que podrías querer que fueran leyes universales',
+    ru: 'Поступай только согласно таким максимам, которые ты мог бы желать видеть всеобщим законом',
+    mk: 'Постапувај само според максими кои би сакал да бидат универзални закони',
+  },
+  'hegel': {
+    es: 'Lo real es racional y lo racional es real',
+    ru: 'Всё разумное действительно, всё действительное разумно',
+    mk: 'Она што е реално е рационално, а она што е рационално е реално',
+  },
+  'marx': {
+    es: 'Trabajadores del mundo, ¡uníos! — no tenéis nada que perder salvo vuestras cadenas',
+    ru: 'Пролетарии всех стран, соединяйтесь! — вам нечего терять, кроме своих цепей',
+    mk: 'Работници на светот, обединете се — немате ништо за изгубете освен вашите синџири',
+  },
+  'rousseau': {
+    es: 'El hombre nace libre, y en todas partes se encuentra encadenado',
+    ru: 'Человек рождается свободным, но всюду он в оковах',
+    mk: 'Човекот се раѓа слободен, а насекаде е во синџири',
+  },
+  'voltaire': {
+    es: 'Si Dios no existiera, habría que inventarlo',
+    ru: 'Если бы Бога не было, его следовало бы выдумать',
+    mk: 'Ако Бог не постоеше, треба да се измисли',
+  },
+  'locke': {
+    es: 'La mente es una hoja en blanco — todo conocimiento viene de la experiencia',
+    ru: 'Разум — это чистая доска; всё знание приходит из опыта',
+    mk: 'Умот е чиста страница — целото знаење доаѓа од искуството',
+  },
+  'hobbes': {
+    es: 'La vida en estado de naturaleza es solitaria, pobre, desagradable, brutal y corta',
+    ru: 'Жизнь в естественном состоянии одинока, бедна, отвратительна, жестока и коротка',
+    mk: 'Животот во природна состојба е осамен, сиромашен, непријатен, бруталски и краток',
+  },
+  'hume': {
+    es: 'La razón es y debe ser solo la esclava de las pasiones',
+    ru: 'Разум есть и должен быть рабом страстей',
+    mk: 'Разумот е и треба да биде само слуга на страстите',
+  },
+  'machiavelli': {
+    es: 'Es mejor ser temido que amado, si no puedes ser ambos',
+    ru: 'Лучше быть feared, чем любимым, если нельзя сочетать и то, и другое',
+    mk: 'Подобро е да се биде плашен отколку сакан, ако не можеш да бидеш и двете',
+  },
+  'epicurus': {
+    es: 'El placer es el principio y el fin de la vida dichosa',
+    ru: 'Удовольствие есть начало и конец блаженной жизни',
+    mk: 'Задоволството е почетокот и целта на блажениот живот',
+  },
+  'marcus-aurelius': {
+    es: 'El obstáculo para la acción avanza la acción — lo que se interpone en el camino se convierte en el camino',
+    ru: 'Препятствие для действия продвигает действие — то, что стоит на пути, становится путём',
+    mk: 'Пречката за дејството го унапредува дејството — она што стои на патот станува патот',
+  },
+};
+
+export function getTranslatedPhilosopherEra(philosopher: Philosopher, lang: string): string {
+  if (lang === 'en') return philosopher.era;
+  return PHILOSOPHER_ERA_I18N[philosopher.id]?.[lang as PhilosopherLang] ?? philosopher.era;
+}
+
+export function getTranslatedPhilosopherTagline(philosopher: Philosopher, lang: string): string {
+  if (lang === 'en') return philosopher.tagline;
+  return PHILOSOPHER_TAGLINE_I18N[philosopher.id]?.[lang as PhilosopherLang] ?? philosopher.tagline;
+}

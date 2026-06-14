@@ -12,6 +12,7 @@ import { LESSONS } from '@/features/content/lessonsData';
 import { ERAS } from '@/features/content/erasData';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
+import type { Language } from '@/i18n/translations';
 
 interface Note {
   id: string;
@@ -29,6 +30,20 @@ const ERA_COLOR: Record<string, string> = {
   modern: 'text-rose-400 border-rose-400/30 bg-rose-400/5',
 };
 
+const ERA_SHORT_I18N: Record<string, Record<Exclude<Language, 'en'>, string>> = {
+  ancient:       { es: 'Antiguo',    ru: 'Древний',    mk: 'Античко' },
+  'middle-ages': { es: 'Medieval',   ru: 'Средние Века', mk: 'Среден Век' },
+  'early-modern':{ es: 'Moderno Temprano', ru: 'Раннее Новое', mk: 'Рано Модерно' },
+  modern:        { es: 'Moderno',    ru: 'Современный', mk: 'Модерно' },
+};
+
+function getEraShortName(eraId: string, lang: Language): string {
+  const era = ERAS.find(e => e.id === eraId);
+  if (!era) return eraId;
+  if (lang === 'en') return era.shortName;
+  return ERA_SHORT_I18N[eraId]?.[lang as Exclude<Language, 'en'>] ?? era.shortName;
+}
+
 function loadNotes(userId: string): Note[] {
   try { return JSON.parse(localStorage.getItem(`historify:notes:${userId}`) ?? '[]'); } catch { return []; }
 }
@@ -37,7 +52,7 @@ function saveNotes(userId: string, notes: Note[]) {
 }
 
 export default function NotesPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { currentUser } = useAuth();
   const [notes, setNotes] = useState<Note[]>([]);
   const [composing, setComposing] = useState(false);
@@ -55,7 +70,7 @@ export default function NotesPage() {
     const lesson = LESSONS.find(l => l.id === lessonId);
     const note: Note = {
       id: crypto.randomUUID(),
-      title: title.trim() || (lesson ? lesson.title : 'Untitled Note'),
+      title: title.trim() || (lesson ? lesson.title : t.notes_untitled),
       content: content.trim(),
       lessonId: lessonId === 'none' ? null : lessonId,
       eraId: lesson?.eraId ?? null,
@@ -65,7 +80,7 @@ export default function NotesPage() {
     setNotes(updated);
     saveNotes(currentUser.id, updated);
     setTitle(''); setContent(''); setLessonId('none'); setComposing(false);
-    toast.success('Note saved!');
+    toast.success(t.notes_saved);
   }
 
   function del(id: string) {
@@ -73,7 +88,7 @@ export default function NotesPage() {
     const updated = notes.filter(n => n.id !== id);
     setNotes(updated);
     saveNotes(currentUser.id, updated);
-    toast.success('Note deleted.');
+    toast.success(t.notes_deleted);
   }
 
   const filtered = eraFilter === 'all' ? notes : notes.filter(n => n.eraId === eraFilter);
@@ -88,11 +103,11 @@ export default function NotesPage() {
             </div>
             <div>
               <h1 className="font-heading text-3xl font-bold">{t.notes_title}</h1>
-              <p className="text-muted-foreground text-sm mt-0.5">{notes.length} note{notes.length !== 1 ? 's' : ''} saved</p>
+              <p className="text-muted-foreground text-sm mt-0.5">{notes.length} {t.notes_count}</p>
             </div>
           </div>
           <Button size="sm" className="gap-2" onClick={() => setComposing(true)}>
-            <Plus className="w-4 h-4" /> New Note
+            <Plus className="w-4 h-4" /> {t.notes_new_note}
           </Button>
         </motion.div>
 
@@ -106,26 +121,26 @@ export default function NotesPage() {
               className="border border-primary/40 bg-primary/5 rounded-2xl p-5 space-y-3"
             >
               <div className="flex items-center justify-between">
-                <p className="font-semibold text-sm">New Note</p>
+                <p className="font-semibold text-sm">{t.notes_new_note}</p>
                 <button onClick={() => setComposing(false)} className="text-muted-foreground hover:text-foreground">
                   <X className="w-4 h-4" />
                 </button>
               </div>
               <Input
-                placeholder="Note title (optional)"
+                placeholder={t.notes_title + ' (optional)'}
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 className="text-sm"
               />
               <Select value={lessonId} onValueChange={setLessonId}>
                 <SelectTrigger className="text-xs h-8">
-                  <SelectValue placeholder="Link to a lesson (optional)" />
+                  <SelectValue placeholder={t.notes_select} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">No lesson</SelectItem>
+                  <SelectItem value="none">—</SelectItem>
                   {ERAS.map(era => (
                     <div key={era.id}>
-                      <div className="px-2 py-1 text-xs text-muted-foreground font-semibold">{era.shortName}</div>
+                      <div className="px-2 py-1 text-xs text-muted-foreground font-semibold">{getEraShortName(era.id, language)}</div>
                       {LESSONS.filter(l => l.eraId === era.id).map(l => (
                         <SelectItem key={l.id} value={l.id}>{l.title}</SelectItem>
                       ))}
@@ -134,25 +149,24 @@ export default function NotesPage() {
                 </SelectContent>
               </Select>
               <Textarea
-                placeholder="Write your note here…"
+                placeholder={t.notes_placeholder}
                 value={content}
                 onChange={e => setContent(e.target.value)}
                 rows={4}
                 className="resize-none text-sm"
               />
               <div className="flex gap-2 justify-end">
-                <Button variant="outline" size="sm" onClick={() => setComposing(false)}>Cancel</Button>
-                <Button size="sm" onClick={save} disabled={!content.trim()}>Save Note</Button>
+                <Button variant="outline" size="sm" onClick={() => setComposing(false)}>{t.btn_cancel ?? 'Cancel'}</Button>
+                <Button size="sm" onClick={save} disabled={!content.trim()}>{t.notes_save}</Button>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Filter */}
+        {/* Era Filter */}
         {notes.length > 0 && (
           <div className="flex gap-2 flex-wrap">
             {['all', ...ERAS.map(e => e.id)].map(id => {
-              const era = ERAS.find(e => e.id === id);
               const isActive = eraFilter === id;
               return (
                 <button
@@ -160,7 +174,7 @@ export default function NotesPage() {
                   onClick={() => setEraFilter(id)}
                   className={`text-xs px-3 py-1 rounded-full border transition-all ${isActive ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:border-primary/40'}`}
                 >
-                  {era ? era.shortName : 'All Eras'}
+                  {id === 'all' ? t.notes_all_eras : getEraShortName(id, language)}
                 </button>
               );
             })}
@@ -171,15 +185,15 @@ export default function NotesPage() {
         {filtered.length === 0 ? (
           <div className="text-center py-20 text-muted-foreground">
             <PenLine className="w-10 h-10 mx-auto mb-3 opacity-30" />
-            <p className="font-medium">{notes.length === 0 ? 'No notes yet' : 'No notes for this filter'}</p>
-            <p className="text-sm mt-1">Click "New Note" to capture your thoughts as you learn.</p>
+            <p className="font-medium">{notes.length === 0 ? t.notes_none : t.notes_none_filter}</p>
+            <p className="text-sm mt-1">{t.notes_hint}</p>
           </div>
         ) : (
           <motion.div layout className="space-y-3">
             <AnimatePresence>
               {filtered.map(note => {
                 const lesson = LESSONS.find(l => l.id === note.lessonId);
-                const era = ERAS.find(e => e.id === note.eraId);
+                const era = note.eraId ? ERAS.find(e => e.id === note.eraId) : null;
                 return (
                   <motion.div
                     key={note.id}
@@ -195,7 +209,7 @@ export default function NotesPage() {
                           <p className="font-semibold text-sm">{note.title}</p>
                           {era && (
                             <Badge variant="outline" className={`text-xs ${note.eraId ? ERA_COLOR[note.eraId]?.split(' ')[0] : ''}`}>
-                              {era.shortName}
+                              {getEraShortName(era.id, language)}
                             </Badge>
                           )}
                         </div>
@@ -207,7 +221,7 @@ export default function NotesPage() {
                         )}
                         <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{note.content}</p>
                         <p className="text-xs text-muted-foreground/60 mt-3">
-                          {new Date(note.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                          {new Date(note.createdAt).toLocaleDateString(language === 'en' ? 'en-US' : language === 'es' ? 'es-ES' : language === 'ru' ? 'ru-RU' : 'mk-MK', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                         </p>
                       </div>
                       <button

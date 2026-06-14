@@ -12,7 +12,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { recordDebateWinInProgress } from '@/features/progress/progressStore';
 import { streamChatResponse } from '@/features/ai/claudeClient';
-import { getTodaysPhilosopher, getTimeUntilNextPhilosopher, hasWonTodaysDebate, recordDebateWin } from '@/features/philosopher/philosophersData';
+import { getTodaysPhilosopher, getTimeUntilNextPhilosopher, hasWonTodaysDebate, recordDebateWin, getTranslatedPhilosopherEra, getTranslatedPhilosopherTagline } from '@/features/philosopher/philosophersData';
 import type { Philosopher } from '@/features/philosopher/philosophersData';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { toast } from 'sonner';
@@ -216,7 +216,7 @@ export default function DebatePhilosopherPage() {
                             <div>
                               <p className="text-xs text-violet-400 font-medium">{t.debate_today}</p>
                               <h2 className="font-heading text-xl font-bold">{philosopher.name}</h2>
-                              <p className="text-xs text-muted-foreground">{philosopher.era} · {philosopher.lifespan}</p>
+                              <p className="text-xs text-muted-foreground">{getTranslatedPhilosopherEra(philosopher, language)} · {philosopher.lifespan}</p>
                             </div>
                             <div className="text-right">
                               <div className="flex items-center gap-1 text-amber-400 font-bold">
@@ -227,7 +227,7 @@ export default function DebatePhilosopherPage() {
                             </div>
                           </div>
                           <p className="text-xs italic text-muted-foreground border-t border-border/40 pt-2 mt-2">
-                            "{philosopher.tagline}"
+                            "{getTranslatedPhilosopherTagline(philosopher, language)}"
                           </p>
                         </CardContent>
                       </Card>

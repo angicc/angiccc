@@ -25,6 +25,54 @@ const TOPICS = [
   'How did the Islamic Golden Age preserve and advance knowledge?',
 ];
 
+const TOPICS_I18N: Record<string, { es: string; ru: string; mk: string }> = {
+  'What caused the fall of the Western Roman Empire?': {
+    es: '¿Qué causó la caída del Imperio Romano Occidental?',
+    ru: 'Что вызвало падение Западной Римской Империи?',
+    mk: 'Што го предизвика падот на Западното Римско Царство?',
+  },
+  'How did the Black Death reshape medieval European society?': {
+    es: '¿Cómo la Peste Negra reconfiguró la sociedad medieval europea?',
+    ru: 'Как Чёрная Смерть изменила средневековое европейское общество?',
+    mk: 'Како Црната Чума го преобликува средновековното европско општество?',
+  },
+  'Why was the Renaissance a turning point in human history?': {
+    es: '¿Por qué el Renacimiento fue un punto de inflexión en la historia humana?',
+    ru: 'Почему Ренессанс стал поворотным моментом в истории человечества?',
+    mk: 'Зошто Ренесансата беше пресвртница во историјата на човештвото?',
+  },
+  'What were the main causes of World War I?': {
+    es: '¿Cuáles fueron las principales causas de la Primera Guerra Mundial?',
+    ru: 'Каковы были главные причины Первой мировой войны?',
+    mk: 'Кои беа главните причини за Првата Светска Војна?',
+  },
+  'How did the Industrial Revolution change everyday life?': {
+    es: '¿Cómo la Revolución Industrial cambió la vida cotidiana?',
+    ru: 'Как Промышленная революция изменила повседневную жизнь?',
+    mk: 'Како Индустриската Револуција ја промени секојдневниот живот?',
+  },
+  'Was Napoleon Bonaparte a hero or a tyrant?': {
+    es: '¿Fue Napoleón Bonaparte un héroe o un tirano?',
+    ru: 'Был ли Наполеон Бонапарт героем или тираном?',
+    mk: 'Дали Наполеон Бонапарта беше херој или тиранин?',
+  },
+  'What impact did Alexander the Great have on the ancient world?': {
+    es: '¿Qué impacto tuvo Alejandro Magno en el mundo antiguo?',
+    ru: 'Какое влияние оказал Александр Великий на древний мир?',
+    mk: 'Какво влијание имаше Александар Велики на античкиот свет?',
+  },
+  'How did the Islamic Golden Age preserve and advance knowledge?': {
+    es: '¿Cómo la Edad de Oro Islámica preservó y avanzó el conocimiento?',
+    ru: 'Как Исламский Золотой Век сохранял и развивал знания?',
+    mk: 'Како Исламскиот Златен Век го зачувуваше и унапредуваше знаењето?',
+  },
+};
+
+function getTranslatedTopic(topic: string, lang: string): string {
+  if (lang === 'en') return topic;
+  return TOPICS_I18N[topic]?.[lang as 'es' | 'ru' | 'mk'] ?? topic;
+}
+
 const ESSAY_SYSTEM = `You are Clio, an expert history professor grading student essays.
 Analyze the submitted essay strictly and fairly according to this rubric:
 
@@ -88,7 +136,7 @@ function ScoreBar({ label, value, color }: { label: string; value: number; color
 }
 
 export default function EssayPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { currentUser } = useAuth();
   const { subscription, canAI } = useSubscription();
   const tier = subscription?.tier ?? 'free';
@@ -190,17 +238,17 @@ export default function EssayPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="grid sm:grid-cols-2 gap-2">
-                  {TOPICS.map(t => (
+                  {TOPICS.map(topicKey => (
                     <button
-                      key={t}
-                      onClick={() => setTopic(t)}
+                      key={topicKey}
+                      onClick={() => setTopic(topicKey)}
                       className={`p-3 rounded-xl border text-sm text-left transition-all duration-200 leading-snug ${
-                        topic === t
+                        topic === topicKey
                           ? 'border-primary/50 bg-primary/10 text-primary'
                           : 'border-border hover:border-primary/30 hover:bg-accent/30 text-muted-foreground hover:text-foreground'
                       }`}
                     >
-                      {t}
+                      {getTranslatedTopic(topicKey, language)}
                     </button>
                   ))}
                   <button

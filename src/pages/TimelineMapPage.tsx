@@ -11,6 +11,7 @@ import { TERRITORY_TOPICS, type TerritoryTopic, type MarkerType } from '@/featur
 import type { Language } from '@/i18n/translations';
 import { getTranslatedTerritoryDesc } from '@/i18n/territoryDescTranslations';
 import { getQuestionsForTopic, getTranslatedTerritoryQuestion, type TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
+import { getTranslatedMarkerName, getTranslatedMarkerNote, getTranslatedMarkerType } from '@/i18n/territoryMarkerTranslations';
 import {
   Map as MapIcon, ChevronRight, Layers, Palette, BookOpen, HelpCircle, Play, Pause,
   SkipBack, SkipForward, ChevronDown, X, Trophy, Swords, Building2, Anchor, Gem, Landmark,
@@ -117,18 +118,19 @@ function getTitle(topic: TerritoryTopic, language: Language): string {
   return topic.titleI18n[language as Exclude<Language, 'en'>] ?? topic.title;
 }
 
-function makeMarkerIcon(marker: { name: string; type: MarkerType }, activeStyle: string) {
+function makeMarkerIcon(marker: { name: string; type: MarkerType }, activeStyle: string, translatedName?: string) {
   const color = MARKER_COLORS[marker.type];
   const icon  = MARKER_ICONS[marker.type];
   const isDark = activeStyle === 'dark' || activeStyle === 'military';
   const labelBg = isDark ? 'rgba(0,0,0,0.85)' : 'rgba(255,255,255,0.92)';
   const labelColor = isDark ? '#fff' : '#111';
   const size = marker.type === 'capital' ? 16 : marker.type === 'battle' ? 15 : 12;
+  const label = translatedName ?? marker.name;
 
   return L.divIcon({
     html: `<div style="display:flex;flex-direction:column;align-items:center;cursor:pointer">
       <div style="background:${color};border:2.5px solid white;border-radius:50%;width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.6);font-size:${size * 0.55}px;color:white;line-height:1">${icon}</div>
-      <div style="background:${labelBg};color:${labelColor};font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;white-space:nowrap;margin-top:2px;font-family:system-ui,sans-serif;box-shadow:0 1px 4px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,0.2)">${marker.name}</div>
+      <div style="background:${labelBg};color:${labelColor};font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;white-space:nowrap;margin-top:2px;font-family:system-ui,sans-serif;box-shadow:0 1px 4px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,0.2)">${label}</div>
     </div>`,
     className: '',
     iconAnchor: [size / 2, size],
@@ -163,6 +165,9 @@ export default function TimelineMapPage() {
   const [quizAnswered, setQuizAnswered] = useState<number | null>(null);
   const [quizScore, setQuizScore]     = useState(0);
   const [quizTotal, setQuizTotal]     = useState(0);
+  const usedQuestionIds               = useRef<Set<string>>(new Set());
+  const sessionXpEarned               = useRef<number>(0);
+  const MAX_SESSION_XP                = 500; // cap XP per session from map quiz
 
   // Map refs
   const mapRef            = useRef<L.Map | null>(null);
@@ -209,17 +214,28 @@ export default function TimelineMapPage() {
     lg.clearLayers();
     if (!selected) return;
 
-    // Polygons
+    // Polygons — professional styling: thick border, smooth joins, subtle glow
     if (layers.territory && selected.polygons) {
       selected.polygons.forEach(poly => {
         const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
+        // Outer glow layer (wider, very transparent)
         L.polygon(latlngs, {
           color: poly.color,
-          weight: 2.5,
+          weight: 8,
+          opacity: 0.18,
+          fillOpacity: 0,
+          interactive: false,
+        } as L.PathOptions).addTo(lg);
+        // Main border polygon
+        L.polygon(latlngs, {
+          color: poly.color,
+          weight: 3.5,
+          opacity: 0.92,
           fillColor: poly.color,
-          fillOpacity: poly.fillOpacity ?? 0.2,
-          dashArray: undefined,
-        }).bindTooltip(poly.label ?? '', { permanent: false, direction: 'center', className: 'leaflet-tooltip-custom' }).addTo(lg);
+          fillOpacity: poly.fillOpacity ?? 0.22,
+          lineJoin: 'round',
+          lineCap: 'round',
+        } as L.PathOptions).bindTooltip(poly.label ?? '', { permanent: false, direction: 'center', className: 'leaflet-tooltip-custom' }).addTo(lg);
       });
     }
 
@@ -246,19 +262,22 @@ export default function TimelineMapPage() {
       const layerKey = typeVisible[m.type];
       if (!layers[layerKey]) return;
 
-      const marker = L.marker([m.lat, m.lng], { icon: makeMarkerIcon(m, styleId) })
+      const tName = getTranslatedMarkerName(m.name, language);
+      const tNote = getTranslatedMarkerNote(m.name, m.note, language);
+      const tType = getTranslatedMarkerType(m.type, language);
+      const marker = L.marker([m.lat, m.lng], { icon: makeMarkerIcon(m, styleId, tName) })
         .bindPopup(`
           <div style="min-width:180px">
-            <div style="font-size:11px;font-weight:700;color:${MARKER_COLORS[m.type]};text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">${MARKER_ICONS[m.type]} ${m.type}</div>
-            <strong style="font-size:13px">${m.name}</strong>
+            <div style="font-size:11px;font-weight:700;color:${MARKER_COLORS[m.type]};text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">${MARKER_ICONS[m.type]} ${tType}</div>
+            <strong style="font-size:13px">${tName}</strong>
             ${m.year ? `<div style="font-size:10px;color:#888;margin:2px 0">${m.year < 0 ? Math.abs(m.year) + ' BCE' : m.year + ' CE'}</div>` : ''}
-            ${m.note ? `<div style="font-size:11px;color:#666;margin-top:4px;line-height:1.5">${m.note}</div>` : ''}
+            ${m.note ? `<div style="font-size:11px;color:#666;margin-top:4px;line-height:1.5">${tNote}</div>` : ''}
           </div>
         `)
         .addTo(lg);
       (marker as unknown as { _tmapType: string })._tmapType = m.type;
     });
-  }, [selected, layers, styleId]);
+  }, [selected, layers, styleId, language]);
 
   useEffect(() => {
     renderLayers();
@@ -310,8 +329,16 @@ export default function TimelineMapPage() {
     const pool = topic ? [topic] : TERRITORY_TOPICS;
     const pick = pool[Math.floor(Math.random() * pool.length)];
     setQuizTopic(pick);
-    const questions = getQuestionsForTopic(pick.id);
-    const q = questions[Math.floor(Math.random() * questions.length)];
+    const allQuestions = getQuestionsForTopic(pick.id);
+    // Filter out already-used questions; if all used, reset for this topic
+    let available = allQuestions.filter(q => !usedQuestionIds.current.has(q.id));
+    if (available.length === 0) {
+      // Reset used IDs for this topic only
+      allQuestions.forEach(q => usedQuestionIds.current.delete(q.id));
+      available = allQuestions;
+    }
+    const q = available[Math.floor(Math.random() * available.length)];
+    if (q) usedQuestionIds.current.add(q.id);
     setQuizQuestion(q ?? null);
     setQuizAnswered(null);
 
@@ -335,8 +362,10 @@ export default function TimelineMapPage() {
     const correct = idx === quizQuestion.correctIndex;
     if (correct) {
       setQuizScore(s => s + 1);
-      if (currentUser) {
-        addBonusXp(currentUser.id, 50, 'Map Quiz');
+      if (currentUser && sessionXpEarned.current < MAX_SESSION_XP) {
+        const xpGain = Math.min(50, MAX_SESSION_XP - sessionXpEarned.current);
+        sessionXpEarned.current += xpGain;
+        addBonusXp(currentUser.id, xpGain, 'Map Quiz');
         refreshProgress();
       }
       toast.success(t.tmap_quiz_correct);
@@ -460,16 +489,16 @@ export default function TimelineMapPage() {
                 {(Object.entries(MARKER_COLORS) as [MarkerType, string][]).map(([type, color]) => (
                   <div key={type} className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
                     <span style={{ color, fontSize: 11 }}>{MARKER_ICONS[type]}</span>
-                    <span className="capitalize">{type === 'landmark' ? 'Landmark' : type}</span>
+                    <span className="capitalize">{getTranslatedMarkerType(type, language)}</span>
                   </div>
                 ))}
                 <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
                   <span style={{ color: '#f59e0b', fontSize: 11 }}>─ ─</span>
-                  <span>Trade</span>
+                  <span className="capitalize">{getTranslatedMarkerType('trade', language)}</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
                   <span style={{ color: '#ef4444', fontSize: 11 }}>───</span>
-                  <span>Military</span>
+                  <span className="capitalize">{getTranslatedMarkerType('military', language)}</span>
                 </div>
               </div>
             </div>
@@ -591,14 +620,14 @@ export default function TimelineMapPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="font-bold text-sm">{storyCurrentMarker.name}</span>
+                    <span className="font-bold text-sm">{getTranslatedMarkerName(storyCurrentMarker.name, language)}</span>
                     {storyCurrentMarker.year && (
                       <span className="text-white/50 text-[10px]">
                         {storyCurrentMarker.year < 0 ? Math.abs(storyCurrentMarker.year) + ' BCE' : storyCurrentMarker.year + ' CE'}
                       </span>
                     )}
                   </div>
-                  <p className="text-white/75 text-xs leading-relaxed">{storyCurrentMarker.note ?? storyCurrentMarker.name}</p>
+                  <p className="text-white/75 text-xs leading-relaxed">{getTranslatedMarkerNote(storyCurrentMarker.name, storyCurrentMarker.note, language) || getTranslatedMarkerName(storyCurrentMarker.name, language)}</p>
                   <p className="text-white/30 text-[10px] mt-1">{storyIdx + 1} / {storyMarkers.length}</p>
                 </div>
               </div>
