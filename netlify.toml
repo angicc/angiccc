@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# SPA fallback — all routes serve index.html
+# Edge functions run before this, so /api/chat is handled server-side first
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

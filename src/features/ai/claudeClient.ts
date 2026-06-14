@@ -1,4 +1,10 @@
-const API_URL = 'https://api.anthropic.com/v1/messages';
+// In production (Netlify), calls go to /api/chat — a server-side edge function
+// that adds the API key. The key never reaches the browser.
+// In local development, set VITE_ANTHROPIC_API_KEY in .env.local and the
+// request goes directly to Anthropic (dev-only, never bundled into production).
+
+const PROD_PROXY  = '/api/chat';
+const DEV_DIRECT  = 'https://api.anthropic.com/v1/messages';
 const MODEL = 'claude-sonnet-4-6';
 
 const SYSTEM_PROMPT = `You are Clio, an expert history tutor for the Historify learning app.
@@ -22,21 +28,26 @@ export async function* streamChatResponse(
   lessonContext?: string,
   systemOverride?: string
 ): AsyncGenerator<string> {
-  // NOTE: VITE_ANTHROPIC_API_KEY is exposed client-side. Use a server proxy in production.
-  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
-  if (!apiKey) throw new Error('VITE_ANTHROPIC_API_KEY is not set. Create a .env.local file in your project root containing: VITE_ANTHROPIC_API_KEY=your_key_here');
+  const isDev = import.meta.env.DEV;
+  const devKey = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
+
+  const url = isDev && devKey ? DEV_DIRECT : PROD_PROXY;
 
   const baseSystem = systemOverride ?? SYSTEM_PROMPT;
   const system = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;
 
-  const res = await fetch(API_URL, {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+
+  if (isDev && devKey) {
+    // Development only — key is never included in production builds
+    headers['x-api-key'] = devKey;
+    headers['anthropic-version'] = '2023-06-01';
+    headers['anthropic-dangerous-direct-browser-access'] = 'true';
+  }
+
+  const res = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
+    headers,
     body: JSON.stringify({ model: MODEL, max_tokens: 1024, system, messages, stream: true }),
   });
 
