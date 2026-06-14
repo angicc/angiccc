@@ -5,7 +5,8 @@
 
 const PROD_PROXY  = '/api/chat';
 const DEV_DIRECT  = 'https://api.anthropic.com/v1/messages';
-const MODEL = 'claude-sonnet-4-6';
+const MODEL = 'claude-haiku-4-5-20251001';
+const MAX_HISTORY = 10; // keep last 10 messages to limit token spend
 
 const SYSTEM_PROMPT = `You are Clio, an expert history tutor for the Historify learning app.
 You help students learn world history across four eras: Ancient (~3000 BCE–500 CE), Middle Ages (~500–1500 CE), Early Modern (~1500–1800 CE), and Modern (~1800–present).
@@ -36,6 +37,9 @@ export async function* streamChatResponse(
   const baseSystem = systemOverride ?? SYSTEM_PROMPT;
   const system = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;
 
+  // Trim to last MAX_HISTORY messages to cap token usage on long conversations
+  const trimmedMessages = messages.slice(-MAX_HISTORY);
+
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
 
   if (isDev && devKey) {
@@ -48,7 +52,7 @@ export async function* streamChatResponse(
   const res = await fetch(url, {
     method: 'POST',
     headers,
-    body: JSON.stringify({ model: MODEL, max_tokens: 1024, system, messages, stream: true }),
+    body: JSON.stringify({ model: MODEL, max_tokens: 1024, system, messages: trimmedMessages, stream: true }),
   });
 
   if (!res.ok) {
