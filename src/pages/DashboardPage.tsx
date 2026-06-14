@@ -21,6 +21,13 @@ import { OnboardingModal, hasCompletedOnboarding } from '@/components/shared/Onb
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
 const fadeUp = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 
+const ERA_SHORT_KEY: Record<string, 'era_short_ancient' | 'era_short_medieval' | 'era_short_earlymod' | 'era_short_modern'> = {
+  ancient: 'era_short_ancient',
+  'middle-ages': 'era_short_medieval',
+  'early-modern': 'era_short_earlymod',
+  modern: 'era_short_modern',
+};
+
 export default function DashboardPage() {
   const { currentUser, progress, refreshProgress } = useAuth();
   const { t } = useLanguage();
@@ -144,7 +151,7 @@ export default function DashboardPage() {
                   return (
                     <div key={era.id} className="cursor-pointer group" onClick={() => navigate('/eras')}>
                       <div className="flex items-center justify-between mb-1 text-sm">
-                        <span className={`font-medium group-hover:opacity-80 transition-opacity ${era.color}`}>{era.shortName}</span>
+                        <span className={`font-medium group-hover:opacity-80 transition-opacity ${era.color}`}>{t[ERA_SHORT_KEY[era.id]] ?? era.shortName}</span>
                         <span className="text-muted-foreground text-xs">{done}/{era.lessonIds.length}</span>
                       </div>
                       <div className="h-2 rounded-full bg-secondary overflow-hidden">

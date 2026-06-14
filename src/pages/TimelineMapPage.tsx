@@ -9,6 +9,8 @@ import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { addBonusXp } from '@/features/progress/progressStore';
 import { TERRITORY_TOPICS, type TerritoryTopic, type MarkerType } from '@/features/content/timelineTerritoryData';
 import type { Language } from '@/i18n/translations';
+import { getTranslatedTerritoryDesc } from '@/i18n/territoryDescTranslations';
+import { getQuestionsForTopic, getTranslatedTerritoryQuestion, type TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
 import {
   Map as MapIcon, ChevronRight, Layers, Palette, BookOpen, HelpCircle, Play, Pause,
   SkipBack, SkipForward, ChevronDown, X, Trophy, Swords, Building2, Anchor, Gem, Landmark,
@@ -134,16 +136,6 @@ function makeMarkerIcon(marker: { name: string; type: MarkerType }, activeStyle:
   });
 }
 
-function buildQuizOptions(correct: TerritoryTopic, all: TerritoryTopic[], language: Language): string[] {
-  const distractors = all
-    .filter(t => t.id !== correct.id)
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 3)
-    .map(t => getTitle(t, language));
-  const options = [...distractors, getTitle(correct, language)].sort(() => Math.random() - 0.5);
-  return options;
-}
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function TimelineMapPage() {
@@ -166,7 +158,7 @@ export default function TimelineMapPage() {
   const storyTimerRef                 = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Quiz mode
-  const [quizOptions, setQuizOptions] = useState<string[]>([]);
+  const [quizQuestion, setQuizQuestion] = useState<TerritoryQuizQuestion | null>(null);
   const [quizTopic, setQuizTopic]     = useState<TerritoryTopic | null>(null);
   const [quizAnswered, setQuizAnswered] = useState<number | null>(null);
   const [quizScore, setQuizScore]     = useState(0);
@@ -318,7 +310,9 @@ export default function TimelineMapPage() {
     const pool = topic ? [topic] : TERRITORY_TOPICS;
     const pick = pool[Math.floor(Math.random() * pool.length)];
     setQuizTopic(pick);
-    setQuizOptions(buildQuizOptions(pick, TERRITORY_TOPICS, language));
+    const questions = getQuestionsForTopic(pick.id);
+    const q = questions[Math.floor(Math.random() * questions.length)];
+    setQuizQuestion(q ?? null);
     setQuizAnswered(null);
 
     const map = mapRef.current;
@@ -335,10 +329,10 @@ export default function TimelineMapPage() {
   }
 
   function handleQuizAnswer(idx: number) {
-    if (quizAnswered !== null || !quizTopic) return;
+    if (quizAnswered !== null || !quizQuestion) return;
     setQuizAnswered(idx);
     setQuizTotal(q => q + 1);
-    const correct = quizOptions[idx] === getTitle(quizTopic, language);
+    const correct = idx === quizQuestion.correctIndex;
     if (correct) {
       setQuizScore(s => s + 1);
       if (currentUser) {
@@ -347,7 +341,7 @@ export default function TimelineMapPage() {
       }
       toast.success(t.tmap_quiz_correct);
     } else {
-      toast.error(`${t.tmap_quiz_wrong} ${getTitle(quizTopic, language)}`);
+      toast.error(t.tmap_quiz_wrong);
     }
   }
 
@@ -568,7 +562,7 @@ export default function TimelineMapPage() {
                 {ERA_LABELS[selected.era][language]} · {selected.period}
               </div>
               <p className="font-bold text-sm leading-snug mb-1">{getTitle(selected, language)}</p>
-              <p className="text-white/70 leading-relaxed text-[11px]">{selected.description}</p>
+              <p className="text-white/70 leading-relaxed text-[11px]">{getTranslatedTerritoryDesc(selected.id, language) ?? selected.description}</p>
               <div className="flex flex-wrap gap-1.5 mt-2">
                 <Badge variant="outline" className="text-[9px] border-white/20 text-white/60 h-4 px-1.5">
                   {selected.markers.length} {t.tmap_markers}
@@ -639,43 +633,48 @@ export default function TimelineMapPage() {
           )}
 
           {/* ── QUIZ MODE PANEL ──────────────────────────── */}
-          {mode === 'quiz' && quizTopic && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[92%] max-w-lg bg-black/88 backdrop-blur-md text-white p-4 rounded-2xl border border-white/15 shadow-2xl">
-              <div className="flex items-center gap-2 mb-3">
-                <HelpCircle className="w-4 h-4 text-primary shrink-0" />
-                <p className="font-semibold text-sm">{t.tmap_quiz_q}</p>
-                {quizTotal > 0 && <span className="ml-auto text-xs text-white/50">{quizScore}/{quizTotal}</span>}
+          {mode === 'quiz' && quizTopic && quizQuestion && (() => {
+            const tq = getTranslatedTerritoryQuestion(quizQuestion, language);
+            return (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[92%] max-w-lg bg-black/88 backdrop-blur-md text-white p-4 rounded-2xl border border-white/15 shadow-2xl">
+                <div className="flex items-center gap-2 mb-2">
+                  <HelpCircle className="w-4 h-4 text-primary shrink-0" />
+                  <p className="font-semibold text-sm leading-snug">{tq.question}</p>
+                  {quizTotal > 0 && <span className="ml-auto shrink-0 text-xs text-white/50">{quizScore}/{quizTotal}</span>}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {tq.options.map((opt, idx) => {
+                    const isCorrect = idx === quizQuestion.correctIndex;
+                    const isSelected = quizAnswered === idx;
+                    let cls = 'border-white/20 hover:border-white/50 hover:bg-white/10 text-white/80';
+                    if (quizAnswered !== null) {
+                      if (isCorrect) cls = 'border-emerald-500 bg-emerald-500/20 text-emerald-300 font-semibold';
+                      else if (isSelected) cls = 'border-red-500 bg-red-500/15 text-red-300';
+                      else cls = 'border-white/10 text-white/30';
+                    }
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => handleQuizAnswer(idx)}
+                        disabled={quizAnswered !== null}
+                        className={cn('border rounded-xl text-xs font-medium px-3 py-2.5 text-left transition-all leading-snug', cls)}
+                      >
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+                {quizAnswered !== null && (
+                  <>
+                    <p className="text-xs text-white/60 mt-3 leading-relaxed italic">{tq.explanation}</p>
+                    <Button size="sm" className="w-full mt-2 gap-2" onClick={() => startNewQuiz(selected ?? undefined)}>
+                      <Trophy className="w-3.5 h-3.5" />{t.tmap_quiz_next}
+                    </Button>
+                  </>
+                )}
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                {quizOptions.map((opt, idx) => {
-                  const correctAns = getTitle(quizTopic, language);
-                  const isCorrect = opt === correctAns;
-                  const isSelected = quizAnswered === idx;
-                  let cls = 'border-white/20 hover:border-white/50 hover:bg-white/10 text-white/80';
-                  if (quizAnswered !== null) {
-                    if (isCorrect) cls = 'border-emerald-500 bg-emerald-500/20 text-emerald-300 font-semibold';
-                    else if (isSelected) cls = 'border-red-500 bg-red-500/15 text-red-300';
-                    else cls = 'border-white/10 text-white/30';
-                  }
-                  return (
-                    <button
-                      key={idx}
-                      onClick={() => handleQuizAnswer(idx)}
-                      disabled={quizAnswered !== null}
-                      className={cn('border rounded-xl text-xs font-medium px-3 py-2.5 text-left transition-all leading-snug', cls)}
-                    >
-                      {opt}
-                    </button>
-                  );
-                })}
-              </div>
-              {quizAnswered !== null && (
-                <Button size="sm" className="w-full mt-3 gap-2" onClick={() => startNewQuiz(selected ?? undefined)}>
-                  <Trophy className="w-3.5 h-3.5" />{t.tmap_quiz_next}
-                </Button>
-              )}
-            </div>
-          )}
+            );
+          })()}
 
           {/* Hint when nothing selected in explore mode */}
           {!selected && mode === 'explore' && (

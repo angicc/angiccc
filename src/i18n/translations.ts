@@ -31,6 +31,10 @@ type TranslationKeys = {
   dash_daily: string; dash_continue: string; dash_next_lesson: string;
   dash_era_progress: string; dash_recent: string; dash_no_activity: string;
   dash_completed: string; dash_xp_label: string;
+  daily_submit: string; daily_correct: string; daily_wrong: string; daily_tomorrow: string;
+  achievement_unlocked: string;
+  difficulty_easy: string; difficulty_medium: string; difficulty_hard: string;
+  era_short_ancient: string; era_short_medieval: string; era_short_earlymod: string; era_short_modern: string;
   // ── Eras ───────────────────────────────────────────────────────
   eras_title: string; eras_subtitle: string; eras_lessons_label: string;
   eras_take_quiz: string; eras_view_lessons: string; eras_locked: string;
@@ -256,6 +260,11 @@ export const T: Translations = {
     dash_next_lesson: 'Next Lesson', dash_era_progress: 'Era Progress',
     dash_recent: 'Recent Activity', dash_no_activity: 'No recent activity yet.',
     dash_completed: 'completed', dash_xp_label: 'XP',
+    daily_submit: 'Submit Answer', daily_correct: 'Correct! +15 XP',
+    daily_wrong: 'Correct answer:', daily_tomorrow: 'Come back tomorrow for a new challenge!',
+    achievement_unlocked: 'Achievement Unlocked!',
+    difficulty_easy: 'Easy', difficulty_medium: 'Medium', difficulty_hard: 'Hard',
+    era_short_ancient: 'Ancient', era_short_medieval: 'Medieval', era_short_earlymod: 'Early Modern', era_short_modern: 'Modern',
     // Eras
     eras_title: 'Eras & Lessons', eras_subtitle: 'Choose your era and begin your journey',
     eras_lessons_label: 'lessons', eras_take_quiz: 'Take Era Quiz',
@@ -515,6 +524,11 @@ export const T: Translations = {
     dash_next_lesson: 'Siguiente Lección', dash_era_progress: 'Progreso por Era',
     dash_recent: 'Actividad Reciente', dash_no_activity: 'Aún no hay actividad reciente.',
     dash_completed: 'completado', dash_xp_label: 'XP',
+    daily_submit: 'Enviar Respuesta', daily_correct: '¡Correcto! +15 XP',
+    daily_wrong: 'Respuesta correcta:', daily_tomorrow: '¡Vuelve mañana para un nuevo desafío!',
+    achievement_unlocked: '¡Logro Desbloqueado!',
+    difficulty_easy: 'Fácil', difficulty_medium: 'Medio', difficulty_hard: 'Difícil',
+    era_short_ancient: 'Antiguo', era_short_medieval: 'Medieval', era_short_earlymod: 'Moderno Temprano', era_short_modern: 'Moderno',
     eras_title: 'Eras y Lecciones', eras_subtitle: 'Elige tu era y comienza tu viaje',
     eras_lessons_label: 'lecciones', eras_take_quiz: 'Hacer Quiz de Era',
     eras_view_lessons: 'Ver Lecciones', eras_locked: 'Bloqueado', eras_completed: 'Completado',
@@ -755,6 +769,11 @@ export const T: Translations = {
     dash_next_lesson: 'Следующий Урок', dash_era_progress: 'Прогресс по Эпохам',
     dash_recent: 'Недавняя активность', dash_no_activity: 'Пока нет активности.',
     dash_completed: 'пройдено', dash_xp_label: 'XP',
+    daily_submit: 'Ответить', daily_correct: 'Правильно! +15 XP',
+    daily_wrong: 'Правильный ответ:', daily_tomorrow: 'Возвращайтесь завтра за новым заданием!',
+    achievement_unlocked: 'Достижение Разблокировано!',
+    difficulty_easy: 'Лёгкий', difficulty_medium: 'Средний', difficulty_hard: 'Сложный',
+    era_short_ancient: 'Древний', era_short_medieval: 'Средневековье', era_short_earlymod: 'Раннее Новое', era_short_modern: 'Современный',
     eras_title: 'Эпохи и Уроки', eras_subtitle: 'Выберите эпоху и начните путешествие',
     eras_lessons_label: 'уроков', eras_take_quiz: 'Пройти Викторину',
     eras_view_lessons: 'Смотреть Уроки', eras_locked: 'Заблокировано', eras_completed: 'Пройдено',
@@ -995,6 +1014,11 @@ export const T: Translations = {
     dash_next_lesson: 'Следна Лекција', dash_era_progress: 'Напредок по Епохи',
     dash_recent: 'Скорешна Активност', dash_no_activity: 'Сè уште нема скорешна активност.',
     dash_completed: 'завршено', dash_xp_label: 'XP',
+    daily_submit: 'Потврди Одговор', daily_correct: 'Точно! +15 XP',
+    daily_wrong: 'Точен одговор:', daily_tomorrow: 'Врати се утре за нов предизвик!',
+    achievement_unlocked: 'Достигнување Отклучено!',
+    difficulty_easy: 'Лесно', difficulty_medium: 'Средно', difficulty_hard: 'Тешко',
+    era_short_ancient: 'Антика', era_short_medieval: 'Средновековие', era_short_earlymod: 'Рано Модерно', era_short_modern: 'Модерно',
     eras_title: 'Епохи и Лекции', eras_subtitle: 'Избери своја епоха и започни го патувањето',
     eras_lessons_label: 'лекции', eras_take_quiz: 'Направи Квиз за Епохата',
     eras_view_lessons: 'Прегледај Лекции', eras_locked: 'Заклучено', eras_completed: 'Завршено',

@@ -40,6 +40,8 @@ export interface TerritoryTopic {
   title: string;
   titleI18n: Partial<Record<ContentLang, string>>;
   description: string;
+  descriptionI18n?: Partial<Record<ContentLang, string>>;
+  storyIntroI18n?: Partial<Record<ContentLang, string>>;
   markers: TerritoryMarker[];
   polygons?: TerritoryPolygon[];
   routes?: TerritoryRoute[];

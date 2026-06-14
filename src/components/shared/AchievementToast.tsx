@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, BookOpen, GraduationCap, Award, Trophy, Flame, Zap, Star, MessageSquare, Map } from 'lucide-react';
 import type { Achievement } from '@/types';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { getTranslatedAchievement } from '@/i18n/achievementTranslations';
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   BookOpen, GraduationCap, Award, Trophy, Flame, Zap, Star, MessageSquare, Map,
 };
 
 export function AchievementToast({ achievements, onDone }: { achievements: Achievement[]; onDone: () => void }) {
+  const { t, language } = useLanguage();
   const [idx, setIdx] = useState(0);
   const [visible, setVisible] = useState(true);
 
@@ -24,6 +27,7 @@ export function AchievementToast({ achievements, onDone }: { achievements: Achie
   }, [idx, achievements.length, onDone]);
 
   const a = achievements[idx];
+  const trans = getTranslatedAchievement(a.id, language);
   const Icon = ICONS[a.icon] ?? Award;
 
   function dismiss() {
@@ -69,9 +73,9 @@ export function AchievementToast({ achievements, onDone }: { achievements: Achie
             </motion.div>
 
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-amber-400">Achievement Unlocked!</p>
-              <p className="font-heading font-bold text-sm mt-0.5 leading-tight">{a.title}</p>
-              <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{a.description}</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-amber-400">{t.achievement_unlocked}</p>
+              <p className="font-heading font-bold text-sm mt-0.5 leading-tight">{trans?.title ?? a.title}</p>
+              <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{trans?.description ?? a.description}</p>
               <p className="text-xs text-amber-400 font-semibold mt-1.5">+{a.xpBonus} XP bonus</p>
             </div>
 
