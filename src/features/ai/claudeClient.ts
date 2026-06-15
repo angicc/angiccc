@@ -1,12 +1,10 @@
-// In production (Netlify), calls go to /api/chat — a server-side edge function
-// that adds the API key. The key never reaches the browser.
-// In local development, set VITE_ANTHROPIC_API_KEY in .env.local and the
-// request goes directly to Anthropic (dev-only, never bundled into production).
+// All AI calls go through /api/chat — a proxy that adds the API key server-side.
+// In production: Netlify Edge Function (netlify/edge-functions/chat.ts)
+// In development: Vite server proxy (vite.config.ts) using VITE_ANTHROPIC_API_KEY
 
-const PROD_PROXY  = '/api/chat';
-const DEV_DIRECT  = 'https://api.anthropic.com/v1/messages';
-const MODEL = 'claude-haiku-4-5-20251001';
-const MAX_HISTORY = 10; // keep last 10 messages to limit token spend
+const API_URL = '/api/chat';
+const MODEL   = 'claude-haiku-4-5-20251001';
+const MAX_HISTORY = 10; // keep last 10 messages to cap token usage
 
 const SYSTEM_PROMPT = `You are Clio, an expert history tutor for the Historify learning app.
 You help students learn world history across four eras: Ancient (~3000 BCE–500 CE), Middle Ages (~500–1500 CE), Early Modern (~1500–1800 CE), and Modern (~1800–present).
@@ -29,29 +27,13 @@ export async function* streamChatResponse(
   lessonContext?: string,
   systemOverride?: string
 ): AsyncGenerator<string> {
-  const isDev = import.meta.env.DEV;
-  const devKey = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
-
-  const url = isDev && devKey ? DEV_DIRECT : PROD_PROXY;
-
   const baseSystem = systemOverride ?? SYSTEM_PROMPT;
   const system = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;
-
-  // Trim to last MAX_HISTORY messages to cap token usage on long conversations
   const trimmedMessages = messages.slice(-MAX_HISTORY);
 
-  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-
-  if (isDev && devKey) {
-    // Development only — key is never included in production builds
-    headers['x-api-key'] = devKey;
-    headers['anthropic-version'] = '2023-06-01';
-    headers['anthropic-dangerous-direct-browser-access'] = 'true';
-  }
-
-  const res = await fetch(url, {
+  const res = await fetch(API_URL, {
     method: 'POST',
-    headers,
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ model: MODEL, max_tokens: 1024, system, messages: trimmedMessages, stream: true }),
   });
 
