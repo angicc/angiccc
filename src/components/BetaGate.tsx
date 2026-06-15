@@ -2,14 +2,9 @@ import { useState } from 'react';
 import { Lock, ArrowRight } from 'lucide-react';
 
 const BETA_CODE = 'HISTORIFY2026';
-const STORAGE_KEY = 'historify:beta_unlocked';
-
-function isUnlocked(): boolean {
-  return localStorage.getItem(STORAGE_KEY) === '1';
-}
 
 export function BetaGate({ children }: { children: React.ReactNode }) {
-  const [unlocked, setUnlocked] = useState(isUnlocked);
+  const [unlocked, setUnlocked] = useState(false);
   const [input, setInput] = useState('');
   const [error, setError] = useState(false);
   const [shake, setShake] = useState(false);
@@ -18,7 +13,6 @@ export function BetaGate({ children }: { children: React.ReactNode }) {
 
   function attempt() {
     if (input.trim().toUpperCase() === BETA_CODE) {
-      localStorage.setItem(STORAGE_KEY, '1');
       setUnlocked(true);
     } else {
       setError(true);
