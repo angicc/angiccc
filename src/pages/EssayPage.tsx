@@ -195,7 +195,9 @@ export default function EssayPage() {
         buf += chunk;
         setRawBuffer(buf);
       }
-      const parsed = JSON.parse(buf) as GradeResult;
+      const jsonMatch = buf.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('Could not parse grading response.');
+      const parsed = JSON.parse(jsonMatch[0]) as GradeResult;
       setResult(parsed);
       toast.success(`Graded! You earned a ${parsed.grade} — ${parsed.gradeSummary}`);
     } catch {

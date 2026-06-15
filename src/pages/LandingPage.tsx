@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { stripMarkdown } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from 'framer-motion';
 import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Globe2, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, MessageCircle, X, Send, Loader2, Sparkles, Film, Shield, Scale } from 'lucide-react';
@@ -364,7 +365,13 @@ function LandingChatbot() {
                       ? 'bg-primary text-primary-foreground rounded-br-sm'
                       : 'bg-muted/80 text-foreground rounded-bl-sm border border-border/40'
                   }`}>
-                    {m.text || (
+                    {m.role === 'assistant' ? stripMarkdown(m.text) || (
+                      <span className="inline-flex gap-1 items-center h-4">
+                        <motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1.1, repeat:Infinity }}>●</motion.span>
+                        <motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1.1, repeat:Infinity, delay:0.2 }}>●</motion.span>
+                        <motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1.1, repeat:Infinity, delay:0.4 }}>●</motion.span>
+                      </span>
+                    ) : m.text || (
                       <span className="inline-flex gap-1 items-center h-4">
                         <motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1.1, repeat:Infinity }}>●</motion.span>
                         <motion.span animate={{ opacity: [0.3,1,0.3] }} transition={{ duration:1.1, repeat:Infinity, delay:0.2 }}>●</motion.span>

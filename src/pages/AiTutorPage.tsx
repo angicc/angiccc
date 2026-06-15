@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { stripMarkdown } from '@/lib/utils';
 import { useSearchParams } from 'react-router-dom';
 import { Send, RotateCcw, Sword, Globe, BookOpen, Scroll, Sparkles, Landmark } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -273,7 +274,7 @@ export default function AiTutorPage() {
                           : 'bg-secondary text-secondary-foreground rounded-tl-sm'
                       } ${msg.isStreaming ? 'streaming-cursor' : ''}`}
                     >
-                      {msg.content || (msg.isStreaming ? ' ' : '…')}
+                      {msg.role === 'assistant' ? stripMarkdown(msg.content || (msg.isStreaming ? ' ' : '...')) : (msg.content || '...')}
                     </div>
                   </motion.div>
                 ))}
