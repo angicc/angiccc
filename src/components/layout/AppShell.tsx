@@ -14,6 +14,9 @@ export function AppShell({ children, compact }: { children: React.ReactNode; com
           'flex-1 animate-fade-in',
           compact ? 'overflow-hidden' : 'p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto'
         )}>{children}</main>
+        <div className="shrink-0 px-4 py-1.5 text-center text-[10px] text-muted-foreground/40 select-none border-t border-border/20">
+          © {new Date().getFullYear()} Historify. All rights reserved.
+        </div>
       </div>
     </div>
   );

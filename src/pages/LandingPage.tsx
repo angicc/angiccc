@@ -927,7 +927,7 @@ export default function LandingPage() {
             <Link to="/login"   className="hover:text-foreground transition-colors">Log In</Link>
             <Link to="/register" className="hover:text-foreground transition-colors">Sign Up</Link>
           </div>
-          <span>© {new Date().getFullYear()} Historify</span>
+          <span>© {new Date().getFullYear()} Historify. All rights reserved.</span>
         </div>
       </footer>
     </div>
