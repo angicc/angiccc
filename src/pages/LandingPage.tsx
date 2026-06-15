@@ -291,17 +291,6 @@ function LandingChatbot() {
     setInput('');
     setLoading(true);
 
-    if (!apiKey) {
-      setTimeout(() => {
-        setMsgs(prev => [...prev, {
-          role: 'assistant',
-          text: "I'm not connected yet — add your VITE_ANTHROPIC_API_KEY to .env.local to enable live answers. Until then, explore Historify free with the Get Started button above!"
-        }]);
-        setLoading(false);
-      }, 800);
-      return;
-    }
-
     const history = [...msgs, userMsg].map(m => ({ role: m.role, content: m.text }));
     let reply = '';
     setMsgs(prev => [...prev, { role: 'assistant', text: '' }]);
@@ -322,7 +311,7 @@ function LandingChatbot() {
       });
     }
     setLoading(false);
-  }, [msgs, loading, apiKey]);
+  }, [msgs, loading]);
 
   function handleOpen() {
     setOpen(o => !o);
