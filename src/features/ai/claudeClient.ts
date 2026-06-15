@@ -1,10 +1,10 @@
-// All AI calls go through /api/chat — a proxy that adds the API key server-side.
-// In production: Netlify Edge Function (netlify/edge-functions/chat.ts)
-// In development: Vite server proxy (vite.config.ts) using VITE_ANTHROPIC_API_KEY
+// Production: calls go to /api/chat (Netlify Edge Function adds key server-side)
+// Development: calls go directly to Anthropic using VITE_ANTHROPIC_API_KEY from .env.local
 
-const API_URL = '/api/chat';
-const MODEL   = 'claude-haiku-4-5-20251001';
-const MAX_HISTORY = 10; // keep last 10 messages to cap token usage
+const MODEL       = 'claude-haiku-4-5-20251001';
+const MAX_HISTORY = 10;
+const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
+const PROXY_URL     = '/api/chat';
 
 const SYSTEM_PROMPT = `You are Clio, an expert history tutor for the Historify learning app.
 You help students learn world history across four eras: Ancient (~3000 BCE–500 CE), Middle Ages (~500–1500 CE), Early Modern (~1500–1800 CE), and Modern (~1800–present).
@@ -27,13 +27,25 @@ export async function* streamChatResponse(
   lessonContext?: string,
   systemOverride?: string
 ): AsyncGenerator<string> {
-  const baseSystem = systemOverride ?? SYSTEM_PROMPT;
-  const system = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;
+  const devKey = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
+  const isDev  = import.meta.env.DEV as boolean;
+
+  const url     = isDev && devKey ? ANTHROPIC_URL : PROXY_URL;
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+
+  if (isDev && devKey) {
+    headers['x-api-key']    = devKey;
+    headers['anthropic-version'] = '2023-06-01';
+    headers['anthropic-dangerous-direct-browser-access'] = 'true';
+  }
+
+  const baseSystem     = systemOverride ?? SYSTEM_PROMPT;
+  const system         = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;
   const trimmedMessages = messages.slice(-MAX_HISTORY);
 
-  const res = await fetch(API_URL, {
+  const res = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify({ model: MODEL, max_tokens: 1024, system, messages: trimmedMessages, stream: true }),
   });
 
@@ -43,7 +55,7 @@ export async function* streamChatResponse(
   }
 
   const reader = res.body!.getReader();
-  const dec = new TextDecoder();
+  const dec    = new TextDecoder();
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
