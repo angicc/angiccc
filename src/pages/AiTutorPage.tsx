@@ -147,7 +147,7 @@ export default function AiTutorPage() {
       let acc = '';
       for await (const chunk of streamChatResponse(history, context)) {
         acc += chunk;
-        setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, content: acc } : m));
+        setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, content: stripMarkdown(acc) } : m));
       }
       setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, isStreaming: false } : m));
     } catch (err) {

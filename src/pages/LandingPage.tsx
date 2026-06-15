@@ -300,7 +300,7 @@ function LandingChatbot() {
         reply += chunk;
         setMsgs(prev => {
           const updated = [...prev];
-          updated[updated.length - 1] = { role: 'assistant', text: reply };
+          updated[updated.length - 1] = { role: 'assistant', text: stripMarkdown(reply) };
           return updated;
         });
       }
