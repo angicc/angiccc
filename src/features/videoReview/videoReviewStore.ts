@@ -77,6 +77,14 @@ export function addVideoXp(userId: string, xp: number): number {
   return next;
 }
 
+export function getVideoReviewCount(userId: string): number {
+  const key = `${COMPLETED_KEY}:${userId}`;
+  const raw = localStorage.getItem(key);
+  if (!raw) return 0;
+  const completed: Record<string, string> = JSON.parse(raw);
+  return Object.keys(completed).length;
+}
+
 export function formatCountdown(ms: number): string {
   const h = Math.floor(ms / 3600000);
   const m = Math.floor((ms % 3600000) / 60000);

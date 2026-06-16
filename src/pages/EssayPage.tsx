@@ -14,6 +14,34 @@ import { streamChatResponse } from '@/features/ai/claudeClient';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+// ── Essay statistics (localStorage) ──────────────────────────────────────────
+const ESSAY_STATS_KEY = 'historify:essayStats:';
+
+interface EssayStats {
+  totalSubmitted: number;
+  grades: Record<string, number>;
+  totalScore: number;
+  bestGrade: string;
+}
+
+function getEssayStats(userId: string): EssayStats {
+  const raw = localStorage.getItem(ESSAY_STATS_KEY + userId);
+  if (raw) return JSON.parse(raw) as EssayStats;
+  return { totalSubmitted: 0, grades: {}, totalScore: 0, bestGrade: '' };
+}
+
+function recordEssayResult(userId: string, grade: string, score: number): void {
+  const stats = getEssayStats(userId);
+  stats.totalSubmitted += 1;
+  stats.grades[grade] = (stats.grades[grade] ?? 0) + 1;
+  stats.totalScore += score;
+  const ORDER = ['A', 'B', 'C', 'D', 'F'];
+  const currentIdx = ORDER.indexOf(stats.bestGrade);
+  const newIdx = ORDER.indexOf(grade);
+  if (!stats.bestGrade || newIdx < currentIdx) stats.bestGrade = grade;
+  localStorage.setItem(ESSAY_STATS_KEY + userId, JSON.stringify(stats));
+}
+
 const TOPICS = [
   'What caused the fall of the Western Roman Empire?',
   'How did the Black Death reshape medieval European society?',
@@ -155,6 +183,9 @@ export default function EssayPage() {
   const [grading, setGrading] = useState(false);
   const [result, setResult] = useState<GradeResult | null>(null);
   const [rawBuffer, setRawBuffer] = useState('');
+  const [essayStats, setEssayStats] = useState<EssayStats>(() =>
+    currentUser ? getEssayStats(currentUser.id) : { totalSubmitted: 0, grades: {}, totalScore: 0, bestGrade: '' }
+  );
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const wordCount = essay.trim() ? essay.trim().split(/\s+/).length : 0;
@@ -208,6 +239,11 @@ export default function EssayPage() {
       if (!jsonMatch) throw new Error('Could not parse grading response.');
       const parsed = JSON.parse(jsonMatch[0]) as GradeResult;
       setResult(parsed);
+      if (currentUser) {
+        const score = Math.round((parsed.accuracy + parsed.argument + parsed.depth) / 3 * 10);
+        recordEssayResult(currentUser.id, parsed.grade, score);
+        setEssayStats(getEssayStats(currentUser.id));
+      }
       toast.success(t.essay_graded.replace('{grade}', parsed.grade));
     } catch {
       toast.error(t.essay_grade_fail);
@@ -237,6 +273,36 @@ export default function EssayPage() {
             <p className="text-muted-foreground text-sm mt-0.5">{t.essay_subtitle}</p>
           </div>
         </motion.div>
+
+        {/* Statistics panel */}
+        {essayStats.totalSubmitted > 0 && (
+          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}>
+            <div className="grid grid-cols-3 gap-3">
+              <Card>
+                <CardContent className="pt-4 pb-4 text-center">
+                  <p className="text-2xl font-heading font-bold text-orange-400">{essayStats.totalSubmitted}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Essays Submitted</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-4 pb-4 text-center">
+                  <p className="text-2xl font-heading font-bold text-primary">
+                    {essayStats.totalSubmitted > 0 ? Math.round(essayStats.totalScore / essayStats.totalSubmitted) : 0}%
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Avg Score</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-4 pb-4 text-center">
+                  <p className={`text-2xl font-heading font-bold ${GRADE_COLOR[essayStats.bestGrade] ?? 'text-foreground'}`}>
+                    {essayStats.bestGrade || '—'}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Best Grade</p>
+                </CardContent>
+              </Card>
+            </div>
+          </motion.div>
+        )}
 
         {!result ? (
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }} className="space-y-5">

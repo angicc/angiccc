@@ -60,8 +60,14 @@ function LessonBanner({
 
   return (
     <div className={`relative h-72 sm:h-80 md:h-96 rounded-2xl overflow-hidden mb-8 bg-gradient-to-br ${bgGradient} border border-border`}>
-      {/* Topic accent stripe at top */}
-      <div className="absolute top-0 left-0 right-0 h-1 z-20" style={{ background: theme.accentColor }} />
+      {/* Topic accent stripe at top — thicker for visual impact */}
+      <div className="absolute top-0 left-0 right-0 h-2 z-20" style={{ background: theme.accentColor }} />
+
+      {/* Topic color wash — makes each lesson distinctly colored even with same fallback photo */}
+      <div
+        className="absolute inset-0 z-[1]"
+        style={{ background: `linear-gradient(135deg, ${theme.accentColor}55 0%, ${theme.accentColor}20 55%, transparent 100%)` }}
+      />
 
       {!loaded && (
         <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-white/5 to-white/0" />
@@ -73,15 +79,15 @@ function LessonBanner({
           aria-hidden
           loading="lazy"
           referrerPolicy="no-referrer"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-75' : 'opacity-0'}`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-[2] ${loaded ? 'opacity-60' : 'opacity-0'}`}
           onLoad={() => setLoaded(true)}
           onError={handleError}
         />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent z-[3]" />
 
       {/* Category watermark */}
-      <div className="absolute top-6 right-6 text-7xl opacity-[0.07] select-none pointer-events-none z-10 leading-none">
+      <div className="absolute top-6 right-6 text-7xl opacity-[0.12] select-none pointer-events-none z-10 leading-none">
         {theme.categoryIcon}
       </div>
 

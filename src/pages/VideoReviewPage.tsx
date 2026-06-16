@@ -15,6 +15,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import {
   getCurrentVideo, getTimeUntilNextVideo, hasReviewedCurrentVideo,
   markCurrentVideoReviewed, getVideoXp, addVideoXp, formatCountdown,
+  getVideoReviewCount,
 } from '@/features/videoReview/videoReviewStore';
 import { getChessRank, getNextRank, getXpToNextRank } from '@/features/ranks/chessRanks';
 import type { HistoryVideo } from '@/features/videoReview/videoData';
@@ -115,6 +116,7 @@ function VideoReviewInner({ userId }: { userId: string }) {
   const [video] = useState<HistoryVideo>(() => getCurrentVideo());
   const [alreadyReviewed] = useState(() => hasReviewedCurrentVideo(userId));
   const [videoXp, setVideoXp]     = useState(() => getVideoXp(userId));
+  const [reviewCount, setReviewCount] = useState(() => getVideoReviewCount(userId));
   const rank                       = getChessRank(videoXp);
   const nextRank                   = getNextRank(rank);
   const xpProgress                 = getXpToNextRank(videoXp);
@@ -170,6 +172,7 @@ ${review}`;
       setVideoXp(newTotal);
       setXpEarned(awarded);
       markCurrentVideoReviewed(userId);
+      setReviewCount(getVideoReviewCount(userId));
       setPhase('done');
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Grading failed. Please try again.');
@@ -221,6 +224,30 @@ ${review}`;
             </div>
           </motion.div>
         )}
+
+        {/* Statistics panel */}
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <div className="grid grid-cols-3 gap-3">
+            <Card>
+              <CardContent className="pt-4 pb-4 text-center">
+                <p className="text-2xl font-heading font-bold text-primary">{reviewCount}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Reviews Done</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="pt-4 pb-4 text-center">
+                <p className="text-2xl font-heading font-bold text-amber-400">{videoXp}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Video XP</p>
+              </CardContent>
+            </Card>
+            <Card className={`${rank.bgColor} ${rank.borderColor}`}>
+              <CardContent className="pt-4 pb-4 text-center">
+                <p className={`text-xl font-heading font-bold ${rank.color}`}>{rank.icon}</p>
+                <p className={`text-xs font-semibold mt-0.5 ${rank.color}`}>{rank.name}</p>
+              </CardContent>
+            </Card>
+          </div>
+        </motion.div>
 
         {/* Already reviewed — locked state */}
         {alreadyReviewed && phase === 'done' && !result && (
