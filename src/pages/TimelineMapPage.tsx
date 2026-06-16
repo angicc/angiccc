@@ -284,12 +284,22 @@ export default function TimelineMapPage() {
     map.on('zoomend', () => {
       const zoom = map.getZoom();
       zoomOpacityRef.current = getFillOpacityForZoom(zoom);
-      // Update all existing polygon fill opacities
       const lg = layerGroupRef.current;
       if (!lg) return;
       lg.eachLayer(layer => {
-        if (layer instanceof L.Polygon && (layer.options as L.PathOptions & { _isFillPoly?: boolean })._isFillPoly) {
-          layer.setStyle({ fillOpacity: zoomOpacityRef.current });
+        if (!(layer instanceof L.Polygon)) return;
+        if (!(layer.options as L.PathOptions & { _isFillPoly?: boolean })._isFillPoly) return;
+        // setStyle resets fill to solid color; reapply gradient immediately after
+        layer.setStyle({ fillOpacity: zoomOpacityRef.current });
+        const pathEl = layer.getElement() as SVGPathElement | null;
+        if (pathEl) {
+          const color = (layer.options.fillColor as string) ?? '';
+          const gId = `hfg-${color.replace('#', '')}`;
+          const svg = pathEl.closest('svg');
+          if (svg?.querySelector(`#${gId}`)) {
+            pathEl.setAttribute('fill', `url(#${gId})`);
+            pathEl.setAttribute('fill-opacity', '1');
+          }
         }
       });
     });
@@ -353,15 +363,20 @@ export default function TimelineMapPage() {
           borderOpacity = 0.5;
         }
 
-        // Outer glow layer (wider, very transparent)
-        L.polygon(latlngs, {
+        // Outer glow layer — feathered border effect
+        const outerGlow = L.polygon(latlngs, {
           color: poly.color,
-          weight: 10,
-          opacity: 0.14,
+          weight: 12,
+          opacity: 0.16,
           fillOpacity: 0,
           interactive: false,
           smoothFactor: 0.5,
-        } as L.PathOptions).addTo(lg);
+        } as L.PathOptions);
+        outerGlow.addTo(lg);
+        requestAnimationFrame(() => {
+          const el = outerGlow.getElement() as SVGElement | null;
+          if (el) el.style.filter = 'blur(3px)';
+        });
 
         // Main border polygon with rich HTML tooltip
         const tooltipContent = `
@@ -392,6 +407,39 @@ export default function TimelineMapPage() {
           sticky: true,
         });
         mainPoly.addTo(lg);
+
+        // Inject SVG radial gradient fill so territory has depth instead of flat color
+        requestAnimationFrame(() => {
+          const pathEl = mainPoly.getElement() as SVGPathElement | null;
+          if (!pathEl) return;
+          const svgContainer = pathEl.closest('svg') as SVGElement | null;
+          if (!svgContainer) return;
+          let defs = svgContainer.querySelector('defs');
+          if (!defs) {
+            defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            svgContainer.prepend(defs);
+          }
+          const gId = `hfg-${poly.color.replace('#', '')}`;
+          if (!defs.querySelector(`#${gId}`)) {
+            const grad = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
+            grad.setAttribute('id', gId);
+            grad.setAttribute('cx', '40%');
+            grad.setAttribute('cy', '35%');
+            grad.setAttribute('r', '65%');
+            const s1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            s1.setAttribute('offset', '0%');
+            s1.setAttribute('stop-color', poly.color);
+            s1.setAttribute('stop-opacity', '0.55');
+            const s2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            s2.setAttribute('offset', '100%');
+            s2.setAttribute('stop-color', poly.color);
+            s2.setAttribute('stop-opacity', '0.12');
+            grad.append(s1, s2);
+            defs.appendChild(grad);
+          }
+          pathEl.setAttribute('fill', `url(#${gId})`);
+          pathEl.setAttribute('fill-opacity', '1');
+        });
       });
 
       // Selected territory glow effect — additional pulsing glow layer on top
