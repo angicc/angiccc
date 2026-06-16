@@ -45,19 +45,39 @@ function TypingIndicator() {
 }
 
 function PhilosopherAvatar({ philosopher, size = 28 }: { philosopher: Philosopher; size?: number }) {
-  const [imgError, setImgError] = useState(false);
-  if (philosopher.imageUrl && !imgError) {
+  const [stage, setStage] = useState<0 | 1 | 2>(0); // 0=primary, 1=fallback, 2=letter
+
+  const src = stage === 0 ? philosopher.imageUrl
+    : stage === 1 ? (philosopher.fallbackImageUrl ?? '')
+    : '';
+
+  function handleError() {
+    if (stage === 0) {
+      console.error(`[PhilosopherAvatar] Primary image failed for ${philosopher.name}: ${philosopher.imageUrl}`);
+      if (philosopher.fallbackImageUrl) {
+        setStage(1);
+      } else {
+        console.error(`[PhilosopherAvatar] No fallback URL for ${philosopher.name}, using letter avatar`);
+        setStage(2);
+      }
+    } else if (stage === 1) {
+      console.error(`[PhilosopherAvatar] Fallback image failed for ${philosopher.name}: ${philosopher.fallbackImageUrl}`);
+      setStage(2);
+    }
+  }
+
+  if (stage < 2 && src) {
     return (
       <div
         className="rounded-full overflow-hidden shrink-0 border-2 border-violet-500/40"
         style={{ width: size, height: size }}
       >
         <img
-          src={philosopher.imageUrl}
+          src={src}
           alt={philosopher.name}
           className="w-full h-full object-cover object-top"
           referrerPolicy="no-referrer"
-          onError={() => setImgError(true)}
+          onError={handleError}
         />
       </div>
     );

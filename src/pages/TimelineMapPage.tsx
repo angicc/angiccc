@@ -130,10 +130,11 @@ function getTitle(topic: TerritoryTopic, language: Language): string {
 
 // Get fill opacity based on zoom level
 function getFillOpacityForZoom(zoom: number): number {
-  if (zoom < 3) return 0.35;
-  if (zoom <= 4) return 0.28;
-  if (zoom <= 6) return 0.20;
-  return 0.12;
+  if (zoom < 3) return 0.30;
+  if (zoom <= 4) return 0.25;
+  if (zoom <= 5) return 0.20;
+  if (zoom <= 7) return 0.15;
+  return 0.10;
 }
 
 // SVG-based professional marker icons
@@ -355,10 +356,11 @@ export default function TimelineMapPage() {
         // Outer glow layer (wider, very transparent)
         L.polygon(latlngs, {
           color: poly.color,
-          weight: 8,
-          opacity: 0.18,
+          weight: 10,
+          opacity: 0.14,
           fillOpacity: 0,
           interactive: false,
+          smoothFactor: 0.5,
         } as L.PathOptions).addTo(lg);
 
         // Main border polygon with rich HTML tooltip
@@ -377,6 +379,7 @@ export default function TimelineMapPage() {
           fillOpacity: zoomOpacityRef.current,
           lineJoin: 'round',
           lineCap: 'round',
+          smoothFactor: 0.5,
           dashArray,
           // Mark this polygon so we can update its fill opacity on zoom
           ...({ _isFillPoly: true } as object),
@@ -397,11 +400,12 @@ export default function TimelineMapPage() {
         const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
         const glowPoly = L.polygon(latlngs, {
           color: poly.color,
-          weight: 14,
-          opacity: 0.12,
+          weight: 18,
+          opacity: 0.10,
           fillColor: poly.color,
-          fillOpacity: 0.08,
+          fillOpacity: 0.06,
           interactive: false,
+          smoothFactor: 0.5,
         } as L.PathOptions).addTo(map);
         glowPolygons.push(glowPoly);
       });
