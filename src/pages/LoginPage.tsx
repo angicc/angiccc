@@ -11,16 +11,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useAuth } from '@/features/auth/AuthContext';
 import { toast } from 'sonner';
 import { HistoryLoadingScreen } from '@/components/shared/HistoryLoadingScreen';
-
-const schema = z.object({ email: z.string().email('Enter a valid email'), password: z.string().min(1, 'Password required') });
-type V = z.infer<typeof schema>;
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { t } = useLanguage();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
+
+  const schema = z.object({
+    email: z.string().email(t.login_err_email),
+    password: z.string().min(1, t.login_err_pass),
+  });
+  type V = z.infer<typeof schema>;
+
   const form = useForm<V>({ resolver: zodResolver(schema), defaultValues: { email: '', password: '' } });
 
   async function onSubmit(v: V) {
@@ -33,7 +39,11 @@ export default function LoginPage() {
       return;
     }
     setLoading(false);
-    form.setError('root', { message: r.error });
+    // Map known auth errors to translated messages
+    const errMsg = r.error === 'No account found with that email.'
+      ? t.auth_no_account
+      : t.login_failed;
+    form.setError('root', { message: errMsg });
   }
 
   return (
@@ -44,16 +54,16 @@ export default function LoginPage() {
         <div className="w-full max-w-md relative z-10">
           <div className="text-center mb-8"><Link to="/" className="font-accent text-3xl font-bold text-primary">Historify</Link></div>
           <Card>
-            <CardHeader className="text-center"><CardTitle className="font-heading text-2xl">Welcome Back</CardTitle><CardDescription>Sign in to continue your journey</CardDescription></CardHeader>
+            <CardHeader className="text-center"><CardTitle className="font-heading text-2xl">{t.login_title}</CardTitle><CardDescription>{t.login_desc}</CardDescription></CardHeader>
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                   {form.formState.errors.root && <div className="p-3 rounded-md bg-destructive/10 border border-destructive/30 text-destructive text-sm">{form.formState.errors.root.message}</div>}
                   <FormField control={form.control} name="email" render={({ field }) => (
-                    <FormItem><FormLabel>Email</FormLabel><FormControl><Input placeholder="you@example.com" autoComplete="email" {...field} /></FormControl><FormMessage /></FormItem>
+                    <FormItem><FormLabel>{t.login_email}</FormLabel><FormControl><Input placeholder="you@example.com" autoComplete="email" {...field} /></FormControl><FormMessage /></FormItem>
                   )} />
                   <FormField control={form.control} name="password" render={({ field }) => (
-                    <FormItem><FormLabel>Password</FormLabel><FormControl>
+                    <FormItem><FormLabel>{t.login_password}</FormLabel><FormControl>
                       <div className="relative">
                         <Input type={show ? 'text' : 'password'} placeholder="••••••••" autoComplete="current-password" {...field} />
                         <Button type="button" variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground" onClick={() => setShow(v => !v)}>
@@ -62,10 +72,10 @@ export default function LoginPage() {
                       </div>
                     </FormControl><FormMessage /></FormItem>
                   )} />
-                  <Button type="submit" className="w-full" disabled={loading}>{loading ? 'Signing in…' : 'Sign In'}</Button>
+                  <Button type="submit" className="w-full" disabled={loading}>{loading ? t.login_signing_in : t.login_btn}</Button>
                 </form>
               </Form>
-              <p className="text-center text-sm text-muted-foreground mt-6">No account? <Link to="/register" className="text-primary hover:underline font-medium">Create one free</Link></p>
+              <p className="text-center text-sm text-muted-foreground mt-6">{t.login_no_account} <Link to="/register" className="text-primary hover:underline font-medium">{t.login_create}</Link></p>
             </CardContent>
           </Card>
         </div>

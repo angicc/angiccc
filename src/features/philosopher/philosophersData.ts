@@ -367,7 +367,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human constructs a truly 
     lifespan: '1770–1831',
     xpReward: 145,
     tagline: 'The real is rational and the rational is real',
-    imageUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Georg_Wilhelm_Friedrich_Hegel_%28cropped%29.jpg?width=400',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Hegel_portrait_by_Schlesinger_1831.jpg/400px-Hegel_portrait_by_Schlesinger_1831.jpg',
     knownPositions: [
       'Dialectic: all thought and history move through thesis, antithesis, and synthesis (Aufhebung)',
       'Absolute Spirit: reality is ultimately a single self-knowing Mind coming to know itself through history',
@@ -417,7 +417,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human produ
     lifespan: '1818–1883',
     xpReward: 150,
     tagline: 'Workers of the world, unite — you have nothing to lose but your chains',
-    imageUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Karl_Marx_001.jpg?width=400',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Karl_Marx_001.jpg/400px-Karl_Marx_001.jpg',
     knownPositions: [
       'Historical materialism: the economic base (forces and relations of production) determines the ideological superstructure',
       'Class struggle is the engine of history — bourgeoisie and proletariat are capitalism\'s defining antagonists',
@@ -467,7 +467,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human demonstrates an irr
     lifespan: '1712–1778',
     xpReward: 120,
     tagline: 'Man is born free, and everywhere he is in chains',
-    imageUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Jean-Jacques_Rousseau_%28painted_portrait%29.jpg?width=400',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Jean-Jacques_Rousseau_%28painted_portrait%29.jpg/400px-Jean-Jacques_Rousseau_%28painted_portrait%29.jpg',
     knownPositions: [
       'Natural man (the "noble savage") is innocent, free, and self-sufficient before civilization corrupts him',
       'The Social Contract and General Will: legitimate political authority rests on genuine popular sovereignty',
@@ -516,7 +516,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human demonstrates — wi
     lifespan: '1694–1778',
     xpReward: 115,
     tagline: 'If God did not exist, it would be necessary to invent him',
-    imageUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Voltaire_by_Jean-Antoine_Houdon_%28Hermitage%29.jpg?width=400',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Voltaire.jpg/400px-Voltaire.jpg',
     knownPositions: [
       'Reason and empirical inquiry must replace superstition and blind religious authority',
       'Religious tolerance is a moral imperative — fanaticism is the greatest danger to civilization',
@@ -565,7 +565,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a genuinel
     lifespan: '1632–1704',
     xpReward: 125,
     tagline: 'The mind is a blank slate — all knowledge comes from experience',
-    imageUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/JohnLocke.png?width=400',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/JohnLocke.png/400px-JohnLocke.png',
     knownPositions: [
       'Tabula rasa: the mind at birth is a blank slate — all ideas derive from sensation and reflection, not innate principles',
       'Natural rights to life, liberty, and property are pre-political and inalienable',
@@ -615,7 +615,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human demonstrates an irr
     lifespan: '1588–1679',
     xpReward: 120,
     tagline: 'Life in the state of nature is solitary, poor, nasty, brutish, and short',
-    imageUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Thomas_Hobbes_%28portrait%29.jpg?width=400',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Thomas_Hobbes_%28cropped%29.jpg/400px-Thomas_Hobbes_%28cropped%29.jpg',
     knownPositions: [
       'Human nature is fundamentally competitive and self-interested — without authority, life is war of all against all',
       'The Leviathan (absolute sovereign) is necessary to impose peace and security on naturally conflicting humans',
@@ -664,7 +664,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human constructs a genuin
     lifespan: '1711–1776',
     xpReward: 130,
     tagline: 'Reason is and ought only to be the slave of the passions',
-    imageUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Painting_of_David_Hume.jpg?width=400',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Painting_of_David_Hume.jpg/400px-Painting_of_David_Hume.jpg',
     knownPositions: [
       'Radical empiricism: all ideas trace back to sense impressions — anything that cannot be so grounded is meaningless',
       'The problem of induction: we have no rational justification for inferring future events from past experience',
@@ -714,7 +714,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a genuinel
     lifespan: '1469–1527',
     xpReward: 135,
     tagline: 'It is better to be feared than loved, if you cannot be both',
-    imageUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Santi_di_Tito_-_Niccolo_Machiavelli%27s_portrait_headcrop.jpg?width=400',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Santi_di_Tito_-_Niccolo_Machiavelli%27s_portrait_headcrop.jpg/400px-Santi_di_Tito_-_Niccolo_Machiavelli%27s_portrait_headcrop.jpg',
     knownPositions: [
       'Political realism: politics must be understood as it is, not as moralists wish it to be',
       'The effective ruler must be both the lion (force) and the fox (cunning) as circumstances demand',
@@ -764,7 +764,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a compelli
     lifespan: '341–270 BCE',
     xpReward: 110,
     tagline: 'Pleasure is the beginning and goal of the blessed life',
-    imageUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Epikouros_BM_1843.jpg?width=400',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Epikouros_BM_1843.jpg/400px-Epikouros_BM_1843.jpg',
     knownPositions: [
       'Ataraxia (tranquility) and aponia (freedom from pain) are the highest goods, not active pleasure-seeking',
       'The gods exist but are utterly indifferent to human affairs — fear of divine punishment is groundless',
@@ -815,7 +815,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a genuinel
     lifespan: '121–180 CE',
     xpReward: 140,
     tagline: 'The impediment to action advances action — what stands in the way becomes the way',
-    imageUrl: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Marcus_Aurelius_Metropolitan_Museum.jpg?width=400',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Marcus_Aurelius_Metropolitan_Museum.jpg/400px-Marcus_Aurelius_Metropolitan_Museum.jpg',
     knownPositions: [
       'Stoic virtue ethics: the only true good is virtue; externals (wealth, health, reputation) are "preferred indifferents"',
       'The Logos (universal reason) governs all of nature; to live in accordance with nature is to live in accordance with reason',

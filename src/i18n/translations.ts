@@ -229,6 +229,28 @@ type TranslationKeys = {
   essay_select_topic: string;
   essay_write_more: string;
   essay_too_long: string;
+  // ── Login page ────────────────────────────────────────────────
+  login_title: string; login_desc: string;
+  login_email: string; login_password: string;
+  login_signing_in: string; login_btn: string;
+  login_no_account: string; login_create: string;
+  login_err_email: string; login_err_pass: string; login_failed: string;
+  // ── Register page ─────────────────────────────────────────────
+  reg_title: string; reg_desc: string;
+  reg_username: string; reg_email: string; reg_pass: string; reg_confirm: string;
+  reg_creating: string; reg_btn: string;
+  reg_have_account: string; reg_sign_in: string;
+  reg_err_username_min: string; reg_err_username_max: string; reg_err_username_chars: string;
+  reg_err_email: string; reg_err_pass_min: string; reg_err_pass_match: string;
+  reg_failed: string;
+  reg_placeholder_username: string; reg_placeholder_pass: string; reg_placeholder_confirm: string;
+  // ── Auth errors ───────────────────────────────────────────────
+  auth_no_account: string;
+  // ── Essay extras ──────────────────────────────────────────────
+  essay_grading_sub: string;
+  essay_graded: string;
+  essay_grade_fail: string;
+  essay_custom_placeholder: string;
 };
 
 type Translations = Record<Language, TranslationKeys>;
@@ -500,6 +522,30 @@ export const T: Translations = {
     essay_select_topic: 'Select a topic above',
     essay_write_more: 'Write at least {n} more words',
     essay_too_long: 'Essay is too long (max 600 words)',
+    // Login
+    login_title: 'Welcome Back', login_desc: 'Sign in to continue your journey',
+    login_email: 'Email', login_password: 'Password',
+    login_signing_in: 'Signing in…', login_btn: 'Sign In',
+    login_no_account: 'No account?', login_create: 'Create one free',
+    login_err_email: 'Enter a valid email', login_err_pass: 'Password required',
+    login_failed: 'Login failed. Check your email and password.',
+    // Register
+    reg_title: 'Begin Your Journey', reg_desc: 'Create your free account — no credit card required',
+    reg_username: 'Username', reg_email: 'Email', reg_pass: 'Password', reg_confirm: 'Confirm Password',
+    reg_creating: 'Creating account…', reg_btn: 'Create Free Account',
+    reg_have_account: 'Already have an account?', reg_sign_in: 'Sign in',
+    reg_err_username_min: 'Min 3 characters', reg_err_username_max: 'Max 20 characters',
+    reg_err_username_chars: 'Letters, numbers, underscores only',
+    reg_err_email: 'Enter a valid email', reg_err_pass_min: 'Min 8 characters',
+    reg_err_pass_match: "Passwords don't match", reg_failed: 'Account creation failed. Please try again.',
+    reg_placeholder_username: 'historybuff42',
+    reg_placeholder_pass: 'At least 8 characters', reg_placeholder_confirm: 'Repeat your password',
+    // Auth errors
+    auth_no_account: 'No account found with that email.',
+    essay_grading_sub: 'Analyzing accuracy, argument quality, and depth…',
+    essay_graded: 'Graded! You earned a {grade}',
+    essay_grade_fail: 'Grading failed. Please try again.',
+    essay_custom_placeholder: 'e.g. How did the Mongol Empire change trade across Asia?',
   },
 
   es: {
@@ -746,6 +792,30 @@ export const T: Translations = {
     essay_select_topic: 'Selecciona un tema arriba',
     essay_write_more: 'Escribe al menos {n} palabras más',
     essay_too_long: 'El ensayo es demasiado largo (máx. 600 palabras)',
+    // Login
+    login_title: 'Bienvenido de Nuevo', login_desc: 'Inicia sesión para continuar tu viaje',
+    login_email: 'Correo electrónico', login_password: 'Contraseña',
+    login_signing_in: 'Iniciando sesión…', login_btn: 'Iniciar Sesión',
+    login_no_account: '¿Sin cuenta?', login_create: 'Crea una gratis',
+    login_err_email: 'Ingresa un email válido', login_err_pass: 'Se requiere contraseña',
+    login_failed: 'Inicio de sesión fallido.',
+    // Register
+    reg_title: 'Comienza tu Viaje', reg_desc: 'Crea tu cuenta gratis — sin tarjeta de crédito',
+    reg_username: 'Nombre de usuario', reg_email: 'Correo electrónico', reg_pass: 'Contraseña', reg_confirm: 'Confirmar Contraseña',
+    reg_creating: 'Creando cuenta…', reg_btn: 'Crear Cuenta Gratis',
+    reg_have_account: '¿Ya tienes cuenta?', reg_sign_in: 'Iniciar sesión',
+    reg_err_username_min: 'Mín. 3 caracteres', reg_err_username_max: 'Máx. 20 caracteres',
+    reg_err_username_chars: 'Solo letras, números y guiones bajos',
+    reg_err_email: 'Ingresa un email válido', reg_err_pass_min: 'Mín. 8 caracteres',
+    reg_err_pass_match: 'Las contraseñas no coinciden', reg_failed: 'Error al crear cuenta. Inténtalo de nuevo.',
+    reg_placeholder_username: 'historybuff42',
+    reg_placeholder_pass: 'Al menos 8 caracteres', reg_placeholder_confirm: 'Repite tu contraseña',
+    // Auth errors
+    auth_no_account: 'No se encontró cuenta con ese correo.',
+    essay_grading_sub: 'Analizando precisión, calidad del argumento y profundidad…',
+    essay_graded: 'Evaluado. Obtuviste una {grade}',
+    essay_grade_fail: 'Error en la evaluación. Inténtalo de nuevo.',
+    essay_custom_placeholder: 'p. ej. ¿Cómo cambió el Imperio Mongol el comercio en Asia?',
   },
 
   ru: {
@@ -992,6 +1062,30 @@ export const T: Translations = {
     essay_select_topic: 'Выберите тему выше',
     essay_write_more: 'Напишите ещё не менее {n} слов',
     essay_too_long: 'Эссе слишком длинное (макс. 600 слов)',
+    // Login
+    login_title: 'Добро Пожаловать', login_desc: 'Войдите, чтобы продолжить путешествие',
+    login_email: 'Эл. почта', login_password: 'Пароль',
+    login_signing_in: 'Вход…', login_btn: 'Войти',
+    login_no_account: 'Нет аккаунта?', login_create: 'Создайте бесплатно',
+    login_err_email: 'Введите действительный email', login_err_pass: 'Требуется пароль',
+    login_failed: 'Ошибка входа. Проверьте email и пароль.',
+    // Register
+    reg_title: 'Начните Путешествие', reg_desc: 'Создайте бесплатный аккаунт — карта не нужна',
+    reg_username: 'Имя пользователя', reg_email: 'Эл. почта', reg_pass: 'Пароль', reg_confirm: 'Подтвердите Пароль',
+    reg_creating: 'Создание аккаунта…', reg_btn: 'Создать Бесплатный Аккаунт',
+    reg_have_account: 'Уже есть аккаунт?', reg_sign_in: 'Войти',
+    reg_err_username_min: 'Минимум 3 символа', reg_err_username_max: 'Максимум 20 символов',
+    reg_err_username_chars: 'Только буквы, цифры и подчёркивания',
+    reg_err_email: 'Введите действительный email', reg_err_pass_min: 'Минимум 8 символов',
+    reg_err_pass_match: 'Пароли не совпадают', reg_failed: 'Ошибка создания аккаунта. Попробуйте снова.',
+    reg_placeholder_username: 'historybuff42',
+    reg_placeholder_pass: 'Не менее 8 символов', reg_placeholder_confirm: 'Повторите пароль',
+    // Auth errors
+    auth_no_account: 'Аккаунт с таким email не найден.',
+    essay_grading_sub: 'Анализ точности, качества аргументов и глубины…',
+    essay_graded: 'Оценено! Вы получили {grade}',
+    essay_grade_fail: 'Ошибка оценки. Попробуйте снова.',
+    essay_custom_placeholder: 'напр. Как Монгольская империя изменила торговлю в Азии?',
   },
 
   mk: {
@@ -1238,5 +1332,29 @@ export const T: Translations = {
     essay_select_topic: 'Избери тема погоре',
     essay_write_more: 'Напиши уште најмалку {n} зборови',
     essay_too_long: 'Есејот е предолг (макс. 600 зборови)',
+    // Login
+    login_title: 'Добредојдовте', login_desc: 'Влезете за да продолжите со патувањето',
+    login_email: 'Е-пошта', login_password: 'Лозинка',
+    login_signing_in: 'Најавување…', login_btn: 'Најави се',
+    login_no_account: 'Немаш профил?', login_create: 'Создај бесплатно',
+    login_err_email: 'Внесете валидна е-пошта', login_err_pass: 'Потребна е лозинка',
+    login_failed: 'Неуспешна најава. Проверете ги вашите податоци.',
+    // Register
+    reg_title: 'Започнете го Патувањето', reg_desc: 'Создадете бесплатен профил — без кредитна картичка',
+    reg_username: 'Корисничко Име', reg_email: 'Е-пошта', reg_pass: 'Лозинка', reg_confirm: 'Потврди Лозинка',
+    reg_creating: 'Создавање профил…', reg_btn: 'Создај Бесплатен Профил',
+    reg_have_account: 'Веќе имаш профил?', reg_sign_in: 'Најави се',
+    reg_err_username_min: 'Мин. 3 знаци', reg_err_username_max: 'Макс. 20 знаци',
+    reg_err_username_chars: 'Само букви, бројки и долни цртички',
+    reg_err_email: 'Внесете валидна е-пошта', reg_err_pass_min: 'Мин. 8 знаци',
+    reg_err_pass_match: 'Лозинките не се совпаѓаат', reg_failed: 'Неуспешно создавање профил. Обидете се повторно.',
+    reg_placeholder_username: 'historybuff42',
+    reg_placeholder_pass: 'Барем 8 знаци', reg_placeholder_confirm: 'Повторете ја лозинката',
+    // Auth errors
+    auth_no_account: 'Не е пронајден профил со тој email.',
+    essay_grading_sub: 'Анализирање на точност, квалитет на аргументот и длабочина…',
+    essay_graded: 'Оценето! Добивте {grade}',
+    essay_grade_fail: 'Оценувањето не успеа. Обидете се повторно.',
+    essay_custom_placeholder: 'пр. Како Монголската Империја го промени трговскиот пат во Азија?',
   },
 };

@@ -111,6 +111,16 @@ const MARKER_ICONS: Record<MarkerType, string> = {
   landmark: '▲',
 };
 
+// Marker type priority for label de-cluttering (higher = more important)
+const MARKER_PRIORITY: Record<MarkerType, number> = {
+  capital:  6,
+  city:     5,
+  battle:   4,
+  port:     3,
+  resource: 2,
+  landmark: 1,
+};
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function getTitle(topic: TerritoryTopic, language: Language): string {
@@ -118,22 +128,100 @@ function getTitle(topic: TerritoryTopic, language: Language): string {
   return topic.titleI18n[language as Exclude<Language, 'en'>] ?? topic.title;
 }
 
-function makeMarkerIcon(marker: { name: string; type: MarkerType }, activeStyle: string, translatedName?: string) {
-  const color = MARKER_COLORS[marker.type];
-  const icon  = MARKER_ICONS[marker.type];
+// Get fill opacity based on zoom level
+function getFillOpacityForZoom(zoom: number): number {
+  if (zoom < 3) return 0.35;
+  if (zoom <= 4) return 0.28;
+  if (zoom <= 6) return 0.20;
+  return 0.12;
+}
+
+// SVG-based professional marker icons
+function makeMarkerIcon(
+  marker: { name: string; type: MarkerType },
+  activeStyle: string,
+  translatedName?: string,
+  hideLabel = false,
+) {
   const isDark = activeStyle === 'dark' || activeStyle === 'military';
   const labelBg = isDark ? 'rgba(0,0,0,0.85)' : 'rgba(255,255,255,0.92)';
   const labelColor = isDark ? '#fff' : '#111';
-  const size = marker.type === 'capital' ? 16 : marker.type === 'battle' ? 15 : 12;
   const label = translatedName ?? marker.name;
+
+  let svgIcon = '';
+  let anchorX = 10;
+  let anchorY = 10;
+
+  switch (marker.type) {
+    case 'capital':
+      // Gold star with drop shadow, 20px
+      anchorX = 10;
+      anchorY = 10;
+      svgIcon = `<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.7))">
+        <polygon points="10,1 12.4,7.5 19.5,7.5 13.9,11.8 16.2,18.5 10,14.5 3.8,18.5 6.1,11.8 0.5,7.5 7.6,7.5" fill="#fbbf24" stroke="#92400e" stroke-width="0.8"/>
+      </svg>`;
+      break;
+
+    case 'city':
+      // Blue dot with white border, 14px
+      anchorX = 7;
+      anchorY = 7;
+      svgIcon = `<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
+        <circle cx="7" cy="7" r="6" fill="#60a5fa" stroke="white" stroke-width="2"/>
+      </svg>`;
+      break;
+
+    case 'battle':
+      // Red crossed swords (✕), 16px
+      anchorX = 8;
+      anchorY = 8;
+      svgIcon = `<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.7))">
+        <circle cx="8" cy="8" r="7.5" fill="#ef4444" stroke="#7f1d1d" stroke-width="0.8"/>
+        <line x1="4" y1="4" x2="12" y2="12" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="12" y1="4" x2="4" y2="12" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>`;
+      break;
+
+    case 'port':
+      // Cyan anchor, 14px
+      anchorX = 7;
+      anchorY = 7;
+      svgIcon = `<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
+        <circle cx="7" cy="7" r="6.5" fill="#0e7490" stroke="#34d399" stroke-width="1"/>
+        <text x="7" y="11" font-size="9" text-anchor="middle" fill="#34d399" font-family="serif" font-weight="bold">⚓</text>
+      </svg>`;
+      break;
+
+    case 'resource':
+      // Purple diamond, 13px
+      anchorX = 6.5;
+      anchorY = 6.5;
+      svgIcon = `<svg width="13" height="13" viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
+        <polygon points="6.5,0.5 12.5,6.5 6.5,12.5 0.5,6.5" fill="#a78bfa" stroke="#5b21b6" stroke-width="0.8"/>
+      </svg>`;
+      break;
+
+    case 'landmark':
+      // Orange triangle/pyramid, 14px
+      anchorX = 7;
+      anchorY = 13;
+      svgIcon = `<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
+        <polygon points="7,1 13.5,13 0.5,13" fill="#f97316" stroke="#9a3412" stroke-width="0.8"/>
+      </svg>`;
+      break;
+  }
+
+  const labelHtml = hideLabel ? '' : `
+    <div style="background:${labelBg};color:${labelColor};font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;white-space:nowrap;margin-top:2px;font-family:system-ui,sans-serif;box-shadow:0 1px 4px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,0.2)">${label}</div>
+  `;
 
   return L.divIcon({
     html: `<div style="display:flex;flex-direction:column;align-items:center;cursor:pointer">
-      <div style="background:${color};border:2.5px solid white;border-radius:50%;width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.6);font-size:${size * 0.55}px;color:white;line-height:1">${icon}</div>
-      <div style="background:${labelBg};color:${labelColor};font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;white-space:nowrap;margin-top:2px;font-family:system-ui,sans-serif;box-shadow:0 1px 4px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,0.2)">${label}</div>
+      ${svgIcon}
+      ${labelHtml}
     </div>`,
     className: '',
-    iconAnchor: [size / 2, size],
+    iconAnchor: [anchorX, anchorY],
     iconSize: undefined as unknown as L.PointExpression,
   });
 }
@@ -175,6 +263,10 @@ export default function TimelineMapPage() {
   const tileRef           = useRef<L.TileLayer | null>(null);
   const layerGroupRef     = useRef<L.LayerGroup | null>(null);
   const storyMarkerRef    = useRef<L.Marker | null>(null);
+  // Glow layer ref for selected territory pulse effect
+  const glowLayerRef      = useRef<L.Polygon[] | null>(null);
+  // Current zoom-based fill opacity
+  const zoomOpacityRef    = useRef<number>(0.22);
 
   // ── Init map ────────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -186,6 +278,21 @@ export default function TimelineMapPage() {
     tileRef.current = tile;
     layerGroupRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
+
+    // Zoom event listener for opacity changes
+    map.on('zoomend', () => {
+      const zoom = map.getZoom();
+      zoomOpacityRef.current = getFillOpacityForZoom(zoom);
+      // Update all existing polygon fill opacities
+      const lg = layerGroupRef.current;
+      if (!lg) return;
+      lg.eachLayer(layer => {
+        if (layer instanceof L.Polygon && (layer.options as L.PathOptions & { _isFillPoly?: boolean })._isFillPoly) {
+          layer.setStyle({ fillOpacity: zoomOpacityRef.current });
+        }
+      });
+    });
+
     return () => { map.remove(); mapRef.current = null; };
   }, []);
 
@@ -212,12 +319,39 @@ export default function TimelineMapPage() {
     const lg  = layerGroupRef.current;
     if (!map || !lg) return;
     lg.clearLayers();
+
+    // Clear any existing glow layers
+    if (glowLayerRef.current) {
+      glowLayerRef.current.forEach(p => { try { map.removeLayer(p); } catch { /* ignore */ } });
+      glowLayerRef.current = null;
+    }
+
     if (!selected) return;
+
+    const currentZoom = map.getZoom();
+    zoomOpacityRef.current = getFillOpacityForZoom(currentZoom);
 
     // Polygons — professional styling: thick border, smooth joins, subtle glow
     if (layers.territory && selected.polygons) {
       selected.polygons.forEach(poly => {
         const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
+
+        // Determine border style based on borderStyle field (if present)
+        const borderStyle = (poly as unknown as { borderStyle?: string }).borderStyle;
+        let dashArray: string | undefined;
+        let borderWeight = 3.5;
+        let borderOpacity = 0.92;
+
+        if (borderStyle === 'disputed') {
+          dashArray = '8,6';
+          borderWeight = 2;
+          borderOpacity = 0.7;
+        } else if (borderStyle === 'influence') {
+          dashArray = '3,6';
+          borderWeight = 1.5;
+          borderOpacity = 0.5;
+        }
+
         // Outer glow layer (wider, very transparent)
         L.polygon(latlngs, {
           color: poly.color,
@@ -226,17 +360,52 @@ export default function TimelineMapPage() {
           fillOpacity: 0,
           interactive: false,
         } as L.PathOptions).addTo(lg);
-        // Main border polygon
-        L.polygon(latlngs, {
+
+        // Main border polygon with rich HTML tooltip
+        const tooltipContent = `
+          <div style="font-family:system-ui,sans-serif;min-width:120px">
+            <div style="font-weight:700;font-size:12px;margin-bottom:2px">${poly.label ?? ''}</div>
+            ${selected.period ? `<div style="font-size:10px;color:#aaa">${selected.period}</div>` : ''}
+          </div>
+        `;
+
+        const mainPoly = L.polygon(latlngs, {
           color: poly.color,
-          weight: 3.5,
-          opacity: 0.92,
+          weight: borderWeight,
+          opacity: borderOpacity,
           fillColor: poly.color,
-          fillOpacity: poly.fillOpacity ?? 0.22,
+          fillOpacity: zoomOpacityRef.current,
           lineJoin: 'round',
           lineCap: 'round',
-        } as L.PathOptions).bindTooltip(poly.label ?? '', { permanent: false, direction: 'center', className: 'leaflet-tooltip-custom' }).addTo(lg);
+          dashArray,
+          // Mark this polygon so we can update its fill opacity on zoom
+          ...({ _isFillPoly: true } as object),
+        } as L.PathOptions);
+
+        mainPoly.bindTooltip(tooltipContent, {
+          permanent: false,
+          direction: 'center',
+          className: 'leaflet-tooltip-rich',
+          sticky: true,
+        });
+        mainPoly.addTo(lg);
       });
+
+      // Selected territory glow effect — additional pulsing glow layer on top
+      const glowPolygons: L.Polygon[] = [];
+      selected.polygons.forEach(poly => {
+        const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
+        const glowPoly = L.polygon(latlngs, {
+          color: poly.color,
+          weight: 14,
+          opacity: 0.12,
+          fillColor: poly.color,
+          fillOpacity: 0.08,
+          interactive: false,
+        } as L.PathOptions).addTo(map);
+        glowPolygons.push(glowPoly);
+      });
+      glowLayerRef.current = glowPolygons;
     }
 
     // Routes
@@ -253,27 +422,86 @@ export default function TimelineMapPage() {
       });
     }
 
-    // Markers
-    selected.markers.forEach(m => {
-      const typeVisible: Record<MarkerType, LayerKey> = {
-        capital: 'capitals', city: 'cities', battle: 'battles',
-        port: 'ports', resource: 'resources', landmark: 'cities',
-      };
-      const layerKey = typeVisible[m.type];
-      if (!layers[layerKey]) return;
+    // Markers — compute which labels to hide due to proximity
+    const typeVisible: Record<MarkerType, LayerKey> = {
+      capital: 'capitals', city: 'cities', battle: 'battles',
+      port: 'ports', resource: 'resources', landmark: 'cities',
+    };
 
+    // Filter to visible markers first
+    const visibleMarkers = selected.markers.filter(m => layers[typeVisible[m.type]]);
+
+    // Determine which markers should hide their label due to proximity (within 0.5°)
+    const hideLabelSet = new Set<number>();
+    for (let i = 0; i < visibleMarkers.length; i++) {
+      for (let j = i + 1; j < visibleMarkers.length; j++) {
+        const a = visibleMarkers[i];
+        const b = visibleMarkers[j];
+        const latDiff = Math.abs(a.lat - b.lat);
+        const lngDiff = Math.abs(a.lng - b.lng);
+        if (latDiff < 0.5 && lngDiff < 0.5) {
+          // Hide the less-important one
+          const prioA = MARKER_PRIORITY[a.type];
+          const prioB = MARKER_PRIORITY[b.type];
+          if (prioA >= prioB) {
+            hideLabelSet.add(j);
+          } else {
+            hideLabelSet.add(i);
+          }
+        }
+      }
+    }
+
+    visibleMarkers.forEach((m, idx) => {
       const tName = getTranslatedMarkerName(m.name, language);
       const tNote = getTranslatedMarkerNote(m.name, m.note, language);
       const tType = getTranslatedMarkerType(m.type, language);
-      const marker = L.marker([m.lat, m.lng], { icon: makeMarkerIcon(m, styleId, tName) })
+      const color = MARKER_COLORS[m.type];
+      const yearStr = m.year ? (m.year < 0 ? `${Math.abs(m.year)} BCE` : `${m.year} CE`) : '';
+
+      const marker = L.marker([m.lat, m.lng], {
+        icon: makeMarkerIcon(m, styleId, tName, hideLabelSet.has(idx)),
+        zIndexOffset: MARKER_PRIORITY[m.type] * 100,
+      })
         .bindPopup(`
-          <div style="min-width:180px">
-            <div style="font-size:11px;font-weight:700;color:${MARKER_COLORS[m.type]};text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">${MARKER_ICONS[m.type]} ${tType}</div>
-            <strong style="font-size:13px">${tName}</strong>
-            ${m.year ? `<div style="font-size:10px;color:#888;margin:2px 0">${m.year < 0 ? Math.abs(m.year) + ' BCE' : m.year + ' CE'}</div>` : ''}
-            ${m.note ? `<div style="font-size:11px;color:#666;margin-top:4px;line-height:1.5">${tNote}</div>` : ''}
+          <div style="
+            min-width:190px;
+            background:#1a1a2e;
+            color:#e2e8f0;
+            border-radius:10px;
+            overflow:hidden;
+            font-family:system-ui,sans-serif;
+            border:1px solid rgba(255,255,255,0.12);
+            box-shadow:0 8px 24px rgba(0,0,0,0.5);
+          ">
+            <div style="
+              background:${color}22;
+              border-bottom:1px solid ${color}44;
+              padding:6px 10px;
+              display:flex;
+              align-items:center;
+              gap:6px;
+            ">
+              <span style="
+                background:${color};
+                color:#000;
+                font-size:9px;
+                font-weight:800;
+                text-transform:uppercase;
+                letter-spacing:0.08em;
+                padding:2px 7px;
+                border-radius:20px;
+              ">${tType}</span>
+              ${yearStr ? `<span style="font-size:10px;color:${color};margin-left:auto;font-weight:600">${yearStr}</span>` : ''}
+            </div>
+            <div style="padding:8px 10px">
+              <div style="font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:4px;line-height:1.3">${tName}</div>
+              ${m.note ? `<div style="font-size:11px;color:#94a3b8;line-height:1.5">${tNote}</div>` : ''}
+            </div>
           </div>
-        `)
+        `, {
+          className: 'tmap-popup-custom',
+        })
         .addTo(lg);
       (marker as unknown as { _tmapType: string })._tmapType = m.type;
     });
@@ -717,6 +945,38 @@ export default function TimelineMapPage() {
           )}
         </div>
       </div>
+
+      {/* Global styles for custom Leaflet elements */}
+      <style>{`
+        .leaflet-tooltip-rich {
+          background: rgba(15, 15, 30, 0.95) !important;
+          border: 1px solid rgba(255,255,255,0.15) !important;
+          border-radius: 8px !important;
+          padding: 6px 10px !important;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.5) !important;
+          color: #e2e8f0 !important;
+          font-family: system-ui, sans-serif !important;
+          pointer-events: none !important;
+        }
+        .leaflet-tooltip-rich::before {
+          display: none !important;
+        }
+        .tmap-popup-custom .leaflet-popup-content-wrapper {
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+          padding: 0 !important;
+          border-radius: 10px !important;
+          overflow: hidden !important;
+        }
+        .tmap-popup-custom .leaflet-popup-content {
+          margin: 0 !important;
+          width: auto !important;
+        }
+        .tmap-popup-custom .leaflet-popup-tip-container {
+          display: none !important;
+        }
+      `}</style>
     </AppShell>
   );
 }

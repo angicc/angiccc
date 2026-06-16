@@ -73,15 +73,23 @@ function getTranslatedTopic(topic: string, lang: string): string {
   return TOPICS_I18N[topic]?.[lang as 'es' | 'ru' | 'mk'] ?? topic;
 }
 
-const ESSAY_SYSTEM = `You are Clio, an expert history professor grading student essays.
+const LANG_NAMES: Record<string, string> = {
+  en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian',
+};
+
+function makeEssaySystem(lang: string): string {
+  const langName = LANG_NAMES[lang] ?? 'English';
+  return `You are Clio, an expert history professor grading student essays.
 Analyze the submitted essay strictly and fairly according to this rubric:
 
-1. **Historical Accuracy** (0–10): Are facts, dates, names, and events correct?
-2. **Argument Quality** (0–10): Is there a clear thesis? Is reasoning logical and supported?
-3. **Depth & Detail** (0–10): Does the essay go beyond surface-level? Specific examples?
-4. **Key Facts Mentioned** (list 3–5): Specific correct historical details the student included.
-5. **Missing Important Points** (list 2–4): Key aspects the student failed to mention.
-6. **Overall Grade**: A / B / C / D / F with a one-sentence summary.
+1. Historical Accuracy (0–10): Are facts, dates, names, and events correct?
+2. Argument Quality (0–10): Is there a clear thesis? Is reasoning logical and supported?
+3. Depth & Detail (0–10): Does the essay go beyond surface-level? Specific examples?
+4. Key Facts Mentioned (list 3–5): Specific correct historical details the student included.
+5. Missing Important Points (list 2–4): Key aspects the student failed to mention.
+6. Overall Grade: A / B / C / D / F with a one-sentence summary.
+
+IMPORTANT: Write ALL text fields (gradeSummary, keyFacts, missingPoints, feedback) in ${langName}.
 
 Respond ONLY in this exact JSON format (no markdown wrapping, no extra text):
 {
@@ -91,9 +99,10 @@ Respond ONLY in this exact JSON format (no markdown wrapping, no extra text):
   "grade": "B",
   "gradeSummary": "A solid essay with good factual grounding but lacking depth on economic causes.",
   "keyFacts": ["Correctly identified Odoacer deposing Romulus Augustulus in 476 CE", "Mentioned the Visigoths sacking Rome in 410 CE"],
-  "missingPoints": ["No mention of the military's role in Rome's decline", "Economic debasement of currency not discussed"],
-  "feedback": "Your essay demonstrates a reasonable understanding of Rome's decline but focuses too narrowly on military invasions. To strengthen this essay, discuss the internal economic pressures — including currency debasement and the cost of maintaining the legions — and the political instability caused by the third-century crisis."
+  "missingPoints": ["No mention of the military role in Rome decline", "Economic debasement of currency not discussed"],
+  "feedback": "Your essay demonstrates a reasonable understanding of Rome decline but focuses too narrowly on military invasions."
 }`;
+}
 
 type GradeResult = {
   accuracy: number;
@@ -190,7 +199,7 @@ export default function EssayPage() {
       for await (const chunk of streamChatResponse(
         [{ role: 'user', content: prompt }],
         undefined,
-        ESSAY_SYSTEM
+        makeEssaySystem(language)
       )) {
         buf += chunk;
         setRawBuffer(buf);
@@ -199,9 +208,9 @@ export default function EssayPage() {
       if (!jsonMatch) throw new Error('Could not parse grading response.');
       const parsed = JSON.parse(jsonMatch[0]) as GradeResult;
       setResult(parsed);
-      toast.success(`Graded! You earned a ${parsed.grade} — ${parsed.gradeSummary}`);
+      toast.success(t.essay_graded.replace('{grade}', parsed.grade));
     } catch {
-      toast.error('Grading failed. Make sure your API key is set and try again.');
+      toast.error(t.essay_grade_fail);
     } finally {
       setGrading(false);
     }
@@ -268,7 +277,7 @@ export default function EssayPage() {
                   <input
                     value={customTopic}
                     onChange={e => setCustomTopic(e.target.value)}
-                    placeholder="e.g. How did the Mongol Empire change trade across Asia?"
+                    placeholder={t.essay_custom_placeholder}
                     className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm outline-none focus:border-primary/60 transition-colors placeholder:text-muted-foreground/50"
                     autoFocus
                   />
@@ -318,7 +327,7 @@ export default function EssayPage() {
                     </motion.div>
                     <div>
                       <p className="text-sm font-medium">{t.essay_grading}</p>
-                      <p className="text-xs text-muted-foreground">Analyzing accuracy, argument quality, and depth</p>
+                      <p className="text-xs text-muted-foreground">{t.essay_grading_sub}</p>
                     </div>
                   </div>
                 </CardContent>

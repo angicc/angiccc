@@ -25,6 +25,80 @@ function proxyImageUrl(url: string): string {
   return url;
 }
 
+const ERA_FALLBACKS: Record<string, string> = {
+  amber:   'https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=1200&q=60',
+  blue:    'https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&w=1200&q=60',
+  emerald: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1200&q=60',
+  rose:    'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=60',
+};
+
+function getFallback(bgGradient: string): string {
+  for (const [key, url] of Object.entries(ERA_FALLBACKS)) {
+    if (bgGradient.includes(key)) return url;
+  }
+  return ERA_FALLBACKS.amber;
+}
+
+function LessonBanner({
+  imageUrl, bgGradient, eraColor, eraShortName,
+  estimatedMinutes, xpReward, title, subtitle,
+  bookmarked, onBookmark,
+}: {
+  imageUrl?: string; bgGradient: string; eraColor: string; eraShortName: string;
+  estimatedMinutes: number; xpReward: number; title: string; subtitle: string;
+  bookmarked: boolean; onBookmark: () => void;
+}) {
+  const [loaded, setLoaded] = useState(false);
+  const [src, setSrc] = useState(imageUrl ? proxyImageUrl(imageUrl) : '');
+
+  function handleError() {
+    const fallback = getFallback(bgGradient);
+    if (src !== fallback) setSrc(fallback);
+    else setLoaded(true);
+  }
+
+  return (
+    <div className={`relative h-72 sm:h-80 md:h-96 rounded-2xl overflow-hidden mb-8 bg-gradient-to-br ${bgGradient} border border-border`}>
+      {!loaded && (
+        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-white/5 to-white/0" />
+      )}
+      {src && (
+        <img
+          src={src}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-75' : 'opacity-0'}`}
+          onLoad={() => setLoaded(true)}
+          onError={handleError}
+        />
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+      <div className="absolute top-4 right-4">
+        <button
+          onClick={onBookmark}
+          className="p-2 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-colors"
+        >
+          {bookmarked
+            ? <BookmarkCheck className="w-4 h-4 text-amber-400" />
+            : <Bookmark className="w-4 h-4 text-white/80" />
+          }
+        </button>
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 p-6">
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
+          <Badge variant="outline" className={`${eraColor} border-current bg-black/40 backdrop-blur-sm text-xs`}>{eraShortName}</Badge>
+          <span className="text-white/70 text-xs flex items-center gap-1"><Clock className="w-3 h-3" />{estimatedMinutes} min</span>
+          <span className="text-white/70 text-xs flex items-center gap-1"><Star className="w-3 h-3" />+{xpReward} XP</span>
+        </div>
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">{title}</h1>
+        <p className="text-white/80 text-sm mt-1">{subtitle}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function LessonPage() {
   const { t, language } = useLanguage();
   const { eraId, lessonId } = useParams<{ eraId: string; lessonId: string }>();
@@ -86,40 +160,18 @@ export default function LessonPage() {
         </div>
 
         {/* Hero banner */}
-        <div className={`relative h-72 sm:h-80 md:h-96 rounded-2xl overflow-hidden mb-8 bg-gradient-to-br ${era.bgGradient} border border-border`}>
-          {lesson.imageUrl && (
-            <img
-              src={proxyImageUrl(lesson.imageUrl)}
-              alt=""
-              aria-hidden
-              referrerPolicy="no-referrer"
-              className="absolute inset-0 w-full h-full object-cover opacity-75"
-              onError={e => e.currentTarget.style.display = 'none'}
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-          <div className="absolute top-4 right-4">
-            <button
-              onClick={handleBookmark}
-              className="p-2 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-colors"
-              title={bookmarked ? 'Remove bookmark' : 'Bookmark lesson'}
-            >
-              {bookmarked
-                ? <BookmarkCheck className="w-4 h-4 text-amber-400" />
-                : <Bookmark className="w-4 h-4 text-white/80" />
-              }
-            </button>
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 p-6">
-            <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <Badge variant="outline" className={`${era.color} border-current bg-black/40 backdrop-blur-sm text-xs`}>{era.shortName}</Badge>
-              <span className="text-white/70 text-xs flex items-center gap-1"><Clock className="w-3 h-3" />{lesson.estimatedMinutes} min</span>
-              <span className="text-white/70 text-xs flex items-center gap-1"><Star className="w-3 h-3" />+{lesson.xpReward} XP</span>
-            </div>
-            <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">{lesson.title}</h1>
-            <p className="text-white/80 text-sm mt-1">{lesson.subtitle}</p>
-          </div>
-        </div>
+        <LessonBanner
+          imageUrl={lesson.imageUrl}
+          bgGradient={era.bgGradient}
+          eraColor={era.color}
+          eraShortName={era.shortName}
+          estimatedMinutes={lesson.estimatedMinutes}
+          xpReward={lesson.xpReward}
+          title={lesson.title}
+          subtitle={lesson.subtitle}
+          bookmarked={bookmarked}
+          onBookmark={handleBookmark}
+        />
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Main content */}
