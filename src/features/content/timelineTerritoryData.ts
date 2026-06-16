@@ -1,4 +1,5 @@
 import type { Language } from '@/i18n/translations';
+import { IMPROVED_POLYGONS } from '@/data/historicalBoundaries';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -992,4 +993,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
       { name: 'Battle of Bitola', type: 'battle', lat: 41.03, lng: 21.33, note: 'End of Ottoman rule in Macedonia (1912)', year: 1912 },
     ],
   },
-];
+].map(topic => ({
+  ...topic,
+  polygons: IMPROVED_POLYGONS[topic.id] ?? topic.polygons,
+} as TerritoryTopic)) satisfies TerritoryTopic[];
