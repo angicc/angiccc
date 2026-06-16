@@ -128,13 +128,22 @@ function getTitle(topic: TerritoryTopic, language: Language): string {
   return topic.titleI18n[language as Exclude<Language, 'en'>] ?? topic.title;
 }
 
-// Get fill opacity based on zoom level
+// Get fill opacity based on zoom level — calibrated for gradient fills (no glow layers)
 function getFillOpacityForZoom(zoom: number): number {
-  if (zoom < 3) return 0.30;
-  if (zoom <= 4) return 0.25;
-  if (zoom <= 5) return 0.20;
-  if (zoom <= 7) return 0.15;
-  return 0.10;
+  if (zoom < 3) return 0.35;
+  if (zoom <= 4) return 0.28;
+  if (zoom <= 5) return 0.22;
+  if (zoom <= 7) return 0.18;
+  return 0.14;
+}
+
+// Darken a hex color by a multiplier (0–1 = darker, >1 = lighter)
+function darkenHex(hex: string, factor = 0.6): string {
+  const n = parseInt(hex.replace('#', ''), 16);
+  const r = Math.round(((n >> 16) & 0xff) * factor);
+  const g = Math.round(((n >> 8) & 0xff) * factor);
+  const b = Math.round((n & 0xff) * factor);
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 }
 
 // SVG-based professional marker icons
@@ -264,8 +273,6 @@ export default function TimelineMapPage() {
   const tileRef           = useRef<L.TileLayer | null>(null);
   const layerGroupRef     = useRef<L.LayerGroup | null>(null);
   const storyMarkerRef    = useRef<L.Marker | null>(null);
-  // Glow layer ref for selected territory pulse effect
-  const glowLayerRef      = useRef<L.Polygon[] | null>(null);
   // Current zoom-based fill opacity
   const zoomOpacityRef    = useRef<number>(0.22);
 
@@ -331,54 +338,31 @@ export default function TimelineMapPage() {
     if (!map || !lg) return;
     lg.clearLayers();
 
-    // Clear any existing glow layers
-    if (glowLayerRef.current) {
-      glowLayerRef.current.forEach(p => { try { map.removeLayer(p); } catch { /* ignore */ } });
-      glowLayerRef.current = null;
-    }
-
     if (!selected) return;
 
     const currentZoom = map.getZoom();
     zoomOpacityRef.current = getFillOpacityForZoom(currentZoom);
 
-    // Polygons — professional styling: thick border, smooth joins, subtle glow
+    // Polygons — GIS atlas style: clean 1.8px border, darkened stroke, subtle gradient fill
     if (layers.territory && selected.polygons) {
       selected.polygons.forEach(poly => {
         const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
 
-        // Determine border style based on borderStyle field (if present)
         const borderStyle = (poly as unknown as { borderStyle?: string }).borderStyle;
         let dashArray: string | undefined;
-        let borderWeight = 3.5;
-        let borderOpacity = 0.92;
+        let borderWeight = 1.8;
 
         if (borderStyle === 'disputed') {
-          dashArray = '8,6';
-          borderWeight = 2;
-          borderOpacity = 0.7;
+          dashArray = '8,5';
+          borderWeight = 1.4;
         } else if (borderStyle === 'influence') {
-          dashArray = '3,6';
-          borderWeight = 1.5;
-          borderOpacity = 0.5;
+          dashArray = '3,5';
+          borderWeight = 1.2;
         }
 
-        // Outer glow layer — feathered border effect
-        const outerGlow = L.polygon(latlngs, {
-          color: poly.color,
-          weight: 12,
-          opacity: 0.16,
-          fillOpacity: 0,
-          interactive: false,
-          smoothFactor: 0.5,
-        } as L.PathOptions);
-        outerGlow.addTo(lg);
-        requestAnimationFrame(() => {
-          const el = outerGlow.getElement() as SVGElement | null;
-          if (el) el.style.filter = 'blur(3px)';
-        });
+        // Border is a darkened version of the fill color — standard cartographic convention
+        const borderColor = darkenHex(poly.color, 0.55);
 
-        // Main border polygon with rich HTML tooltip
         const tooltipContent = `
           <div style="font-family:system-ui,sans-serif;min-width:120px">
             <div style="font-weight:700;font-size:12px;margin-bottom:2px">${poly.label ?? ''}</div>
@@ -387,16 +371,15 @@ export default function TimelineMapPage() {
         `;
 
         const mainPoly = L.polygon(latlngs, {
-          color: poly.color,
+          color: borderColor,
           weight: borderWeight,
-          opacity: borderOpacity,
+          opacity: 0.9,
           fillColor: poly.color,
           fillOpacity: zoomOpacityRef.current,
           lineJoin: 'round',
           lineCap: 'round',
           smoothFactor: 0.5,
           dashArray,
-          // Mark this polygon so we can update its fill opacity on zoom
           ...({ _isFillPoly: true } as object),
         } as L.PathOptions);
 
@@ -408,7 +391,7 @@ export default function TimelineMapPage() {
         });
         mainPoly.addTo(lg);
 
-        // Inject SVG radial gradient fill so territory has depth instead of flat color
+        // Inject SVG radial gradient for subtle depth — inner area brighter, edges fade
         requestAnimationFrame(() => {
           const pathEl = mainPoly.getElement() as SVGPathElement | null;
           if (!pathEl) return;
@@ -429,11 +412,11 @@ export default function TimelineMapPage() {
             const s1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
             s1.setAttribute('offset', '0%');
             s1.setAttribute('stop-color', poly.color);
-            s1.setAttribute('stop-opacity', '0.55');
+            s1.setAttribute('stop-opacity', '0.42');
             const s2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
             s2.setAttribute('offset', '100%');
             s2.setAttribute('stop-color', poly.color);
-            s2.setAttribute('stop-opacity', '0.12');
+            s2.setAttribute('stop-opacity', '0.10');
             grad.append(s1, s2);
             defs.appendChild(grad);
           }
@@ -441,23 +424,6 @@ export default function TimelineMapPage() {
           pathEl.setAttribute('fill-opacity', '1');
         });
       });
-
-      // Selected territory glow effect — additional pulsing glow layer on top
-      const glowPolygons: L.Polygon[] = [];
-      selected.polygons.forEach(poly => {
-        const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
-        const glowPoly = L.polygon(latlngs, {
-          color: poly.color,
-          weight: 18,
-          opacity: 0.10,
-          fillColor: poly.color,
-          fillOpacity: 0.06,
-          interactive: false,
-          smoothFactor: 0.5,
-        } as L.PathOptions).addTo(map);
-        glowPolygons.push(glowPoly);
-      });
-      glowLayerRef.current = glowPolygons;
     }
 
     // Routes

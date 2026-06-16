@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Map } from 'lucide-react';
+import { getLessonTheme, type LessonTheme } from '@/lib/lessonTheme';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -40,13 +41,13 @@ function getFallback(bgGradient: string): string {
 }
 
 function LessonBanner({
-  imageUrl, bgGradient, eraColor, eraShortName,
-  estimatedMinutes, xpReward, title, subtitle,
-  bookmarked, onBookmark,
+  imageUrl, bgGradient, estimatedMinutes, xpReward, title, subtitle,
+  bookmarked, onBookmark, theme,
 }: {
-  imageUrl?: string; bgGradient: string; eraColor: string; eraShortName: string;
+  imageUrl?: string; bgGradient: string;
   estimatedMinutes: number; xpReward: number; title: string; subtitle: string;
   bookmarked: boolean; onBookmark: () => void;
+  theme: LessonTheme;
 }) {
   const [loaded, setLoaded] = useState(false);
   const [src, setSrc] = useState(imageUrl ? proxyImageUrl(imageUrl) : '');
@@ -59,6 +60,9 @@ function LessonBanner({
 
   return (
     <div className={`relative h-72 sm:h-80 md:h-96 rounded-2xl overflow-hidden mb-8 bg-gradient-to-br ${bgGradient} border border-border`}>
+      {/* Topic accent stripe at top */}
+      <div className="absolute top-0 left-0 right-0 h-1 z-20" style={{ background: theme.accentColor }} />
+
       {!loaded && (
         <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-white/5 to-white/0" />
       )}
@@ -74,8 +78,15 @@ function LessonBanner({
           onError={handleError}
         />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-      <div className="absolute top-4 right-4">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+
+      {/* Category watermark */}
+      <div className="absolute top-6 right-6 text-7xl opacity-[0.07] select-none pointer-events-none z-10 leading-none">
+        {theme.categoryIcon}
+      </div>
+
+      {/* Bookmark */}
+      <div className="absolute top-4 right-4 z-20">
         <button
           onClick={onBookmark}
           className="p-2 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-colors"
@@ -86,9 +97,19 @@ function LessonBanner({
           }
         </button>
       </div>
+
       <div className="absolute bottom-0 left-0 right-0 p-6">
         <div className="flex items-center gap-2 mb-2 flex-wrap">
-          <Badge variant="outline" className={`${eraColor} border-current bg-black/40 backdrop-blur-sm text-xs`}>{eraShortName}</Badge>
+          <Badge
+            variant="outline"
+            className="text-xs bg-black/40 backdrop-blur-sm border-current font-semibold"
+            style={{ color: theme.accentLight, borderColor: `${theme.accentColor}99` }}
+          >
+            {theme.categoryIcon} {theme.categoryLabel}
+          </Badge>
+          <Badge variant="outline" className={`text-xs bg-black/30 backdrop-blur-sm border-transparent ${theme.difficultyColor}`}>
+            {theme.difficulty}
+          </Badge>
           <span className="text-white/70 text-xs flex items-center gap-1"><Clock className="w-3 h-3" />{estimatedMinutes} min</span>
           <span className="text-white/70 text-xs flex items-center gap-1"><Star className="w-3 h-3" />+{xpReward} XP</span>
         </div>
@@ -163,14 +184,13 @@ export default function LessonPage() {
         <LessonBanner
           imageUrl={lesson.imageUrl}
           bgGradient={era.bgGradient}
-          eraColor={era.color}
-          eraShortName={era.shortName}
           estimatedMinutes={lesson.estimatedMinutes}
           xpReward={lesson.xpReward}
           title={lesson.title}
           subtitle={lesson.subtitle}
           bookmarked={bookmarked}
           onBookmark={handleBookmark}
+          theme={getLessonTheme(lesson)}
         />
 
         <div className="grid lg:grid-cols-3 gap-6">

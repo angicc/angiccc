@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Lock, ChevronRight, HelpCircle, Clock, Star, CheckCircle2 } from 'lucide-react';
+import { getLessonTheme } from '@/lib/lessonTheme';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
@@ -91,10 +92,11 @@ export default function ErasPage() {
                       {eraLessons.map(lesson => {
                         const locked = !canLesson(lesson.order);
                         const complete = progress?.completedLessons.includes(lesson.id);
+                        const theme = getLessonTheme(lesson);
                         return (
                           <div
                             key={lesson.id}
-                            className={`flex items-center gap-3 p-3 rounded-lg border text-sm transition-all ${
+                            className={`relative flex items-center gap-3 p-3 pl-4 rounded-lg border text-sm transition-all overflow-hidden ${
                               locked
                                 ? 'border-border/40 opacity-50 cursor-not-allowed'
                                 : complete
@@ -103,13 +105,20 @@ export default function ErasPage() {
                             }`}
                             onClick={() => !locked && navigate(`/eras/${era.id}/lessons/${lesson.id}`)}
                           >
+                            {/* Topic color accent strip */}
+                            {!locked && (
+                              <div
+                                className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-lg"
+                                style={{ background: theme.accentColor }}
+                              />
+                            )}
                             <div className="shrink-0">
                               {locked ? (
                                 <Lock className="w-4 h-4 text-muted-foreground" />
                               ) : complete ? (
                                 <CheckCircle2 className="w-4 h-4 text-primary" />
                               ) : (
-                                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-sm leading-none" title={theme.categoryLabel}>{theme.categoryIcon}</span>
                               )}
                             </div>
                             <span className={`flex-1 min-w-0 truncate font-medium ${complete ? 'text-primary' : 'text-foreground'}`}>
