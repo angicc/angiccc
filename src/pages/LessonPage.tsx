@@ -41,50 +41,54 @@ function getFallback(bgGradient: string): string {
 }
 
 function LessonBanner({
-  imageUrl, bgGradient, estimatedMinutes, xpReward, title, subtitle,
+  imageUrl, estimatedMinutes, xpReward, title, subtitle,
   bookmarked, onBookmark, theme,
 }: {
-  imageUrl?: string; bgGradient: string;
+  imageUrl?: string;
   estimatedMinutes: number; xpReward: number; title: string; subtitle: string;
   bookmarked: boolean; onBookmark: () => void;
   theme: LessonTheme;
 }) {
   const [loaded, setLoaded] = useState(false);
+  const [imgFailed, setImgFailed] = useState(false);
   const [src, setSrc] = useState(imageUrl ? proxyImageUrl(imageUrl) : '');
 
   function handleError() {
-    const fallback = getFallback(bgGradient);
-    if (src !== fallback) setSrc(fallback);
-    else setLoaded(true);
+    setImgFailed(true);
+    setLoaded(true);
   }
 
   return (
-    <div className={`relative h-72 sm:h-80 md:h-96 rounded-2xl overflow-hidden mb-8 bg-gradient-to-br ${bgGradient} border border-border`}>
-      {/* Topic accent stripe at top — thicker for visual impact */}
-      <div className="absolute top-0 left-0 right-0 h-2 z-20" style={{ background: theme.accentColor }} />
+    <div
+      className="relative h-72 sm:h-80 md:h-96 rounded-2xl overflow-hidden mb-8 border border-border/50"
+      style={{ background: theme.bannerGradient }}
+    >
+      {/* Category-specific accent stripe — always 3px, consistent across all banners */}
+      <div className="absolute top-0 left-0 right-0 h-[3px] z-20" style={{ background: theme.accentColor }} />
 
-      {/* Topic color wash — makes each lesson distinctly colored even with same fallback photo */}
+      {/* Subtle radial highlight — top-left glow using accent color */}
       <div
         className="absolute inset-0 z-[1]"
-        style={{ background: `linear-gradient(135deg, ${theme.accentColor}55 0%, ${theme.accentColor}20 55%, transparent 100%)` }}
+        style={{ background: `radial-gradient(ellipse 70% 60% at 20% 30%, ${theme.accentColor}30 0%, transparent 70%)` }}
       />
 
       {!loaded && (
-        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-white/5 to-white/0" />
+        <div className="absolute inset-0 animate-pulse bg-white/[0.03] z-[2]" />
       )}
-      {src && (
+      {src && !imgFailed && (
         <img
           src={src}
           alt=""
           aria-hidden
           loading="lazy"
           referrerPolicy="no-referrer"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 z-[2] ${loaded ? 'opacity-60' : 'opacity-0'}`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-[2] ${loaded ? 'opacity-50' : 'opacity-0'}`}
           onLoad={() => setLoaded(true)}
           onError={handleError}
         />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent z-[3]" />
+      {/* Dark-to-transparent overlay — stronger at bottom for text legibility */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 z-[3]" />
 
       {/* Category watermark */}
       <div className="absolute top-6 right-6 text-7xl opacity-[0.12] select-none pointer-events-none z-10 leading-none">
@@ -189,7 +193,6 @@ export default function LessonPage() {
         {/* Hero banner */}
         <LessonBanner
           imageUrl={lesson.imageUrl}
-          bgGradient={era.bgGradient}
           estimatedMinutes={lesson.estimatedMinutes}
           xpReward={lesson.xpReward}
           title={lesson.title}

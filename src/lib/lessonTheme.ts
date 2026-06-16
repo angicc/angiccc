@@ -8,6 +8,40 @@ export type LessonTheme = {
   patternClass: string;
   difficulty: 'Starter' | 'Intermediate' | 'Advanced';
   difficultyColor: string;
+  /** Unique CSS gradient per topic category — never reused across categories, never random */
+  bannerGradient: string;
+};
+
+// ── Banner token map ────────────────────────────────────────────────────────
+// INPUT:  categoryLabel (string)
+// OUTPUT: CSS gradient string (deterministic, one-to-one)
+// RULE:   Each category → exactly one gradient. No fallback reuse across categories.
+//
+// Example outputs:
+//   'Conflict & War'      → deep crimson gradient (dark red tones)
+//   'Philosophy'          → deep violet gradient
+//   'Science & Discovery' → deep teal/navy gradient
+//   'Ancient Civilizations' → deep amber/bronze gradient
+//   'Industrial Age'      → near-black charcoal gradient
+const BANNER_TOKENS: Record<string, string> = {
+  'Conflict & War':        'linear-gradient(135deg, #1a0505 0%, #3d0a0a 60%, #1f0707 100%)',
+  'Philosophy':            'linear-gradient(135deg, #0d0420 0%, #1e0d3c 60%, #130825 100%)',
+  'Science & Discovery':   'linear-gradient(135deg, #00111a 0%, #002a40 60%, #001520 100%)',
+  'Religion & Faith':      'linear-gradient(135deg, #1a1000 0%, #3d2200 60%, #211400 100%)',
+  'Trade & Economy':       'linear-gradient(135deg, #001510 0%, #003118 60%, #001d12 100%)',
+  'Empires':               'linear-gradient(135deg, #1a0800 0%, #3d1500 60%, #250d00 100%)',
+  'Ancient Civilizations': 'linear-gradient(135deg, #191200 0%, #3d2b00 60%, #241c00 100%)',
+  'Industrial Age':        'linear-gradient(135deg, #080808 0%, #1c1c1c 60%, #101010 100%)',
+  'Revolution & Rights':   'linear-gradient(135deg, #00061a 0%, #000f3d 60%, #000929 100%)',
+  'Medieval World':        'linear-gradient(135deg, #000c1a 0%, #001633 60%, #000e20 100%)',
+  'Arts & Culture':        'linear-gradient(135deg, #1a000a 0%, #3d0016 60%, #25000e 100%)',
+  'Modern Politics':       'linear-gradient(135deg, #00071a 0%, #000f3d 60%, #000b2c 100%)',
+  'Conflict & Identity':   'linear-gradient(135deg, #190010 0%, #38001e 60%, #250015 100%)',
+  // Era fallback tokens (used when no topic match)
+  'Ancient World':         'linear-gradient(135deg, #191200 0%, #3d2b00 60%, #241c00 100%)',
+  'Middle Ages':           'linear-gradient(135deg, #000c1a 0%, #001633 60%, #000e20 100%)',
+  'Early Modern':          'linear-gradient(135deg, #001510 0%, #003118 60%, #001d12 100%)',
+  'Modern Era':            'linear-gradient(135deg, #080808 0%, #1c1c1c 60%, #101010 100%)',
 };
 
 // Topic classification by keyword matching
@@ -114,6 +148,9 @@ export function getLessonTheme(lesson: {
     ? { accent: match.accent, accentLight: match.accentLight, category: match.category, icon: match.icon, pattern: match.pattern }
     : (ERA_THEMES[lesson.eraId] ?? ERA_THEMES['ancient']);
 
+  const bannerGradient = BANNER_TOKENS[base.category]
+    ?? BANNER_TOKENS['Ancient World']!;
+
   const difficulty = difficultyFromXp(lesson.xpReward);
   const difficultyColor = difficulty === 'Advanced' ? 'text-rose-400' : difficulty === 'Intermediate' ? 'text-amber-400' : 'text-emerald-400';
 
@@ -125,5 +162,6 @@ export function getLessonTheme(lesson: {
     patternClass: base.pattern,
     difficulty,
     difficultyColor,
+    bannerGradient,
   };
 }

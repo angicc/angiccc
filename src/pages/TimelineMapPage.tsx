@@ -137,13 +137,21 @@ function getFillOpacityForZoom(zoom: number): number {
   return 0.14;
 }
 
-// Darken a hex color by a multiplier (0–1 = darker, >1 = lighter)
-function darkenHex(hex: string, factor = 0.6): string {
-  const n = parseInt(hex.replace('#', ''), 16);
-  const r = Math.round(((n >> 16) & 0xff) * factor);
-  const g = Math.round(((n >> 8) & 0xff) * factor);
-  const b = Math.round((n & 0xff) * factor);
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+// ── 3-tier border system ────────────────────────────────────────────────────
+// PRIMARY:   country/empire boundaries — always visible
+// SECONDARY: province/region subdivisions — visible at zoom ≥ 5
+// TERTIARY:  internal/historical divisions — visible at zoom ≥ 7, dashed
+const BORDER_STYLES = {
+  primary:   { weight: 2.0, color: '#2b2b2b', opacity: 0.80, dashArray: undefined          },
+  secondary: { weight: 1.0, color: '#555555', opacity: 0.60, dashArray: undefined          },
+  tertiary:  { weight: 0.5, color: '#888888', opacity: 0.40, dashArray: '4,4' as string | undefined },
+} as const;
+type BorderTier = keyof typeof BORDER_STYLES;
+
+function getBorderOpacity(tier: BorderTier, zoom: number): number {
+  if (tier === 'secondary' && zoom < 5) return 0;
+  if (tier === 'tertiary'  && zoom < 7) return 0;
+  return BORDER_STYLES[tier].opacity;
 }
 
 // SVG-based professional marker icons
@@ -287,7 +295,7 @@ export default function TimelineMapPage() {
     layerGroupRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
 
-    // Zoom event listener for opacity changes
+    // Zoom event listener — update fill opacity and border tier visibility
     map.on('zoomend', () => {
       const zoom = map.getZoom();
       zoomOpacityRef.current = getFillOpacityForZoom(zoom);
@@ -295,9 +303,13 @@ export default function TimelineMapPage() {
       if (!lg) return;
       lg.eachLayer(layer => {
         if (!(layer instanceof L.Polygon)) return;
-        if (!(layer.options as L.PathOptions & { _isFillPoly?: boolean })._isFillPoly) return;
-        // setStyle resets fill to solid color; reapply gradient immediately after
-        layer.setStyle({ fillOpacity: zoomOpacityRef.current });
+        const opts = layer.options as L.PathOptions & { _isFillPoly?: boolean; _borderTier?: BorderTier };
+        if (!opts._isFillPoly) return;
+        const tier = opts._borderTier ?? 'primary';
+        layer.setStyle({
+          fillOpacity: zoomOpacityRef.current,
+          opacity: getBorderOpacity(tier, zoom),
+        });
         const pathEl = layer.getElement() as SVGPathElement | null;
         if (pathEl) {
           const color = (layer.options.fillColor as string) ?? '';
@@ -343,25 +355,14 @@ export default function TimelineMapPage() {
     const currentZoom = map.getZoom();
     zoomOpacityRef.current = getFillOpacityForZoom(currentZoom);
 
-    // Polygons — GIS atlas style: clean 1.8px border, darkened stroke, subtle gradient fill
+    // Polygons — strict 3-tier border system
     if (layers.territory && selected.polygons) {
       selected.polygons.forEach(poly => {
         const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
 
-        const borderStyle = (poly as unknown as { borderStyle?: string }).borderStyle;
-        let dashArray: string | undefined;
-        let borderWeight = 1.8;
-
-        if (borderStyle === 'disputed') {
-          dashArray = '8,5';
-          borderWeight = 1.4;
-        } else if (borderStyle === 'influence') {
-          dashArray = '3,5';
-          borderWeight = 1.2;
-        }
-
-        // Border is a darkened version of the fill color — standard cartographic convention
-        const borderColor = darkenHex(poly.color, 0.55);
+        const tier = ((poly as unknown as { borderTier?: string }).borderTier ?? 'primary') as BorderTier;
+        const border = BORDER_STYLES[tier];
+        const currentZoom = mapRef.current?.getZoom() ?? 5;
 
         const tooltipContent = `
           <div style="font-family:system-ui,sans-serif;min-width:120px">
@@ -371,16 +372,16 @@ export default function TimelineMapPage() {
         `;
 
         const mainPoly = L.polygon(latlngs, {
-          color: borderColor,
-          weight: borderWeight,
-          opacity: 0.9,
+          color: border.color,
+          weight: border.weight,
+          opacity: getBorderOpacity(tier, currentZoom),
           fillColor: poly.color,
           fillOpacity: zoomOpacityRef.current,
           lineJoin: 'round',
           lineCap: 'round',
           smoothFactor: 0.5,
-          dashArray,
-          ...({ _isFillPoly: true } as object),
+          dashArray: border.dashArray,
+          ...({ _isFillPoly: true, _borderTier: tier } as object),
         } as L.PathOptions);
 
         mainPoly.bindTooltip(tooltipContent, {
