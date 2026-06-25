@@ -75,6 +75,35 @@ function LessonBanner({
       {!loaded && (
         <div className="absolute inset-0 animate-pulse bg-white/[0.03] z-[2]" />
       )}
+
+      {/* Historical pattern texture — shown when image fails or is absent */}
+      {imgFailed || !src ? (
+        <svg
+          className="absolute inset-0 w-full h-full z-[2] opacity-[0.08]"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden
+        >
+          <defs>
+            <pattern id="hist-pattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+              {/* Cross-hatch grid */}
+              <line x1="0" y1="0" x2="60" y2="60" stroke="white" strokeWidth="0.5" />
+              <line x1="60" y1="0" x2="0" y2="60" stroke="white" strokeWidth="0.5" />
+              <line x1="30" y1="0" x2="30" y2="60" stroke="white" strokeWidth="0.3" />
+              <line x1="0" y1="30" x2="60" y2="30" stroke="white" strokeWidth="0.3" />
+              {/* Corner diamonds */}
+              <polygon points="30,2 38,10 30,18 22,10" fill="none" stroke="white" strokeWidth="0.5" />
+              {/* Center dot */}
+              <circle cx="30" cy="30" r="1.5" fill="white" opacity="0.6" />
+              <circle cx="0" cy="0" r="1" fill="white" opacity="0.4" />
+              <circle cx="60" cy="0" r="1" fill="white" opacity="0.4" />
+              <circle cx="0" cy="60" r="1" fill="white" opacity="0.4" />
+              <circle cx="60" cy="60" r="1" fill="white" opacity="0.4" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hist-pattern)" />
+        </svg>
+      ) : null}
+
       {src && !imgFailed && (
         <img
           src={src}
@@ -123,7 +152,10 @@ function LessonBanner({
           <span className="text-white/70 text-xs flex items-center gap-1"><Clock className="w-3 h-3" />{estimatedMinutes} min</span>
           <span className="text-white/70 text-xs flex items-center gap-1"><Star className="w-3 h-3" />+{xpReward} XP</span>
         </div>
-        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">{title}</h1>
+        <h1
+          className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight"
+          style={{ textShadow: '0 2px 16px rgba(212,175,55,0.55), 0 1px 4px rgba(0,0,0,0.9)' }}
+        >{title}</h1>
         <p className="text-white/80 text-sm mt-1">{subtitle}</p>
       </div>
     </div>
