@@ -56,7 +56,7 @@ const CART_STYLES: CartographicStyle[] = [
     nameKey: 'tmap_style_parchment',
     url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
     attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
-    filter: 'sepia(75%) brightness(0.85) contrast(0.88) saturate(0.8)',
+    filter: 'sepia(92%) brightness(0.76) contrast(0.86) saturate(0.45) hue-rotate(10deg)',
   },
   {
     id: 'military',
@@ -154,6 +154,17 @@ function getBorderOpacity(tier: BorderTier, zoom: number): number {
   return BORDER_STYLES[tier].opacity;
 }
 
+// Sepia colour conversion for parchment/vintage map mode
+function toSepiaHex(hex: string): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const sr = Math.min(255, Math.round(r * 0.393 + g * 0.769 + b * 0.189));
+  const sg = Math.min(255, Math.round(r * 0.349 + g * 0.686 + b * 0.168));
+  const sb = Math.min(255, Math.round(r * 0.272 + g * 0.534 + b * 0.131));
+  return `#${sr.toString(16).padStart(2, '0')}${sg.toString(16).padStart(2, '0')}${sb.toString(16).padStart(2, '0')}`;
+}
+
 // SVG-based professional marker icons
 function makeMarkerIcon(
   marker: { name: string; type: MarkerType },
@@ -162,8 +173,9 @@ function makeMarkerIcon(
   hideLabel = false,
 ) {
   const isDark = activeStyle === 'dark' || activeStyle === 'military';
-  const labelBg = isDark ? 'rgba(0,0,0,0.85)' : 'rgba(255,255,255,0.92)';
-  const labelColor = isDark ? '#fff' : '#111';
+  const isParchmentStyle = activeStyle === 'parchment';
+  const labelBg = isDark ? 'rgba(0,0,0,0.85)' : isParchmentStyle ? 'rgba(240,225,185,0.92)' : 'rgba(255,255,255,0.92)';
+  const labelColor = isDark ? '#fff' : isParchmentStyle ? '#2c1810' : '#111';
   const label = translatedName ?? marker.name;
 
   let svgIcon = '';
@@ -253,7 +265,7 @@ export default function TimelineMapPage() {
 
   const [selected, setSelected]       = useState<TerritoryTopic | null>(null);
   const [mode, setMode]               = useState<MapMode>('explore');
-  const [styleId, setStyleId]         = useState('dark');
+  const [styleId, setStyleId]         = useState('parchment');
   const [showLayerPanel, setShowLayerPanel] = useState(false);
   const [showStylePanel, setShowStylePanel] = useState(false);
   const [layers, setLayers]           = useState<Record<LayerKey, boolean>>({
@@ -288,12 +300,13 @@ export default function TimelineMapPage() {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
     const map = L.map(containerRef.current, { center: [30, 20], zoom: 2, zoomControl: true, scrollWheelZoom: true });
-    const style = CART_STYLES.find(s => s.id === 'dark')!;
+    const style = CART_STYLES.find(s => s.id === 'parchment')!;
     const tile = L.tileLayer(style.url, { attribution: style.attribution, maxZoom: 18 });
     tile.addTo(map);
     tileRef.current = tile;
     layerGroupRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
+    if (containerRef.current) containerRef.current.style.filter = style.filter;
 
     // Zoom event listener — update fill opacity and border tier visibility
     map.on('zoomend', () => {
@@ -355,6 +368,8 @@ export default function TimelineMapPage() {
     const currentZoom = map.getZoom();
     zoomOpacityRef.current = getFillOpacityForZoom(currentZoom);
 
+    const isParchment = styleId === 'parchment';
+
     // Polygons — strict 3-tier border system
     if (layers.territory && selected.polygons) {
       selected.polygons.forEach(poly => {
@@ -364,6 +379,13 @@ export default function TimelineMapPage() {
         const border = BORDER_STYLES[tier];
         const currentZoom = mapRef.current?.getZoom() ?? 5;
 
+        // Parchment mode: sepia fill + ink-style border
+        const fillColor = isParchment ? toSepiaHex(poly.color) : poly.color;
+        const strokeColor  = isParchment ? '#2c1810' : border.color;
+        const strokeWeight = isParchment ? border.weight + 0.5 : border.weight;
+        const strokeDash   = isParchment ? (tier === 'primary' ? undefined : '6,3') : border.dashArray;
+        const strokeOpacity = isParchment ? 0.88 : getBorderOpacity(tier, currentZoom);
+
         const tooltipContent = `
           <div style="font-family:system-ui,sans-serif;min-width:120px">
             <div style="font-weight:700;font-size:12px;margin-bottom:2px">${poly.label ?? ''}</div>
@@ -372,15 +394,15 @@ export default function TimelineMapPage() {
         `;
 
         const mainPoly = L.polygon(latlngs, {
-          color: border.color,
-          weight: border.weight,
-          opacity: getBorderOpacity(tier, currentZoom),
-          fillColor: poly.color,
+          color: strokeColor,
+          weight: strokeWeight,
+          opacity: strokeOpacity,
+          fillColor,
           fillOpacity: zoomOpacityRef.current,
           lineJoin: 'round',
           lineCap: 'round',
           smoothFactor: 0.5,
-          dashArray: border.dashArray,
+          dashArray: strokeDash,
           ...({ _isFillPoly: true, _borderTier: tier } as object),
         } as L.PathOptions);
 
@@ -403,7 +425,7 @@ export default function TimelineMapPage() {
             defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
             svgContainer.prepend(defs);
           }
-          const gId = `hfg-${poly.color.replace('#', '')}`;
+          const gId = `hfg-${fillColor.replace('#', '')}`;
           if (!defs.querySelector(`#${gId}`)) {
             const grad = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
             grad.setAttribute('id', gId);
@@ -412,11 +434,11 @@ export default function TimelineMapPage() {
             grad.setAttribute('r', '65%');
             const s1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
             s1.setAttribute('offset', '0%');
-            s1.setAttribute('stop-color', poly.color);
-            s1.setAttribute('stop-opacity', '0.42');
+            s1.setAttribute('stop-color', fillColor);
+            s1.setAttribute('stop-opacity', isParchment ? '0.52' : '0.42');
             const s2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
             s2.setAttribute('offset', '100%');
-            s2.setAttribute('stop-color', poly.color);
+            s2.setAttribute('stop-color', fillColor);
             s2.setAttribute('stop-opacity', '0.10');
             grad.append(s1, s2);
             defs.appendChild(grad);
