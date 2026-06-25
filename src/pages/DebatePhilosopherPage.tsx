@@ -44,8 +44,44 @@ function TypingIndicator() {
   );
 }
 
+// Era-appropriate palette + emblem for the letter fallback
+const ERA_THEME: Record<string, { bg: string; border: string; text: string; emblem: string }> = {
+  ancient: {
+    bg: 'linear-gradient(135deg, #3d2b00 0%, #6b4400 100%)',
+    border: '#c49a2a',
+    text: '#fde68a',
+    emblem: 'M8,2 C8,2 4,5 4,9 C4,12 6,14 8,14 C10,14 12,12 12,9 C12,5 8,2 8,2Z M5,8 Q8,6 11,8', // laurel leaf hint
+  },
+  renaissance: {
+    bg: 'linear-gradient(135deg, #1a0a2e 0%, #3b1f6b 100%)',
+    border: '#9f7aea',
+    text: '#e9d5ff',
+    emblem: 'M4,12 L8,4 L12,12 M6,9 L10,9', // quill / A-shape
+  },
+  enlightenment: {
+    bg: 'linear-gradient(135deg, #0a1628 0%, #1a3a6b 100%)',
+    border: '#60a5fa',
+    text: '#bfdbfe',
+    emblem: 'M8,3 L8,13 M5,6 L11,6 M5,10 L11,10', // book lines
+  },
+  modern: {
+    bg: 'linear-gradient(135deg, #111 0%, #2d2d2d 100%)',
+    border: '#9ca3af',
+    text: '#f3f4f6',
+    emblem: 'M4,4 L12,4 M4,8 L12,8 M4,12 L9,12', // text lines
+  },
+};
+
+function getEraTheme(era: string) {
+  const e = era.toLowerCase();
+  if (e.includes('ancient') || e.includes('classical') || e.includes('hellenistic') || e.includes('roman') || e.includes('china')) return ERA_THEME.ancient;
+  if (e.includes('renaissance') || e.includes('early modern')) return ERA_THEME.renaissance;
+  if (e.includes('enlightenment') || e.includes('civil war') || e.includes('idealism') || e.includes('german')) return ERA_THEME.enlightenment;
+  return ERA_THEME.modern;
+}
+
 function PhilosopherAvatar({ philosopher, size = 28 }: { philosopher: Philosopher; size?: number }) {
-  const [stage, setStage] = useState<0 | 1 | 2>(0); // 0=primary, 1=fallback, 2=letter
+  const [stage, setStage] = useState<0 | 1 | 2>(0); // 0=primary, 1=fallback, 2=era-avatar
 
   const src = stage === 0 ? philosopher.imageUrl
     : stage === 1 ? (philosopher.fallbackImageUrl ?? '')
@@ -53,15 +89,12 @@ function PhilosopherAvatar({ philosopher, size = 28 }: { philosopher: Philosophe
 
   function handleError() {
     if (stage === 0) {
-      console.error(`[PhilosopherAvatar] Primary image failed for ${philosopher.name}: ${philosopher.imageUrl}`);
       if (philosopher.fallbackImageUrl) {
         setStage(1);
       } else {
-        console.error(`[PhilosopherAvatar] No fallback URL for ${philosopher.name}, using letter avatar`);
         setStage(2);
       }
     } else if (stage === 1) {
-      console.error(`[PhilosopherAvatar] Fallback image failed for ${philosopher.name}: ${philosopher.fallbackImageUrl}`);
       setStage(2);
     }
   }
@@ -69,8 +102,8 @@ function PhilosopherAvatar({ philosopher, size = 28 }: { philosopher: Philosophe
   if (stage < 2 && src) {
     return (
       <div
-        className="rounded-full overflow-hidden shrink-0 border-2 border-violet-500/40"
-        style={{ width: size, height: size }}
+        className="rounded-full overflow-hidden shrink-0"
+        style={{ width: size, height: size, border: `2px solid ${getEraTheme(philosopher.era).border}55` }}
       >
         <img
           src={src}
@@ -82,13 +115,38 @@ function PhilosopherAvatar({ philosopher, size = 28 }: { philosopher: Philosophe
       </div>
     );
   }
+
+  // Era-appropriate avatar: themed gradient + emblem SVG + initial
+  const theme = getEraTheme(philosopher.era);
   const initial = philosopher.name[0];
+  const pad = size * 0.18;
+  const iconSize = size * 0.38;
+
   return (
     <div
-      className="rounded-full flex items-center justify-center shrink-0 bg-gradient-to-br from-violet-800 to-purple-950 border border-violet-500/40 font-heading font-bold text-violet-200"
-      style={{ width: size, height: size, fontSize: size * 0.38 }}
+      className="rounded-full shrink-0 flex items-center justify-center overflow-hidden relative"
+      style={{ width: size, height: size, background: theme.bg, border: `2px solid ${theme.border}88` }}
     >
-      {initial}
+      {/* Era emblem watermark */}
+      <svg
+        viewBox="0 0 16 16"
+        width={size - pad}
+        height={size - pad}
+        className="absolute opacity-20"
+        fill="none"
+        stroke={theme.text}
+        strokeWidth="1"
+        strokeLinecap="round"
+      >
+        <path d={theme.emblem} />
+      </svg>
+      {/* Initial letter */}
+      <span
+        className="relative z-10 font-heading font-bold select-none"
+        style={{ color: theme.text, fontSize: iconSize, lineHeight: 1 }}
+      >
+        {initial}
+      </span>
     </div>
   );
 }
