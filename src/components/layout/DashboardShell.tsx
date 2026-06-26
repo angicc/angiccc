@@ -1,10 +1,16 @@
 import { useState } from 'react';
-import Sidebar from './Sidebar';
+import Sidebar, { type View } from './Sidebar';
 import Topbar from './Topbar';
 import InputDashboard from '../views/InputDashboard';
 import AiAgentTerminal from '../views/AiAgentTerminal';
-
-type View = 'input' | 'terminal';
+import LeadScraperHub from '../views/LeadScraperHub';
+import DnsSpamShield from '../views/DnsSpamShield';
+import AbTestingSandbox from '../views/AbTestingSandbox';
+import WebhookCommandCenter from '../views/WebhookCommandCenter';
+import ReplyIntentSimulator from '../views/ReplyIntentSimulator';
+import AgencyLeaderboard from '../views/AgencyLeaderboard';
+import UserProfile from '../views/UserProfile';
+import PlatformSettings from '../views/PlatformSettings';
 
 export default function DashboardShell() {
   const [activeView, setActiveView] = useState<View>('input');
@@ -26,11 +32,18 @@ export default function DashboardShell() {
         <Topbar activeView={activeView} />
 
         <main className="flex-1 overflow-y-auto">
-          {activeView === 'input' ? (
+          {activeView === 'input' && (
             <InputDashboard onAuditComplete={() => setActiveView('terminal')} />
-          ) : (
-            <AiAgentTerminal />
           )}
+          {activeView === 'terminal' && <AiAgentTerminal />}
+          {activeView === 'leads' && <LeadScraperHub />}
+          {activeView === 'dns' && <DnsSpamShield />}
+          {activeView === 'abtesting' && <AbTestingSandbox />}
+          {activeView === 'webhooks' && <WebhookCommandCenter />}
+          {activeView === 'replies' && <ReplyIntentSimulator />}
+          {activeView === 'leaderboard' && <AgencyLeaderboard />}
+          {activeView === 'profile' && <UserProfile />}
+          {activeView === 'settings' && <PlatformSettings />}
         </main>
       </div>
     </div>
