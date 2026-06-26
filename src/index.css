@@ -128,3 +128,29 @@
   padding: 0;
   text-align: initial;
 }
+
+/* OutreachAudit terminal overrides */
+body {
+  background-color: #020617; /* slate-950 */
+}
+
+/* Custom scrollbars for dark terminal aesthetic */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Prevent Orbitron on all headings — use Inter style in terminal */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Sora', system-ui, sans-serif;
+}
