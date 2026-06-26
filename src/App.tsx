@@ -1,5 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider, useAuth } from '@/features/auth/AuthContext';
@@ -7,7 +6,6 @@ import { SubscriptionProvider } from '@/features/subscription/SubscriptionContex
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { ProtectedRoute } from '@/features/auth/ProtectedRoute';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { PageTransition } from '@/components/shared/PageTransition';
 import { LogoutScreen } from '@/components/shared/LogoutScreen';
 import { BetaGate } from '@/components/BetaGate';
 import LandingPage from '@/pages/LandingPage';
@@ -39,39 +37,34 @@ function LogoutOverlay() {
   return <LogoutScreen show={loggingOut} />;
 }
 
-function AnimatedRoutes() {
-  const location = useLocation();
+function AppRoutes() {
   return (
-    <AnimatePresence mode="wait">
-      <PageTransition key={location.pathname}>
-        <Routes location={location}>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-          <Route path="/eras" element={<ProtectedRoute><ErasPage /></ProtectedRoute>} />
-          <Route path="/eras/:eraId/lessons/:lessonId" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
-          <Route path="/eras/:eraId/quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
-          <Route path="/timeline" element={<ProtectedRoute><TimelinePage /></ProtectedRoute>} />
-          <Route path="/tutor" element={<ProtectedRoute><AiTutorPage /></ProtectedRoute>} />
-          <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
-          <Route path="/flashcards" element={<ProtectedRoute><FlashcardsPage /></ProtectedRoute>} />
-          <Route path="/notes" element={<ProtectedRoute><NotesPage /></ProtectedRoute>} />
-          <Route path="/progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
-          <Route path="/smart-quiz" element={<ProtectedRoute><SmartQuizPage /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-          <Route path="/guide" element={<ProtectedRoute><AppGuidePage /></ProtectedRoute>} />
-          <Route path="/report" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
-          <Route path="/essay" element={<ProtectedRoute><EssayPage /></ProtectedRoute>} />
-          <Route path="/video-review" element={<ProtectedRoute><VideoReviewPage /></ProtectedRoute>} />
-          <Route path="/friends" element={<ProtectedRoute><FriendsPage /></ProtectedRoute>} />
-          <Route path="/debate" element={<ProtectedRoute><DebatePhilosopherPage /></ProtectedRoute>} />
-          <Route path="/timeline-map" element={<ProtectedRoute><TimelineMapPage /></ProtectedRoute>} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </PageTransition>
-    </AnimatePresence>
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/pricing" element={<PricingPage />} />
+      <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+      <Route path="/eras" element={<ProtectedRoute><ErasPage /></ProtectedRoute>} />
+      <Route path="/eras/:eraId/lessons/:lessonId" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
+      <Route path="/eras/:eraId/quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
+      <Route path="/timeline" element={<ProtectedRoute><TimelinePage /></ProtectedRoute>} />
+      <Route path="/tutor" element={<ProtectedRoute><AiTutorPage /></ProtectedRoute>} />
+      <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
+      <Route path="/flashcards" element={<ProtectedRoute><FlashcardsPage /></ProtectedRoute>} />
+      <Route path="/notes" element={<ProtectedRoute><NotesPage /></ProtectedRoute>} />
+      <Route path="/progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
+      <Route path="/smart-quiz" element={<ProtectedRoute><SmartQuizPage /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+      <Route path="/guide" element={<ProtectedRoute><AppGuidePage /></ProtectedRoute>} />
+      <Route path="/report" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
+      <Route path="/essay" element={<ProtectedRoute><EssayPage /></ProtectedRoute>} />
+      <Route path="/video-review" element={<ProtectedRoute><VideoReviewPage /></ProtectedRoute>} />
+      <Route path="/friends" element={<ProtectedRoute><FriendsPage /></ProtectedRoute>} />
+      <Route path="/debate" element={<ProtectedRoute><DebatePhilosopherPage /></ProtectedRoute>} />
+      <Route path="/timeline-map" element={<ProtectedRoute><TimelineMapPage /></ProtectedRoute>} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
@@ -84,7 +77,7 @@ function App() {
           <SubscriptionProvider>
             <LanguageProvider>
               <BrowserRouter>
-                <AnimatedRoutes />
+                <AppRoutes />
                 <LogoutOverlay />
               </BrowserRouter>
               <Toaster />
