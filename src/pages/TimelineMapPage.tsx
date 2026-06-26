@@ -379,11 +379,11 @@ export default function TimelineMapPage() {
         const border = BORDER_STYLES[tier];
         const currentZoom = mapRef.current?.getZoom() ?? 5;
 
-        // Parchment mode: sepia fill + ink-style border
+        // Parchment mode: sepia fill + vintage dashed border
         const fillColor = isParchment ? toSepiaHex(poly.color) : poly.color;
-        const strokeColor  = isParchment ? '#2c1810' : border.color;
+        const strokeColor  = isParchment ? '#8b4513' : border.color;
         const strokeWeight = isParchment ? border.weight + 0.5 : border.weight;
-        const strokeDash   = isParchment ? (tier === 'primary' ? undefined : '6,3') : border.dashArray;
+        const strokeDash   = isParchment ? '5, 10' : border.dashArray;
         const strokeOpacity = isParchment ? 0.88 : getBorderOpacity(tier, currentZoom);
 
         const tooltipContent = `
