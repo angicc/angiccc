@@ -11,13 +11,20 @@ import ReplyIntentSimulator from '../views/ReplyIntentSimulator';
 import AgencyLeaderboard from '../views/AgencyLeaderboard';
 import UserProfile from '../views/UserProfile';
 import PlatformSettings from '../views/PlatformSettings';
+import WarmupSimulator from '../views/WarmupSimulator';
+import ObjectionRoleplay from '../views/ObjectionRoleplay';
+import AiChessRank from '../views/AiChessRank';
+import DailyPuzzle from '../views/DailyPuzzle';
+import AppGuide from '../views/AppGuide';
+import ReportProblem from '../views/ReportProblem';
 
-export default function DashboardShell() {
+type Props = { onLogout: () => void };
+
+export default function DashboardShell({ onLogout }: Props) {
   const [activeView, setActiveView] = useState<View>('input');
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-slate-950">
-      {/* Radial background gradient */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
@@ -29,12 +36,10 @@ export default function DashboardShell() {
       <Sidebar activeView={activeView} onViewChange={setActiveView} />
 
       <div className="flex-1 flex flex-col min-w-0 relative z-10">
-        <Topbar activeView={activeView} />
+        <Topbar activeView={activeView} onLogout={onLogout} />
 
         <main className="flex-1 overflow-y-auto">
-          {activeView === 'input' && (
-            <InputDashboard onAuditComplete={() => setActiveView('terminal')} />
-          )}
+          {activeView === 'input' && <InputDashboard onAuditComplete={() => setActiveView('terminal')} />}
           {activeView === 'terminal' && <AiAgentTerminal />}
           {activeView === 'leads' && <LeadScraperHub />}
           {activeView === 'dns' && <DnsSpamShield />}
@@ -42,6 +47,12 @@ export default function DashboardShell() {
           {activeView === 'webhooks' && <WebhookCommandCenter />}
           {activeView === 'replies' && <ReplyIntentSimulator />}
           {activeView === 'leaderboard' && <AgencyLeaderboard />}
+          {activeView === 'warmup' && <WarmupSimulator />}
+          {activeView === 'objection' && <ObjectionRoleplay />}
+          {activeView === 'chessrank' && <AiChessRank />}
+          {activeView === 'dailypuzzle' && <DailyPuzzle />}
+          {activeView === 'guide' && <AppGuide />}
+          {activeView === 'reportproblem' && <ReportProblem />}
           {activeView === 'profile' && <UserProfile />}
           {activeView === 'settings' && <PlatformSettings />}
         </main>

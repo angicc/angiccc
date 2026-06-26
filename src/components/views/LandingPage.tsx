@@ -71,7 +71,7 @@ export default function LandingPage({ onEnterApp }: Props) {
           <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
             <Zap className="w-3.5 h-3.5 text-emerald-400" />
           </div>
-          <span className="font-bold text-white tracking-tight">OutreachAudit<span className="text-emerald-400">.ai</span></span>
+          <span className="font-bold text-white tracking-tight">AngelReach<span className="text-emerald-400">.ai</span></span>
         </div>
         <div className="hidden md:flex items-center gap-6 text-sm text-slate-400">
           <a href="#features" className="hover:text-slate-200 transition-colors">Features</a>

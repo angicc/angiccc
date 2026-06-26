@@ -137,6 +137,34 @@ export type SubAccount = {
   monthlyRevenue: number;
 };
 
+// ─── Gamification ─────────────────────────────────────────────────────────────
+
+export type ChessRankInfo = {
+  title: string;
+  symbol: string;
+  tier: number;
+  min: number;
+  max: number;
+};
+
+export function getChessRank(xp: number): ChessRankInfo {
+  if (xp >= 1500) return { title: 'System Grandmaster', symbol: '♔', tier: 6, min: 1500, max: 99999 };
+  if (xp >= 900) return { title: 'Campaign Queen', symbol: '♛', tier: 5, min: 900, max: 1499 };
+  if (xp >= 500) return { title: 'Strategic Rook', symbol: '♖', tier: 4, min: 500, max: 899 };
+  if (xp >= 250) return { title: 'Tactical Bishop', symbol: '♗', tier: 3, min: 250, max: 499 };
+  if (xp >= 100) return { title: 'Outreach Knight', symbol: '♘', tier: 2, min: 100, max: 249 };
+  return { title: 'Novice Pawn', symbol: '♙', tier: 1, min: 0, max: 99 };
+}
+
+export const ALL_CHESS_RANKS: ChessRankInfo[] = [
+  { title: 'Novice Pawn', symbol: '♙', tier: 1, min: 0, max: 99 },
+  { title: 'Outreach Knight', symbol: '♘', tier: 2, min: 100, max: 249 },
+  { title: 'Tactical Bishop', symbol: '♗', tier: 3, min: 250, max: 499 },
+  { title: 'Strategic Rook', symbol: '♖', tier: 4, min: 500, max: 899 },
+  { title: 'Campaign Queen', symbol: '♛', tier: 5, min: 900, max: 1499 },
+  { title: 'System Grandmaster', symbol: '♔', tier: 6, min: 1500, max: 99999 },
+];
+
 // ─── User & Platform Settings ─────────────────────────────────────────────────
 
 export type PlatformLanguage = 'en' | 'es' | 'fr' | 'de' | 'pt';
@@ -283,6 +311,12 @@ type AuditState = {
 
   // ── Agency leaderboard
   agencyAccounts: SubAccount[];
+
+  // ── Gamification
+  xp: number;
+  puzzleLastSolvedEpoch: number | null;
+  addXp: (amount: number) => void;
+  setPuzzleSolved: () => void;
 
   // ── User & settings
   user: UserData;
@@ -437,6 +471,15 @@ export const useAuditStore = create<AuditState>((set, get) => ({
 
   // ── Agency leaderboard
   agencyAccounts: INITIAL_AGENCY_ACCOUNTS,
+
+  // ── Gamification
+  xp: 75,
+  puzzleLastSolvedEpoch: null,
+  addXp: (amount) => set((s) => ({ xp: s.xp + amount })),
+  setPuzzleSolved: () => {
+    const epoch = Math.floor(Date.now() / (12 * 60 * 60 * 1000));
+    set((s) => ({ puzzleLastSolvedEpoch: epoch, xp: s.xp + 50 }));
+  },
 
   // ── User
   user: { name: 'Angel Dimitrov', email: 'wolfd9606@gmail.com', avatarUrl: null, apiKey: 'oa_live_sk_7f3k9m2p1x8q4n6r5v0w', plan: 'growth' },
