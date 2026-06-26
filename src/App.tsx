@@ -1,14 +1,7 @@
-import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/ThemeProvider";
-import LandingPage from "@/components/LandingPage";
+import DashboardShell from './components/layout/DashboardShell';
 
 function App() {
-  return (
-    <ThemeProvider defaultTheme="dark" storageKey="smilevski-theme">
-      <LandingPage />
-      <Toaster />
-    </ThemeProvider>
-  );
+  return <DashboardShell />;
 }
 
 export default App;
