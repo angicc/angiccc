@@ -13,14 +13,19 @@ interface Props {
   onOpenChange: (open: boolean) => void;
 }
 
+// Premium teardrop pin with a soft gold glow, on a parchment-cream label.
 function makeMarkerIcon(label: string) {
   return L.divIcon({
-    html: `<div style="display:flex;flex-direction:column;align-items:center">
-      <div style="background:#ef4444;border:2px solid white;border-radius:50%;width:12px;height:12px;box-shadow:0 1px 4px rgba(0,0,0,.7)"></div>
-      <div style="background:rgba(0,0,0,.8);color:white;font-size:10px;font-weight:600;padding:1px 5px;border-radius:4px;white-space:nowrap;margin-top:2px;font-family:sans-serif;max-width:120px;overflow:hidden;text-overflow:ellipsis">${label}</div>
+    html: `<div style="display:flex;flex-direction:column;align-items:center;cursor:pointer">
+      <svg width="22" height="28" viewBox="0 0 22 28" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))">
+        <path d="M11 1 C5.5 1 1.5 5 1.5 10.2 C1.5 17 11 27 11 27 C11 27 20.5 17 20.5 10.2 C20.5 5 16.5 1 11 1 Z"
+          fill="#8b4513" stroke="#f0e1b9" stroke-width="1.5"/>
+        <circle cx="11" cy="10.2" r="3.4" fill="#f0e1b9"/>
+      </svg>
+      <div style="background:rgba(240,225,185,0.94);color:#2c1810;font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;white-space:nowrap;margin-top:-2px;font-family:system-ui,sans-serif;max-width:130px;overflow:hidden;text-overflow:ellipsis;box-shadow:0 1px 4px rgba(0,0,0,.4);border:1px solid rgba(139,69,19,0.4)">${label}</div>
     </div>`,
     className: '',
-    iconAnchor: [6, 6],
+    iconAnchor: [11, 27],
     iconSize: undefined as unknown as L.PointExpression,
   });
 }
@@ -52,10 +57,16 @@ export function HistoricalMapModal({ lessonId, lessonTitle, open, onOpenChange }
         scrollWheelZoom: true,
       });
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      // Premium parchment basemap: CARTO voyager tiles + sepia CSS filter.
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
         maxZoom: 18,
       }).addTo(map);
+      if (containerRef.current) {
+        containerRef.current.style.filter =
+          'sepia(92%) brightness(0.78) contrast(0.88) saturate(0.5) hue-rotate(8deg)';
+        containerRef.current.style.background = '#e8d9b5';
+      }
 
       mapData.markers.forEach(m => {
         L.marker([m.lat, m.lon], { icon: makeMarkerIcon(m.label) })

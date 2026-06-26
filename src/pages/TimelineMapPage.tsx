@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { AppShell } from '@/components/layout/AppShell';
@@ -14,7 +14,7 @@ import { getQuestionsForTopic, getTranslatedTerritoryQuestion, type TerritoryQui
 import { getTranslatedMarkerName, getTranslatedMarkerNote, getTranslatedMarkerType } from '@/i18n/territoryMarkerTranslations';
 import {
   Map as MapIcon, ChevronRight, Layers, Palette, BookOpen, HelpCircle, Play, Pause,
-  SkipBack, SkipForward, ChevronDown, X, Trophy, Swords, Building2, Anchor, Gem, Landmark,
+  SkipBack, SkipForward, ChevronDown, X, Trophy, Swords, Building2, Anchor, Gem, Landmark, Clock,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -165,6 +165,46 @@ function toSepiaHex(hex: string): string {
   return `#${sr.toString(16).padStart(2, '0')}${sg.toString(16).padStart(2, '0')}${sb.toString(16).padStart(2, '0')}`;
 }
 
+// Year → human label for the time scrubber (negative = BCE).
+function formatYear(y: number): string {
+  const v = Math.round(y);
+  return v < 0 ? `${Math.abs(v)} BCE` : `${v} CE`;
+}
+
+// Animate a polygon border "drawing" itself via stroke-dashoffset, then settle
+// into its intended dash pattern. Gives frontiers a premium hand-drawn sweep on
+// load and whenever the time scrubber morphs territories.
+function animateBorderDraw(pathEl: SVGPathElement, finalDash: string | undefined, durationMs = 1100) {
+  let len = 0;
+  try { len = pathEl.getTotalLength(); } catch { return; }
+  if (!len || !Number.isFinite(len)) return;
+  let settled = false;
+
+  pathEl.style.transition = 'none';
+  pathEl.style.strokeDasharray = `${len}`;
+  pathEl.style.strokeDashoffset = `${len}`;
+  pathEl.style.fillOpacity = '0';
+  // Force a reflow so the starting state is committed before transitioning.
+  void pathEl.getBoundingClientRect();
+
+  pathEl.style.transition = `stroke-dashoffset ${durationMs}ms cubic-bezier(0.45,0,0.25,1), fill-opacity ${durationMs}ms ease-out`;
+  pathEl.style.strokeDashoffset = '0';
+  pathEl.style.fillOpacity = '1';
+
+  const settle = () => {
+    if (settled) return;
+    settled = true;
+    pathEl.style.transition = '';
+    pathEl.style.strokeDashoffset = '';
+    // Restore the intended visible dash (parchment '5, 10') or a solid stroke.
+    pathEl.style.strokeDasharray = finalDash ?? '';
+    pathEl.removeEventListener('transitionend', settle);
+  };
+  pathEl.addEventListener('transitionend', settle);
+  // Safety net in case transitionend never fires (detached node, reduced motion).
+  setTimeout(settle, durationMs + 120);
+}
+
 // SVG-based professional marker icons
 function makeMarkerIcon(
   marker: { name: string; type: MarkerType },
@@ -271,6 +311,49 @@ export default function TimelineMapPage() {
   const [layers, setLayers]           = useState<Record<LayerKey, boolean>>({
     territory: true, capitals: true, cities: true, battles: true, ports: true, resources: true, routes: true,
   });
+
+  // ── Time scrubber: drag across history to morph territories ────────────────
+  const chronoTopics = useMemo(
+    () => [...TERRITORY_TOPICS].sort((a, b) => a.yearRange[0] - b.yearRange[0]),
+    [],
+  );
+  const [minYear, maxYear] = useMemo(() => {
+    let lo = Infinity, hi = -Infinity;
+    for (const tp of TERRITORY_TOPICS) {
+      lo = Math.min(lo, tp.yearRange[0]);
+      hi = Math.max(hi, tp.yearRange[1]);
+    }
+    return [lo, hi];
+  }, []);
+  const [scrubYear, setScrubYear] = useState(minYear);
+
+  // Resolve the topic that best matches a given year (nearest range; later
+  // periods win ties so overlapping empires reveal the most recent state).
+  const topicForYear = useCallback((year: number): TerritoryTopic => {
+    let best = chronoTopics[0];
+    let bestDist = Infinity;
+    for (const tp of chronoTopics) {
+      const [s, e] = tp.yearRange;
+      const dist = year < s ? s - year : year > e ? year - e : 0;
+      if (dist <= bestDist) { bestDist = dist; best = tp; }
+    }
+    return best;
+  }, [chronoTopics]);
+
+  function handleScrub(year: number) {
+    setScrubYear(year);
+    if (mode === 'quiz') return;
+    const tp = topicForYear(year);
+    if (tp && tp.id !== selected?.id) setSelected(tp);
+  }
+
+  // Keep the scrubber thumb in sync when a topic is picked from the list.
+  useEffect(() => {
+    if (!selected) return;
+    const [s, e] = selected.yearRange;
+    if (scrubYear < s || scrubYear > e) setScrubYear(Math.round((s + e) / 2));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
 
   // Story mode
   const [storyIdx, setStoryIdx]       = useState(0);
@@ -445,6 +528,9 @@ export default function TimelineMapPage() {
           }
           pathEl.setAttribute('fill', `url(#${gId})`);
           pathEl.setAttribute('fill-opacity', '1');
+
+          // Sweep the frontier in on load / on morph.
+          animateBorderDraw(pathEl, strokeDash);
         });
       });
     }
@@ -984,6 +1070,42 @@ export default function TimelineMapPage() {
               </div>
             </div>
           )}
+
+          {/* ── TIME SCRUBBER ────────────────────────────── */}
+          {mode === 'explore' && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[94%] max-w-2xl">
+              <div className="bg-black/80 backdrop-blur-md rounded-2xl border border-white/15 shadow-2xl px-4 py-3">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-primary" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">
+                      {(t as Record<string, string>).tmap_timeline ?? 'Timeline'}
+                    </span>
+                  </div>
+                  <span className="font-heading font-bold text-primary text-base tabular-nums">{formatYear(scrubYear)}</span>
+                </div>
+                <input
+                  type="range"
+                  min={minYear}
+                  max={maxYear}
+                  step={10}
+                  value={scrubYear}
+                  onChange={e => handleScrub(Number(e.target.value))}
+                  className="tmap-scrubber w-full"
+                  aria-label="Historical timeline scrubber"
+                />
+                <div className="flex items-center justify-between mt-1.5 text-[9px] text-white/40 tabular-nums">
+                  <span>{formatYear(minYear)}</span>
+                  {selected && (
+                    <span className="text-white/75 font-semibold truncate px-2 max-w-[60%]">
+                      {getTitle(selected, language)} · {selected.period}
+                    </span>
+                  )}
+                  <span>{formatYear(maxYear)}</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -1016,6 +1138,37 @@ export default function TimelineMapPage() {
         }
         .tmap-popup-custom .leaflet-popup-tip-container {
           display: none !important;
+        }
+        .tmap-scrubber {
+          -webkit-appearance: none;
+          appearance: none;
+          height: 4px;
+          border-radius: 999px;
+          background: linear-gradient(90deg, rgba(212,175,55,0.75), rgba(212,175,55,0.2));
+          outline: none;
+          cursor: pointer;
+        }
+        .tmap-scrubber::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: #f5d77f;
+          border: 2px solid #1a1a2e;
+          box-shadow: 0 0 0 3px rgba(212,175,55,0.35), 0 2px 6px rgba(0,0,0,0.5);
+          cursor: pointer;
+          transition: transform 0.12s ease;
+        }
+        .tmap-scrubber::-webkit-slider-thumb:hover { transform: scale(1.18); }
+        .tmap-scrubber::-moz-range-thumb {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: #f5d77f;
+          border: 2px solid #1a1a2e;
+          box-shadow: 0 0 0 3px rgba(212,175,55,0.35), 0 2px 6px rgba(0,0,0,0.5);
+          cursor: pointer;
         }
       `}</style>
     </AppShell>
