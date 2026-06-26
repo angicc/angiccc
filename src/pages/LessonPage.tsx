@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Map } from 'lucide-react';
 import { getLessonTheme, type LessonTheme } from '@/lib/lessonTheme';
@@ -20,6 +20,7 @@ import { getTranslatedLesson } from '@/i18n/contentTranslations';
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { fetchWikiImage } from '@/lib/wikiImage';
 import { HistoricalMapModal } from '@/components/shared/HistoricalMapModal';
 
 function proxyImageUrl(url: string): string {
@@ -52,8 +53,34 @@ function LessonBanner({
   const [loaded, setLoaded] = useState(false);
   const [imgFailed, setImgFailed] = useState(false);
   const [src, setSrc] = useState(imageUrl ? proxyImageUrl(imageUrl) : '');
+  const [triedWiki, setTriedWiki] = useState(false);
+
+  // Async banner resolver: when no hardcoded image is supplied — or the
+  // hardcoded one 404s — query the Wikipedia REST API by lesson title for a
+  // high-resolution historical depiction. Keyless and CORS-enabled.
+  useEffect(() => {
+    if (src || triedWiki) return;
+    let cancelled = false;
+    setTriedWiki(true);
+    fetchWikiImage(title, true).then(url => {
+      if (cancelled || !url) return;
+      setImgFailed(false);
+      setSrc(url);
+    });
+    return () => { cancelled = true; };
+  }, [src, triedWiki, title]);
 
   function handleError() {
+    // First failure on the hardcoded asset → fall back to Wikipedia by title.
+    if (!triedWiki) {
+      setTriedWiki(true);
+      setLoaded(false);
+      fetchWikiImage(title, true).then(url => {
+        if (url) { setSrc(url); setImgFailed(false); }
+        else { setImgFailed(true); setLoaded(true); }
+      });
+      return;
+    }
     setImgFailed(true);
     setLoaded(true);
   }

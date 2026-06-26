@@ -15,6 +15,7 @@ import { streamChatResponse } from '@/features/ai/claudeClient';
 import { getTodaysPhilosopher, getTimeUntilNextPhilosopher, hasWonTodaysDebate, recordDebateWin, getTranslatedPhilosopherEra, getTranslatedPhilosopherTagline } from '@/features/philosopher/philosophersData';
 import type { Philosopher } from '@/features/philosopher/philosophersData';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { fetchWikiImage } from '@/lib/wikiImage';
 import { toast } from 'sonner';
 import type { ChatMessage } from '@/types';
 
@@ -80,36 +81,67 @@ function getEraTheme(era: string) {
   return ERA_THEME.modern;
 }
 
+// Avatar source resolution order:
+//   0 = primary imageUrl  →  1 = fallbackImageUrl  →  2 = Wikipedia REST API
+//   →  3 = era-themed letter emblem (never fails)
 function PhilosopherAvatar({ philosopher, size = 28 }: { philosopher: Philosopher; size?: number }) {
-  const [stage, setStage] = useState<0 | 1 | 2>(0); // 0=primary, 1=fallback, 2=era-avatar
+  const [stage, setStage] = useState<0 | 1 | 2 | 3>(0);
+  const [wikiSrc, setWikiSrc] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  // Reset the chain whenever the philosopher changes (daily rotation).
+  useEffect(() => {
+    setStage(0);
+    setWikiSrc(null);
+    setLoaded(false);
+  }, [philosopher.id]);
 
   const src = stage === 0 ? philosopher.imageUrl
     : stage === 1 ? (philosopher.fallbackImageUrl ?? '')
+    : stage === 2 ? (wikiSrc ?? '')
     : '';
 
+  // When the chain reaches the Wikipedia stage, asynchronously resolve a
+  // public-domain depiction keyed on the philosopher's name.
+  useEffect(() => {
+    if (stage !== 2 || wikiSrc) return;
+    let cancelled = false;
+    fetchWikiImage(philosopher.name).then(url => {
+      if (cancelled) return;
+      if (url) setWikiSrc(url);
+      else setStage(3); // nothing public found → graceful letter emblem
+    });
+    return () => { cancelled = true; };
+  }, [stage, wikiSrc, philosopher.name]);
+
   function handleError() {
-    if (stage === 0) {
-      if (philosopher.fallbackImageUrl) {
-        setStage(1);
-      } else {
-        setStage(2);
-      }
-    } else if (stage === 1) {
-      setStage(2);
-    }
+    setLoaded(false);
+    if (stage === 0) setStage(philosopher.fallbackImageUrl ? 1 : 2);
+    else if (stage === 1) setStage(2);
+    else if (stage === 2) setStage(3);
   }
 
-  if (stage < 2 && src) {
+  const theme = getEraTheme(philosopher.era);
+
+  if (stage < 3 && src) {
     return (
       <div
-        className="rounded-full overflow-hidden shrink-0"
-        style={{ width: size, height: size, border: `2px solid ${getEraTheme(philosopher.era).border}55` }}
+        className="rounded-full overflow-hidden shrink-0 relative"
+        style={{ width: size, height: size, border: `2px solid ${theme.border}55` }}
       >
+        {/* Skeleton shimmer prevents layout shift while the photo loads */}
+        {!loaded && (
+          <div
+            className="absolute inset-0 animate-pulse rounded-full"
+            style={{ background: theme.bg }}
+          />
+        )}
         <img
           src={src}
           alt={philosopher.name}
-          className="w-full h-full object-cover object-top"
+          className={`w-full h-full object-cover object-top transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
           referrerPolicy="no-referrer"
+          onLoad={() => setLoaded(true)}
           onError={handleError}
         />
       </div>
@@ -117,7 +149,6 @@ function PhilosopherAvatar({ philosopher, size = 28 }: { philosopher: Philosophe
   }
 
   // Era-appropriate avatar: themed gradient + emblem SVG + initial
-  const theme = getEraTheme(philosopher.era);
   const initial = philosopher.name[0];
   const pad = size * 0.18;
   const iconSize = size * 0.38;
