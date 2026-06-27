@@ -1,5 +1,6 @@
 import type { Language } from '@/i18n/translations';
 import { IMPROVED_POLYGONS } from '@/data/historicalBoundaries';
+import { sanitizeRing } from '@/lib/polygonSanitize';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -996,7 +997,11 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
       { name: 'Battle of Bitola', type: 'battle', lat: 41.03, lng: 21.33, note: 'End of Ottoman rule in Macedonia (1912)', year: 1912 },
     ],
   },
-].map(topic => ({
-  ...topic,
-  polygons: IMPROVED_POLYGONS[topic.id] ?? topic.polygons,
-} as TerritoryTopic)) satisfies TerritoryTopic[];
+].map(topic => {
+  // Prefer the high-detail boundary data, then sanitise every ring so a
+  // self-intersecting (hand-traced) polygon can never render as broken lines
+  // slashing across the map. Simple rings pass through untouched.
+  const rawPolys = IMPROVED_POLYGONS[topic.id] ?? topic.polygons;
+  const polygons = rawPolys?.map(p => ({ ...p, coords: sanitizeRing(p.coords) }));
+  return { ...topic, polygons } as TerritoryTopic;
+}) satisfies TerritoryTopic[];

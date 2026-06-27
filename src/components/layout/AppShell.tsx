@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
@@ -12,7 +12,9 @@ export function AppShell({ children, compact }: { children: React.ReactNode; com
   // Reset scroll position on every route change. The scrollable element is the
   // <main> container (not the window), so we reset it directly; window.scrollTo
   // is a harmless fallback for any browser that scrolls the document instead.
-  useEffect(() => {
+  // useLayoutEffect runs synchronously before the browser paints, so the new
+  // page never flashes at the previous page's scroll offset.
+  useLayoutEffect(() => {
     mainRef.current?.scrollTo({ top: 0, left: 0 });
     window.scrollTo(0, 0);
   }, [pathname]);

@@ -58,7 +58,16 @@ export async function* streamChatResponse(
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error((err as { error?: { message?: string } }).error?.message ?? `API error ${res.status}`);
+    const apiMsg = (err as { error?: { message?: string } }).error?.message ?? `API error ${res.status}`;
+    // Turn the opaque "x-api-key header is required" into an actionable hint.
+    if (/x-api-key/i.test(apiMsg)) {
+      throw new Error(
+        clientKey
+          ? 'Anthropic rejected the request key. Check VITE_ANTHROPIC_API_KEY in your .env.local.'
+          : 'AI Tutor is not configured: set ANTHROPIC_API_KEY in your Netlify environment (production) or VITE_ANTHROPIC_API_KEY in .env.local (local dev).'
+      );
+    }
+    throw new Error(apiMsg);
   }
 
   const reader = res.body!.getReader();

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Map } from 'lucide-react';
 import { getLessonTheme, type LessonTheme } from '@/lib/lessonTheme';
@@ -20,7 +20,6 @@ import { getTranslatedLesson } from '@/i18n/contentTranslations';
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { fetchWikiImage } from '@/lib/wikiImage';
 import { HistoricalMapModal } from '@/components/shared/HistoricalMapModal';
 
 function proxyImageUrl(url: string): string {
@@ -41,10 +40,14 @@ function getFallback(eraId: string): string {
   return ERA_FALLBACKS[eraId] ?? ERA_FALLBACKS.ancient;
 }
 
-// Banner image resolution is a staged chain. Each stage is a real image
-// source; only when every stage is exhausted do we render the generated
-// pattern. Stages: hard-coded asset → Wikipedia by title → era fallback.
-type BannerStage = 'primary' | 'wiki' | 'era' | 'pattern';
+// Banner image resolution is a strict, deterministic chain bound to the lesson
+// itself — NO Wikipedia search, NO randomised fallback array. Stages:
+//   primary → the lesson's own imageUrl (its explicit DB binding)
+//   era     → a fixed image keyed by the lesson's eraId
+//   pattern → the generated SVG texture (only if both images fail to load)
+// Because every stage is a fixed function of (lesson, era), the same lesson
+// always shows the same banner, in every language.
+type BannerStage = 'primary' | 'era' | 'pattern';
 
 function LessonBanner({
   imageUrl, eraId, estimatedMinutes, xpReward, title, subtitle,
@@ -60,32 +63,23 @@ function LessonBanner({
   // Start at whichever stage actually has a source. (This component is keyed by
   // lesson id in the parent, so each lesson gets a fresh, correctly-seeded
   // chain rather than inheriting the previously-viewed lesson's state.)
-  const [stage, setStage] = useState<BannerStage>(imageUrl ? 'primary' : 'wiki');
+  const [stage, setStage] = useState<BannerStage>(imageUrl ? 'primary' : 'era');
   const [src, setSrc] = useState(imageUrl ? proxyImageUrl(imageUrl) : '');
 
-  // Resolve the next stage's source. Wikipedia is async; the era fallback is a
-  // guaranteed-good static URL; the pattern needs no source.
+  // Resolve the era stage's source — a fixed, guaranteed-good static URL.
   useEffect(() => {
-    let cancelled = false;
-    if (stage === 'wiki' && !src) {
-      fetchWikiImage(title, true).then(url => {
-        if (cancelled) return;
-        if (url) { setSrc(url); setLoaded(false); }
-        else { setStage('era'); }
-      });
-    } else if (stage === 'era' && !src) {
+    if (stage === 'era' && !src) {
       setSrc(getFallback(eraId));
       setLoaded(false);
     }
-    return () => { cancelled = true; };
-  }, [stage, src, title, eraId]);
+  }, [stage, src, eraId]);
 
   // An image at the current stage failed to load → advance to the next stage,
   // clearing src so the effect above resolves the new source.
   function handleError() {
     setLoaded(false);
     setSrc('');
-    setStage(s => (s === 'primary' ? 'wiki' : s === 'wiki' ? 'era' : 'pattern'));
+    setStage(s => (s === 'primary' ? 'era' : 'pattern'));
   }
 
   const imgFailed = stage === 'pattern';
@@ -207,6 +201,15 @@ export default function LessonPage() {
     currentUser && lessonId ? isBookmarked(currentUser.id, lessonId) : false
   );
   const [mapOpen, setMapOpen] = useState(false);
+
+  // Force the scroll container back to the top the instant a new lesson mounts
+  // (e.g. clicking "Next Lesson"). Keyed on lessonId so it fires for every
+  // lesson change, not just full route swaps. Runs before paint to avoid a
+  // flash of the previous lesson's scroll position.
+  useLayoutEffect(() => {
+    document.querySelector('main')?.scrollTo({ top: 0, left: 0 });
+    window.scrollTo(0, 0);
+  }, [lessonId]);
 
   const rawLesson = getLessonById(lessonId ?? '');
   const lesson = rawLesson ? getTranslatedLesson(rawLesson, language) : undefined;
