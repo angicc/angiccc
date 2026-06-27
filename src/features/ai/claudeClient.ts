@@ -28,14 +28,20 @@ export async function* streamChatResponse(
   lessonContext?: string,
   systemOverride?: string
 ): AsyncGenerator<string> {
-  const devKey = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
-  const isDev  = import.meta.env.DEV as boolean;
+  // A client-side key (VITE_ANTHROPIC_API_KEY) means we can talk to Anthropic
+  // directly and MUST attach it as the `x-api-key` header — otherwise the API
+  // rejects the call with "x-api-key header is required". When no client key is
+  // present we fall through to the serverless proxy (/api/chat), which injects
+  // the key server-side. This works in dev, `vite preview`, and production
+  // builds alike — the previous `isDev` guard stripped the header from any
+  // non-dev build that still relied on a client key.
+  const clientKey = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
 
-  const url     = isDev && devKey ? ANTHROPIC_URL : PROXY_URL;
+  const url     = clientKey ? ANTHROPIC_URL : PROXY_URL;
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
 
-  if (isDev && devKey) {
-    headers['x-api-key']    = devKey;
+  if (clientKey) {
+    headers['x-api-key']    = clientKey;
     headers['anthropic-version'] = '2023-06-01';
     headers['anthropic-dangerous-direct-browser-access'] = 'true';
   }

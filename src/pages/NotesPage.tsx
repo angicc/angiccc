@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AppShell } from '@/components/layout/AppShell';
 import { useAuth } from '@/features/auth/AuthContext';
 import { LESSONS } from '@/features/content/lessonsData';
+import { getTranslatedLesson } from '@/i18n/contentTranslations';
 import { ERAS } from '@/features/content/erasData';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -142,7 +143,7 @@ export default function NotesPage() {
                     <div key={era.id}>
                       <div className="px-2 py-1 text-xs text-muted-foreground font-semibold">{getEraShortName(era.id, language)}</div>
                       {LESSONS.filter(l => l.eraId === era.id).map(l => (
-                        <SelectItem key={l.id} value={l.id}>{l.title}</SelectItem>
+                        <SelectItem key={l.id} value={l.id}>{getTranslatedLesson(l, language).title}</SelectItem>
                       ))}
                     </div>
                   ))}
@@ -216,7 +217,7 @@ export default function NotesPage() {
                         {lesson && (
                           <div className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
                             <BookOpen className="w-3 h-3" />
-                            {lesson.title}
+                            {getTranslatedLesson(lesson, language).title}
                           </div>
                         )}
                         <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{note.content}</p>

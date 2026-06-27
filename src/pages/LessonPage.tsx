@@ -27,63 +27,68 @@ function proxyImageUrl(url: string): string {
   return url;
 }
 
+// Guaranteed-good era fallback imagery, keyed by eraId. Used as the final
+// real-image stage before we drop to the generated pattern, so every era —
+// not just the few whose hard-coded asset happens to resolve — shows a banner.
 const ERA_FALLBACKS: Record<string, string> = {
-  amber:   'https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=1200&q=60',
-  blue:    'https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&w=1200&q=60',
-  emerald: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1200&q=60',
-  rose:    'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=60',
+  ancient:        'https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=1200&q=60',
+  'middle-ages':  'https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&w=1200&q=60',
+  'early-modern': 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1200&q=60',
+  modern:         'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=60',
 };
 
-function getFallback(bgGradient: string): string {
-  for (const [key, url] of Object.entries(ERA_FALLBACKS)) {
-    if (bgGradient.includes(key)) return url;
-  }
-  return ERA_FALLBACKS.amber;
+function getFallback(eraId: string): string {
+  return ERA_FALLBACKS[eraId] ?? ERA_FALLBACKS.ancient;
 }
 
+// Banner image resolution is a staged chain. Each stage is a real image
+// source; only when every stage is exhausted do we render the generated
+// pattern. Stages: hard-coded asset → Wikipedia by title → era fallback.
+type BannerStage = 'primary' | 'wiki' | 'era' | 'pattern';
+
 function LessonBanner({
-  imageUrl, estimatedMinutes, xpReward, title, subtitle,
+  imageUrl, eraId, estimatedMinutes, xpReward, title, subtitle,
   bookmarked, onBookmark, theme,
 }: {
   imageUrl?: string;
+  eraId: string;
   estimatedMinutes: number; xpReward: number; title: string; subtitle: string;
   bookmarked: boolean; onBookmark: () => void;
   theme: LessonTheme;
 }) {
   const [loaded, setLoaded] = useState(false);
-  const [imgFailed, setImgFailed] = useState(false);
+  // Start at whichever stage actually has a source. (This component is keyed by
+  // lesson id in the parent, so each lesson gets a fresh, correctly-seeded
+  // chain rather than inheriting the previously-viewed lesson's state.)
+  const [stage, setStage] = useState<BannerStage>(imageUrl ? 'primary' : 'wiki');
   const [src, setSrc] = useState(imageUrl ? proxyImageUrl(imageUrl) : '');
-  const [triedWiki, setTriedWiki] = useState(false);
 
-  // Async banner resolver: when no hardcoded image is supplied — or the
-  // hardcoded one 404s — query the Wikipedia REST API by lesson title for a
-  // high-resolution historical depiction. Keyless and CORS-enabled.
+  // Resolve the next stage's source. Wikipedia is async; the era fallback is a
+  // guaranteed-good static URL; the pattern needs no source.
   useEffect(() => {
-    if (src || triedWiki) return;
     let cancelled = false;
-    setTriedWiki(true);
-    fetchWikiImage(title, true).then(url => {
-      if (cancelled || !url) return;
-      setImgFailed(false);
-      setSrc(url);
-    });
-    return () => { cancelled = true; };
-  }, [src, triedWiki, title]);
-
-  function handleError() {
-    // First failure on the hardcoded asset → fall back to Wikipedia by title.
-    if (!triedWiki) {
-      setTriedWiki(true);
-      setLoaded(false);
+    if (stage === 'wiki' && !src) {
       fetchWikiImage(title, true).then(url => {
-        if (url) { setSrc(url); setImgFailed(false); }
-        else { setImgFailed(true); setLoaded(true); }
+        if (cancelled) return;
+        if (url) { setSrc(url); setLoaded(false); }
+        else { setStage('era'); }
       });
-      return;
+    } else if (stage === 'era' && !src) {
+      setSrc(getFallback(eraId));
+      setLoaded(false);
     }
-    setImgFailed(true);
-    setLoaded(true);
+    return () => { cancelled = true; };
+  }, [stage, src, title, eraId]);
+
+  // An image at the current stage failed to load → advance to the next stage,
+  // clearing src so the effect above resolves the new source.
+  function handleError() {
+    setLoaded(false);
+    setSrc('');
+    setStage(s => (s === 'primary' ? 'wiki' : s === 'wiki' ? 'era' : 'pattern'));
   }
+
+  const imgFailed = stage === 'pattern';
 
   return (
     <div
@@ -251,7 +256,9 @@ export default function LessonPage() {
 
         {/* Hero banner */}
         <LessonBanner
+          key={lesson.id}
           imageUrl={lesson.imageUrl}
+          eraId={lesson.eraId}
           estimatedMinutes={lesson.estimatedMinutes}
           xpReward={lesson.xpReward}
           title={lesson.title}

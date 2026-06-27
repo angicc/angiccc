@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, RotateCcw, CheckCircle, XCircle, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,8 +8,9 @@ import { AppShell } from '@/components/layout/AppShell';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { LESSONS } from '@/features/content/lessonsData';
 import { ERAS } from '@/features/content/erasData';
-import { getTranslatedEra } from '@/i18n/contentTranslations';
+import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslations';
 import type { EraId } from '@/types';
+import type { Language } from '@/i18n/translations';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Flashcard {
@@ -19,16 +20,23 @@ interface Flashcard {
   back: string;
 }
 
-function buildFlashcards(): Flashcard[] {
-  return LESSONS.flatMap(lesson =>
-    lesson.keyFacts.map((fact, i) => ({
+// Cards are derived from the *translated* lesson so that both the front
+// (lesson title) and back (key fact) follow the selected language. When a
+// lesson has no translation for the active language, getTranslatedLesson
+// gracefully returns the English source — no mixed/blank state.
+function buildFlashcards(language: Language): Flashcard[] {
+  return LESSONS.flatMap(lesson => {
+    const tl = getTranslatedLesson(lesson, language);
+    return tl.keyFacts.map((fact, i) => ({
       id: `${lesson.id}-${i}`,
       eraId: lesson.eraId,
-      lessonTitle: lesson.title,
+      lessonTitle: tl.title,
       back: fact,
-    }))
-  );
+    }));
+  });
 }
+
+const shuffleDeck = (cards: Flashcard[]) => [...cards].sort(() => Math.random() - 0.5);
 
 const ERA_COLOR: Record<string, string> = {
   ancient: 'text-amber-400 border-amber-400/40',
@@ -37,16 +45,21 @@ const ERA_COLOR: Record<string, string> = {
   modern: 'text-rose-400 border-rose-400/40',
 };
 
-const ALL_CARDS = buildFlashcards();
-
 export default function FlashcardsPage() {
   const { t, language } = useLanguage();
+  const allCards = useMemo(() => buildFlashcards(language), [language]);
   const [eraFilter, setEraFilter] = useState<EraId | 'all'>('all');
-  const [deck, setDeck] = useState(() => [...ALL_CARDS].sort(() => Math.random() - 0.5));
+  const [deck, setDeck] = useState(() => shuffleDeck(allCards));
   const [idx, setIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [known, setKnown] = useState<Set<string>>(new Set());
   const [review, setReview] = useState<Set<string>>(new Set());
+
+  // Rebuild the deck whenever the language changes so card content re-localises.
+  useEffect(() => {
+    setDeck(shuffleDeck(allCards));
+    setIdx(0); setFlipped(false); setKnown(new Set()); setReview(new Set());
+  }, [allCards]);
 
   const filtered = eraFilter === 'all' ? deck : deck.filter(c => c.eraId === eraFilter);
   const card = filtered[idx];
@@ -62,7 +75,7 @@ export default function FlashcardsPage() {
     setTimeout(() => setIdx(i => Math.max(i - 1, 0)), 150);
   }
   function shuffle() {
-    setDeck([...ALL_CARDS].sort(() => Math.random() - 0.5));
+    setDeck(shuffleDeck(allCards));
     setIdx(0); setFlipped(false); setKnown(new Set()); setReview(new Set());
   }
   function markKnown() { setKnown(p => new Set([...p, card.id])); goNext(); }

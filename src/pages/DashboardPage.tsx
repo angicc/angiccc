@@ -15,6 +15,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { recordQuizAttempt } from '@/features/progress/progressStore';
 import { ERAS } from '@/features/content/erasData';
 import { LESSONS } from '@/features/content/lessonsData';
+import { getTranslatedLesson } from '@/i18n/contentTranslations';
 import { useState, useEffect } from 'react';
 import { OnboardingModal, hasCompletedOnboarding } from '@/components/shared/OnboardingModal';
 
@@ -30,7 +31,7 @@ const ERA_SHORT_KEY: Record<string, 'era_short_ancient' | 'era_short_medieval' |
 
 export default function DashboardPage() {
   const { currentUser, progress, refreshProgress } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [xpAmt, setXpAmt] = useState(0);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -43,7 +44,8 @@ export default function DashboardPage() {
 
   if (!progress || !currentUser) return null;
 
-  const nextLesson = LESSONS.find(l => !progress.completedLessons.includes(l.id));
+  const nextLessonRaw = LESSONS.find(l => !progress.completedLessons.includes(l.id));
+  const nextLesson = nextLessonRaw ? getTranslatedLesson(nextLessonRaw, language) : undefined;
   const avgScore = Object.values(progress.quizScores).length > 0
     ? Math.round(Object.values(progress.quizScores).reduce((a,b) => a+b, 0) / Object.values(progress.quizScores).length)
     : 0;

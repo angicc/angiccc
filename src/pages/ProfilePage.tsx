@@ -23,6 +23,7 @@ import { useTheme } from '@/components/ThemeProvider';
 import { ACHIEVEMENTS } from '@/features/progress/xpSystem';
 import { getBookmarks } from '@/features/bookmarks/bookmarkStore';
 import { LESSONS } from '@/features/content/lessonsData';
+import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslations';
 import { ERAS } from '@/features/content/erasData';
 import { getVideoXp } from '@/features/videoReview/videoReviewStore';
 import { getChessRank, getXpToNextRank } from '@/features/ranks/chessRanks';
@@ -70,7 +71,7 @@ function FakeQRCode() {
 }
 
 export default function ProfilePage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { currentUser, progress, startLogout } = useAuth();
   const { updateUsername, resetProgress, updateEmail, updatePassword } = useAuthInternal();
   const { subscription } = useSubscription();
@@ -311,8 +312,10 @@ export default function ProfilePage() {
               </div>
             ) : (
               <div className="space-y-2">
-                {bookmarkedLessons.map(lesson => {
-                  const era = ERAS.find(e => e.id === lesson.eraId);
+                {bookmarkedLessons.map(rawLesson => {
+                  const lesson = getTranslatedLesson(rawLesson, language);
+                  const eraRaw = ERAS.find(e => e.id === lesson.eraId);
+                  const era = eraRaw ? getTranslatedEra(eraRaw, language) : undefined;
                   return (
                     <Card key={lesson.id} className="cursor-pointer hover:border-primary/40 hover:-translate-y-0.5 transition-all" onClick={() => navigate(`/eras/${lesson.eraId}/lessons/${lesson.id}`)}>
                       <CardContent className="py-3 px-4 flex items-center gap-3">

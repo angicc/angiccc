@@ -9,7 +9,7 @@ import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { useAuth } from '@/features/auth/AuthContext';
 import { getSortedTimeline } from '@/features/content/timelineData';
 import { ERAS } from '@/features/content/erasData';
-import { getTranslatedEra } from '@/i18n/contentTranslations';
+import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslations';
 import { getTranslatedTimelineEvent } from '@/i18n/timelineTranslations';
 import { LESSONS } from '@/features/content/lessonsData';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -162,7 +162,8 @@ export default function TimelinePage() {
               const tEvent = getTranslatedTimelineEvent(event, language);
               const isMajor = event.significance === 'major';
               const lessonId = EVENT_TO_LESSON[event.id];
-              const lesson = lessonId ? LESSONS.find(l => l.id === lessonId) : null;
+              const lessonRaw = lessonId ? LESSONS.find(l => l.id === lessonId) : null;
+              const lesson = lessonRaw ? getTranslatedLesson(lessonRaw, language) : null;
               const locked = lesson ? !canLesson(lesson.order) : false;
               const eraRaw = ERAS.find(e => e.id === event.eraId);
               const eraName = eraRaw ? getTranslatedEra(eraRaw, language).shortName : '';
