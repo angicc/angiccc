@@ -148,8 +148,9 @@ function LessonBanner({
           onError={handleError}
         />
       )}
-      {/* Dark-to-transparent overlay — stronger at bottom for text legibility */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 z-[3]" />
+      {/* Dark-to-transparent overlay — opaque at bottom to guarantee title
+          legibility over any banner image, regardless of its brightness. */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/15 z-[3]" />
 
       {/* Category watermark */}
       <div className="absolute top-6 right-6 text-7xl opacity-[0.12] select-none pointer-events-none z-10 leading-none">
@@ -186,9 +187,9 @@ function LessonBanner({
         </div>
         <h1
           className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight"
-          style={{ textShadow: '0 2px 16px rgba(212,175,55,0.55), 0 1px 4px rgba(0,0,0,0.9)' }}
+          style={{ textShadow: '0 2px 18px rgba(0,0,0,0.95), 0 1px 4px rgba(0,0,0,1), 0 0 28px rgba(212,175,55,0.45)' }}
         >{title}</h1>
-        <p className="text-white/80 text-sm mt-1">{subtitle}</p>
+        <p className="text-white/85 text-sm mt-1" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.95)' }}>{subtitle}</p>
       </div>
     </div>
   );

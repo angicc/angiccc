@@ -215,7 +215,10 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
         label: 'Roman Empire at Peak (117 CE)',
         color: '#ef4444',
         fillOpacity: 0.2,
-        coords: [[54,0],[50,10],[47,18],[44,24],[41,32],[38,38],[35,38],[32,36],[30,34],[28,32],[24,30],[22,30],[21,36],[22,42],[29,33],[30,25],[30,16],[32,14],[34,8],[37,6],[37,-2],[39,-9],[43,-8],[44,-6],[47,4],[51,4],[54,0]],
+        // Clean single ring encircling the Mediterranean (no self-intersection):
+        // Britannia → Gaul/Rhine → Dacia/Black Sea → Anatolia → Levant → Egypt
+        // → North Africa → Mauretania → Hispania → back to Britannia.
+        coords: [[54,-2],[51,3],[49,9],[47,18],[45,25],[43,28],[40,35],[36,36],[33,36],[31,34],[30,32],[31,28],[31,20],[33,13],[35,8],[36,2],[35,-3],[36,-6],[40,-9],[44,-9],[48,-4],[51,0],[54,-2]],
       },
     ],
     routes: [
