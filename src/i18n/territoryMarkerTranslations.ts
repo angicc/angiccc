@@ -13,6 +13,7 @@ export const MARKER_TYPE_I18N: Record<string, MT> = {
   landmark: { es: 'monumento', ru: 'памятник', mk: 'знаменитост' },
   trade:    { es: 'comercio', ru: 'торговля', mk: 'трговија' },
   military: { es: 'militar', ru: 'военный', mk: 'воен' },
+  religious:{ es: 'religioso', ru: 'религиозный', mk: 'верски' },
 };
 
 // ── Marker name translations (proper nouns in local form) ─────────────────────

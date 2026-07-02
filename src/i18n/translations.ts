@@ -259,6 +259,7 @@ type TranslationKeys = {
   tmap_fog_locked: string; tmap_fog_scouted: string;
   tmap_tel_faction: string; tmap_tel_garrison: string; tmap_tel_resources: string;
   tmap_tel_hazard: string; tmap_tel_battles: string; tmap_tel_none: string;
+  tmap_timeline: string; year_bce: string; year_ce: string;
   tmap_hazard_dust: string; tmap_hazard_frost: string; tmap_hazard_storm: string; tmap_hazard_scorched: string;
   tmap_chokepoint: string;
   // ── Progress achievements summary ──────────────────────────────
@@ -573,6 +574,7 @@ export const T: Translations = {
     tmap_fog_locked: 'Unexplored region — click to scout', tmap_fog_scouted: 'Region scouted!',
     tmap_tel_faction: 'Faction', tmap_tel_garrison: 'Garrison', tmap_tel_resources: 'Resources',
     tmap_tel_hazard: 'Hazard', tmap_tel_battles: 'Battles', tmap_tel_none: 'None recorded',
+    tmap_timeline: 'Timeline', year_bce: 'BCE', year_ce: 'CE',
     tmap_hazard_dust: 'Dust storms', tmap_hazard_frost: 'Frost & famine', tmap_hazard_storm: 'Sea storms', tmap_hazard_scorched: 'Scorched ground',
     tmap_chokepoint: 'Strategic chokepoint',
     prog_ach_summary: 'You have unlocked {unlocked} of {total} achievements.',
@@ -861,6 +863,7 @@ export const T: Translations = {
     tmap_fog_locked: 'Región inexplorada — haz clic para explorar', tmap_fog_scouted: '¡Región explorada!',
     tmap_tel_faction: 'Facción', tmap_tel_garrison: 'Guarnición', tmap_tel_resources: 'Recursos',
     tmap_tel_hazard: 'Peligro', tmap_tel_battles: 'Batallas', tmap_tel_none: 'Sin registros',
+    tmap_timeline: 'Línea de Tiempo', year_bce: 'a.C.', year_ce: 'd.C.',
     tmap_hazard_dust: 'Tormentas de polvo', tmap_hazard_frost: 'Heladas y hambruna', tmap_hazard_storm: 'Tormentas marinas', tmap_hazard_scorched: 'Tierra quemada',
     tmap_chokepoint: 'Punto estratégico',
     prog_ach_summary: 'Has desbloqueado {unlocked} de {total} logros.',
@@ -1149,6 +1152,7 @@ export const T: Translations = {
     tmap_fog_locked: 'Неизведанный регион — нажмите для разведки', tmap_fog_scouted: 'Регион разведан!',
     tmap_tel_faction: 'Фракция', tmap_tel_garrison: 'Гарнизон', tmap_tel_resources: 'Ресурсы',
     tmap_tel_hazard: 'Опасность', tmap_tel_battles: 'Битвы', tmap_tel_none: 'Нет данных',
+    tmap_timeline: 'Шкала Времени', year_bce: 'до н.э.', year_ce: 'н.э.',
     tmap_hazard_dust: 'Пыльные бури', tmap_hazard_frost: 'Мороз и голод', tmap_hazard_storm: 'Морские штормы', tmap_hazard_scorched: 'Выжженная земля',
     tmap_chokepoint: 'Стратегическая точка',
     prog_ach_summary: 'Вы разблокировали {unlocked} из {total} достижений.',
@@ -1437,6 +1441,7 @@ export const T: Translations = {
     tmap_fog_locked: 'Неистражен регион — кликнете за извидување', tmap_fog_scouted: 'Регионот е извидан!',
     tmap_tel_faction: 'Фракција', tmap_tel_garrison: 'Гарнизон', tmap_tel_resources: 'Ресурси',
     tmap_tel_hazard: 'Опасност', tmap_tel_battles: 'Битки', tmap_tel_none: 'Нема податоци',
+    tmap_timeline: 'Временска Линија', year_bce: 'п.н.е.', year_ce: 'н.е.',
     tmap_hazard_dust: 'Песочни бури', tmap_hazard_frost: 'Мраз и глад', tmap_hazard_storm: 'Морски бури', tmap_hazard_scorched: 'Изгорена земја',
     tmap_chokepoint: 'Стратешка точка',
     prog_ach_summary: 'Отклучивте {unlocked} од {total} достигнувања.',

@@ -189,10 +189,10 @@ function getBorderOpacity(tier: BorderTier, zoom: number): number {
   return BORDER_STYLES[tier].opacity;
 }
 
-// Year → human label for the time scrubber (negative = BCE).
-function formatYear(y: number): string {
+// Year → locale-aware human label (negative = before common era).
+function formatYear(y: number, bceLabel: string, ceLabel: string): string {
   const v = Math.round(y);
-  return v < 0 ? `${Math.abs(v)} BCE` : `${v} CE`;
+  return v < 0 ? `${Math.abs(v)} ${bceLabel}` : `${v} ${ceLabel}`;
 }
 
 // Animate a polygon border "drawing" itself via stroke-dashoffset, then settle
@@ -637,7 +637,15 @@ export default function TimelineMapPage() {
         } as L.PathOptions);
 
         // ── Hover telemetry portal card + 10%-accent glow ────────────────────
-        const telemetry = deriveTelemetry(selected, poly);
+        // Telemetry is derived from raw data, then localized at the render
+        // boundary: faction falls back to the translated topic title and
+        // resource names resolve through the marker-name dictionary.
+        const rawTelemetry = deriveTelemetry(selected, poly);
+        const telemetry: RegionTelemetry = {
+          ...rawTelemetry,
+          faction: poly.label ?? getTitle(selected, language),
+          resources: rawTelemetry.resources.map(n => getTranslatedMarkerName(n, language)),
+        };
         mainPoly.on('mousemove', (e: L.LeafletMouseEvent) => {
           const pt = map.latLngToContainerPoint(e.latlng);
           setHoverCard({ x: pt.x, y: pt.y, telemetry, locked: !isExplored });
@@ -735,7 +743,9 @@ export default function TimelineMapPage() {
           weight: 2.5,
           dashArray: dash,
           opacity: 0.8,
-        }).bindPopup(`<strong>${route.name}</strong><br/><em style="font-size:11px;color:#888">${route.type}</em>`).addTo(lg);
+        }).bindPopup(
+          `<strong style="overflow-wrap:break-word">${escapeHtml(getTranslatedMarkerName(route.name, language))}</strong><br/><em style="font-size:11px;color:#888">${escapeHtml(getTranslatedMarkerType(route.type, language))}</em>`
+        ).addTo(lg);
       });
 
       // Pulsing chokepoints where supply lines cross — tactical bottlenecks.
@@ -789,7 +799,7 @@ export default function TimelineMapPage() {
       const tNote = getTranslatedMarkerNote(m.name, m.note, language);
       const tType = getTranslatedMarkerType(m.type, language);
       const color = MARKER_COLORS[m.type];
-      const yearStr = m.year ? (m.year < 0 ? `${Math.abs(m.year)} BCE` : `${m.year} CE`) : '';
+      const yearStr = m.year ? formatYear(m.year, t.year_bce, t.year_ce) : '';
 
       const marker = L.marker([m.lat, m.lng], {
         icon: makeMarkerIcon(m, styleId, tName, hideLabelSet.has(idx)),
@@ -1228,7 +1238,7 @@ export default function TimelineMapPage() {
                       </div>
                       <div className="flex items-start justify-between gap-2">
                         <span className="text-white/50 shrink-0">{t.tmap_tel_resources}</span>
-                        <span className="text-right text-white/85 leading-snug">
+                        <span className="text-right text-white/85 leading-snug min-w-0 break-words">
                           {hoverCard.telemetry.resources.length > 0 ? hoverCard.telemetry.resources.join(', ') : t.tmap_tel_none}
                         </span>
                       </div>
@@ -1286,10 +1296,10 @@ export default function TimelineMapPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="font-bold text-sm">{getTranslatedMarkerName(storyCurrentMarker.name, language)}</span>
+                    <span className="font-bold text-sm truncate">{getTranslatedMarkerName(storyCurrentMarker.name, language)}</span>
                     {storyCurrentMarker.year && (
-                      <span className="text-white/50 text-[10px]">
-                        {storyCurrentMarker.year < 0 ? Math.abs(storyCurrentMarker.year) + ' BCE' : storyCurrentMarker.year + ' CE'}
+                      <span className="text-white/50 text-[10px] shrink-0">
+                        {formatYear(storyCurrentMarker.year, t.year_bce, t.year_ce)}
                       </span>
                     )}
                   </div>
@@ -1334,7 +1344,7 @@ export default function TimelineMapPage() {
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[92%] max-w-lg bg-black/88 backdrop-blur-md text-white p-4 rounded-2xl border border-white/15 shadow-2xl">
                 <div className="flex items-center gap-2 mb-2">
                   <HelpCircle className="w-4 h-4 text-primary shrink-0" />
-                  <p className="font-semibold text-sm leading-snug">{tq.question}</p>
+                  <p className="font-semibold text-sm leading-snug flex-1 min-w-0 break-words">{tq.question}</p>
                   {quizTotal > 0 && <span className="ml-auto shrink-0 text-xs text-white/50">{quizScore}/{quizTotal}</span>}
                 </div>
                 <div className="grid grid-cols-2 gap-2">
@@ -1389,11 +1399,11 @@ export default function TimelineMapPage() {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-primary" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">
-                      {(t as Record<string, string>).tmap_timeline ?? 'Timeline'}
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/50 truncate">
+                      {t.tmap_timeline}
                     </span>
                   </div>
-                  <span className="font-heading font-bold text-primary text-base tabular-nums">{formatYear(scrubYear)}</span>
+                  <span className="font-heading font-bold text-primary text-base tabular-nums shrink-0">{formatYear(scrubYear, t.year_bce, t.year_ce)}</span>
                 </div>
                 <input
                   type="range"
@@ -1403,16 +1413,16 @@ export default function TimelineMapPage() {
                   value={scrubYear}
                   onChange={e => handleScrub(Number(e.target.value))}
                   className="tmap-scrubber w-full"
-                  aria-label="Historical timeline scrubber"
+                  aria-label={t.tmap_timeline}
                 />
                 <div className="flex items-center justify-between mt-1.5 text-[9px] text-white/40 tabular-nums">
-                  <span>{formatYear(minYear)}</span>
+                  <span className="shrink-0">{formatYear(minYear, t.year_bce, t.year_ce)}</span>
                   {selected && (
                     <span className="text-white/75 font-semibold truncate px-2 max-w-[60%]">
                       {getTitle(selected, language)} · {selected.period}
                     </span>
                   )}
-                  <span>{formatYear(maxYear)}</span>
+                  <span className="shrink-0">{formatYear(maxYear, t.year_bce, t.year_ce)}</span>
                 </div>
               </div>
             </div>
