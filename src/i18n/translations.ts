@@ -262,6 +262,10 @@ type TranslationKeys = {
   tmap_tel_hazard: string; tmap_tel_battles: string; tmap_tel_none: string;
   tmap_hazard_dust: string; tmap_hazard_frost: string; tmap_hazard_storm: string; tmap_hazard_scorched: string;
   tmap_chokepoint: string;
+  // ── Progress achievements summary ──────────────────────────────
+  prog_ach_summary: string; prog_ach_remaining: string;
+  // ── Search dialog ──────────────────────────────────────────────
+  search_no_results: string; search_min_chars: string;
 };
 
 type Translations = Record<Language, TranslationKeys>;
@@ -572,6 +576,9 @@ export const T: Translations = {
     tmap_tel_hazard: 'Hazard', tmap_tel_battles: 'Battles', tmap_tel_none: 'None recorded',
     tmap_hazard_dust: 'Dust storms', tmap_hazard_frost: 'Frost & famine', tmap_hazard_storm: 'Sea storms', tmap_hazard_scorched: 'Scorched ground',
     tmap_chokepoint: 'Strategic chokepoint',
+    prog_ach_summary: 'You have unlocked {unlocked} of {total} achievements.',
+    prog_ach_remaining: '{count} still to earn!',
+    search_no_results: 'No results for', search_min_chars: 'Type at least 2 characters to search',
   },
 
   es: {
@@ -857,6 +864,9 @@ export const T: Translations = {
     tmap_tel_hazard: 'Peligro', tmap_tel_battles: 'Batallas', tmap_tel_none: 'Sin registros',
     tmap_hazard_dust: 'Tormentas de polvo', tmap_hazard_frost: 'Heladas y hambruna', tmap_hazard_storm: 'Tormentas marinas', tmap_hazard_scorched: 'Tierra quemada',
     tmap_chokepoint: 'Punto estratégico',
+    prog_ach_summary: 'Has desbloqueado {unlocked} de {total} logros.',
+    prog_ach_remaining: '¡Quedan {count} por conseguir!',
+    search_no_results: 'Sin resultados para', search_min_chars: 'Escribe al menos 2 caracteres para buscar',
   },
 
   ru: {
@@ -1142,6 +1152,9 @@ export const T: Translations = {
     tmap_tel_hazard: 'Опасность', tmap_tel_battles: 'Битвы', tmap_tel_none: 'Нет данных',
     tmap_hazard_dust: 'Пыльные бури', tmap_hazard_frost: 'Мороз и голод', tmap_hazard_storm: 'Морские штормы', tmap_hazard_scorched: 'Выжженная земля',
     tmap_chokepoint: 'Стратегическая точка',
+    prog_ach_summary: 'Вы разблокировали {unlocked} из {total} достижений.',
+    prog_ach_remaining: 'Осталось получить ещё {count}!',
+    search_no_results: 'Ничего не найдено по запросу', search_min_chars: 'Введите минимум 2 символа для поиска',
   },
 
   mk: {
@@ -1427,5 +1440,8 @@ export const T: Translations = {
     tmap_tel_hazard: 'Опасност', tmap_tel_battles: 'Битки', tmap_tel_none: 'Нема податоци',
     tmap_hazard_dust: 'Песочни бури', tmap_hazard_frost: 'Мраз и глад', tmap_hazard_storm: 'Морски бури', tmap_hazard_scorched: 'Изгорена земја',
     tmap_chokepoint: 'Стратешка точка',
+    prog_ach_summary: 'Отклучивте {unlocked} од {total} достигнувања.',
+    prog_ach_remaining: 'Уште {count} за освојување!',
+    search_no_results: 'Нема резултати за', search_min_chars: 'Внесете најмалку 2 знаци за пребарување',
   },
 };

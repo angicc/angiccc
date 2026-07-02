@@ -16,7 +16,7 @@ import type { Achievement } from '@/types';
 import { markLessonComplete } from '@/features/progress/progressStore';
 import { getLessonById, getEraLessons } from '@/features/content/lessonsData';
 import { getEraById } from '@/features/content/erasData';
-import { getTranslatedLesson } from '@/i18n/contentTranslations';
+import { getTranslatedLesson, getTranslatedEra } from '@/i18n/contentTranslations';
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -213,7 +213,8 @@ export default function LessonPage() {
 
   const rawLesson = getLessonById(lessonId ?? '');
   const lesson = rawLesson ? getTranslatedLesson(rawLesson, language) : undefined;
-  const era = getEraById(eraId ?? '');
+  const eraRaw = getEraById(eraId ?? '');
+  const era = eraRaw ? getTranslatedEra(eraRaw, language) : eraRaw;
   if (!lesson || !era) return <AppShell><div className="text-center py-20 text-muted-foreground">Lesson not found.</div></AppShell>;
 
   const eraLessonsRaw = getEraLessons(eraId ?? '');

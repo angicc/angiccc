@@ -12,6 +12,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { QUIZZES } from '@/features/quiz/quizData';
 import { ERAS } from '@/features/content/erasData';
+import { getTranslatedEra } from '@/i18n/contentTranslations';
 import { recordQuizAttempt } from '@/features/progress/progressStore';
 import { getSmartQuizStats, recordSmartQuizSession } from '@/features/smartQuiz/smartQuizStats';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -86,7 +87,7 @@ type Phase = 'intro' | 'question' | 'explain' | 'done';
 export default function SmartQuizPage() {
   const { progress, currentUser, refreshProgress } = useAuth();
   const { subscription } = useSubscription();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const tier = subscription?.tier ?? 'free';
 
   // Build flat question pool with era metadata
@@ -95,9 +96,9 @@ export default function SmartQuizPage() {
       quiz.questions.map(q => ({
         ...q,
         eraId: quiz.eraId,
-        eraName: ERAS.find(e => e.id === quiz.eraId)?.shortName ?? quiz.eraId,
+        eraName: (() => { const e = ERAS.find(er => er.id === quiz.eraId); return e ? getTranslatedEra(e, language).shortName : quiz.eraId; })(),
       }))
-    ), []);
+    ), [language]);
 
   const [phase, setPhase]     = useState<Phase>('intro');
   const [session, setSession] = useState<QuestionWithMeta[]>([]);
@@ -234,8 +235,8 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
         const score = progress.quizScores[q.id];
         return score !== undefined && score < 70;
       })
-      .map(q => ({ eraId: q.eraId, name: ERAS.find(e => e.id === q.eraId)?.shortName ?? '', score: progress.quizScores[q.id] }));
-  }, [progress]);
+      .map(q => { const e = ERAS.find(er => er.id === q.eraId); return { eraId: q.eraId, name: e ? getTranslatedEra(e, language).shortName : '', score: progress.quizScores[q.id] }; });
+  }, [progress, language]);
 
   if (tier === 'free') {
     return (
@@ -355,7 +356,7 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
                   });
                 });
                 const eraRows = Object.entries(eraAgg).map(([eraId, d]) => ({
-                  eraId, name: ERAS.find(e => e.id === eraId)?.shortName ?? eraId,
+                  eraId, name: (() => { const e = ERAS.find(er => er.id === eraId); return e ? getTranslatedEra(e, language).shortName : eraId; })(),
                   pct: Math.round((d.correct / d.total) * 100), correct: d.correct, total: d.total,
                 }));
                 return (
