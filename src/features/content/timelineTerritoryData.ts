@@ -1,6 +1,6 @@
 import type { Language } from '@/i18n/translations';
 import { IMPROVED_POLYGONS } from '@/data/historicalBoundaries';
-import { sanitizeRing } from '@/lib/polygonSanitize';
+import { refineRing } from '@/lib/polygonSanitize';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -998,10 +998,14 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     ],
   },
 ].map(topic => {
-  // Prefer the high-detail boundary data, then sanitise every ring so a
-  // self-intersecting (hand-traced) polygon can never render as broken lines
-  // slashing across the map. Simple rings pass through untouched.
+  // Prefer the high-detail boundary data, then run every ring through the
+  // full rectification pipeline: coordinate clamping/wrapping, duplicate-vertex
+  // collapse, self-intersection repair, corner smoothing, and explicit closure.
+  // A hand-traced polygon can never render as broken lines slashing across the
+  // map; degenerate rings (< 3 distinct valid vertices) are dropped entirely.
   const rawPolys = IMPROVED_POLYGONS[topic.id] ?? topic.polygons;
-  const polygons = rawPolys?.map(p => ({ ...p, coords: sanitizeRing(p.coords) }));
+  const polygons = rawPolys
+    ?.map(p => ({ ...p, coords: refineRing(p.coords) }))
+    .filter(p => p.coords.length >= 4); // closed ring = 3 vertices + closing point
   return { ...topic, polygons } as TerritoryTopic;
 }) satisfies TerritoryTopic[];

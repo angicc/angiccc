@@ -165,16 +165,21 @@ function getFillOpacityForZoom(zoom: number): number {
   return 0.14;
 }
 
-// ── 3-tier border system ────────────────────────────────────────────────────
+// ── 3-tier border system + 60-30-10 colour layering ─────────────────────────
+// 60% — neutral dark canvas (the dark Carto basemap tiles).
+// 30% — structural layer: resting territory borders in calm slate tones.
+// 10% — the brightest accent (gold) is reserved STRICTLY for interaction:
+//        glowing active/hovered borders, player-drawn vector paths, map pins.
 // PRIMARY:   country/empire boundaries — always visible
 // SECONDARY: province/region subdivisions — visible at zoom ≥ 5
-// TERTIARY:  internal/historical divisions — visible at zoom ≥ 7, dashed
+// TERTIARY:  internal/historical divisions — visible at zoom ≥ 7
 // All tiers use clean, solid strokes — no dashes — for crisp professional
 // frontiers. Tiers differ only in weight/opacity/colour by zoom level.
+const ACCENT_GOLD = '#f5d77f';
 const BORDER_STYLES = {
-  primary:   { weight: 2.0, color: '#e2e8f0', opacity: 0.85, dashArray: undefined as string | undefined },
-  secondary: { weight: 1.25, color: '#94a3b8', opacity: 0.65, dashArray: undefined as string | undefined },
-  tertiary:  { weight: 0.75, color: '#64748b', opacity: 0.45, dashArray: undefined as string | undefined },
+  primary:   { weight: 2.0, color: '#cbd5e1', opacity: 0.72, dashArray: undefined as string | undefined },
+  secondary: { weight: 1.25, color: '#94a3b8', opacity: 0.6, dashArray: undefined as string | undefined },
+  tertiary:  { weight: 0.75, color: '#64748b', opacity: 0.42, dashArray: undefined as string | undefined },
 } as const;
 type BorderTier = keyof typeof BORDER_STYLES;
 
@@ -637,15 +642,17 @@ export default function TimelineMapPage() {
           const pt = map.latLngToContainerPoint(e.latlng);
           setHoverCard({ x: pt.x, y: pt.y, telemetry, locked: !isExplored });
         });
+        // Active border = the 10% accent tier: gold stroke + gold glow. Fogged
+        // regions stay in the neutral structural scale even while hovered.
         mainPoly.on('mouseover', () => {
           const el = mainPoly.getElement() as SVGPathElement | null;
-          if (el) el.style.filter = `drop-shadow(0 0 7px ${isExplored ? poly.color : '#94a3b8'})`;
-          mainPoly.setStyle({ weight: strokeWeight + 0.9 });
+          if (el) el.style.filter = `drop-shadow(0 0 7px ${isExplored ? ACCENT_GOLD : '#94a3b8'})`;
+          mainPoly.setStyle({ weight: strokeWeight + 0.9, color: isExplored ? ACCENT_GOLD : strokeColor });
         });
         mainPoly.on('mouseout', () => {
           const el = mainPoly.getElement() as SVGPathElement | null;
           if (el) el.style.filter = '';
-          mainPoly.setStyle({ weight: strokeWeight });
+          mainPoly.setStyle({ weight: strokeWeight, color: strokeColor });
           setHoverCard(null);
         });
         // Scouting: clicking an unexplored claim lifts its fog (annotation

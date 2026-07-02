@@ -91,3 +91,100 @@ export function convexHull(points: LatLng[]): LatLng[] {
 export function sanitizeRing(ring: LatLng[]): LatLng[] {
   return isSimpleRing(ring) ? ring : convexHull(ring);
 }
+
+// Web-Mercator latitude limit — coordinates beyond it project to infinity and
+// draw as broken vectors shooting off the canvas.
+const MERCATOR_LAT_LIMIT = 85.05;
+const EPS = 1e-9;
+
+/**
+ * Normalize raw hand-digitised coordinates into a well-formed OPEN ring:
+ *  - drop non-finite points,
+ *  - clamp latitude into the Web-Mercator projectable range,
+ *  - wrap longitude into [-180, 180],
+ *  - collapse consecutive duplicate vertices (zero-length edges),
+ *  - strip a redundant closing vertex so downstream passes see an open ring.
+ */
+export function normalizeRing(ring: LatLng[]): LatLng[] {
+  const out: LatLng[] = [];
+  for (const p of ring) {
+    if (!Array.isArray(p) || !Number.isFinite(p[0]) || !Number.isFinite(p[1])) continue;
+    const lat = Math.max(-MERCATOR_LAT_LIMIT, Math.min(MERCATOR_LAT_LIMIT, p[0]));
+    let lng = p[1];
+    while (lng > 180) lng -= 360;
+    while (lng < -180) lng += 360;
+    const prev = out[out.length - 1];
+    if (prev && Math.abs(prev[0] - lat) < EPS && Math.abs(prev[1] - lng) < EPS) continue;
+    out.push([lat, lng]);
+  }
+  if (out.length > 1) {
+    const first = out[0];
+    const last = out[out.length - 1];
+    if (Math.abs(first[0] - last[0]) < EPS && Math.abs(first[1] - last[1]) < EPS) out.pop();
+  }
+  return out;
+}
+
+/**
+ * Chaikin corner-cutting: each pass replaces every vertex with two points at
+ * 1/4 and 3/4 along its outgoing edge, rounding hand-traced jagged frontiers
+ * into smooth curves while preserving the overall shape. Operates on the ring
+ * as a CLOSED loop (the last edge wraps to the first vertex) and returns an
+ * explicitly closed ring (first point repeated at the end).
+ */
+export function chaikinSmooth(ring: LatLng[], iterations = 1): LatLng[] {
+  let pts = ring.slice();
+  // Work on the open form; closure is re-established at the end.
+  if (
+    pts.length > 1 &&
+    Math.abs(pts[0][0] - pts[pts.length - 1][0]) < EPS &&
+    Math.abs(pts[0][1] - pts[pts.length - 1][1]) < EPS
+  ) {
+    pts.pop();
+  }
+  for (let it = 0; it < iterations && pts.length >= 3; it++) {
+    const next: LatLng[] = [];
+    for (let i = 0; i < pts.length; i++) {
+      const p = pts[i];
+      const q = pts[(i + 1) % pts.length]; // wraps: the closing edge is smoothed too
+      next.push([0.75 * p[0] + 0.25 * q[0], 0.75 * p[1] + 0.25 * q[1]]);
+      next.push([0.25 * p[0] + 0.75 * q[0], 0.25 * p[1] + 0.75 * q[1]]);
+    }
+    pts = next;
+  }
+  if (pts.length >= 3) pts.push([pts[0][0], pts[0][1]]); // explicit closure
+  return pts;
+}
+
+/** Explicitly close an open ring (repeat the first vertex at the end). */
+function closeRing(pts: LatLng[]): LatLng[] {
+  const out = pts.slice();
+  const first = out[0];
+  const last = out[out.length - 1];
+  if (Math.abs(first[0] - last[0]) > EPS || Math.abs(first[1] - last[1]) > EPS) {
+    out.push([first[0], first[1]]);
+  }
+  return out;
+}
+
+/**
+ * Full geometry rectification pipeline for a territory boundary:
+ * normalize → guarantee simplicity → smooth → verify → explicitly close.
+ *
+ * Chaikin smoothing preserves simplicity for well-behaved rings, but a ring
+ * with a near-self-touching passage can have its corner chords pinched into a
+ * proper crossing. Every stage's output is therefore re-verified, falling back
+ * deterministically: smoothed ring → unsmoothed simple ring → convex hull.
+ * Returns [] for degenerate input (fewer than 3 distinct valid vertices), so
+ * callers can filter out rings that could never form an area.
+ */
+export function refineRing(ring: LatLng[]): LatLng[] {
+  const normalized = normalizeRing(ring);
+  if (normalized.length < 3) return [];
+  const simple = sanitizeRing(normalized);
+  const smoothed = chaikinSmooth(simple, 1);
+  if (isSimpleRing(smoothed)) return smoothed;
+  const closed = closeRing(simple);
+  if (isSimpleRing(closed)) return closed;
+  return convexHull(normalized);
+}
