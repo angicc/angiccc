@@ -47,7 +47,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
   const rank = getChessRank(videoXp);
 
   return (
-    <aside className={cn('flex flex-col w-64 shrink-0 border-r border-border bg-card h-screen sticky top-0', className)}>
+    <aside className={cn('flex flex-col w-64 shrink-0 border-r glass-panel grain-overlay h-screen sticky top-0', className)}>
       {/* Logo + user identity */}
       <div className="px-4 py-5 border-b border-border space-y-3">
         <Logo />
@@ -79,7 +79,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
       <nav className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
         {NAV_KEYS.map(({ to, key, icon: Icon }) => (
           <NavLink key={to} to={to} onClick={onNavigate}
-            className={({ isActive }) => cn('flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors', isActive ? 'bg-primary/15 text-primary font-medium border-r-2 border-primary' : 'text-muted-foreground hover:text-foreground hover:bg-accent')}>
+            className={({ isActive }) => cn('flex items-center gap-3 px-3 py-2 rounded-lg text-sm pressable transition-colors', isActive ? 'bg-primary/15 text-primary font-medium border-r-2 border-primary' : 'text-muted-foreground hover:text-foreground hover:font-medium hover:bg-accent')}>
             <Icon className="w-4 h-4 shrink-0" />{t[key]}
           </NavLink>
         ))}

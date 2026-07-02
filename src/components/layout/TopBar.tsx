@@ -57,7 +57,7 @@ export function TopBar() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <header className="h-14 border-b border-border bg-card/60 backdrop-blur-sm flex items-center px-4 gap-3 shrink-0 sticky top-0 z-20">
+      <header className="h-14 border-b glass-panel flex items-center px-4 gap-3 shrink-0 sticky top-0 z-20">
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild><Button variant="ghost" size="icon" className="lg:hidden"><Menu className="w-5 h-5" /></Button></SheetTrigger>
           <SheetContent side="left" className="p-0 w-60"><Sidebar onNavigate={() => setOpen(false)} /></SheetContent>

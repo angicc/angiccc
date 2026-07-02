@@ -78,6 +78,85 @@
     background: hsl(var(--card) / 0.7);
     border: 1px solid hsl(var(--border) / 0.5);
   }
+
+  /* ── High-fidelity glassmorphic panel (headers, sidebars, modals) ────────
+     12px backdrop blur + ultra-thin uniform stroke per the design spec. */
+  .glass-panel {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: hsl(var(--card) / 0.62);
+    border-color: rgba(255, 255, 255, 0.07);
+  }
+
+  /* Fine-grain parchment noise overlay — merges the historical aesthetic
+     with the glass panels. Pure SVG turbulence, no asset request. */
+  .grain-overlay { position: relative; }
+  .grain-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  /* ── Era-adaptive ambient glow ────────────────────────────────────────────
+     Low-intensity radial backdrop behind focused module cards; the hue keys
+     off the historical era: amber (Ancient), imperial violet (Middle Ages),
+     emerald/teal (Early Modern), rose (Modern). */
+  .era-glow { position: relative; }
+  .era-glow::before {
+    content: '';
+    position: absolute;
+    inset: -16px;
+    border-radius: inherit;
+    background: radial-gradient(60% 60% at 50% 42%, var(--glow-color, transparent) 0%, transparent 72%);
+    filter: blur(18px);
+    opacity: 0;
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .era-glow:hover::before,
+  .era-glow:focus-within::before { opacity: 0.6; }
+  .era-glow-ancient  { --glow-color: rgba(245, 158, 11, 0.38); }
+  .era-glow-medieval { --glow-color: rgba(124, 58, 237, 0.38); }
+  .era-glow-earlymod { --glow-color: rgba(20, 184, 166, 0.36); }
+  .era-glow-modern   { --glow-color: rgba(244, 63, 94, 0.32); }
+
+  /* ── Fluid micro-interactions ─────────────────────────────────────────────
+     Elastic press/hover physics for interactive nodes (hardware-accelerated). */
+  .pressable {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+  .pressable:hover  { transform: translateY(-1px); }
+  .pressable:active { transform: scale(0.97); }
+}
+
+/* ── Kinetic staggered entry ──────────────────────────────────────────────
+   Cards cascade into the viewport with a spring-like ease instead of popping. */
+@keyframes cascade-up {
+  from { opacity: 0; transform: translateY(18px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.cascade-in > * { animation: cascade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.cascade-in > *:nth-child(1)  { animation-delay: 0.03s; }
+.cascade-in > *:nth-child(2)  { animation-delay: 0.09s; }
+.cascade-in > *:nth-child(3)  { animation-delay: 0.15s; }
+.cascade-in > *:nth-child(4)  { animation-delay: 0.21s; }
+.cascade-in > *:nth-child(5)  { animation-delay: 0.27s; }
+.cascade-in > *:nth-child(6)  { animation-delay: 0.33s; }
+.cascade-in > *:nth-child(7)  { animation-delay: 0.39s; }
+.cascade-in > *:nth-child(8)  { animation-delay: 0.45s; }
+.cascade-in > *:nth-child(9)  { animation-delay: 0.51s; }
+.cascade-in > *:nth-child(10) { animation-delay: 0.57s; }
+.cascade-in > *:nth-child(11) { animation-delay: 0.63s; }
+.cascade-in > *:nth-child(12) { animation-delay: 0.69s; }
+@media (prefers-reduced-motion: reduce) {
+  .cascade-in > * { animation: none; }
+  .pressable, .pressable:hover, .pressable:active { transform: none; }
 }
 
 /* Chat message animation */

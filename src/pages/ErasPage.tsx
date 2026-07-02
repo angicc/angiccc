@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Lock, ChevronRight, HelpCircle, Clock, Star, CheckCircle2 } from 'lucide-react';
+import { Lock, HelpCircle, Clock, Star, CheckCircle2 } from 'lucide-react';
 import { getLessonTheme } from '@/lib/lessonTheme';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
@@ -23,7 +23,7 @@ const ERA_PHOTOS: Record<string, string> = {
 };
 
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.12 } } };
-const card = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
+const card = { hidden: { opacity: 0, y: 20, scale: 0.985 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } } };
 
 export default function ErasPage() {
   const { progress } = useAuth();
@@ -42,13 +42,14 @@ export default function ErasPage() {
         <motion.div variants={stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
           {ERAS.map(rawEra => {
             const era = getTranslatedEra(rawEra, language);
+            const glowClass = { ancient: 'era-glow-ancient', 'middle-ages': 'era-glow-medieval', 'early-modern': 'era-glow-earlymod', modern: 'era-glow-modern' }[era.id] ?? '';
             const eraLessons = LESSONS.filter(l => l.eraId === era.id).sort((a, b) => a.order - b.order);
             const done = eraLessons.filter(l => progress?.completedLessons.includes(l.id)).length;
             const pct = eraLessons.length > 0 ? Math.round((done / eraLessons.length) * 100) : 0;
             const quizDone = progress?.completedQuizzes.includes(era.quizId);
             return (
               <motion.div key={era.id} variants={card} className="h-full">
-                <Card className="h-full flex flex-col border-border hover:border-primary/30 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 overflow-hidden bg-card">
+                <Card className={`era-glow ${glowClass} h-full flex flex-col border-border hover:border-primary/30 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 overflow-hidden bg-card`}>
                   {/* Era Banner */}
                   <div className={`h-28 bg-gradient-to-br ${era.bgGradient} relative flex items-end p-4`}>
                     <img

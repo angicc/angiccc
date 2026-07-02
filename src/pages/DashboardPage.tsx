@@ -20,7 +20,7 @@ import { useState, useEffect } from 'react';
 import { OnboardingModal, hasCompletedOnboarding } from '@/components/shared/OnboardingModal';
 
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
-const fadeUp = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
+const fadeUp = { hidden: { opacity: 0, y: 16, scale: 0.985 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const } } };
 
 const ERA_SHORT_KEY: Record<string, 'era_short_ancient' | 'era_short_medieval' | 'era_short_earlymod' | 'era_short_modern'> = {
   ancient: 'era_short_ancient',

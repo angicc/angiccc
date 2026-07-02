@@ -24,7 +24,7 @@ const ERA_COLORS: Record<string, string> = {
 };
 
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.07 } } };
-const fadeUp = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
+const fadeUp = { hidden: { opacity: 0, y: 16, scale: 0.985 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const } } };
 
 export default function ProgressPage() {
   const { t, language } = useLanguage();
