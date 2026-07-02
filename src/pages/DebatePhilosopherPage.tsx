@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Send, RotateCcw, Trophy, Clock, Swords, Crown, Brain, Star } from 'lucide-react';
+import { Send, RotateCcw, Trophy, Clock, Swords, Brain, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -11,7 +11,9 @@ import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { recordDebateWinInProgress } from '@/features/progress/progressStore';
-import { streamChatResponse } from '@/features/ai/claudeClient';
+import { streamChatResponse } from '@/services/aiGateway';
+import { usePersistentChat } from '@/services/chatStore';
+import { AiErrorCard } from '@/components/shared/AiErrorCard';
 import { getTodaysPhilosopher, getTimeUntilNextPhilosopher, hasWonTodaysDebate, recordDebateWin, getTranslatedPhilosopherEra, getTranslatedPhilosopherTagline } from '@/features/philosopher/philosophersData';
 import type { Philosopher } from '@/features/philosopher/philosophersData';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -204,9 +206,12 @@ export default function DebatePhilosopherPage() {
   const isAllowed = tier !== 'free';
 
   const philosopher = getTodaysPhilosopher();
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  // Keyed per philosopher: the daily rotation naturally starts a fresh slice.
+  const [messages, setMessages, clearChat] = usePersistentChat(`debate:${philosopher.id}`, currentUser?.id);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<unknown>(null);
+  const retryRef = useRef<{ history: { role: 'user' | 'assistant'; content: string }[] } | null>(null);
   const [won, setWon] = useState(false);
   const [xpAwarded, setXpAwarded] = useState(0);
   const [countdown, setCountdown] = useState(formatCountdown(getTimeUntilNextPhilosopher()));
@@ -221,17 +226,13 @@ export default function DebatePhilosopherPage() {
     return () => clearInterval(timer);
   }, []);
 
-  const send = useCallback(async (text: string) => {
-    if (!text.trim() || loading || won || alreadyWon) return;
-
-    const userMsg: ChatMessage = { id: crypto.randomUUID(), role: 'user', content: text.trim(), timestamp: new Date().toISOString() };
+  const stream = useCallback(async (history: { role: 'user' | 'assistant'; content: string }[]) => {
     const assistantMsg: ChatMessage = { id: crypto.randomUUID(), role: 'assistant', content: '', timestamp: new Date().toISOString(), isStreaming: true };
-    setMessages(prev => [...prev, userMsg, assistantMsg]);
-    setInput('');
+    setMessages(prev => [...prev, assistantMsg]);
     setLoading(true);
+    setError(null);
 
     try {
-      const history = [...messages, userMsg].map(m => ({ role: m.role, content: m.content }));
       let acc = '';
       for await (const chunk of streamChatResponse(history, undefined, philosopher.systemPrompt)) {
         acc += chunk;
@@ -241,6 +242,7 @@ export default function DebatePhilosopherPage() {
 
       const concedeDetected = acc.includes('<<CONCEDE>>');
       setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, content: acc.replace(/<<CONCEDE>>/g, '').trim(), isStreaming: false } : m));
+      retryRef.current = null;
 
       if (concedeDetected && currentUser && !alreadyWon) {
         const xp = philosopher.xpReward;
@@ -252,10 +254,30 @@ export default function DebatePhilosopherPage() {
         toast.success(`🏆 You defeated ${philosopher.name}! +${xp} XP`);
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Error connecting to AI.';
-      setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, content: `Error: ${msg}`, isStreaming: false } : m));
+      retryRef.current = { history };
+      setError(err);
+      setMessages(prev => prev
+        .filter(m => !(m.id === assistantMsg.id && m.content === ''))
+        .map(m => m.id === assistantMsg.id ? { ...m, isStreaming: false } : m));
     } finally { setLoading(false); }
-  }, [messages, loading, won, alreadyWon, philosopher, currentUser, refreshProgress]);
+  }, [philosopher, currentUser, alreadyWon, refreshProgress, setMessages]);
+
+  const send = useCallback(async (text: string) => {
+    if (!text.trim() || loading || won || alreadyWon) return;
+
+    const userMsg: ChatMessage = { id: crypto.randomUUID(), role: 'user', content: text.trim(), timestamp: new Date().toISOString() };
+    setMessages(prev => [...prev, userMsg]);
+    setInput('');
+
+    const history = [...messages, userMsg].map(m => ({ role: m.role, content: m.content }));
+    void stream(history);
+  }, [messages, loading, won, alreadyWon, setMessages, stream]);
+
+  const retry = useCallback(() => {
+    const saved = retryRef.current;
+    if (!saved || loading) return;
+    void stream(saved.history);
+  }, [loading, stream]);
 
   if (!isAllowed) {
     return (
@@ -295,7 +317,7 @@ export default function DebatePhilosopherPage() {
             </div>
           </div>
           {messages.length > 0 && !won && (
-            <Button variant="ghost" size="sm" className="gap-2" onClick={() => setMessages([])}>
+            <Button variant="ghost" size="sm" className="gap-2" onClick={() => { clearChat(); setError(null); retryRef.current = null; }}>
               <RotateCcw className="w-4 h-4" />{t.debate_new_round}
             </Button>
           )}
@@ -439,6 +461,12 @@ export default function DebatePhilosopherPage() {
                   ))}
                 </AnimatePresence>
                 <AnimatePresence>{loading && <TypingIndicator />}</AnimatePresence>
+                {error != null && !loading && (
+                  <div className="flex gap-3 items-start">
+                    <div className="shrink-0 mt-0.5"><PhilosopherAvatar philosopher={philosopher} size={28} /></div>
+                    <AiErrorCard error={error} onRetry={retry} />
+                  </div>
+                )}
                 <div ref={bottomRef} />
               </div>
             </div>

@@ -1,0 +1,147 @@
+// ─── Unified AI API Gateway ──────────────────────────────────────────────────
+// Single initialization point for every AI feature (Clio tutor, Debate a
+// Philosopher, Essay Challenge, Video Review, landing chatbot).
+//
+// Resolution order:
+//   1. `VITE_ANTHROPIC_API_KEY` (client env, .env.local / build-time) →
+//      talk to Anthropic directly from the browser. This is the primary
+//      path: no server subscription or edge-function credits required.
+//   2. No client key → fall back to the `/api/chat` serverless proxy
+//      (Netlify edge function injects ANTHROPIC_API_KEY server-side).
+//
+// Every failure is normalized into an `AiGatewayError` with a machine-readable
+// `kind` and a `retryable` flag so UI layers can render themed fallback cards
+// with a retry mechanic instead of dumping raw strings into the viewport.
+
+const MODEL         = 'claude-haiku-4-5-20251001';
+const MAX_HISTORY   = 10;
+const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
+const PROXY_URL     = '/api/chat';
+
+export type AiErrorKind = 'config' | 'auth' | 'network' | 'rate_limit' | 'server' | 'unknown';
+
+export class AiGatewayError extends Error {
+  readonly kind: AiErrorKind;
+  readonly retryable: boolean;
+
+  constructor(kind: AiErrorKind, message: string, retryable: boolean) {
+    super(message);
+    this.name = 'AiGatewayError';
+    this.kind = kind;
+    this.retryable = retryable;
+  }
+}
+
+export type GatewayMode = 'direct' | 'proxy';
+
+export interface GatewayStatus {
+  mode: GatewayMode;
+  configured: boolean;
+}
+
+function clientKey(): string | undefined {
+  const key = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
+  return key && key.trim().length > 0 ? key.trim() : undefined;
+}
+
+/** Which transport will the next request use, and is it plausibly configured? */
+export function getGatewayStatus(): GatewayStatus {
+  const key = clientKey();
+  return { mode: key ? 'direct' : 'proxy', configured: Boolean(key) || import.meta.env.PROD };
+}
+
+function classifyHttpError(status: number, apiMsg: string, mode: GatewayMode): AiGatewayError {
+  if (/x-api-key|api key|api_key/i.test(apiMsg) || status === 401 || status === 403) {
+    return new AiGatewayError(
+      mode === 'direct' ? 'auth' : 'config',
+      mode === 'direct'
+        ? 'Anthropic rejected the API key. Check VITE_ANTHROPIC_API_KEY in your .env.local.'
+        : 'AI is not configured: set VITE_ANTHROPIC_API_KEY in .env.local (local dev) or ANTHROPIC_API_KEY in your hosting environment.',
+      false
+    );
+  }
+  if (status === 429)  return new AiGatewayError('rate_limit', 'Rate limit reached — wait a moment and retry.', true);
+  if (status === 404 && mode === 'proxy') {
+    return new AiGatewayError('config', 'The /api/chat proxy is unavailable. For a client-side setup, set VITE_ANTHROPIC_API_KEY in .env.local and rebuild.', false);
+  }
+  if (status >= 500)   return new AiGatewayError('server', `The AI service is temporarily unavailable (${status}).`, true);
+  return new AiGatewayError('unknown', apiMsg || `API error ${status}`, true);
+}
+
+export const LANDING_SYSTEM_PROMPT = `You are the Historify assistant — a friendly, knowledgeable guide for the Historify history learning app.
+Answer questions about Historify's features, pricing, content, and how the app works.
+You can also answer general history questions to showcase the app's focus.
+Keep answers concise (2–4 sentences) and always be encouraging about learning history.
+If asked about lessons, mention specific eras: Ancient World, Middle Ages, Early Modern, Modern Era.
+Plans: Free ($0 / 4 lessons), Pro Learner ($10/mo / all lessons + AI Tutor), Master Student ($20/mo / unlimited AI + downloads).`;
+
+const TUTOR_SYSTEM_PROMPT = `You are Clio, an expert history tutor for the Historify learning app.
+You help students learn world history across four eras: Ancient (~3000 BCE–500 CE), Middle Ages (~500–1500 CE), Early Modern (~1500–1800 CE), and Modern (~1800–present).
+Guidelines:
+- Give clear, engaging answers (150–300 words unless asked for more)
+- Use specific dates, names, and examples
+- Connect events across time periods when relevant
+- End with a thought-provoking question to encourage curiosity
+- If asked off-topic, gently redirect to history
+- Write in plain prose only — no markdown, no ## headers, no ** bold, no bullet asterisks`;
+
+export async function* streamChatResponse(
+  messages: { role: 'user' | 'assistant'; content: string }[],
+  lessonContext?: string,
+  systemOverride?: string
+): AsyncGenerator<string> {
+  const key  = clientKey();
+  const mode: GatewayMode = key ? 'direct' : 'proxy';
+  const url  = key ? ANTHROPIC_URL : PROXY_URL;
+
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (key) {
+    headers['x-api-key']         = key;
+    headers['anthropic-version'] = '2023-06-01';
+    headers['anthropic-dangerous-direct-browser-access'] = 'true';
+  }
+
+  const baseSystem      = systemOverride ?? TUTOR_SYSTEM_PROMPT;
+  const system          = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;
+  const trimmedMessages = messages.slice(-MAX_HISTORY);
+
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ model: MODEL, max_tokens: 1024, system, messages: trimmedMessages, stream: true }),
+    });
+  } catch {
+    // fetch itself threw → offline / DNS / CORS. Always retryable.
+    throw new AiGatewayError('network', 'Could not reach the AI service. Check your connection and retry.', true);
+  }
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    const apiMsg = (err as { error?: { message?: string } }).error?.message ?? '';
+    throw classifyHttpError(res.status, apiMsg, mode);
+  }
+
+  const reader = res.body!.getReader();
+  const dec    = new TextDecoder();
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      for (const line of dec.decode(value).split('\n')) {
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6);
+        if (data === '[DONE]') return;
+        try {
+          const parsed = JSON.parse(data);
+          if (parsed.type === 'content_block_delta' && parsed.delta?.text) yield parsed.delta.text;
+        } catch { /* skip malformed SSE frame */ }
+      }
+    }
+  } catch {
+    // Stream aborted mid-flight (network drop, timeout). Whatever text was
+    // already yielded stays in the caller's state; the retry card handles the rest.
+    throw new AiGatewayError('network', 'The connection dropped while streaming. Retry to continue.', true);
+  }
+}

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw, Brain, Target, Trophy, ChevronRight, MessageSquare, BarChart2, Star } from 'lucide-react';
-import { streamChatResponse } from '@/features/ai/claudeClient';
+import { streamChatResponse } from '@/services/aiGateway';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

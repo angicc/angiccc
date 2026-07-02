@@ -14,8 +14,14 @@ import { getQuestionsForTopic, getTranslatedTerritoryQuestion, type TerritoryQui
 import { getTranslatedMarkerName, getTranslatedMarkerNote, getTranslatedMarkerType } from '@/i18n/territoryMarkerTranslations';
 import {
   Map as MapIcon, ChevronRight, Layers, Palette, BookOpen, HelpCircle, Play, Pause,
-  SkipBack, SkipForward, ChevronDown, X, Trophy, Swords, Building2, Anchor, Gem, Landmark, Clock,
+  SkipBack, SkipForward, ChevronDown, X, Trophy, Swords, Anchor, Clock,
+  MapPin as MapPinIcon, PenLine, Eraser, Shield, Wheat, AlertTriangle, Eye,
 } from 'lucide-react';
+import {
+  computeChokepoints, deriveTelemetry, loadExplored, saveExplored,
+  loadAnnotations, saveAnnotations, ERA_TEXTURES, ensureEraTexturePattern,
+  type MapAnnotations, type RegionTelemetry,
+} from '@/features/map/tacticalLayers';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -85,6 +91,35 @@ const CART_STYLES: CartographicStyle[] = [
 
 type MapMode = 'explore' | 'story' | 'quiz';
 type LayerKey = 'territory' | 'capitals' | 'cities' | 'battles' | 'ports' | 'resources' | 'routes';
+type AnnMode = 'off' | 'pin' | 'draw';
+
+// Multi-category data filter matrix — each strategic category governs a group
+// of concrete layer toggles.
+const FILTER_MATRIX: { labelKey: 'tmap_cat_assets' | 'tmap_cat_diplomatic' | 'tmap_cat_resources' | 'tmap_cat_enemy'; keys: LayerKey[] }[] = [
+  { labelKey: 'tmap_cat_assets',     keys: ['territory', 'capitals', 'cities', 'ports'] },
+  { labelKey: 'tmap_cat_diplomatic', keys: ['routes'] },
+  { labelKey: 'tmap_cat_resources',  keys: ['resources'] },
+  { labelKey: 'tmap_cat_enemy',      keys: ['battles'] },
+];
+
+// Crossfade the previous territory out instead of hard-clearing it, so
+// timeline scrubs and topic switches read as fluid border transitions.
+function fadeOutAndClear(lg: L.LayerGroup, durationMs = 320) {
+  const doomed: L.Layer[] = [];
+  lg.eachLayer(l => doomed.push(l));
+  doomed.forEach(l => {
+    const el = (l as unknown as { getElement?: () => Element | null }).getElement?.();
+    if (el instanceof SVGElement || el instanceof HTMLElement) {
+      el.style.transition = `opacity ${durationMs}ms ease-out`;
+      el.style.opacity = '0';
+    }
+  });
+  setTimeout(() => doomed.forEach(l => lg.removeLayer(l)), durationMs + 20);
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 
 const MARKER_COLORS: Record<MarkerType, string> = {
   capital:   '#fbbf24',
@@ -295,6 +330,34 @@ export default function TimelineMapPage() {
     territory: true, capitals: true, cities: true, battles: true, ports: true, resources: true, routes: true,
   });
 
+  // ── Fog of war: regions stay strategically opaque until scouted ────────────
+  const [explored, setExplored] = useState<Set<string>>(() => loadExplored(currentUser?.id));
+  const markExplored = useCallback((topicId: string) => {
+    setExplored(prev => {
+      if (prev.has(topicId)) return prev;
+      const next = new Set(prev);
+      next.add(topicId);
+      saveExplored(next, currentUser?.id);
+      return next;
+    });
+  }, [currentUser?.id]);
+
+  // ── Hover telemetry card ────────────────────────────────────────────────────
+  const [hoverCard, setHoverCard] = useState<
+    { x: number; y: number; telemetry: RegionTelemetry; locked: boolean } | null
+  >(null);
+
+  // ── Annotation engine ───────────────────────────────────────────────────────
+  const [annMode, setAnnMode] = useState<AnnMode>('off');
+  const annModeRef = useRef<AnnMode>('off');
+  annModeRef.current = annMode;
+  const [annotations, setAnnotations] = useState<MapAnnotations>(() => loadAnnotations(currentUser?.id));
+  const annLayerRef = useRef<L.LayerGroup | null>(null);
+  const drawingRef  = useRef<{ points: [number, number][]; line: L.Polyline | null }>({ points: [], line: null });
+
+  // ── Semantic zoom: parchment grade fades in on the global overview ─────────
+  const [lowZoom, setLowZoom] = useState(false);
+
   // ── Time scrubber: drag across history to morph territories ────────────────
   const chronoTopics = useMemo(
     () => [...TERRITORY_TOPICS].sort((a, b) => a.yearRange[0] - b.yearRange[0]),
@@ -371,12 +434,38 @@ export default function TimelineMapPage() {
     tile.addTo(map);
     tileRef.current = tile;
     layerGroupRef.current = L.layerGroup().addTo(map);
+    annLayerRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
     if (containerRef.current) containerRef.current.style.filter = style.filter;
+
+    // ── Annotation input: pins on click, path vertices in draw mode ──────────
+    map.on('click', (e: L.LeafletMouseEvent) => {
+      const mode = annModeRef.current;
+      if (mode === 'pin') {
+        setAnnotations(prev => ({ ...prev, pins: [...prev.pins, { lat: e.latlng.lat, lng: e.latlng.lng, label: '' }] }));
+      } else if (mode === 'draw') {
+        const d = drawingRef.current;
+        d.points.push([e.latlng.lat, e.latlng.lng]);
+        if (!d.line) {
+          d.line = L.polyline(d.points, { color: '#f5d77f', weight: 2.5, dashArray: '6,5', opacity: 0.9 }).addTo(map);
+        } else {
+          d.line.setLatLngs(d.points);
+        }
+      }
+    });
+    map.on('dblclick', () => {
+      const d = drawingRef.current;
+      if (annModeRef.current !== 'draw' || d.points.length < 2) return;
+      const committed = d.points.slice(0, -1); // dblclick fires an extra click
+      if (d.line) { map.removeLayer(d.line); d.line = null; }
+      d.points = [];
+      setAnnotations(prev => ({ ...prev, paths: [...prev.paths, committed.length >= 2 ? committed : []] .filter(p => p.length >= 2) }));
+    });
 
     // Zoom event listener — update fill opacity and border tier visibility
     map.on('zoomend', () => {
       const zoom = map.getZoom();
+      setLowZoom(zoom < 3.5);
       zoomOpacityRef.current = getFillOpacityForZoom(zoom);
       const lg = layerGroupRef.current;
       if (!lg) return;
@@ -416,25 +505,105 @@ export default function TimelineMapPage() {
     const tile = L.tileLayer(style.url, opts);
     tile.addTo(map);
     tileRef.current = tile;
-    // Apply CSS filter to map container
-    if (containerRef.current) {
-      containerRef.current.style.filter = style.filter;
-    }
   }, [styleId]);
+
+  // ── Grounded semantic zoom: compose the style filter with a parchment grade
+  // that fades in smoothly on the global overview — no jarring state change.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const base = CART_STYLES.find(s => s.id === styleId)!.filter;
+    el.style.transition = 'filter 700ms ease';
+    el.style.filter = lowZoom
+      ? `${base} sepia(0.38) saturate(0.82) brightness(1.05) contrast(0.93)`.trim()
+      : base;
+  }, [styleId, lowZoom]);
+
+  // ── Annotation mode side-effects: draw mode must own double-click ──────────
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    if (annMode === 'draw') map.doubleClickZoom.disable();
+    else map.doubleClickZoom.enable();
+    // Abandon any in-progress sketch when leaving draw mode.
+    if (annMode !== 'draw') {
+      const d = drawingRef.current;
+      if (d.line) { map.removeLayer(d.line); d.line = null; }
+      d.points = [];
+    }
+  }, [annMode]);
+
+  // ── Render + persist annotations (pins with editable labels, drawn paths) ──
+  useEffect(() => {
+    const lg = annLayerRef.current;
+    if (!lg) return;
+    lg.clearLayers();
+
+    annotations.paths.forEach(path => {
+      L.polyline(path, { color: '#f5d77f', weight: 2.5, dashArray: '6,5', opacity: 0.85 }).addTo(lg);
+    });
+
+    annotations.pins.forEach((pin, idx) => {
+      const label = pin.label || t.tmap_ann_pin_default;
+      const icon = L.divIcon({
+        className: '',
+        iconAnchor: [9, 24],
+        html: `<div style="display:flex;flex-direction:column;align-items:center;cursor:pointer">
+          <svg width="18" height="24" viewBox="0 0 18 24" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.7))">
+            <path d="M9 0C4 0 0 4 0 9c0 6.5 9 15 9 15s9-8.5 9-15c0-5-4-9-9-9z" fill="#f5d77f" stroke="#92400e" stroke-width="1"/>
+            <circle cx="9" cy="9" r="3.4" fill="#1a1a2e"/>
+          </svg>
+          <div style="background:rgba(0,0,0,0.85);color:#f5d77f;font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;white-space:nowrap;margin-top:1px;border:1px solid rgba(245,215,127,0.35)">${escapeHtml(label)}</div>
+        </div>`,
+      });
+      const marker = L.marker([pin.lat, pin.lng], { icon, zIndexOffset: 2000 }).addTo(lg);
+      marker.bindPopup(
+        `<div class="tmap-pin-editor">
+          <input type="text" value="${escapeHtml(pin.label)}" placeholder="${escapeHtml(t.tmap_ann_pin_default)}" maxlength="40" />
+          <button data-act="save">✓</button>
+          <button data-act="del">✕</button>
+        </div>`,
+        { className: 'tmap-popup-custom', closeButton: false }
+      );
+      marker.on('popupopen', e => {
+        const el = e.popup.getElement();
+        if (!el) return;
+        const input = el.querySelector('input');
+        const save  = el.querySelector('button[data-act="save"]');
+        const del   = el.querySelector('button[data-act="del"]');
+        save?.addEventListener('click', () => {
+          const value = (input as HTMLInputElement | null)?.value?.trim() ?? '';
+          setAnnotations(prev => ({ ...prev, pins: prev.pins.map((p, i) => i === idx ? { ...p, label: value } : p) }));
+          marker.closePopup();
+        });
+        del?.addEventListener('click', () => {
+          setAnnotations(prev => ({ ...prev, pins: prev.pins.filter((_, i) => i !== idx) }));
+        });
+        (input as HTMLInputElement | null)?.focus();
+      });
+    });
+
+    saveAnnotations(annotations, currentUser?.id);
+  }, [annotations, t.tmap_ann_pin_default, currentUser?.id]);
 
   // ── Render map layers when topic/layers/style changes ──────────────────────
   const renderLayers = useCallback(() => {
     const map = mapRef.current;
     const lg  = layerGroupRef.current;
     if (!map || !lg) return;
-    lg.clearLayers();
+    // Crossfade the outgoing territory instead of a hard clear.
+    fadeOutAndClear(lg);
+    setHoverCard(null);
 
     if (!selected) return;
 
+    const isExplored = explored.has(selected.id);
     const currentZoom = map.getZoom();
     zoomOpacityRef.current = getFillOpacityForZoom(currentZoom);
 
-    // Polygons — strict 3-tier border system, clean solid strokes
+    // Polygons — strict 3-tier border system, clean solid strokes.
+    // Unexplored territories render as fog: desaturated slate fill, details
+    // withheld until the user scouts the region with a click.
     if (layers.territory && selected.polygons) {
       selected.polygons.forEach(poly => {
         const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
@@ -443,18 +612,11 @@ export default function TimelineMapPage() {
         const border = BORDER_STYLES[tier];
         const currentZoom = mapRef.current?.getZoom() ?? 5;
 
-        const fillColor = poly.color;
+        const fillColor = isExplored ? poly.color : '#64748b';
         const strokeColor  = border.color;
         const strokeWeight = border.weight;
-        const strokeDash   = border.dashArray;
+        const strokeDash   = isExplored ? border.dashArray : '5,7';
         const strokeOpacity = getBorderOpacity(tier, currentZoom);
-
-        const tooltipContent = `
-          <div style="font-family:system-ui,sans-serif;min-width:120px">
-            <div style="font-weight:700;font-size:12px;margin-bottom:2px">${poly.label ?? ''}</div>
-            ${selected.period ? `<div style="font-size:10px;color:#aaa">${selected.period}</div>` : ''}
-          </div>
-        `;
 
         const mainPoly = L.polygon(latlngs, {
           color: strokeColor,
@@ -469,11 +631,31 @@ export default function TimelineMapPage() {
           ...({ _isFillPoly: true, _borderTier: tier } as object),
         } as L.PathOptions);
 
-        mainPoly.bindTooltip(tooltipContent, {
-          permanent: false,
-          direction: 'center',
-          className: 'leaflet-tooltip-rich',
-          sticky: true,
+        // ── Hover telemetry portal card + 10%-accent glow ────────────────────
+        const telemetry = deriveTelemetry(selected, poly);
+        mainPoly.on('mousemove', (e: L.LeafletMouseEvent) => {
+          const pt = map.latLngToContainerPoint(e.latlng);
+          setHoverCard({ x: pt.x, y: pt.y, telemetry, locked: !isExplored });
+        });
+        mainPoly.on('mouseover', () => {
+          const el = mainPoly.getElement() as SVGPathElement | null;
+          if (el) el.style.filter = `drop-shadow(0 0 7px ${isExplored ? poly.color : '#94a3b8'})`;
+          mainPoly.setStyle({ weight: strokeWeight + 0.9 });
+        });
+        mainPoly.on('mouseout', () => {
+          const el = mainPoly.getElement() as SVGPathElement | null;
+          if (el) el.style.filter = '';
+          mainPoly.setStyle({ weight: strokeWeight });
+          setHoverCard(null);
+        });
+        // Scouting: clicking an unexplored claim lifts its fog (annotation
+        // tools take precedence over scouting while active).
+        mainPoly.on('click', () => {
+          if (annModeRef.current !== 'off') return;
+          if (!explored.has(selected.id)) {
+            markExplored(selected.id);
+            toast.success(t.tmap_fog_scouted);
+          }
         });
         mainPoly.addTo(lg);
 
@@ -512,11 +694,32 @@ export default function TimelineMapPage() {
           // Sweep the frontier in on load / on morph.
           animateBorderDraw(pathEl, strokeDash);
         });
+
+        // ── Biome-sensitive shading: era-keyed fractal-noise texture overlay ─
+        if (isExplored) {
+          const tex = ERA_TEXTURES[selected.era];
+          const texPoly = L.polygon(latlngs, {
+            stroke: false,
+            fillColor: tex.tint,
+            fillOpacity: tex.opacity,
+            interactive: false,
+            smoothFactor: 0.5,
+          });
+          texPoly.addTo(lg);
+          requestAnimationFrame(() => {
+            const texEl = texPoly.getElement() as SVGPathElement | null;
+            const svgContainer = texEl?.closest('svg') as SVGElement | null;
+            if (!texEl || !svgContainer) return;
+            const patternId = ensureEraTexturePattern(svgContainer, tex);
+            texEl.setAttribute('fill', `url(#${patternId})`);
+            texEl.setAttribute('fill-opacity', String(tex.opacity * 4));
+          });
+        }
       });
     }
 
-    // Routes
-    if (layers.routes && selected.routes) {
+    // Routes — supply networks stay hidden under fog until the region is scouted
+    if (layers.routes && selected.routes && isExplored) {
       selected.routes.forEach(route => {
         const color = route.type === 'trade' ? '#f59e0b' : route.type === 'military' ? '#ef4444' : '#a78bfa';
         const dash  = route.type === 'trade' ? '8,6' : route.type === 'religious' ? '4,8' : undefined;
@@ -527,6 +730,21 @@ export default function TimelineMapPage() {
           opacity: 0.8,
         }).bindPopup(`<strong>${route.name}</strong><br/><em style="font-size:11px;color:#888">${route.type}</em>`).addTo(lg);
       });
+
+      // Pulsing chokepoints where supply lines cross — tactical bottlenecks.
+      computeChokepoints(selected.routes).forEach(cp => {
+        const icon = L.divIcon({
+          className: '',
+          iconAnchor: [9, 9],
+          html: '<div class="tmap-choke"><div class="tmap-choke-core"></div></div>',
+        });
+        L.marker([cp.lat, cp.lng], { icon, zIndexOffset: 900 })
+          .bindTooltip(
+            `<div style="font-family:system-ui,sans-serif"><div style="font-weight:700;font-size:11px">${t.tmap_chokepoint}</div><div style="font-size:10px;color:#aaa">${escapeHtml(cp.routeA)} × ${escapeHtml(cp.routeB)}</div></div>`,
+            { className: 'leaflet-tooltip-rich', direction: 'top' }
+          )
+          .addTo(lg);
+      });
     }
 
     // Markers — compute which labels to hide due to proximity
@@ -535,8 +753,8 @@ export default function TimelineMapPage() {
       port: 'ports', resource: 'resources', landmark: 'cities',
     };
 
-    // Filter to visible markers first
-    const visibleMarkers = selected.markers.filter(m => layers[typeVisible[m.type]]);
+    // Filter to visible markers first — all withheld while the region is fogged
+    const visibleMarkers = isExplored ? selected.markers.filter(m => layers[typeVisible[m.type]]) : [];
 
     // Determine which markers should hide their label due to proximity (within 0.5°)
     const hideLabelSet = new Set<number>();
@@ -612,7 +830,7 @@ export default function TimelineMapPage() {
         .addTo(lg);
       (marker as unknown as { _tmapType: string })._tmapType = m.type;
     });
-  }, [selected, layers, styleId, language]);
+  }, [selected, layers, styleId, language, explored, markExplored, t]);
 
   useEffect(() => {
     renderLayers();
@@ -891,33 +1109,139 @@ export default function TimelineMapPage() {
                 </button>
 
                 {showLayerPanel && (
-                  <div className="absolute top-8 right-0 bg-black/90 backdrop-blur-md rounded-xl border border-white/15 shadow-xl p-3 min-w-[180px] space-y-1.5">
+                  <div className="absolute top-8 right-0 bg-black/90 backdrop-blur-md rounded-xl border border-white/15 shadow-xl p-3 min-w-[210px] space-y-2.5">
                     <button onClick={() => setShowLayerPanel(false)} className="absolute top-2 right-2 text-white/40 hover:text-white"><X className="w-3 h-3" /></button>
-                    <p className="text-[9px] font-bold uppercase tracking-widest text-white/40 mb-2">{t.tmap_layers}</p>
-                    {(Object.entries(layers) as [LayerKey, boolean][]).map(([key, on]) => {
-                      const label = (t as Record<string, string>)[`tmap_layer_${key}`] ?? key;
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-white/40">{t.tmap_layers}</p>
+                    {FILTER_MATRIX.map(cat => {
                       const colors: Record<LayerKey, string> = {
                         territory: '#6366f1', capitals: '#fbbf24', cities: '#60a5fa',
                         battles: '#ef4444', ports: '#34d399', resources: '#a78bfa', routes: '#f59e0b',
                       };
+                      const CatIcon = cat.labelKey === 'tmap_cat_assets' ? Shield
+                        : cat.labelKey === 'tmap_cat_diplomatic' ? Anchor
+                        : cat.labelKey === 'tmap_cat_resources' ? Wheat : Swords;
+                      const allOn = cat.keys.every(k => layers[k]);
                       return (
-                        <button
-                          key={key}
-                          onClick={() => setLayers(l => ({ ...l, [key]: !l[key] }))}
-                          className={cn('w-full flex items-center gap-2.5 text-xs rounded-md px-2 py-1.5 transition-all', on ? 'text-white' : 'text-white/30')}
-                        >
-                          <div className={cn('w-3 h-3 rounded-sm border-2 flex items-center justify-center shrink-0 transition-all')} style={{ borderColor: colors[key], background: on ? colors[key] : 'transparent' }}>
-                            {on && <span style={{ fontSize: 8, color: 'white' }}>✓</span>}
+                        <div key={cat.labelKey}>
+                          <button
+                            onClick={() => setLayers(l => {
+                              const next = { ...l };
+                              cat.keys.forEach(k => { next[k] = !allOn; });
+                              return next;
+                            })}
+                            className={cn('w-full flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider rounded-md px-1.5 py-1 transition-all', allOn ? 'text-white/85' : 'text-white/35')}
+                          >
+                            <CatIcon className="w-3 h-3 shrink-0" />
+                            {t[cat.labelKey]}
+                          </button>
+                          <div className="pl-3 space-y-0.5 mt-0.5">
+                            {cat.keys.map(key => {
+                              const on = layers[key];
+                              const label = (t as Record<string, string>)[`tmap_layer_${key}`] ?? key;
+                              return (
+                                <button
+                                  key={key}
+                                  onClick={() => setLayers(l => ({ ...l, [key]: !l[key] }))}
+                                  className={cn('w-full flex items-center gap-2.5 text-xs rounded-md px-2 py-1 transition-all', on ? 'text-white' : 'text-white/30')}
+                                >
+                                  <div className="w-3 h-3 rounded-sm border-2 flex items-center justify-center shrink-0 transition-all" style={{ borderColor: colors[key], background: on ? colors[key] : 'transparent' }}>
+                                    {on && <span style={{ fontSize: 8, color: 'white' }}>✓</span>}
+                                  </div>
+                                  {label}
+                                </button>
+                              );
+                            })}
                           </div>
-                          {label}
-                        </button>
+                        </div>
                       );
                     })}
                   </div>
                 )}
               </div>
             )}
+
+            {/* ── Annotation toolbar: pins, freehand paths, clear ─────────── */}
+            {mode === 'explore' && (
+              <div className="flex flex-col gap-1 bg-black/80 backdrop-blur-md rounded-full border border-white/15 shadow-lg p-1">
+                <button
+                  title={t.tmap_ann_pin}
+                  onClick={() => setAnnMode(m => m === 'pin' ? 'off' : 'pin')}
+                  className={cn('w-7 h-7 rounded-full flex items-center justify-center transition-all', annMode === 'pin' ? 'bg-primary text-primary-foreground' : 'text-white/70 hover:text-white hover:bg-white/10')}
+                >
+                  <MapPinIcon className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  title={t.tmap_ann_draw}
+                  onClick={() => setAnnMode(m => m === 'draw' ? 'off' : 'draw')}
+                  className={cn('w-7 h-7 rounded-full flex items-center justify-center transition-all', annMode === 'draw' ? 'bg-primary text-primary-foreground' : 'text-white/70 hover:text-white hover:bg-white/10')}
+                >
+                  <PenLine className="w-3.5 h-3.5" />
+                </button>
+                {(annotations.pins.length > 0 || annotations.paths.length > 0) && (
+                  <button
+                    title={t.tmap_ann_clear}
+                    onClick={() => { setAnnotations({ pins: [], paths: [] }); setAnnMode('off'); }}
+                    className="w-7 h-7 rounded-full flex items-center justify-center text-white/70 hover:text-red-400 hover:bg-red-400/10 transition-all"
+                  >
+                    <Eraser className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
+
+          {/* ── HOVER TELEMETRY PORTAL CARD ──────────────── */}
+          {hoverCard && mode === 'explore' && (
+            <div
+              className="absolute z-[1100] pointer-events-none"
+              style={{
+                left: Math.min(hoverCard.x + 14, window.innerWidth - 300),
+                top: Math.max(hoverCard.y - 10, 8),
+              }}
+            >
+              <div className="bg-black/90 backdrop-blur-md text-white rounded-xl border border-white/15 shadow-2xl px-3 py-2.5 w-[220px] text-xs">
+                {hoverCard.locked ? (
+                  <div className="flex items-center gap-2 text-white/70">
+                    <Eye className="w-4 h-4 text-primary shrink-0" />
+                    <span className="leading-snug">{t.tmap_fog_locked}</span>
+                  </div>
+                ) : (
+                  <>
+                    <div className="font-bold text-[12px] leading-snug mb-1.5 flex items-center gap-1.5">
+                      <Shield className="w-3.5 h-3.5 text-primary shrink-0" />
+                      <span className="truncate">{hoverCard.telemetry.faction}</span>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-white/50">{t.tmap_tel_garrison}</span>
+                        <div className="flex-1 h-1.5 rounded-full bg-white/10 overflow-hidden max-w-[80px]">
+                          <div className="h-full rounded-full bg-primary" style={{ width: `${hoverCard.telemetry.garrison}%` }} />
+                        </div>
+                        <span className="tabular-nums text-white/85 font-semibold">{hoverCard.telemetry.garrison}</span>
+                      </div>
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="text-white/50 shrink-0">{t.tmap_tel_resources}</span>
+                        <span className="text-right text-white/85 leading-snug">
+                          {hoverCard.telemetry.resources.length > 0 ? hoverCard.telemetry.resources.join(', ') : t.tmap_tel_none}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-white/50">{t.tmap_tel_battles}</span>
+                        <span className="text-white/85 tabular-nums font-semibold">{hoverCard.telemetry.battles}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-white/50">{t.tmap_tel_hazard}</span>
+                        <span className="flex items-center gap-1 text-amber-300">
+                          <AlertTriangle className="w-3 h-3" />
+                          {(t as Record<string, string>)[hoverCard.telemetry.hazard]}
+                        </span>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* ── SELECTED TOPIC INFO (top-left below header) ─ */}
           {selected && mode === 'explore' && (
@@ -1119,6 +1443,44 @@ export default function TimelineMapPage() {
         .tmap-popup-custom .leaflet-popup-tip-container {
           display: none !important;
         }
+        /* Pulsing chokepoint vector — supply-line intersections */
+        .tmap-choke {
+          width: 18px; height: 18px; position: relative;
+          display: flex; align-items: center; justify-content: center;
+        }
+        .tmap-choke::before {
+          content: ''; position: absolute; inset: 0; border-radius: 50%;
+          border: 2px solid rgba(245, 158, 11, 0.8);
+          animation: tmapChokePulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+        .tmap-choke-core {
+          width: 7px; height: 7px; border-radius: 50%;
+          background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.9);
+        }
+        @keyframes tmapChokePulse {
+          0%   { transform: scale(0.6); opacity: 1; }
+          80%  { transform: scale(1.9); opacity: 0; }
+          100% { transform: scale(1.9); opacity: 0; }
+        }
+        /* Annotation pin label editor popup */
+        .tmap-pin-editor {
+          display: flex; gap: 4px; align-items: center;
+          background: #1a1a2e; border: 1px solid rgba(255,255,255,0.15);
+          border-radius: 10px; padding: 6px 8px;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        .tmap-pin-editor input {
+          background: rgba(255,255,255,0.08); color: #f1f5f9;
+          border: 1px solid rgba(255,255,255,0.15); border-radius: 6px;
+          font-size: 11px; padding: 3px 7px; width: 130px; outline: none;
+        }
+        .tmap-pin-editor input:focus { border-color: rgba(245,215,127,0.6); }
+        .tmap-pin-editor button {
+          border: none; border-radius: 6px; width: 22px; height: 22px;
+          font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .tmap-pin-editor button[data-act="save"] { background: rgba(52,211,153,0.2); color: #34d399; }
+        .tmap-pin-editor button[data-act="del"]  { background: rgba(239,68,68,0.18); color: #f87171; }
         .tmap-scrubber {
           -webkit-appearance: none;
           appearance: none;

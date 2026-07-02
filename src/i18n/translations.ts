@@ -251,6 +251,17 @@ type TranslationKeys = {
   essay_graded: string;
   essay_grade_fail: string;
   essay_custom_placeholder: string;
+  // ── AI gateway errors ─────────────────────────────────────────
+  ai_err_title: string; ai_err_config: string; ai_err_network: string;
+  ai_err_rate: string; ai_err_server: string; ai_err_generic: string;
+  // ── Tactical map (filters / fog / telemetry / annotations) ────
+  tmap_cat_assets: string; tmap_cat_diplomatic: string; tmap_cat_resources: string; tmap_cat_enemy: string;
+  tmap_annotate: string; tmap_ann_pin: string; tmap_ann_draw: string; tmap_ann_clear: string; tmap_ann_pin_default: string;
+  tmap_fog_locked: string; tmap_fog_scouted: string;
+  tmap_tel_faction: string; tmap_tel_garrison: string; tmap_tel_resources: string;
+  tmap_tel_hazard: string; tmap_tel_battles: string; tmap_tel_none: string;
+  tmap_hazard_dust: string; tmap_hazard_frost: string; tmap_hazard_storm: string; tmap_hazard_scorched: string;
+  tmap_chokepoint: string;
 };
 
 type Translations = Record<Language, TranslationKeys>;
@@ -546,6 +557,21 @@ export const T: Translations = {
     essay_graded: 'Graded! You earned a {grade}',
     essay_grade_fail: 'Grading failed. Please try again.',
     essay_custom_placeholder: 'e.g. How did the Mongol Empire change trade across Asia?',
+    // AI gateway errors
+    ai_err_title: 'Clio couldn’t answer',
+    ai_err_config: 'The AI service isn’t configured. Add your API key to .env.local (VITE_ANTHROPIC_API_KEY) and restart the app.',
+    ai_err_network: 'No connection to the AI service. Check your internet and try again.',
+    ai_err_rate: 'Too many requests right now. Wait a few seconds, then retry.',
+    ai_err_server: 'The AI service is temporarily down. Your conversation is saved — retry in a moment.',
+    ai_err_generic: 'Something went wrong while contacting the AI. Your conversation is saved — try again.',
+    // Tactical map
+    tmap_cat_assets: 'Owned Assets', tmap_cat_diplomatic: 'Diplomatic Fronts', tmap_cat_resources: 'Resources', tmap_cat_enemy: 'Enemy Spheres',
+    tmap_annotate: 'Annotate', tmap_ann_pin: 'Place Pin', tmap_ann_draw: 'Draw Path', tmap_ann_clear: 'Clear Notes', tmap_ann_pin_default: 'Map Pin',
+    tmap_fog_locked: 'Unexplored region — click to scout', tmap_fog_scouted: 'Region scouted!',
+    tmap_tel_faction: 'Faction', tmap_tel_garrison: 'Garrison', tmap_tel_resources: 'Resources',
+    tmap_tel_hazard: 'Hazard', tmap_tel_battles: 'Battles', tmap_tel_none: 'None recorded',
+    tmap_hazard_dust: 'Dust storms', tmap_hazard_frost: 'Frost & famine', tmap_hazard_storm: 'Sea storms', tmap_hazard_scorched: 'Scorched ground',
+    tmap_chokepoint: 'Strategic chokepoint',
   },
 
   es: {
@@ -816,6 +842,21 @@ export const T: Translations = {
     essay_graded: 'Evaluado. Obtuviste una {grade}',
     essay_grade_fail: 'Error en la evaluación. Inténtalo de nuevo.',
     essay_custom_placeholder: 'p. ej. ¿Cómo cambió el Imperio Mongol el comercio en Asia?',
+    // AI gateway errors
+    ai_err_title: 'Clio no pudo responder',
+    ai_err_config: 'El servicio de IA no está configurado. Añade tu clave API en .env.local (VITE_ANTHROPIC_API_KEY) y reinicia la aplicación.',
+    ai_err_network: 'Sin conexión con el servicio de IA. Comprueba tu internet e inténtalo de nuevo.',
+    ai_err_rate: 'Demasiadas solicitudes. Espera unos segundos y reintenta.',
+    ai_err_server: 'El servicio de IA está caído temporalmente. Tu conversación está guardada — reintenta en un momento.',
+    ai_err_generic: 'Algo salió mal al contactar con la IA. Tu conversación está guardada — inténtalo de nuevo.',
+    // Tactical map
+    tmap_cat_assets: 'Activos Propios', tmap_cat_diplomatic: 'Frentes Diplomáticos', tmap_cat_resources: 'Recursos', tmap_cat_enemy: 'Esferas Enemigas',
+    tmap_annotate: 'Anotar', tmap_ann_pin: 'Colocar Pin', tmap_ann_draw: 'Dibujar Ruta', tmap_ann_clear: 'Borrar Notas', tmap_ann_pin_default: 'Pin de Mapa',
+    tmap_fog_locked: 'Región inexplorada — haz clic para explorar', tmap_fog_scouted: '¡Región explorada!',
+    tmap_tel_faction: 'Facción', tmap_tel_garrison: 'Guarnición', tmap_tel_resources: 'Recursos',
+    tmap_tel_hazard: 'Peligro', tmap_tel_battles: 'Batallas', tmap_tel_none: 'Sin registros',
+    tmap_hazard_dust: 'Tormentas de polvo', tmap_hazard_frost: 'Heladas y hambruna', tmap_hazard_storm: 'Tormentas marinas', tmap_hazard_scorched: 'Tierra quemada',
+    tmap_chokepoint: 'Punto estratégico',
   },
 
   ru: {
@@ -1086,6 +1127,21 @@ export const T: Translations = {
     essay_graded: 'Оценено! Вы получили {grade}',
     essay_grade_fail: 'Ошибка оценки. Попробуйте снова.',
     essay_custom_placeholder: 'напр. Как Монгольская империя изменила торговлю в Азии?',
+    // AI gateway errors
+    ai_err_title: 'Клио не смогла ответить',
+    ai_err_config: 'Сервис ИИ не настроен. Добавьте ключ API в .env.local (VITE_ANTHROPIC_API_KEY) и перезапустите приложение.',
+    ai_err_network: 'Нет соединения с сервисом ИИ. Проверьте интернет и попробуйте снова.',
+    ai_err_rate: 'Слишком много запросов. Подождите несколько секунд и повторите.',
+    ai_err_server: 'Сервис ИИ временно недоступен. Ваш диалог сохранён — повторите чуть позже.',
+    ai_err_generic: 'Не удалось связаться с ИИ. Ваш диалог сохранён — попробуйте ещё раз.',
+    // Tactical map
+    tmap_cat_assets: 'Свои Активы', tmap_cat_diplomatic: 'Дипломатические Фронты', tmap_cat_resources: 'Ресурсы', tmap_cat_enemy: 'Вражеские Сферы',
+    tmap_annotate: 'Аннотации', tmap_ann_pin: 'Поставить Метку', tmap_ann_draw: 'Нарисовать Путь', tmap_ann_clear: 'Очистить Заметки', tmap_ann_pin_default: 'Метка',
+    tmap_fog_locked: 'Неизведанный регион — нажмите для разведки', tmap_fog_scouted: 'Регион разведан!',
+    tmap_tel_faction: 'Фракция', tmap_tel_garrison: 'Гарнизон', tmap_tel_resources: 'Ресурсы',
+    tmap_tel_hazard: 'Опасность', tmap_tel_battles: 'Битвы', tmap_tel_none: 'Нет данных',
+    tmap_hazard_dust: 'Пыльные бури', tmap_hazard_frost: 'Мороз и голод', tmap_hazard_storm: 'Морские штормы', tmap_hazard_scorched: 'Выжженная земля',
+    tmap_chokepoint: 'Стратегическая точка',
   },
 
   mk: {
@@ -1356,5 +1412,20 @@ export const T: Translations = {
     essay_graded: 'Оценето! Добивте {grade}',
     essay_grade_fail: 'Оценувањето не успеа. Обидете се повторно.',
     essay_custom_placeholder: 'пр. Како Монголската Империја го промени трговскиот пат во Азија?',
+    // AI gateway errors
+    ai_err_title: 'Клио не можеше да одговори',
+    ai_err_config: 'ИИ сервисот не е конфигуриран. Додајте го вашиот API клуч во .env.local (VITE_ANTHROPIC_API_KEY) и рестартирајте ја апликацијата.',
+    ai_err_network: 'Нема врска со ИИ сервисот. Проверете го интернетот и обидете се повторно.',
+    ai_err_rate: 'Премногу барања во моментов. Почекајте неколку секунди, па обидете се повторно.',
+    ai_err_server: 'ИИ сервисот е привремено недостапен. Разговорот е зачуван — обидете се повторно за момент.',
+    ai_err_generic: 'Нешто тргна наопаку при контакт со ИИ. Разговорот е зачуван — обидете се повторно.',
+    // Tactical map
+    tmap_cat_assets: 'Сопствени Средства', tmap_cat_diplomatic: 'Дипломатски Фронтови', tmap_cat_resources: 'Ресурси', tmap_cat_enemy: 'Непријателски Сфери',
+    tmap_annotate: 'Прибелешки', tmap_ann_pin: 'Постави Значка', tmap_ann_draw: 'Нацртај Патека', tmap_ann_clear: 'Избриши Белешки', tmap_ann_pin_default: 'Значка',
+    tmap_fog_locked: 'Неистражен регион — кликнете за извидување', tmap_fog_scouted: 'Регионот е извидан!',
+    tmap_tel_faction: 'Фракција', tmap_tel_garrison: 'Гарнизон', tmap_tel_resources: 'Ресурси',
+    tmap_tel_hazard: 'Опасност', tmap_tel_battles: 'Битки', tmap_tel_none: 'Нема податоци',
+    tmap_hazard_dust: 'Песочни бури', tmap_hazard_frost: 'Мраз и глад', tmap_hazard_storm: 'Морски бури', tmap_hazard_scorched: 'Изгорена земја',
+    tmap_chokepoint: 'Стратешка точка',
   },
 };

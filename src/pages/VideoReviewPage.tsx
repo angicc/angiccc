@@ -10,7 +10,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
-import { streamChatResponse } from '@/features/ai/claudeClient';
+import { streamChatResponse } from '@/services/aiGateway';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   getCurrentVideo, getTimeUntilNextVideo, hasReviewedCurrentVideo,

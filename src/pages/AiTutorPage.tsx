@@ -12,7 +12,9 @@ import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { recordAiMessage } from '@/features/progress/progressStore';
-import { streamChatResponse } from '@/features/ai/claudeClient';
+import { streamChatResponse } from '@/services/aiGateway';
+import { usePersistentChat } from '@/services/chatStore';
+import { AiErrorCard } from '@/components/shared/AiErrorCard';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { ChatMessage } from '@/types';
 
@@ -120,9 +122,11 @@ export default function AiTutorPage() {
   ];
   const [params] = useSearchParams();
   const context = params.get('context') ?? undefined;
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages, clearChat] = usePersistentChat('tutor', currentUser?.id);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<unknown>(null);
+  const retryRef = useRef<{ history: { role: 'user' | 'assistant'; content: string }[] } | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const avatarKey = currentUser ? `historify:avatar:${currentUser.id}` : '';
@@ -130,31 +134,50 @@ export default function AiTutorPage() {
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
-  const send = useCallback(async (text: string) => {
-    const { allowed } = canAI();
-    if (!allowed || !text.trim() || loading) return;
-
-    const userMsg: ChatMessage = { id: crypto.randomUUID(), role: 'user', content: text.trim(), timestamp: new Date().toISOString() };
+  // Runs one streaming exchange against an already-built history. On failure
+  // the empty bubble is dropped, the history is stashed for the retry card,
+  // and any partial text is kept so nothing the model said is lost.
+  const stream = useCallback(async (history: { role: 'user' | 'assistant'; content: string }[]) => {
     const assistantMsg: ChatMessage = { id: crypto.randomUUID(), role: 'assistant', content: '', timestamp: new Date().toISOString(), isStreaming: true };
-    setMessages(prev => [...prev, userMsg, assistantMsg]);
-    setInput('');
+    setMessages(prev => [...prev, assistantMsg]);
     setLoading(true);
-
-    if (currentUser) { recordAiMessage(currentUser.id); trackAiMessage(); refreshProgress(); }
-
+    setError(null);
     try {
-      const history = [...messages, userMsg].map(m => ({ role: m.role, content: m.content }));
       let acc = '';
       for await (const chunk of streamChatResponse(history, context)) {
         acc += chunk;
         setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, content: stripMarkdown(acc) } : m));
       }
       setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, isStreaming: false } : m));
+      retryRef.current = null;
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'An error occurred. Check your API key.';
-      setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, content: `Error: ${msg}`, isStreaming: false } : m));
+      retryRef.current = { history };
+      setError(err);
+      setMessages(prev => prev
+        .filter(m => !(m.id === assistantMsg.id && m.content === ''))
+        .map(m => m.id === assistantMsg.id ? { ...m, isStreaming: false } : m));
     } finally { setLoading(false); }
-  }, [messages, canAI, context, currentUser, loading, refreshProgress, trackAiMessage]);
+  }, [context, setMessages]);
+
+  const send = useCallback(async (text: string) => {
+    const { allowed } = canAI();
+    if (!allowed || !text.trim() || loading) return;
+
+    const userMsg: ChatMessage = { id: crypto.randomUUID(), role: 'user', content: text.trim(), timestamp: new Date().toISOString() };
+    setMessages(prev => [...prev, userMsg]);
+    setInput('');
+
+    if (currentUser) { recordAiMessage(currentUser.id); trackAiMessage(); refreshProgress(); }
+
+    const history = [...messages, userMsg].map(m => ({ role: m.role, content: m.content }));
+    void stream(history);
+  }, [messages, canAI, currentUser, loading, refreshProgress, trackAiMessage, setMessages, stream]);
+
+  const retry = useCallback(() => {
+    const saved = retryRef.current;
+    if (!saved || loading) return;
+    void stream(saved.history);
+  }, [loading, stream]);
 
   const { allowed, reason } = canAI();
 
@@ -180,7 +203,7 @@ export default function AiTutorPage() {
             </div>
           </div>
           {messages.length > 0 && (
-            <Button variant="ghost" size="sm" className="gap-2" onClick={() => setMessages([])}>
+            <Button variant="ghost" size="sm" className="gap-2" onClick={() => { clearChat(); setError(null); retryRef.current = null; }}>
               <RotateCcw className="w-4 h-4" />{t.tutor_new_chat}
             </Button>
           )}
@@ -280,6 +303,12 @@ export default function AiTutorPage() {
                 ))}
               </AnimatePresence>
               <AnimatePresence>{loading && <TypingIndicator />}</AnimatePresence>
+              {error != null && !loading && (
+                <div className="flex gap-3 items-start">
+                  <div className="shrink-0 mt-0.5"><ClioAvatar size={28} /></div>
+                  <AiErrorCard error={error} onRetry={retry} />
+                </div>
+              )}
               <div ref={bottomRef} />
             </div>
             </div>

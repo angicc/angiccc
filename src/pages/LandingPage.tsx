@@ -2,22 +2,14 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { stripMarkdown } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from 'framer-motion';
-import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Globe2, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, MessageCircle, X, Send, Loader2, Sparkles, Film, Shield, Scale } from 'lucide-react';
+import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Globe2, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, X, Send, Loader2, Sparkles, Film, Shield, Scale } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/shared/Logo';
-import { streamChatResponse, LANDING_SYSTEM_PROMPT } from '@/features/ai/claudeClient';
+import { streamChatResponse, LANDING_SYSTEM_PROMPT } from '@/services/aiGateway';
+import { AiErrorCard } from '@/components/shared/AiErrorCard';
 
 // ── Data ──────────────────────────────────────────────────────────────────────
-
-type HeroPhoto = { src: string; label: string; top: string; left?: string; right?: string; delay: number; rot: number; floatDur: number };
-
-const HERO_PHOTOS: HeroPhoto[] = [
-  { src: 'photo-1568322445389-f64ac2515020', label: 'Ancient Egypt',    top: '6%',  left: '1%',  delay: 0,    rot: -5, floatDur: 4.5 },
-  { src: 'photo-1552832230-c0197dd311b5', label: 'Roman Empire',      top: '54%', left: '0%',  delay: 0.4,  rot:  3, floatDur: 5.2 },
-  { src: 'photo-1603565816030-6b389eeb23cb', label: 'Classical Greece', top: '5%',  right: '1%', delay: 0.2,  rot:  4, floatDur: 4.8 },
-  { src: 'photo-1516483638261-f4dbaf036963', label: 'The Renaissance', top: '54%', right: '0%', delay: 0.6,  rot: -3, floatDur: 5.5 },
-];
 
 const ERAS_SHOWCASE = [
   {
@@ -272,27 +264,37 @@ const CHAT_SUGGESTIONS = [
   'What are the pricing plans?',
 ];
 
+const LANDING_CHAT_KEY = 'historify:chat:landing';
+const LANDING_GREETING: ChatMsg = { role: 'assistant', text: "Hi! I'm Clio, your AI history guide. Ask me anything about Historify or world history!" };
+
+function loadLandingChat(): ChatMsg[] {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(LANDING_CHAT_KEY) ?? '') as ChatMsg[];
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : [LANDING_GREETING];
+  } catch { return [LANDING_GREETING]; }
+}
+
 function LandingChatbot() {
   const [open, setOpen]       = useState(false);
-  const [msgs, setMsgs]       = useState<ChatMsg[]>([
-    { role: 'assistant', text: "Hi! I'm Clio, your AI history guide. Ask me anything about Historify or world history!" }
-  ]);
+  const [msgs, setMsgs]       = useState<ChatMsg[]>(loadLandingChat);
   const [input, setInput]     = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState<unknown>(null);
+  const retryRef              = useRef<{ history: { role: 'user' | 'assistant'; content: string }[] } | null>(null);
   const bottomRef             = useRef<HTMLDivElement>(null);
   const inputRef              = useRef<HTMLInputElement>(null);
   const apiKey                = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [msgs]);
 
-  const send = useCallback(async (text: string) => {
-    if (!text.trim() || loading) return;
-    const userMsg: ChatMsg = { role: 'user', text };
-    setMsgs(prev => [...prev, userMsg]);
-    setInput('');
-    setLoading(true);
+  // Persist the conversation so a refresh or timeout never loses context.
+  useEffect(() => {
+    try { localStorage.setItem(LANDING_CHAT_KEY, JSON.stringify(msgs.slice(-40))); } catch { /* best-effort */ }
+  }, [msgs]);
 
-    const history = [...msgs, userMsg].map(m => ({ role: m.role, content: m.text }));
+  const stream = useCallback(async (history: { role: 'user' | 'assistant'; content: string }[]) => {
+    setLoading(true);
+    setError(null);
     let reply = '';
     setMsgs(prev => [...prev, { role: 'assistant', text: '' }]);
     try {
@@ -304,15 +306,28 @@ function LandingChatbot() {
           return updated;
         });
       }
-    } catch {
-      setMsgs(prev => {
-        const updated = [...prev];
-        updated[updated.length - 1] = { role: 'assistant', text: "Sorry, I couldn't connect right now. Try again in a moment!" };
-        return updated;
-      });
+      retryRef.current = null;
+    } catch (err) {
+      retryRef.current = { history };
+      setError(err);
+      // Drop the empty placeholder bubble; keep any partial reply.
+      setMsgs(prev => prev.filter((m, i) => !(i === prev.length - 1 && m.role === 'assistant' && m.text === '')));
     }
     setLoading(false);
-  }, [msgs, loading]);
+  }, []);
+
+  const send = useCallback(async (text: string) => {
+    if (!text.trim() || loading) return;
+    const userMsg: ChatMsg = { role: 'user', text };
+    setMsgs(prev => [...prev, userMsg]);
+    setInput('');
+    void stream([...msgs, userMsg].map(m => ({ role: m.role, content: m.text })));
+  }, [msgs, loading, stream]);
+
+  const retry = useCallback(() => {
+    if (!retryRef.current || loading) return;
+    void stream(retryRef.current.history);
+  }, [loading, stream]);
 
   function handleOpen() {
     setOpen(o => !o);
@@ -381,6 +396,12 @@ function LandingChatbot() {
                   </div>
                 </motion.div>
               ))}
+              {error != null && !loading && (
+                <div className="flex gap-2.5 justify-start">
+                  <div className="shrink-0 mt-0.5"><ClioAvatar size={26} /></div>
+                  <AiErrorCard error={error} onRetry={retry} />
+                </div>
+              )}
               <div ref={bottomRef} />
             </div>
 
