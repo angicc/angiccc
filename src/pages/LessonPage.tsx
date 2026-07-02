@@ -117,7 +117,10 @@ function LessonBanner({
         </button>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 p-6">
+      {/* z-10 keeps the typography ABOVE the z-[3] contrast mask — without it,
+          positive z-index paints over positioned z-auto siblings and the
+          near-opaque mask base would dim the title it exists to protect. */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
         <div className="flex items-center gap-2 mb-2 flex-wrap">
           <Badge
             variant="outline"
