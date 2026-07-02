@@ -252,7 +252,7 @@ type TranslationKeys = {
   essay_custom_placeholder: string;
   // ── AI gateway errors ─────────────────────────────────────────
   ai_err_title: string; ai_err_config: string; ai_err_network: string;
-  ai_err_rate: string; ai_err_server: string; ai_err_generic: string;
+  ai_err_rate: string; ai_err_server: string; ai_err_generic: string; ai_err_reconnect: string;
   // ── Tactical map (filters / fog / telemetry / annotations) ────
   tmap_cat_assets: string; tmap_cat_diplomatic: string; tmap_cat_resources: string; tmap_cat_enemy: string;
   tmap_annotate: string; tmap_ann_pin: string; tmap_ann_draw: string; tmap_ann_clear: string; tmap_ann_pin_default: string;
@@ -566,6 +566,7 @@ export const T: Translations = {
     ai_err_rate: 'Too many requests right now. Wait a few seconds, then retry.',
     ai_err_server: 'The AI service is temporarily down. Your conversation is saved — retry in a moment.',
     ai_err_generic: 'Something went wrong while contacting the AI. Your conversation is saved — try again.',
+    ai_err_reconnect: 'Reconnecting in {s}s…',
     // Tactical map
     tmap_cat_assets: 'Owned Assets', tmap_cat_diplomatic: 'Diplomatic Fronts', tmap_cat_resources: 'Resources', tmap_cat_enemy: 'Enemy Spheres',
     tmap_annotate: 'Annotate', tmap_ann_pin: 'Place Pin', tmap_ann_draw: 'Draw Path', tmap_ann_clear: 'Clear Notes', tmap_ann_pin_default: 'Map Pin',
@@ -853,6 +854,7 @@ export const T: Translations = {
     ai_err_rate: 'Demasiadas solicitudes. Espera unos segundos y reintenta.',
     ai_err_server: 'El servicio de IA está caído temporalmente. Tu conversación está guardada — reintenta en un momento.',
     ai_err_generic: 'Algo salió mal al contactar con la IA. Tu conversación está guardada — inténtalo de nuevo.',
+    ai_err_reconnect: 'Reconectando en {s} s…',
     // Tactical map
     tmap_cat_assets: 'Activos Propios', tmap_cat_diplomatic: 'Frentes Diplomáticos', tmap_cat_resources: 'Recursos', tmap_cat_enemy: 'Esferas Enemigas',
     tmap_annotate: 'Anotar', tmap_ann_pin: 'Colocar Pin', tmap_ann_draw: 'Dibujar Ruta', tmap_ann_clear: 'Borrar Notas', tmap_ann_pin_default: 'Pin de Mapa',
@@ -1140,6 +1142,7 @@ export const T: Translations = {
     ai_err_rate: 'Слишком много запросов. Подождите несколько секунд и повторите.',
     ai_err_server: 'Сервис ИИ временно недоступен. Ваш диалог сохранён — повторите чуть позже.',
     ai_err_generic: 'Не удалось связаться с ИИ. Ваш диалог сохранён — попробуйте ещё раз.',
+    ai_err_reconnect: 'Повторное подключение через {s} с…',
     // Tactical map
     tmap_cat_assets: 'Свои Активы', tmap_cat_diplomatic: 'Дипломатические Фронты', tmap_cat_resources: 'Ресурсы', tmap_cat_enemy: 'Вражеские Сферы',
     tmap_annotate: 'Аннотации', tmap_ann_pin: 'Поставить Метку', tmap_ann_draw: 'Нарисовать Путь', tmap_ann_clear: 'Очистить Заметки', tmap_ann_pin_default: 'Метка',
@@ -1427,6 +1430,7 @@ export const T: Translations = {
     ai_err_rate: 'Премногу барања во моментов. Почекајте неколку секунди, па обидете се повторно.',
     ai_err_server: 'ИИ сервисот е привремено недостапен. Разговорот е зачуван — обидете се повторно за момент.',
     ai_err_generic: 'Нешто тргна наопаку при контакт со ИИ. Разговорот е зачуван — обидете се повторно.',
+    ai_err_reconnect: 'Повторно поврзување за {s} с…',
     // Tactical map
     tmap_cat_assets: 'Сопствени Средства', tmap_cat_diplomatic: 'Дипломатски Фронтови', tmap_cat_resources: 'Ресурси', tmap_cat_enemy: 'Непријателски Сфери',
     tmap_annotate: 'Прибелешки', tmap_ann_pin: 'Постави Значка', tmap_ann_draw: 'Нацртај Патека', tmap_ann_clear: 'Избриши Белешки', tmap_ann_pin_default: 'Значка',

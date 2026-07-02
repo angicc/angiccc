@@ -39,9 +39,26 @@ export interface GatewayStatus {
   configured: boolean;
 }
 
+type EnvMap = Record<string, string | undefined>;
+
+/**
+ * Resolve an env var across every runtime this module can execute in:
+ *   1. `import.meta.env` — Vite statically inlines `VITE_*` keys at build time.
+ *   2. `globalThis.process.env` — serverless functions / SSR / test runners,
+ *      where Vite's static binding does not apply. Accessed via `globalThis`
+ *      so browser bundles (no `process` global) never throw a ReferenceError.
+ */
+function readEnv(name: string): string | undefined {
+  const viaImportMeta = (import.meta.env as EnvMap)[name];
+  if (viaImportMeta && viaImportMeta.trim().length > 0) return viaImportMeta.trim();
+  const proc = (globalThis as { process?: { env?: EnvMap } }).process;
+  const viaProcess = proc?.env?.[name];
+  if (viaProcess && viaProcess.trim().length > 0) return viaProcess.trim();
+  return undefined;
+}
+
 function clientKey(): string | undefined {
-  const key = import.meta.env.VITE_ANTHROPIC_API_KEY as string | undefined;
-  return key && key.trim().length > 0 ? key.trim() : undefined;
+  return readEnv('VITE_ANTHROPIC_API_KEY') ?? readEnv('ANTHROPIC_API_KEY');
 }
 
 /** Which transport will the next request use, and is it plausibly configured? */
