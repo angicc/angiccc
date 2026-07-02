@@ -1,6 +1,6 @@
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Map } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck } from 'lucide-react';
 import { getLessonTheme, type LessonTheme } from '@/lib/lessonTheme';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
@@ -20,39 +20,21 @@ import { getTranslatedLesson, getTranslatedEra } from '@/i18n/contentTranslation
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { HistoricalMapModal } from '@/components/shared/HistoricalMapModal';
+import { resolveBannerCandidates } from '@/features/content/lessonBannerAssets';
+import { EraBannerBackdrop } from '@/components/shared/EraBannerBackdrop';
 
-function proxyImageUrl(url: string): string {
-  return url;
-}
-
-// Guaranteed-good era fallback imagery, keyed by eraId. Used as the final
-// real-image stage before we drop to the generated pattern, so every era —
-// not just the few whose hard-coded asset happens to resolve — shows a banner.
-const ERA_FALLBACKS: Record<string, string> = {
-  ancient:        'https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=1200&q=60',
-  'middle-ages':  'https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&w=1200&q=60',
-  'early-modern': 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1200&q=60',
-  modern:         'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=60',
-};
-
-function getFallback(eraId: string): string {
-  return ERA_FALLBACKS[eraId] ?? ERA_FALLBACKS.ancient;
-}
-
-// Banner image resolution is a strict, deterministic chain bound to the lesson
-// itself — NO Wikipedia search, NO randomised fallback array. Stages:
-//   primary → the lesson's own imageUrl (its explicit DB binding)
-//   era     → a fixed image keyed by the lesson's eraId
-//   pattern → the generated SVG texture (only if both images fail to load)
+// Banner image resolution is a strict, deterministic chain routed per lesson
+// ID (see lessonBannerAssets.ts) — NO Wikipedia search, NO randomised
+// fallback array. Candidates: curated per-lesson override → the lesson's own
+// imageUrl → the era hero image. If every candidate fails to load, the banner
+// renders the era's procedural SVG backdrop, so it is styled — never blank.
 // Because every stage is a fixed function of (lesson, era), the same lesson
 // always shows the same banner, in every language.
-type BannerStage = 'primary' | 'era' | 'pattern';
-
 function LessonBanner({
-  imageUrl, eraId, estimatedMinutes, xpReward, title, subtitle,
+  lessonId, imageUrl, eraId, estimatedMinutes, xpReward, title, subtitle,
   bookmarked, onBookmark, theme,
 }: {
+  lessonId: string;
   imageUrl?: string;
   eraId: string;
   estimatedMinutes: number; xpReward: number; title: string; subtitle: string;
@@ -60,29 +42,20 @@ function LessonBanner({
   theme: LessonTheme;
 }) {
   const [loaded, setLoaded] = useState(false);
-  // Start at whichever stage actually has a source. (This component is keyed by
+  // The full candidate chain is fixed at mount (this component is keyed by
   // lesson id in the parent, so each lesson gets a fresh, correctly-seeded
-  // chain rather than inheriting the previously-viewed lesson's state.)
-  const [stage, setStage] = useState<BannerStage>(imageUrl ? 'primary' : 'era');
-  const [src, setSrc] = useState(imageUrl ? proxyImageUrl(imageUrl) : '');
+  // chain rather than inheriting the previously-viewed lesson's state).
+  const [candidates] = useState(() => resolveBannerCandidates(lessonId, eraId, imageUrl));
+  const [candidateIdx, setCandidateIdx] = useState(0);
 
-  // Resolve the era stage's source — a fixed, guaranteed-good static URL.
-  useEffect(() => {
-    if (stage === 'era' && !src) {
-      setSrc(getFallback(eraId));
-      setLoaded(false);
-    }
-  }, [stage, src, eraId]);
+  const src = candidates[candidateIdx] ?? '';
+  const imgFailed = candidateIdx >= candidates.length;
 
-  // An image at the current stage failed to load → advance to the next stage,
-  // clearing src so the effect above resolves the new source.
+  // A candidate failed to load → advance to the next entry in the chain.
   function handleError() {
     setLoaded(false);
-    setSrc('');
-    setStage(s => (s === 'primary' ? 'era' : 'pattern'));
+    setCandidateIdx(i => i + 1);
   }
-
-  const imgFailed = stage === 'pattern';
 
   return (
     <div
@@ -102,49 +75,29 @@ function LessonBanner({
         <div className="absolute inset-0 animate-pulse bg-white/[0.03] z-[2]" />
       )}
 
-      {/* Historical pattern texture — shown when image fails or is absent */}
-      {imgFailed || !src ? (
-        <svg
-          className="absolute inset-0 w-full h-full z-[2] opacity-[0.08]"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden
-        >
-          <defs>
-            <pattern id="hist-pattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
-              {/* Cross-hatch grid */}
-              <line x1="0" y1="0" x2="60" y2="60" stroke="white" strokeWidth="0.5" />
-              <line x1="60" y1="0" x2="0" y2="60" stroke="white" strokeWidth="0.5" />
-              <line x1="30" y1="0" x2="30" y2="60" stroke="white" strokeWidth="0.3" />
-              <line x1="0" y1="30" x2="60" y2="30" stroke="white" strokeWidth="0.3" />
-              {/* Corner diamonds */}
-              <polygon points="30,2 38,10 30,18 22,10" fill="none" stroke="white" strokeWidth="0.5" />
-              {/* Center dot */}
-              <circle cx="30" cy="30" r="1.5" fill="white" opacity="0.6" />
-              <circle cx="0" cy="0" r="1" fill="white" opacity="0.4" />
-              <circle cx="60" cy="0" r="1" fill="white" opacity="0.4" />
-              <circle cx="0" cy="60" r="1" fill="white" opacity="0.4" />
-              <circle cx="60" cy="60" r="1" fill="white" opacity="0.4" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#hist-pattern)" />
-        </svg>
-      ) : null}
+      {/* Era-specific procedural backdrop — shown when every candidate fails */}
+      {(imgFailed || !src) && <EraBannerBackdrop eraId={eraId} />}
 
       {src && !imgFailed && (
         <img
+          key={src}
           src={src}
           alt=""
           aria-hidden
           loading="lazy"
           referrerPolicy="no-referrer"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-[2] ${loaded ? 'opacity-50' : 'opacity-0'}`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-[2] ${loaded ? 'opacity-60' : 'opacity-0'}`}
           onLoad={() => setLoaded(true)}
           onError={handleError}
         />
       )}
-      {/* Dark-to-transparent overlay — opaque at bottom to guarantee title
-          legibility over any banner image, regardless of its brightness. */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/15 z-[3]" />
+      {/* Progressive mask: fully transparent across the top fifth, near-opaque
+          ink at the base — guarantees AA/AAA title contrast over any image,
+          whether its lower region is pure white marble or pitch-dark oil paint. */}
+      <div
+        className="absolute inset-0 z-[3]"
+        style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0) 20%, rgba(10,15,30,0.95) 100%)' }}
+      />
 
       {/* Category watermark */}
       <div className="absolute top-6 right-6 text-7xl opacity-[0.12] select-none pointer-events-none z-10 leading-none">
@@ -200,7 +153,6 @@ export default function LessonPage() {
   const [bookmarked, setBookmarked] = useState(() =>
     currentUser && lessonId ? isBookmarked(currentUser.id, lessonId) : false
   );
-  const [mapOpen, setMapOpen] = useState(false);
 
   // Force the scroll container back to the top the instant a new lesson mounts
   // (e.g. clicking "Next Lesson"). Keyed on lessonId so it fires for every
@@ -246,7 +198,6 @@ export default function LessonPage() {
 
   return (
     <AppShell>
-      <HistoricalMapModal lessonId={lessonId ?? ''} lessonTitle={lesson.title} open={mapOpen} onOpenChange={setMapOpen} />
       {xpAmt > 0 && <XPBadge amount={xpAmt} onDone={() => setXpAmt(0)} />}
       {unlockedAchievements.length > 0 && <AchievementToast achievements={unlockedAchievements} onDone={() => setUnlockedAchievements([])} />}
       <div className="max-w-5xl mx-auto">
@@ -262,6 +213,7 @@ export default function LessonPage() {
         {/* Hero banner */}
         <LessonBanner
           key={lesson.id}
+          lessonId={lesson.id}
           imageUrl={lesson.imageUrl}
           eraId={lesson.eraId}
           estimatedMinutes={lesson.estimatedMinutes}
@@ -319,25 +271,22 @@ export default function LessonPage() {
                 </ul>
               </CardContent>
             </Card>
-            <Button variant="outline" size="sm" className="w-full gap-2" onClick={() => navigate(`/tutor?context=${encodeURIComponent(lesson.title)}`)}>
-              <MessageSquare className="w-4 h-4" />{t.lesson_discuss}
-            </Button>
-            <Button
-              variant={bookmarked ? 'secondary' : 'outline'}
-              size="sm"
-              className="w-full gap-2"
-              onClick={handleBookmark}
-            >
-              {bookmarked ? <><BookmarkCheck className="w-4 h-4 text-amber-400" />{t.lesson_bookmarked}</> : <><Bookmark className="w-4 h-4" />{t.lesson_save}</>}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full gap-2"
-              onClick={() => setMapOpen(true)}
-            >
-              <Map className="w-4 h-4" />{t.lesson_map}
-            </Button>
+            {/* Two remaining actions absorb the full sidebar width evenly,
+                keeping the vertical rhythm balanced after the Historical Map
+                node was removed. */}
+            <div className="flex flex-col gap-2.5">
+              <Button variant="outline" size="sm" className="w-full gap-2 h-9" onClick={() => navigate(`/tutor?context=${encodeURIComponent(lesson.title)}`)}>
+                <MessageSquare className="w-4 h-4" />{t.lesson_discuss}
+              </Button>
+              <Button
+                variant={bookmarked ? 'secondary' : 'outline'}
+                size="sm"
+                className="w-full gap-2 h-9"
+                onClick={handleBookmark}
+              >
+                {bookmarked ? <><BookmarkCheck className="w-4 h-4 text-amber-400" />{t.lesson_bookmarked}</> : <><Bookmark className="w-4 h-4" />{t.lesson_save}</>}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

@@ -203,7 +203,6 @@ type TranslationKeys = {
   prof_dark_mode: string;
   prof_setup_2fa: string; prof_2fa_scan: string; prof_2fa_enter_code: string; prof_2fa_verify: string; prof_2fa_backup: string;
   // Map feature
-  lesson_map: string;
   map_key_locations: string;
   map_zoom_hint: string;
   // Timeline Territory Map
@@ -513,7 +512,6 @@ export const T: Translations = {
     prof_notif_weekly: 'Weekly Progress Digest', prof_notif_weekly_desc: 'A summary of your weekly learning activity.',
     prof_dark_mode: 'Dark Mode',
     prof_setup_2fa: 'Set Up 2FA', prof_2fa_scan: 'Scan the QR code with an authenticator app (Google Authenticator, Authy, etc.).', prof_2fa_enter_code: 'Enter the 6-digit code from your app', prof_2fa_verify: 'Verify & Enable', prof_2fa_backup: 'Backup codes (save these somewhere safe):',
-    lesson_map: 'Historical Map',
     map_key_locations: 'Key Locations',
     map_zoom_hint: 'Scroll to zoom · Drag to pan',
     nav_timeline_map: 'Territory Map',
@@ -801,7 +799,6 @@ export const T: Translations = {
     prof_notif_weekly: 'Resumen Semanal de Progreso', prof_notif_weekly_desc: 'Un resumen de tu actividad de aprendizaje semanal.',
     prof_dark_mode: 'Modo Oscuro',
     prof_setup_2fa: 'Configurar 2FA', prof_2fa_scan: 'Escanea el código QR con una app autenticadora (Google Authenticator, Authy, etc.).', prof_2fa_enter_code: 'Introduce el código de 6 dígitos de tu app', prof_2fa_verify: 'Verificar y Activar', prof_2fa_backup: 'Códigos de respaldo (guárdalos en un lugar seguro):',
-    lesson_map: 'Mapa Histórico',
     map_key_locations: 'Ubicaciones Clave',
     map_zoom_hint: 'Desplaza para zoom · Arrastra para mover',
     nav_timeline_map: 'Mapa de Territorios',
@@ -1089,7 +1086,6 @@ export const T: Translations = {
     prof_notif_weekly: 'Еженедельный отчёт о прогрессе', prof_notif_weekly_desc: 'Сводка вашей учебной активности за неделю.',
     prof_dark_mode: 'Тёмный режим',
     prof_setup_2fa: 'Настроить 2FA', prof_2fa_scan: 'Отсканируйте QR-код с помощью приложения-аутентификатора (Google Authenticator, Authy и др.).', prof_2fa_enter_code: 'Введите 6-значный код из приложения', prof_2fa_verify: 'Подтвердить и включить', prof_2fa_backup: 'Резервные коды (сохраните их в надёжном месте):',
-    lesson_map: 'Историческая карта',
     map_key_locations: 'Ключевые места',
     map_zoom_hint: 'Прокрутите для масштаба · Перетащите для перемещения',
     nav_timeline_map: 'Карта Территорий',
@@ -1377,7 +1373,6 @@ export const T: Translations = {
     prof_notif_weekly: 'Неделен Преглед на Напредок', prof_notif_weekly_desc: 'Резиме на твојата неделна активност на учење.',
     prof_dark_mode: 'Темен Режим',
     prof_setup_2fa: 'Постави 2FA', prof_2fa_scan: 'Скенирај го QR кодот со апликација за автентикација (Google Authenticator, Authy, итн.).', prof_2fa_enter_code: 'Внеси го 6-цифрениот код од твојата апликација', prof_2fa_verify: 'Верификувај и Овозможи', prof_2fa_backup: 'Резервни кодови (зачувај ги на безбедно место):',
-    lesson_map: 'Историска Карта',
     map_key_locations: 'Клучни Локации',
     map_zoom_hint: 'Скролувај за зум · Влечи за движење',
     nav_timeline_map: 'Карта на Територии',
