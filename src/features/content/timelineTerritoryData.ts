@@ -62,7 +62,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [30, 41],
     zoom: 5,
     title: 'Mesopotamia & Ancient Egypt',
-    titleI18n: { es: 'Mesopotamia y Antiguo Egipto', ru: 'Месопотамия и Древний Египет', mk: 'Месопотамија и Античко Египет' },
+    titleI18n: { es: 'Mesopotamia y Antiguo Egipto', ru: 'Месопотамия и Древний Египет', mk: 'Месопотамија и антички Египет' },
     description: 'The Fertile Crescent — from Mesopotamia\'s Tigris-Euphrates to Egypt\'s Nile — hosted humanity\'s first cities, writing systems, and law codes.',
     polygons: [
       {
@@ -168,7 +168,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [33, 50],
     zoom: 4,
     title: 'The Persian Empire',
-    titleI18n: { es: 'El Imperio Persa', ru: 'Персидская Империя', mk: 'Персиската Империја' },
+    titleI18n: { es: 'El Imperio Persa', ru: 'Персидская империя', mk: 'Персиската империја' },
     description: 'The Achaemenid Persian Empire — stretching from Egypt to the Indus River — was the largest empire the world had yet seen, unified by the Royal Road and Zoroastrian faith.',
     polygons: [
       {
@@ -209,7 +209,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [41, 14],
     zoom: 4,
     title: 'The Roman Empire',
-    titleI18n: { es: 'El Imperio Romano', ru: 'Римская Империя', mk: 'Римската Империја' },
+    titleI18n: { es: 'El Imperio Romano', ru: 'Римская империя', mk: 'Римската империја' },
     description: 'At its height under Trajan (117 CE), Rome unified the Mediterranean world — from Britain to Mesopotamia — with roads, Latin law, and legions.',
     polygons: [
       {
@@ -262,7 +262,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [35, 110],
     zoom: 4,
     title: 'Ancient China — Qin & Han Dynasties',
-    titleI18n: { es: 'China Antigua — Dinastías Qin y Han', ru: 'Древний Китай — Династии Цинь и Хань', mk: 'Античка Кина — Цин и Хан Династии' },
+    titleI18n: { es: 'China Antigua — dinastías Qin y Han', ru: 'Древний Китай — династии Цинь и Хань', mk: 'Античка Кина — династиите Цин и Хан' },
     description: 'The Qin Dynasty unified China under Legalist rule; the Han Dynasty consolidated it under Confucian bureaucracy and opened the Silk Road to the West.',
     polygons: [
       {
@@ -303,7 +303,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [40, 33],
     zoom: 5,
     title: 'Byzantine Empire',
-    titleI18n: { es: 'Imperio Bizantino', ru: 'Византийская Империя', mk: 'Византиската Империја' },
+    titleI18n: { es: 'Imperio Bizantino', ru: 'Византийская империя', mk: 'Византиската империја' },
     description: 'The Eastern Roman Empire survived the fall of the West by nearly a millennium, preserving Greek-Roman culture and Orthodox Christianity until the Ottoman conquest of 1453.',
     polygons: [
       {
@@ -342,7 +342,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [28, 30],
     zoom: 3,
     title: 'Islamic Caliphates',
-    titleI18n: { es: 'Califatos Islámicos', ru: 'Исламские Халифаты', mk: 'Исламски Калифати' },
+    titleI18n: { es: 'Califatos Islámicos', ru: 'Исламские халифаты', mk: 'Исламски калифати' },
     description: 'From Arabia, Islam spread across the Middle East, North Africa, Spain, and Central Asia within a century — creating a civilisation that preserved Greek science and pioneered algebra, astronomy, and medicine.',
     polygons: [
       {
@@ -390,7 +390,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [48, 90],
     zoom: 3,
     title: 'The Mongol Empire',
-    titleI18n: { es: 'El Imperio Mongol', ru: 'Монгольская Империя', mk: 'Монголската Империја' },
+    titleI18n: { es: 'El Imperio Mongol', ru: 'Монгольская империя', mk: 'Монголската империја' },
     description: "Genghis Khan's descendants forged the largest contiguous land empire in history — from Korea to Hungary — connecting East and West through the Pax Mongolica.",
     polygons: [
       {
@@ -429,7 +429,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [33, 36],
     zoom: 6,
     title: 'Crusades & the Holy Land',
-    titleI18n: { es: 'Cruzadas y Tierra Santa', ru: 'Крестовые Походы и Святая Земля', mk: 'Крстоносните Походи и Светата Земја' },
+    titleI18n: { es: 'Cruzadas y Tierra Santa', ru: 'Крестовые походы и Святая земля', mk: 'Крстоносните походи и Светата Земја' },
     description: 'Nine major Crusades shaped medieval Europe — the First captured Jerusalem (1099), Saladin recaptured it (1187), and the last Crusader stronghold fell at Acre in 1291.',
     polygons: [
       {
@@ -472,7 +472,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [36, 137],
     zoom: 5,
     title: 'Medieval Japan — Feudal Age',
-    titleI18n: { es: 'Japón Medieval — Era Feudal', ru: 'Средневековая Япония — Феодальная эпоха', mk: 'Средновековна Јапонија — Феудална Ера' },
+    titleI18n: { es: 'Japón medieval — era feudal', ru: 'Средневековая Япония — Феодальная эпоха', mk: 'Средновековна Јапонија — феудална ера' },
     description: "Japan's feudal age saw samurai clans battle for supremacy through the Genpei War, the Kamakura and Ashikaga shogunates, and the Sengoku warring period.",
     polygons: [
       {
@@ -504,7 +504,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [39, 32],
     zoom: 4,
     title: 'Ottoman Empire at its Peak',
-    titleI18n: { es: 'Imperio Otomano en su Apogeo', ru: 'Османская Империя на Пике Могущества', mk: 'Отоманската Империја на Врвот' },
+    titleI18n: { es: 'Imperio Otomano en su apogeo', ru: 'Османская империя на пике могущества', mk: 'Отоманската империја на врвот' },
     description: "Under Suleiman the Magnificent (1520–66), the Ottomans controlled three continents — from the gates of Vienna to the Persian Gulf — the dominant power of the 16th century.",
     polygons: [
       {
@@ -573,7 +573,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [10, -30],
     zoom: 2,
     title: 'Age of Exploration',
-    titleI18n: { es: 'La Época de la Exploración', ru: 'Эпоха Великих Открытий', mk: 'Доба на Географски Откритија' },
+    titleI18n: { es: 'La época de las exploraciones', ru: 'Эпоха Великих открытий', mk: 'Доба на географските откритија' },
     description: 'Portuguese and Spanish explorers mapped Africa\'s coasts, reached India by sea, landed in the Americas, and circumnavigated the globe — reshaping the world forever.',
     polygons: [
       {
@@ -627,7 +627,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [51, 12],
     zoom: 5,
     title: 'Protestant Reformation',
-    titleI18n: { es: 'La Reforma Protestante', ru: 'Протестантская Реформация', mk: 'Протестантска Реформација' },
+    titleI18n: { es: 'La Reforma Protestante', ru: 'Протестантская Реформация', mk: 'Протестантската реформација' },
     description: "Luther's 95 Theses (1517) fractured Western Christianity, unleashing a century of religious wars culminating in the Peace of Westphalia (1648) that established modern nation-states.",
     polygons: [
       {
@@ -667,7 +667,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [38, -78],
     zoom: 4,
     title: 'American Revolution',
-    titleI18n: { es: 'Revolución Americana', ru: 'Американская Революция', mk: 'Американска Револуција' },
+    titleI18n: { es: 'Revolución americana', ru: 'Американская революция', mk: 'Американска револуција' },
     description: 'The 13 British colonies declared independence in 1776, creating the United States — the first modern democratic republic, inspiring revolutions worldwide.',
     polygons: [
       {
@@ -705,7 +705,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [47, 8],
     zoom: 4,
     title: 'French Revolution & Napoleon',
-    titleI18n: { es: 'Revolución Francesa y Napoleón', ru: 'Французская Революция и Наполеон', mk: 'Француска Револуција и Наполеон' },
+    titleI18n: { es: 'Revolución francesa y Napoleón', ru: 'Французская революция и Наполеон', mk: 'Француска револуција и Наполеон' },
     description: 'The French Revolution overthrew the monarchy (1789), and Napoleon\'s conquests spread revolutionary ideals across Europe before his defeat at Waterloo (1815).',
     polygons: [
       {
@@ -750,7 +750,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [52, -2],
     zoom: 5,
     title: 'Industrial Revolution',
-    titleI18n: { es: 'Revolución Industrial', ru: 'Промышленная Революция', mk: 'Индустриска Револуција' },
+    titleI18n: { es: 'Revolución industrial', ru: 'Промышленная революция', mk: 'Индустриска револуција' },
     description: 'Britain led the world\'s first Industrial Revolution — steam power, railways, textile mills, and urbanisation transformed society from agrarian to industrial by 1850, then spread to Europe and America.',
     polygons: [
       {
@@ -796,7 +796,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [49, 14],
     zoom: 4,
     title: 'World War I',
-    titleI18n: { es: 'Primera Guerra Mundial', ru: 'Первая Мировая Война', mk: 'Прва Светска Војна' },
+    titleI18n: { es: 'Primera Guerra Mundial', ru: 'Первая мировая война', mk: 'Прва светска војна' },
     description: 'The Great War killed 20 million people — trench warfare on the Western Front, collapse of four empires, and the redrawing of Europe\'s map at Versailles (1919).',
     polygons: [
       {
@@ -848,7 +848,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [50, 15],
     zoom: 4,
     title: 'World War II',
-    titleI18n: { es: 'Segunda Guerra Mundial', ru: 'Вторая Мировая Война', mk: 'Втора Светска Војна' },
+    titleI18n: { es: 'Segunda Guerra Mundial', ru: 'Вторая мировая война', mk: 'Втора светска војна' },
     description: 'The deadliest conflict in history — 70–85 million killed, the Holocaust, atomic bombs on Japan, and the post-war world order with the UN, NATO, and Cold War.',
     polygons: [
       {
@@ -895,7 +895,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [55, 30],
     zoom: 3,
     title: 'Cold War',
-    titleI18n: { es: 'Guerra Fría', ru: 'Холодная Война', mk: 'Студена Војна' },
+    titleI18n: { es: 'Guerra Fría', ru: 'Холодная война', mk: 'Студена војна' },
     description: 'The USA and USSR divided the world into competing blocs — NATO vs Warsaw Pact — in a nuclear standoff that shaped politics, culture, and technology until the USSR\'s collapse in 1991.',
     polygons: [
       {
@@ -946,7 +946,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [44, 19],
     zoom: 6,
     title: 'Yugoslav Wars',
-    titleI18n: { es: 'Guerras Yugoslavas', ru: 'Югославские Войны', mk: 'Југословенски Војни' },
+    titleI18n: { es: 'Guerras yugoslavas', ru: 'Югославские войны', mk: 'Југословенски војни' },
     description: 'The dissolution of Yugoslavia produced the bloodiest conflict in Europe since WWII — ethnic cleansing, siege of Sarajevo, NATO intervention, and the emergence of seven new nations.',
     polygons: [
       {
@@ -976,7 +976,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [41.5, 22],
     zoom: 6,
     title: 'Macedonian Struggle',
-    titleI18n: { es: 'La Lucha Macedonia', ru: 'Македонская Борьба', mk: 'Македонска Борба' },
+    titleI18n: { es: 'La lucha macedonia', ru: 'Македонская борьба', mk: 'Македонската борба' },
     description: 'Following Ottoman decline, the Macedonian Question — Bulgarian, Greek, and Serbian claims — erupted in guerrilla war, the Ilinden Uprising (1903), and the Balkan Wars (1912–13).',
     polygons: [
       {

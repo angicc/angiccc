@@ -34,10 +34,10 @@ const ERA_BG    = { ancient: 'bg-amber-400/10', medieval: 'bg-blue-400/10', 'ear
 const ERA_BORDER= { ancient: 'border-amber-400/40', medieval: 'border-blue-400/40', 'early-modern': 'border-emerald-400/40', modern: 'border-rose-400/40' } as const;
 
 const ERA_LABELS: Record<string, Record<Language, string>> = {
-  ancient:        { en: 'Ancient World',  es: 'Mundo Antiguo',          ru: 'Древний Мир',          mk: 'Античко Доба' },
-  medieval:       { en: 'Middle Ages',    es: 'Edad Media',              ru: 'Средние Века',          mk: 'Среден Век' },
-  'early-modern': { en: 'Early Modern',   es: 'Época Moderna Temprana',  ru: 'Раннее Новое Время',   mk: 'Рано Модерно Доба' },
-  modern:         { en: 'Modern Era',     es: 'Era Moderna',             ru: 'Современная Эпоха',    mk: 'Модерна Ера' },
+  ancient:        { en: 'Ancient World',  es: 'Mundo Antiguo',          ru: 'Древний мир',          mk: 'Античко доба' },
+  medieval:       { en: 'Middle Ages',    es: 'Edad Media',              ru: 'Средние века',          mk: 'Среден век' },
+  'early-modern': { en: 'Early Modern',   es: 'Época Moderna Temprana',  ru: 'Раннее Новое время',   mk: 'Рано модерно доба' },
+  modern:         { en: 'Modern Era',     es: 'Era Moderna',             ru: 'Современная эпоха',    mk: 'Модерна ера' },
 };
 
 interface CartographicStyle {
