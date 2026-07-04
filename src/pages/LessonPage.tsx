@@ -21,6 +21,7 @@ import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { resolveBannerCandidates } from '@/features/content/lessonBannerAssets';
+import { isGifBanner } from '@/features/content/lessonGifBanners';
 import { EraBannerBackdrop } from '@/components/shared/EraBannerBackdrop';
 
 // Banner image resolution is a strict, deterministic chain routed per lesson
@@ -85,8 +86,9 @@ function LessonBanner({
           alt=""
           aria-hidden
           loading="lazy"
+          decoding="async"
           referrerPolicy="no-referrer"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-[2] ${loaded ? 'opacity-60' : 'opacity-0'}`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-[2] ${loaded ? 'opacity-60' : 'opacity-0'} ${isGifBanner(src) ? 'scale-[1.07]' : ''}`}
           onLoad={() => setLoaded(true)}
           onError={handleError}
         />

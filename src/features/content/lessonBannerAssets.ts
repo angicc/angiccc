@@ -8,6 +8,8 @@
 // If every candidate fails to load, the banner renders the era's procedural
 // SVG backdrop (see EraBannerBackdrop) — styled per era, never blank.
 
+import { LESSON_GIF_BANNERS } from '@/features/content/lessonGifBanners';
+
 /** Curated per-lesson replacements where the dataset asset is generic or frail. */
 const LESSON_BANNER_OVERRIDES: Record<string, string> = {
   // Globalization: the dataset points at a generic city photo also used as the
@@ -26,9 +28,11 @@ export const ERA_HERO_IMAGES: Record<string, string> = {
 /**
  * The full deterministic candidate chain for a lesson banner. Duplicates are
  * collapsed so a failing URL is never retried at a later stage.
+ * Order: animated Drive GIF → curated override → lesson image → era hero.
  */
 export function resolveBannerCandidates(lessonId: string, eraId: string, imageUrl?: string): string[] {
   const chain = [
+    LESSON_GIF_BANNERS[lessonId],
     LESSON_BANNER_OVERRIDES[lessonId],
     imageUrl,
     ERA_HERO_IMAGES[eraId] ?? ERA_HERO_IMAGES.ancient,
