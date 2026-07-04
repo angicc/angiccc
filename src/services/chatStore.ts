@@ -55,3 +55,64 @@ export function usePersistentChat(module: string, userId?: string) {
 
   return [messages, setMessages, clear] as const;
 }
+
+// ─── Thread registry (multi-conversation history per AI module) ──────────────
+// A module (e.g. 'tutor') can hold many named conversation threads. Each
+// thread's messages live in their own persistent slice keyed
+// `<module>:t:<threadId>`; the registry stores only metadata. Continuity
+// pipeline: when the user reopens a thread, its full persisted slice hydrates
+// into state and the trailing MAX_HISTORY turns are injected back into the
+// LLM context window on the next exchange — the model resumes with the same
+// working memory it ended with. (Client-only app: dynamic window re-injection
+// stands in for server-side vectorization; the interface is the same.)
+
+export interface ChatThread {
+  id: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+function threadsKey(module: string, userId?: string) {
+  return `${PREFIX}:threads:${module}${userId ? `:${userId}` : ''}`;
+}
+
+/** The persistent-chat module name for a given thread. */
+export function threadModule(module: string, threadId: string): string {
+  // 'main' aliases the legacy single-thread slice so existing chats survive.
+  return threadId === 'main' ? module : `${module}:t:${threadId}`;
+}
+
+export function listThreads(module: string, userId?: string): ChatThread[] {
+  try {
+    const raw = localStorage.getItem(threadsKey(module, userId));
+    const parsed = raw ? (JSON.parse(raw) as ChatThread[]) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch { return []; }
+}
+
+function saveThreads(module: string, threads: ChatThread[], userId?: string) {
+  try { localStorage.setItem(threadsKey(module, userId), JSON.stringify(threads.slice(-30))); } catch { /* best-effort */ }
+}
+
+export function createThread(module: string, userId?: string): ChatThread {
+  const now = new Date().toISOString();
+  const thread: ChatThread = { id: crypto.randomUUID(), title: '', createdAt: now, updatedAt: now };
+  saveThreads(module, [...listThreads(module, userId), thread], userId);
+  return thread;
+}
+
+/** Set the thread title from its first user message (no-op once titled). */
+export function titleThread(module: string, threadId: string, firstMessage: string, userId?: string) {
+  const threads = listThreads(module, userId);
+  const target = threads.find(th => th.id === threadId);
+  if (!target || target.title) return;
+  target.title = firstMessage.slice(0, 48) + (firstMessage.length > 48 ? '…' : '');
+  target.updatedAt = new Date().toISOString();
+  saveThreads(module, threads, userId);
+}
+
+export function deleteThread(module: string, threadId: string, userId?: string) {
+  saveThreads(module, listThreads(module, userId).filter(th => th.id !== threadId), userId);
+  try { localStorage.removeItem(storageKey(threadModule(module, threadId), userId)); } catch { /* ignore */ }
+}

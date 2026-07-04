@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { stripMarkdown } from '@/lib/utils';
 import { useSearchParams } from 'react-router-dom';
-import { Send, RotateCcw, Sword, Globe, BookOpen, Scroll, Sparkles, Landmark } from 'lucide-react';
+import { Send, RotateCcw, Sword, Globe, BookOpen, Scroll, Sparkles, Landmark, History, Trash2, Plus } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { recordAiMessage } from '@/features/progress/progressStore';
 import { streamChatResponse } from '@/services/aiGateway';
-import { usePersistentChat } from '@/services/chatStore';
+import { usePersistentChat, listThreads, createThread, titleThread, deleteThread, threadModule, type ChatThread } from '@/services/chatStore';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
 import { CLIO_SAMPLE_DIALOGUES } from '@/features/ai/clioSampleDialogues';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -123,7 +123,12 @@ export default function AiTutorPage() {
   ];
   const [params] = useSearchParams();
   const context = params.get('context') ?? undefined;
-  const [messages, setMessages, clearChat] = usePersistentChat('tutor', currentUser?.id);
+  const activeThreadKey = `historify:chat:active:tutor${currentUser ? `:${currentUser.id}` : ''}`;
+  const [threadId, setThreadId] = useState<string>(() => localStorage.getItem(activeThreadKey) ?? 'main');
+  const [threads, setThreads] = useState<ChatThread[]>(() => listThreads('tutor', currentUser?.id));
+  const [showHistory, setShowHistory] = useState(false);
+  useEffect(() => { try { localStorage.setItem(activeThreadKey, threadId); } catch { /* ignore */ } }, [activeThreadKey, threadId]);
+  const [messages, setMessages, clearChat] = usePersistentChat(threadModule('tutor', threadId), currentUser?.id);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -169,10 +174,14 @@ export default function AiTutorPage() {
     setInput('');
 
     if (currentUser) { recordAiMessage(currentUser.id); trackAiMessage(); refreshProgress(); }
+    if (threadId !== 'main' && messages.length === 0) {
+      titleThread('tutor', threadId, text.trim(), currentUser?.id);
+      setThreads(listThreads('tutor', currentUser?.id));
+    }
 
     const history = [...messages, userMsg].map(m => ({ role: m.role, content: m.content }));
     void stream(history);
-  }, [messages, canAI, currentUser, loading, refreshProgress, trackAiMessage, setMessages, stream]);
+  }, [messages, canAI, currentUser, loading, refreshProgress, trackAiMessage, setMessages, stream, threadId]);
 
   const retry = useCallback(() => {
     const saved = retryRef.current;
@@ -216,11 +225,55 @@ export default function AiTutorPage() {
               <p className="text-muted-foreground text-sm">{t.tutor_subtitle}</p>
             </div>
           </div>
-          {messages.length > 0 && (
-            <Button variant="ghost" size="sm" className="gap-2" onClick={() => { clearChat(); setError(null); retryRef.current = null; }}>
-              <RotateCcw className="w-4 h-4" />{t.tutor_new_chat}
+          <div className="relative flex items-center gap-1">
+            <Button variant="ghost" size="sm" className="gap-2" onClick={() => setShowHistory(s => !s)}>
+              <History className="w-4 h-4" />{t.tutor_history}
             </Button>
-          )}
+            <Button
+              variant="ghost" size="sm" className="gap-2"
+              onClick={() => {
+                const th = createThread('tutor', currentUser?.id);
+                setThreads(listThreads('tutor', currentUser?.id));
+                setThreadId(th.id);
+                setError(null); retryRef.current = null; setShowHistory(false);
+              }}
+            >
+              <Plus className="w-4 h-4" />{t.tutor_new_chat}
+            </Button>
+            {messages.length > 0 && (
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground" onClick={() => { clearChat(); setError(null); retryRef.current = null; }}>
+                <RotateCcw className="w-4 h-4" />
+              </Button>
+            )}
+            {showHistory && (
+              <div className="absolute right-0 top-10 z-30 w-72 max-h-80 overflow-y-auto rounded-xl border border-border glass-panel shadow-2xl p-2 space-y-0.5">
+                {[{ id: 'main', title: t.tutor_thread_first, createdAt: '', updatedAt: '' } as ChatThread, ...[...threads].reverse()].map(th => (
+                  <div
+                    key={th.id}
+                    className={`flex items-center gap-2 rounded-lg px-2.5 py-2 text-xs cursor-pointer transition-colors ${th.id === threadId ? 'bg-primary/15 text-primary font-semibold' : 'hover:bg-accent text-muted-foreground hover:text-foreground'}`}
+                    onClick={() => { setThreadId(th.id); setError(null); retryRef.current = null; setShowHistory(false); }}
+                  >
+                    <History className="w-3 h-3 shrink-0" />
+                    <span className="flex-1 min-w-0 truncate">{th.title || t.tutor_thread_untitled}</span>
+                    {th.updatedAt && <span className="text-[9px] text-muted-foreground/60 shrink-0">{new Date(th.updatedAt).toLocaleDateString()}</span>}
+                    {th.id !== 'main' && (
+                      <button
+                        className="shrink-0 text-muted-foreground/50 hover:text-red-400 transition-colors"
+                        onClick={e => {
+                          e.stopPropagation();
+                          deleteThread('tutor', th.id, currentUser?.id);
+                          setThreads(listThreads('tutor', currentUser?.id));
+                          if (th.id === threadId) setThreadId('main');
+                        }}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </motion.div>
 
         {!allowed && <UpgradePrompt description={reason} requiredPlan={reason?.includes('Master') ? 'master' : 'pro'} />}

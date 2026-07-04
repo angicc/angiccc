@@ -70,6 +70,7 @@ type TranslationKeys = {
   cat_war: string; cat_politics: string; cat_science: string; cat_culture: string; cat_religion: string; cat_exploration: string;
   // ── AI Tutor ───────────────────────────────────────────────────
   tutor_hello: string; tutor_desc: string; tutor_placeholder: string; tutor_examples: string;
+  tutor_history: string; tutor_thread_first: string; tutor_thread_untitled: string;
   tutor_new_chat: string; tutor_upgrade_msg: string;
   // ── Leaderboard ────────────────────────────────────────────────
   lb_title: string; lb_subtitle: string; lb_your_rank: string;
@@ -353,7 +354,8 @@ export const T: Translations = {
     tl_events: 'events', tl_all_eras: 'All Eras', tl_all_categories: 'All Categories',
     tl_open_lesson: 'Open Lesson',
     // AI Tutor
-    tutor_hello: "Hello, I'm Clio!", tutor_examples: 'Or load an example dialogue', tutor_desc: "I am the Muse of History — your guide through the ages. Ask me about any civilization, war, discovery, or era and I'll bring the past to life.",
+    tutor_hello: "Hello, I'm Clio!", tutor_examples: 'Or load an example dialogue',
+    tutor_history: 'History', tutor_thread_first: 'First conversation', tutor_thread_untitled: 'New conversation', tutor_desc: "I am the Muse of History — your guide through the ages. Ask me about any civilization, war, discovery, or era and I'll bring the past to life.",
     tutor_placeholder: 'Ask Clio about any moment in history…', tutor_new_chat: 'New Chat',
     tutor_upgrade_msg: 'Upgrade to use the AI Tutor',
     // Leaderboard
@@ -665,7 +667,8 @@ export const T: Translations = {
     tl_title: 'Línea de Tiempo Histórica', tl_subtitle: 'Desde 3100 a.C. hasta hoy',
     tl_events: 'eventos', tl_all_eras: 'Todas las Eras', tl_all_categories: 'Todas las Categorías',
     tl_open_lesson: 'Abrir Lección',
-    tutor_hello: '¡Hola, soy Clio!', tutor_examples: 'O carga un diálogo de ejemplo', tutor_desc: 'Soy la Musa de la Historia — tu guía a través de los siglos. Pregúntame sobre cualquier civilización, guerra, descubrimiento o era.',
+    tutor_hello: '¡Hola, soy Clio!', tutor_examples: 'O carga un diálogo de ejemplo',
+    tutor_history: 'Historial', tutor_thread_first: 'Primera conversación', tutor_thread_untitled: 'Nueva conversación', tutor_desc: 'Soy la Musa de la Historia — tu guía a través de los siglos. Pregúntame sobre cualquier civilización, guerra, descubrimiento o era.',
     tutor_placeholder: 'Pregunta a Clio sobre cualquier momento de la historia…', tutor_new_chat: 'Nuevo Chat',
     tutor_upgrade_msg: 'Actualiza para usar el Tutor IA',
     lb_title: 'Clasificación', lb_subtitle: 'Los mejores estudiantes clasificados por XP total.',
@@ -964,7 +967,8 @@ export const T: Translations = {
     tl_title: 'Историческая Хронология', tl_subtitle: 'С 3100 г. до н.э. по сегодняшний день',
     tl_events: 'событий', tl_all_eras: 'Все Эпохи', tl_all_categories: 'Все Категории',
     tl_open_lesson: 'Открыть Урок',
-    tutor_hello: 'Привет, я Клио!', tutor_examples: 'Или загрузите пример диалога', tutor_desc: 'Я — Муза Истории, ваш проводник сквозь века. Спросите меня о любой цивилизации, войне, открытии или эпохе.',
+    tutor_hello: 'Привет, я Клио!', tutor_examples: 'Или загрузите пример диалога',
+    tutor_history: 'История', tutor_thread_first: 'Первый разговор', tutor_thread_untitled: 'Новый разговор', tutor_desc: 'Я — Муза Истории, ваш проводник сквозь века. Спросите меня о любой цивилизации, войне, открытии или эпохе.',
     tutor_placeholder: 'Спросите Клио о любом историческом событии…', tutor_new_chat: 'Новый Чат',
     tutor_upgrade_msg: 'Обновите план, чтобы использовать ИИ-Наставника',
     lb_title: 'Рейтинг', lb_subtitle: 'Лучшие ученики, отсортированные по общему XP.',
@@ -1263,7 +1267,8 @@ export const T: Translations = {
     tl_title: 'Историска Временска Линија', tl_subtitle: 'Од 3100 г.п.н.е. до денес',
     tl_events: 'настани', tl_all_eras: 'Сите Епохи', tl_all_categories: 'Сите Категории',
     tl_open_lesson: 'Отвори Лекција',
-    tutor_hello: 'Здраво, јас сум Клио!', tutor_examples: 'Или вчитај пример на дијалог', tutor_desc: 'Јас сум Музата на Историјата — твој водич низ вековите. Прашај ме за секоја цивилизација, војна, откритие или епоха.',
+    tutor_hello: 'Здраво, јас сум Клио!', tutor_examples: 'Или вчитај пример на дијалог',
+    tutor_history: 'Историја', tutor_thread_first: 'Прв разговор', tutor_thread_untitled: 'Нов разговор', tutor_desc: 'Јас сум Музата на Историјата — твој водич низ вековите. Прашај ме за секоја цивилизација, војна, откритие или епоха.',
     tutor_placeholder: 'Прашај ја Клио за секој историски момент…', tutor_new_chat: 'Нов Разговор',
     tutor_upgrade_msg: 'Надгради го планот за да го користиш ВИ Туторот',
     lb_title: 'Рангирање', lb_subtitle: 'Најдобри ученици рангирани по вкупно XP.',
