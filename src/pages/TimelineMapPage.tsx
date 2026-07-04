@@ -476,7 +476,11 @@ export default function TimelineMapPage() {
       if (!lg) return;
       lg.eachLayer(layer => {
         if (!(layer instanceof L.Polygon)) return;
-        const opts = layer.options as L.PathOptions & { _isFillPoly?: boolean; _borderTier?: BorderTier };
+        const opts = layer.options as L.PathOptions & { _isFillPoly?: boolean; _borderTier?: BorderTier; _isCasing?: boolean };
+        if (opts._isCasing) {
+          layer.setStyle({ opacity: getBorderOpacity(opts._borderTier ?? 'primary', zoom) * 0.65 });
+          return;
+        }
         if (!opts._isFillPoly) return;
         const tier = opts._borderTier ?? 'primary';
         layer.setStyle({
@@ -623,6 +627,22 @@ export default function TimelineMapPage() {
         const strokeDash   = isExplored ? border.dashArray : '5,7';
         const strokeOpacity = getBorderOpacity(tier, currentZoom);
 
+        // Atlas-grade double border: a wide, dark casing stroke sits beneath
+        // the frontier line, separating it from busy basemap detail exactly
+        // like the halo line-work in professional editorial cartography.
+        const casing = L.polygon(latlngs, {
+          color: '#0b1220',
+          weight: strokeWeight + 2.6,
+          opacity: Math.min(0.55, strokeOpacity + 0.1),
+          fill: false,
+          interactive: false,
+          lineJoin: 'round',
+          lineCap: 'round',
+          smoothFactor: 0.4,
+          ...({ _isCasing: true, _borderTier: tier } as object),
+        } as L.PathOptions);
+        casing.addTo(lg);
+
         const mainPoly = L.polygon(latlngs, {
           color: strokeColor,
           weight: strokeWeight,
@@ -631,7 +651,7 @@ export default function TimelineMapPage() {
           fillOpacity: zoomOpacityRef.current,
           lineJoin: 'round',
           lineCap: 'round',
-          smoothFactor: 0.5,
+          smoothFactor: 0.4,
           dashArray: strokeDash,
           ...({ _isFillPoly: true, _borderTier: tier } as object),
         } as L.PathOptions);

@@ -182,8 +182,13 @@ export function refineRing(ring: LatLng[]): LatLng[] {
   const normalized = normalizeRing(ring);
   if (normalized.length < 3) return [];
   const simple = sanitizeRing(normalized);
-  const smoothed = chaikinSmooth(simple, 1);
-  if (isSimpleRing(smoothed)) return smoothed;
+  // Two passes give editorial-atlas curve quality (each pass doubles the
+  // vertex count, quartering the angular error); step down to one pass, then
+  // no smoothing, for rings whose narrow passages a pass would pinch shut.
+  for (const iterations of [2, 1]) {
+    const smoothed = chaikinSmooth(simple, iterations);
+    if (isSimpleRing(smoothed)) return smoothed;
+  }
   const closed = closeRing(simple);
   if (isSimpleRing(closed)) return closed;
   return convexHull(normalized);
