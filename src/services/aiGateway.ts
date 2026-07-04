@@ -102,6 +102,26 @@ Guidelines:
 - If asked off-topic, gently redirect to history
 - Write in plain prose only — no markdown, no ## headers, no ** bold, no bullet asterisks`;
 
+// ── Multi-language output directive ─────────────────────────────────────────
+// Appended to every system prompt so AI output is contextually native, not a
+// literal string translation. Macedonian gets explicit morphology enforcement
+// because smaller models degrade hardest there.
+const LOCALE_DIRECTIVES: Record<string, string> = {
+  es: `OUTPUT LANGUAGE: Spanish. Write natural, idiomatic Spanish — never word-for-word translations of English phrasing. Follow RAE orthography: sentence-style capitalization (only the first word and proper nouns), lowercase adjectives in historical event names (Revolución francesa), and correct use of a.C./d.C. for dates.`,
+  ru: `OUTPUT LANGUAGE: Russian. Write natural, idiomatic Russian — never calques of English word order. Only the first word and proper nouns are capitalized in multi-word names (Вторая мировая война). Use correct case government throughout and до н.э./н.э. for dates.`,
+  mk: `OUTPUT LANGUAGE: Macedonian. Write natural, native Macedonian — never literal translations of English structure. Enforce strictly: (1) correct postfixed definite articles (-от, -та, -то, -те) matched to gender and number; (2) full gender/number agreement between adjectives and nouns, including historical terms; (3) sentence-style capitalization — in multi-word names only the first word and proper nouns are capitalized ("Втора светска војна", never "Втора Светска Војна"); (4) native word order for noun phrases ("династиите Цин и Хан", not "Цин и Хан династии"); (5) п.н.е./н.е. for dates.`,
+};
+
+/** Locale sub-prompt for the user's active UI language ('' for English). */
+function localeDirective(): string {
+  try {
+    const lang = localStorage.getItem('historify:language');
+    return lang && LOCALE_DIRECTIVES[lang] ? `\n\n${LOCALE_DIRECTIVES[lang]}` : '';
+  } catch {
+    return '';
+  }
+}
+
 export async function* streamChatResponse(
   messages: { role: 'user' | 'assistant'; content: string }[],
   lessonContext?: string,
@@ -119,7 +139,8 @@ export async function* streamChatResponse(
   }
 
   const baseSystem      = systemOverride ?? TUTOR_SYSTEM_PROMPT;
-  const system          = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;
+  const withContext     = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;
+  const system          = withContext + localeDirective();
   const trimmedMessages = messages.slice(-MAX_HISTORY);
 
   let res: Response;

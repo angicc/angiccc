@@ -10,6 +10,7 @@ import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
+import { PlanGate } from '@/features/subscription/planGate';
 import { recordAiMessage } from '@/features/progress/progressStore';
 import { streamChatResponse } from '@/services/aiGateway';
 import { usePersistentChat } from '@/services/chatStore';
@@ -18,6 +19,7 @@ import { stripMarkdown } from '@/lib/utils';
 import {
   CRISIS_SCENARIOS, buildCrisisSystemPrompt,
   getCrisisTitle, getCrisisRole, getCrisisTagline,
+  getCrisisYearLabel, getCrisisBriefing, getCrisisObjectives,
   type CrisisScenario,
 } from '@/features/content/crisisScenarios';
 import type { ChatMessage } from '@/types';
@@ -65,7 +67,8 @@ export default function ChronosCrisisPage() {
           )}
         </motion.div>
 
-        {!allowed && <UpgradePrompt description={reason} requiredPlan={reason?.includes('Master') ? 'master' : 'pro'} />}
+        <PlanGate plan="master" description={t.crisis_master_only}>
+        {!allowed && <UpgradePrompt description={reason} requiredPlan="master" />}
 
         {allowed && !scenario && (
           <div className="grid sm:grid-cols-2 gap-4 overflow-y-auto pb-4 cascade-in">
@@ -82,7 +85,7 @@ export default function ChronosCrisisPage() {
                 >
                   <div className="flex items-center justify-between mb-3">
                     <Badge variant="outline" className={cn('text-[10px] font-bold', es.text, es.border, es.bg)}>
-                      {s.yearLabel}
+                      {getCrisisYearLabel(s, language)}
                     </Badge>
                     <Crown className={cn('w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity', es.text)} />
                   </div>
@@ -105,6 +108,7 @@ export default function ChronosCrisisPage() {
             }}
           />
         )}
+        </PlanGate>
       </div>
     </AppShell>
   );
@@ -170,7 +174,7 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
       {/* Briefing panel */}
       <div className={cn('rounded-xl border p-4', es.border, 'bg-card/60')}>
         <div className="flex flex-wrap items-center gap-2 mb-2">
-          <Badge variant="outline" className={cn('text-[10px] font-bold', es.text, es.border, es.bg)}>{scenario.yearLabel}</Badge>
+          <Badge variant="outline" className={cn('text-[10px] font-bold', es.text, es.border, es.bg)}>{getCrisisYearLabel(scenario, language)}</Badge>
           <span className="font-heading font-bold text-sm">{getCrisisTitle(scenario, language)}</span>
           <span className={cn('text-xs font-semibold', es.text)}>· {getCrisisRole(scenario, language)}</span>
           {(messages.length > 0) && (
@@ -183,9 +187,9 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
             </Button>
           )}
         </div>
-        <p className="text-xs text-muted-foreground leading-relaxed break-words">{scenario.briefing}</p>
+        <p className="text-xs text-muted-foreground leading-relaxed break-words">{getCrisisBriefing(scenario, language)}</p>
         <div className="flex flex-wrap gap-1.5 mt-2.5">
-          {scenario.objectives.map(obj => (
+          {getCrisisObjectives(scenario, language).map(obj => (
             <span key={obj} className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full border border-border/70 text-muted-foreground">
               <Target className={cn('w-2.5 h-2.5', es.text)} />{obj}
             </span>
