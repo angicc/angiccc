@@ -23,6 +23,7 @@ import {
   getCrisisYearLabel, getCrisisBriefing, getCrisisObjectives,
   type CrisisScenario,
 } from '@/features/content/crisisScenarios';
+import { parseCrisisTelemetry, CRISIS_TOTAL_TURNS } from '@/features/content/crisisTelemetry';
 import type { ChatMessage } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -130,6 +131,7 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
   const bottomRef = useRef<HTMLDivElement>(null);
   const es = ERA_STYLE[scenario.era];
   const systemPrompt = buildCrisisSystemPrompt(scenario);
+  const telemetry = parseCrisisTelemetry(messages, BEGIN_SIGNAL);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
@@ -199,6 +201,8 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
         </div>
       </div>
 
+      <div className="flex-1 min-h-0 flex gap-3">
+      <div className="flex-1 min-h-0 flex flex-col gap-3">
       {/* Simulation feed */}
       <ScrollArea className="flex-1 border border-border rounded-xl p-4">
         {messages.length === 0 && !loading && (
@@ -253,6 +257,59 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
         <Button size="icon" onClick={() => send(input)} disabled={!input.trim() || loading || messages.length === 0}>
           <Send className="w-4 h-4" />
         </Button>
+      </div>
+      </div>
+
+      {/* ── Operations side panel: live resource indicators + decision log ── */}
+      <aside className="hidden xl:flex w-60 shrink-0 flex-col gap-3">
+        <div className={cn('rounded-xl border p-4 space-y-3 bg-card/60', es.border)}>
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.crisis_turn}</span>
+            <span className={cn('font-heading font-bold text-sm tabular-nums', es.text)}>
+              {telemetry.verdictReached ? '—' : `${telemetry.turn ?? 0}/${CRISIS_TOTAL_TURNS}`}
+            </span>
+          </div>
+          {([
+            [t.crisis_stability, telemetry.stability],
+            [t.crisis_legitimacy, telemetry.legitimacy],
+            [t.crisis_legacy, telemetry.legacy],
+          ] as [string, number | null][]).map(([label, value]) => (
+            <div key={label}>
+              <div className="flex items-center justify-between text-[11px] mb-1">
+                <span className="text-muted-foreground">{label}</span>
+                <span className="tabular-nums font-semibold">{value ?? '–'}/10</span>
+              </div>
+              <div className="h-1.5 rounded-full bg-muted/40 overflow-hidden">
+                <div
+                  className={cn('h-full rounded-full transition-all duration-700', es.bg.replace('/10', ''))}
+                  style={{ width: `${((value ?? 0) / 10) * 100}%` }}
+                />
+              </div>
+            </div>
+          ))}
+          {telemetry.verdictReached && (
+            <div className={cn('rounded-lg border px-3 py-2 text-center', es.border, es.bg)}>
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{t.crisis_verdict}</p>
+              <p className={cn('font-heading font-bold text-xl tabular-nums', es.text)}>
+                {telemetry.finalScore != null ? `${telemetry.finalScore}/100` : '✓'}
+              </p>
+            </div>
+          )}
+        </div>
+        {telemetry.decisions.length > 0 && (
+          <div className="rounded-xl border border-border p-4 flex-1 min-h-0 overflow-y-auto bg-card/40">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">{t.crisis_decisions}</p>
+            <ol className="space-y-2">
+              {telemetry.decisions.map((d, i) => (
+                <li key={i} className="text-[11px] leading-snug text-muted-foreground break-words flex gap-2">
+                  <span className={cn('shrink-0 font-bold tabular-nums', es.text)}>{i + 1}.</span>
+                  <span className="min-w-0">{d.length > 90 ? d.slice(0, 90) + '…' : d}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+      </aside>
       </div>
     </div>
   );

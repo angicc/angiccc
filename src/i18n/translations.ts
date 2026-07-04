@@ -17,6 +17,8 @@ type TranslationKeys = {
   // ── Chronos Crisis Room ───────────────────────────────────────
   crisis_title: string; crisis_subtitle: string; crisis_back: string;
   crisis_begin: string; crisis_abandon: string; crisis_placeholder: string; crisis_master_only: string;
+  crisis_turn: string; crisis_stability: string; crisis_legitimacy: string; crisis_legacy: string;
+  crisis_decisions: string; crisis_verdict: string;
   nav_profile: string; nav_guide: string; nav_report: string;
   nav_upgrade: string; nav_logout: string;
   logout_title: string; logout_desc: string;
@@ -290,6 +292,8 @@ export const T: Translations = {
     crisis_abandon: 'Abandon timeline',
     crisis_placeholder: 'Type your decision — pick an option or forge your own path…',
     crisis_master_only: 'The Chronos Crisis Room is exclusive to the Master Student plan — full counterfactual simulations with real-time AI evaluation.',
+    crisis_turn: 'Turn', crisis_stability: 'Stability', crisis_legitimacy: 'Legitimacy', crisis_legacy: 'Legacy',
+    crisis_decisions: 'Decision log', crisis_verdict: 'Final verdict',
     nav_profile: 'Profile', nav_guide: 'App Guide', nav_report: 'Report a Problem',
     nav_upgrade: 'Upgrade Plan', nav_logout: 'Log Out',
     logout_title: 'Log out of Historify?', logout_desc: 'Your progress is saved. You can log back in anytime.',
@@ -608,6 +612,8 @@ export const T: Translations = {
     crisis_abandon: 'Abandonar línea temporal',
     crisis_placeholder: 'Escribe tu decisión: elige una opción o traza tu propio camino…',
     crisis_master_only: 'La Sala de crisis Chronos es exclusiva del plan Master Student — simulaciones contrafactuales completas con evaluación de IA en tiempo real.',
+    crisis_turn: 'Turno', crisis_stability: 'Estabilidad', crisis_legitimacy: 'Legitimidad', crisis_legacy: 'Legado',
+    crisis_decisions: 'Registro de decisiones', crisis_verdict: 'Veredicto final',
     nav_profile: 'Perfil', nav_guide: 'Guía de la App', nav_report: 'Reportar Problema',
     nav_upgrade: 'Actualizar Plan', nav_logout: 'Cerrar Sesión',
     logout_title: '¿Cerrar sesión en Historify?', logout_desc: 'Tu progreso está guardado. Puedes iniciar sesión de nuevo en cualquier momento.',
@@ -905,6 +911,8 @@ export const T: Translations = {
     crisis_abandon: 'Покинуть таймлайн',
     crisis_placeholder: 'Введите своё решение — выберите вариант или идите своим путём…',
     crisis_master_only: 'Кризисный штаб «Хронос» доступен только на плане Master Student — полные контрфактические симуляции с оценкой ИИ в реальном времени.',
+    crisis_turn: 'Ход', crisis_stability: 'Стабильность', crisis_legitimacy: 'Легитимность', crisis_legacy: 'Наследие',
+    crisis_decisions: 'Журнал решений', crisis_verdict: 'Итоговый вердикт',
     nav_profile: 'Профиль', nav_guide: 'Руководство', nav_report: 'Сообщить об ошибке',
     nav_upgrade: 'Обновить план', nav_logout: 'Выйти',
     logout_title: 'Выйти из Historify?', logout_desc: 'Ваш прогресс сохранён. Вы можете войти снова в любое время.',
@@ -1202,6 +1210,8 @@ export const T: Translations = {
     crisis_abandon: 'Напушти ја временската линија',
     crisis_placeholder: 'Напиши ја твојата одлука — избери опција или тргни по свој пат…',
     crisis_master_only: 'Кризната соба „Хронос“ е ексклузивна за планот Master Student — целосни контрафактуални симулации со ИИ оценување во реално време.',
+    crisis_turn: 'Потег', crisis_stability: 'Стабилност', crisis_legitimacy: 'Легитимност', crisis_legacy: 'Наследство',
+    crisis_decisions: 'Дневник на одлуки', crisis_verdict: 'Финален вердикт',
     nav_profile: 'Профил', nav_guide: 'Водич за Апликацијата', nav_report: 'Пријави Проблем',
     nav_upgrade: 'Надгради го Планот', nav_logout: 'Одјави се',
     logout_title: 'Одјавување од Historify?', logout_desc: 'Твојот напредок е зачуван. Можеш да се најавиш повторно во секое време.',
