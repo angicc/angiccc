@@ -11,6 +11,7 @@ import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { streamChatResponse } from '@/services/aiGateway';
+import { safeJsonParse } from '@/lib/safeJsonParse';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -235,9 +236,7 @@ export default function EssayPage() {
         buf += chunk;
         setRawBuffer(buf);
       }
-      const jsonMatch = buf.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) throw new Error('Could not parse grading response.');
-      const parsed = JSON.parse(jsonMatch[0]) as GradeResult;
+      const parsed = safeJsonParse<GradeResult>(buf);
       setResult(parsed);
       if (currentUser) {
         const score = Math.round((parsed.accuracy + parsed.argument + parsed.depth) / 3 * 10);

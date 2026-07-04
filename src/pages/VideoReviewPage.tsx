@@ -11,6 +11,7 @@ import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { streamChatResponse } from '@/services/aiGateway';
+import { safeJsonParse } from '@/lib/safeJsonParse';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   getCurrentVideo, getTimeUntilNextVideo, hasReviewedCurrentVideo,
@@ -160,10 +161,12 @@ ${review}`;
         setStreamBuf(buf);
       }
 
-      // Parse JSON result
-      const jsonMatch = buf.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) throw new Error('Could not parse Clio\'s response.');
-      const parsed: GradeResult = JSON.parse(jsonMatch[0]);
+      // Parse the result through the repair pipeline — tolerates unescaped
+      // quotes, trailing commas, and mid-array truncation in the AI output.
+      const parsed = safeJsonParse<GradeResult>(buf);
+      if (!Array.isArray(parsed.sentenceReviews) || typeof parsed.overallScore !== 'number') {
+        throw new Error('Clio\'s grading response was incomplete. Please try again.');
+      }
       setResult(parsed);
 
       // Award XP
