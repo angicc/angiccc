@@ -476,9 +476,13 @@ export default function TimelineMapPage() {
       if (!lg) return;
       lg.eachLayer(layer => {
         if (!(layer instanceof L.Polygon)) return;
-        const opts = layer.options as L.PathOptions & { _isFillPoly?: boolean; _borderTier?: BorderTier; _isCasing?: boolean };
+        const opts = layer.options as L.PathOptions & { _isFillPoly?: boolean; _borderTier?: BorderTier; _isCasing?: boolean; _isGlow?: boolean };
         if (opts._isCasing) {
           layer.setStyle({ opacity: getBorderOpacity(opts._borderTier ?? 'primary', zoom) * 0.65 });
+          return;
+        }
+        if (opts._isGlow) {
+          layer.setStyle({ opacity: getBorderOpacity(opts._borderTier ?? 'primary', zoom) > 0 ? 0.16 : 0 });
           return;
         }
         if (!opts._isFillPoly) return;
@@ -642,6 +646,21 @@ export default function TimelineMapPage() {
           ...({ _isCasing: true, _borderTier: tier } as object),
         } as L.PathOptions);
         casing.addTo(lg);
+
+        // Soft inner glow in the territory's own colour between casing and
+        // crisp frontier — the layered multi-stroke look of premium atlases.
+        const glow = L.polygon(latlngs, {
+          color: fillColor,
+          weight: strokeWeight + 4,
+          opacity: strokeOpacity > 0 ? 0.16 : 0,
+          fill: false,
+          interactive: false,
+          lineJoin: 'round',
+          lineCap: 'round',
+          smoothFactor: 0.4,
+          ...({ _isGlow: true, _borderTier: tier } as object),
+        } as L.PathOptions);
+        glow.addTo(lg);
 
         const mainPoly = L.polygon(latlngs, {
           color: strokeColor,

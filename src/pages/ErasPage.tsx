@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { TiltCard } from '@/components/shared/TiltCard';
 import { AppShell } from '@/components/layout/AppShell';
 import { EraIcon } from '@/components/shared/EraIcon';
 import { useAuth } from '@/features/auth/AuthContext';
@@ -49,7 +50,8 @@ export default function ErasPage() {
             const quizDone = progress?.completedQuizzes.includes(era.quizId);
             return (
               <motion.div key={era.id} variants={card} className="h-full">
-                <Card className={`era-glow ${glowClass} h-full flex flex-col border-border hover:border-primary/30 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 overflow-hidden bg-card`}>
+                <TiltCard className="relative h-full" maxTilt={5}>
+                <Card className={`era-glow ${glowClass} h-full flex flex-col border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 overflow-hidden bg-card`}>
                   {/* Era Banner */}
                   <div className={`h-28 bg-gradient-to-br ${era.bgGradient} relative flex items-end p-4`}>
                     <img
@@ -149,6 +151,7 @@ export default function ErasPage() {
                     </Button>
                   </CardContent>
                 </Card>
+                </TiltCard>
               </motion.div>
             );
           })}

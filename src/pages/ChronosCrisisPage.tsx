@@ -8,6 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { AppShell } from '@/components/layout/AppShell';
 import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
+import { TiltCard } from '@/components/shared/TiltCard';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { PlanGate } from '@/features/subscription/planGate';
@@ -75,11 +76,11 @@ export default function ChronosCrisisPage() {
             {CRISIS_SCENARIOS.map(s => {
               const es = ERA_STYLE[s.era];
               return (
+                <TiltCard key={s.id} className="relative" maxTilt={6}>
                 <button
-                  key={s.id}
                   onClick={() => setScenario(s)}
                   className={cn(
-                    'text-left p-5 rounded-2xl border bg-card/70 era-glow pressable transition-all group',
+                    'w-full h-full text-left p-5 rounded-2xl border bg-card/70 era-glow transition-all group',
                     es.border, es.glow,
                   )}
                 >
@@ -93,6 +94,7 @@ export default function ChronosCrisisPage() {
                   <p className={cn('text-xs font-semibold mt-1', es.text)}>{getCrisisRole(s, language)}</p>
                   <p className="text-muted-foreground text-xs leading-relaxed mt-2 break-words">{getCrisisTagline(s, language)}</p>
                 </button>
+                </TiltCard>
               );
             })}
           </div>

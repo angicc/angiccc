@@ -60,7 +60,7 @@ function LessonBanner({
 
   return (
     <div
-      className="relative h-72 sm:h-80 md:h-96 rounded-2xl overflow-hidden mb-8 border border-border/50"
+      className="relative w-full aspect-[21/9] min-h-64 max-h-96 rounded-2xl overflow-hidden mb-8 border border-border/50"
       style={{ background: theme.bannerGradient }}
     >
       {/* Category-specific accent stripe — always 3px, consistent across all banners */}
@@ -88,7 +88,7 @@ function LessonBanner({
           loading="lazy"
           decoding="async"
           referrerPolicy="no-referrer"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-[2] ${loaded ? 'opacity-60' : 'opacity-0'} ${isGifBanner(src) ? 'scale-[1.07]' : ''}`}
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 z-[2] ${loaded ? (isGifBanner(src) ? 'opacity-80' : 'opacity-60') : 'opacity-0'} ${isGifBanner(src) ? 'scale-[1.07]' : ''}`}
           onLoad={() => setLoaded(true)}
           onError={handleError}
         />
