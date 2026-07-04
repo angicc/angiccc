@@ -15,6 +15,7 @@ import { recordAiMessage } from '@/features/progress/progressStore';
 import { streamChatResponse } from '@/services/aiGateway';
 import { usePersistentChat } from '@/services/chatStore';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
+import { CLIO_SAMPLE_DIALOGUES } from '@/features/ai/clioSampleDialogues';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { ChatMessage } from '@/types';
 
@@ -179,6 +180,19 @@ export default function AiTutorPage() {
     void stream(saved.history);
   }, [loading, stream]);
 
+  // Load a curated example exchange into the (empty) chat so new students can
+  // see what a rich Socratic session with Clio looks like before typing.
+  const loadExample = useCallback((dialogueId: string) => {
+    const dialogue = CLIO_SAMPLE_DIALOGUES.find(d => d.id === dialogueId);
+    if (!dialogue || loading) return;
+    setMessages(dialogue.turns.map(turn => ({
+      id: crypto.randomUUID(),
+      role: turn.role,
+      content: turn.content,
+      timestamp: new Date().toISOString(),
+    })));
+  }, [loading, setMessages]);
+
   const { allowed, reason } = canAI();
 
   return (
@@ -264,6 +278,22 @@ export default function AiTutorPage() {
                           </Button>
                         </motion.div>
                       ))}
+                    </div>
+                  )}
+                  {allowed && (
+                    <div className="w-full max-w-lg space-y-1.5">
+                      <p className="text-[10px] uppercase tracking-widest text-muted-foreground/70 font-semibold">{t.tutor_examples}</p>
+                      <div className="flex flex-wrap gap-1.5 justify-center">
+                        {CLIO_SAMPLE_DIALOGUES.map(d => (
+                          <button
+                            key={d.id}
+                            onClick={() => loadExample(d.id)}
+                            className="text-[11px] px-3 py-1.5 rounded-full border border-border/70 text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all"
+                          >
+                            {d.topic}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </motion.div>
