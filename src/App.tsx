@@ -31,6 +31,7 @@ import VideoReviewPage from '@/pages/VideoReviewPage';
 import FriendsPage from '@/pages/FriendsPage';
 import DebatePhilosopherPage from '@/pages/DebatePhilosopherPage';
 import TimelineMapPage from '@/pages/TimelineMapPage';
+import ChronosCrisisPage from '@/pages/ChronosCrisisPage';
 
 function LogoutOverlay() {
   const { loggingOut } = useAuth();
@@ -63,6 +64,7 @@ function AppRoutes() {
       <Route path="/friends" element={<ProtectedRoute><FriendsPage /></ProtectedRoute>} />
       <Route path="/debate" element={<ProtectedRoute><DebatePhilosopherPage /></ProtectedRoute>} />
       <Route path="/timeline-map" element={<ProtectedRoute><TimelineMapPage /></ProtectedRoute>} />
+      <Route path="/crisis" element={<ProtectedRoute><ChronosCrisisPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

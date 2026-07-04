@@ -13,6 +13,10 @@ type TranslationKeys = {
   nav_leaderboard: string; nav_friends: string; nav_flashcards: string; nav_notes: string;
   nav_progress: string; nav_smart_quiz: string; nav_essay: string; nav_video_review: string;
   nav_debate: string;
+  nav_crisis: string;
+  // ── Chronos Crisis Room ───────────────────────────────────────
+  crisis_title: string; crisis_subtitle: string; crisis_back: string;
+  crisis_begin: string; crisis_abandon: string; crisis_placeholder: string;
   nav_profile: string; nav_guide: string; nav_report: string;
   nav_upgrade: string; nav_logout: string;
   logout_title: string; logout_desc: string;
@@ -278,6 +282,13 @@ export const T: Translations = {
     nav_flashcards: 'Flashcards', nav_notes: 'My Notes', nav_progress: 'Progress',
     nav_smart_quiz: 'Smart Quiz', nav_essay: 'Essay Challenge', nav_video_review: 'Video Review',
     nav_debate: 'Debate a Philosopher',
+    nav_crisis: 'Crisis Room',
+    crisis_title: 'Chronos Crisis Room',
+    crisis_subtitle: 'Step into a historical turning point and make the decisions yourself',
+    crisis_back: 'All scenarios',
+    crisis_begin: 'Begin the simulation',
+    crisis_abandon: 'Abandon timeline',
+    crisis_placeholder: 'Type your decision — pick an option or forge your own path…',
     nav_profile: 'Profile', nav_guide: 'App Guide', nav_report: 'Report a Problem',
     nav_upgrade: 'Upgrade Plan', nav_logout: 'Log Out',
     logout_title: 'Log out of Historify?', logout_desc: 'Your progress is saved. You can log back in anytime.',
@@ -588,6 +599,13 @@ export const T: Translations = {
     nav_flashcards: 'Tarjetas', nav_notes: 'Mis Notas', nav_progress: 'Progreso',
     nav_smart_quiz: 'Quiz Inteligente', nav_essay: 'Desafío de Ensayo', nav_video_review: 'Revisión de Vídeo',
     nav_debate: 'Debate con un Filósofo',
+    nav_crisis: 'Sala de Crisis',
+    crisis_title: 'Sala de crisis Chronos',
+    crisis_subtitle: 'Entra en un punto de inflexión histórico y toma las decisiones tú mismo',
+    crisis_back: 'Todos los escenarios',
+    crisis_begin: 'Iniciar la simulación',
+    crisis_abandon: 'Abandonar línea temporal',
+    crisis_placeholder: 'Escribe tu decisión: elige una opción o traza tu propio camino…',
     nav_profile: 'Perfil', nav_guide: 'Guía de la App', nav_report: 'Reportar Problema',
     nav_upgrade: 'Actualizar Plan', nav_logout: 'Cerrar Sesión',
     logout_title: '¿Cerrar sesión en Historify?', logout_desc: 'Tu progreso está guardado. Puedes iniciar sesión de nuevo en cualquier momento.',
@@ -877,6 +895,13 @@ export const T: Translations = {
     nav_flashcards: 'Карточки', nav_notes: 'Мои Заметки', nav_progress: 'Прогресс',
     nav_smart_quiz: 'Умная Викторина', nav_essay: 'Эссе-Задание', nav_video_review: 'Обзор Видео',
     nav_debate: 'Дискуссия с Философом',
+    nav_crisis: 'Кризисный штаб',
+    crisis_title: 'Кризисный штаб «Хронос»',
+    crisis_subtitle: 'Окажитесь в поворотном моменте истории и примите решения сами',
+    crisis_back: 'Все сценарии',
+    crisis_begin: 'Начать симуляцию',
+    crisis_abandon: 'Покинуть таймлайн',
+    crisis_placeholder: 'Введите своё решение — выберите вариант или идите своим путём…',
     nav_profile: 'Профиль', nav_guide: 'Руководство', nav_report: 'Сообщить об ошибке',
     nav_upgrade: 'Обновить план', nav_logout: 'Выйти',
     logout_title: 'Выйти из Historify?', logout_desc: 'Ваш прогресс сохранён. Вы можете войти снова в любое время.',
@@ -1166,6 +1191,13 @@ export const T: Translations = {
     nav_flashcards: 'Картички', nav_notes: 'Мои Белешки', nav_progress: 'Напредок',
     nav_smart_quiz: 'Паметен Квиз', nav_essay: 'Есеј Предизвик', nav_video_review: 'Видео Преглед',
     nav_debate: 'Дебата со Филозоф',
+    nav_crisis: 'Кризна соба',
+    crisis_title: 'Кризна соба „Хронос“',
+    crisis_subtitle: 'Влези во историска пресвртница и донеси ги одлуките самиот',
+    crisis_back: 'Сите сценарија',
+    crisis_begin: 'Започни ја симулацијата',
+    crisis_abandon: 'Напушти ја временската линија',
+    crisis_placeholder: 'Напиши ја твојата одлука — избери опција или тргни по свој пат…',
     nav_profile: 'Профил', nav_guide: 'Водич за Апликацијата', nav_report: 'Пријави Проблем',
     nav_upgrade: 'Надгради го Планот', nav_logout: 'Одјави се',
     logout_title: 'Одјавување од Historify?', logout_desc: 'Твојот напредок е зачуван. Можеш да се најавиш повторно во секое време.',

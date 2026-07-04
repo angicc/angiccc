@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { stripMarkdown } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from 'framer-motion';
-import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Globe2, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, X, Send, Loader2, Sparkles, Film, Shield, Scale } from 'lucide-react';
+import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Globe2, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, X, Send, Loader2, Sparkles, Film, Shield, Scale, Hourglass, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/shared/Logo';
@@ -73,7 +73,83 @@ const FEATURES = [
   { icon: Scale,   title: 'Debate a Philosopher',    desc: 'Challenge Socrates, Nietzsche, Kant and more in daily philosophical debates. Make them concede and earn XP. One philosopher per day.', color: 'text-violet-400', bg: 'bg-violet-400/10', border: 'border-violet-400/20' },
   { icon: PenLine, title: 'AI Essay Challenge',       desc: 'Write historical essays graded live by Clio — accuracy, argument quality, and depth all scored. Exclusive to Master Student.', color: 'text-orange-400', bg: 'bg-orange-400/10', border: 'border-orange-400/20' },
   { icon: Globe2,  title: 'Timeline Territory Map',   desc: 'Explore real geographic territories for 22 historical periods on a live OpenStreetMap. Click topics to fly the map to exact territories with annotated markers.', color: 'text-sky-400',    bg: 'bg-sky-400/10',    border: 'border-sky-400/20'    },
+  { icon: Hourglass, title: 'Chronos Crisis Room',    desc: 'Take command at a real historical turning point — the Rubicon, Constantinople 1453, July 1789, the Cuban Missile Crisis — and have every decision judged by AI in real time.', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20' },
 ];
+
+// ── Chronos Crisis Room spotlight (new-feature promo) ─────────────────────────
+const CRISIS_PROMO_SCENARIOS = [
+  { year: '49 BCE',  label: 'Cross the Rubicon as Caesar',          color: 'text-amber-400',  border: 'border-amber-400/30'  },
+  { year: '1453',    label: 'Hold Constantinople as Constantine XI', color: 'text-violet-400', border: 'border-violet-400/30' },
+  { year: '1789',    label: 'Survive the Bastille summer as Louis XVI', color: 'text-teal-400', border: 'border-teal-400/30'  },
+  { year: '1962',    label: 'Defuse the Missile Crisis as JFK',      color: 'text-rose-400',   border: 'border-rose-400/30'   },
+];
+
+function ChronosPromo() {
+  return (
+    <section className="max-w-6xl mx-auto px-4 pt-20">
+      <motion.div
+        initial={{ opacity: 0, y: 24, scale: 0.99 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
+        className="relative overflow-hidden rounded-3xl border border-primary/25 bg-gradient-to-br from-primary/10 via-card to-card p-8 sm:p-12"
+      >
+        {/* Ambient glow */}
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="relative grid lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <Badge className="bg-primary text-primary-foreground text-[10px] font-bold tracking-widest uppercase">New</Badge>
+              <span className="text-xs text-muted-foreground font-semibold uppercase tracking-widest">Major AI feature</span>
+            </div>
+            <div className="flex items-center gap-3 mb-3">
+              <motion.div
+                className="p-2.5 rounded-2xl bg-primary/15 border border-primary/30"
+                animate={{ rotate: [0, 180, 180, 360] }}
+                transition={{ duration: 6, times: [0, 0.45, 0.55, 1], repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <Hourglass className="w-6 h-6 text-primary" />
+              </motion.div>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold">Chronos Crisis Room</h2>
+            </div>
+            <p className="text-muted-foreground leading-relaxed mb-6 max-w-lg">
+              History's greatest decisions, handed to you. Step into a real turning point as the leader
+              who faced it, weigh the same impossible options, and watch the Chronos Engine — our AI
+              game master — evaluate every choice against what actually happened. Six turns. Real
+              constraints. A final verdict on the timeline you created.
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link to="/register">
+                <Button size="lg" className="gap-2">
+                  Enter the Crisis Room <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+              <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <Target className="w-3.5 h-3.5 text-primary" /> Decisions scored live: Stability · Legitimacy · Legacy
+              </span>
+            </div>
+          </div>
+          <div className="grid gap-3">
+            {CRISIS_PROMO_SCENARIOS.map((s, i) => (
+              <motion.div
+                key={s.year}
+                initial={{ opacity: 0, x: 24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.12 + i * 0.09, duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
+                className={`flex items-center gap-4 rounded-xl border ${s.border} bg-card/70 px-4 py-3`}
+              >
+                <span className={`font-heading font-bold text-lg tabular-nums ${s.color} w-20 shrink-0`}>{s.year}</span>
+                <span className="text-sm text-foreground/85">{s.label}</span>
+                <ArrowRight className="w-4 h-4 ml-auto text-muted-foreground/50" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
 
 const IQ_QUESTIONS = [
   {
@@ -811,7 +887,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Features grid (8 items) ── */}
+      {/* ── Chronos Crisis Room spotlight ── */}
+      <ChronosPromo />
+
+      {/* ── Features grid ── */}
       <section className="max-w-6xl mx-auto px-4 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

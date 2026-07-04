@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film, Users, Scale, Globe2 } from 'lucide-react';
+import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film, Users, Scale, Globe2, Hourglass } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -28,6 +28,7 @@ const NAV_KEYS = [
   { to: '/essay',       key: 'nav_essay'       as const, icon: FileEdit },
   { to: '/video-review',key: 'nav_video_review'as const, icon: Film },
   { to: '/debate',      key: 'nav_debate'      as const, icon: Scale },
+  { to: '/crisis',      key: 'nav_crisis'      as const, icon: Hourglass },
   { to: '/profile',     key: 'nav_profile'     as const, icon: User },
   { to: '/guide',       key: 'nav_guide'       as const, icon: HelpCircle },
   { to: '/report',      key: 'nav_report'      as const, icon: AlertTriangle },
