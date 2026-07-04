@@ -12,6 +12,7 @@ import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { recordAiMessage } from '@/features/progress/progressStore';
+import { getGapSummary } from '@/features/progress/conceptGaps';
 import { streamChatResponse } from '@/services/aiGateway';
 import { usePersistentChat, listThreads, createThread, titleThread, deleteThread, threadModule, type ChatThread } from '@/services/chatStore';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
@@ -122,7 +123,11 @@ export default function AiTutorPage() {
     { icon: SUGGESTION_ICONS[5], text: t.sugg_6 },
   ];
   const [params] = useSearchParams();
-  const context = params.get('context') ?? undefined;
+  // Lesson context from deep links, enriched with the student's active
+  // concept gaps so Clio proactively targets what they keep missing.
+  const gapSummary = getGapSummary(currentUser?.id);
+  const baseContext = params.get('context') ?? undefined;
+  const context = [baseContext, gapSummary].filter(Boolean).join('\n') || undefined;
   const activeThreadKey = `historify:chat:active:tutor${currentUser ? `:${currentUser.id}` : ''}`;
   const [threadId, setThreadId] = useState<string>(() => localStorage.getItem(activeThreadKey) ?? 'main');
   const [threads, setThreads] = useState<ChatThread[]>(() => listThreads('tutor', currentUser?.id));

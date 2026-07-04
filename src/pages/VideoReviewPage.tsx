@@ -12,6 +12,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { streamChatResponse } from '@/services/aiGateway';
 import { safeJsonParse } from '@/lib/safeJsonParse';
+import { MULTI_METRIC_JSON_SPEC, METRIC_KEYS, validateMultiMetric, type MultiMetricGrade } from '@/features/ai/gradingSchema';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   getCurrentVideo, getTimeUntilNextVideo, hasReviewedCurrentVideo,
@@ -42,6 +43,8 @@ overallScore: 0–100
 videoXp: proportional to score — max 200 (90–100), 150 (75–89), 100 (60–74), 60 (45–59), 20 (<45)
 letterGrade: A(90+), B(75–89), C(60–74), D(45–59), F(<45)
 
+${MULTI_METRIC_JSON_SPEC}
+
 Grading rules:
 - excellent: precise historical detail, specific facts, clear analytical insight, correctly identifies the video's thesis
 - good: accurate and shows understanding, uses some specifics
@@ -56,6 +59,8 @@ interface GradeResult {
   videoXp: number;
   letterGrade: string;
   summary: string;
+  /** Multi-metric rubric — optional so older/partial AI output still renders. */
+  metrics?: MultiMetricGrade;
 }
 
 const QUALITY_STYLE: Record<string, { border: string; bg: string; badge: string; label: string }> = {
@@ -167,7 +172,7 @@ ${review}`;
       if (!Array.isArray(parsed.sentenceReviews) || typeof parsed.overallScore !== 'number') {
         throw new Error('Clio\'s grading response was incomplete. Please try again.');
       }
-      setResult(parsed);
+      setResult({ ...parsed, metrics: validateMultiMetric(parsed.metrics) ?? undefined });
 
       // Award XP
       const awarded = Math.max(20, Math.min(200, parsed.videoXp));
@@ -384,6 +389,33 @@ ${review}`;
                         <span className="font-semibold text-amber-400">+{xpEarned} Video XP earned!</span>
                       </div>
                       <p className="text-sm text-muted-foreground leading-relaxed">{result.summary}</p>
+                      {result.metrics && (
+                        <div className="grid sm:grid-cols-2 gap-x-6 gap-y-2 mt-4">
+                          {METRIC_KEYS.map(key => {
+                            const METRIC_LABELS: Record<string, string> = {
+                              historicalAuthenticity: 'Historical Authenticity',
+                              strategicRealism: 'Strategic Realism',
+                              syntacticElegance: 'Syntactic Elegance',
+                              argumentativeRigor: 'Argumentative Rigor',
+                            };
+                            const metric = result.metrics![key];
+                            return (
+                              <div key={key}>
+                                <div className="flex items-center justify-between text-[11px] mb-1">
+                                  <span className="text-muted-foreground">{METRIC_LABELS[key]}</span>
+                                  <span className="tabular-nums font-semibold">{metric.score}</span>
+                                </div>
+                                <div className="h-1.5 rounded-full bg-muted/40 overflow-hidden">
+                                  <div className="h-full rounded-full bg-primary transition-all duration-700" style={{ width: `${metric.score}%` }} />
+                                </div>
+                                {metric.feedback[0] && (
+                                  <p className="text-[10px] text-muted-foreground/70 mt-1 leading-snug break-words">{metric.feedback[0]}</p>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </CardContent>

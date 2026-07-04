@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw, Brain, Target, Trophy, ChevronRight, MessageSquare, BarChart2, Star } from 'lucide-react';
 import { streamChatResponse } from '@/services/aiGateway';
+import { recordMiss, eraGapFactor } from '@/features/progress/conceptGaps';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -42,7 +43,8 @@ type QuestionWithMeta = {
 function selectAdaptiveQuestions(
   allQuestions: QuestionWithMeta[],
   quizScores: Record<string, number>,
-  count: number
+  count: number,
+  userId?: string
 ): QuestionWithMeta[] {
   const eraWeight = (eraId: string) => {
     const eraQuiz = QUIZZES.find(q => q.eraId === eraId);
@@ -69,7 +71,9 @@ function selectAdaptiveQuestions(
   // Assign weights and shuffle using weighted random
   const weighted = allQuestions.map(q => ({
     q,
-    weight: eraWeight(q.eraId) * diffWeight(q.difficulty) * (0.7 + Math.random() * 0.6),
+    // eraGapFactor folds the student's ACTIVE misses (decaying half-life)
+    // into selection, so the quiz targets live struggles, not just averages.
+    weight: eraWeight(q.eraId) * eraGapFactor(q.eraId, userId) * diffWeight(q.difficulty) * (0.7 + Math.random() * 0.6),
   }));
   weighted.sort((a, b) => b.weight - a.weight);
 
@@ -145,7 +149,7 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
   }
 
   function startSession() {
-    const q = selectAdaptiveQuestions(allQuestions, progress?.quizScores ?? {}, SESSION_SIZE);
+    const q = selectAdaptiveQuestions(allQuestions, progress?.quizScores ?? {}, SESSION_SIZE, currentUser?.id);
     setSession(q);
     setQIdx(0);
     setSelected(null);
@@ -158,7 +162,12 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
 
   function submitAnswer() {
     if (selected === null) return;
-    const correct = selected === session[qIdx].correctIndex;
+    const q = session[qIdx];
+    const correct = selected === q.correctIndex;
+    if (!correct) {
+      // Feed the personalization loop: concept = leading words of the prompt.
+      recordMiss(q.eraId, q.question.split(/\s+/).slice(0, 8).join(' '), currentUser?.id);
+    }
     setAnswers(prev => [...prev, correct]);
     setPhase('explain');
   }
