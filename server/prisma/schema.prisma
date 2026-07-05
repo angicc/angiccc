@@ -1,0 +1,75 @@
+// Historify backend — Prisma schema (PostgreSQL)
+// Mirrors the client's localStorage models 1:1 so the frontend sync layer can
+// hydrate/flush without shape translation.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Tier {
+  FREE
+  PRO
+  MASTER // "Master Student Plan" — gates Chronos Crisis Room + Video Review
+}
+
+enum Sender {
+  user
+  clio
+}
+
+model User {
+  id            String            @id @default(cuid())
+  email         String            @unique
+  username      String
+  passwordHash  String
+  tier          Tier              @default(FREE)
+  language      String            @default("en") // en | es | ru | mk
+  createdAt     DateTime          @default(now())
+  chatSessions  ClioChatSession[]
+  crisisStates  CrisisRoomState[]
+}
+
+model ClioChatSession {
+  id        String            @id @default(cuid())
+  userId    String
+  title     String            @default("")
+  language  String            @default("en")
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  ClioChatMessage[]
+
+  @@index([userId, updatedAt])
+}
+
+model ClioChatMessage {
+  id        String          @id @default(cuid())
+  sessionId String
+  sender    Sender
+  text      String
+  timestamp DateTime        @default(now())
+  session   ClioChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, timestamp])
+}
+
+model CrisisRoomState {
+  id              String   @id @default(cuid())
+  userId          String
+  crisisId        String   // e.g. "crisis-rubicon"
+  activeStep      Int      @default(0)
+  concluded       Boolean  @default(false)
+  // [{ step, optionId, text, revealedConsequence? }]
+  decisionHistory Json     @default("[]")
+  // { diplomaticCapital, domesticStability, militaryReadiness, treasury } 0–100
+  resourceMetrics Json     @default("{\"diplomaticCapital\":50,\"domesticStability\":50,\"militaryReadiness\":50,\"treasury\":50}")
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, crisisId])
+}
