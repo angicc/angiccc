@@ -120,7 +120,47 @@ export type CrisisNodePayload = z.infer<typeof crisisNodeSchema>;
 
 // ── Stage 3: middleware ──────────────────────────────────────────────────────
 
-/** Repair + validate a raw LLM string against a schema; throws 422-worthy errors. */
-export function validateLlmPayload<S extends z.ZodTypeAny>(schema: S, raw: string): z.infer<S> {
-  return schema.parse(safeJsonParse<unknown>(raw));
+// ── Localization alignment guard ─────────────────────────────────────────────
+// A grading payload whose feedback strings are in the wrong script cannot
+// have honored the user's language preference — reject it before persistence
+// so the client re-requests rather than storing an unlocalized grade.
+
+const CYRILLIC = /[Ѐ-ӿ]/;
+const LATIN_LETTERS = /[A-Za-zÁÉÍÓÚÑáéíóúñ]/;
+
+function matchesLanguage(text: string, language: string): boolean {
+  const t = text.trim();
+  if (t.length < 4) return true; // too short to judge ("+10 XP", "A")
+  if (language === 'ru' || language === 'mk') return CYRILLIC.test(t);
+  if (language === 'es' || language === 'en') return !CYRILLIC.test(t) && LATIN_LETTERS.test(t);
+  return true;
+}
+
+export class LocalizationMismatchError extends Error {
+  constructor(language: string, sample: string) {
+    super(`Payload feedback is not localized for '${language}': "${sample.slice(0, 60)}"`);
+    this.name = 'LocalizationMismatchError';
+  }
+}
+
+/** Throws when any feedback string is written in the wrong script for `language`. */
+export function assertGradeLocalized(grade: MultiMetricGrade, language: string): void {
+  for (const metric of Object.values(grade)) {
+    for (const line of metric.feedback) {
+      if (!matchesLanguage(line, language)) throw new LocalizationMismatchError(language, line);
+    }
+  }
+}
+
+/**
+ * Repair + validate a raw LLM string against a schema; throws 422-worthy
+ * errors. Pass `language` to additionally enforce localization alignment on
+ * multi-metric grading payloads.
+ */
+export function validateLlmPayload<S extends z.ZodTypeAny>(schema: S, raw: string, language?: string): z.infer<S> {
+  const parsed = schema.parse(safeJsonParse<unknown>(raw));
+  if (language && schema === (multiMetricGradeSchema as unknown as S)) {
+    assertGradeLocalized(parsed as MultiMetricGrade, language);
+  }
+  return parsed;
 }

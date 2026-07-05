@@ -110,3 +110,16 @@ io.on('connection', socket => {
 httpServer.listen(Number(PORT), () => {
   console.log(`Historify backend listening on :${PORT} (${NODE_ENV})`);
 });
+
+// ── Graceful shutdown: drain sockets, stop accepting, exit clean ─────────────
+// Prevents dropped in-flight requests and socket leaks on rolling deploys.
+for (const signal of ['SIGTERM', 'SIGINT'] as const) {
+  process.on(signal, () => {
+    console.log(`${signal} received — draining connections`);
+    io.close(() => {
+      httpServer.close(() => process.exit(0));
+    });
+    // Hard deadline so a stuck connection can't block the deploy.
+    setTimeout(() => process.exit(1), 10_000).unref();
+  });
+}

@@ -191,5 +191,5 @@ ENGINE RULES:
 5. TEMPORAL INTEGRITY: once the player diverges from real history, every later node must live inside that counterfactual reality. Never snap back to the textbook timeline; consequences compound.
 6. FREE-FORM DECISIONS: if the player types their own plan instead of choosing A/B/C, treat it seriously, judge its period-realism, and resolve it with the same JSON shape.
 7. COMPACTNESS: historicalContext ≤ 60 words; actionText ≤ 20 words; hiddenConsequences values ≤ 25 words. Short, tactical, mobile-readable.
-8. Write all human-readable strings in the language the player writes in.`;
+8. LANGUAGE: every human-readable string value (historicalContext, actionText, hiddenConsequences) MUST be written in the language named by the OUTPUT LANGUAGE directive appended to this prompt. If no such directive is appended, use English. Protocol messages the player sends (BEGIN SIMULATION, DECISION, STATE, HARD GATE) are machine tokens — never treat their language as the player's language choice. JSON keys stay in English exactly as specified.`;
 }

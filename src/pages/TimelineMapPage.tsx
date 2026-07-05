@@ -189,6 +189,12 @@ function getBorderOpacity(tier: BorderTier, zoom: number): number {
   return BORDER_STYLES[tier].opacity;
 }
 
+// Period strings in the dataset carry English era tokens ("476–1453 CE");
+// swap them for the locale's notation without touching the numerals.
+function localizePeriod(period: string, bceLabel: string, ceLabel: string): string {
+  return period.replace(/\bBCE\b/g, bceLabel).replace(/\bCE\b/g, ceLabel);
+}
+
 // Year → locale-aware human label (negative = before common era).
 function formatYear(y: number, bceLabel: string, ceLabel: string): string {
   const v = Math.round(y);
@@ -1303,7 +1309,7 @@ export default function TimelineMapPage() {
           {selected && mode === 'explore' && (
             <div className="absolute top-3 left-3 max-w-[240px] z-[1000] bg-black/80 backdrop-blur-md text-white p-3 rounded-xl text-xs shadow-xl border border-white/10 pointer-events-none">
               <div className={cn('text-[9px] font-bold uppercase tracking-widest mb-1', ERA_COLORS[selected.era])}>
-                {ERA_LABELS[selected.era][language]} · {selected.period}
+                {ERA_LABELS[selected.era][language]} · {localizePeriod(selected.period, t.year_bce, t.year_ce)}
               </div>
               <p className="font-bold text-sm leading-snug mb-1">{getTitle(selected, language)}</p>
               <p className="text-white/70 leading-relaxed text-[11px]">{getTranslatedTerritoryDesc(selected.id, language) ?? selected.description}</p>
@@ -1458,7 +1464,7 @@ export default function TimelineMapPage() {
                   <span className="shrink-0">{formatYear(minYear, t.year_bce, t.year_ce)}</span>
                   {selected && (
                     <span className="text-white/75 font-semibold truncate px-2 max-w-[60%]">
-                      {getTitle(selected, language)} · {selected.period}
+                      {getTitle(selected, language)} · {localizePeriod(selected.period, t.year_bce, t.year_ce)}
                     </span>
                   )}
                   <span className="shrink-0">{formatYear(maxYear, t.year_bce, t.year_ce)}</span>

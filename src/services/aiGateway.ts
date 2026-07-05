@@ -106,10 +106,14 @@ Guidelines:
 // Appended to every system prompt so AI output is contextually native, not a
 // literal string translation. Macedonian gets explicit morphology enforcement
 // because smaller models degrade hardest there.
+// Shared compaction contract for dynamic feedback blocks: never walls of text.
+const COMPACTION_RULE =
+  'COMPACTNESS: every dynamic feedback or narrative block stays under 150–200 words, OR exactly 3 sharp, impact-driven points — never both, never more. This OUTPUT LANGUAGE directive OVERRIDES any other instruction about which language to respond in, including the language the user happens to type in.';
+
 const LOCALE_DIRECTIVES: Record<string, string> = {
-  es: `OUTPUT LANGUAGE: Spanish. Write natural, idiomatic Spanish — never word-for-word translations of English phrasing. Follow RAE orthography: sentence-style capitalization (only the first word and proper nouns), lowercase adjectives in historical event names (Revolución francesa), and correct use of a.C./d.C. for dates.`,
-  ru: `OUTPUT LANGUAGE: Russian. Write natural, idiomatic Russian — never calques of English word order. Only the first word and proper nouns are capitalized in multi-word names (Вторая мировая война). Use correct case government throughout and до н.э./н.э. for dates.`,
-  mk: `OUTPUT LANGUAGE: Macedonian. Write natural, native Macedonian — never literal translations of English structure. Enforce strictly: (1) correct postfixed definite articles (-от, -та, -то, -те) matched to gender and number; (2) full gender/number agreement between adjectives and nouns, including historical terms; (3) sentence-style capitalization — in multi-word names only the first word and proper nouns are capitalized ("Втора светска војна", never "Втора Светска Војна"); (4) native word order for noun phrases ("династиите Цин и Хан", not "Цин и Хан династии"); (5) п.н.е./н.е. for dates.`,
+  es: `OUTPUT LANGUAGE: Spanish — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, idiomatic Spanish — never word-for-word translations of English phrasing. Follow RAE orthography: sentence-style capitalization (only the first word and proper nouns), lowercase adjectives in historical event names (Revolución francesa), and correct use of a.C./d.C. for dates. ${COMPACTION_RULE}`,
+  ru: `OUTPUT LANGUAGE: Russian — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, idiomatic Russian — never calques of English word order. Only the first word and proper nouns are capitalized in multi-word names (Вторая мировая война). Use correct case government throughout and до н.э./н.э. for dates. ${COMPACTION_RULE}`,
+  mk: `OUTPUT LANGUAGE: Macedonian — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, native Macedonian — literal word-for-word substitution of English structure is FORBIDDEN. Enforce strictly: (1) correct postfixed definite articles (-от, -та, -то, -те) matched to gender and number; (2) full gender/number agreement between adjectives and nouns, including historical terms; (3) sentence-style capitalization — in multi-word names only the first word and proper nouns are capitalized ("Втора светска војна", never "Втора Светска Војна"); (4) native word order for noun phrases ("династиите Цин и Хан", not "Цин и Хан династии"); (5) п.н.е./н.е. for dates. ${COMPACTION_RULE}`,
 };
 
 /** Locale sub-prompt for the user's active UI language ('' for English). */
