@@ -6,6 +6,8 @@ type MT = Partial<Record<ContentLang, string>>;
 
 // ── Territory polygon label translations ─────────────────────────────────────
 export const POLY_LABEL_I18N: Record<string, MT> = {
+  'Empire of Alexander the Great': { es: 'Imperio de Alejandro Magno', ru: 'Держава Александра Великого', mk: 'Империјата на Александар Велики' },
+  'Kingdom of Naples (Aragonese)': { es: 'Reino de Nápoles (aragonés)', ru: 'Неаполитанское королевство (арагонское)', mk: 'Кралство Неапол (арагонско)' },
   'Egyptian New Kingdom': { es: 'Nuevo Reino de Egipto', ru: 'Новое царство Египта', mk: 'Новото Египетско Царство' },
   'Mesopotamian Kingdoms': { es: 'Reinos de Mesopotamia', ru: 'Царства Месопотамии', mk: 'Месопотамски царства' },
   'Greek World': { es: 'Mundo griego', ru: 'Греческий мир', mk: 'Грчкиот свет' },
@@ -62,6 +64,12 @@ export const MARKER_TYPE_I18N: Record<string, MT> = {
 
 // ── Marker name translations (proper nouns in local form) ─────────────────────
 export const MARKER_NAME_I18N: Record<string, MT> = {
+  'Aigai (Vergina)': { es: 'Egas (Vergina)', ru: 'Эги (Вергина)', mk: 'Ајгаи (Кутлеш)' },
+  'Battle of Chaeronea': { es: 'Batalla de Queronea', ru: 'Битва при Херонее', mk: 'Битка кај Херонеја' },
+  'Battle of the Granicus': { es: 'Batalla del Gránico', ru: 'Битва на Гранике', mk: 'Битка кај Граник' },
+  'Battle of Gaugamela': { es: 'Batalla de Gaugamela', ru: 'Битва при Гавгамелах', mk: 'Битка кај Гавгамела' },
+  'Battle of the Hydaspes': { es: 'Batalla del Hidaspes', ru: 'Битва на Гидаспе', mk: 'Битка кај Хидасп' },
+
   'Algiers':             { es: 'Argel', ru: 'Алжир', mk: 'Алжир' },
   'Battle of Actium':    { es: 'Batalla de Accio', ru: 'Битва при Акции', mk: 'Битка кај Акциум' },
   'Carthage':            { es: 'Cartago', ru: 'Карфаген', mk: 'Картагина' },
@@ -231,6 +239,12 @@ export const MARKER_NAME_I18N: Record<string, MT> = {
 
 // ── Marker note translations (descriptions shown in popups and story panel) ───
 export const MARKER_NOTE_I18N: Record<string, MT> = {
+  'Aigai (Vergina)': { es: 'Antigua capital real — tumba de Filipo II descubierta en 1977', ru: 'Старая царская столица — гробница Филиппа II найдена в 1977 г.', mk: 'Старата кралска престолнина — гробницата на Филип II откриена во 1977 г.' },
+  'Battle of Chaeronea': { es: 'Filipo II aplasta a Atenas y Tebas — Grecia bajo Macedonia (338 a.C.)', ru: 'Филипп II сокрушает Афины и Фивы — Греция под Македонией (338 г. до н.э.)', mk: 'Филип II ги скршува Атина и Теба — Грција под Македонија (338 п.н.е.)' },
+  'Battle of the Granicus': { es: 'Primera victoria sobre Persia — Asia Menor se abre (334 a.C.)', ru: 'Первая победа над Персией — Малая Азия открыта (334 г. до н.э.)', mk: 'Прва победа над Персија — Мала Азија се отвора (334 п.н.е.)' },
+  'Battle of Gaugamela': { es: 'Victoria decisiva — cae el Imperio persa (331 a.C.)', ru: 'Решающая победа — падение Персидской державы (331 г. до н.э.)', mk: 'Одлучувачка победа — Персиската империја паѓа (331 п.н.е.)' },
+  'Battle of the Hydaspes': { es: 'Victoria sobre el rey Poro — el ejército se niega a seguir (326 a.C.)', ru: 'Победа над царём Пором — армия отказывается идти дальше (326 г. до н.э.)', mk: 'Победа над кралот Пор — војската одбива да продолжи (326 п.н.е.)' },
+
   'Acre': { es: 'Última gran ciudad cruzada — cayó en 1291', ru: 'Последний оплот крестоносцев — пал в 1291 г.', mk: 'Последниот голем крстоносен град — падна во 1291 г.' },
   'Alexandria': { es: 'Puerto clave del Mediterráneo bajo administración otomana', ru: 'Ключевой средиземноморский порт под властью османов', mk: 'Клучно медитеранско пристаниште под отоманска управа' },
   'Algiers': { es: 'Principal base naval otomana en el norte de África', ru: 'Главная османская военно-морская база в Северной Африке', mk: 'Главна отоманска поморска база во Северна Африка' },

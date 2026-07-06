@@ -161,6 +161,38 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
   },
 
   {
+    id: 'ancient-macedonia',
+    era: 'ancient',
+    period: '359–323 BCE',
+    yearRange: [-359, -323],
+    center: [36, 38],
+    zoom: 4,
+    title: 'Ancient Macedonia — Alexander the Great',
+    titleI18n: { es: 'Antigua Macedonia — Alejandro Magno', ru: 'Древняя Македония — Александр Великий', mk: 'Античка Македонија — Александар Велики' },
+    description: 'From Philip II\'s reformed phalanx to Alexander\'s eleven-year march from Pella to the Indus, Macedonia built the largest empire the ancient world had seen — and spread Greek culture from Egypt to Central Asia.',
+    routes: [
+      {
+        name: 'Alexander\'s Campaign Route',
+        nameI18n: { es: 'Ruta de Alejandro Magno', ru: 'Маршрут Александра Великого', mk: 'Рутата на Александар Велики' },
+        type: 'military',
+        color: '#eab308',
+        points: [[40.76,22.52],[40.3,27.3],[38.4,31],[36.8,36.2],[33.5,36.3],[31.2,29.9],[30,31.2],[33.3,44.4],[36.56,43.44],[32.5,44.4],[34,48],[36,52],[36.7,67],[34.5,69.2],[32.8,73.6],[31,72],[29,67],[31.5,48],[32.5,44.4]],
+      },
+    ],
+    markers: [
+      { name: 'Pella', type: 'capital', lat: 40.76, lng: 22.52, note: 'Macedonian capital — birthplace of Alexander the Great', year: -356 },
+      { name: 'Aigai (Vergina)', type: 'landmark', lat: 40.48, lng: 22.32, note: 'Old royal capital — tomb of Philip II discovered 1977', year: -336 },
+      { name: 'Battle of Chaeronea', type: 'battle', lat: 38.49, lng: 22.85, note: 'Philip II crushes Athens and Thebes — Greece under Macedon (338 BCE)', year: -338 },
+      { name: 'Battle of the Granicus', type: 'battle', lat: 40.3, lng: 27.3, note: 'First victory over Persia — Asia Minor opens (334 BCE)', year: -334 },
+      { name: 'Battle of Issus', type: 'battle', lat: 36.8, lng: 36.2, note: 'Alexander defeats Darius III — turning point (333 BCE)', year: -333 },
+      { name: 'Battle of Gaugamela', type: 'battle', lat: 36.56, lng: 43.44, note: 'Decisive victory — the Persian Empire falls (331 BCE)', year: -331 },
+      { name: 'Alexandria', type: 'city', lat: 31.2, lng: 29.9, note: 'Founded 331 BCE — greatest of the Alexandrias, future centre of learning', year: -331 },
+      { name: 'Battle of the Hydaspes', type: 'battle', lat: 32.8, lng: 73.6, note: 'Victory over King Porus — the army refuses to march further east (326 BCE)', year: -326 },
+      { name: 'Babylon', type: 'city', lat: 32.54, lng: 44.42, note: 'Alexander dies here aged 32 — the empire splits among the Diadochi (323 BCE)', year: -323 },
+    ],
+  },
+
+  {
     id: 'persian-empire',
     era: 'ancient',
     period: '550–330 BCE',
