@@ -182,10 +182,17 @@ export function refineRing(ring: LatLng[]): LatLng[] {
   const normalized = normalizeRing(ring);
   if (normalized.length < 3) return [];
   const simple = sanitizeRing(normalized);
-  // Three passes give editorial-atlas curve quality (each pass doubles the
-  // vertex count, quartering the angular error); step down pass-by-pass, then
-  // to no smoothing, for rings whose narrow passages a pass would pinch shut.
-  for (const iterations of [3, 2, 1]) {
+  // Dense rings come from real GIS border data and are already organic —
+  // interpolation would only multiply vertices. Chaikin passes exist for
+  // sparse hand-traced rings (each pass doubles the vertex count, quartering
+  // the angular error); step down pass-by-pass, then to no smoothing, for
+  // rings whose narrow passages a pass would pinch shut.
+  if (simple.length > 90) {
+    const closedDense = closeRing(simple);
+    if (isSimpleRing(closedDense)) return closedDense;
+  }
+  const passes = simple.length > 40 ? [1] : [3, 2, 1];
+  for (const iterations of passes) {
     const smoothed = chaikinSmooth(simple, iterations);
     if (isSimpleRing(smoothed)) return smoothed;
   }
