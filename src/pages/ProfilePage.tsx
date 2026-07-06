@@ -215,7 +215,7 @@ export default function ProfilePage() {
         </DialogContent>
       </Dialog>
 
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         <Tabs defaultValue="overview">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">{t.prof_overview}</TabsTrigger>

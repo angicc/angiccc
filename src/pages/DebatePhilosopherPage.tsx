@@ -12,6 +12,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { recordDebateWinInProgress } from '@/features/progress/progressStore';
 import { streamChatResponse } from '@/services/aiGateway';
+import { stripMarkdown } from '@/lib/utils';
 import { usePersistentChat } from '@/services/chatStore';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
 import { getTodaysPhilosopher, getTimeUntilNextPhilosopher, hasWonTodaysDebate, recordDebateWin, getTranslatedPhilosopherEra, getTranslatedPhilosopherTagline } from '@/features/philosopher/philosophersData';
@@ -282,7 +283,7 @@ export default function DebatePhilosopherPage() {
   if (!isAllowed) {
     return (
       <AppShell>
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
             <div className="p-2 rounded-xl bg-violet-400/10"><Swords className="w-5 h-5 text-violet-400" /></div>
             <div>
@@ -298,7 +299,7 @@ export default function DebatePhilosopherPage() {
 
   return (
     <AppShell>
-      <div className="max-w-5xl mx-auto flex flex-col h-[calc(100vh-7rem)]">
+      <div className="max-w-7xl mx-auto flex flex-col h-[calc(100vh-7rem)]">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
@@ -455,7 +456,7 @@ export default function DebatePhilosopherPage() {
                           ? 'bg-primary text-primary-foreground rounded-tr-sm'
                           : 'bg-secondary text-secondary-foreground rounded-tl-sm'
                       } ${msg.isStreaming ? 'streaming-cursor' : ''}`}>
-                        {msg.content || (msg.isStreaming ? ' ' : '…')}
+                        {msg.role === 'assistant' ? stripMarkdown(msg.content || (msg.isStreaming ? ' ' : '…')) : (msg.content || '…')}
                       </div>
                     </motion.div>
                   ))}

@@ -62,7 +62,7 @@ export default function DashboardPage() {
     <AppShell>
       {showOnboarding && <OnboardingModal userId={currentUser.id} onDone={() => setShowOnboarding(false)} />}
       {xpAmt > 0 && <XPBadge amount={xpAmt} onDone={() => setXpAmt(0)} />}
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Welcome */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
           className="p-6 rounded-xl border border-border bg-card">

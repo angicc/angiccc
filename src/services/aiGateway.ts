@@ -116,13 +116,19 @@ const LOCALE_DIRECTIVES: Record<string, string> = {
   mk: `OUTPUT LANGUAGE: Macedonian — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, native Macedonian — literal word-for-word substitution of English structure is FORBIDDEN. Enforce strictly: (1) correct postfixed definite articles (-от, -та, -то, -те) matched to gender and number; (2) full gender/number agreement between adjectives and nouns, including historical terms; (3) sentence-style capitalization — in multi-word names only the first word and proper nouns are capitalized ("Втора светска војна", never "Втора Светска Војна"); (4) native word order for noun phrases ("династиите Цин и Хан", not "Цин и Хан династии"); (5) п.н.е./н.е. for dates. ${COMPACTION_RULE}`,
 };
 
-/** Locale sub-prompt for the user's active UI language ('' for English). */
+// Universal, language-independent format rule: the UI renders plain text, so
+// markdown control characters must never appear in any AI output.
+const FORMAT_RULE =
+  'OUTPUT FORMAT: plain prose only. NEVER emit markdown syntax — no # headers, no ** bold, no * or - bullet markers, no backticks — unless this prompt explicitly demands raw JSON. Violating this corrupts the display.';
+
+/** Format + locale sub-prompt for the user's active UI language. */
 function localeDirective(): string {
   try {
     const lang = localStorage.getItem('historify:language');
-    return lang && LOCALE_DIRECTIVES[lang] ? `\n\n${LOCALE_DIRECTIVES[lang]}` : '';
+    const langBlock = lang && LOCALE_DIRECTIVES[lang] ? `\n\n${LOCALE_DIRECTIVES[lang]}` : '';
+    return `\n\n${FORMAT_RULE}${langBlock}`;
   } catch {
-    return '';
+    return `\n\n${FORMAT_RULE}`;
   }
 }
 

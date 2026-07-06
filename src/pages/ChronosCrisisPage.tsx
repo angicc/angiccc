@@ -50,7 +50,7 @@ export default function ChronosCrisisPage() {
 
   return (
     <AppShell>
-      <div className="max-w-6xl mx-auto flex flex-col h-[calc(100vh-7rem)]">
+      <div className="max-w-7xl mx-auto flex flex-col h-[calc(100vh-7rem)]">
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <motion.div
@@ -155,6 +155,21 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
   const awaitingDecision = !!lastNode && lastNode.branchingOptions.length > 0 && !run.concluded && !loading;
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, loading]);
+
+  // Legacy-format recovery: chats persisted by the pre-state-machine engine
+  // are prose the node renderer cannot parse. Mounting with messages but zero
+  // nodes means a bricked timeline (no Begin button, locked input, blank
+  // feed) — reset once so the player lands on a fresh run.
+  const recoveredRef = useRef(false);
+  useEffect(() => {
+    if (recoveredRef.current) return;
+    recoveredRef.current = true;
+    if (messages.length > 0 && nodes.length === 0) {
+      clearChat();
+      setRun(resetRunState(scenario.id, userId));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const persistRun = useCallback((next: CrisisRunState) => {
     setRun(next);

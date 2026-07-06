@@ -31,7 +31,7 @@ export default function AppGuidePage() {
 
   return (
     <AppShell>
-      <div className="max-w-5xl mx-auto space-y-8 pb-8">
+      <div className="max-w-7xl mx-auto space-y-8 pb-8">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
           <div className="flex items-center gap-3">

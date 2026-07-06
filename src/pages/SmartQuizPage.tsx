@@ -250,7 +250,7 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
   if (tier === 'free') {
     return (
       <AppShell>
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
             <div className="p-2 rounded-xl bg-violet-400/10">
               <Sparkles className="w-5 h-5 text-violet-400" />
@@ -272,7 +272,7 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
 
   return (
     <AppShell>
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-violet-400/10">

@@ -198,7 +198,7 @@ export default function EssayPage() {
   if (tier !== 'master') {
     return (
       <AppShell>
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-6">
             <div className="p-2 rounded-xl bg-orange-400/10">
               <PenLine className="w-5 h-5 text-orange-400" />
@@ -261,7 +261,7 @@ export default function EssayPage() {
 
   return (
     <AppShell>
-      <div className="max-w-5xl mx-auto space-y-6 pb-8">
+      <div className="max-w-7xl mx-auto space-y-6 pb-8">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-orange-400/10">
