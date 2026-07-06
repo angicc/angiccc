@@ -11,7 +11,7 @@ import { TERRITORY_TOPICS, type TerritoryTopic, type MarkerType } from '@/featur
 import type { Language } from '@/i18n/translations';
 import { getTranslatedTerritoryDesc } from '@/i18n/territoryDescTranslations';
 import { getQuestionsForTopic, getTranslatedTerritoryQuestion, type TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
-import { getTranslatedMarkerName, getTranslatedMarkerNote, getTranslatedMarkerType } from '@/i18n/territoryMarkerTranslations';
+import { getTranslatedMarkerName, getTranslatedMarkerNote, getTranslatedMarkerType, getTranslatedPolyLabel } from '@/i18n/territoryMarkerTranslations';
 import {
   Map as MapIcon, ChevronRight, Layers, Palette, BookOpen, HelpCircle, Play, Pause,
   SkipBack, SkipForward, ChevronDown, X, Trophy, Swords, Anchor, Clock,
@@ -688,7 +688,7 @@ export default function TimelineMapPage() {
         const rawTelemetry = deriveTelemetry(selected, poly);
         const telemetry: RegionTelemetry = {
           ...rawTelemetry,
-          faction: poly.label ?? getTitle(selected, language),
+          faction: poly.label ? getTranslatedPolyLabel(poly.label, language) : getTitle(selected, language),
           resources: rawTelemetry.resources.map(n => getTranslatedMarkerName(n, language)),
         };
         mainPoly.on('mousemove', (e: L.LeafletMouseEvent) => {
