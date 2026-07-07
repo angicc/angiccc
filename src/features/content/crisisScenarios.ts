@@ -62,6 +62,39 @@ export const CRISIS_SCENARIOS: CrisisScenario[] = [
     },
   },
   {
+    id: 'crisis-gaugamela',
+    era: 'ancient',
+    yearLabel: 'October, 331 BCE',
+    yearLabelI18n: { es: 'Octubre, 331 a.C.', ru: 'Октябрь 331 г. до н.э.', mk: 'Октомври 331 п.н.е.' },
+    title: 'Gaugamela',
+    titleI18n: { es: 'Gaugamela', ru: 'Гавгамелы', mk: 'Гавгамела' },
+    role: 'Alexander III of Macedon, King and Hegemon of the Hellenic League',
+    roleI18n: {
+      es: 'Alejandro III de Macedonia, rey y hegemón de la Liga Helénica',
+      ru: 'Александр III Македонский, царь и гегемон Эллинского союза',
+      mk: 'Александар III Македонски, крал и хегемон на Хеленската лига',
+    },
+    tagline: 'Forty-seven thousand men against a quarter of a million. One dawn to decide the fate of two empires.',
+    taglineI18n: {
+      es: 'Cuarenta y siete mil hombres contra un cuarto de millón. Un amanecer para decidir el destino de dos imperios.',
+      ru: 'Сорок семь тысяч против четверти миллиона. Один рассвет решит судьбу двух империй.',
+      mk: 'Четириесет и седум илјади луѓе против четврт милион. Една зора ќе ја одлучи судбината на две империи.',
+    },
+    briefing:
+      'Darius III has chosen this plain near Gaugamela and flattened it for his scythed chariots. His host — Persians, Bactrians, Indian elephants, Greek mercenaries — dwarfs yours. Parmenion urges a night attack; you have refused to steal a victory. Your veterans trust you completely, but one break in the phalanx and there is no reserve, no retreat, no Macedonia to return to. Somewhere across that plain stands Darius, twice a fugitive from your spear.',
+    briefingI18n: {
+      es: 'Darío III ha elegido esta llanura cerca de Gaugamela y la ha aplanado para sus carros falcados. Su ejército — persas, bactrianos, elefantes indios, mercenarios griegos — empequeñece al tuyo. Parmenión insiste en un ataque nocturno; te has negado a robar la victoria. Tus veteranos confían plenamente en ti, pero una brecha en la falange y no hay reserva, ni retirada, ni Macedonia a la que volver. En algún lugar de esa llanura está Darío, dos veces fugitivo de tu lanza.',
+      ru: 'Дарий III выбрал эту равнину близ Гавгамел и выровнял её для своих серпоносных колесниц. Его войско — персы, бактрийцы, индийские слоны, греческие наёмники — многократно превосходит ваше. Парменион настаивает на ночной атаке; вы отказались красть победу. Ветераны верят вам безгранично, но один разрыв в фаланге — и нет ни резерва, ни отступления, ни Македонии, куда можно вернуться. Где-то за равниной стоит Дарий, дважды бежавший от вашего копья.',
+      mk: 'Дариј III ја избра оваа рамнина кај Гавгамела и ја израмни за своите коли со српови. Неговата војска — Персијци, Бактријци, индиски слонови, грчки платеници — многукратно ја надминува твојата. Парменион инсистира на ноќен напад; ти одби да ја украдеш победата. Твоите ветерани целосно ти веруваат, но еден пробив во фалангата — и нема резерва, нема повлекување, нема Македонија за враќање. Некаде преку таа рамнина стои Дариј, двапати бегалец од твоето копје.',
+    },
+    objectives: ['Destroy the Persian army, not just win the field', 'Keep Parmenion\'s left wing alive', 'Take Darius — a fugitive Great King means endless war'],
+    objectivesI18n: {
+      es: ['Destruye al ejército persa, no solo ganes el campo', 'Mantén viva el ala izquierda de Parmenión', 'Captura a Darío — un Gran Rey fugitivo significa guerra sin fin'],
+      ru: ['Уничтожить персидскую армию, а не просто выиграть поле', 'Сохранить левое крыло Пармениона', 'Взять Дария — беглый Великий царь означает бесконечную войну'],
+      mk: ['Уништи ја персиската војска, не само освои го полето', 'Одржи го живо левото крило на Парменион', 'Фати го Дариј — Голем крал во бегство значи бескрајна војна'],
+    },
+  },
+  {
     id: 'crisis-1453',
     era: 'middle-ages',
     yearLabel: 'April, 1453',

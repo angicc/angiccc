@@ -6,6 +6,8 @@ type MT = Partial<Record<ContentLang, string>>;
 
 // ── Territory polygon label translations ─────────────────────────────────────
 export const POLY_LABEL_I18N: Record<string, MT> = {
+  'Empire of Alexander the Great': { es: 'Imperio de Alejandro Magno', ru: 'Держава Александра Великого', mk: 'Империјата на Александар Велики' },
+  'Kingdom of Naples (Aragonese)': { es: 'Reino de Nápoles (aragonés)', ru: 'Неаполитанское королевство (арагонское)', mk: 'Кралство Неапол (арагонско)' },
   'Egyptian New Kingdom': { es: 'Nuevo Reino de Egipto', ru: 'Новое царство Египта', mk: 'Новото Египетско Царство' },
   'Mesopotamian Kingdoms': { es: 'Reinos de Mesopotamia', ru: 'Царства Месопотамии', mk: 'Месопотамски царства' },
   'Greek World': { es: 'Mundo griego', ru: 'Греческий мир', mk: 'Грчкиот свет' },
@@ -64,6 +66,7 @@ export const MARKER_TYPE_I18N: Record<string, MT> = {
 
 // ── Marker name translations (proper nouns in local form) ─────────────────────
 export const MARKER_NAME_I18N: Record<string, MT> = {
+
   'Algiers':             { es: 'Argel', ru: 'Алжир', mk: 'Алжир' },
   'Battle of Actium':    { es: 'Batalla de Accio', ru: 'Битва при Акции', mk: 'Битка кај Акциум' },
   'Carthage':            { es: 'Cartago', ru: 'Карфаген', mk: 'Картагина' },
@@ -242,6 +245,7 @@ export const MARKER_NAME_I18N: Record<string, MT> = {
 
 // ── Marker note translations (descriptions shown in popups and story panel) ───
 export const MARKER_NOTE_I18N: Record<string, MT> = {
+
   'Acre': { es: 'Última gran ciudad cruzada — cayó en 1291', ru: 'Последний оплот крестоносцев — пал в 1291 г.', mk: 'Последниот голем крстоносен град — падна во 1291 г.' },
   'Alexandria': { es: 'Puerto clave del Mediterráneo bajo administración otomana', ru: 'Ключевой средиземноморский порт под властью османов', mk: 'Клучно медитеранско пристаниште под отоманска управа' },
   'Algiers': { es: 'Principal base naval otomana en el norte de África', ru: 'Главная османская военно-морская база в Северной Африке', mk: 'Главна отоманска поморска база во Северна Африка' },

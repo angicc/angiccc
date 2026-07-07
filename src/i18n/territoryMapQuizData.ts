@@ -16,6 +16,68 @@ export interface TerritoryQuizQuestion {
 }
 
 export const TERRITORY_QUIZ_BANK: TerritoryQuizQuestion[] = [
+  // ── ANCIENT MACEDONIA ───────────────────────────────────────────────────────
+  {
+    id: 'anmk-1', topicId: 'ancient-macedonia',
+    question: 'Which battle in 331 BCE effectively destroyed the Persian Empire?',
+    options: ['Battle of Issus', 'Battle of Gaugamela', 'Battle of the Granicus', 'Battle of the Hydaspes'],
+    correctIndex: 1,
+    explanation: 'At Gaugamela Alexander routed Darius III\'s vastly larger army; Persian imperial resistance collapsed soon after.',
+    i18n: {
+      es: { question: '¿Qué batalla de 331 a.C. destruyó de hecho al Imperio persa?', options: ['Batalla de Issos', 'Batalla de Gaugamela', 'Batalla del Gránico', 'Batalla del Hidaspes'], explanation: 'En Gaugamela Alejandro derrotó al ejército mucho mayor de Darío III; la resistencia persa se derrumbó poco después.' },
+      ru: { question: 'Какая битва 331 г. до н.э. фактически уничтожила Персидскую державу?', options: ['Битва при Иссе', 'Битва при Гавгамелах', 'Битва на Гранике', 'Битва на Гидаспе'], explanation: 'При Гавгамелах Александр разгромил намного превосходящую армию Дария III; персидское сопротивление вскоре рухнуло.' },
+      mk: { question: 'Која битка во 331 п.н.е. практично ја уништи Персиската империја?', options: ['Битка кај Ис', 'Битка кај Гавгамела', 'Битка кај Граник', 'Битка кај Хидасп'], explanation: 'Кај Гавгамела Александар ја разби многу поголемата војска на Дариј III; персискиот отпор набрзо пропадна.' },
+    },
+  },
+  {
+    id: 'anmk-2', topicId: 'ancient-macedonia',
+    question: 'Where was Alexander the Great born?',
+    options: ['Athens', 'Aigai', 'Pella', 'Babylon'],
+    correctIndex: 2,
+    explanation: 'Alexander was born in 356 BCE in Pella, the capital of the Macedonian kingdom.',
+    i18n: {
+      es: { question: '¿Dónde nació Alejandro Magno?', options: ['Atenas', 'Egas', 'Pela', 'Babilonia'], explanation: 'Alejandro nació en 356 a.C. en Pela, la capital del reino macedonio.' },
+      ru: { question: 'Где родился Александр Великий?', options: ['Афины', 'Эги', 'Пелла', 'Вавилон'], explanation: 'Александр родился в 356 г. до н.э. в Пелле, столице Македонского царства.' },
+      mk: { question: 'Каде е роден Александар Велики?', options: ['Атина', 'Ајгаи', 'Пела', 'Вавилон'], explanation: 'Александар е роден во 356 п.н.е. во Пела, престолнината на македонското кралство.' },
+    },
+  },
+  {
+    id: 'anmk-3', topicId: 'ancient-macedonia',
+    question: 'What military innovation underpinned Philip II\'s conquests?',
+    options: ['War elephants', 'The reformed sarissa phalanx', 'Fire ships', 'Horse archers'],
+    correctIndex: 1,
+    explanation: 'Philip re-armed the phalanx with the 6-metre sarissa pike and paired it with heavy Companion cavalry — the hammer and anvil Alexander inherited.',
+    i18n: {
+      es: { question: '¿Qué innovación militar sustentó las conquistas de Filipo II?', options: ['Elefantes de guerra', 'La falange reformada con sarisa', 'Barcos incendiarios', 'Arqueros a caballo'], explanation: 'Filipo rearmó la falange con la sarisa de 6 metros y la combinó con la caballería de Compañeros — el martillo y el yunque que heredó Alejandro.' },
+      ru: { question: 'Какое военное новшество обеспечило завоевания Филиппа II?', options: ['Боевые слоны', 'Реформированная фаланга с сариссами', 'Брандеры', 'Конные лучники'], explanation: 'Филипп вооружил фалангу шестиметровой сариссой и соединил её с тяжёлой конницей гетайров — «молот и наковальня», доставшиеся Александру.' },
+      mk: { question: 'Која воена иновација ги овозможи освојувањата на Филип II?', options: ['Воени слонови', 'Реформираната фаланга со сариса', 'Запаливи бродови', 'Коњски стрелци'], explanation: 'Филип ја вооружи фалангата со шестметарска сариса и ја спои со тешката коњаница на хетајрите — чеканот и наковалната што ги наследи Александар.' },
+    },
+  },
+  {
+    id: 'anmk-4', topicId: 'ancient-macedonia',
+    question: 'Why did Alexander\'s army stop at the Hydaspes river in 326 BCE?',
+    options: ['Darius III surrendered', 'The soldiers refused to march further east', 'Winter destroyed the supply lines', 'Alexander fell ill'],
+    correctIndex: 1,
+    explanation: 'After defeating Porus, Alexander\'s exhausted veterans mutinied at the Hyphasis and refused to go on; he turned back toward Babylon.',
+    i18n: {
+      es: { question: '¿Por qué se detuvo el ejército de Alejandro en el Hidaspes en 326 a.C.?', options: ['Darío III se rindió', 'Los soldados se negaron a seguir hacia el este', 'El invierno destruyó los suministros', 'Alejandro enfermó'], explanation: 'Tras vencer a Poro, los veteranos agotados se amotinaron y se negaron a continuar; Alejandro regresó hacia Babilonia.' },
+      ru: { question: 'Почему армия Александра остановилась на Гидаспе в 326 г. до н.э.?', options: ['Дарий III сдался', 'Солдаты отказались идти дальше на восток', 'Зима уничтожила снабжение', 'Александр заболел'], explanation: 'После победы над Пором измотанные ветераны взбунтовались и отказались идти дальше; Александр повернул к Вавилону.' },
+      mk: { question: 'Зошто војската на Александар застана кај Хидасп во 326 п.н.е.?', options: ['Дариј III се предаде', 'Војниците одбија да одат подалеку на исток', 'Зимата ги уништи залихите', 'Александар се разболе'], explanation: 'По победата над Пор, исцрпените ветерани се побунија и одбија да продолжат; Александар сврте назад кон Вавилон.' },
+    },
+  },
+  {
+    id: 'anmk-5', topicId: 'ancient-macedonia',
+    question: 'What happened to Alexander\'s empire after his death in 323 BCE?',
+    options: ['His son ruled it intact for 40 years', 'It was split among his generals, the Diadochi', 'It was returned to Persian rule', 'Rome annexed it immediately'],
+    correctIndex: 1,
+    explanation: 'With no adult heir, Alexander\'s generals — the Diadochi — carved the empire into rival kingdoms: Ptolemaic Egypt, Seleucid Asia, and Antigonid Macedonia.',
+    i18n: {
+      es: { question: '¿Qué pasó con el imperio de Alejandro tras su muerte en 323 a.C.?', options: ['Su hijo lo gobernó intacto 40 años', 'Se repartió entre sus generales, los diádocos', 'Volvió al dominio persa', 'Roma lo anexó de inmediato'], explanation: 'Sin heredero adulto, los diádocos dividieron el imperio en reinos rivales: el Egipto ptolemaico, el Asia seléucida y la Macedonia antigónida.' },
+      ru: { question: 'Что стало с империей Александра после его смерти в 323 г. до н.э.?', options: ['Его сын правил ею 40 лет', 'Её разделили полководцы — диадохи', 'Она вернулась под власть персов', 'Её сразу захватил Рим'], explanation: 'Не оставив взрослого наследника, Александр оставил империю диадохам, разделившим её на царства Птолемеев, Селевкидов и Антигонидов.' },
+      mk: { question: 'Што се случи со империјата на Александар по неговата смрт во 323 п.н.е.?', options: ['Синот ја владееше 40 години', 'Ја поделија неговите генерали — дијадосите', 'Се врати под персиска власт', 'Рим веднаш ја анектираше'], explanation: 'Без возрасен наследник, дијадосите ја поделија империјата на ривалски кралства: птолемејски Египет, селевкидска Азија и антигонидска Македонија.' },
+    },
+  },
+
   // ── MESOPOTAMIA ─────────────────────────────────────────────────────────────
   {
     id: 'meso-1', topicId: 'mesopotamia',
