@@ -44,6 +44,11 @@ export const POLY_LABEL_I18N: Record<string, MT> = {
   'Ilinden Uprising Zone (Kruševo Republic, 1903)': { es: 'Zona del Levantamiento de Ilinden (República de Kruševo, 1903)', ru: 'Зона Илинденского восстания (Крушевская республика, 1903)', mk: 'Зона на Илинденското востание (Крушевска Република, 1903)' },
   'Empire of Alexander the Great (323 BCE)': { es: 'Imperio de Alejandro Magno (323 a.C.)', ru: 'Империя Александра Великого (323 г. до н.э.)', mk: 'Империјата на Александар Велики (323 п.н.е.)' },
   'Kingdom of Macedon & Balkan lands (336 BCE)': { es: 'Reino de Macedonia y tierras balcánicas (336 a.C.)', ru: 'Македонское царство и балканские земли (336 г. до н.э.)', mk: 'Кралството Македонија и балканските земји (336 п.н.е.)' },
+  'Assyria': { es: 'Asiria', ru: 'Ассирия', mk: 'Асирија' },
+  'Babylonia': { es: 'Babilonia', ru: 'Вавилония', mk: 'Вавилонија' },
+  'Elam': { es: 'Elam', ru: 'Элам', mk: 'Елам' },
+  'Batavian Republic (French satellite)': { es: 'República Bátava (satélite francés)', ru: 'Батавская республика (сателлит Франции)', mk: 'Батавска Република (француски сателит)' },
+  'Helvetic Republic (French satellite)': { es: 'República Helvética (satélite francés)', ru: 'Гельветическая республика (сателлит Франции)', mk: 'Хелветска Република (француски сателит)' },
 };
 
 export function getTranslatedPolyLabel(label: string, lang: Language): string {

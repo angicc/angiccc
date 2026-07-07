@@ -32,6 +32,26 @@ model User {
   createdAt     DateTime          @default(now())
   chatSessions  ClioChatSession[]
   crisisStates  CrisisRoomState[]
+  progress      ProgressSnapshot?
+  campaign      CampaignProgress?
+}
+
+// Whole-progress snapshot mirroring the client progress store (XP, streaks,
+// completed lessons/quizzes, achievements). Client-authoritative for now:
+// hydrate on login, flush after mutations; last write wins per device.
+model ProgressSnapshot {
+  userId    String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Territory Conquest Campaign state (stars, best scores, banked XP per stage).
+model CampaignProgress {
+  userId    String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ClioChatSession {

@@ -21,6 +21,13 @@ type TranslationKeys = {
   crisis_decisions: string; crisis_verdict: string;
   crisis_dc: string; crisis_mr: string; crisis_treasury: string; crisis_consequence: string;
   crisis_risk_low: string; crisis_risk_med: string; crisis_risk_high: string;
+  // ── Chronos Strategic Assessment ──────────────────────────────
+  crisis_assess_title: string; crisis_assess_cta: string; crisis_assess_sub: string;
+  crisis_assess_loading: string; crisis_assess_score: string; crisis_assess_xp: string;
+  crisis_assess_m_foresight: string; crisis_assess_m_judgment: string; crisis_assess_m_stewardship: string;
+  crisis_assess_m_decisiveness: string; crisis_assess_m_adaptability: string;
+  crisis_assess_strengths: string; crisis_assess_improve: string;
+  crisis_assess_counterfactual: string; crisis_assess_rerun: string;
   nav_profile: string; nav_guide: string; nav_report: string;
   nav_upgrade: string; nav_logout: string;
   logout_title: string; logout_desc: string;
@@ -63,6 +70,8 @@ type TranslationKeys = {
   quiz_test_knowledge: string; quiz_passing_score: string; quiz_question_of: string;
   quiz_upgrade_explanations: string; quiz_not_found: string;
   sq_clio_fallback: string; sq_upgrade_desc: string;
+  sq_plan_title: string; sq_plan_focus: string; sq_plan_steps: string;
+  sq_plan_forecast: string; sq_plan_master: string; sq_plan_min: string; sq_plan_open: string;
   // ── Timeline ───────────────────────────────────────────────────
   tl_title: string; tl_subtitle: string; tl_events: string;
   tl_all_eras: string; tl_all_categories: string; tl_open_lesson: string;
@@ -309,6 +318,12 @@ export const T: Translations = {
     crisis_decisions: 'Decision log', crisis_verdict: 'Final verdict',
     crisis_dc: 'Diplomatic Capital', crisis_mr: 'Military Readiness', crisis_treasury: 'Treasury', crisis_consequence: 'Consequence',
     crisis_risk_low: 'Low', crisis_risk_med: 'Medium', crisis_risk_high: 'High',
+    crisis_assess_title: 'Strategic Assessment', crisis_assess_cta: 'Request Strategic Assessment', crisis_assess_sub: 'The Chronos Tribunal grades your entire command run across five dimensions',
+    crisis_assess_loading: 'The Tribunal is deliberating…', crisis_assess_score: 'Command Score', crisis_assess_xp: 'XP earned',
+    crisis_assess_m_foresight: 'Strategic Foresight', crisis_assess_m_judgment: 'Historical Judgment', crisis_assess_m_stewardship: 'Resource Stewardship',
+    crisis_assess_m_decisiveness: 'Decisiveness', crisis_assess_m_adaptability: 'Adaptability',
+    crisis_assess_strengths: 'Strengths', crisis_assess_improve: 'Improvements',
+    crisis_assess_counterfactual: 'What History Did', crisis_assess_rerun: 'Reconvene the Tribunal',
     nav_profile: 'Profile', nav_guide: 'App Guide', nav_report: 'Report a Problem',
     nav_upgrade: 'Upgrade Plan', nav_logout: 'Log Out',
     logout_title: 'Log out of Historify?', logout_desc: 'Your progress is saved. You can log back in anytime.',
@@ -362,6 +377,8 @@ export const T: Translations = {
     quiz_upgrade_explanations: 'Upgrade to Pro to see answer explanations.',
     quiz_not_found: 'Quiz not found.',
     sq_clio_fallback: 'Great effort! Focus on reviewing the eras where you struggled and retry those lessons for maximum growth.',
+    sq_plan_title: "Clio's Study Plan", sq_plan_focus: 'Focus areas', sq_plan_steps: 'Your 3-step plan',
+    sq_plan_forecast: 'Next-session forecast', sq_plan_master: 'Misconception analysis', sq_plan_min: 'min', sq_plan_open: 'Open lesson',
     sq_upgrade_desc: 'Smart Quiz uses an adaptive algorithm that targets your weakest eras and calibrates difficulty to your performance level. Available on Pro Learner and above.',
     // Timeline
     tl_title: 'Historical Timeline', tl_subtitle: 'From 3100 BCE to the present day',
@@ -641,6 +658,12 @@ export const T: Translations = {
     crisis_decisions: 'Registro de decisiones', crisis_verdict: 'Veredicto final',
     crisis_dc: 'Capital diplomático', crisis_mr: 'Preparación militar', crisis_treasury: 'Tesoro', crisis_consequence: 'Consecuencia',
     crisis_risk_low: 'Bajo', crisis_risk_med: 'Medio', crisis_risk_high: 'Alto',
+    crisis_assess_title: 'Evaluación Estratégica', crisis_assess_cta: 'Solicitar Evaluación Estratégica', crisis_assess_sub: 'El Tribunal de Chronos califica toda tu partida en cinco dimensiones',
+    crisis_assess_loading: 'El Tribunal está deliberando…', crisis_assess_score: 'Puntuación de Mando', crisis_assess_xp: 'XP ganada',
+    crisis_assess_m_foresight: 'Visión estratégica', crisis_assess_m_judgment: 'Juicio histórico', crisis_assess_m_stewardship: 'Gestión de recursos',
+    crisis_assess_m_decisiveness: 'Decisión', crisis_assess_m_adaptability: 'Adaptabilidad',
+    crisis_assess_strengths: 'Fortalezas', crisis_assess_improve: 'Mejoras',
+    crisis_assess_counterfactual: 'Lo que hizo la Historia', crisis_assess_rerun: 'Reconvocar al Tribunal',
     nav_profile: 'Perfil', nav_guide: 'Guía de la App', nav_report: 'Reportar Problema',
     nav_upgrade: 'Actualizar Plan', nav_logout: 'Cerrar Sesión',
     logout_title: '¿Cerrar sesión en Historify?', logout_desc: 'Tu progreso está guardado. Puedes iniciar sesión de nuevo en cualquier momento.',
@@ -688,6 +711,8 @@ export const T: Translations = {
     quiz_upgrade_explanations: 'Actualiza a Pro para ver las explicaciones de respuestas.',
     quiz_not_found: 'Quiz no encontrado.',
     sq_clio_fallback: '¡Buen esfuerzo! Concéntrate en revisar las eras donde tuviste dificultades y vuelve a intentar esas lecciones.',
+    sq_plan_title: 'Plan de Estudio de Clío', sq_plan_focus: 'Áreas de enfoque', sq_plan_steps: 'Tu plan de 3 pasos',
+    sq_plan_forecast: 'Pronóstico de la próxima sesión', sq_plan_master: 'Análisis de conceptos erróneos', sq_plan_min: 'min', sq_plan_open: 'Abrir lección',
     sq_upgrade_desc: 'El Quiz Inteligente usa un algoritmo adaptativo que apunta a tus eras más débiles y calibra la dificultad según tu nivel. Disponible en Pro Learner y superior.',
     tl_title: 'Línea de Tiempo Histórica', tl_subtitle: 'Desde 3100 a.C. hasta hoy',
     tl_events: 'eventos', tl_all_eras: 'Todas las Eras', tl_all_categories: 'Todas las Categorías',
@@ -952,6 +977,12 @@ export const T: Translations = {
     crisis_decisions: 'Журнал решений', crisis_verdict: 'Итоговый вердикт',
     crisis_dc: 'Дипломатический капитал', crisis_mr: 'Боеготовность', crisis_treasury: 'Казна', crisis_consequence: 'Последствие',
     crisis_risk_low: 'Низкий', crisis_risk_med: 'Средний', crisis_risk_high: 'Высокий',
+    crisis_assess_title: 'Стратегическая оценка', crisis_assess_cta: 'Запросить стратегическую оценку', crisis_assess_sub: 'Трибунал Хроноса оценивает всю вашу кампанию по пяти измерениям',
+    crisis_assess_loading: 'Трибунал совещается…', crisis_assess_score: 'Оценка командования', crisis_assess_xp: 'Получено XP',
+    crisis_assess_m_foresight: 'Стратегическое предвидение', crisis_assess_m_judgment: 'Историческое суждение', crisis_assess_m_stewardship: 'Управление ресурсами',
+    crisis_assess_m_decisiveness: 'Решительность', crisis_assess_m_adaptability: 'Адаптивность',
+    crisis_assess_strengths: 'Сильные стороны', crisis_assess_improve: 'Что улучшить',
+    crisis_assess_counterfactual: 'Как поступила история', crisis_assess_rerun: 'Созвать Трибунал заново',
     nav_profile: 'Профиль', nav_guide: 'Руководство', nav_report: 'Сообщить об ошибке',
     nav_upgrade: 'Обновить план', nav_logout: 'Выйти',
     logout_title: 'Выйти из Historify?', logout_desc: 'Ваш прогресс сохранён. Вы можете войти снова в любое время.',
@@ -999,6 +1030,8 @@ export const T: Translations = {
     quiz_upgrade_explanations: 'Обновитесь до Pro, чтобы видеть объяснения ответов.',
     quiz_not_found: 'Викторина не найдена.',
     sq_clio_fallback: 'Отличная работа! Сосредоточься на повторении эпох, где ты испытывал трудности, и повтори те уроки для максимального роста.',
+    sq_plan_title: 'Учебный план Клио', sq_plan_focus: 'Зоны внимания', sq_plan_steps: 'Ваш план из 3 шагов',
+    sq_plan_forecast: 'Прогноз на следующую сессию', sq_plan_master: 'Разбор заблуждений', sq_plan_min: 'мин', sq_plan_open: 'Открыть урок',
     sq_upgrade_desc: 'Умная Викторина использует адаптивный алгоритм, который нацелен на твои слабые эпохи и калибрует сложность по твоему уровню. Доступно на Pro Learner и выше.',
     tl_title: 'Историческая Хронология', tl_subtitle: 'С 3100 г. до н.э. по сегодняшний день',
     tl_events: 'событий', tl_all_eras: 'Все Эпохи', tl_all_categories: 'Все Категории',
@@ -1263,6 +1296,12 @@ export const T: Translations = {
     crisis_decisions: 'Дневник на одлуки', crisis_verdict: 'Финален вердикт',
     crisis_dc: 'Дипломатски капитал', crisis_mr: 'Воена готовност', crisis_treasury: 'Трезор', crisis_consequence: 'Последица',
     crisis_risk_low: 'Низок', crisis_risk_med: 'Среден', crisis_risk_high: 'Висок',
+    crisis_assess_title: 'Стратешка проценка', crisis_assess_cta: 'Побарај стратешка проценка', crisis_assess_sub: 'Трибуналот на Хронос ја оценува целата ваша кампања по пет димензии',
+    crisis_assess_loading: 'Трибуналот заседава…', crisis_assess_score: 'Команден резултат', crisis_assess_xp: 'Заработено XP',
+    crisis_assess_m_foresight: 'Стратешка визија', crisis_assess_m_judgment: 'Историска проценка', crisis_assess_m_stewardship: 'Управување со ресурси',
+    crisis_assess_m_decisiveness: 'Одлучност', crisis_assess_m_adaptability: 'Приспособливост',
+    crisis_assess_strengths: 'Силни страни', crisis_assess_improve: 'За подобрување',
+    crisis_assess_counterfactual: 'Што направи историјата', crisis_assess_rerun: 'Повторно свикај го Трибуналот',
     nav_profile: 'Профил', nav_guide: 'Водич за Апликацијата', nav_report: 'Пријави Проблем',
     nav_upgrade: 'Надгради го Планот', nav_logout: 'Одјави се',
     logout_title: 'Одјавување од Historify?', logout_desc: 'Твојот напредок е зачуван. Можеш да се најавиш повторно во секое време.',
@@ -1310,6 +1349,8 @@ export const T: Translations = {
     quiz_upgrade_explanations: 'Надгради на Pro за да ги гледаш објаснувањата на одговорите.',
     quiz_not_found: 'Квизот не е пронајден.',
     sq_clio_fallback: 'Добар напор! Фокусирај се на прегледување на епохите каде имаш тешкотии и повтори ги тие лекции за максимален напредок.',
+    sq_plan_title: 'Учебен план на Клио', sq_plan_focus: 'Области на фокус', sq_plan_steps: 'Твојот план во 3 чекори',
+    sq_plan_forecast: 'Прогноза за следната сесија', sq_plan_master: 'Анализа на заблуди', sq_plan_min: 'мин', sq_plan_open: 'Отвори лекција',
     sq_upgrade_desc: 'Паметниот Квиз користи адаптивен алгоритам кој ги насочува кон твоите слаби епохи и ја калибрира тежината според твоето ниво. Достапно на Pro Learner и повисоко.',
     tl_title: 'Историска Временска Линија', tl_subtitle: 'Од 3100 г.п.н.е. до денес',
     tl_events: 'настани', tl_all_eras: 'Сите Епохи', tl_all_categories: 'Сите Категории',

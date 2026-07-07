@@ -21,6 +21,10 @@ const gif = (driveFileId: string) => `https://lh3.googleusercontent.com/d/${driv
 export const LESSON_GIF_BANNERS: Record<string, string> = {
   // ── Ancient Era ──
   'ancient-01': gif('1Jmhzo4H_kaDPYSNMmNZE4DgD7GT-EAOX'), // Ancient Mesopotamia and Egypt
+  // Animated Greek-vase runners (Wikimedia Commons, public domain)
+  'ancient-02': 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Race-on-Greek-vase.gif',
+  // Animated map of Roman expansion, Republic → Empire (Wikimedia Commons)
+  'ancient-03': 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Roman_Republic_Empire_map.gif',
   'ancient-04': gif('1eZIvgcJFYuPSX7sT4jHKqVp6zkQYnA0J'), // Ancient East
   'ancient-06': gif('1M5xqCDt50TuU-bh2nMVYpG9s3a59fajv'), // The Phoenicians
 
@@ -86,5 +90,7 @@ export async function resolveGifPageBanner(lessonId: string): Promise<string | n
 
 /** True when a resolved banner src is one of the animated GIF banners. */
 export function isGifBanner(src: string): boolean {
-  return src.startsWith('https://lh3.googleusercontent.com/d/') || src.includes('.makeagif.com/');
+  return src.startsWith('https://lh3.googleusercontent.com/d/')
+    || src.includes('.makeagif.com/')
+    || /\.gif(\?.*)?$/i.test(src);
 }

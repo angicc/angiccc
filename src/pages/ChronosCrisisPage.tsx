@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Hourglass, Send, ArrowLeft, RotateCcw, Target, Crown, Play, AlertTriangle, Flag } from 'lucide-react';
+import { Hourglass, Send, ArrowLeft, RotateCcw, Target, Crown, Play, AlertTriangle, Flag, Scale, CheckCircle2, TrendingUp, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -26,6 +26,12 @@ import {
   loadRunState, saveRunState, resetRunState, beginMessage, decisionMessage, conclusionMessage,
   RESOURCE_KEYS, type CrisisRunState, type CrisisNodePayload, type CrisisResources,
 } from '@/features/content/crisisEngine';
+import {
+  buildAssessmentPrompt, parseAssessment, assessmentXp,
+  loadAssessment, saveAssessment, ASSESSMENT_METRIC_KEYS,
+  type CrisisAssessment, type AssessmentMetricKey, type LetterGrade,
+} from '@/features/content/crisisAssessment';
+import { addBonusXp } from '@/features/progress/progressStore';
 import type { ChatMessage } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -40,6 +46,14 @@ const RISK_STYLE: Record<'Low' | 'Medium' | 'High', string> = {
   Low: 'text-emerald-400 border-emerald-400/40 bg-emerald-400/10',
   Medium: 'text-amber-400 border-amber-400/40 bg-amber-400/10',
   High: 'text-red-400 border-red-400/40 bg-red-400/10',
+};
+
+const GRADE_STYLE: Record<LetterGrade, { text: string; ring: string; bg: string }> = {
+  S: { text: 'text-fuchsia-300', ring: 'border-fuchsia-400/60', bg: 'bg-fuchsia-400/10' },
+  A: { text: 'text-emerald-400', ring: 'border-emerald-400/60', bg: 'bg-emerald-400/10' },
+  B: { text: 'text-blue-400',    ring: 'border-blue-400/60',    bg: 'bg-blue-400/10' },
+  C: { text: 'text-amber-400',   ring: 'border-amber-400/60',   bg: 'bg-amber-400/10' },
+  D: { text: 'text-rose-400',    ring: 'border-rose-400/60',    bg: 'bg-rose-400/10' },
 };
 
 export default function ChronosCrisisPage() {
@@ -145,6 +159,39 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
   const bottomRef = useRef<HTMLDivElement>(null);
   const es = ERA_STYLE[scenario.era];
   const systemPrompt = buildCrisisEnginePrompt(scenario);
+
+  // ── Strategic Assessment: tribunal-grade verdict over the whole run ────────
+  const [assessment, setAssessment] = useState<CrisisAssessment | null>(() => loadAssessment(scenario.id, userId));
+  const [assessing, setAssessing] = useState(false);
+  const [assessError, setAssessError] = useState<unknown>(null);
+
+  const requestAssessment = useCallback(async () => {
+    if (assessing) return;
+    setAssessing(true);
+    setAssessError(null);
+    try {
+      const tribunalPrompt = buildAssessmentPrompt(scenario, run, language);
+      let acc = '';
+      for await (const chunk of streamChatResponse(
+        [{ role: 'user', content: 'Deliver the tribunal assessment of this run now.' }],
+        undefined,
+        tribunalPrompt,
+      )) acc += chunk;
+      onAiMessage();
+      const parsed = parseAssessment(acc);
+      if (!parsed) throw new Error('The Tribunal returned an unreadable verdict. Retry to reconvene.');
+      // XP pays out on improvement only — reconvening cannot be farmed.
+      const already = assessment?.xpAwarded ?? 0;
+      const runXp = assessmentXp(parsed.overallScore);
+      const delta = Math.max(0, runXp - already);
+      const sealed: CrisisAssessment = { ...parsed, xpAwarded: Math.max(already, runXp) };
+      setAssessment(sealed);
+      saveAssessment(sealed, scenario.id, userId);
+      if (delta > 0 && userId) addBonusXp(userId, delta, 'Crisis Assessment');
+    } catch (err) {
+      setAssessError(err);
+    } finally { setAssessing(false); }
+  }, [assessing, assessment, scenario, run, language, userId, onAiMessage]);
 
   // The transcript is the transport log; the UI renders only validated nodes.
   const nodes: CrisisNodePayload[] = messages
@@ -350,6 +397,129 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
                 </div>
               )}
               {error != null && !loading && <AiErrorCard error={error} onRetry={retry} />}
+
+              {/* ── STRATEGIC ASSESSMENT — tribunal verdict over the whole run ── */}
+              {run.concluded && !loading && (() => {
+                const METRIC_LABELS: Record<AssessmentMetricKey, string> = {
+                  strategicForesight: t.crisis_assess_m_foresight,
+                  historicalJudgment: t.crisis_assess_m_judgment,
+                  resourceStewardship: t.crisis_assess_m_stewardship,
+                  decisiveness: t.crisis_assess_m_decisiveness,
+                  adaptability: t.crisis_assess_m_adaptability,
+                };
+                if (assessing) {
+                  return (
+                    <div className={cn('rounded-xl border p-5 flex items-center gap-3 bg-card/60', es.border)}>
+                      <Scale className={cn('w-5 h-5 animate-pulse', es.text)} />
+                      <span className="text-sm text-muted-foreground animate-pulse">{t.crisis_assess_loading}</span>
+                    </div>
+                  );
+                }
+                if (assessError != null) return <AiErrorCard error={assessError} onRetry={() => void requestAssessment()} />;
+                if (!assessment) {
+                  return (
+                    <div className={cn('rounded-xl border p-5 text-center space-y-3 bg-card/60', es.border)}>
+                      <Scale className={cn('w-7 h-7 mx-auto', es.text)} />
+                      <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed">{t.crisis_assess_sub}</p>
+                      <Button className="gap-2" onClick={() => void requestAssessment()}>
+                        <Crown className="w-4 h-4" />{t.crisis_assess_cta}
+                      </Button>
+                    </div>
+                  );
+                }
+                const gs = GRADE_STYLE[assessment.grade];
+                return (
+                  <motion.div
+                    initial={{ opacity: 0, y: 14, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className={cn('rounded-xl border p-5 space-y-4 bg-card/70', es.border)}
+                  >
+                    {/* Header: medallion + title + score */}
+                    <div className="flex items-center gap-4">
+                      <div className={cn('w-16 h-16 shrink-0 rounded-2xl border-2 flex items-center justify-center font-heading text-3xl font-bold', gs.ring, gs.bg, gs.text)}>
+                        {assessment.grade}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.crisis_assess_title}</p>
+                        <p className={cn('font-heading font-bold text-lg leading-snug break-words', es.text)}>{assessment.commanderTitle}</p>
+                        <div className="flex flex-wrap items-center gap-3 mt-0.5 text-xs text-muted-foreground">
+                          <span>{t.crisis_assess_score}: <span className={cn('font-bold tabular-nums', gs.text)}>{assessment.overallScore}/100</span></span>
+                          {assessment.xpAwarded > 0 && (
+                            <span className="flex items-center gap-1 text-amber-400 font-semibold">
+                              <Star className="w-3 h-3" />+{assessment.xpAwarded} {t.crisis_assess_xp}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Five-dimension matrix */}
+                    <div className="space-y-2.5">
+                      {ASSESSMENT_METRIC_KEYS.map(key => {
+                        const m = assessment.metrics[key];
+                        return (
+                          <div key={key}>
+                            <div className="flex items-center justify-between text-[11px] mb-1">
+                              <span className="text-muted-foreground">{METRIC_LABELS[key]}</span>
+                              <span className={cn('font-semibold tabular-nums', es.text)}>{m.score}</span>
+                            </div>
+                            <div className="h-1.5 rounded-full bg-muted/40 overflow-hidden">
+                              <motion.div
+                                className={cn('h-full rounded-full', es.bar)}
+                                initial={{ width: 0 }}
+                                animate={{ width: `${m.score}%` }}
+                                transition={{ duration: 0.8, ease: 'easeOut' }}
+                              />
+                            </div>
+                            {m.feedback && <p className="text-[11px] text-muted-foreground/80 mt-1 leading-snug break-words">{m.feedback}</p>}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Strengths / improvements */}
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      <div className="rounded-lg border border-emerald-400/25 bg-emerald-400/5 p-3">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 mb-1.5">{t.crisis_assess_strengths}</p>
+                        <ul className="space-y-1">
+                          {assessment.strengths.map((sItem, i) => (
+                            <li key={i} className="flex gap-1.5 text-[11px] leading-snug text-muted-foreground break-words">
+                              <CheckCircle2 className="w-3 h-3 shrink-0 mt-0.5 text-emerald-400" />{sItem}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="rounded-lg border border-amber-400/25 bg-amber-400/5 p-3">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400 mb-1.5">{t.crisis_assess_improve}</p>
+                        <ul className="space-y-1">
+                          {assessment.improvements.map((sItem, i) => (
+                            <li key={i} className="flex gap-1.5 text-[11px] leading-snug text-muted-foreground break-words">
+                              <TrendingUp className="w-3 h-3 shrink-0 mt-0.5 text-amber-400" />{sItem}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Counterfactual: player's timeline vs the real one */}
+                    {assessment.counterfactual && (
+                      <div className={cn('rounded-lg border p-3', es.border, es.bg)}>
+                        <p className={cn('text-[10px] font-bold uppercase tracking-widest mb-1.5', es.text)}>{t.crisis_assess_counterfactual}</p>
+                        <p className="text-xs leading-relaxed text-muted-foreground break-words">{assessment.counterfactual}</p>
+                      </div>
+                    )}
+
+                    {assessment.epitaph && (
+                      <p className="text-xs italic text-center text-muted-foreground/80 break-words">“{assessment.epitaph}”</p>
+                    )}
+
+                    <Button variant="ghost" size="sm" className="w-full gap-2 text-[11px] text-muted-foreground" onClick={() => void requestAssessment()}>
+                      <RotateCcw className="w-3 h-3" />{t.crisis_assess_rerun}
+                    </Button>
+                  </motion.div>
+                );
+              })()}
               <div ref={bottomRef} />
             </div>
           </ScrollArea>

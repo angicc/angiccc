@@ -9,6 +9,8 @@ import jwt from 'jsonwebtoken';
 import { Server as SocketIOServer } from 'socket.io';
 import { crisisRouter } from './routes/crisis';
 import { clioRouter } from './routes/clio';
+import { authRouter } from './routes/auth';
+import { syncRouter } from './routes/sync';
 
 declare global {
   // Attached by the JWT middleware below.
@@ -67,6 +69,10 @@ function requireTier(tier: 'PRO' | 'MASTER') {
 
 // ── Routes ───────────────────────────────────────────────────────────────────
 app.get('/healthz', (_req, res) => res.json({ ok: true }));
+// register/login/logout are public; /me needs the session.
+app.use('/api/auth/me', authenticate);
+app.use('/api/auth', authRouter);
+app.use('/api/sync', authenticate, syncRouter);
 app.use('/api/crisis', authenticate, requireTier('MASTER'), crisisRouter);
 app.use('/api/clio', authenticate, requireTier('PRO'), clioRouter);
 
@@ -105,6 +111,8 @@ io.on('connection', socket => {
   // devices. Persisting to Postgres happens through the REST layer.
   socket.on('crisis:sync', (payload: unknown) => socket.to(room).emit('crisis:sync', payload));
   socket.on('clio:sync', (payload: unknown) => socket.to(room).emit('clio:sync', payload));
+  socket.on('progress:sync', (payload: unknown) => socket.to(room).emit('progress:sync', payload));
+  socket.on('campaign:sync', (payload: unknown) => socket.to(room).emit('campaign:sync', payload));
 });
 
 httpServer.listen(Number(PORT), () => {

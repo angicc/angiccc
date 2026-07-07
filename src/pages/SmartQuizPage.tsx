@@ -1,7 +1,10 @@
 import { useState, useMemo } from 'react';
-import { Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw, Brain, Target, Trophy, ChevronRight, MessageSquare, BarChart2, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw, Brain, Target, Trophy, ChevronRight, MessageSquare, BarChart2, Star, BookOpen, Clock, TrendingUp, Crown } from 'lucide-react';
 import { streamChatResponse } from '@/services/aiGateway';
 import { recordMiss, eraGapFactor } from '@/features/progress/conceptGaps';
+import { buildStudyPlanPrompt, parseStudyPlan, type StudyPlan, type MissedQuestion } from '@/features/smartQuiz/studyPlan';
+import { LESSONS } from '@/features/content/lessonsData';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -104,44 +107,43 @@ export default function SmartQuizPage() {
       }))
     ), [language]);
 
+  const navigate = useNavigate();
   const [phase, setPhase]     = useState<Phase>('intro');
   const [session, setSession] = useState<QuestionWithMeta[]>([]);
   const [qIdx, setQIdx]       = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [answers, setAnswers] = useState<boolean[]>([]);
+  const [choices, setChoices] = useState<number[]>([]);
   const [xpEarned, setXpEarned] = useState(0);
-  const [clioRec, setClioRec] = useState('');
+  const [plan, setPlan] = useState<StudyPlan | null>(null);
+  const [clioRec, setClioRec] = useState(''); // plain-text fallback when the plan can't be parsed
   const [clioLoading, setClioLoading] = useState(false);
 
-  async function getClioRecommendation(scoreVal: number, eraBreakdownData: Array<{name: string; correct: number; total: number}>) {
+  // Premium recommendation: Clio sees the actual missed questions and the real
+  // lesson catalog, and must answer with a structured, clickable study plan.
+  async function requestStudyPlan(
+    scoreVal: number,
+    eraBreakdownData: Array<{ name: string; correct: number; total: number }>,
+    missed: MissedQuestion[],
+    weakEraIds: string[],
+  ) {
     setClioLoading(true);
+    setPlan(null);
     setClioRec('');
-    const weakest = eraBreakdownData
-      .map(e => ({ name: e.name, pct: Math.round((e.correct / e.total) * 100) }))
-      .sort((a, b) => a.pct - b.pct)
-      .slice(0, 2);
-
-    const strongEras = eraBreakdownData
-      .map(e => ({ name: e.name, pct: Math.round((e.correct / e.total) * 100) }))
-      .filter(e => e.pct >= 75)
-      .map(e => e.name);
-
-    const prompt = `You are Clio, an AI history tutor with deep knowledge and an encouraging but scholarly personality. A student just completed a 15-question adaptive Smart Quiz and scored ${scoreVal}%.
-
-Era breakdown: ${eraBreakdownData.map(e => `${e.name}: ${Math.round((e.correct/e.total)*100)}% (${e.correct}/${e.total})`).join(', ')}.
-${weakest.length > 0 ? `Weakest areas: ${weakest.map(w => `${w.name} (${w.pct}%)`).join(', ')}.` : ''}
-${strongEras.length > 0 ? `Strong areas: ${strongEras.join(', ')}.` : ''}
-
-Write a 3-sentence personalized recommendation directly to the student:
-1. Acknowledge their specific performance with precision (mention the exact score and one strength if any).
-2. Give a concrete, actionable next step targeting their weakest era — name a specific concept, event, or lesson to revisit.
-3. End with a motivating, historically-flavored insight that connects their weak area to why history matters.
-Address the student as "you". Be specific, warm, and scholarly. Do NOT use bullet points.`;
-
+    const prompt = buildStudyPlanPrompt({
+      score: scoreVal,
+      breakdown: eraBreakdownData,
+      missed,
+      weakEraIds,
+      language,
+      master: tier === 'master',
+    });
     try {
-      for await (const chunk of streamChatResponse([{ role: 'user', content: prompt }])) {
-        setClioRec(prev => prev + chunk);
-      }
+      let acc = '';
+      for await (const chunk of streamChatResponse([{ role: 'user', content: prompt }])) acc += chunk;
+      const parsed = parseStudyPlan(acc);
+      if (parsed) setPlan(parsed);
+      else setClioRec(acc.trim() || t.sq_clio_fallback);
     } catch {
       setClioRec(t.sq_clio_fallback);
     }
@@ -154,7 +156,9 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
     setQIdx(0);
     setSelected(null);
     setAnswers([]);
+    setChoices([]);
     setXpEarned(0);
+    setPlan(null);
     setClioRec('');
     setClioLoading(false);
     setPhase('question');
@@ -169,12 +173,16 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
       recordMiss(q.eraId, q.question.split(/\s+/).slice(0, 8).join(' '), currentUser?.id);
     }
     setAnswers(prev => [...prev, correct]);
+    setChoices(prev => [...prev, selected]);
     setPhase('explain');
   }
 
   function advance() {
     if (qIdx + 1 >= session.length) {
-      const finalAnswers = [...answers, selected === session[qIdx].correctIndex];
+      // `answers` already contains every question (submitAnswer appends before
+      // the explain phase) — appending again here double-counted the final
+      // answer and could inflate the score past 100%.
+      const finalAnswers = answers.length === session.length ? answers : [...answers, selected === session[qIdx].correctIndex];
       const correct = finalAnswers.filter(Boolean).length;
       const xp = correct * 15;
       const scoreVal = Math.round((correct / session.length) * 100);
@@ -212,7 +220,22 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
         });
       }
       setPhase('done');
-      getClioRecommendation(scoreVal, eraBreakdownData);
+      // Ground the study plan in the actual misses: question, chosen option,
+      // correct option, era — plus the weak-era lesson catalog.
+      const finalChoices = choices.length === session.length ? choices : [...choices, selected ?? -1];
+      const missed: MissedQuestion[] = session
+        .map((qq, i) => ({ qq, i }))
+        .filter(({ i }) => !finalAnswers[i])
+        .map(({ qq, i }) => ({
+          question: qq.question,
+          eraName: qq.eraName,
+          chosen: qq.options[finalChoices[i]] ?? '—',
+          correct: qq.options[qq.correctIndex],
+        }));
+      const weakEraIds = Object.entries(map)
+        .filter(([, d]) => d.correct / d.total < 0.7)
+        .map(([eraId]) => eraId);
+      void requestStudyPlan(scoreVal, eraBreakdownData, missed, weakEraIds);
     } else {
       setQIdx(i => i + 1);
       setSelected(null);
@@ -542,11 +565,11 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
                     </div>
                   )}
 
-                  {/* Clio Recommendation — 3D flip reveal */}
+                  {/* Clio Study Plan — structured premium recommendation */}
                   <AnimatePresence>
-                    {(clioLoading || clioRec) && (
+                    {(clioLoading || plan || clioRec) && (
                       <motion.div
-                        key="clio-rec"
+                        key="clio-plan"
                         initial={{ opacity: 0, rotateX: -60, scale: 0.92, y: 20 }}
                         animate={{ opacity: 1, rotateX: 0, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9 }}
@@ -562,14 +585,10 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
                           >
                             <MessageSquare className="w-4 h-4 text-primary shrink-0" />
                           </motion.div>
-                          <span className="text-xs font-bold text-primary tracking-wide uppercase">{t.quiz_clio_rec}</span>
+                          <span className="text-xs font-bold text-primary tracking-wide uppercase">{t.sq_plan_title}</span>
                           {clioLoading && (
-                            <motion.div
-                              className="ml-auto flex gap-1"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                            >
-                              {[0,1,2].map(i => (
+                            <motion.div className="ml-auto flex gap-1" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                              {[0, 1, 2].map(i => (
                                 <motion.div
                                   key={i}
                                   className="w-1.5 h-1.5 rounded-full bg-primary/60"
@@ -580,19 +599,83 @@ Address the student as "you". Be specific, warm, and scholarly. Do NOT use bulle
                             </motion.div>
                           )}
                         </div>
+
                         {/* Body */}
-                        <div className="px-4 py-3">
-                          {clioLoading && !clioRec ? (
+                        <div className="px-4 py-3 space-y-3">
+                          {clioLoading && !plan && !clioRec && (
                             <p className="text-xs text-muted-foreground italic">{t.quiz_clio_thinking}</p>
-                          ) : (
-                            <motion.p
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              transition={{ duration: 0.4 }}
-                              className="text-sm text-foreground/85 leading-relaxed"
-                            >
-                              {clioRec}
-                            </motion.p>
+                          )}
+
+                          {/* Fallback: unstructured text if the plan couldn't be parsed */}
+                          {!plan && clioRec && !clioLoading && (
+                            <p className="text-sm text-foreground/85 leading-relaxed">{clioRec}</p>
+                          )}
+
+                          {plan && (
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }} className="space-y-3">
+                              <p className="text-sm font-semibold leading-snug">{plan.headline}</p>
+                              <p className="text-xs text-muted-foreground leading-relaxed">{plan.diagnosis}</p>
+
+                              {plan.focusEras.length > 0 && (
+                                <div className="space-y-1">
+                                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.sq_plan_focus}</p>
+                                  <div className="flex flex-wrap gap-1.5">
+                                    {plan.focusEras.map((f, i) => (
+                                      <span key={i} className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full border border-primary/25 bg-primary/5" title={f.reason}>
+                                        <Target className="w-3 h-3 text-primary" />{f.era}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+
+                              <div className="space-y-1.5">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.sq_plan_steps}</p>
+                                {plan.steps.map((step, i) => {
+                                  const lesson = step.lessonId ? LESSONS.find(l => l.id === step.lessonId) : undefined;
+                                  return (
+                                    <div key={i} className="flex items-start gap-2.5 rounded-lg border border-border/70 bg-card/50 px-3 py-2">
+                                      <span className="shrink-0 w-5 h-5 rounded-md bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
+                                      <div className="flex-1 min-w-0 space-y-1">
+                                        <p className="text-xs leading-snug">{step.action}</p>
+                                        <div className="flex flex-wrap items-center gap-2">
+                                          <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+                                            <Clock className="w-3 h-3" />{step.minutes} {t.sq_plan_min}
+                                          </span>
+                                          {lesson && (
+                                            <button
+                                              onClick={() => navigate(`/eras/${lesson.eraId}/lessons/${lesson.id}`)}
+                                              className="inline-flex items-center gap-1 text-[10px] font-semibold text-primary hover:underline"
+                                            >
+                                              <BookOpen className="w-3 h-3" />{t.sq_plan_open}: {step.lessonTitle ?? lesson.title}
+                                            </button>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+
+                              {plan.masterAnalysis && (
+                                <div className="rounded-lg border border-amber-400/25 bg-amber-400/5 p-3 space-y-1">
+                                  <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400 flex items-center gap-1.5">
+                                    <Crown className="w-3 h-3" />{t.sq_plan_master}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground leading-relaxed">{plan.masterAnalysis}</p>
+                                </div>
+                              )}
+
+                              {plan.forecast && (
+                                <p className="text-xs flex items-start gap-1.5 text-muted-foreground">
+                                  <TrendingUp className="w-3.5 h-3.5 shrink-0 text-emerald-400 mt-0.5" />
+                                  <span><span className="font-semibold text-foreground/80">{t.sq_plan_forecast}:</span> {plan.forecast}</span>
+                                </p>
+                              )}
+                              {plan.mentorInsight && (
+                                <p className="text-xs italic text-muted-foreground/80 leading-relaxed">{plan.mentorInsight}</p>
+                              )}
+                            </motion.div>
                           )}
                         </div>
                       </motion.div>
