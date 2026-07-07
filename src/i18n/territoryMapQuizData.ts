@@ -138,6 +138,67 @@ export const TERRITORY_QUIZ_BANK: TerritoryQuizQuestion[] = [
       mk: { question: 'Античките Олимписки игри, одржувани во Олимпија секои четири години во чест на Ѕевс, започнаа во која традиционална година?', options: ['1200 г.п.н.е.', '776 г.п.н.е.', '490 г.п.н.е.', '146 г.п.н.е.'], explanation: 'Според античките грчки записи, првите Олимписки Игри се одржале во 776 г.п.н.е. во Олимпија во чест на Ѕевс, со свето примирје кое ги запирало сите војни.' },
     },
   },
+  // ── ANCIENT MACEDONIA ───────────────────────────────────────────────────────
+  {
+    id: 'macedon-1', topicId: 'ancient-macedonia',
+    question: 'In which Macedonian city was Alexander the Great born in 356 BCE?',
+    options: ['Aigai', 'Pella', 'Dion', 'Thessaloniki'],
+    correctIndex: 1,
+    explanation: 'Alexander was born in Pella, the capital of Macedon, in 356 BCE. His father Philip II had transformed the city into a great royal centre, and Aristotle later tutored Alexander at nearby Mieza.',
+    i18n: {
+      es: { question: '¿En qué ciudad macedonia nació Alejandro Magno en el 356 a.C.?', options: ['Egas', 'Pela', 'Dion', 'Tesalónica'], explanation: 'Alejandro nació en Pela, la capital de Macedonia, en el 356 a.C. Su padre Filipo II había convertido la ciudad en un gran centro real, y Aristóteles fue más tarde tutor de Alejandro en la cercana Mieza.' },
+      ru: { question: 'В каком македонском городе в 356 г. до н.э. родился Александр Великий?', options: ['Эги', 'Пелла', 'Дион', 'Салоники'], explanation: 'Александр родился в Пелле, столице Македонии, в 356 г. до н.э. Его отец Филипп II превратил город в великий царский центр, а Аристотель позже обучал Александра в соседней Миезе.' },
+      mk: { question: 'Во кој македонски град е роден Александар Велики во 356 п.н.е.?', options: ['Ајгај', 'Пела', 'Дион', 'Солун'], explanation: 'Александар е роден во Пела, престолнината на Македонија, во 356 п.н.е. Неговиот татко Филип II го претворил градот во голем кралски центар, а Аристотел подоцна го подучувал Александар во блиската Миеза.' },
+    },
+  },
+  {
+    id: 'macedon-2', topicId: 'ancient-macedonia',
+    question: 'Which battle in 331 BCE sealed the fall of the Persian Empire to Alexander?',
+    options: ['Battle of the Granicus', 'Battle of Issus', 'Battle of Gaugamela', 'Battle of the Hydaspes'],
+    correctIndex: 2,
+    explanation: 'At Gaugamela (331 BCE), Alexander decisively defeated Darius III despite being heavily outnumbered. Darius fled and was later murdered by his own satraps — the Achaemenid Empire was finished.',
+    i18n: {
+      es: { question: '¿Qué batalla en el 331 a.C. selló la caída del Imperio Persa ante Alejandro?', options: ['Batalla del Gránico', 'Batalla de Iso', 'Batalla de Gaugamela', 'Batalla del Hidaspes'], explanation: 'En Gaugamela (331 a.C.), Alejandro derrotó de forma decisiva a Darío III pese a estar en clara inferioridad numérica. Darío huyó y fue asesinado después por sus propios sátrapas — el Imperio Aqueménida estaba acabado.' },
+      ru: { question: 'Какая битва в 331 г. до н.э. окончательно решила судьбу Персидской империи?', options: ['Битва при Гранике', 'Битва при Иссе', 'Битва при Гавгамелах', 'Битва при Гидаспе'], explanation: 'При Гавгамелах (331 г. до н.э.) Александр наголову разбил Дария III, несмотря на численное превосходство персов. Дарий бежал и позже был убит собственными сатрапами — империя Ахеменидов пала.' },
+      mk: { question: 'Која битка во 331 п.н.е. го запечати падот на Персиската империја пред Александар?', options: ['Битката кај Граник', 'Битката кај Ис', 'Битката кај Гавгамела', 'Битката кај Хидасп'], explanation: 'Кај Гавгамела (331 п.н.е.) Александар одлучувачки го порази Дариј III и покрај огромната бројчана надмоќ на Персијците. Дариј побегна и подоцна беше убиен од сопствените сатрапи — Ахеменидската империја падна.' },
+    },
+  },
+  {
+    id: 'macedon-3', topicId: 'ancient-macedonia',
+    question: 'Philip II\'s victory at which battle in 338 BCE gave Macedon mastery over the Greek city-states?',
+    options: ['Battle of Chaeronea', 'Battle of Thermopylae', 'Battle of Marathon', 'Battle of Salamis'],
+    correctIndex: 0,
+    explanation: 'At Chaeronea (338 BCE), Philip II crushed the combined armies of Athens and Thebes. The 18-year-old Alexander led the decisive cavalry charge that destroyed the Sacred Band of Thebes.',
+    i18n: {
+      es: { question: '¿La victoria de Filipo II en qué batalla del 338 a.C. dio a Macedonia el dominio sobre las ciudades-estado griegas?', options: ['Batalla de Queronea', 'Batalla de las Termópilas', 'Batalla de Maratón', 'Batalla de Salamina'], explanation: 'En Queronea (338 a.C.), Filipo II aplastó a los ejércitos combinados de Atenas y Tebas. Alejandro, de 18 años, dirigió la carga de caballería decisiva que destruyó el Batallón Sagrado de Tebas.' },
+      ru: { question: 'Победа Филиппа II в какой битве 338 г. до н.э. дала Македонии господство над греческими полисами?', options: ['Битва при Херонее', 'Битва при Фермопилах', 'Битва при Марафоне', 'Битва при Саламине'], explanation: 'При Херонее (338 г. до н.э.) Филипп II разгромил объединённые армии Афин и Фив. 18-летний Александр возглавил решающую атаку конницы, уничтожившую Священный отряд Фив.' },
+      mk: { question: 'Победата на Филип II во која битка од 338 п.н.е. ѝ ја даде на Македонија власта над грчките градови-држави?', options: ['Битката кај Херонеја', 'Битката кај Термопили', 'Битката кај Маратон', 'Битката кај Саламина'], explanation: 'Кај Херонеја (338 п.н.е.) Филип II ги здроби здружените војски на Атина и Теба. Осумнаесетгодишниот Александар ја предводеше одлучувачката коњичка атака што го уништи Светиот одред на Теба.' },
+    },
+  },
+  {
+    id: 'macedon-4', topicId: 'ancient-macedonia',
+    question: 'Where did Alexander the Great die in June 323 BCE, aged just 32?',
+    options: ['Alexandria', 'Persepolis', 'Pella', 'Babylon'],
+    correctIndex: 3,
+    explanation: 'Alexander died in Nebuchadnezzar\'s palace in Babylon on 11 June 323 BCE after a sudden fever. Asked to whom he left his empire, he reportedly whispered "to the strongest" — and his generals tore it apart in the Wars of the Diadochi.',
+    i18n: {
+      es: { question: '¿Dónde murió Alejandro Magno en junio del 323 a.C., con solo 32 años?', options: ['Alejandría', 'Persépolis', 'Pela', 'Babilonia'], explanation: 'Alejandro murió en el palacio de Nabucodonosor en Babilonia el 11 de junio del 323 a.C. tras una fiebre repentina. Al preguntarle a quién dejaba su imperio, susurró según la tradición «al más fuerte» — y sus generales lo despedazaron en las Guerras de los Diádocos.' },
+      ru: { question: 'Где в июне 323 г. до н.э. умер Александр Великий, которому было всего 32 года?', options: ['Александрия', 'Персеполь', 'Пелла', 'Вавилон'], explanation: 'Александр умер во дворце Навуходоносора в Вавилоне 11 июня 323 г. до н.э. после внезапной лихорадки. На вопрос, кому он оставляет империю, он, по преданию, прошептал «сильнейшему» — и его полководцы разорвали её на части в войнах диадохов.' },
+      mk: { question: 'Каде почина Александар Велики во јуни 323 п.н.е., на само 32 години?', options: ['Александрија', 'Персепол', 'Пела', 'Вавилон'], explanation: 'Александар почина во палатата на Навуходоносор во Вавилон на 11 јуни 323 п.н.е. по ненадејна треска. Прашан кому му ја остава империјата, според преданието прошепотел „на најсилниот" — и неговите генерали ја растргнаа во Војните на дијадосите.' },
+    },
+  },
+  {
+    id: 'macedon-5', topicId: 'ancient-macedonia',
+    question: 'What military formation, perfected by Philip II, was the backbone of the Macedonian army?',
+    options: ['The Roman legion', 'The sarissa phalanx', 'The hoplite shield wall', 'The Persian Immortals'],
+    correctIndex: 1,
+    explanation: 'Philip II armed his infantry with the sarissa — a pike up to 6 metres long — creating a phalanx that presented an impenetrable wall of spearpoints. Combined with the Companion cavalry, it made the Macedonian army nearly unbeatable for two centuries.',
+    i18n: {
+      es: { question: '¿Qué formación militar, perfeccionada por Filipo II, fue la columna vertebral del ejército macedonio?', options: ['La legión romana', 'La falange de sarisas', 'El muro de escudos hoplita', 'Los Inmortales persas'], explanation: 'Filipo II armó a su infantería con la sarisa — una pica de hasta 6 metros — creando una falange que presentaba un muro impenetrable de puntas de lanza. Junto con la caballería de los Compañeros, hizo al ejército macedonio casi invencible durante dos siglos.' },
+      ru: { question: 'Какое военное построение, усовершенствованное Филиппом II, было основой македонской армии?', options: ['Римский легион', 'Фаланга с сариссами', 'Стена щитов гоплитов', 'Персидские «бессмертные»'], explanation: 'Филипп II вооружил пехоту сариссой — пикой длиной до 6 метров — создав фалангу, выставлявшую непроницаемую стену наконечников. Вместе с конницей гетайров она сделала македонскую армию почти непобедимой на два столетия.' },
+      mk: { question: 'Која воена формација, усовршена од Филип II, беше столбот на македонската војска?', options: ['Римската легија', 'Фалангата со сариси', 'Хоплитскиот ѕид од штитови', 'Персиските Бесмртници'], explanation: 'Филип II ја вооружи пешадијата со сариса — копје долго до 6 метри — создавајќи фаланга што претставуваше непробоен ѕид од врвови на копја. Заедно со коњаницата на хетајрите, таа ја направи македонската војска речиси непобедлива два века.' },
+    },
+  },
   // ── PERSIAN EMPIRE ──────────────────────────────────────────────────────────
   {
     id: 'persian-1', topicId: 'persian-empire',

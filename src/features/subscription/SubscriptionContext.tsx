@@ -3,11 +3,17 @@ import type { UserSubscription, SubscriptionTier } from '@/types';
 import { loadSubscription, upgradeSubscription, recordAiMessageSub, canAccessLesson, canUseAI, canDownload, canAdvancedStats, canFilterTimeline, canSeeExplanations } from './subscriptionStore';
 import { useAuth } from '@/features/auth/AuthContext';
 
+export type CampaignEraId = 'ancient' | 'medieval' | 'early-modern' | 'modern';
+
 interface SubCtx {
   subscription: UserSubscription | null; upgrade(t: SubscriptionTier): void; trackAiMessage(): void;
   canLesson(order: number): boolean; canAI(): { allowed: boolean; reason?: string };
   canDownload(): boolean; canAdvancedStats(): boolean; canTimeline(): boolean; canExplanations(): boolean;
   canTerritoryMap(): boolean;
+  /** Eras whose Conquest Campaign is playable on the current plan. */
+  campaignEras(): CampaignEraId[];
+  /** Legendary campaign mode (flawless conquests, 2× XP) — Master exclusive. */
+  canLegendary(): boolean;
   refreshSubscription(): void;
 }
 const SubContext = createContext<SubCtx | null>(null);
@@ -27,7 +33,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   const usedToday = subscription?.aiMessagesUsedToday ?? 0;
 
   return (
-    <SubContext.Provider value={{ subscription, upgrade, trackAiMessage, canLesson: o => canAccessLesson(tier, o), canAI: () => canUseAI(tier, used, usedToday), canDownload: () => canDownload(tier), canAdvancedStats: () => canAdvancedStats(tier), canTimeline: () => canFilterTimeline(tier), canExplanations: () => canSeeExplanations(tier), canTerritoryMap: () => tier !== 'free', refreshSubscription }}>
+    <SubContext.Provider value={{ subscription, upgrade, trackAiMessage, canLesson: o => canAccessLesson(tier, o), canAI: () => canUseAI(tier, used, usedToday), canDownload: () => canDownload(tier), canAdvancedStats: () => canAdvancedStats(tier), canTimeline: () => canFilterTimeline(tier), canExplanations: () => canSeeExplanations(tier), canTerritoryMap: () => tier !== 'free', campaignEras: () => tier === 'master' ? ['ancient', 'medieval', 'early-modern', 'modern'] : tier === 'pro' ? ['ancient', 'medieval'] : [], canLegendary: () => tier === 'master', refreshSubscription }}>
       {children}
     </SubContext.Provider>
   );

@@ -12,6 +12,11 @@ const TERRITORY_DESCS: Record<string, Partial<Record<ContentLang, string>>> = {
     ru: 'Греческие города-государства создали демократию, философию и науку — основы западной цивилизации. Персидские войны и завоевания Александра распространили эллинизм по всей Азии.',
     mk: 'Грчките градови-држави ја исковале демократијата, филозофијата и науката — темелите на западната цивилизација. Персиските Војни и освојувањата на Александар го рашириле хеленизмот низ Азија.',
   },
+  'ancient-macedonia': {
+    es: 'Desde el reino forjado por Filipo II, Alejandro Magno condujo al ejército macedonio por tres continentes — derribando a Persia y llevando la civilización helenística del Nilo al Indo en solo once años.',
+    ru: 'Из царства, созданного Филиппом II, Александр Великий провёл македонскую армию через три континента — сокрушив Персию и донеся эллинистическую цивилизацию от Нила до Инда всего за одиннадцать лет.',
+    mk: 'Од кралството што го изгради Филип II, Александар Велики ја поведе македонската војска преку три континенти — соборувајќи ја Персија и носејќи ја хеленистичката цивилизација од Нил до Инд за само единаесет години.',
+  },
   'persian-empire': {
     es: 'El Imperio Persa Aqueménida — que se extendía de Egipto al río Indo — fue el mayor imperio que el mundo había visto hasta entonces, unificado por la Ruta Real y la fe zoroástrica.',
     ru: 'Империя Ахеменидов — простиравшаяся от Египта до реки Инд — была крупнейшей империей в мире на тот момент, объединённой Царской дорогой и зороастрийской верой.',

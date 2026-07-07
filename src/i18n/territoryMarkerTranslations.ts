@@ -38,8 +38,10 @@ export const POLY_LABEL_I18N: Record<string, MT> = {
   'Eastern Bloc (Warsaw Pact)': { es: 'Bloque del Este (Pacto de Varsovia)', ru: 'Восточный блок (ОВД)', mk: 'Источен блок (Варшавски пакт)' },
   'Western Bloc (NATO core)': { es: 'Bloque occidental (núcleo OTAN)', ru: 'Западный блок (ядро НАТО)', mk: 'Западен блок (НАТО јадро)' },
   'Former Yugoslavia': { es: 'Antigua Yugoslavia', ru: 'Бывшая Югославия', mk: 'Поранешна Југославија' },
-  'Contested Macedonia Region': { es: 'Región de Macedonia en disputa', ru: 'Спорный Македонский регион', mk: 'Оспоруваниот македонски регион' },
-  'Thessaloniki hinterland (Greek/Bulgarian contested)': { es: 'Interior de Salónica (disputado)', ru: 'Окрестности Салоник (спорные)', mk: 'Солунско залеѓе (оспорувано)' },
+  'Macedonia Region (Ottoman vilayets)': { es: 'Región de Macedonia (vilayatos otomanos)', ru: 'Македонский регион (османские вилайеты)', mk: 'Регионот Македонија (отомански вилаети)' },
+  'Ilinden Uprising Zone (Kruševo Republic, 1903)': { es: 'Zona del Levantamiento de Ilinden (República de Kruševo, 1903)', ru: 'Зона Илинденского восстания (Крушевская республика, 1903)', mk: 'Зона на Илинденското востание (Крушевска Република, 1903)' },
+  'Empire of Alexander the Great (323 BCE)': { es: 'Imperio de Alejandro Magno (323 a.C.)', ru: 'Империя Александра Великого (323 г. до н.э.)', mk: 'Империјата на Александар Велики (323 п.н.е.)' },
+  'Kingdom of Macedon & Balkan lands (336 BCE)': { es: 'Reino de Macedonia y tierras balcánicas (336 a.C.)', ru: 'Македонское царство и балканские земли (336 г. до н.э.)', mk: 'Кралството Македонија и балканските земји (336 п.н.е.)' },
 };
 
 export function getTranslatedPolyLabel(label: string, lang: Language): string {
@@ -227,6 +229,15 @@ export const MARKER_NAME_I18N: Record<string, MT> = {
   'Lexington':           { es: 'Lexington', ru: 'Лексингтон', mk: 'Лексингтон' },
   'Valley Forge':        { es: 'Valley Forge', ru: 'Вэлли-Фордж', mk: 'Вали Форџ' },
   'Yorktown':            { es: 'Yorktown', ru: 'Йорктаун', mk: 'Јорктаун' },
+  "Chang'an (Xi'an)":    { es: "Chang'an (Xi'an)", ru: 'Чанъань (Сиань)', mk: 'Чанган (Сјан)' },
+  'Aigai (Vergina)':     { es: 'Egas (Vergina)', ru: 'Эги (Вергина)', mk: 'Ајгај (Вергина)' },
+  'Dion':                { es: 'Dion', ru: 'Дион', mk: 'Дион' },
+  'Battle of Chaeronea': { es: 'Batalla de Queronea', ru: 'Битва при Херонее', mk: 'Битката кај Херонеја' },
+  'Battle of the Granicus': { es: 'Batalla del Gránico', ru: 'Битва при Гранике', mk: 'Битката кај Граник' },
+  'Siege of Tyre':       { es: 'Asedio de Tiro', ru: 'Осада Тира', mk: 'Опсадата на Тир' },
+  'Alexandria (founded)': { es: 'Alejandría (fundación)', ru: 'Александрия (основание)', mk: 'Александрија (основање)' },
+  'Battle of Gaugamela': { es: 'Batalla de Gaugamela', ru: 'Битва при Гавгамелах', mk: 'Битката кај Гавгамела' },
+  'Battle of the Hydaspes': { es: 'Batalla del Hidaspes', ru: 'Битва при Гидаспе', mk: 'Битката кај Хидасп' },
 };
 
 // ── Marker note translations (descriptions shown in popups and story panel) ───
@@ -531,6 +542,143 @@ export const MARKER_NOTE_I18N: Record<string, MT> = {
     ru: 'Внезапная атака Японии (7 дек. 1941) — США вступают в войну',
     mk: 'Јапански изненаден напад (7 дек. 1941) — САД влегуваат во войната',
   },
+  "Chang'an (Xi'an)": {
+    es: 'Capital Qin y Han — Ejército de Terracota de Qin Shi Huang',
+    ru: 'Столица Цинь и Хань — Терракотовая армия Цинь Шихуанди',
+    mk: 'Престолнина на Цин и Хан — Теракотната армија на Цин Ши Хуанг',
+  },
+  'Medina': {
+    es: 'Capital del profeta Mahoma — segunda ciudad más sagrada',
+    ru: 'Столица пророка Мухаммада — второй по святости город',
+    mk: 'Престолнина на пророкот Мухамед — втор најсвет град',
+  },
+  'Beijing (Khanbaliq)': {
+    es: 'Capital de la dinastía Yuan de Kublai Kan',
+    ru: 'Столица династии Юань Хубилай-хана',
+    mk: 'Престолнина на династијата Јуан на Кублај Кан',
+  },
+  'Osaka': {
+    es: 'Ciudad-fortaleza de Toyotomi Hideyoshi — casi unificó Japón',
+    ru: 'Город-крепость Тоётоми Хидэёси — почти объединил Японию',
+    mk: 'Град-тврдина на Тојотоми Хидејоши — речиси ја обедини Јапонија',
+  },
+  'Milan': {
+    es: 'Taller de Leonardo da Vinci — aquí pintó La Última Cena',
+    ru: 'Мастерская Леонардо да Винчи — здесь написана «Тайная вечеря»',
+    mk: 'Работилницата на Леонардо да Винчи — тука е насликана Тајната вечера',
+  },
+  'Lisbon': {
+    es: 'Centro portugués de la exploración marítima',
+    ru: 'Португальский центр морских исследований',
+    mk: 'Португалски центар на поморските истражувања',
+  },
+  'Calicut': {
+    es: 'Desembarco de Vasco da Gama en la India — se abre el comercio de especias (1498)',
+    ru: 'Высадка Васко да Гамы в Индии — открыта торговля пряностями (1498)',
+    mk: 'Слетувањето на Васко да Гама во Индија — отворена трговијата со зачини (1498)',
+  },
+  'Geneva': {
+    es: 'República teocrática de Calvino — centro de la Reforma calvinista',
+    ru: 'Теократическая республика Кальвина — центр кальвинистской Реформации',
+    mk: 'Теократска република на Калвин — центар на калвинистичката реформација',
+  },
+  'Valley Forge': {
+    es: 'El ejército de Washington invernó aquí — puso a prueba la determinación revolucionaria',
+    ru: 'Армия Вашингтона зимовала здесь — испытание революционной стойкости',
+    mk: 'Војската на Вашингтон презимуваше тука — испит за револуционерната решителност',
+  },
+  'Aigai (Vergina)': {
+    es: 'Antigua capital real — tumbas de los reyes macedonios; aquí yace Filipo II',
+    ru: 'Древняя царская столица — гробницы македонских царей; здесь похоронен Филипп II',
+    mk: 'Старата кралска престолнина — гробниците на македонските кралеви; тука е погребан Филип II',
+  },
+  'Dion': {
+    es: 'Ciudad sagrada de Zeus — Alejandro ofreció sacrificios aquí antes de invadir Asia',
+    ru: 'Священный город Зевса — Александр принёс здесь жертвы перед вторжением в Азию',
+    mk: 'Свет град на Зевс — Александар принесе жртви тука пред походот кон Азија',
+  },
+  'Battle of Chaeronea': {
+    es: 'Filipo II derrota a Atenas y Tebas — Macedonia domina Grecia (338 a.C.)',
+    ru: 'Филипп II разбивает Афины и Фивы — Македония господствует над Грецией (338 г. до н.э.)',
+    mk: 'Филип II ги поразува Атина и Теба — Македонија завладува со Грција (338 п.н.е.)',
+  },
+  'Battle of the Granicus': {
+    es: 'Primera victoria de Alejandro sobre Persia en Asia Menor (334 a.C.)',
+    ru: 'Первая победа Александра над Персией в Малой Азии (334 г. до н.э.)',
+    mk: 'Првата победа на Александар над Персија во Мала Азија (334 п.н.е.)',
+  },
+  'Siege of Tyre': {
+    es: 'Asedio de siete meses — Alejandro construye un dique hasta la ciudad insular (332 a.C.)',
+    ru: 'Семимесячная осада — Александр строит дамбу к островному городу (332 г. до н.э.)',
+    mk: 'Седуммесечна опсада — Александар гради насип до островскиот град (332 п.н.е.)',
+  },
+  'Alexandria (founded)': {
+    es: 'Fundada por Alejandro (331 a.C.) — llegó a ser la mayor ciudad helenística',
+    ru: 'Основана Александром (331 г. до н.э.) — стала величайшим эллинистическим городом',
+    mk: 'Основана од Александар (331 п.н.е.) — стана најголемиот хеленистички град',
+  },
+  'Battle of Gaugamela': {
+    es: 'Derrota decisiva de Darío III — cae el Imperio Persa (331 a.C.)',
+    ru: 'Решающее поражение Дария III — Персидская империя пала (331 г. до н.э.)',
+    mk: 'Одлучувачки пораз на Дариј III — Персиската империја паѓа (331 п.н.е.)',
+  },
+  'Battle of the Hydaspes': {
+    es: 'Alejandro derrota al rey Poro en la India — su ejército se niega a seguir (326 a.C.)',
+    ru: 'Александр побеждает царя Пора в Индии — армия отказывается идти дальше (326 г. до н.э.)',
+    mk: 'Александар го поразува кралот Пор во Индија — војската одбива да продолжи (326 п.н.е.)',
+  },
+};
+
+// ── Note translations keyed by the EXACT English note text ────────────────────
+// Several cities appear in multiple era timelines with a different note in
+// each (Babylon in Mesopotamia vs. the Persian Empire, Moscow in 1812 vs. 1941
+// vs. the Cold War…). A name-keyed lookup can only hold one translation, which
+// silently mistranslates every other occurrence. Text-keyed entries win over
+// the name-keyed table, so each occurrence renders its own translation.
+export const MARKER_NOTE_TEXT_I18N: Record<string, MT> = {
+  "Hammurabi's Code, Hanging Gardens, heart of Babylonian Empire": { es: 'Código de Hammurabi, Jardines Colgantes, corazón del Imperio Babilónico', ru: 'Кодекс Хаммурапи, Висячие сады, сердце Вавилонской империи', mk: 'Хамурабиевиот законик, Висечките градини, срцето на Вавилонската империја' },
+  'Incorporated into Persian Empire by Cyrus (539 BCE)': { es: 'Incorporada al Imperio Persa por Ciro (539 a.C.)', ru: 'Включён в Персидскую империю Киром (539 г. до н.э.)', mk: 'Приклучен кон Персиската империја од Кир (539 п.н.е.)' },
+  'Alexander dies here aged 32 (11 June 323 BCE) — his empire fragments': { es: 'Alejandro muere aquí a los 32 años (11 de junio de 323 a.C.) — su imperio se fragmenta', ru: 'Александр умирает здесь в 32 года (11 июня 323 г. до н.э.) — его империя распадается', mk: 'Александар умира тука на 32 години (11 јуни 323 п.н.е.) — неговата империја се распаѓа' },
+  'First capital of unified Egypt, seat of Pharaohs': { es: 'Primera capital del Egipto unificado, sede de los faraones', ru: 'Первая столица объединённого Египта, резиденция фараонов', mk: 'Прва престолнина на обединетиот Египет, седиште на фараоните' },
+  'Egypt under Persian rule — satrapy of Mudraya': { es: 'Egipto bajo dominio persa — satrapía de Mudraya', ru: 'Египет под властью персов — сатрапия Мудрайя', mk: 'Египет под персиска власт — сатрапија Мудраја' },
+  'Ceremonial Achaemenid capital': { es: 'Capital ceremonial aqueménida', ru: 'Церемониальная столица Ахеменидов', mk: 'Церемонијална престолнина на Ахеменидите' },
+  'Ceremonial capital — destroyed by Alexander (330 BCE)': { es: 'Capital ceremonial — destruida por Alejandro (330 a.C.)', ru: 'Церемониальная столица — разрушена Александром (330 г. до н.э.)', mk: 'Церемонијална престолнина — уништена од Александар (330 п.н.е.)' },
+  '300 Spartans vs Persian invasion (480 BCE)': { es: '300 espartanos contra la invasión persa (480 a.C.)', ru: '300 спартанцев против персидского вторжения (480 г. до н.э.)', mk: '300 Спартанци против персиската инвазија (480 п.н.е.)' },
+  'Persian army defeated Greek defenders (480 BCE)': { es: 'El ejército persa derrotó a los defensores griegos (480 a.C.)', ru: 'Персидская армия разбила греческих защитников (480 г. до н.э.)', mk: 'Персиската војска ги порази грчките бранители (480 п.н.е.)' },
+  'Greatest library of the ancient world — centre of Greek learning': { es: 'La mayor biblioteca del mundo antiguo — centro del saber griego', ru: 'Величайшая библиотека древнего мира — центр греческой учёности', mk: 'Најголемата библиотека на античкиот свет — центар на грчката ученост' },
+  'Key Mediterranean port under Ottoman administration': { es: 'Puerto clave del Mediterráneo bajo administración otomana', ru: 'Ключевой средиземноморский порт под властью османов', mk: 'Клучно медитеранско пристаниште под отоманска управа' },
+  'Eastern capital founded by Constantine (330 CE)': { es: 'Capital oriental fundada por Constantino (330 d.C.)', ru: 'Восточная столица, основанная Константином (330 г. н.э.)', mk: 'Источна престолнина основана од Константин (330 н.е.)' },
+  'Capital for 1,000 years — fell to Ottomans 1453 CE': { es: 'Capital durante 1.000 años — cayó ante los otomanos en 1453', ru: 'Столица на протяжении 1000 лет — пала под натиском османов в 1453 г.', mk: 'Престолнина 1.000 години — падна под Османлиите во 1453 г.' },
+  'Sacked by Fourth Crusade (1204) — great betrayal': { es: 'Saqueada por la Cuarta Cruzada (1204) — la gran traición', ru: 'Разграблен Четвёртым крестовым походом (1204) — великое предательство', mk: 'Ограбен од Четвртата крстоносна војна (1204) — големото предавство' },
+  'Jewish revolts — Temple destroyed 70 CE by Titus': { es: 'Revueltas judías — el Templo destruido por Tito en el 70 d.C.', ru: 'Иудейские восстания — Храм разрушен Титом в 70 г. н.э.', mk: 'Еврејски востанија — Храмот уништен од Тит во 70 н.е.' },
+  'Holy city — captured 1099, recaptured by Saladin 1187, fell 1244': { es: 'Ciudad santa — tomada en 1099, recuperada por Saladino en 1187, cayó en 1244', ru: 'Святой город — взят в 1099, отвоёван Саладином в 1187, пал в 1244', mk: 'Свет град — освоен 1099, повторно земен од Саладин 1187, падна 1244' },
+  'Third largest city of the empire, early Christian centre': { es: 'Tercera ciudad del imperio, centro cristiano primitivo', ru: 'Третий по величине город империи, ранний центр христианства', mk: 'Трет најголем град на империјата, ран христијански центар' },
+  'Patriarchate and major eastern city': { es: 'Patriarcado y gran ciudad oriental', ru: 'Патриархат и крупный восточный город', mk: 'Патријаршија и голем источен град' },
+  'First Crusader principality established 1098': { es: 'Primer principado cruzado, fundado en 1098', ru: 'Первое княжество крестоносцев, основано в 1098 г.', mk: 'Првото крстоносно кнежевство, основано во 1098 г.' },
+  'Arabs defeat Byzantines — empire loses Levant (636 CE)': { es: 'Los árabes derrotan a Bizancio — el imperio pierde el Levante (636 d.C.)', ru: 'Арабы разбивают византийцев — империя теряет Левант (636 г.)', mk: 'Арапите ги поразуваат Византијците — империјата го губи Левантот (636 н.е.)' },
+  'Muslims defeat Byzantines — conquest of Levant (636)': { es: 'Los musulmanes derrotan a Bizancio — conquista del Levante (636)', ru: 'Мусульмане разбивают византийцев — завоевание Леванта (636)', mk: 'Муслиманите ги поразуваат Византијците — освојување на Левантот (636)' },
+  'Birthplace of Islam — holiest city of the Muslim world': { es: 'Cuna del islam — la ciudad más sagrada del mundo musulmán', ru: 'Родина ислама — самый священный город мусульманского мира', mk: 'Родното место на исламот — најсветиот град на муслиманскиот свет' },
+  'Under Ottoman protection as Custodians of Two Holy Mosques': { es: 'Bajo protección otomana como Custodios de las Dos Mezquitas Sagradas', ru: 'Под османской защитой как Хранители двух святынь', mk: 'Под отоманска заштита како Чувари на двете свети џамии' },
+  'Abbasid capital — House of Wisdom, peak of Islamic Golden Age': { es: 'Capital abasí — Casa de la Sabiduría, cima de la Edad de Oro islámica', ru: 'Столица Аббасидов — Дом мудрости, вершина исламского золотого века', mk: 'Абасидска престолнина — Куќата на мудроста, врв на исламскиот златен век' },
+  'Sacked 1258 — 800,000 killed, end of Abbasid Caliphate': { es: 'Saqueada en 1258 — 800.000 muertos, fin del Califato abasí', ru: 'Разграблен в 1258 — 800 000 убитых, конец Аббасидского халифата', mk: 'Ограбен 1258 — 800.000 убиени, крај на Абасидскиот калифат' },
+  'Taken from Safavid Persia by Suleiman (1534)': { es: 'Arrebatada a la Persia safávida por Solimán (1534)', ru: 'Отвоёван у сефевидской Персии Сулейманом (1534)', mk: 'Одземен од Сафавидска Персија од Сулејман (1534)' },
+  'Silk Road hub — Paper and scholarship centre': { es: 'Nudo de la Ruta de la Seda — centro del papel y la erudición', ru: 'Узел Шёлкового пути — центр бумаги и науки', mk: 'Јазол на Патот на свилата — центар на хартијата и науката' },
+  'Major Silk Road city — Genghis Khan conquered 1220': { es: 'Gran ciudad de la Ruta de la Seda — conquistada por Gengis Kan en 1220', ru: 'Крупный город Шёлкового пути — завоёван Чингисханом в 1220', mk: 'Голем град на Патот на свилата — освоен од Џингис Кан во 1220' },
+  "Sistine Chapel, St. Peter's — Michelangelo and Raphael": { es: 'Capilla Sixtina, San Pedro — Miguel Ángel y Rafael', ru: 'Сикстинская капелла, собор Св. Петра — Микеланджело и Рафаэль', mk: 'Сикстинска капела, Св. Петар — Микеланџело и Рафаел' },
+  'Counter-Reformation — Council of Trent (1545–63)': { es: 'Contrarreforma — Concilio de Trento (1545–63)', ru: 'Контрреформация — Тридентский собор (1545–63)', mk: 'Контрареформација — Тридентски собор (1545–63)' },
+  'Revolution epicentre — Bastille stormed 14 July 1789': { es: 'Epicentro de la Revolución — la Bastilla asaltada el 14 de julio de 1789', ru: 'Эпицентр революции — штурм Бастилии 14 июля 1789', mk: 'Епицентар на револуцијата — Бастилја заземена на 14 јули 1789' },
+  'Allied capital — nearly fell in 1914 and 1918': { es: 'Capital aliada — estuvo a punto de caer en 1914 y 1918', ru: 'Столица союзников — едва не пала в 1914 и 1918', mk: 'Сојузничка престолнина — за малку ќе паднеше во 1914 и 1918' },
+  'Palace stormed — King Louis XVI arrested, then guillotined': { es: 'Palacio asaltado — el rey Luis XVI arrestado y luego guillotinado', ru: 'Дворец взят штурмом — король Людовик XVI арестован, затем казнён', mk: 'Палатата нападната — кралот Луј XVI уапсен, потоа гилотиниран' },
+  'Treaty of Versailles (1919) — redraws European map': { es: 'Tratado de Versalles (1919) — redibuja el mapa de Europa', ru: 'Версальский договор (1919) — перекраивает карту Европы', mk: 'Версајскиот договор (1919) — ја прекројува картата на Европа' },
+  'Napoleon enters burning Moscow — catastrophic retreat begins': { es: 'Napoleón entra en un Moscú en llamas — comienza la retirada catastrófica', ru: 'Наполеон входит в горящую Москву — начинается катастрофическое отступление', mk: 'Наполеон влегува во запалена Москва — почнува катастрофалното повлекување' },
+  'German advance stopped at Moscow — Operation Typhoon fails (1941)': { es: 'El avance alemán detenido ante Moscú — fracasa la Operación Tifón (1941)', ru: 'Немецкое наступление остановлено под Москвой — провал операции «Тайфун» (1941)', mk: 'Германското напредување запрено кај Москва — Операцијата Тајфун пропаѓа (1941)' },
+  'Soviet capital — Kremlin and Warsaw Pact leader': { es: 'Capital soviética — el Kremlin y líder del Pacto de Varsovia', ru: 'Советская столица — Кремль и лидер Варшавского договора', mk: 'Советска престолнина — Кремљ и лидер на Варшавскиот пакт' },
+  'Assassination of Archduke Franz Ferdinand — war trigger (1914)': { es: 'Asesinato del archiduque Francisco Fernando — detonante de la guerra (1914)', ru: 'Убийство эрцгерцога Франца Фердинанда — повод к войне (1914)', mk: 'Атентатот врз надвојводата Франц Фердинанд — повод за војната (1914)' },
+  'Longest siege of a capital in modern warfare (1992–96) — 11,000 killed': { es: 'El asedio más largo de una capital en la guerra moderna (1992–96) — 11.000 muertos', ru: 'Самая долгая осада столицы в современной истории (1992–96) — 11 000 погибших', mk: 'Најдолгата опсада на престолнина во модерното војување (1992–96) — 11.000 загинати' },
+  'German capital — surrendered November 11, 1918': { es: 'Capital alemana — se rindió el 11 de noviembre de 1918', ru: 'Столица Германии — капитулировала 11 ноября 1918', mk: 'Германска престолнина — капитулираше на 11 ноември 1918' },
+  'Nazi Germany capital — fell May 2, 1945 to Soviet forces': { es: 'Capital de la Alemania nazi — cayó el 2 de mayo de 1945 ante los soviéticos', ru: 'Столица нацистской Германии — пала 2 мая 1945 под ударами советских войск', mk: 'Престолнина на нацистичка Германија — падна на 2 мај 1945 пред советските сили' },
+  'Macedonian capital — birthplace of Alexander the Great': { es: 'Capital macedonia — cuna de Alejandro Magno', ru: 'Македонская столица — родина Александра Великого', mk: 'Македонска престолнина — родно место на Александар Велики' },
+  'Capital of Macedon — birthplace of Alexander the Great (356 BCE)': { es: 'Capital de Macedonia — cuna de Alejandro Magno (356 a.C.)', ru: 'Столица Македонии — родина Александра Великого (356 г. до н.э.)', mk: 'Престолнина на Македонија — родно место на Александар Велики (356 п.н.е.)' },
 };
 
 export function getTranslatedMarkerName(name: string, lang: Language): string {
@@ -541,7 +689,9 @@ export function getTranslatedMarkerName(name: string, lang: Language): string {
 export function getTranslatedMarkerNote(name: string, note: string | undefined, lang: Language): string {
   if (!note) return '';
   if (lang === 'en') return note;
-  return MARKER_NOTE_I18N[name]?.[lang as ContentLang] ?? note;
+  return MARKER_NOTE_TEXT_I18N[note]?.[lang as ContentLang]
+    ?? MARKER_NOTE_I18N[name]?.[lang as ContentLang]
+    ?? note;
 }
 
 export function getTranslatedMarkerType(type: string, lang: Language): string {

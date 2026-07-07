@@ -48,7 +48,43 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   'modern-06': gif('19h9ddiRHiTwbjrMNiAzW4XlJ22GzRu5d'), // Yugoslav Wars
 };
 
-/** True when a resolved banner src is one of the animated Drive banners. */
+// ── GIF banners hosted on external gallery pages (e.g. makeagif.com) ─────────
+// Some banner GIFs live on gallery pages whose direct media URL embeds an
+// upload-date path segment that cannot be derived from the page URL alone
+// (i.makeagif.com/media/<date>/<id>.gif). The page itself cannot be read
+// cross-origin from the browser, so the media URL is resolved once per client
+// through microlink.io's public, CORS-enabled metadata API (og:image of the
+// page) and cached in localStorage. If resolution fails for any reason the
+// lesson simply falls back to its static banner chain — the UI never breaks.
+export const LESSON_GIF_PAGES: Record<string, string> = {
+  // Alexander the Great (All Parts) — Ancient Macedonia lesson banner
+  'ancient-07': 'https://makeagif.com/gif/alexander-the-great-all-parts-ErY-9P',
+};
+
+const GIF_PAGE_CACHE_PREFIX = 'historify:gifbanner:';
+
+/** Resolve the direct media URL behind a lesson's GIF gallery page. */
+export async function resolveGifPageBanner(lessonId: string): Promise<string | null> {
+  const page = LESSON_GIF_PAGES[lessonId];
+  if (!page) return null;
+  try {
+    const cached = localStorage.getItem(GIF_PAGE_CACHE_PREFIX + lessonId);
+    if (cached) return cached;
+  } catch { /* storage unavailable — resolve fresh */ }
+  try {
+    const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(page)}`);
+    if (!res.ok) return null;
+    const json = await res.json() as { data?: { image?: { url?: string } } };
+    const url = json?.data?.image?.url;
+    if (!url || !/^https:\/\/[^\s"']+\.(gif|webp|png|jpe?g)(\?.*)?$/i.test(url)) return null;
+    try { localStorage.setItem(GIF_PAGE_CACHE_PREFIX + lessonId, url); } catch { /* best-effort */ }
+    return url;
+  } catch {
+    return null;
+  }
+}
+
+/** True when a resolved banner src is one of the animated GIF banners. */
 export function isGifBanner(src: string): boolean {
-  return src.startsWith('https://lh3.googleusercontent.com/d/');
+  return src.startsWith('https://lh3.googleusercontent.com/d/') || src.includes('.makeagif.com/');
 }

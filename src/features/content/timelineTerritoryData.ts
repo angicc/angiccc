@@ -161,6 +161,56 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
   },
 
   {
+    id: 'ancient-macedonia',
+    era: 'ancient',
+    period: '359–323 BCE',
+    yearRange: [-359, -323],
+    center: [39, 30],
+    zoom: 4,
+    title: 'Ancient Macedonia — Alexander the Great',
+    titleI18n: { es: 'Antigua Macedonia — Alejandro Magno', ru: 'Древняя Македония — Александр Великий', mk: 'Античка Македонија — Александар Велики' },
+    description: 'From the kingdom Philip II forged, Alexander the Great led the Macedonian army across three continents — toppling Persia and carrying Hellenistic civilisation from the Nile to the Indus in just eleven years.',
+    polygons: [
+      {
+        label: 'Kingdom of Macedon & Balkan lands (336 BCE)',
+        color: '#f59e0b',
+        fillOpacity: 0.28,
+        coords: [[41.8,20.6],[42.0,21.4],[41.9,22.3],[41.6,23.6],[41.1,24.4],[40.85,24.72],[40.5,23.6],[40.0,22.6],[40.1,22.0],[40.3,21.4],[41.0,20.75],[41.8,20.6]],
+      },
+    ],
+    routes: [
+      {
+        name: "Alexander's Conquest Route (334–323 BCE)",
+        nameI18n: { es: 'Ruta de conquista de Alejandro (334–323 a.C.)', ru: 'Путь завоеваний Александра (334–323 до н.э.)', mk: 'Патот на освојувањата на Александар (334–323 п.н.е.)' },
+        type: 'military',
+        color: '#ef4444',
+        points: [[40.76,22.52],[40.35,26.4],[40.02,27.28],[38.48,28.04],[36.9,30.7],[36.77,36.15],[33.27,35.2],[31.2,29.92],[29.98,31.13],[31.2,29.92],[36.36,43.15],[32.54,44.42],[32.19,48.26],[29.93,52.89],[36.3,59.6],[36.75,66.9],[39.65,66.97],[34.53,69.17],[32.94,73.73],[30.2,71.47],[25.4,68.3],[29.93,52.89],[32.54,44.42]],
+      },
+      {
+        name: 'Hellenistic Trade Corridor',
+        nameI18n: { es: 'Corredor comercial helenístico', ru: 'Эллинистический торговый коридор', mk: 'Хеленистички трговски коридор' },
+        type: 'trade',
+        color: '#f59e0b',
+        points: [[40.64,22.94],[40.15,26.41],[38.42,27.14],[36.2,36.16],[31.2,29.92]],
+      },
+    ],
+    markers: [
+      { name: 'Pella', type: 'capital', lat: 40.76, lng: 22.52, note: 'Capital of Macedon — birthplace of Alexander the Great (356 BCE)', year: -356 },
+      { name: 'Aigai (Vergina)', type: 'landmark', lat: 40.48, lng: 22.32, note: 'Old royal capital — tombs of the Macedonian kings, Philip II buried here', year: -336 },
+      { name: 'Dion', type: 'landmark', lat: 40.17, lng: 22.49, note: 'Sacred city of Zeus — Alexander sacrificed here before invading Asia', year: -334 },
+      { name: 'Battle of Chaeronea', type: 'battle', lat: 38.5, lng: 22.84, note: 'Philip II defeats Athens and Thebes — Macedon masters Greece (338 BCE)', year: -338 },
+      { name: 'Battle of the Granicus', type: 'battle', lat: 40.02, lng: 27.28, note: "Alexander's first victory over Persia in Asia Minor (334 BCE)", year: -334 },
+      { name: 'Battle of Issus', type: 'battle', lat: 36.77, lng: 36.15, note: 'Alexander defeats Darius III — turning point (333 BCE)', year: -333 },
+      { name: 'Siege of Tyre', type: 'battle', lat: 33.27, lng: 35.2, note: 'Seven-month siege — Alexander builds a causeway to the island city (332 BCE)', year: -332 },
+      { name: 'Alexandria (founded)', type: 'city', lat: 31.2, lng: 29.92, note: 'Founded by Alexander (331 BCE) — became the greatest Hellenistic city', year: -331 },
+      { name: 'Battle of Gaugamela', type: 'battle', lat: 36.56, lng: 43.44, note: 'Decisive defeat of Darius III — the Persian Empire falls (331 BCE)', year: -331 },
+      { name: 'Persepolis', type: 'city', lat: 29.93, lng: 52.89, note: 'Ceremonial capital — destroyed by Alexander (330 BCE)', year: -330 },
+      { name: 'Battle of the Hydaspes', type: 'battle', lat: 32.94, lng: 73.73, note: 'Alexander defeats King Porus in India — his army refuses to go further (326 BCE)', year: -326 },
+      { name: 'Babylon', type: 'city', lat: 32.54, lng: 44.42, note: 'Alexander dies here aged 32 (11 June 323 BCE) — his empire fragments', year: -323 },
+    ],
+  },
+
+  {
     id: 'persian-empire',
     era: 'ancient',
     period: '550–330 BCE',

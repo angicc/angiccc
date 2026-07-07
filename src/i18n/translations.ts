@@ -270,6 +270,16 @@ type TranslationKeys = {
   tmap_tel_hazard: string; tmap_tel_battles: string; tmap_tel_none: string;
   tmap_timeline: string; year_bce: string; year_ce: string;
   tmap_hazard_dust: string; tmap_hazard_frost: string; tmap_hazard_storm: string; tmap_hazard_scorched: string;
+  // ── Territory Conquest Campaign ────────────────────────────────
+  tmap_campaign: string; tmap_camp_subtitle: string; tmap_camp_select: string;
+  tmap_camp_stage: string; tmap_camp_question: string; tmap_camp_start: string;
+  tmap_camp_retry: string; tmap_camp_continue: string; tmap_camp_conquered: string;
+  tmap_camp_locked: string; tmap_camp_victory: string; tmap_camp_defeat: string;
+  tmap_camp_progress: string; tmap_camp_stars: string; tmap_camp_rank: string;
+  tmap_camp_rank_1: string; tmap_camp_rank_2: string; tmap_camp_rank_3: string;
+  tmap_camp_rank_4: string; tmap_camp_rank_5: string;
+  tmap_camp_legendary: string; tmap_camp_legendary_hint: string;
+  tmap_camp_xp: string; tmap_camp_era_locked: string; tmap_camp_no_questions: string;
   tmap_chokepoint: string;
   // ── Progress achievements summary ──────────────────────────────
   prog_ach_summary: string; prog_ach_remaining: string;
@@ -598,6 +608,15 @@ export const T: Translations = {
     tmap_tel_hazard: 'Hazard', tmap_tel_battles: 'Battles', tmap_tel_none: 'None recorded',
     tmap_timeline: 'Timeline', year_bce: 'BCE', year_ce: 'CE',
     tmap_hazard_dust: 'Dust storms', tmap_hazard_frost: 'Frost & famine', tmap_hazard_storm: 'Sea storms', tmap_hazard_scorched: 'Scorched ground',
+    tmap_campaign: 'Campaign', tmap_camp_subtitle: 'Conquer every region of history, era by era', tmap_camp_select: 'Pick an unlocked region to begin your conquest',
+    tmap_camp_stage: 'Stage', tmap_camp_question: 'Question', tmap_camp_start: 'Begin Conquest',
+    tmap_camp_retry: 'Retry Stage', tmap_camp_continue: 'Next Stage', tmap_camp_conquered: 'Conquered',
+    tmap_camp_locked: 'Locked — conquer the previous region first', tmap_camp_victory: 'Region conquered!', tmap_camp_defeat: 'Conquest failed — you need at least 3 of 5 correct to claim the region.',
+    tmap_camp_progress: 'Campaign Progress', tmap_camp_stars: 'Stars', tmap_camp_rank: 'Commander Rank',
+    tmap_camp_rank_1: 'Recruit', tmap_camp_rank_2: 'Captain', tmap_camp_rank_3: 'General',
+    tmap_camp_rank_4: 'Warlord', tmap_camp_rank_5: 'Strategos',
+    tmap_camp_legendary: 'Legendary Mode', tmap_camp_legendary_hint: 'Master exclusive — only flawless conquests count, XP is doubled',
+    tmap_camp_xp: 'XP earned', tmap_camp_era_locked: 'This era\'s campaign requires the Master plan', tmap_camp_no_questions: 'No challenges available for this region yet.',
     tmap_chokepoint: 'Strategic chokepoint',
     prog_ach_summary: 'You have unlocked {unlocked} of {total} achievements.',
     prog_ach_remaining: '{count} still to earn!',
@@ -900,6 +919,15 @@ export const T: Translations = {
     tmap_tel_hazard: 'Peligro', tmap_tel_battles: 'Batallas', tmap_tel_none: 'Sin registros',
     tmap_timeline: 'Línea de tiempo', year_bce: 'a.C.', year_ce: 'd.C.',
     tmap_hazard_dust: 'Tormentas de polvo', tmap_hazard_frost: 'Heladas y hambruna', tmap_hazard_storm: 'Tormentas marinas', tmap_hazard_scorched: 'Tierra quemada',
+    tmap_campaign: 'Campaña', tmap_camp_subtitle: 'Conquista cada región de la historia, era por era', tmap_camp_select: 'Elige una región desbloqueada para comenzar tu conquista',
+    tmap_camp_stage: 'Etapa', tmap_camp_question: 'Pregunta', tmap_camp_start: 'Iniciar conquista',
+    tmap_camp_retry: 'Reintentar etapa', tmap_camp_continue: 'Siguiente etapa', tmap_camp_conquered: 'Conquistada',
+    tmap_camp_locked: 'Bloqueada — conquista primero la región anterior', tmap_camp_victory: '¡Región conquistada!', tmap_camp_defeat: 'Conquista fallida — necesitas al menos 3 de 5 aciertos para reclamar la región.',
+    tmap_camp_progress: 'Progreso de campaña', tmap_camp_stars: 'Estrellas', tmap_camp_rank: 'Rango de comandante',
+    tmap_camp_rank_1: 'Recluta', tmap_camp_rank_2: 'Capitán', tmap_camp_rank_3: 'General',
+    tmap_camp_rank_4: 'Señor de la guerra', tmap_camp_rank_5: 'Estratego',
+    tmap_camp_legendary: 'Modo Legendario', tmap_camp_legendary_hint: 'Exclusivo Master — solo cuentan conquistas perfectas, XP duplicada',
+    tmap_camp_xp: 'XP ganada', tmap_camp_era_locked: 'La campaña de esta era requiere el plan Master', tmap_camp_no_questions: 'Aún no hay desafíos disponibles para esta región.',
     tmap_chokepoint: 'Punto estratégico',
     prog_ach_summary: 'Has desbloqueado {unlocked} de {total} logros.',
     prog_ach_remaining: '¡Quedan {count} por conseguir!',
@@ -1202,6 +1230,15 @@ export const T: Translations = {
     tmap_tel_hazard: 'Опасность', tmap_tel_battles: 'Битвы', tmap_tel_none: 'Нет данных',
     tmap_timeline: 'Шкала времени', year_bce: 'до н.э.', year_ce: 'н.э.',
     tmap_hazard_dust: 'Пыльные бури', tmap_hazard_frost: 'Мороз и голод', tmap_hazard_storm: 'Морские штормы', tmap_hazard_scorched: 'Выжженная земля',
+    tmap_campaign: 'Кампания', tmap_camp_subtitle: 'Покорите каждый регион истории, эпоху за эпохой', tmap_camp_select: 'Выберите открытый регион, чтобы начать завоевание',
+    tmap_camp_stage: 'Этап', tmap_camp_question: 'Вопрос', tmap_camp_start: 'Начать завоевание',
+    tmap_camp_retry: 'Повторить этап', tmap_camp_continue: 'Следующий этап', tmap_camp_conquered: 'Покорён',
+    tmap_camp_locked: 'Заблокировано — сначала покорите предыдущий регион', tmap_camp_victory: 'Регион покорён!', tmap_camp_defeat: 'Завоевание провалилось — нужно минимум 3 из 5 верных ответов.',
+    tmap_camp_progress: 'Прогресс кампании', tmap_camp_stars: 'Звёзды', tmap_camp_rank: 'Звание командира',
+    tmap_camp_rank_1: 'Новобранец', tmap_camp_rank_2: 'Капитан', tmap_camp_rank_3: 'Генерал',
+    tmap_camp_rank_4: 'Полководец', tmap_camp_rank_5: 'Стратег',
+    tmap_camp_legendary: 'Легендарный режим', tmap_camp_legendary_hint: 'Эксклюзив Master — засчитываются только безупречные победы, XP удваивается',
+    tmap_camp_xp: 'Получено XP', tmap_camp_era_locked: 'Кампания этой эпохи доступна на плане Master', tmap_camp_no_questions: 'Для этого региона пока нет испытаний.',
     tmap_chokepoint: 'Стратегическая точка',
     prog_ach_summary: 'Вы разблокировали {unlocked} из {total} достижений.',
     prog_ach_remaining: 'Осталось получить ещё {count}!',
@@ -1504,6 +1541,15 @@ export const T: Translations = {
     tmap_tel_hazard: 'Опасност', tmap_tel_battles: 'Битки', tmap_tel_none: 'Нема податоци',
     tmap_timeline: 'Временска линија', year_bce: 'п.н.е.', year_ce: 'н.е.',
     tmap_hazard_dust: 'Песочни бури', tmap_hazard_frost: 'Мраз и глад', tmap_hazard_storm: 'Морски бури', tmap_hazard_scorched: 'Изгорена земја',
+    tmap_campaign: 'Кампања', tmap_camp_subtitle: 'Освојте го секој регион од историјата, епоха по епоха', tmap_camp_select: 'Изберете отклучен регион за да го започнете освојувањето',
+    tmap_camp_stage: 'Етапа', tmap_camp_question: 'Прашање', tmap_camp_start: 'Започни освојување',
+    tmap_camp_retry: 'Повтори етапа', tmap_camp_continue: 'Следна етапа', tmap_camp_conquered: 'Освоено',
+    tmap_camp_locked: 'Заклучено — прво освојте го претходниот регион', tmap_camp_victory: 'Регионот е освоен!', tmap_camp_defeat: 'Освојувањето не успеа — потребни се барем 3 од 5 точни за да го земете регионот.',
+    tmap_camp_progress: 'Напредок на кампањата', tmap_camp_stars: 'Ѕвезди', tmap_camp_rank: 'Команден чин',
+    tmap_camp_rank_1: 'Регрут', tmap_camp_rank_2: 'Капетан', tmap_camp_rank_3: 'Генерал',
+    tmap_camp_rank_4: 'Војсководец', tmap_camp_rank_5: 'Стратег',
+    tmap_camp_legendary: 'Легендарен режим', tmap_camp_legendary_hint: 'Ексклузивно за Master — се бројат само беспрекорни освојувања, XP се дуплира',
+    tmap_camp_xp: 'Заработено XP', tmap_camp_era_locked: 'Кампањата на оваа епоха бара Master план', tmap_camp_no_questions: 'Сè уште нема предизвици за овој регион.',
     tmap_chokepoint: 'Стратешка точка',
     prog_ach_summary: 'Отклучивте {unlocked} од {total} достигнувања.',
     prog_ach_remaining: 'Уште {count} за освојување!',

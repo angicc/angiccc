@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck } from 'lucide-react';
 import { getLessonTheme, type LessonTheme } from '@/lib/lessonTheme';
@@ -21,7 +21,7 @@ import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { resolveBannerCandidates } from '@/features/content/lessonBannerAssets';
-import { isGifBanner } from '@/features/content/lessonGifBanners';
+import { isGifBanner, resolveGifPageBanner } from '@/features/content/lessonGifBanners';
 import { EraBannerBackdrop } from '@/components/shared/EraBannerBackdrop';
 
 // Banner image resolution is a strict, deterministic chain routed per lesson
@@ -46,8 +46,23 @@ function LessonBanner({
   // The full candidate chain is fixed at mount (this component is keyed by
   // lesson id in the parent, so each lesson gets a fresh, correctly-seeded
   // chain rather than inheriting the previously-viewed lesson's state).
-  const [candidates] = useState(() => resolveBannerCandidates(lessonId, eraId, imageUrl));
+  const [candidates, setCandidates] = useState(() => resolveBannerCandidates(lessonId, eraId, imageUrl));
   const [candidateIdx, setCandidateIdx] = useState(0);
+
+  // Lessons whose animated banner lives behind a gallery page (makeagif.com)
+  // resolve the direct media URL asynchronously; once known it takes the head
+  // of the chain. The static candidates keep the banner filled meanwhile, and
+  // a failed resolution simply leaves the static chain untouched.
+  useEffect(() => {
+    let alive = true;
+    resolveGifPageBanner(lessonId).then(url => {
+      if (!alive || !url) return;
+      setCandidates(prev => (prev[0] === url ? prev : [url, ...prev.filter(u => u !== url)]));
+      setCandidateIdx(0);
+      setLoaded(false);
+    });
+    return () => { alive = false; };
+  }, [lessonId]);
 
   const src = candidates[candidateIdx] ?? '';
   const imgFailed = candidateIdx >= candidates.length;
