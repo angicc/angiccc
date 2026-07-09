@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Users, Search, UserPlus, UserCheck, Clock, X, Check } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Users, Search, UserPlus, UserCheck, Clock, X, Check, MessageSquare, Swords, Send } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +10,12 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/features/auth/AuthContext';
 import { getChessRank } from '@/features/ranks/chessRanks';
+import { DuelArena } from '@/features/friends/DuelArena';
+import {
+  loadThread, saveThread, autoReplyFor, loadDuelRecord,
+  type ChatMsg,
+} from '@/features/friends/friendInteractions';
+import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
 const MOCK_USERS = [
@@ -47,7 +53,7 @@ function saveJSON<T>(key: string, data: T) {
 }
 
 export default function FriendsPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { currentUser } = useAuth();
   const userId = currentUser?.id ?? '';
 
@@ -55,6 +61,9 @@ export default function FriendsPage() {
   const [friends, setFriends]         = useState<FriendEntry[]>([]);
   const [sentIds, setSentIds]         = useState<string[]>([]);
   const [received, setReceived]       = useState<RequestEntry[]>([]);
+  // Messaging + duel state
+  const [chatFriend, setChatFriend]   = useState<FriendEntry | null>(null);
+  const [duelFriend, setDuelFriend]   = useState<FriendEntry | null>(null);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -254,10 +263,27 @@ export default function FriendsPage() {
                               <span className="text-xs text-muted-foreground">{friend.streak}d streak</span>
                             </div>
                           </div>
-                          <div className={`shrink-0 flex flex-col items-center px-2 py-1 rounded-lg border ${rank.borderColor} ${rank.bgColor}`}>
+                          <div className={`shrink-0 hidden sm:flex flex-col items-center px-2 py-1 rounded-lg border ${rank.borderColor} ${rank.bgColor}`}>
                             <span className="text-base leading-none">{rank.icon}</span>
                             <span className={`text-[10px] font-bold mt-0.5 ${rank.color}`}>{rank.name}</span>
                           </div>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="gap-1.5 shrink-0"
+                            onClick={() => setChatFriend(friend)}
+                          >
+                            <MessageSquare className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">{t.fr_message}</span>
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="gap-1.5 shrink-0 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-500/90 hover:to-amber-500/90 text-white border-0"
+                            onClick={() => setDuelFriend(friend)}
+                          >
+                            <Swords className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">{t.fr_duel}</span>
+                          </Button>
                           <Button
                             size="sm"
                             variant="ghost"
@@ -362,6 +388,119 @@ export default function FriendsPage() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* ── Chat drawer ── */}
+      <AnimatePresence>
+        {chatFriend && (
+          <ChatDrawer
+            key={chatFriend.id}
+            userId={userId}
+            friend={chatFriend}
+            t={t as unknown as Record<string, string>}
+            onClose={() => setChatFriend(null)}
+            onChallenge={() => { const f = chatFriend; setChatFriend(null); setDuelFriend(f); }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── History 1v1 duel arena ── */}
+      {duelFriend && currentUser && (
+        <DuelArena
+          userId={userId}
+          playerName={currentUser.username}
+          opponent={{ id: duelFriend.id, username: duelFriend.username, xp: duelFriend.xp }}
+          language={language}
+          t={t as unknown as Record<string, string>}
+          onClose={() => setDuelFriend(null)}
+        />
+      )}
     </AppShell>
+  );
+}
+
+// ── Sliding chat drawer with a canned-reply opponent ─────────────────────────
+function ChatDrawer({ userId, friend, t, onClose, onChallenge }: {
+  userId: string;
+  friend: FriendEntry;
+  t: Record<string, string>;
+  onClose: () => void;
+  onChallenge: () => void;
+}) {
+  const [thread, setThread] = useState<ChatMsg[]>(() => loadThread(userId, friend.id));
+  const [draft, setDraft] = useState('');
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const record = loadDuelRecord(userId, friend.id);
+
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [thread]);
+
+  function send() {
+    const text = draft.trim();
+    if (!text) return;
+    const mine: ChatMsg = { id: crypto.randomUUID(), from: 'me', text, ts: new Date().toISOString() };
+    const next = [...thread, mine];
+    setThread(next);
+    saveThread(userId, friend.id, next);
+    setDraft('');
+    // The friend replies shortly with a canned line, so the thread feels live.
+    setTimeout(() => {
+      const reply: ChatMsg = { id: crypto.randomUUID(), from: friend.id, text: autoReplyFor(friend.id, next.length), ts: new Date().toISOString() };
+      setThread(prev => { const t2 = [...prev, reply]; saveThread(userId, friend.id, t2); return t2; });
+    }, 900);
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[2500] bg-black/50 backdrop-blur-sm flex justify-end"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ x: 420 }} animate={{ x: 0 }} exit={{ x: 420 }} transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+        className="w-full max-w-md h-full bg-card border-l border-border flex flex-col shadow-2xl"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center gap-3 p-4 border-b border-border">
+          <Avatar className="h-9 w-9 shrink-0"><AvatarFallback className="bg-primary/20 text-primary text-sm font-semibold">{friend.username.slice(0, 2).toUpperCase()}</AvatarFallback></Avatar>
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-sm truncate">{friend.username}</p>
+            {(record.wins + record.losses) > 0 && (
+              <p className="text-[11px] text-muted-foreground">{t.fr_duel_record}: {record.wins}W · {record.losses}L</p>
+            )}
+          </div>
+          <Button size="sm" className="gap-1.5 bg-gradient-to-r from-rose-500 to-amber-500 text-white border-0" onClick={onChallenge}>
+            <Swords className="w-3.5 h-3.5" /> {t.fr_duel}
+          </Button>
+          <Button size="sm" variant="ghost" className="shrink-0" onClick={onClose}><X className="w-4 h-4" /></Button>
+        </div>
+
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-2.5">
+          {thread.length === 0 && (
+            <div className="text-center py-10 text-sm text-muted-foreground">{t.fr_msg_empty}</div>
+          )}
+          {thread.map(m => (
+            <div key={m.id} className={`flex ${m.from === 'me' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-[78%] rounded-2xl px-3.5 py-2 text-sm leading-snug break-words ${m.from === 'me' ? 'bg-primary text-primary-foreground rounded-br-sm' : 'bg-muted text-foreground rounded-bl-sm'}`}>
+                {m.text}
+              </div>
+            </div>
+          ))}
+          <div ref={bottomRef} />
+        </div>
+
+        {/* Composer */}
+        <div className="p-3 border-t border-border flex gap-2">
+          <Input
+            value={draft}
+            onChange={e => setDraft(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') send(); }}
+            placeholder={t.fr_msg_placeholder}
+            className="flex-1"
+          />
+          <Button size="icon" onClick={send} disabled={!draft.trim()}><Send className="w-4 h-4" /></Button>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }

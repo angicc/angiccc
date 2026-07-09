@@ -91,6 +91,12 @@ type TranslationKeys = {
   fr_title: string; fr_subtitle: string; fr_search: string;
   fr_tab_friends: string; fr_tab_requests: string; fr_tab_sent: string;
   fr_add: string; fr_pending: string; fr_accept: string; fr_decline: string;
+  // ── Friends: messaging + History 1v1 duel ─────────────────────
+  fr_message: string; fr_duel: string; fr_msg_title: string; fr_msg_placeholder: string;
+  fr_msg_empty: string; fr_msg_send: string;
+  fr_duel_title: string; fr_duel_begin: string; fr_duel_youhit: string; fr_duel_foehit: string;
+  fr_duel_clash: string; fr_duel_miss: string; fr_duel_victory: string; fr_duel_defeat: string;
+  fr_duel_won_desc: string; fr_duel_lost_desc: string; fr_duel_done: string; fr_duel_record: string;
   fr_remove: string; fr_no_friends: string; fr_no_requests: string; fr_no_sent: string;
   fr_request_sent: string; fr_added: string;
   // ── Flashcards ─────────────────────────────────────────────────
@@ -402,6 +408,11 @@ export const T: Translations = {
     fr_title: 'Friends', fr_subtitle: 'Connect with other history learners',
     fr_search: 'Search users…', fr_tab_friends: 'Friends', fr_tab_requests: 'Requests',
     fr_tab_sent: 'Sent', fr_add: 'Add Friend', fr_pending: 'Pending',
+    fr_message: 'Message', fr_duel: 'History 1v1', fr_msg_title: 'Chat with {name}', fr_msg_placeholder: 'Write a message…',
+    fr_msg_empty: 'Say hello — or challenge them to a History 1v1!', fr_msg_send: 'Send',
+    fr_duel_title: 'History 1v1', fr_duel_begin: 'Begin the duel', fr_duel_youhit: 'You strike true!', fr_duel_foehit: '{name} lands a blow!',
+    fr_duel_clash: 'Blades clash — both wounded!', fr_duel_miss: 'Both swings go wide!', fr_duel_victory: 'Victory!', fr_duel_defeat: 'Defeated',
+    fr_duel_won_desc: 'You bested {name} on {field}.', fr_duel_lost_desc: '{name} won this time. Rematch when you\'re ready.', fr_duel_done: 'Leave arena', fr_duel_record: 'Duel record',
     fr_accept: 'Accept', fr_decline: 'Decline', fr_remove: 'Remove',
     fr_no_friends: 'No friends yet. Search for users to connect!',
     fr_no_requests: 'No incoming requests.', fr_no_sent: 'No sent requests.',
@@ -735,6 +746,11 @@ export const T: Translations = {
     fr_title: 'Amigos', fr_subtitle: 'Conecta con otros estudiantes de historia',
     fr_search: 'Buscar usuarios…', fr_tab_friends: 'Amigos', fr_tab_requests: 'Solicitudes',
     fr_tab_sent: 'Enviadas', fr_add: 'Agregar Amigo', fr_pending: 'Pendiente',
+    fr_message: 'Mensaje', fr_duel: 'Duelo 1v1', fr_msg_title: 'Chat con {name}', fr_msg_placeholder: 'Escribe un mensaje…',
+    fr_msg_empty: '¡Saluda — o rétalo a un Duelo de Historia 1v1!', fr_msg_send: 'Enviar',
+    fr_duel_title: 'Historia 1v1', fr_duel_begin: 'Comenzar el duelo', fr_duel_youhit: '¡Golpe certero!', fr_duel_foehit: '¡{name} te golpea!',
+    fr_duel_clash: '¡Chocan las espadas — ambos heridos!', fr_duel_miss: '¡Ambos fallan!', fr_duel_victory: '¡Victoria!', fr_duel_defeat: 'Derrota',
+    fr_duel_won_desc: 'Venciste a {name} en {field}.', fr_duel_lost_desc: '{name} ganó esta vez. Revancha cuando quieras.', fr_duel_done: 'Salir de la arena', fr_duel_record: 'Historial de duelos',
     fr_accept: 'Aceptar', fr_decline: 'Rechazar', fr_remove: 'Eliminar',
     fr_no_friends: 'Aún no tienes amigos. ¡Busca usuarios para conectar!',
     fr_no_requests: 'No hay solicitudes entrantes.', fr_no_sent: 'No hay solicitudes enviadas.',
@@ -1057,6 +1073,11 @@ export const T: Translations = {
     fr_title: 'Друзья', fr_subtitle: 'Общайтесь с другими любителями истории',
     fr_search: 'Поиск пользователей…', fr_tab_friends: 'Друзья', fr_tab_requests: 'Запросы',
     fr_tab_sent: 'Отправленные', fr_add: 'Добавить в Друзья', fr_pending: 'Ожидание',
+    fr_message: 'Сообщение', fr_duel: 'Дуэль 1x1', fr_msg_title: 'Чат с {name}', fr_msg_placeholder: 'Напишите сообщение…',
+    fr_msg_empty: 'Поздоровайтесь — или вызовите на Историческую дуэль 1x1!', fr_msg_send: 'Отправить',
+    fr_duel_title: 'История 1x1', fr_duel_begin: 'Начать дуэль', fr_duel_youhit: 'Точный удар!', fr_duel_foehit: '{name} наносит удар!',
+    fr_duel_clash: 'Клинки скрестились — оба ранены!', fr_duel_miss: 'Оба промахнулись!', fr_duel_victory: 'Победа!', fr_duel_defeat: 'Поражение',
+    fr_duel_won_desc: 'Вы одолели {name} на поле {field}.', fr_duel_lost_desc: '{name} победил на этот раз. Реванш, когда будете готовы.', fr_duel_done: 'Покинуть арену', fr_duel_record: 'Счёт дуэлей',
     fr_accept: 'Принять', fr_decline: 'Отклонить', fr_remove: 'Удалить',
     fr_no_friends: 'Друзей пока нет. Найдите пользователей для общения!',
     fr_no_requests: 'Нет входящих запросов.', fr_no_sent: 'Нет отправленных запросов.',
@@ -1379,6 +1400,11 @@ export const T: Translations = {
     fr_title: 'Пријатели', fr_subtitle: 'Поврзи се со други ученици по историја',
     fr_search: 'Пребарај корисници…', fr_tab_friends: 'Пријатели', fr_tab_requests: 'Барања',
     fr_tab_sent: 'Испратени', fr_add: 'Додај Пријател', fr_pending: 'На чекање',
+    fr_message: 'Порака', fr_duel: 'Историја 1v1', fr_msg_title: 'Разговор со {name}', fr_msg_placeholder: 'Напиши порака…',
+    fr_msg_empty: 'Поздрави се — или предизвикај го на Историски дуел 1v1!', fr_msg_send: 'Испрати',
+    fr_duel_title: 'Историја 1v1', fr_duel_begin: 'Започни дуел', fr_duel_youhit: 'Точен удар!', fr_duel_foehit: '{name} нанесува удар!',
+    fr_duel_clash: 'Сечилата се судираат — двајцата ранети!', fr_duel_miss: 'Двата замавa промашија!', fr_duel_victory: 'Победа!', fr_duel_defeat: 'Пораз',
+    fr_duel_won_desc: 'Го надви {name} на {field}.', fr_duel_lost_desc: '{name} победи овој пат. Реванш кога си спремен.', fr_duel_done: 'Напушти ја арената', fr_duel_record: 'Дуел биланс',
     fr_accept: 'Прифати', fr_decline: 'Одбиј', fr_remove: 'Отстрани',
     fr_no_friends: 'Сè уште нема пријатели. Пребарај корисници за да се поврзеш!',
     fr_no_requests: 'Нема дојдовни барања.', fr_no_sent: 'Нема испратени барања.',
