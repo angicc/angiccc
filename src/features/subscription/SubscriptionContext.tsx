@@ -20,7 +20,13 @@ const SubContext = createContext<SubCtx | null>(null);
 
 export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
   const { currentUser } = useAuth();
-  const [subscription, setSubscription] = useState<UserSubscription | null>(null);
+  // Hydrate synchronously: a paying user must never see a first render as
+  // 'free' — plan-gated pages early-return on that flash, and any mount-once
+  // effect behind the gate (e.g. the Territory Map's Leaflet init) would
+  // silently never run.
+  const [subscription, setSubscription] = useState<UserSubscription | null>(
+    () => (currentUser ? loadSubscription(currentUser.id) : null),
+  );
 
   useEffect(() => { setSubscription(currentUser ? loadSubscription(currentUser.id) : null); }, [currentUser]);
 

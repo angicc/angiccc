@@ -62,10 +62,10 @@ const ERA_TEXT: Record<string, string> = {
 };
 
 const FEATURES = [
-  { icon: BookOpen, label: 'Rich Lessons', desc: '18 in-depth lessons across 4 historical eras', color: 'text-amber-400' },
+  { icon: BookOpen, label: 'Rich Lessons', desc: '28 in-depth lessons across 4 historical eras', color: 'text-amber-400' },
   { icon: Layers, label: 'Flashcards', desc: 'Flip-card review to lock in key facts', color: 'text-violet-400' },
   { icon: MessageSquare, label: 'AI Tutor — Clio', desc: 'Ask anything about history, get instant answers', color: 'text-primary' },
-  { icon: ScrollText, label: 'Timeline', desc: '50+ historical events from 3100 BCE to today', color: 'text-emerald-400' },
+  { icon: ScrollText, label: 'Timeline', desc: '75+ historical events from 3100 BCE to today', color: 'text-emerald-400' },
   { icon: Trophy, label: 'Leaderboard', desc: 'Compete with other learners for the top spot', color: 'text-blue-400' },
   { icon: Flame, label: 'Streaks & XP', desc: 'Stay consistent and climb the level ladder', color: 'text-rose-400' },
 ];
@@ -131,7 +131,7 @@ export function OnboardingModal({ userId, onDone }: { userId: string; onDone: ()
                   I'll be your guide through 5,000 years of human civilization — from the first cities of Mesopotamia to the digital age. Together we'll explore empires, revolutions, ideas, and the people who shaped the world.
                 </p>
                 <div className="grid grid-cols-3 gap-3 py-2">
-                  {[['18', 'Lessons'], ['50+', 'Timeline Events'], ['4', 'Eras']].map(([n, l]) => (
+                  {[['28', 'Lessons'], ['75+', 'Timeline Events'], ['4', 'Eras']].map(([n, l]) => (
                     <div key={l} className="text-center p-3 rounded-xl bg-primary/5 border border-primary/20">
                       <div className="font-heading text-xl font-bold text-primary">{n}</div>
                       <div className="text-xs text-muted-foreground mt-0.5">{l}</div>

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ChatMessage } from '@/types';
 
 const PREFIX = 'historify:chat';
-const MAX_PERSISTED = 40; // cap the slice so localStorage never balloons
+const MAX_PERSISTED = 200; // generous cap — a long tutoring session must survive intact
 
 function storageKey(module: string, userId?: string) {
   return userId ? `${PREFIX}:${module}:${userId}` : `${PREFIX}:${module}`;
@@ -31,29 +31,45 @@ function load(key: string): ChatMessage[] {
  */
 export function usePersistentChat(module: string, userId?: string) {
   const key = storageKey(module, userId);
-  const [messages, setMessages] = useState<ChatMessage[]>(() => load(key));
-  const keyRef = useRef(key);
+  // Messages are tagged with the key they were hydrated for. The persist
+  // effect refuses to write messages tagged for key A under key B, so a
+  // thread/user switch can never clobber the destination slice with the
+  // previous conversation (the "history reset" bug: stale state briefly
+  // persisted under the new key before re-hydration committed).
+  const [state, setState] = useState<{ key: string; messages: ChatMessage[] }>(
+    () => ({ key, messages: load(key) }),
+  );
 
-  // Switching user (login/logout) re-hydrates the slice for the new key.
+  // Switching thread or user (login/logout) re-hydrates for the new key.
   useEffect(() => {
-    if (keyRef.current === key) return;
-    keyRef.current = key;
-    setMessages(load(key));
+    setState(prev => (prev.key === key ? prev : { key, messages: load(key) }));
   }, [key]);
 
   useEffect(() => {
+    if (state.key !== key) return; // stale state from the previous key — never persist it
     try {
-      if (messages.length === 0) localStorage.removeItem(key);
-      else localStorage.setItem(key, JSON.stringify(messages.slice(-MAX_PERSISTED)));
+      if (state.messages.length === 0) localStorage.removeItem(key);
+      else localStorage.setItem(key, JSON.stringify(state.messages.slice(-MAX_PERSISTED)));
     } catch { /* quota exceeded — persistence is best-effort */ }
-  }, [messages, key]);
+  }, [state, key]);
+
+  const keyRef = useRef(key);
+  keyRef.current = key;
+
+  const setMessages = useCallback((update: ChatMessage[] | ((prev: ChatMessage[]) => ChatMessage[])) => {
+    setState(prev => {
+      const base = prev.key === keyRef.current ? prev.messages : load(keyRef.current);
+      const next = typeof update === 'function' ? update(base) : update;
+      return { key: keyRef.current, messages: next };
+    });
+  }, []);
 
   const clear = useCallback(() => {
-    setMessages([]);
+    setState({ key: keyRef.current, messages: [] });
     try { localStorage.removeItem(keyRef.current); } catch { /* ignore */ }
   }, []);
 
-  return [messages, setMessages, clear] as const;
+  return [state.messages, setMessages, clear] as const;
 }
 
 // ─── Thread registry (multi-conversation history per AI module) ──────────────

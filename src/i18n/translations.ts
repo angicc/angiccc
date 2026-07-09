@@ -7,7 +7,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   mk: 'Македонски',
 };
 
-type TranslationKeys = {
+export type TranslationKeys = {
   // ── Sidebar / Nav ──────────────────────────────────────────────
   nav_dashboard: string; nav_eras: string; nav_timeline: string; nav_tutor: string;
   nav_leaderboard: string; nav_friends: string; nav_flashcards: string; nav_notes: string;
@@ -30,6 +30,8 @@ type TranslationKeys = {
   crisis_assess_counterfactual: string; crisis_assess_rerun: string;
   nav_profile: string; nav_guide: string; nav_report: string;
   nav_upgrade: string; nav_logout: string;
+  nav_group_chronicles: string; nav_group_academy: string; nav_group_agora: string; nav_group_ledger: string;
+  notif_title: string; notif_empty: string;
   logout_title: string; logout_desc: string;
   // ── Common buttons / labels ─────────────────────────────────────
   search_placeholder: string;
@@ -83,6 +85,7 @@ type TranslationKeys = {
   tutor_hello: string; tutor_desc: string; tutor_placeholder: string; tutor_examples: string;
   tutor_history: string; tutor_thread_first: string; tutor_thread_untitled: string;
   tutor_new_chat: string; tutor_upgrade_msg: string;
+  tutor_clear_title: string; tutor_clear_confirm: string;
   // ── Leaderboard ────────────────────────────────────────────────
   lb_title: string; lb_subtitle: string; lb_your_rank: string;
   lb_full_rankings: string; lb_you: string; lb_chess_rank: string;
@@ -156,6 +159,7 @@ type TranslationKeys = {
   // ── Pricing ────────────────────────────────────────────────────
   pricing_title: string; pricing_subtitle: string; pricing_current: string;
   pricing_select: string; pricing_month: string; pricing_free_label: string;
+  pricing_trial_note: string;
   pricing_back: string;
   // ── Philosopher Debate ─────────────────────────────────────────
   debate_title: string; debate_subtitle: string; debate_today: string;
@@ -336,6 +340,8 @@ export const T: Translations = {
     crisis_assess_counterfactual: 'What History Did', crisis_assess_rerun: 'Reconvene the Tribunal',
     nav_profile: 'Profile', nav_guide: 'App Guide', nav_report: 'Report a Problem',
     nav_upgrade: 'Upgrade Plan', nav_logout: 'Log Out',
+    nav_group_chronicles: 'Chronicles', nav_group_academy: 'Academy', nav_group_agora: 'Agora', nav_group_ledger: 'Ledger',
+    notif_title: 'Notifications', notif_empty: 'Nothing new — keep your streak alive today!',
     logout_title: 'Log out of Historify?', logout_desc: 'Your progress is saved. You can log back in anytime.',
     // Common
     search_placeholder: 'Search…', btn_start: 'Start', btn_submit: 'Submit',
@@ -398,6 +404,7 @@ export const T: Translations = {
     tutor_hello: "Hello, I'm Clio — your guide through history!", tutor_examples: 'Or load an example dialogue',
     tutor_history: 'History', tutor_thread_first: 'First conversation', tutor_thread_untitled: 'New conversation', tutor_desc: "Welcome! I'm the Muse of History, here to make the past click for you. Ask me anything — a battle, an empire, a strange custom, or \"why did this happen?\" — and I'll explain it clearly, connect it to the bigger picture, and help you remember it. New here? Try a suggestion below, revisit a lesson with me, or just tell me what you're curious about.",
     tutor_placeholder: 'Ask Clio about any moment in history…', tutor_new_chat: 'New Chat',
+    tutor_clear_title: 'Clear this conversation', tutor_clear_confirm: 'Clear this conversation? The messages will be permanently deleted from this thread.',
     tutor_upgrade_msg: 'Upgrade to use the AI Tutor',
     // Leaderboard
     lb_title: 'Leaderboard', lb_subtitle: 'Top learners ranked by total XP earned.',
@@ -496,6 +503,7 @@ export const T: Translations = {
     // Pricing
     pricing_title: 'Choose Your Learning Plan', pricing_subtitle: 'From casual exploration to mastery-level study — a plan for every learner.',
     pricing_current: 'Current Plan', pricing_select: 'Get Started', pricing_month: '/month',
+    pricing_trial_note: '5-day free trial — cancel anytime',
     pricing_free_label: 'Free', pricing_back: 'Back',
     // Debate
     debate_title: 'Debate a Philosopher', debate_subtitle: 'Challenge history\'s greatest thinkers',
@@ -684,6 +692,8 @@ export const T: Translations = {
     crisis_assess_counterfactual: 'Lo que hizo la Historia', crisis_assess_rerun: 'Reconvocar al Tribunal',
     nav_profile: 'Perfil', nav_guide: 'Guía de la App', nav_report: 'Reportar Problema',
     nav_upgrade: 'Actualizar Plan', nav_logout: 'Cerrar Sesión',
+    nav_group_chronicles: 'Crónicas', nav_group_academy: 'Academia', nav_group_agora: 'Ágora', nav_group_ledger: 'Registro',
+    notif_title: 'Notificaciones', notif_empty: 'Nada nuevo — ¡mantén viva tu racha hoy!',
     logout_title: '¿Cerrar sesión en Historify?', logout_desc: 'Tu progreso está guardado. Puedes iniciar sesión de nuevo en cualquier momento.',
     search_placeholder: 'Buscar…', btn_start: 'Iniciar', btn_submit: 'Enviar',
     btn_next: 'Siguiente', btn_back: 'Atrás', btn_save: 'Guardar', btn_cancel: 'Cancelar',
@@ -738,6 +748,7 @@ export const T: Translations = {
     tutor_hello: '¡Hola, soy Clio, tu guía por la historia!', tutor_examples: 'O carga un diálogo de ejemplo',
     tutor_history: 'Historial', tutor_thread_first: 'Primera conversación', tutor_thread_untitled: 'Nueva conversación', tutor_desc: '¡Bienvenido! Soy la Musa de la Historia, aquí para que el pasado cobre sentido. Pregúntame lo que sea — una batalla, un imperio, una costumbre extraña o "¿por qué pasó esto?" — y te lo explicaré con claridad, lo conectaré con el panorama general y te ayudaré a recordarlo. ¿Nuevo por aquí? Prueba una sugerencia, repasa una lección conmigo o dime qué te da curiosidad.',
     tutor_placeholder: 'Pregunta a Clio sobre cualquier momento de la historia…', tutor_new_chat: 'Nuevo Chat',
+    tutor_clear_title: 'Borrar esta conversación', tutor_clear_confirm: '¿Borrar esta conversación? Los mensajes se eliminarán permanentemente de este hilo.',
     tutor_upgrade_msg: 'Actualiza para usar el Tutor IA',
     lb_title: 'Clasificación', lb_subtitle: 'Los mejores estudiantes clasificados por XP total.',
     lb_your_rank: 'Tu Posición', lb_full_rankings: 'Clasificación Completa', lb_you: '(Tú)',
@@ -824,6 +835,7 @@ export const T: Translations = {
     report_type: 'Tipo de Problema',
     pricing_title: 'Elige tu Plan de Aprendizaje', pricing_subtitle: 'Desde exploración casual hasta estudio avanzado — un plan para cada estudiante.',
     pricing_current: 'Plan Actual', pricing_select: 'Comenzar', pricing_month: '/mes',
+    pricing_trial_note: '5 días de prueba gratis — cancela cuando quieras',
     pricing_free_label: 'Gratis', pricing_back: 'Volver',
     // Debate
     debate_title: 'Debate con un Filósofo', debate_subtitle: 'Desafía a los grandes pensadores de la historia',
@@ -1011,6 +1023,8 @@ export const T: Translations = {
     crisis_assess_counterfactual: 'Как поступила история', crisis_assess_rerun: 'Созвать Трибунал заново',
     nav_profile: 'Профиль', nav_guide: 'Руководство', nav_report: 'Сообщить об ошибке',
     nav_upgrade: 'Обновить план', nav_logout: 'Выйти',
+    nav_group_chronicles: 'Хроники', nav_group_academy: 'Академия', nav_group_agora: 'Агора', nav_group_ledger: 'Реестр',
+    notif_title: 'Уведомления', notif_empty: 'Ничего нового — поддержите свою серию сегодня!',
     logout_title: 'Выйти из Historify?', logout_desc: 'Ваш прогресс сохранён. Вы можете войти снова в любое время.',
     search_placeholder: 'Поиск…', btn_start: 'Начать', btn_submit: 'Ответить',
     btn_next: 'Далее', btn_back: 'Назад', btn_save: 'Сохранить', btn_cancel: 'Отмена',
@@ -1065,6 +1079,7 @@ export const T: Translations = {
     tutor_hello: 'Привет, я Клио — ваш проводник по истории!', tutor_examples: 'Или загрузите пример диалога',
     tutor_history: 'История', tutor_thread_first: 'Первый разговор', tutor_thread_untitled: 'Новый разговор', tutor_desc: 'Добро пожаловать! Я — Муза Истории, и я помогу вам понять прошлое. Спрашивайте о чём угодно — о битве, империи, странном обычае или "почему это случилось?" — я объясню ясно, свяжу с общей картиной и помогу запомнить. Впервые здесь? Попробуйте подсказку ниже, повторите со мной урок или просто скажите, что вам интересно.',
     tutor_placeholder: 'Спросите Клио о любом историческом событии…', tutor_new_chat: 'Новый Чат',
+    tutor_clear_title: 'Очистить этот разговор', tutor_clear_confirm: 'Очистить этот разговор? Сообщения будут безвозвратно удалены из этой ветки.',
     tutor_upgrade_msg: 'Обновите план, чтобы использовать ИИ-Наставника',
     lb_title: 'Рейтинг', lb_subtitle: 'Лучшие ученики, отсортированные по общему XP.',
     lb_your_rank: 'Ваш Рейтинг', lb_full_rankings: 'Полный Рейтинг', lb_you: '(Вы)',
@@ -1151,6 +1166,7 @@ export const T: Translations = {
     report_type: 'Тип проблемы',
     pricing_title: 'Выберите свой учебный план', pricing_subtitle: 'От лёгкого изучения до мастерства — план для каждого.',
     pricing_current: 'Текущий план', pricing_select: 'Начать', pricing_month: '/мес',
+    pricing_trial_note: '5 дней бесплатно — отмена в любой момент',
     pricing_free_label: 'Бесплатно', pricing_back: 'Назад',
     // Debate
     debate_title: 'Дискуссия с Философом', debate_subtitle: 'Бросьте вызов великим мыслителям истории',
@@ -1338,6 +1354,8 @@ export const T: Translations = {
     crisis_assess_counterfactual: 'Што направи историјата', crisis_assess_rerun: 'Повторно свикај го Трибуналот',
     nav_profile: 'Профил', nav_guide: 'Водич за Апликацијата', nav_report: 'Пријави Проблем',
     nav_upgrade: 'Надгради го Планот', nav_logout: 'Одјави се',
+    nav_group_chronicles: 'Хроники', nav_group_academy: 'Академија', nav_group_agora: 'Агора', nav_group_ledger: 'Регистар',
+    notif_title: 'Известувања', notif_empty: 'Ништо ново — одржи ја серијата денес!',
     logout_title: 'Одјавување од Historify?', logout_desc: 'Твојот напредок е зачуван. Можеш да се најавиш повторно во секое време.',
     search_placeholder: 'Пребарај…', btn_start: 'Започни', btn_submit: 'Потврди',
     btn_next: 'Следно', btn_back: 'Назад', btn_save: 'Зачувај', btn_cancel: 'Откажи',
@@ -1392,6 +1410,7 @@ export const T: Translations = {
     tutor_hello: 'Здраво, јас сум Клио — твој водич низ историјата!', tutor_examples: 'Или вчитај пример на дијалог',
     tutor_history: 'Историја', tutor_thread_first: 'Прв разговор', tutor_thread_untitled: 'Нов разговор', tutor_desc: 'Добредојде! Јас сум Музата на Историјата и тука сум за да ти го доловам минатото. Прашај ме било што — битка, империја, чуден обичај или „зошто се случило ова?" — и ќе ти објаснам јасно, ќе го поврзам со целината и ќе ти помогнам да го запомниш. Нов си тука? Пробај предлог подолу, повтори лекција со мене или само кажи ми што те интересира.',
     tutor_placeholder: 'Прашај ја Клио за секој историски момент…', tutor_new_chat: 'Нов Разговор',
+    tutor_clear_title: 'Исчисти го овој разговор', tutor_clear_confirm: 'Да се исчисти овој разговор? Пораките трајно ќе се избришат од оваа нишка.',
     tutor_upgrade_msg: 'Надгради го планот за да го користиш ВИ Туторот',
     lb_title: 'Рангирање', lb_subtitle: 'Најдобри ученици рангирани по вкупно XP.',
     lb_your_rank: 'Твоето Рангирање', lb_full_rankings: 'Целосна Листа', lb_you: '(Ти)',
@@ -1478,6 +1497,7 @@ export const T: Translations = {
     report_type: 'Вид на проблем',
     pricing_title: 'Избери го твојот план за учење', pricing_subtitle: 'Од лесно истражување до напредно учење — план за секој ученик.',
     pricing_current: 'Тековен план', pricing_select: 'Почни', pricing_month: '/месец',
+    pricing_trial_note: '5 дена бесплатен пробен период — откажи кога сакаш',
     pricing_free_label: 'Бесплатно', pricing_back: 'Назад',
     // Debate
     debate_title: 'Дебата со Филозоф', debate_subtitle: 'Предизвикај ги најголемите мислители во историјата',

@@ -312,7 +312,92 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-balkan-wars': {
     es: { title: 'Las Guerras de los Balcanes', description: 'Grecia, Bulgaria, Serbia y Montenegro derrotan al Imperio Otomano, luego se enfrentan entre ellos por el botín. Macedonia queda particionada, trazando las fronteras modernas de los Balcanes occidentales.' },
     ru: { title: 'Балканские войны', description: 'Греция, Болгария, Сербия и Черногория побеждают Османскую империю, затем воюют между собой за добычу. Македония разделена, образуя современные границы западных Балкан.' },
-    mk: { title: 'Балканските Војни', description: 'Грција, Бугарија, Србија и Crna Gora ја поразиле Отоманската Империја, потоа се бореле меѓу себе за пленот. Македонија е поделена, одредувајќи ги современите граници на Западен Балкан.' },
+    mk: { title: 'Балканските Војни', description: 'Грција, Бугарија, Србија и Црна Гора ја поразиле Отоманската Империја, потоа се бореле меѓу себе за пленот. Македонија е поделена, одредувајќи ги современите граници на Западен Балкан.' },
+  },
+  't-phoenician-alphabet': {
+    es: { title: 'El Alfabeto Fenicio se Difunde', description: 'Los comerciantes fenicios perfeccionan un alfabeto de 22 letras — antepasado del griego, del latín y de la mayoría de las escrituras modernas — y lo llevan a cada puerto del Mediterráneo.' },
+    ru: { title: 'Распространение финикийского алфавита', description: 'Финикийские торговцы совершенствуют алфавит из 22 букв — предок греческого, латинского и большинства современных письменностей — и разносят его по всем портам Средиземноморья.' },
+    mk: { title: 'Феникиската Азбука се Шири', description: 'Феникиските трговци усовршуваат азбука од 22 букви — предок на грчкото, латинското и повеќето модерни писма — и ја носат во секое средоземно пристаниште.' },
+  },
+  't-carthage-founded': {
+    es: { title: 'Fundación de Cartago', description: 'Colonos fenicios de Tiro fundan Cartago en el norte de África — el imperio comercial que un día desafiará a la propia Roma.' },
+    ru: { title: 'Основание Карфагена', description: 'Финикийские колонисты из Тира основывают Карфаген в Северной Африке — торговую империю, которая однажды бросит вызов самому Риму.' },
+    mk: { title: 'Основање на Картагина', description: 'Феникиски колонисти од Тир ја основаат Картагина во Северна Африка — трговската империја што еден ден ќе ѝ се спротивстави на самиот Рим.' },
+  },
+  't-chaeronea': {
+    es: { title: 'Filipo II Vence en Queronea', description: 'Filipo II de Macedonia derrota a las ciudades-estado griegas aliadas en Queronea, unificando Grecia bajo el liderazgo macedonio — el trampolín para las conquistas de su hijo Alejandro.' },
+    ru: { title: 'Филипп II побеждает при Херонее', description: 'Филипп II Македонский разбивает союзные греческие полисы при Херонее, объединяя Грецию под македонским началом — трамплин для завоеваний его сына Александра.' },
+    mk: { title: 'Филип II Победува кај Херонеја', description: 'Филип II Македонски ги поразува сојузничките грчки градови-држави кај Херонеја, обединувајќи ја Грција под македонско водство — отскочна даска за освојувањата на неговиот син Александар.' },
+  },
+  't-gaugamela': {
+    es: { title: 'Batalla de Gaugamela', description: 'Alejandro Magno destroza el ejército persa de Darío III en Gaugamela — la victoria decisiva que le entrega el mayor imperio que el mundo había visto.' },
+    ru: { title: 'Битва при Гавгамелах', description: 'Александр Великий сокрушает персидское войско Дария III при Гавгамелах — решающая победа, вручившая ему величайшую империю, какую видел мир.' },
+    mk: { title: 'Битката кај Гавгамела', description: 'Александар Велики ја разбива персиската војска на Дариј III кај Гавгамела — одлучувачката победа што му ја предава најголемата империја што светот ја видел.' },
+  },
+  't-lindisfarne': {
+    es: { title: 'Ataque Vikingo a Lindisfarne', description: 'Los saqueadores nórdicos arrasan el monasterio insular de Lindisfarne frente a la costa inglesa — el impacto que tradicionalmente abre la Era Vikinga.' },
+    ru: { title: 'Набег викингов на Линдисфарн', description: 'Норманнские налётчики разоряют островной монастырь Линдисфарн у английского побережья — потрясение, с которого традиционно начинается эпоха викингов.' },
+    mk: { title: 'Викиншки Напад на Линдисфарн', description: 'Нордиските напаѓачи го ограбуваат островскиот манастир Линдисфарн крај англискиот брег — шокот со кој традиционално започнува Викиншката ера.' },
+  },
+  't-vinland': {
+    es: { title: 'Leif Erikson Llega a Vinlandia', description: 'El explorador nórdico Leif Erikson desembarca en Terranova — los primeros europeos en llegar a América del Norte, cinco siglos antes que Colón.' },
+    ru: { title: 'Лейф Эрикссон достигает Винланда', description: 'Норманнский мореплаватель Лейф Эрикссон высаживается на Ньюфаундленде — первые европейцы в Северной Америке, за пять веков до Колумба.' },
+    mk: { title: 'Лејф Ериксон Стигнува до Винланд', description: 'Нордискиот истражувач Лејф Ериксон се истоварува на Њуфаундленд — првите Европејци што стигнале до Северна Америка, пет века пред Колумбо.' },
+  },
+  't-kamakura': {
+    es: { title: 'Fundación del Sogunato Kamakura', description: 'Minamoto no Yoritomo se convierte en el primer sogún de Japón, abriendo siete siglos de gobierno samurái en los que los guerreros, no los emperadores, ejercen el poder real.' },
+    ru: { title: 'Основание сёгуната Камакура', description: 'Минамото-но Ёритомо становится первым сёгуном Японии, открывая семь веков самурайского правления, когда реальная власть принадлежит воинам, а не императорам.' },
+    mk: { title: 'Основање на Камакура Шогунатот', description: 'Минамото но Јоритомо станува првиот шогун на Јапонија, отворајќи седум века самурајско владеење во кое вистинската моќ ја држат воините, а не императорите.' },
+  },
+  't-kamikaze': {
+    es: { title: 'Fracasan las Invasiones Mongolas de Japón', description: 'Los tifones — los "kamikaze" o vientos divinos — destrozan las flotas de invasión de Kublai Kan, preservando la independencia japonesa y entrando en la leyenda samurái.' },
+    ru: { title: 'Провал монгольских вторжений в Японию', description: 'Тайфуны — «камикадзе», божественные ветры — уничтожают флоты вторжения Хубилая, сохраняя независимость Японии и входя в самурайские легенды.' },
+    mk: { title: 'Монголските Инвазии на Јапонија Пропаѓаат', description: 'Тајфуните — „камикази" или божествени ветрови — ги уништуваат инвазиските флоти на Кублај Кан, зачувувајќи ја јапонската независност и влегувајќи во самурајската легенда.' },
+  },
+  't-marco-polo': {
+    es: { title: 'Marco Polo Parte hacia China', description: 'El mercader veneciano Marco Polo parte hacia la corte de Kublai Kan por la Ruta de la Seda asegurada por los mongoles — su relato encenderá la imaginación europea durante siglos.' },
+    ru: { title: 'Марко Поло отправляется в Китай', description: 'Венецианский купец Марко Поло отправляется ко двору Хубилая по охраняемому монголами Шёлковому пути — его рассказ будет будоражить воображение европейцев столетиями.' },
+    mk: { title: 'Марко Поло Тргнува кон Кина', description: 'Венецијанскиот трговец Марко Поло тргнува кон дворот на Кублај Кан по Патот на свилата обезбеден од Монголите — неговиот запис ќе ја разгорува европската фантазија со векови.' },
+  },
+  't-hanseatic': {
+    es: { title: 'Formalización de la Liga Hanseática', description: 'Las ciudades comerciales del norte de Alemania se unen en la Liga Hanseática, dominando el comercio báltico y mostrando el nuevo poder de los gremios mercantiles y las ciudades autónomas.' },
+    ru: { title: 'Оформление Ганзейского союза', description: 'Торговые города Северной Германии объединяются в Ганзейский союз, господствуя в балтийской торговле и демонстрируя новую силу купеческих гильдий и вольных городов.' },
+    mk: { title: 'Формализирање на Ханзеатската Лига', description: 'Северногерманските трговски градови се обврзуваат во Ханзеатската лига, доминирајќи во балтичката трговија и покажувајќи ја новата моќ на трговските еснафи и повластените градови.' },
+  },
+  't-first-slave-voyage': {
+    es: { title: 'Comienza la Trata Transatlántica de Esclavos', description: 'El primer barco negrero navega directamente de África a las Américas. Durante los siguientes 350 años, 12,5 millones de africanos serán forzados a cruzar el Pasaje del Medio.' },
+    ru: { title: 'Начало трансатлантической работорговли', description: 'Первый невольничий корабль идёт напрямую из Африки в Америку. За следующие 350 лет 12,5 миллиона африканцев будут насильно перевезены через Средний путь.' },
+    mk: { title: 'Започнува Трансатлантската Трговија со Робови', description: 'Првиот робовски брод плови директно од Африка кон Америка. Во следните 350 години, 12,5 милиони Африканци ќе бидат присилно пренесени преку Средниот премин.' },
+  },
+  't-asiento': {
+    es: { title: 'Gran Bretaña Gana el Asiento', description: 'El Tratado de Utrecht otorga a Gran Bretaña el asiento — el contrato para transportar africanos esclavizados a la América española — industrializando el comercio triangular.' },
+    ru: { title: 'Британия получает асьенто', description: 'Утрехтский договор передаёт Британии асьенто — контракт на поставку порабощённых африканцев в испанскую Америку — ставя треугольную торговлю на промышленные рельсы.' },
+    mk: { title: 'Британија го Добива Асиентото', description: 'Договорот од Утрехт ѝ го доделува на Британија асиентото — договорот за превоз на поробени Африканци во шпанска Америка — индустријализирајќи ја триаголната трговија.' },
+  },
+  't-suleiman': {
+    es: { title: 'Coronación de Solimán el Magnífico', description: 'Solimán I asciende al trono otomano, iniciando un reinado de 46 años de reforma legal, esplendor arquitectónico y expansión que lleva al imperio a su cenit.' },
+    ru: { title: 'Воцарение Сулеймана Великолепного', description: 'Сулейман I занимает османский трон, начиная 46-летнее правление — правовые реформы, архитектурное великолепие и экспансия приводят империю к зениту.' },
+    mk: { title: 'Крунисување на Сулејман Величествениот', description: 'Сулејман I го зазема отоманскиот престол, започнувајќи 46-годишно владеење на правни реформи, архитектонски сјај и експанзија што ја носи империјата до нејзиниот зенит.' },
+  },
+  't-vienna-siege': {
+    es: { title: 'Primer Sitio Otomano de Viena', description: 'El ejército de Solimán llega a las puertas de Viena — el punto culminante de la expansión otomana en Europa central.' },
+    ru: { title: 'Первая осада Вены османами', description: 'Армия Сулеймана подходит к воротам Вены — высшая точка османской экспансии в Центральную Европу.' },
+    mk: { title: 'Првата Отоманска Опсада на Виена', description: 'Војската на Сулејман стигнува до портите на Виена — врвната точка на отоманската експанзија во Централна Европа.' },
+  },
+  't-versailles-court': {
+    es: { title: 'Luis XIV Traslada la Corte a Versalles', description: 'El Rey Sol traslada su corte al palacio de Versalles, convirtiendo el ritual y el esplendor en instrumentos del poder real absoluto.' },
+    ru: { title: 'Людовик XIV переносит двор в Версаль', description: 'Король-Солнце переносит свой двор в Версальский дворец, превращая ритуал и роскошь в инструменты абсолютной королевской власти.' },
+    mk: { title: 'Луј XIV го Преселува Дворот во Версај', description: 'Кралот Сонце го преселува својот двор во палатата Версај, претворајќи ги ритуалот и сјајот во инструменти на апсолутната кралска моќ.' },
+  },
+  't-berlin-conference': {
+    es: { title: 'La Conferencia de Berlín Divide África', description: 'Las potencias europeas se reparten África en colonias en la Conferencia de Berlín — sin un solo representante africano presente. El Reparto de África se acelera.' },
+    ru: { title: 'Берлинская конференция делит Африку', description: 'Европейские державы делят Африку на колонии на Берлинской конференции — без единого африканского представителя. «Драка за Африку» ускоряется.' },
+    mk: { title: 'Берлинската Конференција ја Дели Африка', description: 'Европските сили ја делат Африка на колонии на Берлинската конференција — без ниту еден африкански претставник. Грабежот за Африка се забрзува.' },
+  },
+  't-adwa': {
+    es: { title: 'Batalla de Adua', description: 'Etiopía aplasta al ejército italiano invasor en Adua — la mayor victoria africana sobre una potencia colonial, preservando la independencia etíope.' },
+    ru: { title: 'Битва при Адуа', description: 'Эфиопия сокрушает вторгшуюся итальянскую армию при Адуа — величайшая победа африканцев над колониальной державой, сохранившая независимость Эфиопии.' },
+    mk: { title: 'Битката кај Адва', description: 'Етиопија ја разбива италијанската освојувачка војска кај Адва — најголемата африканска победа над колонијална сила, зачувувајќи ја етиопската независност.' },
   },
 };
 

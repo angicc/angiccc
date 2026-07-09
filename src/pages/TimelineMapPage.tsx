@@ -488,8 +488,13 @@ export default function TimelineMapPage() {
   const zoomOpacityRef    = useRef<number>(0.22);
 
   // ── Init map ────────────────────────────────────────────────────────────────
+  // Re-runs when the plan gate opens: if the first render early-returned the
+  // UpgradePrompt (subscription still resolving), the container doesn't exist
+  // yet — a mount-once effect would fire against null and Leaflet would never
+  // initialize, leaving a permanently black map panel.
+  const mapAllowed = canTerritoryMap();
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    if (!mapAllowed || !containerRef.current || mapRef.current) return;
     const map = L.map(containerRef.current, { center: [30, 20], zoom: 2, zoomControl: true, scrollWheelZoom: true });
     const style = CART_STYLES.find(s => s.id === 'dark')!;
     const tile = L.tileLayer(style.url, { attribution: style.attribution, maxZoom: 18 });
@@ -562,7 +567,8 @@ export default function TimelineMapPage() {
     });
 
     return () => { map.remove(); mapRef.current = null; };
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapAllowed]);
 
   // ── Tile layer swap on style change ────────────────────────────────────────
   useEffect(() => {

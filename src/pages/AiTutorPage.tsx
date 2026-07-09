@@ -246,7 +246,14 @@ export default function AiTutorPage() {
               <Plus className="w-4 h-4" />{t.tutor_new_chat}
             </Button>
             {messages.length > 0 && (
-              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground" onClick={() => { clearChat(); setError(null); retryRef.current = null; }}>
+              <Button
+                variant="ghost" size="sm" className="gap-2 text-muted-foreground"
+                title={t.tutor_clear_title}
+                onClick={() => {
+                  if (!window.confirm(t.tutor_clear_confirm)) return;
+                  clearChat(); setError(null); retryRef.current = null;
+                }}
+              >
                 <RotateCcw className="w-4 h-4" />
               </Button>
             )}

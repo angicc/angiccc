@@ -16,13 +16,13 @@ const ERAS_SHOWCASE = [
     name: 'Ancient World', range: '3000 BCE – 500 CE',
     color: 'text-amber-400', bg: 'from-amber-900/30 to-amber-950/60', border: 'border-amber-500/30',
     photo: 'photo-1568322445389-f64ac2515020',
-    lessons: ['The First Civilizations', 'Classical Greece', 'The Roman Empire', 'The Ancient East', 'Ancient Egypt & Pharaohs', 'The Phoenicians: Masters of the Sea'],
+    lessons: ['The First Civilizations', 'Classical Greece', 'The Roman Empire', 'The Ancient East', 'Ancient Egypt & Pharaohs', 'The Phoenicians: Masters of the Sea', 'Ancient Macedonia: Alexander the Great'],
   },
   {
     name: 'Middle Ages', range: '500 – 1500 CE',
     color: 'text-blue-400', bg: 'from-blue-900/30 to-blue-950/60', border: 'border-blue-500/30',
     photo: 'photo-1548690312-e3b507d8c110',
-    lessons: ['Fall of Rome & Early Middle Ages', 'Crusades & Islamic Golden Age', 'The Black Death', 'Medieval Economy & Trade Guilds', 'The Mongol Empire', 'Medieval Japan: Samurai & Shoguns'],
+    lessons: ['Fall of Rome & Early Middle Ages', 'Crusades & Islamic Golden Age', 'The Black Death', 'Medieval Economy & Trade Guilds', 'The Mongol Empire', 'Medieval Japan: Samurai & Shoguns', 'The Viking Age'],
   },
   {
     name: 'Early Modern', range: '1500 – 1800 CE',
@@ -45,9 +45,9 @@ const TESTIMONIALS = [
 ];
 
 const STATS = [
-  { label: 'Lessons',        value: 24,   suffix: '+' },
-  { label: 'Timeline Events', value: 50,  suffix: '+' },
-  { label: 'Quiz Questions',  value: 80,  suffix: '+' },
+  { label: 'Lessons',        value: 28,   suffix: ''  },
+  { label: 'Timeline Events', value: 75,  suffix: '+' },
+  { label: 'Quiz Questions',  value: 180, suffix: '+' },
   { label: 'XP to Earn',     value: 5000, suffix: '+' },
 ];
 
@@ -59,9 +59,9 @@ const HISTORICAL_QUOTES = [
 ];
 
 const FEATURES = [
-  { icon: BookOpen,   title: '24 In-Depth Lessons',   desc: 'Expert-written lessons from Ancient Egypt to the Digital Age, packed with rich historical context.',      color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
+  { icon: BookOpen,   title: '28 In-Depth Lessons',   desc: 'Expert-written lessons from Ancient Egypt to the Digital Age, packed with rich historical context.',      color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
   { icon: Brain,      title: 'AI Tutor — Clio',        desc: 'Ask your personal AI tutor anything about history and get clear, scholarly answers instantly.',            color: 'text-blue-400',    bg: 'bg-blue-400/10',    border: 'border-blue-400/20'    },
-  { icon: ScrollText, title: 'Interactive Timeline',   desc: 'Explore 50+ pivotal events on a visual timeline, filterable by era and category.',                         color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
+  { icon: ScrollText, title: 'Interactive Timeline',   desc: 'Explore 75+ pivotal events on a visual timeline, filterable by era and category.',                         color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
   { icon: HelpCircle, title: 'Quizzes & XP',           desc: 'Test knowledge with 80+ quiz questions, earn XP, level up, and unlock achievements.',                      color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/20'    },
   { icon: Layers,     title: 'Flashcard System',       desc: 'Reinforce learning with spaced repetition flashcards drawn from every lesson across all eras.',            color: 'text-violet-400',  bg: 'bg-violet-400/10',  border: 'border-violet-400/20'  },
   { icon: Globe,      title: 'Leaderboard',            desc: 'Compete with learners worldwide, climb the XP rankings, and earn legendary status.',                       color: 'text-cyan-400',    bg: 'bg-cyan-400/10',    border: 'border-cyan-400/20'    },
@@ -72,7 +72,7 @@ const FEATURES = [
   { icon: Shield,     title: 'Historical Chess Ranks', desc: 'Earn Video XP to climb 10 ranks — from Pawn to Alexander the Great. Your rank dominates the Leaderboard.', color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
   { icon: Scale,   title: 'Debate a Philosopher',    desc: 'Challenge Socrates, Nietzsche, Kant and more in daily philosophical debates. Make them concede and earn XP. One philosopher per day.', color: 'text-violet-400', bg: 'bg-violet-400/10', border: 'border-violet-400/20' },
   { icon: PenLine, title: 'AI Essay Challenge',       desc: 'Write historical essays graded live by Clio — accuracy, argument quality, and depth all scored. Exclusive to Master Student.', color: 'text-orange-400', bg: 'bg-orange-400/10', border: 'border-orange-400/20' },
-  { icon: Globe2,  title: 'Timeline Territory Map',   desc: 'Explore real geographic territories for 22 historical periods on a live OpenStreetMap. Click topics to fly the map to exact territories with annotated markers.', color: 'text-sky-400',    bg: 'bg-sky-400/10',    border: 'border-sky-400/20'    },
+  { icon: Globe2,  title: 'Timeline Territory Map',   desc: 'Explore real geographic territories for 25 historical periods on a live OpenStreetMap. Click topics to fly the map to exact territories with annotated markers.', color: 'text-sky-400',    bg: 'bg-sky-400/10',    border: 'border-sky-400/20'    },
   { icon: Hourglass, title: 'Chronos Crisis Room',    desc: 'Take command at a real historical turning point — the Rubicon, Constantinople 1453, July 1789, the Cuban Missile Crisis — and have every decision judged by AI in real time.', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20' },
 ];
 
@@ -92,7 +92,7 @@ const WHATS_NEW = [
   },
   {
     icon: MapIcon,
-    title: '24 Real-Geography Timelines',
+    title: '25 Real-Geography Timelines',
     desc: 'From the Viking Age and Alexander\'s empire to the Atlantic slave trade — explore real historical borders, routes, and battle markers on a live map.',
     color: 'text-amber-400', border: 'border-amber-400/30', bg: 'bg-amber-400/10',
   },
@@ -969,13 +969,13 @@ export default function LandingPage() {
       <section className="max-w-4xl mx-auto px-4 py-20 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <h2 className="font-heading text-3xl font-bold mb-4">Plans for Every Learner</h2>
-          <p className="text-muted-foreground mb-8">Start free. Upgrade when you're ready.</p>
+          <p className="text-muted-foreground mb-8">Every paid plan starts with a <span className="text-primary font-semibold">5-day free trial</span> — cancel anytime.</p>
           <div className="grid sm:grid-cols-3 gap-4 mb-8">
             {[
-              { plan: 'Free',           price: '$0',     desc: '4 intro lessons · Clio AI 5/day · Leaderboard',                           icon: BookOpen, highlight: false },
-              { plan: 'Pro Learner',    price: '$10/mo', desc: 'All lessons · AI Tutor 50/mo · Timeline · Debate a Philosopher',           icon: Zap,      highlight: true  },
-              { plan: 'Master Student', price: '$20/mo', desc: 'Unlimited AI · Essay Challenge · Video Review · Downloads',                icon: Crown,    highlight: false },
-            ].map(({ plan, price, desc, icon: Icon, highlight }, i) => (
+              { plan: 'Free',           price: '$0',     desc: '4 intro lessons · Clio AI 5/day · Leaderboard',                           trial: false, icon: BookOpen, highlight: false },
+              { plan: 'Pro Learner',    price: '$10/mo', desc: 'All lessons · AI Tutor 50/mo · Timeline · Debate a Philosopher',           trial: true,  icon: Zap,      highlight: true  },
+              { plan: 'Master Student', price: '$20/mo', desc: 'Unlimited AI · Essay Challenge · Video Review · Downloads',                trial: true,  icon: Crown,    highlight: false },
+            ].map(({ plan, price, desc, trial, icon: Icon, highlight }, i) => (
               <motion.div
                 key={plan}
                 initial={{ opacity: 0, y: 15 }}
@@ -988,6 +988,7 @@ export default function LandingPage() {
                 <Icon className={`w-6 h-6 ${highlight ? 'text-primary' : i === 2 ? 'text-amber-400' : 'text-muted-foreground'}`} />
                 <div className="font-heading font-semibold">{plan}</div>
                 <div className={`text-2xl font-bold ${highlight ? 'text-primary' : 'text-foreground'}`}>{price}</div>
+                {trial && <div className="text-[11px] font-semibold text-emerald-400">5-day free trial</div>}
                 <div className="text-xs text-muted-foreground text-center">{desc}</div>
                 {highlight && <Badge className="text-xs mt-1">Most Popular</Badge>}
               </motion.div>

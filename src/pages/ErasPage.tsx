@@ -40,10 +40,10 @@ export default function ErasPage() {
           <p className="text-muted-foreground mt-1">{t.eras_subtitle}</p>
         </motion.div>
 
-        {/* items-start: cards size to their own content, so an era with fewer
-            lessons ends cleanly instead of stretching a void between its
-            lesson list and the quiz button to match its taller neighbour. */}
-        <motion.div variants={stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6 items-start">
+        {/* Stretch cards to equal height per row; the quiz button is pinned to
+            the bottom edge (mt-auto) so both cards in a row end on the same
+            line regardless of how their descriptions or lesson titles wrap. */}
+        <motion.div variants={stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
           {ERAS.map(rawEra => {
             const era = getTranslatedEra(rawEra, language);
             const glowClass = { ancient: 'era-glow-ancient', 'middle-ages': 'era-glow-medieval', 'early-modern': 'era-glow-earlymod', modern: 'era-glow-modern' }[era.id] ?? '';
@@ -52,9 +52,9 @@ export default function ErasPage() {
             const pct = eraLessons.length > 0 ? Math.round((done / eraLessons.length) * 100) : 0;
             const quizDone = progress?.completedQuizzes.includes(era.quizId);
             return (
-              <motion.div key={era.id} variants={card}>
-                <TiltCard className="relative" maxTilt={5}>
-                <Card className={`era-glow ${glowClass} flex flex-col border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 overflow-hidden bg-card`}>
+              <motion.div key={era.id} variants={card} className="h-full">
+                <TiltCard className="relative h-full" maxTilt={5}>
+                <Card className={`era-glow ${glowClass} h-full flex flex-col border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300 overflow-hidden bg-card`}>
                   {/* Era Banner */}
                   <div className={`h-28 bg-gradient-to-br ${era.bgGradient} relative flex items-end p-4`}>
                     <img
@@ -81,7 +81,10 @@ export default function ErasPage() {
                     </div>
                   </div>
 
-                  <CardContent className="p-4 flex flex-col space-y-4">
+                  {/* gap-4 (not space-y-4): space-y's sibling selector outranks
+                      the quiz button's mt-auto, which must win to pin the
+                      button to the card's bottom edge. */}
+                  <CardContent className="p-4 flex-1 flex flex-col gap-4">
                     <p className="text-sm text-muted-foreground leading-relaxed">{era.description}</p>
 
                     {/* Progress */}
@@ -146,7 +149,7 @@ export default function ErasPage() {
                     <Button
                       variant={quizDone ? 'secondary' : 'default'}
                       size="sm"
-                      className="w-full gap-2"
+                      className="w-full gap-2 mt-auto"
                       onClick={() => navigate(`/eras/${era.id}/quiz`)}
                     >
                       <HelpCircle className="w-4 h-4" />
