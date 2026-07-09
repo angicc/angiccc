@@ -266,28 +266,28 @@ function makeMarkerIcon(
 
   switch (marker.type) {
     case 'capital':
-      // Gold star with drop shadow, 20px
-      anchorX = 10;
-      anchorY = 10;
-      svgIcon = `<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.7))">
+      // Gold star with drop shadow, 26px (~30% larger)
+      anchorX = 13;
+      anchorY = 13;
+      svgIcon = `<svg width="26" height="26" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.7))">
         <polygon points="10,1 12.4,7.5 19.5,7.5 13.9,11.8 16.2,18.5 10,14.5 3.8,18.5 6.1,11.8 0.5,7.5 7.6,7.5" fill="#fbbf24" stroke="#92400e" stroke-width="0.8"/>
       </svg>`;
       break;
 
     case 'city':
-      // Blue dot with white border, 14px
-      anchorX = 7;
-      anchorY = 7;
-      svgIcon = `<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
+      // Blue dot with white border, 18px
+      anchorX = 9;
+      anchorY = 9;
+      svgIcon = `<svg width="18" height="18" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
         <circle cx="7" cy="7" r="6" fill="#60a5fa" stroke="white" stroke-width="2"/>
       </svg>`;
       break;
 
     case 'battle':
-      // Red crossed swords (✕), 16px
-      anchorX = 8;
-      anchorY = 8;
-      svgIcon = `<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.7))">
+      // Red crossed swords (✕), 21px
+      anchorX = 10.5;
+      anchorY = 10.5;
+      svgIcon = `<svg width="21" height="21" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.7))">
         <circle cx="8" cy="8" r="7.5" fill="#ef4444" stroke="#7f1d1d" stroke-width="0.8"/>
         <line x1="4" y1="4" x2="12" y2="12" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
         <line x1="12" y1="4" x2="4" y2="12" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
@@ -295,36 +295,36 @@ function makeMarkerIcon(
       break;
 
     case 'port':
-      // Cyan anchor, 14px
-      anchorX = 7;
-      anchorY = 7;
-      svgIcon = `<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
+      // Cyan anchor, 18px
+      anchorX = 9;
+      anchorY = 9;
+      svgIcon = `<svg width="18" height="18" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
         <circle cx="7" cy="7" r="6.5" fill="#0e7490" stroke="#34d399" stroke-width="1"/>
         <text x="7" y="11" font-size="9" text-anchor="middle" fill="#34d399" font-family="serif" font-weight="bold">⚓</text>
       </svg>`;
       break;
 
     case 'resource':
-      // Purple diamond, 13px
-      anchorX = 6.5;
-      anchorY = 6.5;
-      svgIcon = `<svg width="13" height="13" viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
+      // Purple diamond, 17px
+      anchorX = 8.5;
+      anchorY = 8.5;
+      svgIcon = `<svg width="17" height="17" viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
         <polygon points="6.5,0.5 12.5,6.5 6.5,12.5 0.5,6.5" fill="#a78bfa" stroke="#5b21b6" stroke-width="0.8"/>
       </svg>`;
       break;
 
     case 'landmark':
-      // Orange triangle/pyramid, 14px
-      anchorX = 7;
-      anchorY = 13;
-      svgIcon = `<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
+      // Orange triangle/pyramid, 18px
+      anchorX = 9;
+      anchorY = 17;
+      svgIcon = `<svg width="18" height="18" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6))">
         <polygon points="7,1 13.5,13 0.5,13" fill="#f97316" stroke="#9a3412" stroke-width="0.8"/>
       </svg>`;
       break;
   }
 
   const labelHtml = hideLabel ? '' : `
-    <div style="background:${labelBg};color:${labelColor};font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;white-space:nowrap;margin-top:2px;font-family:system-ui,sans-serif;box-shadow:0 1px 4px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,0.2)">${label}</div>
+    <div style="background:${labelBg};color:${labelColor};font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;white-space:nowrap;margin-top:2px;font-family:system-ui,sans-serif;box-shadow:0 1px 4px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,0.2)">${label}</div>
   `;
 
   return L.divIcon({
@@ -869,9 +869,9 @@ export default function TimelineMapPage() {
         const dash  = route.type === 'trade' ? '8,6' : route.type === 'religious' ? '4,8' : undefined;
         L.polyline(route.points.map(([lat, lng]) => [lat, lng] as [number, number]), {
           color: route.color ?? color,
-          weight: 2.5,
+          weight: 3.5,
           dashArray: dash,
-          opacity: 0.8,
+          opacity: 0.85,
         }).bindPopup(
           `<strong style="overflow-wrap:break-word">${escapeHtml(getRouteName(route, language))}</strong><br/><em style="font-size:11px;color:#888">${escapeHtml(getTranslatedMarkerType(route.type, language))}</em>`
         ).addTo(lg);

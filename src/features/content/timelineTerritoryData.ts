@@ -515,6 +515,56 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
   },
 
   {
+    id: 'viking-age',
+    era: 'medieval',
+    period: '793–1066 CE',
+    yearRange: [793, 1066],
+    center: [58, 5],
+    zoom: 4,
+    title: 'The Viking Age',
+    titleI18n: { es: 'La Era Vikinga', ru: 'Эпоха викингов', mk: 'Викиншката ера' },
+    description: 'From the raid on Lindisfarne (793) to Stamford Bridge (1066), Norse seafarers raided, traded, and settled from Newfoundland to Baghdad — founding Iceland, the Danelaw, Normandy, and Kievan Rus.',
+    routes: [
+      {
+        name: 'Western Raiding & Settlement Route',
+        nameI18n: { es: 'Ruta de saqueo y asentamiento occidental', ru: 'Западный путь набегов и поселений', mk: 'Западен пат на пустошење и населување' },
+        type: 'military',
+        color: '#ef4444',
+        points: [[60.4, 5.3], [59.9, -1.3], [57.5, -3.5], [55.9, -3.2], [53.3, -6.2], [51.5, -0.1], [49.2, -0.4], [48.4, -4.5], [43.4, -8.4]],
+      },
+      {
+        name: 'Eastern River Trade Route (to Byzantium)',
+        nameI18n: { es: 'Ruta fluvial oriental (a Bizancio)', ru: 'Восточный речной торговый путь (в Византию)', mk: 'Источен речен трговски пат (до Византија)' },
+        type: 'trade',
+        color: '#f59e0b',
+        points: [[59.3, 18.1], [59.9, 30.3], [58.5, 31.3], [56.8, 35.9], [54.6, 39.7], [50.4, 30.5], [46.5, 30.7], [41.0, 28.9]],
+      },
+      {
+        name: 'North Atlantic Exploration',
+        nameI18n: { es: 'Exploración del Atlántico Norte', ru: 'Исследование Северной Атлантики', mk: 'Истражување на Северниот Атлантик' },
+        type: 'trade',
+        color: '#60a5fa',
+        points: [[60.4, 5.3], [62.0, -6.8], [64.1, -21.9], [61.2, -45.4], [51.6, -55.5]],
+      },
+    ],
+    markers: [
+      { name: 'Lindisfarne', type: 'battle', lat: 55.68, lng: -1.8, note: 'First recorded Viking raid (793 CE) — shocked Christendom', year: 793 },
+      { name: 'Hedeby', type: 'city', lat: 54.49, lng: 9.56, note: 'Great Danish trading town — hub between the North Sea and Baltic', year: 800 },
+      { name: 'Kaupang', type: 'port', lat: 59.0, lng: 10.2, note: 'Norway\'s earliest town — Skiringssal trading centre', year: 800 },
+      { name: 'Birka', type: 'port', lat: 59.34, lng: 17.54, note: 'Swedish Viking trade hub on Lake Mälaren', year: 800 },
+      { name: 'Jorvik (York)', type: 'capital', lat: 53.96, lng: -1.08, note: 'Capital of the Danish kingdom in England — heart of the Danelaw', year: 866 },
+      { name: 'Dublin', type: 'city', lat: 53.35, lng: -6.26, note: 'Norse-founded longphort — major slave and silver market', year: 841 },
+      { name: 'Reykjavík (Iceland)', type: 'landmark', lat: 64.13, lng: -21.9, note: 'Iceland settled by Norse from c.874 — the Althing founded 930', year: 874 },
+      { name: 'Brattahlíð (Greenland)', type: 'landmark', lat: 61.15, lng: -45.5, note: 'Erik the Red\'s estate — Norse Greenland settled c.985', year: 985 },
+      { name: 'L\'Anse aux Meadows', type: 'landmark', lat: 51.6, lng: -55.53, note: 'Norse site in Newfoundland — Europeans in America c.1000', year: 1000 },
+      { name: 'Novgorod', type: 'city', lat: 58.52, lng: 31.27, note: 'Rurik\'s Varangian seat — birth of the Rus state', year: 862 },
+      { name: 'Kiev', type: 'capital', lat: 50.45, lng: 30.52, note: 'Capital of Kievan Rus — Varangian route to the Greeks', year: 882 },
+      { name: 'Stamford Bridge', type: 'battle', lat: 53.99, lng: -0.92, note: 'Harald Hardrada killed (1066) — the Viking Age ends', year: 1066 },
+      { name: 'Normandy (Rouen)', type: 'landmark', lat: 49.44, lng: 1.1, note: 'Granted to Rollo\'s Norsemen (911) — birth of the Normans', year: 911 },
+    ],
+  },
+
+  {
     id: 'medieval-japan',
     era: 'medieval',
     period: '1185–1600 CE',
@@ -546,6 +596,53 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
   // ══════════════════════════════════════════════════════
   // EARLY MODERN
   // ══════════════════════════════════════════════════════
+  {
+    id: 'transatlantic-slave-trade',
+    era: 'early-modern',
+    period: '1500–1866 CE',
+    yearRange: [1500, 1866],
+    center: [10, -35],
+    zoom: 3,
+    title: 'The Transatlantic Slave Trade',
+    titleI18n: { es: 'El comercio transatlántico de esclavos', ru: 'Трансатлантическая работорговля', mk: 'Трансатлантската трговија со робови' },
+    description: 'Over 12.5 million enslaved Africans were shipped across the Atlantic on the triangular trade — manufactured goods to Africa, human beings to the Americas, sugar and cotton back to Europe.',
+    routes: [
+      {
+        name: 'Middle Passage (Africa → Americas)',
+        nameI18n: { es: 'El Paso del Medio (África → América)', ru: 'Средний путь (Африка → Америка)', mk: 'Средниот премин (Африка → Америка)' },
+        type: 'military',
+        color: '#ef4444',
+        points: [[5.5, 0.5], [4.0, -12.0], [8.0, -28.0], [13.0, -45.0], [13.2, -59.6]],
+      },
+      {
+        name: 'Sugar & Cotton Route (Americas → Europe)',
+        nameI18n: { es: 'Ruta del azúcar y algodón (América → Europa)', ru: 'Путь сахара и хлопка (Америка → Европа)', mk: 'Пат на шеќер и памук (Америка → Европа)' },
+        type: 'trade',
+        color: '#f59e0b',
+        points: [[13.2, -59.6], [25.0, -60.0], [35.0, -40.0], [42.0, -20.0], [50.9, -1.4]],
+      },
+      {
+        name: 'Manufactured Goods Route (Europe → Africa)',
+        nameI18n: { es: 'Ruta de manufacturas (Europa → África)', ru: 'Путь промышленных товаров (Европа → Африка)', mk: 'Пат на индустриски стоки (Европа → Африка)' },
+        type: 'trade',
+        color: '#a78bfa',
+        points: [[51.5, -0.1], [42.0, -9.5], [28.0, -15.0], [14.0, -17.0], [5.5, 0.5]],
+      },
+    ],
+    markers: [
+      { name: 'Elmina Castle', type: 'port', lat: 5.08, lng: -1.35, note: 'Oldest European slaving fort in sub-Saharan Africa (1482)', year: 1482 },
+      { name: 'Ouidah', type: 'port', lat: 6.36, lng: 2.08, note: 'Major slaving port of the Kingdom of Dahomey', year: 1700 },
+      { name: 'Luanda', type: 'port', lat: -8.84, lng: 13.23, note: 'Portuguese Angola — largest single source of the enslaved', year: 1600 },
+      { name: 'Gorée Island', type: 'landmark', lat: 14.67, lng: -17.4, note: 'Senegalese slaving depot — the House of Slaves', year: 1600 },
+      { name: 'Salvador da Bahia', type: 'city', lat: -12.97, lng: -38.5, note: 'Brazil received ~40% of all enslaved Africans — sugar capital', year: 1550 },
+      { name: 'Kingston', type: 'port', lat: 17.97, lng: -76.79, note: 'Jamaica — hub of the British Caribbean sugar economy', year: 1692 },
+      { name: 'Bridgetown', type: 'port', lat: 13.1, lng: -59.62, note: 'Barbados — first English plantation-slavery colony', year: 1627 },
+      { name: 'Charleston', type: 'port', lat: 32.78, lng: -79.93, note: 'Main North American slave-importing port', year: 1670 },
+      { name: 'Liverpool', type: 'port', lat: 53.41, lng: -2.99, note: 'Europe\'s dominant slave-trading port by the 1740s', year: 1740 },
+      { name: 'Cape Coast', type: 'battle', lat: 5.11, lng: -1.24, note: 'British slaving headquarters on the Gold Coast', year: 1664 },
+    ],
+  },
+
   {
     id: 'ottoman-empire',
     era: 'early-modern',

@@ -63,6 +63,8 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
 export const LESSON_GIF_PAGES: Record<string, string> = {
   // Alexander the Great (All Parts) — Ancient Macedonia lesson banner
   'ancient-07': 'https://makeagif.com/gif/alexander-the-great-all-parts-ErY-9P',
+  // Vikings raid & burn Lindisfarne — where the Viking Age lesson opens
+  'medieval-07': 'https://makeagif.com/gif/the-vikings-raid-and-burn-lindisfarne-monastery-the-vikings-season-1-sp3G_K',
 };
 
 const GIF_PAGE_CACHE_PREFIX = 'historify:gifbanner:';

@@ -627,6 +627,128 @@ export const TERRITORY_QUIZ_BANK: TerritoryQuizQuestion[] = [
       mk: { question: 'Монголскиот пљачкос на кој град во 1258 г.н.е. ефективно го заврши Исламскиот Златен Век со уништување на неговиот најголем центар на учење?', options: ['Каиро', 'Ерусалим', 'Багдад', 'Дамаск'], explanation: 'Во 1258 г.н.е., монголската армија на Хулагу Хан го пљачка Багдад, уништувајќи го Домот на Мудроста. Оваа катастрофа го заврши Исламскиот Златен Век.' },
     },
   },
+  // ── VIKING AGE ──────────────────────────────────────────────────────────────
+  {
+    id: 'viking-1', topicId: 'viking-age',
+    question: 'The Viking Age is traditionally dated from a 793 CE raid on which island monastery?',
+    options: ['Iona', 'Lindisfarne', 'Skellig Michael', 'Rathlin'],
+    correctIndex: 1,
+    explanation: 'The raid on Lindisfarne, a monastery off the coast of Northumbria, in 793 CE is the conventional start of the Viking Age. Its brutality shocked Christian Europe and announced two centuries of Norse expansion.',
+    i18n: {
+      es: { question: 'La era vikinga se data tradicionalmente a partir de un ataque en 793 a ¿qué monasterio insular?', options: ['Iona', 'Lindisfarne', 'Skellig Michael', 'Rathlin'], explanation: 'El ataque a Lindisfarne, un monasterio frente a Northumbria, en 793 es el inicio convencional de la era vikinga. Su brutalidad conmocionó a la Europa cristiana.' },
+      ru: { question: 'Эпоха викингов традиционно отсчитывается от набега 793 года на какой островной монастырь?', options: ['Иона', 'Линдисфарн', 'Скеллиг-Майкл', 'Ратлин'], explanation: 'Набег на Линдисфарн, монастырь у побережья Нортумбрии, в 793 году — общепринятое начало эпохи викингов. Его жестокость потрясла христианскую Европу.' },
+      mk: { question: 'Викиншката ера традиционално се датира од напад во 793 врз кој островски манастир?', options: ['Јона', 'Линдисфарн', 'Скелиг Мајкл', 'Ратлин'], explanation: 'Нападот на Линдисфарн, манастир крај брегот на Нортумбрија, во 793 е конвенционалниот почеток на викиншката ера. Неговата бруталност го потресе христијанска Европа.' },
+    },
+  },
+  {
+    id: 'viking-2', topicId: 'viking-age',
+    question: 'Which Norse-founded state grew from Varangian traders along the rivers between the Baltic and the Black Sea?',
+    options: ['Kievan Rus', 'The Danelaw', 'The Duchy of Normandy', 'Vinland'],
+    correctIndex: 0,
+    explanation: 'Kievan Rus grew from Varangian (Swedish Viking) traders and warriors who followed the river route "from the Varangians to the Greeks", ruling from Novgorod and then Kiev — the foundation of the later Russian and Ukrainian states.',
+    i18n: {
+      es: { question: '¿Qué estado fundado por nórdicos surgió de los comerciantes varegos en los ríos entre el Báltico y el mar Negro?', options: ['La Rus de Kiev', 'El Danelaw', 'El Ducado de Normandía', 'Vinlandia'], explanation: 'La Rus de Kiev surgió de comerciantes y guerreros varegos (vikingos suecos) que seguían la ruta fluvial "de los varegos a los griegos", gobernando desde Nóvgorod y luego Kiev.' },
+      ru: { question: 'Какое основанное норманнами государство выросло из варяжских торговцев на реках между Балтикой и Чёрным морем?', options: ['Киевская Русь', 'Данелаг', 'Герцогство Нормандия', 'Винланд'], explanation: 'Киевская Русь выросла из варяжских (шведских) торговцев и воинов, следовавших по пути «из варяг в греки», правивших из Новгорода, а затем Киева.' },
+      mk: { question: 'Која нордиски основана држава израсна од варјашките трговци по реките меѓу Балтикот и Црното Море?', options: ['Киевска Рус', 'Данелагот', 'Војводството Нормандија', 'Винланд'], explanation: 'Киевска Рус израсна од варјашки (шведски викиншки) трговци и војници кои го следеа речниот пат „од Варјазите кон Грците", владеејќи од Новгород, а потоа Киев.' },
+    },
+  },
+  {
+    id: 'viking-3', topicId: 'viking-age',
+    question: 'Around 1000 CE, Norse explorers reached North America, leaving a settlement at which Newfoundland site?',
+    options: ['Nuuk', 'Brattahlíð', "L'Anse aux Meadows", 'Reykjavík'],
+    correctIndex: 2,
+    explanation: "L'Anse aux Meadows in Newfoundland is the only confirmed Norse site in North America, dating to around 1000 CE — proof that Vikings, led by figures like Leif Erikson, reached the Americas five centuries before Columbus.",
+    i18n: {
+      es: { question: 'Hacia el año 1000, los exploradores nórdicos llegaron a Norteamérica, dejando un asentamiento en ¿qué sitio de Terranova?', options: ['Nuuk', 'Brattahlíð', "L'Anse aux Meadows", 'Reikiavik'], explanation: "L'Anse aux Meadows en Terranova es el único sitio nórdico confirmado en Norteamérica, de hacia el año 1000 — prueba de que los vikingos llegaron a América cinco siglos antes que Colón." },
+      ru: { question: 'Около 1000 года норманнские мореходы достигли Северной Америки, оставив поселение на каком месте в Ньюфаундленде?', options: ['Нуук', 'Браттахлид', "Л'Анс-о-Медоуз", 'Рейкьявик'], explanation: "Л'Анс-о-Медоуз в Ньюфаундленде — единственное подтверждённое норманнское поселение в Северной Америке, датируемое ок.1000 года — доказательство, что викинги достигли Америки за пять веков до Колумба." },
+      mk: { question: 'Околу 1000 година, нордиските истражувачи стигнале до Северна Америка, оставајќи населба на кое наоѓалиште во Њуфаундленд?', options: ['Нуук', 'Браттахлид', "Л'Анс о Медоуз", 'Рејкјавик'], explanation: "Л'Анс о Медоуз во Њуфаундленд е единственото потврдено нордиско наоѓалиште во Северна Америка, од околу 1000 година — доказ дека Викинзите стигнале до Америка пет века пред Колумбо." },
+    },
+  },
+  {
+    id: 'viking-4', topicId: 'viking-age',
+    question: 'The Viking Age is often said to end with a 1066 battle where which Norwegian king was killed?',
+    options: ['Cnut the Great', 'Harald Hardrada', 'Sweyn Forkbeard', 'Olaf Tryggvason'],
+    correctIndex: 1,
+    explanation: 'Harald Hardrada of Norway was killed at the Battle of Stamford Bridge in 1066, defeated by the English king Harold Godwinson. The failed invasion is the traditional close of the Viking Age — weeks before the Normans (themselves of Norse descent) conquered England.',
+    i18n: {
+      es: { question: 'Se suele decir que la era vikinga termina con una batalla de 1066 donde murió ¿qué rey noruego?', options: ['Canuto el Grande', 'Harald Hardrada', 'Svend Barba Partida', 'Olaf Tryggvason'], explanation: 'Harald Hardrada de Noruega murió en la batalla de Stamford Bridge en 1066, derrotado por el rey inglés Harold Godwinson. La invasión fallida es el cierre tradicional de la era vikinga.' },
+      ru: { question: 'Часто говорят, что эпоха викингов заканчивается битвой 1066 года, где погиб какой норвежский король?', options: ['Кнуд Великий', 'Харальд Суровый', 'Свен Вилобородый', 'Олаф Трюггвасон'], explanation: 'Харальд Суровый Норвежский погиб в битве при Стамфорд-Бридже в 1066 году, разбитый английским королём Гарольдом Годвинсоном. Неудавшееся вторжение — традиционный конец эпохи викингов.' },
+      mk: { question: 'Често се вели дека викиншката ера завршува со битка од 1066 каде што бил убиен кој норвешки крал?', options: ['Кнут Велики', 'Харалд Хардрада', 'Свен Вилобради', 'Олаф Тригвасон'], explanation: 'Харалд Хардрада од Норвешка бил убиен во битката кај Стамфорд Бриџ во 1066, поразен од англискиот крал Харолд Годвинсон. Неуспешната инвазија е традиционалниот крај на викиншката ера.' },
+    },
+  },
+  {
+    id: 'viking-5', topicId: 'viking-age',
+    question: 'In 911 CE, the Frankish king granted land around Rouen to a Viking leader named Rollo, creating what?',
+    options: ['The Danelaw', 'The Duchy of Normandy', 'The Kingdom of York', 'The Kievan Rus'],
+    correctIndex: 1,
+    explanation: 'By the Treaty of Saint-Clair-sur-Epte (911), Charles the Simple granted Rollo the land that became the Duchy of Normandy ("land of the Northmen"). Rollo\'s descendants, the Normans, would conquer England in 1066 and southern Italy soon after.',
+    i18n: {
+      es: { question: 'En 911, el rey franco concedió tierras alrededor de Ruan a un líder vikingo llamado Rollón, creando ¿qué?', options: ['El Danelaw', 'El Ducado de Normandía', 'El Reino de York', 'La Rus de Kiev'], explanation: 'Por el Tratado de Saint-Clair-sur-Epte (911), Carlos el Simple concedió a Rollón la tierra que se convirtió en el Ducado de Normandía ("tierra de los hombres del norte"). Los normandos conquistarían Inglaterra en 1066.' },
+      ru: { question: 'В 911 году франкский король пожаловал земли вокруг Руана вождю викингов по имени Роллон, создав что?', options: ['Данелаг', 'Герцогство Нормандия', 'Королевство Йорк', 'Киевскую Русь'], explanation: 'По договору в Сен-Клер-сюр-Эпт (911) Карл Простоватый пожаловал Роллону землю, ставшую герцогством Нормандия («земля северян»). Потомки Роллона, нормандцы, завоюют Англию в 1066 году.' },
+      mk: { question: 'Во 911, франачкиот крал му дал земја околу Руан на викиншкиот водач по име Роло, создавајќи што?', options: ['Данелагот', 'Војводството Нормандија', 'Кралството Јорк', 'Киевска Рус'], explanation: 'Со Договорот од Сен-Клер-сир-Епт (911), Карло Простиот му ја дал на Роло земјата што стана Војводство Нормандија („земја на северните луѓе"). Потомците на Роло, Норманите, ќе ја освојат Англија во 1066.' },
+    },
+  },
+  // ── TRANSATLANTIC SLAVE TRADE ──────────────────────────────────────────────
+  {
+    id: 'slave-1', topicId: 'transatlantic-slave-trade',
+    question: 'The forced voyage of enslaved Africans across the Atlantic to the Americas was known as what?',
+    options: ['The Middle Passage', 'The Triangular Route', 'The Windward Passage', 'The Guinea Run'],
+    correctIndex: 0,
+    explanation: 'The Middle Passage was the horrific transatlantic crossing — the middle leg of the triangular trade — during which around 1.8 million of the 12.5 million embarked Africans died in the crowded, disease-ridden holds of slave ships.',
+    i18n: {
+      es: { question: '¿Cómo se conocía el viaje forzado de africanos esclavizados a través del Atlántico hacia América?', options: ['El Paso del Medio', 'La Ruta Triangular', 'El Paso de Barlovento', 'La Carrera de Guinea'], explanation: 'El Paso del Medio era la travesía transatlántica — el tramo central del comercio triangular — durante la cual murieron unos 1,8 millones de los 12,5 millones de africanos embarcados.' },
+      ru: { question: 'Как называлось принудительное плавание порабощённых африканцев через Атлантику в Америку?', options: ['Средний путь', 'Треугольный маршрут', 'Наветренный проход', 'Гвинейский рейс'], explanation: 'Средний путь — это ужасающее трансатлантическое плавание, средний отрезок треугольной торговли, во время которого погибло около 1,8 из 12,5 миллиона отправленных африканцев.' },
+      mk: { question: 'Како било познато присилното патување на поробените Африканци преку Атлантикот кон Америка?', options: ['Средниот премин', 'Триаголната рута', 'Приветрениот премин', 'Гвинејската трка'], explanation: 'Средниот премин бил ужасниот трансатлантски премин — средниот дел на триаголната трговија — за време на кој загинале околу 1,8 од 12,5 милиони натоварени Африканци.' },
+    },
+  },
+  {
+    id: 'slave-2', topicId: 'transatlantic-slave-trade',
+    question: 'Which single country received roughly 40% of all enslaved Africans brought to the Americas?',
+    options: ['United States', 'Brazil', 'Jamaica', 'Haiti'],
+    correctIndex: 1,
+    explanation: 'Brazil, a Portuguese colony, received about 40% of all enslaved Africans — some 5 million people — mostly to work its sugar and later coffee plantations. It was the last country in the Americas to abolish slavery, in 1888.',
+    i18n: {
+      es: { question: '¿Qué país recibió aproximadamente el 40% de todos los africanos esclavizados llevados a América?', options: ['Estados Unidos', 'Brasil', 'Jamaica', 'Haití'], explanation: 'Brasil, colonia portuguesa, recibió cerca del 40% de todos los africanos esclavizados — unos 5 millones — sobre todo para sus plantaciones de azúcar y luego de café. Fue el último país de América en abolir la esclavitud, en 1888.' },
+      ru: { question: 'Какая страна приняла примерно 40% всех порабощённых африканцев, привезённых в Америку?', options: ['США', 'Бразилия', 'Ямайка', 'Гаити'], explanation: 'Бразилия, португальская колония, приняла около 40% всех порабощённых африканцев — около 5 миллионов человек — в основном для сахарных, а затем кофейных плантаций. Она последней в Америке отменила рабство, в 1888 году.' },
+      mk: { question: 'Која земја примила приближно 40% од сите поробени Африканци донесени во Америка?', options: ['САД', 'Бразил', 'Јамајка', 'Хаити'], explanation: 'Бразил, португалска колонија, прими околу 40% од сите поробени Африканци — околу 5 милиони луѓе — главно за плантажите со шеќер, а подоцна и кафе. Бил последната земја во Америка што го укина ропството, во 1888.' },
+    },
+  },
+  {
+    id: 'slave-3', topicId: 'transatlantic-slave-trade',
+    question: 'By the 1740s, which British city had become Europe\'s dominant slave-trading port?',
+    options: ['Bristol', 'London', 'Liverpool', 'Glasgow'],
+    correctIndex: 2,
+    explanation: 'Liverpool overtook Bristol and London to become the leading slave-trading port in Europe, handling perhaps 1.5 million enslaved Africans. Slaving profits helped fund the city\'s docks and the wider Industrial Revolution.',
+    i18n: {
+      es: { question: 'Hacia la década de 1740, ¿qué ciudad británica se había convertido en el puerto esclavista dominante de Europa?', options: ['Bristol', 'Londres', 'Liverpool', 'Glasgow'], explanation: 'Liverpool superó a Bristol y Londres para convertirse en el principal puerto esclavista de Europa, traficando quizá 1,5 millones de africanos esclavizados. Sus beneficios ayudaron a financiar los muelles de la ciudad y la Revolución Industrial.' },
+      ru: { question: 'К 1740-м годам какой британский город стал доминирующим работорговым портом Европы?', options: ['Бристоль', 'Лондон', 'Ливерпуль', 'Глазго'], explanation: 'Ливерпуль обогнал Бристоль и Лондон, став ведущим работорговым портом Европы, через который прошло около 1,5 миллиона порабощённых африканцев. Прибыль помогла финансировать доки города и промышленную революцию.' },
+      mk: { question: 'До 1740-тите, кој британски град станал доминантниот робовладелски пристан на Европа?', options: ['Бристол', 'Лондон', 'Ливерпул', 'Глазгов'], explanation: 'Ливерпул ги надмина Бристол и Лондон и стана водечкиот робовладелски пристан во Европа, преку кој поминале околу 1,5 милиони поробени Африканци. Профитот помогна да се финансираат пристаништата на градот и Индустриската револуција.' },
+    },
+  },
+  {
+    id: 'slave-4', topicId: 'transatlantic-slave-trade',
+    question: 'Elmina Castle, the oldest European slaving fort in sub-Saharan Africa, was built in 1482 on the coast of which modern country?',
+    options: ['Nigeria', 'Ghana', 'Senegal', 'Angola'],
+    correctIndex: 1,
+    explanation: 'Elmina Castle, built by the Portuguese in 1482 on the Gold Coast of modern Ghana, is the oldest surviving European building south of the Sahara. It became a key holding point where captives were imprisoned before the Middle Passage.',
+    i18n: {
+      es: { question: 'El Castillo de Elmina, el fuerte esclavista europeo más antiguo del África subsahariana, se construyó en 1482 en la costa de ¿qué país actual?', options: ['Nigeria', 'Ghana', 'Senegal', 'Angola'], explanation: 'El Castillo de Elmina, construido por los portugueses en 1482 en la Costa del Oro de la actual Ghana, es el edificio europeo más antiguo que se conserva al sur del Sáhara. Fue un punto clave de retención antes del Paso del Medio.' },
+      ru: { question: 'Замок Эльмина, старейший европейский работорговый форт в Тропической Африке, был построен в 1482 году на побережье какой современной страны?', options: ['Нигерия', 'Гана', 'Сенегал', 'Ангола'], explanation: 'Замок Эльмина, построенный португальцами в 1482 году на Золотом Берегу современной Ганы, — старейшее сохранившееся европейское здание к югу от Сахары. Он стал ключевым местом содержания пленников перед Средним путём.' },
+      mk: { question: 'Замокот Елмина, најстарата европска робовладелска тврдина во субсахарска Африка, бил изграден во 1482 на брегот на која модерна земја?', options: ['Нигерија', 'Гана', 'Сенегал', 'Ангола'], explanation: 'Замокот Елмина, изграден од Португалците во 1482 на Златниот Брег на денешна Гана, е најстарата зачувана европска градба јужно од Сахара. Стана клучна точка на задржување пред Средниот премин.' },
+    },
+  },
+  {
+    id: 'slave-5', topicId: 'transatlantic-slave-trade',
+    question: 'The "triangular trade" carried enslaved people on the Atlantic\'s middle leg. What typically travelled from the Americas back to Europe?',
+    options: ['Manufactured guns and cloth', 'Sugar, cotton and tobacco', 'Gold and ivory', 'Spices and silk'],
+    correctIndex: 1,
+    explanation: 'The triangular trade\'s third leg carried plantation goods — sugar, cotton, tobacco, coffee and rum — from the Americas to Europe, where the profits bought the manufactured goods (guns, cloth, metalware) traded in Africa for more captives.',
+    i18n: {
+      es: { question: 'El "comercio triangular" llevaba esclavizados en el tramo central del Atlántico. ¿Qué viajaba típicamente de América de vuelta a Europa?', options: ['Armas y telas manufacturadas', 'Azúcar, algodón y tabaco', 'Oro y marfil', 'Especias y seda'], explanation: 'El tercer tramo del comercio triangular llevaba productos de plantación — azúcar, algodón, tabaco, café y ron — de América a Europa, donde los beneficios compraban las manufacturas cambiadas en África por más cautivos.' },
+      ru: { question: '«Треугольная торговля» перевозила порабощённых на среднем отрезке Атлантики. Что обычно шло из Америки обратно в Европу?', options: ['Промышленное оружие и ткани', 'Сахар, хлопок и табак', 'Золото и слоновая кость', 'Пряности и шёлк'], explanation: 'Третий отрезок треугольной торговли вёз плантационные товары — сахар, хлопок, табак, кофе и ром — из Америки в Европу, где на прибыль покупали промышленные товары, обмениваемые в Африке на новых пленников.' },
+      mk: { question: '„Триаголната трговија" превезувала поробени луѓе на средниот дел на Атлантикот. Што вообичаено патувало од Америка назад кон Европа?', options: ['Индустриско оружје и ткаенини', 'Шеќер, памук и тутун', 'Злато и слонова коска', 'Зачини и свила'], explanation: 'Третиот дел на триаголната трговија носел плантажни производи — шеќер, памук, тутун, кафе и рум — од Америка кон Европа, каде што профитот купувал индустриски стоки разменувани во Африка за нови заробеници.' },
+    },
+  },
   // ── CRUSADER STATES ─────────────────────────────────────────────────────────
   {
     id: 'crusader-1', topicId: 'crusader-states',

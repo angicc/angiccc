@@ -47,6 +47,16 @@ const TERRITORY_DESCS: Record<string, Partial<Record<ContentLang, string>>> = {
     ru: 'Потомки Чингисхана создали крупнейшую в истории единую сухопутную империю — от Кореи до Венгрии — соединив Восток и Запад через Pax Mongolica.',
     mk: 'Потомците на Џингис Кан ја исковале најголемата копнена империја во историјата — од Кореја до Унгарија — поврзувајќи го Истокот и Западот преку Pax Mongolica.',
   },
+  'viking-age': {
+    es: 'Desde el ataque a Lindisfarne (793) hasta Stamford Bridge (1066), los navegantes nórdicos saquearon, comerciaron y colonizaron desde Terranova hasta Bagdad — fundando Islandia, el Danelaw, Normandía y la Rus de Kiev.',
+    ru: 'От набега на Линдисфарн (793) до Стамфорд-Бриджа (1066) норманнские мореходы грабили, торговали и селились от Ньюфаундленда до Багдада — основав Исландию, Данелаг, Нормандию и Киевскую Русь.',
+    mk: 'Од нападот на Линдисфарн (793) до Стамфорд Бриџ (1066), нордиските морепловци пустошеле, тргувале и се населувале од Њуфаундленд до Багдад — основувајќи ги Исланд, Данелагот, Нормандија и Киевска Рус.',
+  },
+  'transatlantic-slave-trade': {
+    es: 'Más de 12,5 millones de africanos esclavizados fueron transportados a través del Atlántico en el comercio triangular — manufacturas a África, seres humanos a América, azúcar y algodón de vuelta a Europa.',
+    ru: 'Более 12,5 миллиона порабощённых африканцев были перевезены через Атлантику в рамках треугольной торговли — промышленные товары в Африку, люди в Америку, сахар и хлопок обратно в Европу.',
+    mk: 'Над 12,5 милиони поробени Африканци беа пренесени преку Атлантикот во триаголната трговија — индустриски стоки кон Африка, луѓе кон Америка, шеќер и памук назад кон Европа.',
+  },
   'crusader-states': {
     es: 'Nueve Cruzadas dieron forma a la Europa medieval — la Primera capturó Jerusalén (1099), Saladino la reconquistó (1187), y el último bastión cruzado cayó en Acre en 1291.',
     ru: 'Девять крупных Крестовых походов сформировали средневековую Европу — Первый захватил Иерусалим (1099), Салах ад-Дин отвоевал его (1187), а последний оплот крестоносцев пал в Акре в 1291 году.',

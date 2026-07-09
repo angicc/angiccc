@@ -49,6 +49,13 @@ export const POLY_LABEL_I18N: Record<string, MT> = {
   'Elam': { es: 'Elam', ru: 'Элам', mk: 'Елам' },
   'Batavian Republic (French satellite)': { es: 'República Bátava (satélite francés)', ru: 'Батавская республика (сателлит Франции)', mk: 'Батавска Република (француски сателит)' },
   'Helvetic Republic (French satellite)': { es: 'República Helvética (satélite francés)', ru: 'Гельветическая республика (сателлит Франции)', mk: 'Хелветска Република (француски сателит)' },
+  'Denmark & Norway (Norse realm)': { es: 'Dinamarca y Noruega (reino nórdico)', ru: 'Дания и Норвегия (норманнское королевство)', mk: 'Данска и Норвешка (нордиско кралство)' },
+  'Sweden (Svear)': { es: 'Suecia (svear)', ru: 'Швеция (свеи)', mk: 'Шведска (Свеи)' },
+  'Kievan Rus (Varangian)': { es: 'Rus de Kiev (varegos)', ru: 'Киевская Русь (варяги)', mk: 'Киевска Рус (Варјази)' },
+  'West & Central African coast (slaving)': { es: 'Costa de África Occidental y Central (esclavista)', ru: 'Побережье Западной и Центральной Африки (работорговля)', mk: 'Западноафриканскиот и централноафриканскиот брег (робовладеење)' },
+  'Caribbean & Brazil (plantation coast)': { es: 'Caribe y Brasil (costa de plantaciones)', ru: 'Карибы и Бразилия (плантационное побережье)', mk: 'Кариби и Бразил (плантажен брег)' },
+  'Brazil (Portuguese slaving coast)': { es: 'Brasil (costa esclavista portuguesa)', ru: 'Бразилия (португальское работорговое побережье)', mk: 'Бразил (португалски робовладелски брег)' },
+
 };
 
 export function getTranslatedPolyLabel(label: string, lang: Language): string {
@@ -246,6 +253,29 @@ export const MARKER_NAME_I18N: Record<string, MT> = {
   'Alexandria (founded)': { es: 'Alejandría (fundación)', ru: 'Александрия (основание)', mk: 'Александрија (основање)' },
   'Battle of Gaugamela': { es: 'Batalla de Gaugamela', ru: 'Битва при Гавгамелах', mk: 'Битката кај Гавгамела' },
   'Battle of the Hydaspes': { es: 'Batalla del Hidaspes', ru: 'Битва при Гидаспе', mk: 'Битката кај Хидасп' },
+  'Lindisfarne': { es: 'Lindisfarne', ru: 'Линдисфарн', mk: 'Линдисфарн' },
+  'Hedeby': { es: 'Hedeby', ru: 'Хедебю', mk: 'Хедебо' },
+  'Kaupang': { es: 'Kaupang', ru: 'Каупанг', mk: 'Каупанг' },
+  'Birka': { es: 'Birka', ru: 'Бирка', mk: 'Бирка' },
+  'Jorvik (York)': { es: 'Jorvik (York)', ru: 'Йорвик (Йорк)', mk: 'Јорвик (Јорк)' },
+  'Dublin': { es: 'Dublín', ru: 'Дублин', mk: 'Даблин' },
+  'Reykjavík (Iceland)': { es: 'Reikiavik (Islandia)', ru: 'Рейкьявик (Исландия)', mk: 'Рејкјавик (Исланд)' },
+  'Brattahlíð (Greenland)': { es: 'Brattahlíð (Groenlandia)', ru: 'Браттахлид (Гренландия)', mk: 'Braтахлид (Гренланд)' },
+  "L'Anse aux Meadows": { es: "L'Anse aux Meadows", ru: 'Л\'Анс-о-Медоуз', mk: 'Л\'Анс о Медоуз' },
+  'Novgorod': { es: 'Nóvgorod', ru: 'Новгород', mk: 'Новгород' },
+  'Kiev': { es: 'Kiev', ru: 'Киев', mk: 'Киев' },
+  'Stamford Bridge': { es: 'Puente de Stamford', ru: 'Стамфорд-Бридж', mk: 'Стамфорд Бриџ' },
+  'Normandy (Rouen)': { es: 'Normandía (Ruan)', ru: 'Нормандия (Руан)', mk: 'Нормандија (Руан)' },
+  'Elmina Castle': { es: 'Castillo de Elmina', ru: 'Замок Эльмина', mk: 'Замокот Елмина' },
+  'Ouidah': { es: 'Uidá', ru: 'Уида', mk: 'Уида' },
+  'Luanda': { es: 'Luanda', ru: 'Луанда', mk: 'Луанда' },
+  'Gorée Island': { es: 'Isla de Gorea', ru: 'Остров Горе', mk: 'Островот Горе' },
+  'Salvador da Bahia': { es: 'Salvador de Bahía', ru: 'Салвадор-да-Баия', mk: 'Салвадор да Баија' },
+  'Kingston': { es: 'Kingston', ru: 'Кингстон', mk: 'Кингстон' },
+  'Bridgetown': { es: 'Bridgetown', ru: 'Бриджтаун', mk: 'Бриџтаун' },
+  'Charleston': { es: 'Charleston', ru: 'Чарлстон', mk: 'Чарлстон' },
+  'Cape Coast': { es: 'Cape Coast', ru: 'Кейп-Кост', mk: 'Кејп Кост' },
+
 };
 
 // ── Marker note translations (descriptions shown in popups and story panel) ───
@@ -688,6 +718,29 @@ export const MARKER_NOTE_TEXT_I18N: Record<string, MT> = {
   'Nazi Germany capital — fell May 2, 1945 to Soviet forces': { es: 'Capital de la Alemania nazi — cayó el 2 de mayo de 1945 ante los soviéticos', ru: 'Столица нацистской Германии — пала 2 мая 1945 под ударами советских войск', mk: 'Престолнина на нацистичка Германија — падна на 2 мај 1945 пред советските сили' },
   'Macedonian capital — birthplace of Alexander the Great': { es: 'Capital macedonia — cuna de Alejandro Magno', ru: 'Македонская столица — родина Александра Великого', mk: 'Македонска престолнина — родно место на Александар Велики' },
   'Capital of Macedon — birthplace of Alexander the Great (356 BCE)': { es: 'Capital de Macedonia — cuna de Alejandro Magno (356 a.C.)', ru: 'Столица Македонии — родина Александра Великого (356 г. до н.э.)', mk: 'Престолнина на Македонија — родно место на Александар Велики (356 п.н.е.)' },
+  'First recorded Viking raid (793 CE) — shocked Christendom': { es: "Primer ataque vikingo registrado (793) — conmocionó a la cristiandad", ru: "Первый зафиксированный набег викингов (793) — потряс христианский мир", mk: "Првиот забележан викиншки напад (793) — го потресе христијанскиот свет" },
+  'Great Danish trading town — hub between the North Sea and Baltic': { es: "Gran ciudad comercial danesa — nexo entre el mar del Norte y el Báltico", ru: "Крупный датский торговый город — узел между Северным и Балтийским морями", mk: "Голем дански трговски град — јазол меѓу Северното и Балтичкото Море" },
+  "Norway's earliest town — Skiringssal trading centre": { es: "La ciudad más antigua de Noruega — centro comercial de Skiringssal", ru: "Древнейший город Норвегии — торговый центр Скирингссаль", mk: "Најстариот град во Норвешка — трговски центар Скирингсал" },
+  'Swedish Viking trade hub on Lake Mälaren': { es: "Centro comercial vikingo sueco en el lago Mälaren", ru: "Шведский торговый центр викингов на озере Меларен", mk: "Шведски викиншки трговски центар на езерото Меларен" },
+  'Capital of the Danish kingdom in England — heart of the Danelaw': { es: "Capital del reino danés en Inglaterra — corazón del Danelaw", ru: "Столица датского королевства в Англии — сердце Данелага", mk: "Престолнина на данското кралство во Англија — срцето на Данелагот" },
+  'Norse-founded longphort — major slave and silver market': { es: "Longphort fundado por nórdicos — gran mercado de esclavos y plata", ru: "Основанный норманнами лонгфорт — крупный рынок рабов и серебра", mk: "Нордиски лонгфорт — голем пазар на робови и сребро" },
+  'Iceland settled by Norse from c.874 — the Althing founded 930': { es: "Islandia colonizada por nórdicos desde c.874 — el Althing fundado en 930", ru: "Исландия заселена норманнами с ок.874 — Альтинг основан в 930", mk: "Исланд населен од Нордијците од околу 874 — Алтингот основан 930" },
+  "Erik the Red's estate — Norse Greenland settled c.985": { es: "Hacienda de Erik el Rojo — Groenlandia nórdica colonizada c.985", ru: "Усадьба Эрика Рыжего — норманнская Гренландия заселена ок.985", mk: "Имотот на Ерик Црвениот — нордиски Гренланд населен околу 985" },
+  'Norse site in Newfoundland — Europeans in America c.1000': { es: "Sitio nórdico en Terranova — europeos en América c.1000", ru: "Норманнское поселение в Ньюфаундленде — европейцы в Америке ок.1000", mk: "Нордиско наоѓалиште во Њуфаундленд — Европејци во Америка околу 1000" },
+  "Rurik's Varangian seat — birth of the Rus state": { es: "Sede varega de Rúrik — nacimiento del estado de Rus", ru: "Варяжская столица Рюрика — рождение государства Русь", mk: "Варјашко седиште на Рурик — раѓањето на државата Рус" },
+  'Capital of Kievan Rus — Varangian route to the Greeks': { es: "Capital de la Rus de Kiev — ruta varega hacia los griegos", ru: "Столица Киевской Руси — путь из варяг в греки", mk: "Престолнина на Киевска Рус — варјашки пат кон Грците" },
+  'Harald Hardrada killed (1066) — the Viking Age ends': { es: "Harald Hardrada muere (1066) — termina la era vikinga", ru: "Харальд Суровый убит (1066) — конец эпохи викингов", mk: "Харалд Хардрада убиен (1066) — крајот на викиншката ера" },
+  "Granted to Rollo's Norsemen (911) — birth of the Normans": { es: "Cedida a los nórdicos de Rollón (911) — nacimiento de los normandos", ru: "Передана норманнам Роллона (911) — рождение нормандцев", mk: "Дадена на Нордијците на Роло (911) — раѓањето на Норманите" },
+  'Oldest European slaving fort in sub-Saharan Africa (1482)': { es: "El fuerte esclavista europeo más antiguo del África subsahariana (1482)", ru: "Старейший европейский работорговый форт в Тропической Африке (1482)", mk: "Најстарата европска робовладелска тврдина во субсахарска Африка (1482)" },
+  'Major slaving port of the Kingdom of Dahomey': { es: "Gran puerto esclavista del Reino de Dahomey", ru: "Крупный работорговый порт королевства Дагомея", mk: "Голем робовладелски пристан на Кралството Дахомеј" },
+  'Portuguese Angola — largest single source of the enslaved': { es: "Angola portuguesa — la mayor fuente de esclavizados", ru: "Португальская Ангола — крупнейший источник порабощённых", mk: "Португалска Ангола — најголем поединечен извор на поробени" },
+  'Senegalese slaving depot — the House of Slaves': { es: "Depósito esclavista senegalés — la Casa de los Esclavos", ru: "Сенегальский работорговый склад — Дом рабов", mk: "Сенегалски робовладелски депо — Куќата на робовите" },
+  'Brazil received ~40% of all enslaved Africans — sugar capital': { es: "Brasil recibió ~40% de los africanos esclavizados — capital azucarera", ru: "Бразилия приняла ~40% всех порабощённых африканцев — сахарная столица", mk: "Бразил прими ~40% од сите поробени Африканци — престолнина на шеќерот" },
+  'Jamaica — hub of the British Caribbean sugar economy': { es: "Jamaica — nexo de la economía azucarera del Caribe británico", ru: "Ямайка — центр сахарной экономики Британских Карибов", mk: "Јамајка — јазол на шеќерната економија на британските Кариби" },
+  'Barbados — first English plantation-slavery colony': { es: "Barbados — primera colonia inglesa de esclavitud en plantaciones", ru: "Барбадос — первая английская колония плантационного рабства", mk: "Барбадос — првата англиска колонија на плантажно ропство" },
+  'Main North American slave-importing port': { es: "Principal puerto importador de esclavos de Norteamérica", ru: "Главный порт ввоза рабов в Северной Америке", mk: "Главниот северноамерикански пристан за увоз на робови" },
+  "Europe's dominant slave-trading port by the 1740s": { es: "El puerto esclavista dominante de Europa hacia la década de 1740", ru: "Доминирующий работорговый порт Европы к 1740-м", mk: "Доминантниот европски робовладелски пристан до 1740-тите" },
+  'British slaving headquarters on the Gold Coast': { es: "Cuartel general esclavista británico en la Costa del Oro", ru: "Британская штаб-квартира работорговли на Золотом Берегу", mk: "Британски робовладелски штаб на Златниот Брег" },
 };
 
 export function getTranslatedMarkerName(name: string, lang: Language): string {
