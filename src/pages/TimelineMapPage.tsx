@@ -23,6 +23,7 @@ import {
   eraProgress, totalStars, commanderRankKey, drawStageQuestions,
   type CampaignState,
 } from '@/features/map/campaign';
+import { BattleArena } from '@/features/map/BattleArena';
 import {
   computeChokepoints, deriveTelemetry, loadExplored, saveExplored,
   loadAnnotations, saveAnnotations, ERA_TEXTURES, ensureEraTexturePattern,
@@ -445,58 +446,25 @@ export default function TimelineMapPage() {
   const [campaign, setCampaign] = useState<CampaignState>(() => loadCampaign(currentUser?.id));
   useEffect(() => { setCampaign(loadCampaign(currentUser?.id)); }, [currentUser?.id]);
   const [legendary, setLegendary]       = useState(false);
-  const [campPhase, setCampPhase]       = useState<'idle' | 'active' | 'result'>('idle');
-  const [campQuestions, setCampQuestions] = useState<TerritoryQuizQuestion[]>([]);
-  const [campIdx, setCampIdx]           = useState(0);
-  const [campCorrect, setCampCorrect]   = useState(0);
-  const [campAnswered, setCampAnswered] = useState<number | null>(null);
-  const [campLastResult, setCampLastResult] = useState<{ stars: 0 | 1 | 2 | 3; xp: number; correct: number; total: number } | null>(null);
+  // The battle arena replaces the old quiz-style campaign panel entirely.
+  const [battleQuestions, setBattleQuestions] = useState<TerritoryQuizQuestion[]>([]);
+  const [battleActive, setBattleActive] = useState(false);
 
   function startCampaignStage(topic: TerritoryTopic) {
     const qs = drawStageQuestions(topic.id);
     if (qs.length === 0) { toast.error(t.tmap_camp_no_questions); return; }
-    setCampQuestions(qs);
-    setCampIdx(0);
-    setCampCorrect(0);
-    setCampAnswered(null);
-    setCampLastResult(null);
-    setCampPhase('active');
+    setBattleQuestions(qs);
+    setBattleActive(true);
   }
 
-  function handleCampaignAnswer(idx: number) {
-    if (campAnswered !== null || !campQuestions[campIdx]) return;
-    setCampAnswered(idx);
-    if (idx === campQuestions[campIdx].correctIndex) setCampCorrect(c => c + 1);
-  }
-
-  function advanceCampaign() {
+  // Fired once the animated battle concludes: bank stars/XP just like before.
+  function finishBattle(outcome: { correct: number; total: number; won: boolean }) {
     if (!selected) return;
-    if (campIdx + 1 < campQuestions.length) {
-      setCampIdx(i => i + 1);
-      setCampAnswered(null);
-      return;
-    }
-    const total = campQuestions.length;
-    const { state, stars, xpDelta } = recordStageRun(campaign, selected.id, campCorrect, total, legendary);
+    const { state, stars, xpDelta } = recordStageRun(campaign, selected.id, outcome.correct, outcome.total, legendary);
     setCampaign(state);
     saveCampaign(state, currentUser?.id);
-    if (stars >= 1) { markExplored(selected.id); toast.success(t.tmap_camp_victory); }
-    else toast.error(t.tmap_camp_defeat);
+    if (stars >= 1) markExplored(selected.id);
     if (xpDelta > 0 && currentUser) { addBonusXp(currentUser.id, xpDelta, 'Territory Campaign'); refreshProgress(); }
-    setCampLastResult({ stars, xp: xpDelta, correct: campCorrect, total });
-    setCampPhase('result');
-  }
-
-  // Advance to the next stage of the same era campaign (or back to HQ if done).
-  function continueCampaign() {
-    if (!selected) return;
-    const eraTopics = getEraCampaignTopics(selected.era);
-    const idx = eraTopics.findIndex(tp => tp.id === selected.id);
-    const next = eraTopics.slice(idx + 1).find(tp => isStageUnlocked(campaign, eraTopics, tp.id) && (campaign.stages[tp.id]?.stars ?? 0) === 0)
-      ?? eraTopics.find(tp => isStageUnlocked(campaign, eraTopics, tp.id) && (campaign.stages[tp.id]?.stars ?? 0) === 0);
-    setCampPhase('idle');
-    if (next) setSelected(next);
-    else setSelected(null);
   }
 
   function handleTopicClick(topic: TerritoryTopic, isActive: boolean) {
@@ -505,7 +473,6 @@ export default function TimelineMapPage() {
       const eraTopics = getEraCampaignTopics(topic.era);
       if (!isStageUnlocked(campaign, eraTopics, topic.id)) { toast.error(t.tmap_camp_locked); return; }
       setSelected(topic);
-      setCampPhase('idle');
       return;
     }
     setSelected(isActive && mode !== 'quiz' ? null : topic);
@@ -1088,8 +1055,7 @@ export default function TimelineMapPage() {
       mapRef.current.removeLayer(storyMarkerRef.current);
       storyMarkerRef.current = null;
     }
-    setCampPhase('idle');
-    setCampAnswered(null);
+    setBattleActive(false);
     if (mode === 'quiz') startNewQuiz(selected);
     else renderLayers();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1541,7 +1507,7 @@ export default function TimelineMapPage() {
           {/* ── CONQUEST CAMPAIGN PANEL ──────────────────── */}
           {mode === 'campaign' && (() => {
             const rankKey = commanderRankKey(totalStars(campaign));
-            const legendaryToggle = canLegendary() && campPhase !== 'active' && (
+            const legendaryToggle = canLegendary() && !battleActive && (
               <button
                 onClick={() => setLegendary(l => !l)}
                 title={t.tmap_camp_legendary_hint}
@@ -1593,109 +1559,44 @@ export default function TimelineMapPage() {
             const stageNum = eraTopics.findIndex(tp => tp.id === selected.id) + 1;
             const best = campaign.stages[selected.id];
 
-            // ── Stage briefing ──
-            if (campPhase === 'idle') {
-              return (
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[92%] max-w-lg bg-black/88 backdrop-blur-md text-white p-4 rounded-2xl border border-white/15 shadow-2xl">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Swords className="w-4 h-4 text-primary shrink-0" />
-                    <p className="font-bold text-sm flex-1 min-w-0 truncate">{getTitle(selected, language)}</p>
-                    {legendaryToggle}
-                  </div>
-                  <div className="flex items-center gap-3 text-[11px] text-white/60 mb-3">
-                    <span>{t.tmap_camp_stage} {stageNum}/{eraTopics.length}</span>
-                    <span className="flex items-center gap-px">
-                      {[1, 2, 3].map(n => (
-                        <StarIcon key={n} className={cn('w-3 h-3', n <= (best?.stars ?? 0) ? 'text-amber-400 fill-amber-400' : 'text-white/20')} />
-                      ))}
-                    </span>
-                    {(best?.stars ?? 0) >= 1 && <span className="text-emerald-400 font-semibold">{t.tmap_camp_conquered}</span>}
-                  </div>
-                  <Button size="sm" className="w-full gap-2" onClick={() => startCampaignStage(selected)}>
-                    <Play className="w-3.5 h-3.5" />{t.tmap_camp_start}
-                  </Button>
+            // ── Stage briefing (launch pad for the battle arena) ──
+            return (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[92%] max-w-lg bg-black/88 backdrop-blur-md text-white p-4 rounded-2xl border border-white/15 shadow-2xl">
+                <div className="flex items-center gap-2 mb-1">
+                  <Swords className="w-4 h-4 text-primary shrink-0" />
+                  <p className="font-bold text-sm flex-1 min-w-0 truncate">{getTitle(selected, language)}</p>
+                  {legendaryToggle}
                 </div>
-              );
-            }
-
-            // ── Active question flow ──
-            if (campPhase === 'active' && campQuestions[campIdx]) {
-              const q = campQuestions[campIdx];
-              const tq = getTranslatedTerritoryQuestion(q, language);
-              return (
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[92%] max-w-lg bg-black/88 backdrop-blur-md text-white p-4 rounded-2xl border border-white/15 shadow-2xl">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Swords className="w-4 h-4 text-primary shrink-0" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/50 shrink-0">
-                      {t.tmap_camp_question} {campIdx + 1}/{campQuestions.length}
-                    </span>
-                    {legendary && <Crown className="w-3.5 h-3.5 text-amber-400 shrink-0" />}
-                    <span className="ml-auto shrink-0 text-xs text-emerald-400 tabular-nums">✓ {campCorrect}</span>
-                  </div>
-                  <p className="font-semibold text-sm leading-snug mb-3 break-words">{tq.question}</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {tq.options.map((opt, idx) => {
-                      const isCorrect = idx === q.correctIndex;
-                      const isSelected = campAnswered === idx;
-                      let cls = 'border-white/20 hover:border-white/50 hover:bg-white/10 text-white/80';
-                      if (campAnswered !== null) {
-                        if (isCorrect) cls = 'border-emerald-500 bg-emerald-500/20 text-emerald-300 font-semibold';
-                        else if (isSelected) cls = 'border-red-500 bg-red-500/15 text-red-300';
-                        else cls = 'border-white/10 text-white/30';
-                      }
-                      return (
-                        <button
-                          key={idx}
-                          onClick={() => handleCampaignAnswer(idx)}
-                          disabled={campAnswered !== null}
-                          className={cn('border rounded-xl text-xs font-medium px-3 py-2.5 text-left transition-all leading-snug', cls)}
-                        >
-                          {opt}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {campAnswered !== null && (
-                    <>
-                      <p className="text-xs text-white/60 mt-3 leading-relaxed italic">{tq.explanation}</p>
-                      <Button size="sm" className="w-full mt-2 gap-2" onClick={advanceCampaign}>
-                        <ChevronRight className="w-3.5 h-3.5" />{t.tmap_quiz_next}
-                      </Button>
-                    </>
-                  )}
-                </div>
-              );
-            }
-
-            // ── Stage result ──
-            if (campPhase === 'result' && campLastResult) {
-              const r = campLastResult;
-              return (
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[92%] max-w-lg bg-black/88 backdrop-blur-md text-white p-4 rounded-2xl border border-white/15 shadow-2xl text-center">
-                  <div className="flex items-center justify-center gap-1.5 mb-2">
+                <div className="flex items-center gap-3 text-[11px] text-white/60 mb-3">
+                  <span>{t.tmap_camp_stage} {stageNum}/{eraTopics.length}</span>
+                  <span className="flex items-center gap-px">
                     {[1, 2, 3].map(n => (
-                      <StarIcon key={n} className={cn('w-7 h-7 transition-all', n <= r.stars ? 'text-amber-400 fill-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]' : 'text-white/15')} />
+                      <StarIcon key={n} className={cn('w-3 h-3', n <= (best?.stars ?? 0) ? 'text-amber-400 fill-amber-400' : 'text-white/20')} />
                     ))}
-                  </div>
-                  <p className={cn('font-bold text-sm mb-1', r.stars >= 1 ? 'text-emerald-400' : 'text-red-400')}>
-                    {r.stars >= 1 ? t.tmap_camp_victory : t.tmap_camp_defeat}
-                  </p>
-                  <p className="text-white/60 text-xs mb-3 tabular-nums">
-                    {r.correct}/{r.total}{r.xp > 0 ? ` · ${t.tmap_camp_xp}: +${r.xp}` : ''}
-                  </p>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline" className="flex-1 gap-2 border-white/25 bg-transparent text-white hover:bg-white/10" onClick={() => startCampaignStage(selected)}>
-                      <SkipBack className="w-3.5 h-3.5" />{t.tmap_camp_retry}
-                    </Button>
-                    <Button size="sm" className="flex-1 gap-2" onClick={continueCampaign}>
-                      <Trophy className="w-3.5 h-3.5" />{t.tmap_camp_continue}
-                    </Button>
-                  </div>
+                  </span>
+                  {(best?.stars ?? 0) >= 1 && <span className="text-emerald-400 font-semibold">{t.tmap_camp_conquered}</span>}
                 </div>
-              );
-            }
-            return null;
+                <Button size="sm" className="w-full gap-2" onClick={() => startCampaignStage(selected)}>
+                  <Swords className="w-3.5 h-3.5" />{t.tmap_camp_start}
+                </Button>
+              </div>
+            );
           })()}
+
+          {/* ── ANIMATED BATTLE ARENA (campaign) ──────────── */}
+          {mode === 'campaign' && battleActive && selected && (
+            <BattleArena
+              key={`${selected.id}-${battleQuestions.map(q => q.id).join('')}`}
+              topic={selected}
+              questions={battleQuestions}
+              language={language}
+              legendary={legendary}
+              playerName={currentUser?.username ?? 'Your army'}
+              t={t as unknown as Record<string, string>}
+              onFinish={finishBattle}
+              onExit={() => setBattleActive(false)}
+            />
+          )}
 
           {/* Hint when nothing selected in explore mode */}
           {!selected && mode === 'explore' && (
