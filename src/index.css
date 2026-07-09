@@ -4,20 +4,32 @@
 
 @layer base {
   :root {
-    /* Dark mode (default) — deep navy */
-    --background: 222 47% 8%; --foreground: 40 30% 92%;
-    --card: 222 44% 11%; --card-foreground: 40 30% 92%;
-    --popover: 222 44% 11%; --popover-foreground: 40 30% 92%;
-    --primary: 45 85% 58%; --primary-foreground: 222 47% 8%;
-    --secondary: 222 30% 18%; --secondary-foreground: 40 30% 82%;
-    --muted: 222 30% 15%; --muted-foreground: 40 20% 55%;
-    --accent: 222 30% 20%; --accent-foreground: 40 30% 92%;
+    /* Dark mode (default) — Master Layout elevation system.
+       Borderless hierarchy: nearer surfaces are LIGHTER, not outlined.
+       Layer 0 #0A0D14 Deep Obsidian (base canvas / sidebar)
+       Layer 1 #121722 Stone Slate  (main content panel + header)
+       Layer 2 #1C2333 Raised Midnight (cards, inputs, dropdowns)
+       Layer 3 #FFAA00 Classic Historical Gold (accents, streaks, actions) */
+    --layer-0: 222 33% 6%;
+    --layer-1: 221 31% 10%;
+    --layer-2: 222 29% 15%;
+    --background: 222 33% 6%; --foreground: 0 0% 100%;
+    --card: 222 29% 15%; --card-foreground: 0 0% 100%;
+    --popover: 222 29% 15%; --popover-foreground: 0 0% 100%;
+    --primary: 40 100% 50%; --primary-foreground: 222 33% 6%;
+    --secondary: 222 29% 15%; --secondary-foreground: 215 25% 88%;
+    --muted: 222 29% 12%; --muted-foreground: 215 20% 65%; /* #94A3B8 */
+    --accent: 222 27% 18%; --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%; --destructive-foreground: 0 0% 98%;
-    --border: 222 22% 26%; --input: 222 30% 18%; --ring: 45 85% 58%;
-    --gold: 45 85% 58%; --radius: 0.5rem;
+    /* ≈ 1px white @ 5% over Layer 1 — the only permissible separator */
+    --border: 222 20% 16%; --input: 222 29% 15%; --ring: 40 100% 50%;
+    --gold: 40 100% 50%; --radius: 0.5rem;
   }
   .light {
     /* Light mode — warm parchment, much more polished */
+    --layer-0: 38 34% 86%;
+    --layer-1: 38 40% 92%;
+    --layer-2: 38 35% 98%;
     --background: 38 40% 92%; --foreground: 220 40% 14%;
     --card: 38 35% 98%; --card-foreground: 220 40% 14%;
     --popover: 38 35% 98%; --popover-foreground: 220 40% 14%;

@@ -1,3 +1,10 @@
+// ─── Master Layout Template — the global 3-zone shell ────────────────────────
+// Zone A: 240px sidebar on Layer 0 (Deep Obsidian) — the deepest surface.
+// Zone B: 70px utility header on Layer 1 (Stone Slate).
+// Zone C: fluid main content on Layer 1 with comfortable p-8 padding.
+// Hierarchy is expressed through color elevation (nearer = lighter), never
+// hard borders; the sole permitted separator is a 1px rgba(255,255,255,0.05)
+// hairline. Feature pages mount into Zone C via `children`.
 import { useLayoutEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
@@ -20,16 +27,18 @@ export function AppShell({ children, compact }: { children: React.ReactNode; com
   }, [pathname]);
 
   return (
-    <div className="flex h-screen bg-background relative overflow-hidden">
+    <div className="flex h-screen bg-layer-0 relative overflow-hidden">
       <ParticleCanvas />
-      <Sidebar className="hidden lg:flex" />
-      <div className="flex flex-col flex-1 min-w-0 relative z-10 overflow-hidden">
+      {/* Zone A — sidebar (Layer 0, blends into the base canvas) */}
+      <Sidebar className="hidden lg:flex relative z-10" />
+      {/* Zones B + C — the raised content panel (Layer 1) */}
+      <div className="flex flex-col flex-1 min-w-0 relative z-10 overflow-hidden bg-layer-1/95 lg:rounded-tl-2xl">
         <TopBar />
         <main ref={mainRef} className={cn(
-          'flex-1 animate-fade-in',
-          compact ? 'overflow-hidden' : 'p-3 sm:p-4 md:p-6 lg:p-8 overflow-y-auto'
+          'flex-1 animate-fade-in scroll-smooth',
+          compact ? 'overflow-hidden' : 'p-4 sm:p-6 lg:p-8 overflow-y-auto',
         )}>{children}</main>
-        <div className="shrink-0 px-4 py-1.5 text-center text-[10px] text-muted-foreground/40 select-none border-t border-border/20">
+        <div className="shrink-0 px-4 py-1.5 text-center text-[10px] text-muted-foreground/40 select-none">
           © {new Date().getFullYear()} Historify. All rights reserved.
         </div>
       </div>

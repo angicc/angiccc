@@ -21,6 +21,7 @@ export default {
         destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
         border: 'hsl(var(--border))', input: 'hsl(var(--input))', ring: 'hsl(var(--ring))',
         gold: 'hsl(var(--gold))',
+        'layer-0': 'hsl(var(--layer-0))', 'layer-1': 'hsl(var(--layer-1))', 'layer-2': 'hsl(var(--layer-2))',
       },
       keyframes: {
         'accordion-down': { from: { height: '0' }, to: { height: 'var(--radix-accordion-content-height)' } },

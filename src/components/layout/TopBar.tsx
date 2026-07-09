@@ -1,6 +1,11 @@
+// ─── Zone B: Fixed Top Utility Header (70px, Layer 1 — Stone Slate) ──────────
+// Left: global search (Ctrl+K) + the current page title. Right: XP mini-pill
+// with progress, notification bell, language selector, theme toggle, and the
+// account menu. Separation from Zone C comes from elevation, not hard rules —
+// the only stroke is a 1px rgba(255,255,255,0.05) hairline under the header.
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Menu, Sun, Moon, Search, Globe, Check } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Menu, Sun, Moon, Search, Globe, Check, Bell, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -9,17 +14,40 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useAuth } from '@/features/auth/AuthContext';
 import { useTheme } from '@/components/ThemeProvider';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { LevelProgress } from '@/components/shared/LevelProgress';
-import { StreakBadge } from '@/components/shared/StreakBadge';
+import { xpToNextLevel } from '@/features/progress/xpSystem';
 import { SearchDialog } from '@/components/shared/SearchDialog';
 import { Sidebar } from './Sidebar';
-import { LANGUAGE_LABELS, type Language } from '@/i18n/translations';
+import { LANGUAGE_LABELS, type Language, type TranslationKeys } from '@/i18n/translations';
+
+// Route prefix → page-title translation key. First (longest) match wins, so
+// keep more specific prefixes above shorter ones.
+const PAGE_TITLES: [string, keyof TranslationKeys][] = [
+  ['/timeline-map', 'nav_timeline_map'],
+  ['/dashboard',    'nav_dashboard'],
+  ['/eras',         'nav_eras'],
+  ['/timeline',     'nav_timeline'],
+  ['/tutor',        'nav_tutor'],
+  ['/smart-quiz',   'nav_smart_quiz'],
+  ['/essay',        'nav_essay'],
+  ['/video-review', 'nav_video_review'],
+  ['/debate',       'nav_debate'],
+  ['/crisis',       'nav_crisis'],
+  ['/flashcards',   'nav_flashcards'],
+  ['/friends',      'nav_friends'],
+  ['/leaderboard',  'nav_leaderboard'],
+  ['/progress',     'nav_progress'],
+  ['/notes',        'nav_notes'],
+  ['/profile',      'nav_profile'],
+  ['/guide',        'nav_guide'],
+  ['/report',       'nav_report'],
+];
 
 export function TopBar() {
   const { currentUser, progress, startLogout } = useAuth();
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
@@ -41,6 +69,9 @@ export function TopBar() {
   }, [avatarKey]);
 
   const LANGS = Object.entries(LANGUAGE_LABELS) as [Language, string][];
+  const titleKey = PAGE_TITLES.find(([prefix]) => pathname.startsWith(prefix))?.[1];
+  const pageTitle = titleKey ? t[titleKey] : '';
+  const xpInfo = progress ? xpToNextLevel(progress.xp) : null;
 
   return (
     <>
@@ -57,27 +88,64 @@ export function TopBar() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <header className="h-14 border-b glass-panel flex items-center px-4 gap-3 shrink-0 sticky top-0 z-20">
+
+      <header className="h-[70px] bg-layer-1 flex items-center px-4 lg:px-6 gap-3 shrink-0 sticky top-0 z-20 shadow-[0_1px_0_rgba(255,255,255,0.05)]">
+        {/* Mobile nav trigger */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild><Button variant="ghost" size="icon" className="lg:hidden"><Menu className="w-5 h-5" /></Button></SheetTrigger>
           <SheetContent side="left" className="p-0 w-60"><Sidebar onNavigate={() => setOpen(false)} /></SheetContent>
         </Sheet>
 
+        {/* ── Left: global search + current page title ── */}
         <button
           onClick={() => setSearchOpen(true)}
-          className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-muted/50 hover:bg-muted text-muted-foreground text-sm transition-colors"
+          className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-layer-2 hover:bg-accent text-muted-foreground text-sm transition-colors w-56"
         >
-          <Search className="w-3.5 h-3.5" />
-          <span>{t.search_placeholder}</span>
-          <kbd className="ml-2 text-xs bg-background px-1.5 py-0.5 rounded border border-border">Ctrl+K</kbd>
+          <Search className="w-3.5 h-3.5 shrink-0" />
+          <span className="truncate">{t.search_placeholder}</span>
+          <kbd className="ml-auto text-[10px] font-sans bg-white/5 text-muted-foreground px-1.5 py-0.5 rounded shrink-0">Ctrl+K</kbd>
         </button>
         <Button variant="ghost" size="icon" className="sm:hidden" onClick={() => setSearchOpen(true)}>
           <Search className="w-4 h-4" />
         </Button>
+        {pageTitle && (
+          <h1 className="hidden md:block font-heading text-base font-bold text-foreground truncate">{pageTitle}</h1>
+        )}
 
         <div className="flex-1" />
-        {progress && <StreakBadge streak={progress.streak} compact />}
-        {progress && <div className="hidden sm:block"><LevelProgress xp={progress.xp} compact /></div>}
+
+        {/* ── Right: XP mini-pill · bell · language · theme · account ── */}
+        {progress && xpInfo && (
+          <div className="hidden sm:flex items-center gap-2 pl-3 pr-3.5 py-1.5 rounded-full bg-layer-2" title={`Lv.${progress.level}`}>
+            <Flame className="w-3.5 h-3.5 text-primary" />
+            <div className="w-16 h-1.5 bg-white/5 rounded-full overflow-hidden">
+              <div className="h-full bg-primary rounded-full transition-all duration-700" style={{ width: `${Math.min(xpInfo.percent, 100)}%` }} />
+            </div>
+            <span className="text-[11px] font-semibold text-muted-foreground tabular-nums">{xpInfo.current}/{xpInfo.needed} XP</span>
+          </div>
+        )}
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" title={t.notif_title} className="relative">
+              <Bell className="w-4 h-4" />
+              {progress != null && progress.streak > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary" />
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-64">
+            <div className="px-3 py-2">
+              <p className="font-semibold text-sm">{t.notif_title}</p>
+              {progress && progress.streak > 0 && (
+                <p className="text-xs text-primary mt-1.5 flex items-center gap-1.5">
+                  <Flame className="w-3 h-3" />{progress.streak}{t.sidebar_streak}
+                </p>
+              )}
+              <p className="text-xs text-muted-foreground mt-1.5">{t.notif_empty}</p>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         {/* Language selector */}
         <DropdownMenu>
@@ -109,7 +177,7 @@ export function TopBar() {
               <Button variant="ghost" className="p-0 h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
                   {avatarUrl && <AvatarImage src={avatarUrl} alt={currentUser.username} />}
-                  <AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">{currentUser.avatarInitials}</AvatarFallback>
+                  <AvatarFallback className="bg-layer-2 text-primary text-xs font-semibold">{currentUser.avatarInitials}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
