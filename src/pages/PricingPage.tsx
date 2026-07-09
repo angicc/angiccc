@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { PLANS } from '@/features/subscription/plans';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { useAuth } from '@/features/auth/AuthContext';
+import { billingConfigured, startCheckout } from '@/services/billing';
 import { PaymentModal } from '@/components/shared/PaymentModal';
 import { Logo } from '@/components/shared/Logo';
 import { toast } from 'sonner';
@@ -24,7 +25,7 @@ export default function PricingPage() {
   const tier = subscription?.tier ?? 'free';
   const [payTarget, setPayTarget] = useState<{ id: SubscriptionTier; name: string; price: number } | null>(null);
 
-  function handleSelect(id: SubscriptionTier) {
+  async function handleSelect(id: SubscriptionTier) {
     if (!currentUser) { navigate('/register'); return; }
     if (tier === id) { toast.info('You are already on this plan.'); return; }
     const plan = PLANS.find(p => p.id === id)!;
@@ -33,6 +34,18 @@ export default function PricingPage() {
       toast.success('Downgraded to Free plan.');
       navigate('/dashboard');
       return;
+    }
+    // Real money path: with a backend configured, purchases go through Stripe
+    // Checkout (subscription + free trial, card up front). The demo modal
+    // only appears in local/preview builds that have no VITE_API_URL.
+    if (billingConfigured()) {
+      try {
+        const url = await startCheckout(id as 'pro' | 'master');
+        if (url) { window.location.assign(url); return; }
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Could not start checkout — please try again.');
+        return;
+      }
     }
     setPayTarget({ id, name: plan.name, price: plan.price });
   }
@@ -79,6 +92,7 @@ export default function PricingPage() {
                   <div className="flex items-baseline gap-1 mb-2">
                     {plan.price === 0 ? <span className="text-4xl font-bold font-heading">{t.pricing_price_free}</span> : <><span className="text-4xl font-bold font-heading">${plan.price}</span><span className="text-muted-foreground text-sm">{t.pricing_month}</span></>}
                   </div>
+                  {plan.price > 0 && <div className="text-xs font-semibold text-emerald-400 mb-1">{t.pricing_trial_note}</div>}
                   <p className="text-muted-foreground text-sm">{plan.description}</p>
                 </CardHeader>
                 <CardContent className="flex flex-col flex-1 gap-6">

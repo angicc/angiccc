@@ -31,6 +31,14 @@ model User {
   language      String            @default("en") // en | es | ru | mk
   createdAt     DateTime          @default(now())
   lastSeenAt    DateTime          @default(now()) // presence heartbeat
+
+  // ── Billing (Stripe subscription + free trial) ──
+  stripeCustomerId   String?   @unique
+  subscriptionId     String?
+  subscriptionStatus String?   // trialing | active | past_due | canceled
+  trialEndsAt        DateTime?
+  renewsAt           DateTime?
+
   chatSessions  ClioChatSession[]
   crisisStates  CrisisRoomState[]
   progress      ProgressSnapshot?

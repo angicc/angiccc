@@ -28,6 +28,10 @@ the frontend keeps working on localStorage until it is pointed here.
 | `/api/social/duel/challenge` | POST | session | Record a History 1v1 challenge |
 | `/api/social/duel/pending` | GET | session | Challenges awaiting my response |
 | `/api/social/duel/respond` | POST | session | Accept / decline a challenge |
+| `/api/billing/status` | GET | session | Fresh tier + subscription/trial state |
+| `/api/billing/checkout` | POST | session | Create Stripe Checkout session (`{plan:'pro'\|'master'}` → `{url}`) |
+| `/api/billing/portal` | POST | session | Stripe customer portal (cancel / change plan / card) |
+| `/api/billing/webhook` | POST | Stripe HMAC | Subscription lifecycle → flips `User.tier` in Postgres |
 | `/api/presence/count` | GET | — | Global online-user count (status pages) |
 | `/api/crisis/reset` | POST | Master | Transactional reset: drop decision log, re-init baseline metrics |
 | `/api/crisis/:crisisId` | GET | Master | Fetch (or lazily create) the active run state |
@@ -49,6 +53,29 @@ social events: `dm:send` → `dm:new` (direct messages), `duel:challenge` →
 room. Clients send `heartbeat` to refresh `lastSeenAt`. For horizontal scaling,
 back the presence registry with Redis and add the socket.io Redis adapter so
 presence and relays span nodes.
+
+## Billing (Stripe)
+
+Paid launch: every paid plan starts with a free trial (`TRIAL_DAYS`, default 5,
+card collected up front, first charge when the trial ends). Setup:
+
+1. In the Stripe dashboard create two recurring prices — Pro Learner $10/mo and
+   Master Student $20/mo — and put their IDs in `STRIPE_PRICE_PRO` /
+   `STRIPE_PRICE_MASTER`.
+2. Set `STRIPE_SECRET_KEY`, `FRONTEND_URL`, and add a webhook endpoint pointing
+   at `POST /api/billing/webhook` subscribed to `checkout.session.completed`,
+   `customer.subscription.created/updated/deleted`, and
+   `invoice.payment_failed`; put its signing secret in `STRIPE_WEBHOOK_SECRET`.
+3. The webhook is the only writer of paid tiers: Stripe → HMAC-verified event →
+   `User.tier` in Postgres. `past_due` keeps access while Stripe retries the
+   card; a definitive cancellation drops the account to FREE. Tier gates
+   re-check the DB when a JWT's tier claim is stale, so upgrades apply without
+   re-login. No Stripe SDK is required — the server calls Stripe's REST API
+   directly and verifies webhook signatures with `node:crypto`.
+
+The frontend calls `/api/billing/checkout` when `VITE_API_URL` is set and
+redirects to the returned Checkout URL; without a backend URL it falls back to
+the local demo payment modal (no real charge).
 
 ## Deployment
 

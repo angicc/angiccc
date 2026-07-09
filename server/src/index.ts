@@ -13,6 +13,7 @@ import { clioRouter } from './routes/clio';
 import { authRouter } from './routes/auth';
 import { syncRouter } from './routes/sync';
 import { socialRouter } from './routes/social';
+import { billingRouter, stripeWebhookHandler } from './routes/billing';
 import { presence } from './presence';
 
 const prisma = new PrismaClient();
@@ -44,6 +45,11 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+// Stripe webhook needs the raw request bytes for signature verification, so it
+// is mounted BEFORE the JSON body parser (and takes no session auth — the HMAC
+// signature is its authentication).
+app.post('/api/billing/webhook', express.raw({ type: 'application/json' }), stripeWebhookHandler);
+
 app.use(express.json({ limit: '256kb' }));
 app.use(cookieParser());
 
@@ -62,13 +68,23 @@ function authenticate(req: Request, res: Response, next: NextFunction) {
 }
 
 // ── Tier gating (server-side twin of the client PlanGate HOC) ────────────────
+// The JWT carries the tier it had at login, so a user who upgrades mid-session
+// still holds a FREE-tier token. When the claim is insufficient, re-check the
+// database before denying — a Stripe upgrade takes effect immediately without
+// forcing a re-login, while the cheap JWT pass still handles the common case.
 function requireTier(tier: 'PRO' | 'MASTER') {
   const rank = { FREE: 0, PRO: 1, MASTER: 2 } as const;
-  return (req: Request, res: Response, next: NextFunction) => {
-    if (!req.auth || rank[req.auth.tier] < rank[tier]) {
-      return res.status(403).json({ error: `${tier === 'MASTER' ? 'Master Student' : 'Pro Learner'} plan required.` });
-    }
-    next();
+  return async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.auth) return res.status(401).json({ error: 'Authentication required.' });
+    if (rank[req.auth.tier] >= rank[tier]) return next();
+    try {
+      const fresh = await prisma.user.findUnique({ where: { id: req.auth.userId }, select: { tier: true } });
+      if (fresh && rank[fresh.tier] >= rank[tier]) {
+        req.auth.tier = fresh.tier;
+        return next();
+      }
+    } catch { /* fall through to denial */ }
+    res.status(403).json({ error: `${tier === 'MASTER' ? 'Master Student' : 'Pro Learner'} plan required.` });
   };
 }
 
@@ -79,6 +95,7 @@ app.use('/api/auth/me', authenticate);
 app.use('/api/auth', authRouter);
 app.use('/api/sync', authenticate, syncRouter);
 app.use('/api/social', authenticate, socialRouter);
+app.use('/api/billing', authenticate, billingRouter);
 app.use('/api/crisis', authenticate, requireTier('MASTER'), crisisRouter);
 app.use('/api/clio', authenticate, requireTier('PRO'), clioRouter);
 
