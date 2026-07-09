@@ -30,10 +30,56 @@ model User {
   tier          Tier              @default(FREE)
   language      String            @default("en") // en | es | ru | mk
   createdAt     DateTime          @default(now())
+  lastSeenAt    DateTime          @default(now()) // presence heartbeat
   chatSessions  ClioChatSession[]
   crisisStates  CrisisRoomState[]
   progress      ProgressSnapshot?
   campaign      CampaignProgress?
+  friendsA      Friendship[]      @relation("friendA")
+  friendsB      Friendship[]      @relation("friendB")
+  sentMessages  DirectMessage[]   @relation("msgFrom")
+  recvMessages  DirectMessage[]   @relation("msgTo")
+}
+
+// Accepted friendship (undirected pair, stored once with a < b ordering).
+model Friendship {
+  id        String   @id @default(cuid())
+  aId       String
+  bId       String
+  createdAt DateTime @default(now())
+  a         User     @relation("friendA", fields: [aId], references: [id], onDelete: Cascade)
+  b         User     @relation("friendB", fields: [bId], references: [id], onDelete: Cascade)
+
+  @@unique([aId, bId])
+  @@index([aId])
+  @@index([bId])
+}
+
+// Durable direct message between two users. Relayed live over sockets when the
+// recipient is online, and persisted so it is delivered on next connect.
+model DirectMessage {
+  id         String   @id @default(cuid())
+  fromId     String
+  toId       String
+  text       String
+  createdAt  DateTime @default(now())
+  readAt     DateTime?
+  from       User     @relation("msgFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to         User     @relation("msgTo", fields: [toId], references: [id], onDelete: Cascade)
+
+  @@index([toId, createdAt])
+  @@index([fromId, toId])
+}
+
+// A pending History 1v1 challenge from one user to another.
+model DuelChallenge {
+  id         String   @id @default(cuid())
+  fromId     String
+  toId       String
+  status     String   @default("pending") // pending | accepted | declined | expired
+  createdAt  DateTime @default(now())
+
+  @@index([toId, status])
 }
 
 // Whole-progress snapshot mirroring the client progress store (XP, streaks,

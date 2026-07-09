@@ -7,10 +7,15 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 import { Server as SocketIOServer } from 'socket.io';
+import { PrismaClient } from '@prisma/client';
 import { crisisRouter } from './routes/crisis';
 import { clioRouter } from './routes/clio';
 import { authRouter } from './routes/auth';
 import { syncRouter } from './routes/sync';
+import { socialRouter } from './routes/social';
+import { presence } from './presence';
+
+const prisma = new PrismaClient();
 
 declare global {
   // Attached by the JWT middleware below.
@@ -73,8 +78,12 @@ app.get('/healthz', (_req, res) => res.json({ ok: true }));
 app.use('/api/auth/me', authenticate);
 app.use('/api/auth', authRouter);
 app.use('/api/sync', authenticate, syncRouter);
+app.use('/api/social', authenticate, socialRouter);
 app.use('/api/crisis', authenticate, requireTier('MASTER'), crisisRouter);
 app.use('/api/clio', authenticate, requireTier('PRO'), clioRouter);
+
+// Lightweight global presence stat (no auth) — for status pages / health.
+app.get('/api/presence/count', (_req, res) => res.json({ online: presence.onlineCount() }));
 
 // Central error handler — no stack traces in production responses.
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
@@ -102,10 +111,32 @@ io.use((socket, next) => {
   }
 });
 
+// Notify a user's accepted friends of a presence change (online/offline).
+async function broadcastPresence(userId: string, online: boolean) {
+  try {
+    const rows = await prisma.friendship.findMany({
+      where: { OR: [{ aId: userId }, { bId: userId }] },
+      select: { aId: true, bId: true },
+    });
+    const friendIds = rows.map(r => (r.aId === userId ? r.bId : r.aId));
+    for (const fid of friendIds) io.to(`user:${fid}`).emit('presence', { userId, online });
+  } catch (err) { console.error('presence broadcast failed', err); }
+}
+
 io.on('connection', socket => {
-  // Each user gets a private room — the sync fan-out target for their devices.
-  const room = `user:${socket.data.userId}`;
+  const userId = socket.data.userId as string;
+  // Each user gets a private room — the sync fan-out + direct-delivery target.
+  const room = `user:${userId}`;
   void socket.join(room);
+
+  // ── Presence: mark online, heartbeat lastSeen, tell friends ──
+  const cameOnline = presence.add(userId, socket.id);
+  prisma.user.update({ where: { id: userId }, data: { lastSeenAt: new Date() } }).catch(() => {});
+  if (cameOnline) void broadcastPresence(userId, true);
+
+  socket.on('heartbeat', () => {
+    prisma.user.update({ where: { id: userId }, data: { lastSeenAt: new Date() } }).catch(() => {});
+  });
 
   // Client pushes local state deltas; server rebroadcasts to the user's other
   // devices. Persisting to Postgres happens through the REST layer.
@@ -113,6 +144,32 @@ io.on('connection', socket => {
   socket.on('clio:sync', (payload: unknown) => socket.to(room).emit('clio:sync', payload));
   socket.on('progress:sync', (payload: unknown) => socket.to(room).emit('progress:sync', payload));
   socket.on('campaign:sync', (payload: unknown) => socket.to(room).emit('campaign:sync', payload));
+
+  // ── Live direct messages: deliver to the recipient's room immediately ──
+  socket.on('dm:send', (payload: { toId?: string; text?: string; id?: string }) => {
+    if (!payload?.toId || typeof payload.text !== 'string') return;
+    io.to(`user:${payload.toId}`).emit('dm:new', {
+      id: payload.id, fromId: userId, text: payload.text.slice(0, 2000), createdAt: new Date().toISOString(),
+    });
+  });
+
+  // ── Live duel signalling: challenge / accept / decline relayed to the peer ──
+  socket.on('duel:challenge', (payload: { toId?: string; challengeId?: string }) => {
+    if (!payload?.toId) return;
+    io.to(`user:${payload.toId}`).emit('duel:incoming', { fromId: userId, challengeId: payload.challengeId });
+  });
+  socket.on('duel:respond', (payload: { toId?: string; accept?: boolean; challengeId?: string }) => {
+    if (!payload?.toId) return;
+    io.to(`user:${payload.toId}`).emit('duel:response', { fromId: userId, accept: !!payload.accept, challengeId: payload.challengeId });
+  });
+
+  socket.on('disconnect', () => {
+    const wentOffline = presence.remove(userId, socket.id);
+    if (wentOffline) {
+      prisma.user.update({ where: { id: userId }, data: { lastSeenAt: new Date() } }).catch(() => {});
+      void broadcastPresence(userId, false);
+    }
+  });
 });
 
 httpServer.listen(Number(PORT), () => {
