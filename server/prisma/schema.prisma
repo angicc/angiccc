@@ -1,0 +1,184 @@
+// Historify backend — Prisma schema (PostgreSQL)
+// Mirrors the client's localStorage models 1:1 so the frontend sync layer can
+// hydrate/flush without shape translation.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Tier {
+  FREE
+  PRO
+  MASTER // "Master Student Plan" — gates Chronos Crisis Room + Video Review
+}
+
+enum Sender {
+  user
+  clio
+}
+
+model User {
+  id            String            @id @default(cuid())
+  email         String            @unique
+  username      String
+  passwordHash  String
+  tier          Tier              @default(FREE)
+  language      String            @default("en") // en | es | ru | mk
+  createdAt     DateTime          @default(now())
+  lastSeenAt    DateTime          @default(now()) // presence heartbeat
+
+  // ── Billing (Stripe subscription + free trial) ──
+  stripeCustomerId   String?   @unique
+  subscriptionId     String?
+  subscriptionStatus String?   // trialing | active | past_due | canceled
+  trialEndsAt        DateTime?
+  renewsAt           DateTime?
+
+  chatSessions  ClioChatSession[]
+  crisisStates  CrisisRoomState[]
+  progress      ProgressSnapshot?
+  campaign      CampaignProgress?
+  learnerProfile LearnerProfile?
+  weekPlan      WeekPlanRecord?
+  studySets     StudySet[]
+  friendsA      Friendship[]      @relation("friendA")
+  friendsB      Friendship[]      @relation("friendB")
+  sentMessages  DirectMessage[]   @relation("msgFrom")
+  recvMessages  DirectMessage[]   @relation("msgTo")
+}
+
+// Accepted friendship (undirected pair, stored once with a < b ordering).
+model Friendship {
+  id        String   @id @default(cuid())
+  aId       String
+  bId       String
+  createdAt DateTime @default(now())
+  a         User     @relation("friendA", fields: [aId], references: [id], onDelete: Cascade)
+  b         User     @relation("friendB", fields: [bId], references: [id], onDelete: Cascade)
+
+  @@unique([aId, bId])
+  @@index([aId])
+  @@index([bId])
+}
+
+// Durable direct message between two users. Relayed live over sockets when the
+// recipient is online, and persisted so it is delivered on next connect.
+model DirectMessage {
+  id         String   @id @default(cuid())
+  fromId     String
+  toId       String
+  text       String
+  createdAt  DateTime @default(now())
+  readAt     DateTime?
+  from       User     @relation("msgFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to         User     @relation("msgTo", fields: [toId], references: [id], onDelete: Cascade)
+
+  @@index([toId, createdAt])
+  @@index([fromId, toId])
+}
+
+// A pending History 1v1 challenge from one user to another.
+model DuelChallenge {
+  id         String   @id @default(cuid())
+  fromId     String
+  toId       String
+  status     String   @default("pending") // pending | accepted | declined | expired
+  createdAt  DateTime @default(now())
+
+  @@index([toId, status])
+}
+
+// Whole-progress snapshot mirroring the client progress store (XP, streaks,
+// completed lessons/quizzes, achievements). Client-authoritative for now:
+// hydrate on login, flush after mutations; last write wins per device.
+model ProgressSnapshot {
+  userId    String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Territory Conquest Campaign state (stars, best scores, banked XP per stage).
+model CampaignProgress {
+  userId    String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ClioChatSession {
+  id        String            @id @default(cuid())
+  userId    String
+  title     String            @default("")
+  language  String            @default("en")
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  ClioChatMessage[]
+
+  @@index([userId, updatedAt])
+}
+
+model ClioChatMessage {
+  id        String          @id @default(cuid())
+  sessionId String
+  sender    Sender
+  text      String
+  timestamp DateTime        @default(now())
+  session   ClioChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, timestamp])
+}
+
+// Clio's persistent learner memory (interests, misconceptions, mastered facts,
+// session summaries). Client-authoritative blob, one per user.
+model LearnerProfile {
+  userId    String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// The generated weekly study plan (steps + AI coach notes + manual checkoffs).
+model WeekPlanRecord {
+  userId    String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// One AI Studio study set (flashcards + questions + facts generated from a
+// user-pasted source). Discrete rows so sets sync and delete individually;
+// the id is the client-generated UUID.
+model StudySet {
+  id        String   @id
+  userId    String
+  name      String
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model CrisisRoomState {
+  id              String   @id @default(cuid())
+  userId          String
+  crisisId        String   // e.g. "crisis-rubicon"
+  activeStep      Int      @default(0)
+  concluded       Boolean  @default(false)
+  // [{ step, optionId, text, revealedConsequence? }]
+  decisionHistory Json     @default("[]")
+  // { diplomaticCapital, domesticStability, militaryReadiness, treasury } 0–100
+  resourceMetrics Json     @default("{\"diplomaticCapital\":50,\"domesticStability\":50,\"militaryReadiness\":50,\"treasury\":50}")
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, crisisId])
+}

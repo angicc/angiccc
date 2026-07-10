@@ -1,0 +1,213 @@
+// Historify backend — production server runtime (Express + Socket.io).
+// Run: npm run build && npm start   (or npm run dev for tsx watch mode)
+import express, { type Request, type Response, type NextFunction } from 'express';
+import { createServer } from 'node:http';
+import helmet from 'helmet';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
+import { Server as SocketIOServer } from 'socket.io';
+import { PrismaClient } from '@prisma/client';
+import { crisisRouter } from './routes/crisis';
+import { clioRouter } from './routes/clio';
+import { authRouter } from './routes/auth';
+import { syncRouter } from './routes/sync';
+import { socialRouter } from './routes/social';
+import { learningRouter } from './routes/learning';
+import { billingRouter, stripeWebhookHandler } from './routes/billing';
+import { presence } from './presence';
+
+const prisma = new PrismaClient();
+
+declare global {
+  // Attached by the JWT middleware below.
+  namespace Express {
+    interface Request { auth?: { userId: string; tier: 'FREE' | 'PRO' | 'MASTER' } }
+  }
+}
+
+const {
+  PORT = '4000',
+  JWT_SECRET = '',
+  CORS_ORIGIN = 'http://localhost:5173',
+  NODE_ENV = 'development',
+} = process.env;
+
+if (!JWT_SECRET) throw new Error('JWT_SECRET is required — set it in the environment.');
+
+const app = express();
+app.set('trust proxy', 1); // behind a reverse proxy / load balancer
+
+// ── Security & parsing middleware ────────────────────────────────────────────
+app.use(helmet());
+app.use(cors({
+  origin: CORS_ORIGIN.split(','),   // comma-separated allowlist, never '*' with credentials
+  credentials: true,                 // cookie-session + Authorization headers cross-origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+// Stripe webhook needs the raw request bytes for signature verification, so it
+// is mounted BEFORE the JSON body parser (and takes no session auth — the HMAC
+// signature is its authentication).
+app.post('/api/billing/webhook', express.raw({ type: 'application/json' }), stripeWebhookHandler);
+
+app.use(express.json({ limit: '256kb' }));
+app.use(cookieParser());
+
+// ── JWT authentication (httpOnly cookie or Authorization: Bearer) ───────────
+function authenticate(req: Request, res: Response, next: NextFunction) {
+  const bearer = req.headers.authorization?.replace(/^Bearer\s+/i, '');
+  const token = bearer ?? (req.cookies?.session as string | undefined);
+  if (!token) return res.status(401).json({ error: 'Authentication required.' });
+  try {
+    const payload = jwt.verify(token, JWT_SECRET) as { sub: string; tier: 'FREE' | 'PRO' | 'MASTER' };
+    req.auth = { userId: payload.sub, tier: payload.tier };
+    next();
+  } catch {
+    res.status(401).json({ error: 'Invalid or expired session.' });
+  }
+}
+
+// ── Tier gating (server-side twin of the client PlanGate HOC) ────────────────
+// The JWT carries the tier it had at login, so a user who upgrades mid-session
+// still holds a FREE-tier token. When the claim is insufficient, re-check the
+// database before denying — a Stripe upgrade takes effect immediately without
+// forcing a re-login, while the cheap JWT pass still handles the common case.
+function requireTier(tier: 'PRO' | 'MASTER') {
+  const rank = { FREE: 0, PRO: 1, MASTER: 2 } as const;
+  return async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.auth) return res.status(401).json({ error: 'Authentication required.' });
+    if (rank[req.auth.tier] >= rank[tier]) return next();
+    try {
+      const fresh = await prisma.user.findUnique({ where: { id: req.auth.userId }, select: { tier: true } });
+      if (fresh && rank[fresh.tier] >= rank[tier]) {
+        req.auth.tier = fresh.tier;
+        return next();
+      }
+    } catch { /* fall through to denial */ }
+    res.status(403).json({ error: `${tier === 'MASTER' ? 'Master Student' : 'Pro Learner'} plan required.` });
+  };
+}
+
+// ── Routes ───────────────────────────────────────────────────────────────────
+app.get('/healthz', (_req, res) => res.json({ ok: true }));
+// register/login/logout are public; /me needs the session.
+app.use('/api/auth/me', authenticate);
+app.use('/api/auth', authRouter);
+app.use('/api/sync', authenticate, syncRouter);
+app.use('/api/social', authenticate, socialRouter);
+// Learner memory / study plan / study sets. Tier-free by design: these sync
+// existing client state — the AI calls that CREATE the content are the gated
+// resource (clio proxy is PRO+), so a downgraded user keeps read/write access
+// to material they already generated.
+app.use('/api/learning', authenticate, learningRouter);
+app.use('/api/billing', authenticate, billingRouter);
+app.use('/api/crisis', authenticate, requireTier('MASTER'), crisisRouter);
+app.use('/api/clio', authenticate, requireTier('PRO'), clioRouter);
+
+// Lightweight global presence stat (no auth) — for status pages / health.
+app.get('/api/presence/count', (_req, res) => res.json({ online: presence.onlineCount() }));
+
+// Central error handler — no stack traces in production responses.
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  console.error(err);
+  res.status(500).json({ error: NODE_ENV === 'production' ? 'Internal server error.' : err.message });
+});
+
+// ── WebSocket layer: live cloud sync / future multiplayer ────────────────────
+const httpServer = createServer(app);
+const io = new SocketIOServer(httpServer, {
+  cors: { origin: CORS_ORIGIN.split(','), credentials: true },
+});
+
+io.use((socket, next) => {
+  // Same JWT, delivered via the socket handshake.
+  const token = (socket.handshake.auth?.token as string | undefined)
+    ?? socket.handshake.headers.authorization?.replace(/^Bearer\s+/i, '');
+  if (!token) return next(new Error('unauthorized'));
+  try {
+    const payload = jwt.verify(token, JWT_SECRET) as { sub: string };
+    socket.data.userId = payload.sub;
+    next();
+  } catch {
+    next(new Error('unauthorized'));
+  }
+});
+
+// Notify a user's accepted friends of a presence change (online/offline).
+async function broadcastPresence(userId: string, online: boolean) {
+  try {
+    const rows = await prisma.friendship.findMany({
+      where: { OR: [{ aId: userId }, { bId: userId }] },
+      select: { aId: true, bId: true },
+    });
+    const friendIds = rows.map(r => (r.aId === userId ? r.bId : r.aId));
+    for (const fid of friendIds) io.to(`user:${fid}`).emit('presence', { userId, online });
+  } catch (err) { console.error('presence broadcast failed', err); }
+}
+
+io.on('connection', socket => {
+  const userId = socket.data.userId as string;
+  // Each user gets a private room — the sync fan-out + direct-delivery target.
+  const room = `user:${userId}`;
+  void socket.join(room);
+
+  // ── Presence: mark online, heartbeat lastSeen, tell friends ──
+  const cameOnline = presence.add(userId, socket.id);
+  prisma.user.update({ where: { id: userId }, data: { lastSeenAt: new Date() } }).catch(() => {});
+  if (cameOnline) void broadcastPresence(userId, true);
+
+  socket.on('heartbeat', () => {
+    prisma.user.update({ where: { id: userId }, data: { lastSeenAt: new Date() } }).catch(() => {});
+  });
+
+  // Client pushes local state deltas; server rebroadcasts to the user's other
+  // devices. Persisting to Postgres happens through the REST layer.
+  socket.on('crisis:sync', (payload: unknown) => socket.to(room).emit('crisis:sync', payload));
+  socket.on('clio:sync', (payload: unknown) => socket.to(room).emit('clio:sync', payload));
+  socket.on('progress:sync', (payload: unknown) => socket.to(room).emit('progress:sync', payload));
+  socket.on('campaign:sync', (payload: unknown) => socket.to(room).emit('campaign:sync', payload));
+
+  // ── Live direct messages: deliver to the recipient's room immediately ──
+  socket.on('dm:send', (payload: { toId?: string; text?: string; id?: string }) => {
+    if (!payload?.toId || typeof payload.text !== 'string') return;
+    io.to(`user:${payload.toId}`).emit('dm:new', {
+      id: payload.id, fromId: userId, text: payload.text.slice(0, 2000), createdAt: new Date().toISOString(),
+    });
+  });
+
+  // ── Live duel signalling: challenge / accept / decline relayed to the peer ──
+  socket.on('duel:challenge', (payload: { toId?: string; challengeId?: string }) => {
+    if (!payload?.toId) return;
+    io.to(`user:${payload.toId}`).emit('duel:incoming', { fromId: userId, challengeId: payload.challengeId });
+  });
+  socket.on('duel:respond', (payload: { toId?: string; accept?: boolean; challengeId?: string }) => {
+    if (!payload?.toId) return;
+    io.to(`user:${payload.toId}`).emit('duel:response', { fromId: userId, accept: !!payload.accept, challengeId: payload.challengeId });
+  });
+
+  socket.on('disconnect', () => {
+    const wentOffline = presence.remove(userId, socket.id);
+    if (wentOffline) {
+      prisma.user.update({ where: { id: userId }, data: { lastSeenAt: new Date() } }).catch(() => {});
+      void broadcastPresence(userId, false);
+    }
+  });
+});
+
+httpServer.listen(Number(PORT), () => {
+  console.log(`Historify backend listening on :${PORT} (${NODE_ENV})`);
+});
+
+// ── Graceful shutdown: drain sockets, stop accepting, exit clean ─────────────
+// Prevents dropped in-flight requests and socket leaks on rolling deploys.
+for (const signal of ['SIGTERM', 'SIGINT'] as const) {
+  process.on(signal, () => {
+    console.log(`${signal} received — draining connections`);
+    io.close(() => {
+      httpServer.close(() => process.exit(0));
+    });
+    // Hard deadline so a stuck connection can't block the deploy.
+    setTimeout(() => process.exit(1), 10_000).unref();
+  });
+}
