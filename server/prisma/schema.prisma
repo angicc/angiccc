@@ -43,6 +43,9 @@ model User {
   crisisStates  CrisisRoomState[]
   progress      ProgressSnapshot?
   campaign      CampaignProgress?
+  learnerProfile LearnerProfile?
+  weekPlan      WeekPlanRecord?
+  studySets     StudySet[]
   friendsA      Friendship[]      @relation("friendA")
   friendsB      Friendship[]      @relation("friendB")
   sentMessages  DirectMessage[]   @relation("msgFrom")
@@ -130,6 +133,38 @@ model ClioChatMessage {
   session   ClioChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@index([sessionId, timestamp])
+}
+
+// Clio's persistent learner memory (interests, misconceptions, mastered facts,
+// session summaries). Client-authoritative blob, one per user.
+model LearnerProfile {
+  userId    String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// The generated weekly study plan (steps + AI coach notes + manual checkoffs).
+model WeekPlanRecord {
+  userId    String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// One AI Studio study set (flashcards + questions + facts generated from a
+// user-pasted source). Discrete rows so sets sync and delete individually;
+// the id is the client-generated UUID.
+model StudySet {
+  id        String   @id
+  userId    String
+  name      String
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
 }
 
 model CrisisRoomState {

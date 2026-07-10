@@ -65,6 +65,9 @@ export const LESSON_GIF_PAGES: Record<string, string> = {
   'ancient-07': 'https://makeagif.com/gif/alexander-the-great-all-parts-ErY-9P',
   // Vikings raid & burn Lindisfarne — where the Viking Age lesson opens
   'medieval-07': 'https://makeagif.com/gif/the-vikings-raid-and-burn-lindisfarne-monastery-the-vikings-season-1-sp3G_K',
+  // Macedonia — The Macedonian Struggle lesson banner (Tenor; og:image is the
+  // direct media.tenor.com GIF, resolved through the same microlink path)
+  'modern-07': 'https://tenor.com/view/macedonia-greece-alexander-the-great-hellas-makedonija-gif-13934090',
 };
 
 const GIF_PAGE_CACHE_PREFIX = 'historify:gifbanner:';

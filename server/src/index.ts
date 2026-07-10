@@ -13,6 +13,7 @@ import { clioRouter } from './routes/clio';
 import { authRouter } from './routes/auth';
 import { syncRouter } from './routes/sync';
 import { socialRouter } from './routes/social';
+import { learningRouter } from './routes/learning';
 import { billingRouter, stripeWebhookHandler } from './routes/billing';
 import { presence } from './presence';
 
@@ -95,6 +96,11 @@ app.use('/api/auth/me', authenticate);
 app.use('/api/auth', authRouter);
 app.use('/api/sync', authenticate, syncRouter);
 app.use('/api/social', authenticate, socialRouter);
+// Learner memory / study plan / study sets. Tier-free by design: these sync
+// existing client state — the AI calls that CREATE the content are the gated
+// resource (clio proxy is PRO+), so a downgraded user keeps read/write access
+// to material they already generated.
+app.use('/api/learning', authenticate, learningRouter);
 app.use('/api/billing', authenticate, billingRouter);
 app.use('/api/crisis', authenticate, requireTier('MASTER'), crisisRouter);
 app.use('/api/clio', authenticate, requireTier('PRO'), clioRouter);

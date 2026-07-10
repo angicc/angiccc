@@ -6,7 +6,7 @@
 // gold bar on the left edge, and hovering an item shifts its text toward gold.
 import { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film, Users, Scale, Globe2, Hourglass } from 'lucide-react';
+import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film, Users, Scale, Globe2, Hourglass, Wand2, Route } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -42,6 +42,8 @@ const NAV_GROUPS: NavGroup[] = [
     headerKey: 'nav_group_academy',
     items: [
       { to: '/tutor',        key: 'nav_tutor',        icon: MessageSquare },
+      { to: '/study-plan',   key: 'nav_study_plan',   icon: Route },
+      { to: '/studio',       key: 'nav_studio',       icon: Wand2 },
       { to: '/smart-quiz',   key: 'nav_smart_quiz',   icon: Sparkles },
       { to: '/essay',        key: 'nav_essay',        icon: FileEdit },
       { to: '/video-review', key: 'nav_video_review', icon: Film },

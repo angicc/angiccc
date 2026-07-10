@@ -14,6 +14,8 @@ import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { recordAiMessage } from '@/features/progress/progressStore';
 import { getGapSummary } from '@/features/progress/conceptGaps';
 import { streamChatResponse } from '@/services/aiGateway';
+import { buildMemoryAwareSystem, noteExchangeAndMaybeExtract } from '@/features/ai/learnerProfile';
+import { ClioMemoryPanel } from '@/components/shared/ClioMemoryPanel';
 import { usePersistentChat, listThreads, createThread, titleThread, deleteThread, threadModule, type ChatThread } from '@/services/chatStore';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
 import { CLIO_SAMPLE_DIALOGUES } from '@/features/ai/clioSampleDialogues';
@@ -155,12 +157,19 @@ export default function AiTutorPage() {
     setError(null);
     try {
       let acc = '';
-      for await (const chunk of streamChatResponse(history, context)) {
+      // Persistent learner memory: Clio's system prompt carries what she has
+      // learned about this student across every past session.
+      const memorySystem = currentUser ? buildMemoryAwareSystem(currentUser.id, currentUser.username) : undefined;
+      for await (const chunk of streamChatResponse(history, context, memorySystem)) {
         acc += chunk;
         setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, content: stripMarkdown(acc) } : m));
       }
       setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, isStreaming: false } : m));
       retryRef.current = null;
+      // Background memory extraction — throttled, silent, never blocks the UI.
+      if (currentUser && acc) {
+        noteExchangeAndMaybeExtract(currentUser.id, [...history, { role: 'assistant', content: acc }]);
+      }
     } catch (err) {
       retryRef.current = { history };
       setError(err);
@@ -168,7 +177,7 @@ export default function AiTutorPage() {
         .filter(m => !(m.id === assistantMsg.id && m.content === ''))
         .map(m => m.id === assistantMsg.id ? { ...m, isStreaming: false } : m));
     } finally { setLoading(false); }
-  }, [context, setMessages]);
+  }, [context, setMessages, currentUser]);
 
   const send = useCallback(async (text: string) => {
     const { allowed } = canAI();
@@ -289,6 +298,9 @@ export default function AiTutorPage() {
         </motion.div>
 
         {!allowed && <UpgradePrompt description={reason} requiredPlan={reason?.includes('Master') ? 'master' : 'pro'} />}
+
+        {/* Persistent memory — what Clio has learned about this student */}
+        {currentUser && <div className="mb-3"><ClioMemoryPanel userId={currentUser.id} /></div>}
 
         <div className="flex-1 min-h-0 flex flex-col">
           <ScrollArea className="flex-1 border border-border rounded-xl overflow-hidden relative p-4">

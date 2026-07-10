@@ -308,6 +308,31 @@ export type TranslationKeys = {
   prog_ach_summary: string; prog_ach_remaining: string;
   // ── Search dialog ──────────────────────────────────────────────
   search_no_results: string; search_min_chars: string;
+  // ── Clio memory / AI Studio / Study Plan ──────────────────────
+  mem_title: string; mem_empty: string; mem_interests: string; mem_strengths: string;
+  mem_misconceptions: string; mem_facts: string; mem_sessions: string; mem_resolved: string;
+  mem_clear: string; mem_clear_confirm_title: string; mem_clear_confirm_desc: string;
+  nav_studio: string; nav_study_plan: string;
+  studio_title: string; studio_subtitle: string; studio_gate_desc: string;
+  studio_paste_label: string; studio_paste_placeholder: string; studio_source_too_short: string;
+  studio_focus_label: string; studio_focus_placeholder: string;
+  studio_questions_label: string; studio_cards_label: string;
+  studio_generation_failed: string; studio_generating: string; studio_generate: string;
+  studio_my_sets: string; studio_no_sets: string; studio_delete_set: string;
+  studio_flashcards: string; studio_questions: string; studio_best: string;
+  studio_practice: string; studio_review_cards: string;
+  studio_review_title: string; studio_review_subtitle: string; studio_kept: string;
+  studio_summary: string; studio_facts: string; studio_set_name: string;
+  studio_discard: string; studio_save_set: string;
+  studio_practice_score: string; studio_done: string; studio_show_answer: string; studio_next_card: string;
+  path_title: string; path_subtitle: string; path_mastery_title: string; path_focus: string;
+  path_lessons_done: string; path_quiz_score: string; path_adaptive_acc: string;
+  path_generate: string; path_regenerate: string; path_enhance: string; path_enhancing: string;
+  path_enhance_upsell: string; path_done_of: string; path_deep_analysis: string;
+  path_day: string; path_empty: string;
+  path_step_lesson: string; path_step_quiz: string; path_step_smart_quiz: string;
+  path_step_flashcards: string; path_step_studio: string; path_step_crisis: string; path_step_map: string;
+  path_min: string; path_mark_done: string;
 };
 
 type Translations = Record<Language, TranslationKeys>;
@@ -664,6 +689,39 @@ export const T: Translations = {
     prog_ach_summary: 'You have unlocked {unlocked} of {total} achievements.',
     prog_ach_remaining: '{count} still to earn!',
     search_no_results: 'No results for', search_min_chars: 'Type at least 2 characters to search',
+    // Clio memory / AI Studio / Study Plan
+    mem_title: "Clio's memory of you", mem_empty: 'Clio is still getting to know you — chat with her and take quizzes, and her memory builds automatically.',
+    mem_interests: 'Your interests', mem_strengths: 'Strengths', mem_misconceptions: 'Corrections in progress',
+    mem_facts: 'Facts mastered', mem_sessions: 'Session notes', mem_resolved: 'Got it',
+    mem_clear: 'Forget everything', mem_clear_confirm_title: "Clear Clio's memory?",
+    mem_clear_confirm_desc: 'Clio will forget your interests, corrections, and session history. Your XP and progress are not affected.',
+    nav_studio: 'AI Studio', nav_study_plan: 'Study Plan',
+    studio_title: 'AI Content Studio', studio_subtitle: 'Turn any historical text into flashcards, quizzes, and key facts',
+    studio_gate_desc: 'The AI Content Studio is available on the Pro plan. Turn any text into a personal study kit.',
+    studio_paste_label: 'Source text', studio_paste_placeholder: 'Paste a textbook chapter, article, lecture notes, or any historical text here…',
+    studio_source_too_short: 'Add at least 200 characters so the AI has enough to work with.',
+    studio_focus_label: 'Focus (optional)', studio_focus_placeholder: 'e.g. military tactics',
+    studio_questions_label: 'Quiz questions', studio_cards_label: 'Flashcards',
+    studio_generation_failed: 'The AI response could not be validated. Try again — a fresh run usually fixes it.',
+    studio_generating: 'Engineering your study kit…', studio_generate: 'Generate study kit',
+    studio_my_sets: 'My study sets', studio_no_sets: 'No study sets yet — generate your first kit above.',
+    studio_delete_set: 'Delete set', studio_flashcards: 'flashcards', studio_questions: 'questions', studio_best: 'best',
+    studio_practice: 'Practice', studio_review_cards: 'Cards',
+    studio_review_title: 'Review the generated kit', studio_review_subtitle: 'Tap any item to keep or discard it, then save the set.',
+    studio_kept: 'kept', studio_summary: 'Summary', studio_facts: 'Key facts', studio_set_name: 'Study set name',
+    studio_discard: 'Discard', studio_save_set: 'Save set',
+    studio_practice_score: 'Score:', studio_done: 'Finish', studio_show_answer: 'Tap to reveal', studio_next_card: 'Next card',
+    path_title: 'Study Plan', path_subtitle: 'Your week, engineered around what you most need to learn',
+    path_mastery_title: 'Era mastery', path_focus: 'focus',
+    path_lessons_done: 'Lessons', path_quiz_score: 'Quiz', path_adaptive_acc: 'Adaptive',
+    path_generate: 'Generate my week', path_regenerate: 'Regenerate week',
+    path_enhance: 'Enhance with Clio', path_enhancing: 'Clio is studying your data…',
+    path_enhance_upsell: "Upgrade to Pro to get Clio's coaching notes on your plan.",
+    path_done_of: 'steps done', path_deep_analysis: 'Master analysis', path_day: 'Day',
+    path_empty: 'Generate a personalized week: the plan targets your weakest era with real lessons, adaptive quizzes, and a final measurement day — and checks itself off as you learn.',
+    path_step_lesson: 'Lesson', path_step_quiz: 'Era quiz', path_step_smart_quiz: 'Smart Quiz',
+    path_step_flashcards: 'Flashcard review', path_step_studio: 'AI Studio session', path_step_crisis: 'Crisis simulation', path_step_map: 'Territory Map',
+    path_min: 'min', path_mark_done: 'Mark done',
   },
 
   es: {
@@ -995,6 +1053,39 @@ export const T: Translations = {
     prog_ach_summary: 'Has desbloqueado {unlocked} de {total} logros.',
     prog_ach_remaining: '¡Quedan {count} por conseguir!',
     search_no_results: 'Sin resultados para', search_min_chars: 'Escribe al menos 2 caracteres para buscar',
+    // Clio memory / AI Studio / Study Plan
+    mem_title: 'La memoria de Clío sobre ti', mem_empty: 'Clío aún te está conociendo: chatea con ella y haz cuestionarios, y su memoria se construye automáticamente.',
+    mem_interests: 'Tus intereses', mem_strengths: 'Fortalezas', mem_misconceptions: 'Correcciones en curso',
+    mem_facts: 'Datos dominados', mem_sessions: 'Notas de sesión', mem_resolved: 'Entendido',
+    mem_clear: 'Olvidar todo', mem_clear_confirm_title: '¿Borrar la memoria de Clío?',
+    mem_clear_confirm_desc: 'Clío olvidará tus intereses, correcciones e historial de sesiones. Tu XP y progreso no se ven afectados.',
+    nav_studio: 'Estudio IA', nav_study_plan: 'Plan de estudio',
+    studio_title: 'Estudio de Contenido IA', studio_subtitle: 'Convierte cualquier texto histórico en tarjetas, cuestionarios y datos clave',
+    studio_gate_desc: 'El Estudio de Contenido IA está disponible en el plan Pro. Convierte cualquier texto en un kit de estudio personal.',
+    studio_paste_label: 'Texto fuente', studio_paste_placeholder: 'Pega aquí un capítulo de libro, un artículo, apuntes de clase o cualquier texto histórico…',
+    studio_source_too_short: 'Añade al menos 200 caracteres para que la IA tenga con qué trabajar.',
+    studio_focus_label: 'Enfoque (opcional)', studio_focus_placeholder: 'p. ej., táctica militar',
+    studio_questions_label: 'Preguntas de cuestionario', studio_cards_label: 'Tarjetas',
+    studio_generation_failed: 'La respuesta de la IA no pudo validarse. Inténtalo de nuevo: una nueva ejecución suele arreglarlo.',
+    studio_generating: 'Creando tu kit de estudio…', studio_generate: 'Generar kit de estudio',
+    studio_my_sets: 'Mis sets de estudio', studio_no_sets: 'Aún no hay sets de estudio: genera tu primer kit arriba.',
+    studio_delete_set: 'Eliminar set', studio_flashcards: 'tarjetas', studio_questions: 'preguntas', studio_best: 'récord',
+    studio_practice: 'Practicar', studio_review_cards: 'Tarjetas',
+    studio_review_title: 'Revisa el kit generado', studio_review_subtitle: 'Toca cualquier elemento para conservarlo o descartarlo, luego guarda el set.',
+    studio_kept: 'conservados', studio_summary: 'Resumen', studio_facts: 'Datos clave', studio_set_name: 'Nombre del set',
+    studio_discard: 'Descartar', studio_save_set: 'Guardar set',
+    studio_practice_score: 'Puntuación:', studio_done: 'Terminar', studio_show_answer: 'Toca para revelar', studio_next_card: 'Siguiente tarjeta',
+    path_title: 'Plan de estudio', path_subtitle: 'Tu semana, diseñada en torno a lo que más necesitas aprender',
+    path_mastery_title: 'Dominio por era', path_focus: 'enfoque',
+    path_lessons_done: 'Lecciones', path_quiz_score: 'Cuestionario', path_adaptive_acc: 'Adaptativo',
+    path_generate: 'Generar mi semana', path_regenerate: 'Regenerar semana',
+    path_enhance: 'Mejorar con Clío', path_enhancing: 'Clío está estudiando tus datos…',
+    path_enhance_upsell: 'Pasa a Pro para recibir las notas de entrenamiento de Clío sobre tu plan.',
+    path_done_of: 'pasos completados', path_deep_analysis: 'Análisis Master', path_day: 'Día',
+    path_empty: 'Genera una semana personalizada: el plan apunta a tu era más débil con lecciones reales, cuestionarios adaptativos y un día final de medición, y se marca solo a medida que aprendes.',
+    path_step_lesson: 'Lección', path_step_quiz: 'Cuestionario de era', path_step_smart_quiz: 'Cuestionario inteligente',
+    path_step_flashcards: 'Repaso de tarjetas', path_step_studio: 'Sesión de Estudio IA', path_step_crisis: 'Simulación de crisis', path_step_map: 'Mapa de territorios',
+    path_min: 'min', path_mark_done: 'Marcar como hecho',
   },
 
   ru: {
@@ -1326,6 +1417,39 @@ export const T: Translations = {
     prog_ach_summary: 'Вы разблокировали {unlocked} из {total} достижений.',
     prog_ach_remaining: 'Осталось получить ещё {count}!',
     search_no_results: 'Ничего не найдено по запросу', search_min_chars: 'Введите минимум 2 символа для поиска',
+    // Clio memory / AI Studio / Study Plan
+    mem_title: 'Память Клио о вас', mem_empty: 'Клио ещё знакомится с вами — общайтесь с ней и проходите викторины, и память накопится автоматически.',
+    mem_interests: 'Ваши интересы', mem_strengths: 'Сильные стороны', mem_misconceptions: 'Исправляемые заблуждения',
+    mem_facts: 'Освоенные факты', mem_sessions: 'Заметки о занятиях', mem_resolved: 'Понятно',
+    mem_clear: 'Забыть всё', mem_clear_confirm_title: 'Очистить память Клио?',
+    mem_clear_confirm_desc: 'Клио забудет ваши интересы, исправления и историю занятий. XP и прогресс не пострадают.',
+    nav_studio: 'ИИ-Студия', nav_study_plan: 'План занятий',
+    studio_title: 'ИИ-студия контента', studio_subtitle: 'Превратите любой исторический текст в карточки, викторины и ключевые факты',
+    studio_gate_desc: 'ИИ-студия контента доступна на плане Pro. Превратите любой текст в личный учебный набор.',
+    studio_paste_label: 'Исходный текст', studio_paste_placeholder: 'Вставьте сюда главу учебника, статью, конспект лекции или любой исторический текст…',
+    studio_source_too_short: 'Добавьте не менее 200 символов, чтобы ИИ было с чем работать.',
+    studio_focus_label: 'Фокус (необязательно)', studio_focus_placeholder: 'например, военная тактика',
+    studio_questions_label: 'Вопросы викторины', studio_cards_label: 'Карточки',
+    studio_generation_failed: 'Ответ ИИ не прошёл проверку. Попробуйте ещё раз — повторный запуск обычно помогает.',
+    studio_generating: 'Собираем ваш учебный набор…', studio_generate: 'Создать учебный набор',
+    studio_my_sets: 'Мои учебные наборы', studio_no_sets: 'Наборов пока нет — создайте первый выше.',
+    studio_delete_set: 'Удалить набор', studio_flashcards: 'карточек', studio_questions: 'вопросов', studio_best: 'рекорд',
+    studio_practice: 'Практика', studio_review_cards: 'Карточки',
+    studio_review_title: 'Проверьте созданный набор', studio_review_subtitle: 'Нажмите на элемент, чтобы оставить или убрать его, затем сохраните набор.',
+    studio_kept: 'оставлено', studio_summary: 'Краткое содержание', studio_facts: 'Ключевые факты', studio_set_name: 'Название набора',
+    studio_discard: 'Не сохранять', studio_save_set: 'Сохранить набор',
+    studio_practice_score: 'Результат:', studio_done: 'Завершить', studio_show_answer: 'Нажмите, чтобы открыть', studio_next_card: 'Следующая карточка',
+    path_title: 'План занятий', path_subtitle: 'Ваша неделя, построенная вокруг того, что вам нужнее всего',
+    path_mastery_title: 'Освоение эпох', path_focus: 'фокус',
+    path_lessons_done: 'Уроки', path_quiz_score: 'Викторина', path_adaptive_acc: 'Адаптивная',
+    path_generate: 'Составить мою неделю', path_regenerate: 'Пересоставить неделю',
+    path_enhance: 'Усилить с Клио', path_enhancing: 'Клио изучает ваши данные…',
+    path_enhance_upsell: 'Перейдите на Pro, чтобы получать тренерские заметки Клио к вашему плану.',
+    path_done_of: 'шагов выполнено', path_deep_analysis: 'Анализ Master', path_day: 'День',
+    path_empty: 'Составьте персональную неделю: план нацелен на вашу самую слабую эпоху — реальные уроки, адаптивные викторины и контрольный день в конце. Шаги отмечаются сами по мере обучения.',
+    path_step_lesson: 'Урок', path_step_quiz: 'Викторина эпохи', path_step_smart_quiz: 'Умная викторина',
+    path_step_flashcards: 'Повторение карточек', path_step_studio: 'Сессия в ИИ-студии', path_step_crisis: 'Кризисная симуляция', path_step_map: 'Карта территорий',
+    path_min: 'мин', path_mark_done: 'Отметить выполненным',
   },
 
   mk: {
@@ -1657,5 +1781,38 @@ export const T: Translations = {
     prog_ach_summary: 'Отклучивте {unlocked} од {total} достигнувања.',
     prog_ach_remaining: 'Уште {count} за освојување!',
     search_no_results: 'Нема резултати за', search_min_chars: 'Внесете најмалку 2 знаци за пребарување',
+    // Clio memory / AI Studio / Study Plan
+    mem_title: 'Меморијата на Клио за тебе', mem_empty: 'Клио сè уште те запознава — разговарај со неа и решавај квизови, а меморијата се гради автоматски.',
+    mem_interests: 'Твоите интереси', mem_strengths: 'Силни страни', mem_misconceptions: 'Заблуди во исправање',
+    mem_facts: 'Совладани факти', mem_sessions: 'Белешки од сесиите', mem_resolved: 'Сфатив',
+    mem_clear: 'Заборави сè', mem_clear_confirm_title: 'Да се избрише меморијата на Клио?',
+    mem_clear_confirm_desc: 'Клио ќе ги заборави твоите интереси, исправки и историјата на сесиите. Твоето XP и напредокот не се засегнати.',
+    nav_studio: 'ВИ Студио', nav_study_plan: 'План за учење',
+    studio_title: 'ВИ Студио за содржина', studio_subtitle: 'Претвори секој историски текст во картички, квизови и клучни факти',
+    studio_gate_desc: 'ВИ Студиото за содржина е достапно на планот Pro. Претвори секој текст во личен комплет за учење.',
+    studio_paste_label: 'Изворен текст', studio_paste_placeholder: 'Залепи тука поглавје од учебник, статија, белешки од предавање или кој било историски текст…',
+    studio_source_too_short: 'Додај најмалку 200 знаци за ВИ да има доволно материјал.',
+    studio_focus_label: 'Фокус (изборно)', studio_focus_placeholder: 'на пр. воена тактика',
+    studio_questions_label: 'Прашања за квиз', studio_cards_label: 'Картички',
+    studio_generation_failed: 'Одговорот на ВИ не помина проверка. Обиди се повторно — нов обид обично помага.',
+    studio_generating: 'Го составуваме твојот комплет за учење…', studio_generate: 'Создај комплет за учење',
+    studio_my_sets: 'Мои комплети за учење', studio_no_sets: 'Сè уште нема комплети — создај го првиот погоре.',
+    studio_delete_set: 'Избриши комплет', studio_flashcards: 'картички', studio_questions: 'прашања', studio_best: 'рекорд',
+    studio_practice: 'Вежбај', studio_review_cards: 'Картички',
+    studio_review_title: 'Прегледај го создадениот комплет', studio_review_subtitle: 'Допри на кој било елемент за да го задржиш или отфрлиш, па зачувај го комплетот.',
+    studio_kept: 'задржани', studio_summary: 'Резиме', studio_facts: 'Клучни факти', studio_set_name: 'Име на комплетот',
+    studio_discard: 'Отфрли', studio_save_set: 'Зачувај комплет',
+    studio_practice_score: 'Резултат:', studio_done: 'Заврши', studio_show_answer: 'Допри за одговор', studio_next_card: 'Следна картичка',
+    path_title: 'План за учење', path_subtitle: 'Твојата недела, изградена околу она што најмногу ти треба',
+    path_mastery_title: 'Совладаност по епоха', path_focus: 'фокус',
+    path_lessons_done: 'Лекции', path_quiz_score: 'Квиз', path_adaptive_acc: 'Адаптивно',
+    path_generate: 'Состави ми недела', path_regenerate: 'Состави нова недела',
+    path_enhance: 'Засили со Клио', path_enhancing: 'Клио ги проучува твоите податоци…',
+    path_enhance_upsell: 'Премини на Pro за тренерски белешки од Клио кон твојот план.',
+    path_done_of: 'чекори завршени', path_deep_analysis: 'Master анализа', path_day: 'Ден',
+    path_empty: 'Состави персонализирана недела: планот ја таргетира твојата најслаба епоха со вистински лекции, адаптивни квизови и контролен ден на крајот — и сам се одбележува додека учиш.',
+    path_step_lesson: 'Лекција', path_step_quiz: 'Квиз за епохата', path_step_smart_quiz: 'Паметен квиз',
+    path_step_flashcards: 'Повторување картички', path_step_studio: 'Сесија во ВИ Студио', path_step_crisis: 'Кризна симулација', path_step_map: 'Мапа на територии',
+    path_min: 'мин', path_mark_done: 'Означи завршено',
   },
 };

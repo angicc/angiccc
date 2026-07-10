@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw, Brain, Target, Trophy, ChevronRight, MessageSquare, BarChart2, Star, BookOpen, Clock, TrendingUp, Crown } from 'lucide-react';
 import { streamChatResponse } from '@/services/aiGateway';
 import { recordMiss, eraGapFactor } from '@/features/progress/conceptGaps';
+import { recordQuizMissesToProfile } from '@/features/ai/learnerProfile';
 import { buildStudyPlanPrompt, parseStudyPlan, type StudyPlan, type MissedQuestion } from '@/features/smartQuiz/studyPlan';
 import { LESSONS } from '@/features/content/lessonsData';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -235,6 +236,9 @@ export default function SmartQuizPage() {
       const weakEraIds = Object.entries(map)
         .filter(([, d]) => d.correct / d.total < 0.7)
         .map(([eraId]) => eraId);
+      // Feed the misses into Clio's persistent learner memory so the tutor
+      // revisits exactly these questions in future conversations.
+      if (currentUser) recordQuizMissesToProfile(currentUser.id, missed);
       void requestStudyPlan(scoreVal, eraBreakdownData, missed, weakEraIds);
     } else {
       setQIdx(i => i + 1);
