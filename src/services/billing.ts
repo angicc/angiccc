@@ -28,7 +28,7 @@ async function post<T>(path: string, body?: unknown): Promise<T> {
  * Start a Stripe Checkout session for a paid plan and return the URL to
  * redirect the browser to. Returns null when no backend is configured.
  */
-export async function startCheckout(plan: 'pro' | 'master'): Promise<string | null> {
+export async function startCheckout(plan: 'beginner' | 'pro' | 'master'): Promise<string | null> {
   if (!billingConfigured()) return null;
   const { url } = await post<{ url: string | null }>('/api/billing/checkout', { plan });
   return url;

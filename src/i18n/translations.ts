@@ -333,6 +333,16 @@ export type TranslationKeys = {
   path_step_lesson: string; path_step_quiz: string; path_step_smart_quiz: string;
   path_step_flashcards: string; path_step_studio: string; path_step_crisis: string; path_step_map: string;
   path_min: string; path_mark_done: string;
+  // ── Philosopher memory / Flashcards gate / Battle tactics ─────
+  pmem_title: string; pmem_empty: string; pmem_debates: string; pmem_wins: string;
+  pmem_stances: string; pmem_concessions: string; pmem_strong: string; pmem_style: string;
+  pmem_clear: string; pmem_clear_title: string; pmem_clear_desc: string;
+  flash_gate_desc: string;
+  tmap_battle_brief2: string; tmap_battle_council: string; tmap_battle_order: string;
+  tmap_battle_rout: string; tmap_battle_crit: string; tmap_battle_advantage: string;
+  tmap_battle_outmaneuvered: string; tmap_battle_morale: string;
+  tmap_tactic_charge: string; tmap_tactic_volley: string; tmap_tactic_hold: string;
+  tmap_tactic_charge_hint: string; tmap_tactic_volley_hint: string; tmap_tactic_hold_hint: string;
 };
 
 type Translations = Record<Language, TranslationKeys>;
@@ -716,12 +726,27 @@ export const T: Translations = {
     path_lessons_done: 'Lessons', path_quiz_score: 'Quiz', path_adaptive_acc: 'Adaptive',
     path_generate: 'Generate my week', path_regenerate: 'Regenerate week',
     path_enhance: 'Enhance with Clio', path_enhancing: 'Clio is studying your data…',
-    path_enhance_upsell: "Upgrade to Pro to get Clio's coaching notes on your plan.",
+    path_enhance_upsell: "Clio's coaching notes on your plan are a Master Student exclusive.",
     path_done_of: 'steps done', path_deep_analysis: 'Master analysis', path_day: 'Day',
     path_empty: 'Generate a personalized week: the plan targets your weakest era with real lessons, adaptive quizzes, and a final measurement day — and checks itself off as you learn.',
     path_step_lesson: 'Lesson', path_step_quiz: 'Era quiz', path_step_smart_quiz: 'Smart Quiz',
     path_step_flashcards: 'Flashcard review', path_step_studio: 'AI Studio session', path_step_crisis: 'Crisis simulation', path_step_map: 'Territory Map',
     path_min: 'min', path_mark_done: 'Mark done',
+    // Philosopher memory / Flashcards gate / Battle tactics
+    pmem_title: "{name}'s memory of you", pmem_empty: 'No debates on record yet — argue with them and they will remember every stance you take.',
+    pmem_debates: 'debates', pmem_wins: 'concessions won', pmem_stances: 'Positions you argued',
+    pmem_concessions: 'Points you conceded', pmem_strong: 'Your strongest arguments', pmem_style: 'Your style',
+    pmem_clear: 'Erase this rivalry', pmem_clear_title: 'Erase this debate history?',
+    pmem_clear_desc: 'The philosopher will forget every stance, concession, and victory between you. Your XP is not affected.',
+    flash_gate_desc: 'Flashcards unlock on the Beginner Student plan. Drill key facts from every lesson with 3D flip cards.',
+    tmap_battle_brief2: 'Each round: choose a tactic at the war council, then answer the order. Correct — your tactic strikes. Wrong — theirs does. Charge beats volley, volley beats shield wall, shield wall beats charge. Break their army — or their morale.',
+    tmap_battle_council: 'War council — choose your tactic', tmap_battle_order: 'The order',
+    tmap_battle_rout: 'THE LINE BREAKS!', tmap_battle_crit: 'ROUT STRIKE!',
+    tmap_battle_advantage: 'Tactical advantage!', tmap_battle_outmaneuvered: 'Outmaneuvered!', tmap_battle_morale: 'Morale',
+    tmap_tactic_charge: 'Charge', tmap_tactic_volley: 'Volley', tmap_tactic_hold: 'Shield wall',
+    tmap_tactic_charge_hint: 'Breaks volleys · falls to a braced line',
+    tmap_tactic_volley_hint: 'Shreds a braced line · ridden down by a charge',
+    tmap_tactic_hold_hint: 'Stops a charge cold · helpless under a volley',
   },
 
   es: {
@@ -1080,12 +1105,27 @@ export const T: Translations = {
     path_lessons_done: 'Lecciones', path_quiz_score: 'Cuestionario', path_adaptive_acc: 'Adaptativo',
     path_generate: 'Generar mi semana', path_regenerate: 'Regenerar semana',
     path_enhance: 'Mejorar con Clío', path_enhancing: 'Clío está estudiando tus datos…',
-    path_enhance_upsell: 'Pasa a Pro para recibir las notas de entrenamiento de Clío sobre tu plan.',
+    path_enhance_upsell: 'Las notas de entrenamiento de Clío sobre tu plan son exclusivas de Master Student.',
     path_done_of: 'pasos completados', path_deep_analysis: 'Análisis Master', path_day: 'Día',
     path_empty: 'Genera una semana personalizada: el plan apunta a tu era más débil con lecciones reales, cuestionarios adaptativos y un día final de medición, y se marca solo a medida que aprendes.',
     path_step_lesson: 'Lección', path_step_quiz: 'Cuestionario de era', path_step_smart_quiz: 'Cuestionario inteligente',
     path_step_flashcards: 'Repaso de tarjetas', path_step_studio: 'Sesión de Estudio IA', path_step_crisis: 'Simulación de crisis', path_step_map: 'Mapa de territorios',
     path_min: 'min', path_mark_done: 'Marcar como hecho',
+    // Philosopher memory / Flashcards gate / Battle tactics
+    pmem_title: 'La memoria de {name} sobre ti', pmem_empty: 'Aún no hay debates registrados — discute con ellos y recordarán cada postura que tomes.',
+    pmem_debates: 'debates', pmem_wins: 'concesiones ganadas', pmem_stances: 'Posturas que defendiste',
+    pmem_concessions: 'Puntos que concediste', pmem_strong: 'Tus mejores argumentos', pmem_style: 'Tu estilo',
+    pmem_clear: 'Borrar esta rivalidad', pmem_clear_title: '¿Borrar este historial de debates?',
+    pmem_clear_desc: 'El filósofo olvidará cada postura, concesión y victoria entre vosotros. Tu XP no se ve afectado.',
+    flash_gate_desc: 'Las tarjetas se desbloquean en el plan Beginner Student. Practica datos clave de cada lección con tarjetas 3D.',
+    tmap_battle_brief2: 'Cada ronda: elige una táctica en el consejo de guerra y responde la orden. Correcto — golpea tu táctica. Incorrecto — golpea la suya. La carga vence a la descarga, la descarga vence al muro de escudos, el muro de escudos vence a la carga. Rompe su ejército — o su moral.',
+    tmap_battle_council: 'Consejo de guerra — elige tu táctica', tmap_battle_order: 'La orden',
+    tmap_battle_rout: '¡LA LÍNEA SE ROMPE!', tmap_battle_crit: '¡GOLPE DE DERROTA!',
+    tmap_battle_advantage: '¡Ventaja táctica!', tmap_battle_outmaneuvered: '¡Superado en maniobra!', tmap_battle_morale: 'Moral',
+    tmap_tactic_charge: 'Carga', tmap_tactic_volley: 'Descarga', tmap_tactic_hold: 'Muro de escudos',
+    tmap_tactic_charge_hint: 'Rompe descargas · cae ante una línea firme',
+    tmap_tactic_volley_hint: 'Destroza una línea firme · arrollada por una carga',
+    tmap_tactic_hold_hint: 'Detiene una carga en seco · indefenso bajo una descarga',
   },
 
   ru: {
@@ -1444,12 +1484,27 @@ export const T: Translations = {
     path_lessons_done: 'Уроки', path_quiz_score: 'Викторина', path_adaptive_acc: 'Адаптивная',
     path_generate: 'Составить мою неделю', path_regenerate: 'Пересоставить неделю',
     path_enhance: 'Усилить с Клио', path_enhancing: 'Клио изучает ваши данные…',
-    path_enhance_upsell: 'Перейдите на Pro, чтобы получать тренерские заметки Клио к вашему плану.',
+    path_enhance_upsell: 'Тренерские заметки Клио к вашему плану — эксклюзив Master Student.',
     path_done_of: 'шагов выполнено', path_deep_analysis: 'Анализ Master', path_day: 'День',
     path_empty: 'Составьте персональную неделю: план нацелен на вашу самую слабую эпоху — реальные уроки, адаптивные викторины и контрольный день в конце. Шаги отмечаются сами по мере обучения.',
     path_step_lesson: 'Урок', path_step_quiz: 'Викторина эпохи', path_step_smart_quiz: 'Умная викторина',
     path_step_flashcards: 'Повторение карточек', path_step_studio: 'Сессия в ИИ-студии', path_step_crisis: 'Кризисная симуляция', path_step_map: 'Карта территорий',
     path_min: 'мин', path_mark_done: 'Отметить выполненным',
+    // Philosopher memory / Flashcards gate / Battle tactics
+    pmem_title: 'Память {name} о вас', pmem_empty: 'Дебатов пока не было — поспорьте, и они запомнят каждую вашу позицию.',
+    pmem_debates: 'дебатов', pmem_wins: 'выигранных уступок', pmem_stances: 'Позиции, которые вы отстаивали',
+    pmem_concessions: 'Пункты, которые вы уступили', pmem_strong: 'Ваши сильнейшие аргументы', pmem_style: 'Ваш стиль',
+    pmem_clear: 'Стереть это соперничество', pmem_clear_title: 'Стереть историю дебатов?',
+    pmem_clear_desc: 'Философ забудет каждую позицию, уступку и победу между вами. XP не пострадает.',
+    flash_gate_desc: 'Карточки открываются на плане Beginner Student. Отрабатывайте ключевые факты каждого урока с 3D-карточками.',
+    tmap_battle_brief2: 'Каждый раунд: выберите тактику на военном совете, затем ответьте на приказ. Верно — бьёт ваша тактика. Неверно — их. Атака бьёт залп, залп бьёт стену щитов, стена щитов бьёт атаку. Сломите их армию — или их боевой дух.',
+    tmap_battle_council: 'Военный совет — выберите тактику', tmap_battle_order: 'Приказ',
+    tmap_battle_rout: 'СТРОЙ СЛОМЛЕН!', tmap_battle_crit: 'СОКРУШИТЕЛЬНЫЙ УДАР!',
+    tmap_battle_advantage: 'Тактическое преимущество!', tmap_battle_outmaneuvered: 'Вас переиграли!', tmap_battle_morale: 'Боевой дух',
+    tmap_tactic_charge: 'Атака', tmap_tactic_volley: 'Залп', tmap_tactic_hold: 'Стена щитов',
+    tmap_tactic_charge_hint: 'Ломает залпы · разбивается о стойкий строй',
+    tmap_tactic_volley_hint: 'Рвёт стойкий строй · сминается атакой',
+    tmap_tactic_hold_hint: 'Останавливает атаку · беззащитна под залпом',
   },
 
   mk: {
@@ -1808,11 +1863,26 @@ export const T: Translations = {
     path_lessons_done: 'Лекции', path_quiz_score: 'Квиз', path_adaptive_acc: 'Адаптивно',
     path_generate: 'Состави ми недела', path_regenerate: 'Состави нова недела',
     path_enhance: 'Засили со Клио', path_enhancing: 'Клио ги проучува твоите податоци…',
-    path_enhance_upsell: 'Премини на Pro за тренерски белешки од Клио кон твојот план.',
+    path_enhance_upsell: 'Тренерските белешки од Клио кон твојот план се ексклузивни за Master Student.',
     path_done_of: 'чекори завршени', path_deep_analysis: 'Master анализа', path_day: 'Ден',
     path_empty: 'Состави персонализирана недела: планот ја таргетира твојата најслаба епоха со вистински лекции, адаптивни квизови и контролен ден на крајот — и сам се одбележува додека учиш.',
     path_step_lesson: 'Лекција', path_step_quiz: 'Квиз за епохата', path_step_smart_quiz: 'Паметен квиз',
     path_step_flashcards: 'Повторување картички', path_step_studio: 'Сесија во ВИ Студио', path_step_crisis: 'Кризна симулација', path_step_map: 'Мапа на територии',
     path_min: 'мин', path_mark_done: 'Означи завршено',
+    // Philosopher memory / Flashcards gate / Battle tactics
+    pmem_title: 'Меморијата на {name} за тебе', pmem_empty: 'Сè уште нема дебати — расправај со нив и ќе го паметат секој твој став.',
+    pmem_debates: 'дебати', pmem_wins: 'освоени отстапки', pmem_stances: 'Ставови што ги бранеше',
+    pmem_concessions: 'Точки што ги отстапи', pmem_strong: 'Твоите најсилни аргументи', pmem_style: 'Твојот стил',
+    pmem_clear: 'Избриши го ова ривалство', pmem_clear_title: 'Да се избрише историјата на дебати?',
+    pmem_clear_desc: 'Филозофот ќе го заборави секој став, отстапка и победа меѓу вас. Твоето XP не е засегнато.',
+    flash_gate_desc: 'Картичките се отклучуваат на планот Beginner Student. Вежбај клучни факти од секоја лекција со 3D картички.',
+    tmap_battle_brief2: 'Секоја рунда: избери тактика на воениот совет, па одговори на наредбата. Точно — удира твојата тактика. Погрешно — нивната. Јуришот победува залп, залпот победува штитен ѕид, штитниот ѕид победува јуриш. Скрши ја нивната војска — или нивниот морал.',
+    tmap_battle_council: 'Воен совет — избери ја твојата тактика', tmap_battle_order: 'Наредбата',
+    tmap_battle_rout: 'ЛИНИЈАТА СЕ КРШИ!', tmap_battle_crit: 'РАЗБИВАЧКИ УДАР!',
+    tmap_battle_advantage: 'Тактичка предност!', tmap_battle_outmaneuvered: 'Надмудрен!', tmap_battle_morale: 'Морал',
+    tmap_tactic_charge: 'Јуриш', tmap_tactic_volley: 'Залп', tmap_tactic_hold: 'Штитен ѕид',
+    tmap_tactic_charge_hint: 'Крши залпови · паѓа пред цврста линија',
+    tmap_tactic_volley_hint: 'Кине цврста линија · прегазен од јуриш',
+    tmap_tactic_hold_hint: 'Запира јуриш · беспомошен под залп',
   },
 };

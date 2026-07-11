@@ -9,9 +9,9 @@ import type { ComponentType, ReactNode } from 'react';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 
-export type PlanTier = 'free' | 'pro' | 'master';
+export type PlanTier = 'free' | 'beginner' | 'pro' | 'master';
 
-const TIER_RANK: Record<PlanTier, number> = { free: 0, pro: 1, master: 2 };
+const TIER_RANK: Record<PlanTier, number> = { free: 0, beginner: 1, pro: 2, master: 3 };
 
 export function usePlanTier(): PlanTier {
   const { subscription } = useSubscription();
@@ -26,7 +26,7 @@ export function PlanGate({ plan, description, children }: {
 }) {
   const tier = usePlanTier();
   if (TIER_RANK[tier] < TIER_RANK[plan]) {
-    return <UpgradePrompt description={description} requiredPlan={plan === 'master' ? 'master' : 'pro'} />;
+    return <UpgradePrompt description={description} requiredPlan={plan === 'free' ? 'beginner' : plan} />;
   }
   return <>{children}</>;
 }

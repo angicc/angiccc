@@ -16,6 +16,7 @@ import { useTheme } from '@/components/ThemeProvider';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { xpToNextLevel } from '@/features/progress/xpSystem';
 import { SearchDialog } from '@/components/shared/SearchDialog';
+import { Logo } from '@/components/shared/Logo';
 import { Sidebar } from './Sidebar';
 import { LANGUAGE_LABELS, type Language, type TranslationKeys } from '@/i18n/translations';
 
@@ -111,6 +112,11 @@ export function TopBar() {
         {pageTitle && (
           <h1 className="hidden md:block font-heading text-base font-bold text-foreground truncate">{pageTitle}</h1>
         )}
+
+        {/* ── Center: brand mark, dead-centered in the top bar ── */}
+        <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none select-none hidden md:block">
+          <Logo className="opacity-95" />
+        </div>
 
         <div className="flex-1" />
 

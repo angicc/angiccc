@@ -161,13 +161,13 @@ export default function StudyPlanPage() {
           <Button onClick={generate} className="gap-2">
             <RefreshCw className="w-4 h-4" />{plan ? t.path_regenerate : t.path_generate}
           </Button>
-          {plan && tier !== 'free' && (
+          {plan && tier === 'master' && (
             <Button variant="secondary" onClick={enhance} disabled={enhancing} className="gap-2">
               <Sparkles className={`w-4 h-4 ${enhancing ? 'animate-pulse' : ''}`} />
               {enhancing ? t.path_enhancing : t.path_enhance}
             </Button>
           )}
-          {plan && tier === 'free' && (
+          {plan && tier !== 'master' && (
             <span className="text-xs text-muted-foreground">{t.path_enhance_upsell}</span>
           )}
           {plan && (

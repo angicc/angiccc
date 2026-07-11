@@ -76,7 +76,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
   const { subscription } = useSubscription();
   const { t } = useLanguage();
   const tier = subscription?.tier ?? 'free';
-  const tierLabel = { free: 'Free', pro: 'Pro Learner', master: 'Master Student' }[tier];
+  const tierLabel = { free: 'Free', beginner: 'Beginner Student', pro: 'Pro Student', master: 'Master Student' }[tier];
   const xpInfo = progress ? xpToNextLevel(progress.xp) : null;
 
   const avatarKey = currentUser ? `historify:avatar:${currentUser.id}` : '';

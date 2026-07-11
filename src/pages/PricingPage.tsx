@@ -15,7 +15,8 @@ import type { SubscriptionTier } from '@/types';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getTranslatedPlanFeatures } from '@/i18n/planTranslations';
 
-const ICONS: Record<SubscriptionTier, React.ReactNode> = { free: <BookOpen className="w-6 h-6" />, pro: <Zap className="w-6 h-6" />, master: <Crown className="w-6 h-6" /> };
+const ICONS: Record<SubscriptionTier, React.ReactNode> = { free: <BookOpen className="w-6 h-6" />, beginner: <Star className="w-6 h-6" />, pro: <Zap className="w-6 h-6" />, master: <Crown className="w-6 h-6" /> };
+const TIER_ORDER: SubscriptionTier[] = ['free', 'beginner', 'pro', 'master'];
 
 export default function PricingPage() {
   const { t, language } = useLanguage();
@@ -40,7 +41,7 @@ export default function PricingPage() {
     // only appears in local/preview builds that have no VITE_API_URL.
     if (billingConfigured()) {
       try {
-        const url = await startCheckout(id as 'pro' | 'master');
+        const url = await startCheckout(id as 'beginner' | 'pro' | 'master');
         if (url) { window.location.assign(url); return; }
       } catch (err) {
         toast.error(err instanceof Error ? err.message : 'Could not start checkout — please try again.');
@@ -79,16 +80,16 @@ export default function PricingPage() {
           <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">{t.pricing_title}</h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t.pricing_subtitle}</p>
         </div>
-        <div className="grid md:grid-cols-3 gap-6 items-stretch">
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
           {PLANS.map(plan => {
             const isCurrent = tier === plan.id;
-            const isUp = ['free','pro','master'].indexOf(plan.id) > ['free','pro','master'].indexOf(tier);
+            const isUp = TIER_ORDER.indexOf(plan.id) > TIER_ORDER.indexOf(tier);
             return (
               <Card key={plan.id} className={`relative flex flex-col border-2 ${plan.color} ${plan.id === 'pro' ? 'shadow-lg shadow-primary/20 scale-[1.02]' : ''} ${isCurrent ? 'ring-2 ring-primary ring-offset-2 ring-offset-background' : ''}`}>
                 {plan.badge && <div className="absolute -top-3 left-1/2 -translate-x-1/2"><Badge className="bg-primary text-primary-foreground px-3 py-1 text-xs"><Star className="w-3 h-3 mr-1" />{plan.badge}</Badge></div>}
                 {isCurrent && <div className="absolute -top-3 right-4"><Badge variant="secondary" className="text-xs">{t.pricing_current}</Badge></div>}
                 <CardHeader className="pb-4">
-                  <div className={`flex items-center gap-3 mb-3 ${plan.id === 'master' ? 'text-amber-400' : plan.id === 'pro' ? 'text-primary' : 'text-muted-foreground'}`}>{ICONS[plan.id as SubscriptionTier]}<span className="font-heading text-xl font-bold text-foreground">{plan.name}</span></div>
+                  <div className={`flex items-center gap-3 mb-3 ${plan.id === 'master' ? 'text-amber-400' : plan.id === 'pro' ? 'text-primary' : plan.id === 'beginner' ? 'text-emerald-400' : 'text-muted-foreground'}`}>{ICONS[plan.id as SubscriptionTier]}<span className="font-heading text-xl font-bold text-foreground">{plan.name}</span></div>
                   <div className="flex items-baseline gap-1 mb-2">
                     {plan.price === 0 ? <span className="text-4xl font-bold font-heading">{t.pricing_price_free}</span> : <><span className="text-4xl font-bold font-heading">${plan.price}</span><span className="text-muted-foreground text-sm">{t.pricing_month}</span></>}
                   </div>

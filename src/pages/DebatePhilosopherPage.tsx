@@ -16,6 +16,8 @@ import { stripMarkdown } from '@/lib/utils';
 import { usePersistentChat } from '@/services/chatStore';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
 import { getTodaysPhilosopher, getTimeUntilNextPhilosopher, hasWonTodaysDebate, recordDebateWin, getTranslatedPhilosopherEra, getTranslatedPhilosopherTagline } from '@/features/philosopher/philosophersData';
+import { buildPhilosopherSystem, noteDebateExchange, recordDebateEngagement, recordDebateVictory } from '@/features/philosopher/philosopherMemory';
+import { PhilosopherMemoryPanel } from '@/components/shared/PhilosopherMemoryPanel';
 import type { Philosopher } from '@/features/philosopher/philosophersData';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { fetchWikiImage } from '@/lib/wikiImage';
@@ -204,7 +206,7 @@ export default function DebatePhilosopherPage() {
   const { currentUser, refreshProgress } = useAuth();
   const { subscription } = useSubscription();
   const tier = subscription?.tier ?? 'free';
-  const isAllowed = tier !== 'free';
+  const isAllowed = tier === 'pro' || tier === 'master';
 
   const philosopher = getTodaysPhilosopher();
   // Keyed per philosopher: the daily rotation naturally starts a fresh slice.
@@ -235,7 +237,10 @@ export default function DebatePhilosopherPage() {
 
     try {
       let acc = '';
-      for await (const chunk of streamChatResponse(history, undefined, philosopher.systemPrompt)) {
+      // Persistent debate memory: the persona remembers this student's past
+      // stances, concessions, and record — across the daily rotation.
+      const system = buildPhilosopherSystem(currentUser?.id, philosopher.id, philosopher.systemPrompt);
+      for await (const chunk of streamChatResponse(history, undefined, system)) {
         acc += chunk;
         const display = acc.replace(/<<CONCEDE>>/g, '');
         setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, content: display } : m));
@@ -245,10 +250,16 @@ export default function DebatePhilosopherPage() {
       setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, content: acc.replace(/<<CONCEDE>>/g, '').trim(), isStreaming: false } : m));
       retryRef.current = null;
 
+      if (currentUser && acc) {
+        recordDebateEngagement(currentUser.id, philosopher.id, philosopher.name);
+        noteDebateExchange(currentUser.id, philosopher.id, philosopher.name, [...history, { role: 'assistant', content: acc }]);
+      }
+
       if (concedeDetected && currentUser && !alreadyWon) {
         const xp = philosopher.xpReward;
         recordDebateWinInProgress(currentUser.id, xp, philosopher.name);
         recordDebateWin(currentUser.id, philosopher.id, xp);
+        recordDebateVictory(currentUser.id, philosopher.id, philosopher.name);
         refreshProgress();
         setWon(true);
         setXpAwarded(xp);
@@ -323,6 +334,13 @@ export default function DebatePhilosopherPage() {
             </Button>
           )}
         </motion.div>
+
+        {/* What this philosopher remembers of past debates with this student */}
+        {currentUser && (
+          <div className="mb-3">
+            <PhilosopherMemoryPanel userId={currentUser.id} philosopherId={philosopher.id} philosopherName={philosopher.name} />
+          </div>
+        )}
 
         <div className="flex-1 min-h-0 flex flex-col">
           <ScrollArea className="flex-1 border border-border rounded-xl overflow-hidden relative p-4">

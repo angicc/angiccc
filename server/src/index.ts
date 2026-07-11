@@ -14,7 +14,9 @@ import { authRouter } from './routes/auth';
 import { syncRouter } from './routes/sync';
 import { socialRouter } from './routes/social';
 import { learningRouter } from './routes/learning';
+import { leaderboardRouter } from './routes/leaderboard';
 import { billingRouter, stripeWebhookHandler } from './routes/billing';
+import { rateLimit } from './middleware/rateLimit';
 import { presence } from './presence';
 
 const prisma = new PrismaClient();
@@ -22,7 +24,7 @@ const prisma = new PrismaClient();
 declare global {
   // Attached by the JWT middleware below.
   namespace Express {
-    interface Request { auth?: { userId: string; tier: 'FREE' | 'PRO' | 'MASTER' } }
+    interface Request { auth?: { userId: string; tier: 'FREE' | 'BEGINNER' | 'PRO' | 'MASTER' } }
   }
 }
 
@@ -60,7 +62,7 @@ function authenticate(req: Request, res: Response, next: NextFunction) {
   const token = bearer ?? (req.cookies?.session as string | undefined);
   if (!token) return res.status(401).json({ error: 'Authentication required.' });
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as { sub: string; tier: 'FREE' | 'PRO' | 'MASTER' };
+    const payload = jwt.verify(token, JWT_SECRET) as { sub: string; tier: 'FREE' | 'BEGINNER' | 'PRO' | 'MASTER' };
     req.auth = { userId: payload.sub, tier: payload.tier };
     next();
   } catch {
@@ -74,7 +76,7 @@ function authenticate(req: Request, res: Response, next: NextFunction) {
 // database before denying — a Stripe upgrade takes effect immediately without
 // forcing a re-login, while the cheap JWT pass still handles the common case.
 function requireTier(tier: 'PRO' | 'MASTER') {
-  const rank = { FREE: 0, PRO: 1, MASTER: 2 } as const;
+  const rank = { FREE: 0, BEGINNER: 1, PRO: 2, MASTER: 3 } as const;
   return async (req: Request, res: Response, next: NextFunction) => {
     if (!req.auth) return res.status(401).json({ error: 'Authentication required.' });
     if (rank[req.auth.tier] >= rank[tier]) return next();
@@ -89,6 +91,13 @@ function requireTier(tier: 'PRO' | 'MASTER') {
   };
 }
 
+// ── Rate limits ──────────────────────────────────────────────────────────────
+// Two rings: a broad per-user/IP API cap, and a tight ring around the
+// credential endpoints (the only surface worth brute-forcing).
+app.use('/api/', rateLimit({ windowMs: 60_000, max: 240, scope: 'API' }));
+app.use('/api/auth/login', rateLimit({ windowMs: 15 * 60_000, max: 20, scope: 'login' }));
+app.use('/api/auth/register', rateLimit({ windowMs: 60 * 60_000, max: 10, scope: 'registration' }));
+
 // ── Routes ───────────────────────────────────────────────────────────────────
 app.get('/healthz', (_req, res) => res.json({ ok: true }));
 // register/login/logout are public; /me needs the session.
@@ -101,6 +110,7 @@ app.use('/api/social', authenticate, socialRouter);
 // resource (clio proxy is PRO+), so a downgraded user keeps read/write access
 // to material they already generated.
 app.use('/api/learning', authenticate, learningRouter);
+app.use('/api/leaderboard', authenticate, leaderboardRouter);
 app.use('/api/billing', authenticate, billingRouter);
 app.use('/api/crisis', authenticate, requireTier('MASTER'), crisisRouter);
 app.use('/api/clio', authenticate, requireTier('PRO'), clioRouter);

@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { AppShell } from '@/components/layout/AppShell';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { PlanGate } from '@/features/subscription/planGate';
 import { LESSONS } from '@/features/content/lessonsData';
 import { ERAS } from '@/features/content/erasData';
 import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslations';
@@ -104,6 +105,7 @@ export default function FlashcardsPage() {
           </Button>
         </motion.div>
 
+        <PlanGate plan="beginner" description={t.flash_gate_desc}>
         {/* Controls */}
         <div className="flex items-center gap-3">
           <Select value={eraFilter} onValueChange={v => { setEraFilter(v as EraId | 'all'); setIdx(0); setFlipped(false); }}>
@@ -250,6 +252,7 @@ export default function FlashcardsPage() {
             </Button>
           </motion.div>
         )}
+        </PlanGate>
       </div>
     </AppShell>
   );

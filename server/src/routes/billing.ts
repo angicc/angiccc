@@ -21,13 +21,16 @@ function trialDays(): number {
   return Number.isFinite(n) ? Math.min(14, Math.max(0, Math.round(n))) : 5;
 }
 
-function priceIdFor(plan: 'pro' | 'master'): string {
-  const id = plan === 'pro' ? process.env.STRIPE_PRICE_PRO : process.env.STRIPE_PRICE_MASTER;
+function priceIdFor(plan: 'beginner' | 'pro' | 'master'): string {
+  const id = plan === 'beginner' ? process.env.STRIPE_PRICE_BEGINNER
+    : plan === 'pro' ? process.env.STRIPE_PRICE_PRO
+    : process.env.STRIPE_PRICE_MASTER;
   if (!id) throw new StripeError(`Stripe price for the ${plan} plan is not configured.`, 503);
   return id;
 }
 
 function tierForPrice(priceId: string): Tier | null {
+  if (priceId === process.env.STRIPE_PRICE_BEGINNER) return 'BEGINNER';
   if (priceId === process.env.STRIPE_PRICE_PRO) return 'PRO';
   if (priceId === process.env.STRIPE_PRICE_MASTER) return 'MASTER';
   return null;
@@ -51,12 +54,12 @@ billingRouter.get('/status', async (req: Request, res: Response) => {
   });
 });
 
-const checkoutSchema = z.object({ plan: z.enum(['pro', 'master']) });
+const checkoutSchema = z.object({ plan: z.enum(['beginner', 'pro', 'master']) });
 
 // ── POST /api/billing/checkout — create a Checkout Session, return its URL ───
 billingRouter.post('/checkout', async (req: Request, res: Response) => {
   const parsed = checkoutSchema.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: "plan must be 'pro' or 'master'." });
+  if (!parsed.success) return res.status(400).json({ error: "plan must be 'beginner', 'pro', or 'master'." });
   const { plan } = parsed.data;
 
   try {

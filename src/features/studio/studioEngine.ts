@@ -43,7 +43,9 @@ const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: '
 export function buildStudioPrompt(req: StudioRequest, language: string): string {
   const langName = LANG_NAMES[language] ?? 'English';
   const source = req.sourceText.slice(0, SOURCE_MAX_CHARS);
-  return `You are a history-education content engineer. Transform the SOURCE TEXT below into study material. Every item must be answerable FROM THE SOURCE TEXT — never invent facts that are not in it. If the source contradicts common knowledge, follow the source.
+  return `OUTPUT LANGUAGE: ${langName}. Every student-facing string you produce — title, summary, facts, flashcard fronts AND backs, question stems, all four options, explanations — MUST be written in ${langName}, even though the source text may be in a different language. Translate the material's content into ${langName}; do NOT copy source-language sentences verbatim. Proper names stay in their conventional ${langName} form.
+
+You are a history-education content engineer. Transform the SOURCE TEXT below into study material. Every item must be answerable FROM THE SOURCE TEXT — never invent facts that are not in it. If the source contradicts common knowledge, follow the source.
 ${req.focus ? `\nFOCUS: emphasize "${req.focus}" where the source allows.\n` : ''}
 SOURCE TEXT:
 """
@@ -62,7 +64,7 @@ QUALITY RULES:
 - Wrong options must be historically plausible, same category as the answer (a date vs dates, a person vs persons).
 - No "all of the above" / "none of the above".
 
-Write all student-facing text in ${langName}. Respond ONLY with JSON, no fences:
+FINAL LANGUAGE CHECK before you answer: every string value in your JSON must be in ${langName} — if any flashcard, question, option, or explanation is not in ${langName}, rewrite it in ${langName} first. Respond ONLY with JSON, no fences:
 {
   "title": "...",
   "summary": "...",

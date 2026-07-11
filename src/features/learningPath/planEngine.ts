@@ -135,7 +135,9 @@ export function buildPlanNotesPrompt(mastery: MasterySnapshot, plan: WeekPlan, l
       return `- day ${s.day}: ${KIND_LABEL[s.kind]}${lesson ? ` — "${lesson.title}"` : s.eraId ? ` (${eraName(s.eraId)})` : ''} (${s.minutes} min)`;
     })
     .join('\n');
-  return `You are Clio, an expert history mentor. A student's week of study has already been scheduled by the app. Your job is ONLY to motivate and explain it — do not propose different activities.
+  return `OUTPUT LANGUAGE: ${langName}. Every string you produce — weekTheme, coachNote, every dayNote${master ? ', deepAnalysis' : ''} — MUST be written in natural, idiomatic ${langName}. This applies even though this prompt and the data below are in English.
+
+You are Clio, an expert history mentor. A student's week of study has already been scheduled by the app. Your job is ONLY to motivate and explain it — do not propose different activities.
 
 STUDENT MASTERY:
 ${masteryLines}
@@ -150,7 +152,7 @@ Produce:
 - dayNotes: for each scheduled day, ONE short sentence of rationale or a concrete tip for that day's activity.${master ? `
 - deepAnalysis: a paragraph (4–5 sentences) reading the pattern in their mastery data — which signal lags (coverage vs quizzes vs adaptive accuracy), what that says about how they study, and the single highest-leverage habit change.` : ''}
 
-Write ALL text in ${langName}. Plain text only, no markdown. Respond ONLY with JSON, no fences:
+FINAL LANGUAGE CHECK: every JSON string value must be in ${langName} — rewrite any that is not before answering. Plain text only, no markdown. Respond ONLY with JSON, no fences:
 { "weekTheme": "...", "coachNote": "...", "dayNotes": { "1": "...", "2": "..." }${master ? ', "deepAnalysis": "..."' : ''} }`;
 }
 

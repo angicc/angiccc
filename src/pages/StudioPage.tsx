@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { AppShell } from '@/components/layout/AppShell';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
+import { Flip3D } from '@/components/shared/Flip3D';
 import { PlanGate } from '@/features/subscription/planGate';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
@@ -495,15 +496,23 @@ function CardReviewer({ set, onExit }: { set: StudySet; onExit: () => void }) {
         </Button>
         <span className="text-xs text-muted-foreground">{idx + 1} / {set.cards.length}</span>
       </div>
-      <button
+      <Flip3D
+        flipped={flipped}
         onClick={() => setFlipped(f => !f)}
-        className="w-full min-h-56 rounded-2xl border border-border bg-card hover:border-primary/40 transition-all p-8 flex flex-col items-center justify-center text-center gap-3"
-      >
-        <Badge variant="outline" className="text-[10px]">{flipped ? t.studio_review_cards : t.studio_show_answer}</Badge>
-        <p className={`font-heading ${flipped ? 'text-lg text-primary' : 'text-xl font-bold'}`}>
-          {flipped ? card.back : card.front}
-        </p>
-      </button>
+        minHeight={224}
+        front={
+          <div className="w-full h-full min-h-56 rounded-2xl border border-border bg-card hover:border-primary/40 transition-colors p-8 flex flex-col items-center justify-center text-center gap-3 shadow-lg">
+            <Badge variant="outline" className="text-[10px]">{t.studio_show_answer}</Badge>
+            <p className="font-heading text-xl font-bold leading-snug">{card.front}</p>
+          </div>
+        }
+        back={
+          <div className="w-full h-full min-h-56 rounded-2xl border border-primary/40 bg-gradient-to-br from-primary/10 to-primary/5 p-8 flex flex-col items-center justify-center text-center gap-3 shadow-lg">
+            <Badge variant="outline" className="text-[10px] text-primary border-primary/40">{t.flash_answer}</Badge>
+            <p className="font-heading text-lg text-primary leading-snug">{card.back}</p>
+          </div>
+        }
+      />
       <div className="flex gap-2">
         <Button
           variant="outline" className="flex-1 gap-1.5"

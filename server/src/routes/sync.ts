@@ -55,3 +55,43 @@ syncRouter.put('/campaign', async (req: Request, res: Response) => {
   });
   res.json({ ok: true, updatedAt: row.updatedAt });
 });
+
+// GET /api/sync/notes
+syncRouter.get('/notes', async (req: Request, res: Response) => {
+  const row = await prisma.notesSnapshot.findUnique({ where: { userId: req.auth!.userId } });
+  res.json({ data: row?.data ?? null, updatedAt: row?.updatedAt ?? null });
+});
+
+// PUT /api/sync/notes
+syncRouter.put('/notes', async (req: Request, res: Response) => {
+  if (!validBlob(req.body, res)) return;
+  const row = await prisma.notesSnapshot.upsert({
+    where: { userId: req.auth!.userId },
+    create: { userId: req.auth!.userId, data: req.body },
+    update: { data: req.body },
+  });
+  res.json({ ok: true, updatedAt: row.updatedAt });
+});
+
+// GET /api/sync/philosopher-memory
+syncRouter.get('/philosopher-memory', async (req: Request, res: Response) => {
+  const row = await prisma.philosopherMemoryRecord.findUnique({ where: { userId: req.auth!.userId } });
+  res.json({ data: row?.data ?? null, updatedAt: row?.updatedAt ?? null });
+});
+
+// PUT /api/sync/philosopher-memory
+syncRouter.put('/philosopher-memory', async (req: Request, res: Response) => {
+  if (!validBlob(req.body, res)) return;
+  const row = await prisma.philosopherMemoryRecord.upsert({
+    where: { userId: req.auth!.userId },
+    create: { userId: req.auth!.userId, data: req.body },
+    update: { data: req.body },
+  });
+  res.json({ ok: true, updatedAt: row.updatedAt });
+});
+
+// DELETE /api/sync/philosopher-memory — mirror of the client "erase rivalry".
+syncRouter.delete('/philosopher-memory', async (req: Request, res: Response) => {
+  await prisma.philosopherMemoryRecord.deleteMany({ where: { userId: req.auth!.userId } });
+  res.json({ ok: true });
+});

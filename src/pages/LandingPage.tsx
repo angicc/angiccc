@@ -73,34 +73,38 @@ const FEATURES = [
   { icon: Scale,   title: 'Debate a Philosopher',    desc: 'Challenge Socrates, Nietzsche, Kant and more in daily philosophical debates. Make them concede and earn XP. One philosopher per day.', color: 'text-violet-400', bg: 'bg-violet-400/10', border: 'border-violet-400/20' },
   { icon: PenLine, title: 'AI Essay Challenge',       desc: 'Write historical essays graded live by Clio — accuracy, argument quality, and depth all scored. Exclusive to Master Student.', color: 'text-orange-400', bg: 'bg-orange-400/10', border: 'border-orange-400/20' },
   { icon: Globe2,  title: 'Timeline Territory Map',   desc: 'Explore real geographic territories for 25 historical periods on a live OpenStreetMap. Click topics to fly the map to exact territories with annotated markers.', color: 'text-sky-400',    bg: 'bg-sky-400/10',    border: 'border-sky-400/20'    },
-  { icon: Hourglass, title: 'Chronos Crisis Room',    desc: 'Take command at a real historical turning point — the Rubicon, Constantinople 1453, July 1789, the Cuban Missile Crisis — and have every decision judged by AI in real time.', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20' },
+  { icon: Hourglass, title: 'Chronos Crisis Room',    desc: 'Take command at nine real historical turning points — Salamis, the Rubicon, Hattin, Constantinople 1453, the Armada, July 1914, the Cuban Missile Crisis and more — with every decision judged by AI in real time.', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20' },
+  { icon: Brain,   title: 'Clio Memory',              desc: 'Your AI tutor genuinely remembers you: interests, misconceptions she is correcting, facts you mastered, and your goals — personalizing every session across time.', color: 'text-blue-400', bg: 'bg-blue-400/10', border: 'border-blue-400/20' },
+  { icon: Sparkles, title: 'AI Content Studio',       desc: 'Paste any historical text and Clio engineers it into a validated study kit — flashcards, quiz questions, and key facts — saved to your personal practice library.', color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
+  { icon: BarChart2, title: 'Study Plan',             desc: 'A mastery model scores every era and builds your week: real lessons, adaptive quizzes and a measurement day — steps check themselves off as you learn.', color: 'text-cyan-400', bg: 'bg-cyan-400/10', border: 'border-cyan-400/20' },
+  { icon: Scale,   title: 'Philosopher Memory',       desc: 'Every philosopher remembers your past debates — the stances you argued, the points you conceded, your win record — and sharpens their arguments accordingly.', color: 'text-violet-400', bg: 'bg-violet-400/10', border: 'border-violet-400/20' },
 ];
 
 // ── "What's New" spotlight — the latest additions & improvements ─────────────
 const WHATS_NEW = [
   {
+    icon: Brain,
+    title: 'AI That Remembers You',
+    desc: 'Clio and every debate philosopher now carry a real memory of you — your interests, misconceptions, past stances and wins — and personalize every session with it.',
+    color: 'text-blue-400', border: 'border-blue-400/30', bg: 'bg-blue-400/10',
+  },
+  {
     icon: Swords,
-    title: 'Territory Conquest',
-    desc: 'Command armies across a living historical map. Win animated battles by out-thinking the enemy, claim regions era by era, and climb from Recruit to Strategos.',
+    title: 'Cinematic Conquest Battles',
+    desc: 'War-council tactics, era-authentic regiments, morale that can break an army, rout strikes and battlefield cinematics — the Conquest Campaign is now a full battle game.',
     color: 'text-rose-400', border: 'border-rose-400/30', bg: 'bg-rose-400/10',
   },
   {
-    icon: Users,
-    title: 'History 1v1 Duels',
-    desc: 'Challenge a friend to a live knowledge duel on a Clio-built battlefield. Land history questions as attacks, drain their HP, and settle who really knows the past.',
-    color: 'text-sky-400', border: 'border-sky-400/30', bg: 'bg-sky-400/10',
+    icon: Sparkles,
+    title: 'AI Content Studio & Study Plan',
+    desc: 'Turn any text into a validated study kit, and let the mastery model engineer your week — with Clio coaching it on Master.',
+    color: 'text-emerald-400', border: 'border-emerald-400/30', bg: 'bg-emerald-400/10',
   },
   {
     icon: MapIcon,
-    title: '25 Real-Geography Timelines',
-    desc: 'From the Viking Age and Alexander\'s empire to the Atlantic slave trade — explore real historical borders, routes, and battle markers on a live map.',
+    title: 'Atlas-Grade Territory Maps',
+    desc: 'Historical borders redrawn to reference cartography — flowing atlas frontiers, region labels, real coastlines — plus four new Crisis Room turning points.',
     color: 'text-amber-400', border: 'border-amber-400/30', bg: 'bg-amber-400/10',
-  },
-  {
-    icon: Scale,
-    title: 'AI Strategic Assessment',
-    desc: 'The Chronos Tribunal grades your Crisis Room command across five dimensions — with a letter grade, a commander title, and a counterfactual vs. real history.',
-    color: 'text-violet-400', border: 'border-violet-400/30', bg: 'bg-violet-400/10',
   },
 ];
 
@@ -970,11 +974,12 @@ export default function LandingPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <h2 className="font-heading text-3xl font-bold mb-4">Plans for Every Learner</h2>
           <p className="text-muted-foreground mb-8">Every paid plan starts with a <span className="text-primary font-semibold">5-day free trial</span> — cancel anytime.</p>
-          <div className="grid sm:grid-cols-3 gap-4 mb-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {[
-              { plan: 'Free',           price: '$0',     desc: '4 intro lessons · Clio AI 5/day · Leaderboard',                           trial: false, icon: BookOpen, highlight: false },
-              { plan: 'Pro Learner',    price: '$10/mo', desc: 'All lessons · AI Tutor 50/mo · Timeline · Debate a Philosopher',           trial: true,  icon: Zap,      highlight: true  },
-              { plan: 'Master Student', price: '$20/mo', desc: 'Unlimited AI · Essay Challenge · Video Review · Downloads',                trial: true,  icon: Crown,    highlight: false },
+              { plan: 'Free',             price: '$0',        desc: '4 intro lessons · Clio AI 5/day · Leaderboard',                                trial: false, icon: BookOpen, highlight: false },
+              { plan: 'Beginner Student', price: '$4.99/mo',  desc: 'Full timeline · Flashcards · Clio AI 10/day · Quiz explanations',              trial: true,  icon: Star,     highlight: false },
+              { plan: 'Pro Student',      price: '$9.99/mo',  desc: 'All lessons · Smart Quiz · Study Plan · AI Studio · Territory Map · Debates',  trial: true,  icon: Zap,      highlight: true  },
+              { plan: 'Master Student',   price: '$17.99/mo', desc: 'Crisis Room · Conquest battles · Essay & Video challenges · 300 AI msgs/mo',   trial: true,  icon: Crown,    highlight: false },
             ].map(({ plan, price, desc, trial, icon: Icon, highlight }, i) => (
               <motion.div
                 key={plan}

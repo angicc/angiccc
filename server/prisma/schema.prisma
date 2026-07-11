@@ -13,6 +13,7 @@ datasource db {
 
 enum Tier {
   FREE
+  BEGINNER // "Beginner Student" — timeline, flashcards, 10 Clio messages/day
   PRO
   MASTER // "Master Student Plan" — gates Chronos Crisis Room + Video Review
 }
@@ -46,6 +47,8 @@ model User {
   learnerProfile LearnerProfile?
   weekPlan      WeekPlanRecord?
   studySets     StudySet[]
+  notes         NotesSnapshot?
+  philosopherMemory PhilosopherMemoryRecord?
   friendsA      Friendship[]      @relation("friendA")
   friendsB      Friendship[]      @relation("friendB")
   sentMessages  DirectMessage[]   @relation("msgFrom")
@@ -146,6 +149,23 @@ model LearnerProfile {
 
 // The generated weekly study plan (steps + AI coach notes + manual checkoffs).
 model WeekPlanRecord {
+  userId    String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Personal lesson notes (client-authoritative blob, one per user).
+model NotesSnapshot {
+  userId    String   @id
+  data      Json
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Per-philosopher debate memory (stances, concessions, win records) — the
+// debate twin of LearnerProfile. Client-authoritative blob, one per user.
+model PhilosopherMemoryRecord {
   userId    String   @id
   data      Json
   updatedAt DateTime @updatedAt

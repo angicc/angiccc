@@ -35,10 +35,15 @@ function resetIfNeeded(s: UserSubscription): boolean {
   return changed;
 }
 
-export const canAccessLesson = (tier: SubscriptionTier, order: number) => tier === 'free' ? order <= 1 : true;
+export const canAccessLesson = (tier: SubscriptionTier, order: number) =>
+  tier === 'free' || tier === 'beginner' ? order <= 1 : true;
 export const canUseAI = (tier: SubscriptionTier, used: number, usedToday = 0): { allowed: boolean; reason?: string } => {
   if (tier === 'free') {
-    if (usedToday >= 5) return { allowed: false, reason: 'You have used your 5 free daily messages. Come back tomorrow or upgrade to Pro for 50 messages/month.' };
+    if (usedToday >= 5) return { allowed: false, reason: 'You have used your 5 free daily messages. Come back tomorrow or upgrade to Beginner for 10 messages/day.' };
+    return { allowed: true };
+  }
+  if (tier === 'beginner') {
+    if (usedToday >= 10) return { allowed: false, reason: 'You have used your 10 daily messages. Come back tomorrow or upgrade to Pro Student for 50 messages/month.' };
     return { allowed: true };
   }
   if (tier === 'pro' && used >= 50) return { allowed: false, reason: 'You have used all 50 AI messages this month. Upgrade to Master for 300 messages/month.' };
@@ -46,6 +51,8 @@ export const canUseAI = (tier: SubscriptionTier, used: number, usedToday = 0): {
   return { allowed: true };
 };
 export const canDownload = (tier: SubscriptionTier) => tier === 'master';
-export const canAdvancedStats = (tier: SubscriptionTier) => tier !== 'free';
+export const canAdvancedStats = (tier: SubscriptionTier) => tier === 'pro' || tier === 'master';
 export const canFilterTimeline = (tier: SubscriptionTier) => tier !== 'free';
 export const canSeeExplanations = (tier: SubscriptionTier) => tier !== 'free';
+/** Flashcards unlock at Beginner Student and above. */
+export const canFlashcards = (tier: SubscriptionTier) => tier !== 'free';

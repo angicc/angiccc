@@ -1,6 +1,6 @@
 import type { Language } from '@/i18n/translations';
 import { IMPROVED_POLYGONS } from '@/data/historicalBoundaries';
-import { refineRing } from '@/lib/polygonSanitize';
+import { refineRing, chaikinSmooth, isSimpleRing } from '@/lib/polygonSanitize';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -119,7 +119,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     zoom: 6,
     title: 'Classical Greece',
     titleI18n: { es: 'Grecia Clásica', ru: 'Классическая Греция', mk: 'Класична Грција' },
-    description: 'Greek city-states forged democracy, philosophy, and science — foundations of Western civilisation. The Persian Wars and Alexander\'s conquests spread Hellenism across Asia.',
+    description: 'Greek city-states forged democracy, philosophy, and science — foundations of Western civilisation. From Athens to Ionia, Greek colonies carried this culture across the Mediterranean.',
     polygons: [
       {
         label: 'Greek World (core)',
@@ -142,13 +142,6 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
         color: '#3b82f6',
         points: [[38,24],[39,26],[40,28],[41,29],[40,26],[38,24]],
       },
-      {
-        name: 'Alexander\'s Campaign Route',
-        nameI18n: { es: 'Ruta de Alejandro Magno', ru: 'Маршрут Александра Великого', mk: 'Рутата на Александар Велики' },
-        type: 'military',
-        color: '#ef4444',
-        points: [[40,23],[40,28],[37,36],[31,35],[30,31],[30,50],[33,44],[35,48],[38,54],[36,62],[32,65],[29,68],[30,74],[28,77]],
-      },
     ],
     markers: [
       { name: 'Athens', type: 'capital', lat: 37.97, lng: 23.72, note: 'Birthplace of democracy — Parthenon, Socrates, Plato, Aristotle', year: -508 },
@@ -158,7 +151,6 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
       { name: 'Battle of Thermopylae', type: 'battle', lat: 38.8, lng: 22.53, note: '300 Spartans vs Persian invasion (480 BCE)', year: -480 },
       { name: 'Battle of Salamis', type: 'battle', lat: 37.94, lng: 23.47, note: 'Greek naval victory that saved Greece from Persia (480 BCE)', year: -480 },
       { name: 'Battle of Marathon', type: 'battle', lat: 38.15, lng: 23.97, note: 'Athens defeated Persian invasion (490 BCE)', year: -490 },
-      { name: 'Pella', type: 'capital', lat: 40.76, lng: 22.52, note: 'Macedonian capital — birthplace of Alexander the Great', year: -350 },
       { name: 'Corinth', type: 'city', lat: 37.94, lng: 22.93, note: 'Wealthy trading city — Corinthian order of architecture', year: -700 },
     ],
   },
@@ -1158,7 +1150,22 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
   // map; degenerate rings (< 3 distinct valid vertices) are dropped entirely.
   const rawPolys = IMPROVED_POLYGONS[topic.id] ?? topic.polygons;
   const polygons = rawPolys
-    ?.map(p => ({ ...p, coords: refineRing(p.coords) }))
+    ?.map(p => {
+      let coords = refineRing(p.coords);
+      // Atlas finish: hand-traced rings (sparse vertices) get extra Chaikin
+      // passes so straight survey-line segments become the flowing organic
+      // frontiers of historical cartography. Dense GIS coastlines are already
+      // organic and are left untouched. Simplicity is re-verified after every
+      // pass — a pinched ring keeps its previous valid state.
+      if (coords.length > 0 && coords.length < 200) {
+        for (let pass = 0; pass < 2; pass++) {
+          const smoother = chaikinSmooth(coords, 1);
+          if (!isSimpleRing(smoother)) break;
+          coords = smoother;
+        }
+      }
+      return { ...p, coords };
+    })
     .filter(p => p.coords.length >= 4); // closed ring = 3 vertices + closing point
   return { ...topic, polygons } as TerritoryTopic;
 }) satisfies TerritoryTopic[];

@@ -797,11 +797,11 @@ export default function TimelineMapPage() {
             const s1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
             s1.setAttribute('offset', '0%');
             s1.setAttribute('stop-color', fillColor);
-            s1.setAttribute('stop-opacity', '0.42');
+            s1.setAttribute('stop-opacity', '0.55');
             const s2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
             s2.setAttribute('offset', '100%');
             s2.setAttribute('stop-color', fillColor);
-            s2.setAttribute('stop-opacity', '0.10');
+            s2.setAttribute('stop-opacity', '0.22');
             grad.append(s1, s2);
             defs.appendChild(grad);
           }
@@ -811,6 +811,39 @@ export default function TimelineMapPage() {
           // Sweep the frontier in on load / on morph.
           animateBorderDraw(pathEl, strokeDash);
         });
+
+        // ── Atlas region label: the small-caps territory name set inside the
+        // region at its visual centre — the signature of historical
+        // cartography. Rendered as a non-interactive divIcon so it pans/zooms
+        // with the territory and never intercepts polygon hover telemetry.
+        if (isExplored && poly.label) {
+          const ringPts = poly.coords;
+          let cLat = 0, cLng = 0;
+          for (const [la, ln] of ringPts) { cLat += la; cLng += ln; }
+          cLat /= ringPts.length; cLng /= ringPts.length;
+          const labelText = getTranslatedPolyLabel(poly.label, language).toUpperCase();
+          L.marker([cLat, cLng], {
+            interactive: false,
+            keyboard: false,
+            icon: L.divIcon({
+              className: '',
+              html: `<div style="
+                transform: translate(-50%, -50%);
+                font-family: 'Playfair Display', Georgia, serif;
+                font-size: 11px;
+                font-weight: 600;
+                letter-spacing: 0.22em;
+                color: ${poly.color};
+                filter: brightness(1.35);
+                text-shadow: 0 0 4px rgba(0,0,0,0.95), 0 1px 2px rgba(0,0,0,0.9);
+                white-space: nowrap;
+                pointer-events: none;
+                opacity: 0.92;
+              ">${escapeHtml(labelText)}</div>`,
+              iconSize: [0, 0],
+            }),
+          }).addTo(lg);
+        }
 
         // ── Biome-sensitive shading: era-keyed fractal-noise texture overlay ─
         if (isExplored) {

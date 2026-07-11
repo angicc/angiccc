@@ -8,9 +8,9 @@ const TERRITORY_DESCS: Record<string, Partial<Record<ContentLang, string>>> = {
     mk: 'Плодородниот Полумесец — од Тигар и Еуфрат во Месопотамија до Нилот во Египет — ги дал на светот првите градови, системи на пишување и законски кодекси.',
   },
   'classical-greece': {
-    es: 'Las ciudades-estado griegas forjaron la democracia, la filosofía y la ciencia — fundamentos de la civilización occidental. Las Guerras Persas y las conquistas de Alejandro difundieron el helenismo por Asia.',
-    ru: 'Греческие города-государства создали демократию, философию и науку — основы западной цивилизации. Персидские войны и завоевания Александра распространили эллинизм по всей Азии.',
-    mk: 'Грчките градови-држави ја исковале демократијата, филозофијата и науката — темелите на западната цивилизација. Персиските Војни и освојувањата на Александар го рашириле хеленизмот низ Азија.',
+    es: 'Las ciudades-estado griegas forjaron la democracia, la filosofía y la ciencia — fundamentos de la civilización occidental. De Atenas a Jonia, las colonias griegas llevaron esta cultura por todo el Mediterráneo.',
+    ru: 'Греческие города-государства создали демократию, философию и науку — основы западной цивилизации. От Афин до Ионии греческие колонии разнесли эту культуру по всему Средиземноморью.',
+    mk: 'Грчките градови-држави ја исковале демократијата, филозофијата и науката — темелите на западната цивилизација. Од Атина до Јонија, грчките колонии ја пронеле оваа култура низ целиот Медитеран.',
   },
   'ancient-macedonia': {
     es: 'Desde el reino forjado por Filipo II, Alejandro Magno condujo al ejército macedonio por tres continentes — derribando a Persia y llevando la civilización helenística del Nilo al Indo en solo once años.',
