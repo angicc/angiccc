@@ -32,10 +32,10 @@ const ERA_COLOR: Record<string, string> = {
 };
 
 const ERA_SHORT_I18N: Record<string, Record<Exclude<Language, 'en'>, string>> = {
-  ancient:       { es: 'Antiguo',    ru: 'Древний',    mk: 'Античко' },
-  'middle-ages': { es: 'Medieval',   ru: 'Средние Века', mk: 'Среден Век' },
-  'early-modern':{ es: 'Moderno Temprano', ru: 'Раннее Новое', mk: 'Рано Модерно' },
-  modern:        { es: 'Moderno',    ru: 'Современный', mk: 'Модерно' },
+  ancient:       { es: 'Antiguo',    ru: 'Древний',    mk: 'Античко', de: 'Antike', fr: 'Antiquité' },
+  'middle-ages': { es: 'Medieval',   ru: 'Средние Века', mk: 'Среден Век', de: 'Mittelalter', fr: 'Moyen Âge' },
+  'early-modern':{ es: 'Moderno Temprano', ru: 'Раннее Новое', mk: 'Рано Модерно', de: 'Frühe Neuzeit', fr: 'Époque moderne' },
+  modern:        { es: 'Moderno',    ru: 'Современный', mk: 'Модерно', de: 'Moderne', fr: 'Contemporain' },
 };
 
 function getEraShortName(eraId: string, lang: Language): string {

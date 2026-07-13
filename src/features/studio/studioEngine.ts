@@ -38,7 +38,7 @@ export interface StudioRequest {
 export const SOURCE_MIN_CHARS = 200;
 export const SOURCE_MAX_CHARS = 12000;
 
-const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian' };
+const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian', de: 'German', fr: 'French' };
 
 export function buildStudioPrompt(req: StudioRequest, language: string): string {
   const langName = LANG_NAMES[language] ?? 'English';

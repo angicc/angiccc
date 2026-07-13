@@ -38,7 +38,7 @@ export interface CrisisAssessment {
   xpAwarded: number;             // XP banked when this assessment was first sealed
 }
 
-const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian' };
+const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian', de: 'German', fr: 'French' };
 
 export function buildAssessmentPrompt(scenario: CrisisScenario, run: CrisisRunState, language: string): string {
   const langName = LANG_NAMES[language] ?? 'English';

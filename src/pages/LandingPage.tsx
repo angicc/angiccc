@@ -2,7 +2,10 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { stripMarkdown } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from 'framer-motion';
-import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Globe2, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, X, Send, Loader2, Sparkles, Film, Shield, Scale, Hourglass, Target, Swords, Map as MapIcon, Users } from 'lucide-react';
+import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Globe2, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, X, Send, Loader2, Sparkles, Film, Shield, Scale, Hourglass, Target, Swords, Map as MapIcon, Users, Check } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { LANGUAGE_LABELS, type Language } from '@/i18n/translations';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/shared/Logo';
@@ -694,6 +697,7 @@ function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: str
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function LandingPage() {
+  const { t, language, setLanguage } = useLanguage();
   const [quoteIdx, setQuoteIdx] = useState(0);
 
   useEffect(() => {
@@ -709,9 +713,26 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Logo />
           <div className="flex items-center gap-2">
+            {/* Language selector — all six UI languages, available pre-login */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="gap-1.5">
+                  <Globe className="w-4 h-4" />
+                  <span className="hidden sm:inline uppercase text-xs font-semibold">{language}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {(Object.entries(LANGUAGE_LABELS) as [Language, string][]).map(([code, label]) => (
+                  <DropdownMenuItem key={code} onClick={() => setLanguage(code)} className="gap-2">
+                    {language === code && <Check className="w-3.5 h-3.5 text-primary" />}
+                    <span className={language === code ? 'font-semibold' : 'pl-5'}>{label}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Link to="/pricing"><Button variant="ghost" size="sm">Pricing</Button></Link>
-            <Link to="/login"><Button variant="ghost" size="sm">Log In</Button></Link>
-            <Link to="/register"><Button size="sm">Get Started</Button></Link>
+            <Link to="/login"><Button variant="ghost" size="sm">{t.btn_log_in}</Button></Link>
+            <Link to="/register"><Button size="sm">{t.btn_get_started}</Button></Link>
           </div>
         </div>
       </nav>

@@ -140,8 +140,9 @@ const FAQ_MK: FaqItem[] = [
 ];
 
 export function getTranslatedGuideContent(language: Language) {
-  const stepsMap: Record<Language, StepContent[]> = { en: STEPS_EN, es: STEPS_ES, ru: STEPS_RU, mk: STEPS_MK };
-  const faqMap: Record<Language, FaqItem[]> = { en: FAQ_EN, es: FAQ_ES, ru: FAQ_RU, mk: FAQ_MK };
+  // de/fr serve the English guide until their translations land (same fallback contract as the content layer).
+  const stepsMap: Record<Language, StepContent[]> = { en: STEPS_EN, es: STEPS_ES, ru: STEPS_RU, mk: STEPS_MK, de: STEPS_EN, fr: STEPS_EN };
+  const faqMap: Record<Language, FaqItem[]> = { en: FAQ_EN, es: FAQ_ES, ru: FAQ_RU, mk: FAQ_MK, de: FAQ_EN, fr: FAQ_EN };
   const stepsContent = stepsMap[language] ?? STEPS_EN;
   const faqContent = faqMap[language] ?? FAQ_EN;
   return {

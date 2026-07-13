@@ -1,11 +1,15 @@
-export type Language = 'en' | 'es' | 'ru' | 'mk';
+export type Language = 'en' | 'es' | 'ru' | 'mk' | 'de' | 'fr';
 
 export const LANGUAGE_LABELS: Record<Language, string> = {
   en: 'English',
   es: 'Español',
   ru: 'Русский',
   mk: 'Македонски',
+  de: 'Deutsch',
+  fr: 'Français',
 };
+
+import { DE_OVERRIDES, FR_OVERRIDES } from './translationsDeFr';
 
 export type TranslationKeys = {
   // ── Sidebar / Nav ──────────────────────────────────────────────
@@ -14,6 +18,7 @@ export type TranslationKeys = {
   nav_progress: string; nav_smart_quiz: string; nav_essay: string; nav_video_review: string;
   nav_debate: string;
   nav_crisis: string;
+  nav_imperium: string;
   // ── Chronos Crisis Room ───────────────────────────────────────
   crisis_title: string; crisis_subtitle: string; crisis_back: string;
   crisis_begin: string; crisis_abandon: string; crisis_placeholder: string; crisis_master_only: string;
@@ -347,8 +352,7 @@ export type TranslationKeys = {
 
 type Translations = Record<Language, TranslationKeys>;
 
-export const T: Translations = {
-  en: {
+const EN: TranslationKeys = {
     // Nav
     nav_dashboard: 'Dashboard', nav_eras: 'Eras & Lessons', nav_timeline: 'Timeline',
     nav_tutor: 'AI Tutor', nav_leaderboard: 'Leaderboard', nav_friends: 'Friends',
@@ -356,6 +360,7 @@ export const T: Translations = {
     nav_smart_quiz: 'Smart Quiz', nav_essay: 'Essay Challenge', nav_video_review: 'Video Review',
     nav_debate: 'Debate a Philosopher',
     nav_crisis: 'Crisis Room',
+    nav_imperium: 'Chronos Imperium',
     crisis_title: 'Chronos Crisis Room',
     crisis_subtitle: 'Step into a historical turning point and make the decisions yourself',
     crisis_back: 'All scenarios',
@@ -747,8 +752,10 @@ export const T: Translations = {
     tmap_tactic_charge_hint: 'Breaks volleys · falls to a braced line',
     tmap_tactic_volley_hint: 'Shreds a braced line · ridden down by a charge',
     tmap_tactic_hold_hint: 'Stops a charge cold · helpless under a volley',
-  },
+};
 
+export const T: Translations = {
+  en: EN,
   es: {
     nav_dashboard: 'Panel', nav_eras: 'Eras y Lecciones', nav_timeline: 'Línea de Tiempo',
     nav_tutor: 'Tutor IA', nav_leaderboard: 'Clasificación', nav_friends: 'Amigos',
@@ -756,6 +763,7 @@ export const T: Translations = {
     nav_smart_quiz: 'Quiz Inteligente', nav_essay: 'Desafío de Ensayo', nav_video_review: 'Revisión de Vídeo',
     nav_debate: 'Debate con un Filósofo',
     nav_crisis: 'Sala de Crisis',
+    nav_imperium: 'Chronos Imperium',
     crisis_title: 'Sala de crisis Chronos',
     crisis_subtitle: 'Entra en un punto de inflexión histórico y toma las decisiones tú mismo',
     crisis_back: 'Todos los escenarios',
@@ -1135,6 +1143,7 @@ export const T: Translations = {
     nav_smart_quiz: 'Умная Викторина', nav_essay: 'Эссе-Задание', nav_video_review: 'Обзор Видео',
     nav_debate: 'Дискуссия с Философом',
     nav_crisis: 'Кризисный штаб',
+    nav_imperium: 'Chronos Imperium',
     crisis_title: 'Кризисный штаб «Хронос»',
     crisis_subtitle: 'Окажитесь в поворотном моменте истории и примите решения сами',
     crisis_back: 'Все сценарии',
@@ -1514,6 +1523,7 @@ export const T: Translations = {
     nav_smart_quiz: 'Паметен Квиз', nav_essay: 'Есеј Предизвик', nav_video_review: 'Видео Преглед',
     nav_debate: 'Дебата со Филозоф',
     nav_crisis: 'Кризна соба',
+    nav_imperium: 'Chronos Imperium',
     crisis_title: 'Кризна соба „Хронос“',
     crisis_subtitle: 'Влези во историска пресвртница и донеси ги одлуките самиот',
     crisis_back: 'Сите сценарија',
@@ -1885,4 +1895,11 @@ export const T: Translations = {
     tmap_tactic_volley_hint: 'Кине цврста линија · прегазен од јуриш',
     tmap_tactic_hold_hint: 'Запира јуриш · беспомошен под залп',
   },
+
+  // German & French launch with the full key surface (spread from English) and
+  // a hand-translated core covering the high-traffic UI. Remaining keys serve
+  // English until their translations land — the same graceful-fallback contract
+  // the content layer has always used.
+  de: { ...EN, ...DE_OVERRIDES },
+  fr: { ...EN, ...FR_OVERRIDES },
 };

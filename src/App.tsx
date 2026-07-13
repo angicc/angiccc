@@ -32,6 +32,7 @@ import FriendsPage from '@/pages/FriendsPage';
 import DebatePhilosopherPage from '@/pages/DebatePhilosopherPage';
 import TimelineMapPage from '@/pages/TimelineMapPage';
 import ChronosCrisisPage from '@/pages/ChronosCrisisPage';
+import ImperiumPage from '@/pages/ImperiumPage';
 import StudioPage from '@/pages/StudioPage';
 import StudyPlanPage from '@/pages/StudyPlanPage';
 
@@ -67,6 +68,7 @@ function AppRoutes() {
       <Route path="/debate" element={<ProtectedRoute><DebatePhilosopherPage /></ProtectedRoute>} />
       <Route path="/timeline-map" element={<ProtectedRoute><TimelineMapPage /></ProtectedRoute>} />
       <Route path="/crisis" element={<ProtectedRoute><ChronosCrisisPage /></ProtectedRoute>} />
+      <Route path="/imperium" element={<ProtectedRoute><ImperiumPage /></ProtectedRoute>} />
       <Route path="/studio" element={<ProtectedRoute><StudioPage /></ProtectedRoute>} />
       <Route path="/study-plan" element={<ProtectedRoute><StudyPlanPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />

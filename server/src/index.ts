@@ -15,6 +15,7 @@ import { syncRouter } from './routes/sync';
 import { socialRouter } from './routes/social';
 import { learningRouter } from './routes/learning';
 import { leaderboardRouter } from './routes/leaderboard';
+import { imperiumRouter } from './routes/imperium';
 import { billingRouter, stripeWebhookHandler } from './routes/billing';
 import { rateLimit } from './middleware/rateLimit';
 import { presence } from './presence';
@@ -113,6 +114,7 @@ app.use('/api/learning', authenticate, learningRouter);
 app.use('/api/leaderboard', authenticate, leaderboardRouter);
 app.use('/api/billing', authenticate, billingRouter);
 app.use('/api/crisis', authenticate, requireTier('MASTER'), crisisRouter);
+app.use('/api/imperium', authenticate, requireTier('MASTER'), imperiumRouter);
 app.use('/api/clio', authenticate, requireTier('PRO'), clioRouter);
 
 // Lightweight global presence stat (no auth) — for status pages / health.
@@ -177,6 +179,15 @@ io.on('connection', socket => {
   socket.on('clio:sync', (payload: unknown) => socket.to(room).emit('clio:sync', payload));
   socket.on('progress:sync', (payload: unknown) => socket.to(room).emit('progress:sync', payload));
   socket.on('campaign:sync', (payload: unknown) => socket.to(room).emit('campaign:sync', payload));
+
+  // ── CHRONOS IMPERIUM (Part D): state-delta fan-out to the client pool ──
+  // The resolving device persists through REST, then pushes the delta here;
+  // every OTHER device of the same user receives it live and applies it to
+  // its local campaign copy (turn advanced / rolled back / abandoned).
+  socket.on('imperium:delta', (payload: { campaignId?: string; kind?: string }) => {
+    if (!payload || typeof payload.campaignId !== 'string') return;
+    socket.to(room).emit('imperium:delta', payload);
+  });
 
   // ── Live direct messages: deliver to the recipient's room immediately ──
   socket.on('dm:send', (payload: { toId?: string; text?: string; id?: string }) => {

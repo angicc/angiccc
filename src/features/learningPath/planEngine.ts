@@ -117,7 +117,7 @@ export function generateWeekPlan(
 
 // ─── AI decoration ────────────────────────────────────────────────────────────
 
-const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian' };
+const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian', de: 'German', fr: 'French' };
 const KIND_LABEL: Record<StepKind, string> = {
   lesson: 'lesson', 'era-quiz': 'era quiz', 'smart-quiz': 'adaptive quiz',
   flashcards: 'flashcard review', studio: 'content studio', crisis: 'crisis simulation', 'timeline-map': 'territory map exploration',
