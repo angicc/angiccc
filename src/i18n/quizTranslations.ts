@@ -1,4 +1,5 @@
 import type { Language } from './translations';
+import { QUIZ_TRANS_EXPANSION } from './quizTranslationsExpansion';
 type ContentLang = Exclude<Language, 'en'>;
 
 interface QuizQuestionTranslation {
@@ -1101,5 +1102,5 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
 
 export function getTranslatedQuestion(questionId: string, lang: Language): QuizQuestionTranslation | null {
   if (lang === 'en') return null;
-  return QUIZ_TRANS[questionId]?.[lang as ContentLang] ?? null;
+  return QUIZ_TRANS[questionId]?.[lang as ContentLang] ?? QUIZ_TRANS_EXPANSION[questionId]?.[lang as ContentLang] ?? null;
 }

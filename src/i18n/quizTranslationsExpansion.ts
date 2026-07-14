@@ -1,0 +1,708 @@
+// Translations (es/ru/mk) for the era-quiz expansion questions (16–50 of each
+// era). Same shape as quizTranslations.ts; merged in getTranslatedQuestion.
+import type { Language } from './translations';
+type ContentLang = Exclude<Language, 'en'>;
+interface QQT { question: string; options: string[]; explanation: string; }
+
+export const QUIZ_TRANS_EXPANSION: Record<string, Partial<Record<ContentLang, QQT>>> = {
+  'aq16': {
+    es: { question: 'La Epopeya de Gilgamesh, una de las primeras obras literarias, se originó ¿en qué civilización?', options: ['Egipto','Sumeria/Babilonia','Persia','El valle del Indo'], explanation: 'Gilgamesh fue un rey legendario de Uruk en Sumeria; la epopeya se compiló después en acadio en Babilonia.' },
+    ru: { question: 'Эпос о Гильгамеше — одно из древнейших литературных произведений — возник в какой цивилизации?', options: ['Египет','Шумер/Вавилония','Персия','Долина Инда'], explanation: 'Гильгамеш — легендарный царь Урука в Шумере; позднее эпос был сведён на аккадском в Вавилонии.' },
+    mk: { question: 'Епот за Гилгамеш, едно од најраните книжевни дела, потекнува од која цивилизација?', options: ['Египет','Сумер/Вавилонија','Персија','Долината на Инд'], explanation: 'Гилгамеш бил легендарен крал на Урук во Сумер; епот подоцна е составен на акадски во Вавилонија.' },
+  },
+  'aq17': {
+    es: { question: '¿Qué reina egipcia gobernó como faraón y envió una famosa expedición comercial al País de Punt?', options: ['Nefertiti','Cleopatra VII','Hatshepsut','Nefertari'], explanation: 'Hatshepsut (r. c.1479–1458 a.C.) asumió plenos poderes de faraón y conmemoró la expedición a Punt en Deir el-Bahri.' },
+    ru: { question: 'Какая египетская царица правила как фараон и снарядила знаменитую торговую экспедицию в страну Пунт?', options: ['Нефертити','Клеопатра VII','Хатшепсут','Нефертари'], explanation: 'Хатшепсут (ок. 1479–1458 до н.э.) приняла полную власть фараона и увековечила экспедицию в Пунт в Дейр-эль-Бахри.' },
+    mk: { question: 'Која египетска кралица владеела како фараон и испратила позната трговска експедиција во земјата Пунт?', options: ['Нефертити','Клеопатра VII','Хатшепсут','Нефертари'], explanation: 'Хатшепсут (вл. околу 1479–1458 г.п.н.е.) ги презела целосните овластувања на фараон и ја овековечила експедицијата во Пунт во Деир ел-Бахри.' },
+  },
+  'aq18': {
+    es: { question: 'La Piedra de Rosetta fue crucial porque permitió descifrar ¿qué?', options: ['El cuneiforme','El Lineal A','Los jeroglíficos egipcios','El alfabeto fenicio'], explanation: 'Su mismo texto en jeroglífico, demótico y griego permitió a Champollion descifrar los jeroglíficos en 1822.' },
+    ru: { question: 'Розеттский камень был важен тем, что позволил расшифровать что?', options: ['Клинопись','Линейное письмо А','Египетские иероглифы','Финикийский алфавит'], explanation: 'Один и тот же текст иероглифами, демотикой и по-гречески позволил Шампольону расшифровать иероглифы в 1822 году.' },
+    mk: { question: 'Каменот од Розета бил клучен бидејќи овозможил дешифрирање на што?', options: ['Клинопис','Линеарно А','Египетски хиероглифи','Феникиска азбука'], explanation: 'Истиот текст на хиероглифи, демотско и грчко писмо му овозможи на Шамполион да ги дешифрира хиероглифите во 1822.' },
+  },
+  'aq19': {
+    es: { question: '¿Qué pueblo difundió el primer alfabeto ampliamente adoptado mediante sus redes comerciales mediterráneas?', options: ['Los griegos','Los fenicios','Los hititas','Los etruscos'], explanation: 'El alfabeto consonántico fenicio de 22 letras fue adaptado por los griegos, que añadieron las vocales.' },
+    ru: { question: 'Какой народ распространил первый широко принятый алфавит через свои средиземноморские торговые сети?', options: ['Греки','Финикийцы','Хетты','Этруски'], explanation: '22-буквенный консонантный алфавит финикийцев переняли греки, добавив гласные.' },
+    mk: { question: 'Кој народ ја рашири првата широко прифатена азбука преку своите медитерански трговски мрежи?', options: ['Грците','Феникијците','Хетитите','Етрурците'], explanation: 'Феникиската азбука од 22 согласки ја презедоа Грците, додавајќи самогласки.' },
+  },
+  'aq20': {
+    es: { question: 'Cartago, la gran rival de Roma, comenzó como colonia ¿de qué ciudad?', options: ['Atenas','Tiro','Alejandría','Biblos'], explanation: 'Colonos fenicios de Tiro fundaron Cartago (tradicionalmente en 814 a.C.) en la costa norteafricana.' },
+    ru: { question: 'Карфаген, великий соперник Рима, начинался как колония какого города?', options: ['Афины','Тир','Александрия','Библ'], explanation: 'Финикийские поселенцы из Тира основали Карфаген (по традиции в 814 г. до н.э.) на североафриканском берегу.' },
+    mk: { question: 'Картагина, големиот ривал на Рим, започна како колонија на кој град?', options: ['Атина','Тир','Александрија','Библос'], explanation: 'Феникиски доселеници од Тир ја основаа Картагина (традиционално 814 г.п.н.е.) на северноафриканскиот брег.' },
+  },
+  'aq21': {
+    es: { question: 'Ciro el Grande fundó ¿qué dinastía persa?', options: ['Sasánida','Parta','Aqueménida','Safávida'], explanation: 'La dinastía aqueménida gobernó el mayor imperio que el mundo antiguo había visto, del Egeo al Indo.' },
+    ru: { question: 'Кир Великий основал какую персидскую династию?', options: ['Сасанидов','Парфянскую','Ахеменидов','Сефевидов'], explanation: 'Династия Ахеменидов правила крупнейшей империей древнего мира — от Эгейского моря до Инда.' },
+    mk: { question: 'Кир Велики ја основа која персиска династија?', options: ['Сасанидска','Партиска','Ахаеменидска','Сафавидска'], explanation: 'Ахаеменидската династија владееше со најголемата империја што античкиот свет ја видел, од Егеј до Инд.' },
+  },
+  'aq22': {
+    es: { question: '¿Qué era una satrapía en el Imperio persa?', options: ['Una fiesta religiosa','Una gobernación provincial','Una unidad de caballería','Un palacio real'], explanation: 'Darío I dividió el imperio en unas veinte satrapías, provincias regidas por gobernadores llamados sátrapas.' },
+    ru: { question: 'Что такое сатрапия в Персидской империи?', options: ['Религиозный праздник','Провинциальное наместничество','Конное подразделение','Царский дворец'], explanation: 'Дарий I разделил империю примерно на двадцать сатрапий — провинций под управлением сатрапов.' },
+    mk: { question: 'Што била сатрапија во Персиската империја?', options: ['Верски празник','Провинциско гувернерство','Коњаничка единица','Кралска палата'], explanation: 'Дариј I ја подели империјата на дваесетина сатрапии — провинции водени од управители наречени сатрапи.' },
+  },
+  'aq23': {
+    es: { question: 'El Camino Real, que permitía cruzar el Imperio persa en cerca de una semana, conectaba Susa ¿con qué ciudad?', options: ['Babilonia','Persépolis','Sardes','Menfis'], explanation: 'El Camino Real de 2.700 km iba de Susa a Sardes, en Anatolia occidental, con postas de caballos frescos.' },
+    ru: { question: 'Царская дорога, позволявшая пересечь Персидскую империю примерно за неделю, соединяла Сузы с каким городом?', options: ['Вавилон','Персеполь','Сарды','Мемфис'], explanation: 'Царская дорога длиной 2 700 км шла из Суз в Сарды в западной Анатолии, со станциями подменных коней.' },
+    mk: { question: 'Кралскиот пат, што овозможуваше преминување на Персиската империја за околу недела, ги поврзуваше Суза и кој град?', options: ['Вавилон','Персеполис','Сард','Мемфис'], explanation: 'Кралскиот пат од 2.700 км водеше од Суза до Сард во западна Анадолија, со станици за свежи коњи.' },
+  },
+  'aq24': {
+    es: { question: '¿Qué religión, fundada por el profeta Zoroastro, dominaba en la antigua Persia?', options: ['Mitraísmo','Zoroastrismo','Maniqueísmo','Vedismo'], explanation: 'El zoroastrismo planteaba la existencia como lucha entre verdad y mentira bajo el dios Ahura Mazda.' },
+    ru: { question: 'Какая религия, основанная пророком Зороастром, господствовала в древней Персии?', options: ['Митраизм','Зороастризм','Манихейство','Ведизм'], explanation: 'Зороастризм видел бытие как борьбу истины и лжи под властью бога Ахура-Мазды.' },
+    mk: { question: 'Која религија, основана од пророкот Зороастер, доминираше во древна Персија?', options: ['Митраизам','Зороастризам','Манихејство','Ведизам'], explanation: 'Зороастризмот го гледаше постоењето како борба меѓу вистината и лагата под богот Ахура Мазда.' },
+  },
+  'aq25': {
+    es: { question: 'La capital ceremonial del Imperio aqueménida, incendiada durante la conquista de Alejandro, era...', options: ['Susa','Ecbatana','Pasargada','Persépolis'], explanation: 'Persépolis, iniciada por Darío I, fue saqueada e incendiada por el ejército de Alejandro en 330 a.C.' },
+    ru: { question: 'Церемониальной столицей державы Ахеменидов, сожжённой при завоевании Александра, был...', options: ['Сузы','Экбатана','Пасаргады','Персеполь'], explanation: 'Персеполь, начатый Дарием I, был разграблен и сожжён армией Александра в 330 г. до н.э.' },
+    mk: { question: 'Церемонијалната престолнина на Ахаеменидската империја, запалена при освојувањето на Александар, беше...', options: ['Суза','Екбатана','Пасаргада','Персеполис'], explanation: 'Персеполис, започнат од Дариј I, беше ограбен и запален од војската на Александар во 330 г.п.н.е.' },
+  },
+  'aq26': {
+    es: { question: 'Tras la muerte de Alejandro en 323 a.C., su imperio se dividió entre sus generales, conocidos como los...', options: ['Estrategos','Diádocos','Sátrapas','Epígonos'], explanation: 'Los diádocos ("sucesores") — Ptolomeo, Seleuco, Antígono y otros — partieron el imperio en reinos rivales.' },
+    ru: { question: 'После смерти Александра в 323 г. до н.э. его империю разделили полководцы, известные как...', options: ['Стратеги','Диадохи','Сатрапы','Эпигоны'], explanation: 'Диадохи («преемники») — Птолемей, Селевк, Антигон и другие — раскроили империю на соперничающие царства.' },
+    mk: { question: 'По смртта на Александар во 323 г.п.н.е., неговата империја беше поделена меѓу неговите генерали, познати како...', options: ['Стратези','Дијадоси','Сатрапи','Епигони'], explanation: 'Дијадосите („наследници") — Птолемеј, Селевк, Антигон и други — ја исечкаа империјата на ривалски кралства.' },
+  },
+  'aq27': {
+    es: { question: '¿Qué dinastía gobernó Egipto desde Alejandría hasta la conquista romana en 30 a.C.?', options: ['Los seléucidas','Los antigónidas','Los ptolomeos','Los atálidas'], explanation: 'Ptolomeo I tomó Egipto; su línea terminó con Cleopatra VII tras Accio.' },
+    ru: { question: 'Какая династия правила Египтом из Александрии до римского завоевания в 30 г. до н.э.?', options: ['Селевкиды','Антигониды','Птолемеи','Атталиды'], explanation: 'Птолемей I взял Египет; его род пресёкся на Клеопатре VII после Акция.' },
+    mk: { question: 'Која династија владееше со Египет од Александрија до римското освојување во 30 г.п.н.е.?', options: ['Селевкидите','Антигонидите','Птолемеите','Аталидите'], explanation: 'Птолемеј I го зеде Египет; неговата лоза заврши со Клеопатра VII по Акциум.' },
+  },
+  'aq28': {
+    es: { question: 'La Biblioteca de Alejandría formaba parte de ¿qué institución académica mayor?', options: ['La Academia','El Liceo','El Museo (Mouseion)','La Estoa'], explanation: 'El Mouseion, institución de investigación dedicada a las Musas, albergaba la biblioteca y a sabios asalariados.' },
+    ru: { question: 'Александрийская библиотека была частью какого более крупного учёного учреждения?', options: ['Академии','Ликея','Мусейона','Стои'], explanation: 'Мусейон — исследовательское учреждение, посвящённое Музам, — содержал библиотеку и учёных на жалованье.' },
+    mk: { question: 'Библиотеката во Александрија беше дел од која поголема научна институција?', options: ['Академијата','Ликejот','Мусеионот','Стоата'], explanation: 'Мусеионот, истражувачка институција посветена на Музите, ги содржеше библиотеката и платени научници.' },
+  },
+  'aq29': {
+    es: { question: '¿Qué científico helenístico calculó la circunferencia de la Tierra usando sombras en Alejandría y Siena?', options: ['Arquímedes','Eratóstenes','Euclides','Hiparco'], explanation: 'La estimación geométrica de Eratóstenes (c.240 a.C.) se acercó asombrosamente al valor real.' },
+    ru: { question: 'Какой эллинистический учёный вычислил окружность Земли по теням в Александрии и Сиене?', options: ['Архимед','Эратосфен','Евклид','Гиппарх'], explanation: 'Геометрическая оценка Эратосфена (ок. 240 г. до н.э.) оказалась поразительно близка к истинной.' },
+    mk: { question: 'Кој хеленистички научник ја пресмета обиколката на Земјата користејќи сенки во Александрија и Сиена?', options: ['Архимед','Ератостен','Евклид','Хипарх'], explanation: 'Геометриската проценка на Ератостен (околу 240 г.п.н.е.) беше зачудувачки блиску до вистинската вредност.' },
+  },
+  'aq30': {
+    es: { question: 'La batalla de las Termópilas (480 a.C.) es famosa por la resistencia del rey Leónidas y ¿cuántos espartanos?', options: ['100','300','1.000','10.000'], explanation: 'Los 300 espartanos de Leónidas (con varios miles de aliados) defendieron el paso contra la invasión de Jerjes durante tres días.' },
+    ru: { question: 'Битва при Фермопилах (480 г. до н.э.) знаменита стоянием царя Леонида и скольких спартанцев?', options: ['100','300','1 000','10 000'], explanation: '300 спартанцев Леонида (с несколькими тысячами союзников) три дня держали проход против вторжения Ксеркса.' },
+    mk: { question: 'Битката кај Термопилите (480 г.п.н.е.) е позната по отпорот на кралот Леонида и колку Спартанци?', options: ['100','300','1.000','10.000'], explanation: '300-те Спартанци на Леонида (со неколку илjади сојузници) го држеа премминот против инвазијата на Ксеркс три дена.' },
+  },
+  'aq31': {
+    es: { question: '¿Qué estructura construyeron los atenienses en la Acrópolis para honrar a su diosa patrona?', options: ['El Panteón','El Partenón','El Erecteón','El templo de Zeus'], explanation: 'El Partenón (447–432 a.C.) albergaba la colosal estatua de Atenea Partenos de Fidias.' },
+    ru: { question: 'Какое сооружение афиняне возвели на Акрополе в честь богини-покровительницы?', options: ['Пантеон','Парфенон','Эрехтейон','Храм Зевса'], explanation: 'Парфенон (447–432 гг. до н.э.) хранил колоссальную статую Афины Парфенос работы Фидия.' },
+    mk: { question: 'Која градба ја изградија Атињаните на Акрополот во чест на својата божица заштитничка?', options: ['Пантеонот','Партенонот','Ерехтејонот','Храмот на Зевс'], explanation: 'Партенонот (447–432 г.п.н.е.) ја чуваше колосалната статуа на Атена Партенос од Фидија.' },
+  },
+  'aq32': {
+    es: { question: 'El primer código legal escrito de Roma, expuesto públicamente hacia 450 a.C., se llamó...', options: ['El Código de Justiniano','Las Doce Tablas','El Edicto de Milán','La Lex Julia'], explanation: 'Las Doce Tablas fijaron el derecho civil para que los magistrados patricios ya no gobernaran por costumbre no escrita.' },
+    ru: { question: 'Первый писаный свод законов Рима, выставленный публично около 450 г. до н.э., назывался...', options: ['Кодекс Юстиниана','Законы двенадцати таблиц','Миланский эдикт','Lex Julia'], explanation: 'Двенадцать таблиц записали гражданское право, чтобы магистраты-патриции не правили по неписаному обычаю.' },
+    mk: { question: 'Првиот пишан законик на Рим, јавно изложен околу 450 г.п.н.е., се викаше...', options: ['Јустинијановиот законик','Дванаесетте таблици','Миланскиот едикт','Lex Julia'], explanation: 'Дванаесетте таблици го запишаа граѓанското право за патрициските магистрати да не владеат по непишан обичај.' },
+  },
+  'aq33': {
+    es: { question: 'La aplastante victoria de doble envolvimiento de Aníbal sobre Roma en 216 a.C. ocurrió en...', options: ['Zama','Trebia','Lago Trasimeno','Cannas'], explanation: 'En Cannas, Aníbal rodeó y destruyó un ejército romano mucho mayor — aún se estudia en las academias militares.' },
+    ru: { question: 'Сокрушительная победа Ганнибала с двойным охватом над Римом в 216 г. до н.э. произошла при...', options: ['Заме','Требии','Тразименском озере','Каннах'], explanation: 'При Каннах Ганнибал окружил и уничтожил куда более многочисленную римскую армию — её до сих пор изучают военные академии.' },
+    mk: { question: 'Кршечката победа со двоен опфат на Ханибал над Рим во 216 г.п.н.е. се случи кај...', options: ['Зама','Требија','Тразименското Езеро','Кана'], explanation: 'Кај Кана Ханибал опколи и уништи многу поголема римска војска — сè уште се изучува во воените академии.' },
+  },
+  'aq34': {
+    es: { question: '¿Quién derrotó a Aníbal en Zama en 202 a.C., poniendo fin a la Segunda Guerra Púnica?', options: ['Escipión el Africano','Fabio Máximo','Mario','Pompeyo'], explanation: 'Publio Cornelio Escipión llevó la guerra a África y ganó el sobrenombre de "Africano" por la victoria.' },
+    ru: { question: 'Кто разбил Ганнибала при Заме в 202 г. до н.э., завершив Вторую Пуническую войну?', options: ['Сципион Африканский','Фабий Максим','Марий','Помпей'], explanation: 'Публий Корнелий Сципион перенёс войну в Африку и за победу получил прозвание «Африканский».' },
+    mk: { question: 'Кој го порази Ханибал кај Зама во 202 г.п.н.е., завршувајќи ја Втората пунска војна?', options: ['Сципион Африканецот','Фабиј Максим','Мариј','Помпеј'], explanation: 'Публиј Корнелиј Сципион ја пренесе војната во Африка и ја заслужи титулата „Африканецот" за победата.' },
+  },
+  'aq35': {
+    es: { question: 'El Primer Triunvirato lo formaban César, Pompeyo y ¿qué rico romano?', options: ['Cicerón','Craso','Bruto','Antonio'], explanation: 'Marco Licinio Craso, el hombre más rico de Roma, financió la alianza informal del 60 a.C.' },
+    ru: { question: 'Первый триумвират составили Цезарь, Помпей и какой богатейший римлянин?', options: ['Цицерон','Красс','Брут','Антоний'], explanation: 'Марк Лициний Красс, богатейший человек Рима, финансировал неформальный союз 60 г. до н.э.' },
+    mk: { question: 'Првиот триумвират го сочинуваа Цезар, Помпеј и кој богат Римјанин?', options: ['Цицерон','Крас','Брут','Антониј'], explanation: 'Марко Лициниј Крас, најбогатиот човек во Рим, го финансираше неформалниот сојуз од 60 г.п.н.е.' },
+  },
+  'aq36': {
+    es: { question: 'Octavio derrotó a Antonio y Cleopatra en 31 a.C. en la batalla naval de...', options: ['Salamina','Accio','Milas','Nauloco'], explanation: 'Accio dejó a Octavio dueño del mundo romano; cuatro años después se convirtió en Augusto.' },
+    ru: { question: 'Октавиан разбил Антония и Клеопатру в 31 г. до н.э. в морской битве при...', options: ['Саламине','Акции','Милах','Навлохе'], explanation: 'Акций сделал Октавиана хозяином римского мира; через четыре года он стал Августом.' },
+    mk: { question: 'Октавијан ги порази Антониј и Клеопатра во 31 г.п.н.е. во поморската битка кај...', options: ['Саламина','Акциум','Мила','Наулох'], explanation: 'Акциум го остави Октавијан господар на римскиот свет; четири години подоцна стана Август.' },
+  },
+  'aq37': {
+    es: { question: '¿Qué emperador romano construyó una gran muralla defensiva a través del norte de Britania?', options: ['Trajano','Adriano','Claudio','Diocleciano'], explanation: 'El Muro de Adriano (comenzado en 122 d.C.) marcó y controló la frontera norte del imperio durante casi tres siglos.' },
+    ru: { question: 'Какой римский император построил огромную оборонительную стену через северную Британию?', options: ['Траян','Адриан','Клавдий','Диоклетиан'], explanation: 'Вал Адриана (начат в 122 г. н.э.) обозначал и контролировал северную границу империи почти три века.' },
+    mk: { question: 'Кој римски император изгради масивен одбранбен ѕид низ северна Британија?', options: ['Трајан','Хадријан','Клаудиј','Диоклецијан'], explanation: 'Хадријановиот ѕид (започнат 122 г.н.е.) ја одбележуваше и контролираше северната граница на империјата речиси три века.' },
+  },
+  'aq38': {
+    es: { question: 'El Imperio romano alcanzó su mayor extensión territorial bajo ¿qué emperador?', options: ['Augusto','Nerón','Trajano','Constantino'], explanation: 'Las conquistas de Trajano en Dacia y Mesopotamia (98–117 d.C.) llevaron el imperio a su tamaño máximo.' },
+    ru: { question: 'Римская империя достигла наибольших размеров при каком императоре?', options: ['Августе','Нероне','Траяне','Константине'], explanation: 'Завоевания Траяна в Дакии и Месопотамии (98–117 гг.) довели империю до максимума.' },
+    mk: { question: 'Римската империја го достигна својот најголем територијален опсег под кој император?', options: ['Август','Нерон','Трајан','Константин'], explanation: 'Освојувањата на Трајан во Дакија и Месопотамија (98–117 г.н.е.) ја доведоа империјата до најголемиот размер.' },
+  },
+  'aq39': {
+    es: { question: 'El emperador Diocleciano respondió a la crisis del siglo III repartiendo el gobierno entre cuatro gobernantes, sistema llamado...', options: ['Principado','Dominado','Tetrarquía','Consulado'], explanation: 'La Tetrarquía (293 d.C.) dividió la autoridad entre dos Augustos mayores y dos Césares menores.' },
+    ru: { question: 'Император Диоклетиан ответил на кризис III века разделом власти между четырьмя правителями — система называлась...', options: ['Принципат','Доминат','Тетрархия','Консулат'], explanation: 'Тетрархия (293 г.) поделила власть между двумя старшими августами и двумя младшими цезарями.' },
+    mk: { question: 'Императорот Диоклецијан одговори на кризата од III век со поделба на власта меѓу четворица владетели, систем наречен...', options: ['Принципат','Доминат','Тетрархија','Консулат'], explanation: 'Тетрархијата (293 г.н.е.) ја подели власта меѓу двајца постари Августи и двајца помлади Цезари.' },
+  },
+  'aq40': {
+    es: { question: '¿Qué ciudad convirtió Constantino en la nueva capital del Imperio romano en 330 d.C.?', options: ['Rávena','Antioquía','Alejandría','Bizancio (Constantinopla)'], explanation: 'Constantino refundó la ciudad griega de Bizancio como Constantinopla, la "Nueva Roma" del Bósforo.' },
+    ru: { question: 'Какой город Константин сделал новой столицей Римской империи в 330 г.?', options: ['Равенна','Антиохия','Александрия','Византий (Константинополь)'], explanation: 'Константин преобразовал греческий Византий в Константинополь — «Новый Рим» на Босфоре.' },
+    mk: { question: 'Кој град Константин го направи нова престолнина на Римската империја во 330 г.н.е.?', options: ['Равена','Антиохија','Александрија','Византион (Константинопол)'], explanation: 'Константин го преоснова грчкиот град Византион како Константинопол, „Новиот Рим" на Босфорот.' },
+  },
+  'aq41': {
+    es: { question: 'El Imperio maurya de la India fue fundado por ¿qué gobernante?', options: ['Ashoka','Chandragupta Maurya','Harsha','Kanishka'], explanation: 'Chandragupta tomó Magadha hacia 322 a.C. y construyó el primer imperio que abarcó la mayor parte del subcontinente.' },
+    ru: { question: 'Империю Маурьев в Индии основал какой правитель?', options: ['Ашока','Чандрагупта Маурья','Харша','Канишка'], explanation: 'Чандрагупта захватил Магадху около 322 г. до н.э. и построил первую империю, охватившую большую часть субконтинента.' },
+    mk: { question: 'Маурjанската империја во Индија ја основа кој владетел?', options: ['Ашока','Чандрагупта Маурја','Харша','Канишка'], explanation: 'Чандрагупта ја зазеде Магада околу 322 г.п.н.е. и ја изгради првата империја што опфати поголем дел од потконтинентот.' },
+  },
+  'aq42': {
+    es: { question: 'El rey Qin que unificó China en 221 a.C. y se convirtió en su primer emperador fue...', options: ['Confucio','Qin Shi Huang','Wu de Han','Sun Tzu'], explanation: 'Qin Shi Huang estandarizó la escritura, pesos y moneda, y fue sepultado con el Ejército de Terracota.' },
+    ru: { question: 'Циньский царь, объединивший Китай в 221 г. до н.э. и ставший первым императором, — это...', options: ['Конфуций','Цинь Шихуанди','У-ди из Хань','Сунь-цзы'], explanation: 'Цинь Шихуанди унифицировал письмо, меры и монету и был погребён с Терракотовой армией.' },
+    mk: { question: 'Кинскиот крал што ја обедини Кина во 221 г.п.н.е. и стана нејзин прв император беше...', options: ['Конфучиј','Кин Ши Хуанг','Ву од Хан','Сун Цу'], explanation: 'Кин Ши Хуанг ги стандардизира писмото, мерките и монетите, и беше погребан со Теракотната армија.' },
+  },
+  'aq43': {
+    es: { question: '¿Qué filosofía china, defendida por Han Feizi, sostenía que leyes estrictas y castigos duros eran la base del orden?', options: ['Confucianismo','Taoísmo','Legalismo','Mohísmo'], explanation: 'El legalismo guio la implacable eficiencia del estado Qin; las dinastías posteriores lo suavizaron con la ética confuciana.' },
+    ru: { question: 'Какая китайская философия, отстаиваемая Хань Фэйцзы, считала строгие законы и суровые кары основой порядка?', options: ['Конфуцианство','Даосизм','Легизм','Моизм'], explanation: 'Легизм направлял безжалостную эффективность царства Цинь; позднейшие династии смягчили его конфуцианской этикой.' },
+    mk: { question: 'Која кинеска филозофија, застапувана од Хан Феизи, тврдеше дека строги закони и остри казни се основа на редот?', options: ['Конфучијанизам','Даоизам','Легализам','Моизам'], explanation: 'Легализмот ја водеше немилосрдната ефикасност на Кин; подоцнежните династии го ублажија со конфучијанска етика.' },
+  },
+  'aq44': {
+    es: { question: 'El Código de Hammurabi es conocido sobre todo por ¿qué principio legal?', options: ['Juicio por jurado','Justicia retributiva ("ojo por ojo")','Presunción de inocencia','Separación de poderes'], explanation: 'Su lex talionis graduaba el castigo según la ofensa — y según el rango social de los implicados.' },
+    ru: { question: 'Кодекс Хаммурапи известен прежде всего каким правовым принципом?', options: ['Суд присяжных','Возмездное правосудие («око за око»)','Презумпция невиновности','Разделение властей'], explanation: 'Его lex talionis соизмерял кару с преступлением — и с социальным рангом участников.' },
+    mk: { question: 'Хамурабиевиот законик е најпознат по кој правен принцип?', options: ['Судење со порота','Ретрибутивна правда („око за око")','Претпоставка на невиност','Поделба на власта'], explanation: 'Неговиот lex talionis ја одмеруваше казната според престапот — и според социјалниот ранг на вклучените.' },
+  },
+  'aq45': {
+    es: { question: '¿Qué civilización antigua construyó ciudades planificadas con calles en cuadrícula y drenaje avanzado en Harappa y Mohenjo-daro?', options: ['La civilización del valle del Indo','Sumeria','El antiguo Egipto','Los minoicos'], explanation: 'Las ciudades del Indo (c.2600–1900 a.C.) muestran urbanismo sofisticado; su escritura sigue sin descifrar.' },
+    ru: { question: 'Какая древняя цивилизация строила спланированные города с сетчатыми улицами и продвинутой канализацией в Хараппе и Мохенджо-Даро?', options: ['Цивилизация долины Инда','Шумер','Древний Египет','Минойцы'], explanation: 'Города Инда (ок. 2600–1900 до н.э.) демонстрируют сложное градостроительство; их письменность не расшифрована.' },
+    mk: { question: 'Која древна цивилизација градеше планирани градови со мрежести улици и напредна канализација во Харапа и Мохенџо-даро?', options: ['Цивилизацијата на долината на Инд','Сумер','Древен Египет','Миноjците'], explanation: 'Градовите на Инд (околу 2600–1900 г.п.н.е.) покажуваат софистицирано урбанистичко планирање; нивното писмо е недешифрирано.' },
+  },
+  'aq46': {
+    es: { question: 'La guerra del Peloponeso fue narrada con rigor analítico sin precedentes por ¿qué historiador?', options: ['Heródoto','Tucídides','Jenofonte','Polibio'], explanation: 'Tucídides, general ateniense en la guerra, escribió un relato célebremente desapasionado de la política del poder.' },
+    ru: { question: 'Пелопоннесскую войну с небывалой аналитической строгостью описал какой историк?', options: ['Геродот','Фукидид','Ксенофонт','Полибий'], explanation: 'Фукидид, афинский стратег той войны, оставил знаменитый бесстрастный анализ политики силы.' },
+    mk: { question: 'Пелопонеската војна беше хроничарски опишана со невидена аналитичка строгост од кој историчар?', options: ['Херодот','Тукидид','Ксенофонт','Полибиј'], explanation: 'Тукидид, атински генерал во војната, напиша познато несентиментално дело за политиката на моќта.' },
+  },
+  'aq47': {
+    es: { question: 'El tutor de Alejandro Magno durante su juventud en Macedonia fue...', options: ['Platón','Sócrates','Aristóteles','Isócrates'], explanation: 'Filipo II contrató a Aristóteles para educar al adolescente Alejandro en Mieza.' },
+    ru: { question: 'Наставником юного Александра Великого в Македонии был...', options: ['Платон','Сократ','Аристотель','Исократ'], explanation: 'Филипп II нанял Аристотеля обучать юного Александра в Миезе.' },
+    mk: { question: 'Учителот на Александар Велики во неговата младост во Македонија беше...', options: ['Платон','Сократ','Аристотел','Исократ'], explanation: 'Филип II го ангажира Аристотел да го подучува тинејџерот Александар во Миеза.' },
+  },
+  'aq48': {
+    es: { question: 'La expresión "victoria pírrica" viene de las costosas batallas del rey Pirro de Epiro contra ¿qué potencia?', options: ['Cartago','Macedonia','Roma','Persia'], explanation: 'Pirro venció a los ejércitos romanos en Heraclea y Ásculo pero perdió tropas irreemplazables — "otra victoria así y estamos perdidos".' },
+    ru: { question: 'Выражение «пиррова победа» происходит от дорогостоящих битв царя Пирра Эпирского против какой державы?', options: ['Карфагена','Македонии','Рима','Персии'], explanation: 'Пирр побеждал римлян при Гераклее и Аускуле, но терял невосполнимые войска: «Ещё одна такая победа — и мы погибли».' },
+    mk: { question: 'Изразот „Пирова победа" доаѓа од скапите битки на кралот Пир од Епир против која сила?', options: ['Картагина','Македонија','Рим','Персија'], explanation: 'Пир ги победи римските војски кај Хераклеја и Аскул, но загуби војници што не можеше да ги замени — „уште една ваква победа и сме готови".' },
+  },
+  'aq49': {
+    es: { question: '¿Qué reino kushita al sur de Egipto desarrolló su propia escritura y construyó más pirámides que el propio Egipto?', options: ['Axum','Meroe','Punt','Nubia bajo Napata'], explanation: 'El reino de Kush centrado en Meroe levantó cientos de pirámides empinadas y prosperó con el hierro y el comercio.' },
+    ru: { question: 'Какое кушитское царство к югу от Египта создало собственную письменность и построило больше пирамид, чем сам Египет?', options: ['Аксум','Мероэ','Пунт','Нубия при Напате'], explanation: 'Царство Куш с центром в Мероэ возвело сотни крутобоких пирамид и процветало на железе и торговле.' },
+    mk: { question: 'Кое кушитско кралство јужно од Египет разви сопствено писмо и изгради повеќе пирамиди од самиот Египет?', options: ['Аксум','Мерое','Пунт','Нубија под Напата'], explanation: 'Кралството Куш со центар во Мерое изгради стотици стрмни пирамиди и цветаше од железо и трговија.' },
+  },
+  'aq50': {
+    es: { question: 'La Pax Romana comenzó con el reinado de ¿qué emperador?', options: ['Julio César','Augusto','Tiberio','Marco Aurelio'], explanation: 'El arreglo de Augusto del 27 a.C. abrió dos siglos de relativa paz interna y prosperidad.' },
+    ru: { question: 'Pax Romana начался с правления какого императора?', options: ['Юлия Цезаря','Августа','Тиберия','Марка Аврелия'], explanation: 'Уложение Августа 27 г. до н.э. открыло два века относительного внутреннего мира и процветания.' },
+    mk: { question: 'Pax Romana започна со владеењето на кој император?', options: ['Јулиј Цезар','Август','Тибериј','Марко Аврелиј'], explanation: 'Спогодбата на Август од 27 г.п.н.е. отвори два века релативен внатрешен мир и просперитет.' },
+  },
+  'mq16': {
+    es: { question: '¿Qué emperador bizantino codificó el derecho romano y construyó Santa Sofía?', options: ['Constantino XI','Justiniano I','Basilio II','Heraclio'], explanation: 'Justiniano I (r.527–565) produjo el Corpus Juris Civilis y reconstruyó Santa Sofía tras los disturbios de Niká.' },
+    ru: { question: 'Какой византийский император кодифицировал римское право и построил собор Святой Софии?', options: ['Константин XI','Юстиниан I','Василий II','Ираклий'], explanation: 'Юстиниан I (пр. 527–565) создал Corpus Juris Civilis и отстроил Святую Софию после восстания «Ника».' },
+    mk: { question: 'Кој византиски император го кодификуваше римското право и ја изгради Света Софија?', options: ['Константин XI','Јустинијан I','Василиј II','Ираклиј'], explanation: 'Јустинијан I (вл. 527–565) го создаде Corpus Juris Civilis и ја обнови Света Софија по бунтот Ника.' },
+  },
+  'mq17': {
+    es: { question: '¿En qué año cayó finalmente Constantinopla ante los turcos otomanos?', options: ['1204','1389','1453','1492'], explanation: 'Mehmed II tomó la ciudad en mayo de 1453, poniendo fin al milenario Imperio bizantino.' },
+    ru: { question: 'В каком году Константинополь окончательно пал перед турками-османами?', options: ['1204','1389','1453','1492'], explanation: 'Мехмед II взял город в мае 1453 года, положив конец тысячелетней Византийской империи.' },
+    mk: { question: 'Во која година Константинопол конечно падна пред османлиските Турци?', options: ['1204','1389','1453','1492'], explanation: 'Мехмед II го зазеде градот во мај 1453, завршувајќи ја илјадагодишната Византиска империја.' },
+  },
+  'mq18': {
+    es: { question: 'El calendario islámico comienza con la Hégira — la migración de Mahoma en 622 d.C. de La Meca a...', options: ['Jerusalén','Damasco','Medina','Bagdad'], explanation: 'El traslado a Medina (entonces Yathrib) marca el año uno del calendario islámico.' },
+    ru: { question: 'Исламский календарь начинается с хиджры — переселения Мухаммада в 622 году из Мекки в...', options: ['Иерусалим','Дамаск','Медину','Багдад'], explanation: 'Переезд в Медину (тогда Ясриб) отмечает первый год исламского календаря.' },
+    mk: { question: 'Исламскиот календар почнува со Хиџра — миграцијата на Мухамед во 622 г.н.е. од Мека во...', options: ['Ерусалим','Дамаск','Медина','Багдад'], explanation: 'Преселбата во Медина (тогаш Јатриб) го одбележува првата година од исламскиот календар.' },
+  },
+  'mq19': {
+    es: { question: '¿Qué comandante musulmán dirigió la invasión de Iberia en 711 d.C.?', options: ['Saladino','Tariq ibn Ziyad','Abd al-Rahman I','Musa ibn Nusayr'], explanation: 'Tariq cruzó desde el norte de África por la roca que luego llevó su nombre: Jabal Tariq, Gibraltar.' },
+    ru: { question: 'Какой мусульманский полководец возглавил вторжение в Иберию в 711 году?', options: ['Саладин','Тарик ибн Зияд','Абд ар-Рахман I','Муса ибн Нусайр'], explanation: 'Тарик переправился из Северной Африки у скалы, позже названной его именем: Джабаль-Тарик — Гибралтар.' },
+    mk: { question: 'Кој муслимански командант ја водеше инвазијата на Иберија во 711 г.н.е.?', options: ['Саладин','Тарик ибн Зијад','Абд ал-Рахман I','Муса ибн Нусаjр'], explanation: 'Тарик премина од Северна Африка кај карпата подоцна именувана по него — Џабал Тарик, Гибралтар.' },
+  },
+  'mq20': {
+    es: { question: 'El califato omeya de Córdoba era famoso en el siglo X por...', options: ['Destruir el saber clásico','Sus bibliotecas, erudición y relativa coexistencia religiosa','Aislar a Iberia del comercio','Conquistar Francia'], explanation: 'Córdoba era de las mayores ciudades de Europa, con vastas bibliotecas y una cultura de convivencia entre credos.' },
+    ru: { question: 'Кордовский халифат Омейядов славился в X веке чем?', options: ['Уничтожением классического знания','Библиотеками, учёностью и относительным сосуществованием религий','Изоляцией Иберии от торговли','Завоеванием Франции'], explanation: 'Кордова была среди крупнейших городов Европы — огромные библиотеки и культура сосуществования вер.' },
+    mk: { question: 'Омејадскиот калифат на Кордоба беше прочуен во X век по...', options: ['Уништување на класичното знаење','Своите библиотеки, ученост и релативен верски соживот','Изолирање на Иберија од трговијата','Освојување на Франција'], explanation: 'Кордоба беше меѓу најголемите градови на Европа, со огромни библиотеки и култура на соживот меѓу верите.' },
+  },
+  'mq21': {
+    es: { question: 'La batalla de Tours (732 d.C.), que frenó el avance omeya hacia Francia, la ganó...', options: ['Carlomagno','Carlos Martel','Pipino el Breve','Clodoveo'], explanation: 'Carlos Martel ("el Martillo"), abuelo de Carlomagno, derrotó al ejército invasor cerca de Tours y Poitiers.' },
+    ru: { question: 'Битву при Туре (732 г.), остановившую продвижение Омейядов во Франкию, выиграл...', options: ['Карл Великий','Карл Мартелл','Пипин Короткий','Хлодвиг'], explanation: 'Карл Мартелл («Молот»), дед Карла Великого, разбил войско у Тура и Пуатье.' },
+    mk: { question: 'Битката кај Тур (732 г.н.е.), што го запре омејадското напредување кон Франкија, ја доби...', options: ['Карло Велики','Карло Мартел','Пипин Малиот','Хлодвиг'], explanation: 'Карло Мартел („Чеканот"), дедо на Карло Велики, ја порази нападната војска кај Тур и Поатје.' },
+  },
+  'mq22': {
+    es: { question: 'La Reconquista terminó en 1492 con la rendición de ¿qué último estado musulmán de Iberia?', options: ['El Califato de Córdoba','El Imperio almohade','El Emirato de Granada','La taifa de Sevilla'], explanation: 'Granada capituló ante Fernando e Isabel en enero de 1492, tras una guerra de diez años.' },
+    ru: { question: 'Реконкиста завершилась в 1492 году сдачей какого последнего мусульманского государства Иберии?', options: ['Кордовского халифата','Альмохадской империи','Гранадского эмирата','Севильской тайфы'], explanation: 'Гранада капитулировала перед Фердинандом и Изабеллой в январе 1492 года после десятилетней войны.' },
+    mk: { question: 'Реконкистата заврши во 1492 со предавањето на која последна муслиманска држава во Иберија?', options: ['Калифатот на Кордоба','Алмохадската империја','Емиратот Гранада','Таифата Севилја'], explanation: 'Гранада капитулира пред Фердинанд и Изабела во јануари 1492, по десетгодишна војна.' },
+  },
+  'mq23': {
+    es: { question: 'El movimiento de traducción de Toledo fue históricamente importante porque...', options: ['Tradujo la Biblia al español','Vertió el saber árabe y griego al latín para Europa','Estandarizó la ortografía castellana','Preservó el derecho visigodo'], explanation: 'Equipos multilingües en la Toledo reconquistada tradujeron a Aristóteles, Avicena y las matemáticas árabes, nutriendo las universidades europeas.' },
+    ru: { question: 'Толедская школа переводчиков исторически важна тем, что...', options: ['Перевела Библию на испанский','Переложила арабское и греческое знание на латынь для Европы','Стандартизировала кастильскую орфографию','Сохранила вестготское право'], explanation: 'Многоязычные команды в отвоёванном Толедо переводили Аристотеля, Авиценну и арабскую математику, питая университеты Европы.' },
+    mk: { question: 'Толедското преведувачко движење беше историски важно бидејќи...', options: ['Ја преведе Библијата на шпански','Го претвори арапското и грчкото знаење на латински за Европа','Го стандардизира кастилскиот правопис','Го зачува визиготското право'], explanation: 'Повеќејазични тимови во повторно освоениот Толедо ги преведоа Аристотел, Авицена и арапската математика, хранејќи ги европските универзитети.' },
+  },
+  'mq24': {
+    es: { question: 'La guerra de los Cien Años (1337–1453) se libró principalmente entre ¿qué dos reinos?', options: ['Inglaterra y Francia','Francia y el Sacro Imperio','Inglaterra y Escocia','Castilla y Aragón'], explanation: 'La reclamación Plantagenet a la corona francesa encendió más de un siglo de guerra intermitente.' },
+    ru: { question: 'Столетняя война (1337–1453) велась главным образом между какими двумя королевствами?', options: ['Англией и Францией','Францией и Священной Римской империей','Англией и Шотландией','Кастилией и Арагоном'], explanation: 'Притязания Плантагенетов на французскую корону разожгли более века прерывистой войны.' },
+    mk: { question: 'Стогодишната војна (1337–1453) се водеше првенствено меѓу кои две кралства?', options: ['Англија и Франција','Франција и Светото Римско Царство','Англија и Шкотска','Кастилја и Арагон'], explanation: 'Плантагенетската претензија на француската круна запали повеќе од век испрекината војна.' },
+  },
+  'mq25': {
+    es: { question: 'Las victorias inglesas en Crécy y Agincourt se debieron en gran parte a ¿qué arma?', options: ['La ballesta','La pica','El arco largo','Los primeros mosquetes'], explanation: 'Los arqueros galeses e ingleses en masa disparaban mucho más rápido que las ballestas, triturando las cargas de caballería francesa.' },
+    ru: { question: 'Английские победы при Креси и Азенкуре во многом обязаны какому оружию?', options: ['Арбалету','Пике','Длинному луку','Ранним мушкетам'], explanation: 'Массированные валлийские и английские лучники стреляли куда быстрее арбалетчиков, кроша атаки французской конницы.' },
+    mk: { question: 'Англиските победи кај Креси и Азенкур многу должеа на кое оружје?', options: ['Самострелот','Пиката','Долгиот лак','Раните мускети'], explanation: 'Масираните велшки и англиски стрелци пукаа многу побрзо од самострелите, мелejќи ги јуришите на француската коњаница.' },
+  },
+  'mq26': {
+    es: { question: '¿Qué destino sufrió Juana de Arco en 1431?', options: ['Murió en batalla','Fue coronada regente','Fue quemada en la hoguera tras un juicio respaldado por Inglaterra','Se retiró a un convento'], explanation: 'Capturada y vendida a los ingleses, Juana fue condenada por herejía en Ruan; un nuevo juicio la exoneró en 1456.' },
+    ru: { question: 'Какая участь постигла Жанну д\'Арк в 1431 году?', options: ['Погибла в бою','Была коронована регентшей','Сожжена на костре после суда под английским покровительством','Удалилась в монастырь'], explanation: 'Пленённую и проданную англичанам Жанну осудили за ересь в Руане; пересмотр 1456 года её оправдал.' },
+    mk: { question: 'Каква судбина ја снајде Јована Орлеанска во 1431?', options: ['Загина во битка','Беше крунисана за регентка','Беше запалена на клада по судење поддржано од Англија','Се повлече во манастир'], explanation: 'Заробена и продадена на Англичаните, Јована беше осудена за ерес во Руан; повторното судење ја ослободи во 1456.' },
+  },
+  'mq27': {
+    es: { question: '¿Qué batalla de 1066 dio la corona inglesa a Guillermo de Normandía?', options: ['Stamford Bridge','Hastings','Fulford','Maldon'], explanation: 'Harold II cayó en Hastings semanas después de derrotar una invasión noruega en Stamford Bridge.' },
+    ru: { question: 'Какая битва 1066 года дала английскую корону Вильгельму Нормандскому?', options: ['Стамфорд-Бридж','Гастингс','Фулфорд','Молдон'], explanation: 'Гарольд II пал при Гастингсе через несколько недель после разгрома норвежского вторжения у Стамфорд-Бриджа.' },
+    mk: { question: 'Која битка од 1066 му ја даде англиската круна на Вилијам од Нормандија?', options: ['Стамфорд Бриџ','Хестингс','Фулфорд','Молдон'], explanation: 'Харолд II падна кај Хестингс неколку недели откако порази норвешка инвазија кај Стамфорд Бриџ.' },
+  },
+  'mq28': {
+    es: { question: 'El Libro Domesday, compilado en 1086, era...', options: ['Una crónica religiosa','Un censo de la propiedad inglesa para la fiscalidad','Un código de caballería','Un mapa de castillos normandos'], explanation: 'El gran censo de Guillermo I registró quién poseía qué tierra y cuánto valía — de valor incalculable para los historiadores.' },
+    ru: { question: '«Книга Страшного суда», составленная в 1086 году, была...', options: ['Религиозной хроникой','Переписью английских землевладений для налогообложения','Кодексом рыцарства','Картой нормандских замков'], explanation: 'Великая перепись Вильгельма I записала, кто какой землёй владел и сколько она стоила, — бесценный источник.' },
+    mk: { question: 'Книгата Домсдеј, составена во 1086, беше...', options: ['Верска хроника','Попис на англиското земјопоседништво за оданочување','Кодекс на витештвото','Карта на нормански замоци'], explanation: 'Големиот попис на Вилијам I запиша кој која земја ја држи и колку вреди — непроценливо за историчарите.' },
+  },
+  'mq29': {
+    es: { question: '¿Qué cruzada fue desviada para saquear Constantinopla en 1204?', options: ['La Primera','La Segunda','La Tercera','La Cuarta'], explanation: 'Las deudas venecianas y las intrigas dinásticas volvieron la Cuarta Cruzada contra la capital cristiana bizantina.' },
+    ru: { question: 'Какой крестовый поход был повёрнут на разграбление Константинополя в 1204 году?', options: ['Первый','Второй','Третий','Четвёртый'], explanation: 'Венецианские долги и династические интриги обратили Четвёртый крестовый поход против христианской византийской столицы.' },
+    mk: { question: 'Кој крстоносен поход беше пренасочен да го ограби Константинопол во 1204?', options: ['Првиот','Вториот','Третиот','Четвртиот'], explanation: 'Венецијанските долгови и династичките интриги го свртеа Четвртиот крстоносен поход против христијанската византиска престолнина.' },
+  },
+  'mq30': {
+    es: { question: 'El adversario de Ricardo Corazón de León durante la Tercera Cruzada fue...', options: ['Baibars','Saladino','Nur ad-Din','Zengi'], explanation: 'Sus campañas acabaron en una tregua (1192) que aseguró el acceso de los peregrinos a Jerusalén bajo dominio musulmán.' },
+    ru: { question: 'Противником Ричарда Львиное Сердце в Третьем крестовом походе был...', options: ['Бейбарс','Саладин','Нур ад-Дин','Занги'], explanation: 'Их кампании завершились перемирием (1192), обеспечившим паломникам доступ в Иерусалим под мусульманской властью.' },
+    mk: { question: 'Противникот на Ричард Лавовското Срце во Третиот крстоносен поход беше...', options: ['Баjбарс','Саладин','Нур ад-Дин','Зенги'], explanation: 'Нивните кампањи завршија со примирје (1192) што обезбеди пристап на аџиите до Ерусалим под муслиманска власт.' },
+  },
+  'mq31': {
+    es: { question: 'La Casa de la Sabiduría de Bagdad era principalmente un centro de...', options: ['Entrenamiento militar','Traducción y erudición científica','Peregrinación religiosa','Producción de seda'], explanation: 'Bajo los abasíes reunió textos griegos, persas e indios; allí trabajaron sabios como al-Juarismi.' },
+    ru: { question: 'Дом мудрости в Багдаде был прежде всего центром чего?', options: ['Военной подготовки','Перевода и научной учёности','Религиозного паломничества','Производства шёлка'], explanation: 'При Аббасидах он собирал греческие, персидские и индийские тексты; там работали учёные вроде аль-Хорезми.' },
+    mk: { question: 'Домот на мудроста во Багдад беше првенствено центар на...', options: ['Воена обука','Преведување и научна ученост','Верско аџилак','Производство на свила'], explanation: 'Под Абасидите собираше грчки, персиски и индиски текстови; таму работеа научници како ал-Хорезми.' },
+  },
+  'mq32': {
+    es: { question: 'La palabra "álgebra" deriva de la obra de ¿qué erudito?', options: ['Avicena (Ibn Sina)','Al-Juarismi','Averroes (Ibn Rushd)','Al-Razi'], explanation: 'El tratado "al-Jabr" de al-Juarismi dio nombre al álgebra; "algoritmo" viene del suyo propio.' },
+    ru: { question: 'Слово «алгебра» происходит из труда какого учёного?', options: ['Авиценны (Ибн Сины)','Аль-Хорезми','Аверроэса (Ибн Рушда)','Ар-Рази'], explanation: 'Трактат аль-Хорезми «аль-Джабр» дал имя алгебре; «алгоритм» — от его собственного имени.' },
+    mk: { question: 'Зборот „алгебра" потекнува од делото на кој научник?', options: ['Авицена (Ибн Сина)','Ал-Хорезми','Авероес (Ибн Рушд)','Ал-Рази'], explanation: 'Трактатот „ал-Џабр" на ал-Хорезми ѝ го даде името на алгебрата; „алгоритам" доаѓа од неговото име.' },
+  },
+  'mq33': {
+    es: { question: 'El imperio de Gengis Kan se dividió a su muerte en kanatos; ¿cuál gobernó Rusia?', options: ['El Ilkanato','El Kanato de Chagatai','La Horda de Oro','El Yuan'], explanation: 'La Horda de Oro cobró tributo de los principados rusos durante más de dos siglos.' },
+    ru: { question: 'Империя Чингисхана после его смерти распалась на улусы; какой правил Русью?', options: ['Ильханат','Чагатайский улус','Золотая Орда','Юань'], explanation: 'Золотая Орда более двух веков взимала дань с русских княжеств.' },
+    mk: { question: 'Империјата на Џингис Кан по неговата смрт се подели на канати; кој владееше со Русија?', options: ['Илканатот','Чагатаjскиот канат','Златната Орда','Јуан'], explanation: 'Златната Орда собираше данок од руските кнежевства повеќе од два века.' },
+  },
+  'mq34': {
+    es: { question: 'Kublai Kan fundó ¿qué dinastía en China?', options: ['Ming','Song','Yuan','Tang'], explanation: 'Kublai completó la conquista de la China Song y gobernó como emperador Yuan desde Khanbaliq (Pekín).' },
+    ru: { question: 'Хубилай-хан основал какую династию в Китае?', options: ['Мин','Сун','Юань','Тан'], explanation: 'Хубилай завершил завоевание сунского Китая и правил как император Юань из Ханбалыка (Пекина).' },
+    mk: { question: 'Кублај Кан ја основа која династија во Кина?', options: ['Минг','Сунг','Јуан','Танг'], explanation: 'Кублај го доврши освојувањето на Сунг Кина и владееше како Јуан император од Канбалик (Пекинг).' },
+  },
+  'mq35': {
+    es: { question: '¿El relato de qué mercader veneciano sobre sus viajes a la corte de Kublai Kan fascinó a Europa?', options: ['Ibn Battuta','Marco Polo','Juan de Plano Carpini','Guillermo de Rubruck'], explanation: 'Los "Viajes" de Marco Polo (dictados c.1298) moldearon las ideas europeas sobre Asia durante siglos.' },
+    ru: { question: 'Рассказ какого венецианского купца о путешествиях ко двору Хубилай-хана заворожил Европу?', options: ['Ибн Баттуты','Марко Поло','Джованни Плано Карпини','Гильома Рубрука'], explanation: '«Книга» Марко Поло (продиктована ок. 1298) веками формировала европейские представления об Азии.' },
+    mk: { question: 'Раскажувањето на кој венецијански трговец за патувањата до дворот на Кублај Кан ја фасцинира Европа?', options: ['Ибн Батута','Марко Поло','Јован од Плано Карпини','Вилијам од Рубрук'], explanation: '„Патувањата" на Марко Поло (диктирани околу 1298) со векови ги обликуваа европските претстави за Азија.' },
+  },
+  'mq36': {
+    es: { question: 'La Peste Negra llegó a Europa en 1347 a bordo de barcos procedentes de ¿qué región?', options: ['El puerto de Caffa en el mar Negro','Egipto','India','Marruecos'], explanation: 'Galeras genovesas que huían del asedio de Caffa en Crimea llevaron ratas infectadas a Sicilia.' },
+    ru: { question: 'Чёрная смерть достигла Европы в 1347 году на кораблях из какого региона?', options: ['Черноморского порта Каффа','Египта','Индии','Марокко'], explanation: 'Генуэзские галеры, бежавшие из осаждённой Каффы в Крыму, привезли заражённых крыс на Сицилию.' },
+    mk: { question: 'Црната смрт стигна во Европа во 1347 на бродови што доаѓаа од кој регион?', options: ['Црноморското пристаниште Кафа','Египет','Индија','Мароко'], explanation: 'Џеновски галии што бегаа од опсадата на Кафа на Крим донесоа заразени стаорци во Сицилија.' },
+  },
+  'mq37': {
+    es: { question: 'Un gran efecto económico de la Peste Negra en Europa occidental fue...', options: ['Salarios en caída','Un auge de la servidumbre','Salarios en alza y poder de negociación campesino','El fin de las ferias comerciales'], explanation: 'La escasez de mano de obra permitió a los supervivientes exigir mejores condiciones, aflojando la servidumbre en Occidente.' },
+    ru: { question: 'Одним из главных экономических последствий Чёрной смерти в Западной Европе стало...', options: ['Падение заработков','Расцвет крепостничества','Рост заработков и переговорной силы крестьян','Конец торговых ярмарок'], explanation: 'Нехватка рабочих рук позволила выжившим требовать лучших условий, ослабив крепостничество на Западе.' },
+    mk: { question: 'Голем економски ефект на Црната смрт во Западна Европа беше...', options: ['Опаѓање на платите','Подем на крепосништвото','Раст на платите и преговарачка моќ на селаните','Крај на трговските саеми'], explanation: 'Недостигот на работна рака им дозволи на преживеаните да бараат подобри услови, олабавувајќи го крепосништвото на Западот.' },
+  },
+  'mq38': {
+    es: { question: '¿Qué gobierno guerrero japonés, fundado en 1192, puso el poder real en el shogun y no en el emperador?', options: ['El shogunato Kamakura','El shogunato Tokugawa','El shogunato Ashikaga','La corte Heian'], explanation: 'El bakufu de Kamakura de Minamoto no Yoritomo inició casi 700 años de gobierno samurái.' },
+    ru: { question: 'Какое японское воинское правительство, основанное в 1192 году, отдало реальную власть сёгуну, а не императору?', options: ['Сёгунат Камакура','Сёгунат Токугава','Сёгунат Асикага','Двор Хэйан'], explanation: 'Бакуфу Камакура Минамото-но Ёритомо начал почти 700 лет самурайского правления.' },
+    mk: { question: 'Која јапонска воена влада, основана во 1192, ја стави вистинската моќ кај шогунот наместо кај императорот?', options: ['Камакура шогунатот','Токугава шогунатот','Ашикага шогунатот','Хеиан дворот'], explanation: 'Камакура бакуфуто на Минамото но Јоритомо започна речиси 700 години самурајско владеење.' },
+  },
+  'mq39': {
+    es: { question: 'Los "vientos divinos" (kamikaze) que salvaron Japón en 1274 y 1281 destruyeron flotas de invasión enviadas por...', options: ['La China Ming','Corea','Los mongoles de Kublai Kan','La dinastía Song'], explanation: 'Los tifones destrozaron ambas armadas mongolas, cimentando la leyenda de la protección divina.' },
+    ru: { question: '«Божественные ветры» (камикадзе), спасшие Японию в 1274 и 1281 годах, уничтожили флоты вторжения, посланные кем?', options: ['Минским Китаем','Кореей','Монголами Хубилай-хана','Династией Сун'], explanation: 'Тайфуны разбили обе монгольские армады, укрепив легенду о божественной защите.' },
+    mk: { question: '„Божествените ветрови" (камикадзе) што ја спасија Јапонија во 1274 и 1281 уништија инвазиски флоти испратени од...', options: ['Минг Кина','Кореја','Монголите на Кублај Кан','Династијата Сунг'], explanation: 'Тајфуни ги разбија двете монголски армади, зацврстувајќи ја легендата за божествена заштита.' },
+  },
+  'mq40': {
+    es: { question: '¿La peregrinación a La Meca de qué emperador africano en 1324 fue tan fastuosa que supuestamente deprimió el precio del oro en Egipto?', options: ['Sundiata Keita','Mansa Musa','Askia Muhammad','Ezana de Axum'], explanation: 'Mansa Musa de Malí repartió tanto oro en el camino que su valor en El Cairo cayó durante años.' },
+    ru: { question: 'Паломничество в Мекку какого африканского императора в 1324 году было столь пышным, что, по преданию, обрушило цену золота в Египте?', options: ['Сундиаты Кейты','Мансы Мусы','Аскии Мухаммада','Эзаны Аксумского'], explanation: 'Манса Муса из Мали раздал в пути столько золота, что его цена в Каире падала годами.' },
+    mk: { question: 'Аџилакот до Мека на кој африкански император во 1324 беше толку раскошен што наводно ја собори цената на златото во Египет?', options: ['Сундиjата Кеита','Манса Муса','Аскија Мухамед','Езана од Аксум'], explanation: 'Манса Муса од Мали раздаде толку злато по патот што неговата вредност во Каиро паѓаше со години.' },
+  },
+  'mq41': {
+    es: { question: 'Tombuctú, famosa por sus manuscritos y su universidad, floreció ¿en qué imperio?', options: ['Ghana','Malí y luego Songhai','Etiopía','Gran Zimbabue'], explanation: 'Bajo Malí y luego Songhai, la mezquita de Sankore de Tombuctú ancló una célebre comunidad académica.' },
+    ru: { question: 'Тимбукту, знаменитый рукописями и университетом, процветал в какой империи?', options: ['Гане','Мали, а затем Сонгай','Эфиопии','Великом Зимбабве'], explanation: 'При Мали, а затем Сонгае мечеть Санкоре в Тимбукту была центром прославленного учёного сообщества.' },
+    mk: { question: 'Тимбукту, прочуен по ракописите и универзитетот, цветаше во која империја?', options: ['Гана','Мали, а потоа Сонгаj','Етиопија','Големо Зимбабве'], explanation: 'Под Мали, а потоа Сонгаj, џамијата Санкоре во Тимбукту беше центар на прославена научна заедница.' },
+  },
+  'mq42': {
+    es: { question: 'La querella de las investiduras de los siglos XI–XII fue una lucha sobre...', options: ['La financiación de las cruzadas','Si los reyes o los papas nombraban a los obispos','La fecha de la Pascua','Las exenciones fiscales de la Iglesia'], explanation: 'El choque de Enrique IV con Gregorio VII — incluida su penitencia en Canossa — definió la rivalidad Iglesia-Estado.' },
+    ru: { question: 'Борьба за инвеституру XI–XII веков была спором о чём?', options: ['Финансировании крестовых походов','О том, короли или папы назначают епископов','Дате Пасхи','Налоговых льготах церкви'], explanation: 'Столкновение Генриха IV с Григорием VII — включая покаяние в Каноссе — определило соперничество церкви и государства.' },
+    mk: { question: 'Инвеститурната борба од XI–XII век беше судир за...', options: ['Финансирање на крстоносните походи','Дали кралевите или папите именуваат епископи','Датумот на Велигден','Даночните ослободувања на црквата'], explanation: 'Судирот на Хенрих IV со папата Гргур VII — вклучувајќи го покајанието во Каноса — ја дефинира ривалноста црква-држава.' },
+  },
+  'mq43': {
+    es: { question: 'Las catedrales góticas lograron su altura y sus vastos ventanales principalmente gracias a...', options: ['Muros más gruesos','Arbotantes y arcos apuntados','Cúpulas de hormigón','Estructuras de madera'], explanation: 'Los contrafuertes exteriores soportaban el empuje de la bóveda, liberando los muros para las vidrieras.' },
+    ru: { question: 'Готические соборы достигли высоты и огромных окон прежде всего благодаря чему?', options: ['Более толстым стенам','Аркбутанам и стрельчатым аркам','Бетонным куполам','Деревянным каркасам'], explanation: 'Наружные контрфорсы принимали распор сводов, освобождая стены под витражи.' },
+    mk: { question: 'Готските катедрали ја постигнаа својата височина и огромни прозорци главно преку...', options: ['Подебели ѕидови','Летечки потпори и зашилени лаци','Бетонски куполи','Дрвени рамки'], explanation: 'Надворешните потпори го носеа притисокот на сводот, ослободувајќи ги ѕидовите за витражи.' },
+  },
+  'mq44': {
+    es: { question: 'Las primeras universidades de Europa, como Bolonia y París, surgieron ¿en qué siglos?', options: ['IX–X','XI–XIII','XIV–XV','VI–VII'], explanation: 'Bolonia (derecho) y París (teología) se organizaron como gremios de estudiantes y maestros en la Plena Edad Media.' },
+    ru: { question: 'Первые университеты Европы — Болонья, Париж — возникли в какие века?', options: ['IX–X','XI–XIII','XIV–XV','VI–VII'], explanation: 'Болонья (право) и Париж (теология) сложились как гильдии школяров и магистров в Высокое Средневековье.' },
+    mk: { question: 'Првите универзитети на Европа, како Болоња и Париз, се појавија во кои векови?', options: ['IX–X','XI–XIII','XIV–XV','VI–VII'], explanation: 'Болоња (право) и Париз (теологија) се организираа како еснафи на студенти и учители во Високиот среден век.' },
+  },
+  'mq45': {
+    es: { question: 'La Liga Hanseática era...', options: ['Una orden cruzada','Una federación comercial de ciudades del norte de Europa','Un código caballeresco francés','Una corte papal'], explanation: 'Lübeck, Hamburgo y decenas de ciudades del Báltico y el mar del Norte coordinaban privilegios comerciales e incluso guerras.' },
+    ru: { question: 'Ганзейский союз был чем?', options: ['Крестоносным орденом','Северноевропейской федерацией торговых городов','Французским рыцарским кодексом','Папским судом'], explanation: 'Любек, Гамбург и десятки балтийских и северноморских городов согласовывали торговые привилегии и даже вели войны.' },
+    mk: { question: 'Ханзеатската лига беше...', options: ['Крстоносен ред','Северноевропска федерација на трговски градови','Француски витешки кодекс','Папски суд'], explanation: 'Либек, Хамбург и десетици балтички и северноморски градови координираа трговски привилегии, па дури и војни.' },
+  },
+  'mq46': {
+    es: { question: '¿Qué explorador vikingo llegó a Norteamérica hacia el año 1000?', options: ['Erik el Rojo','Leif Eriksson','Harald Hardrada','Ragnar Lodbrok'], explanation: 'Los viajes de Leif a "Vinland" están confirmados por el sitio nórdico de L\'Anse aux Meadows, Terranova.' },
+    ru: { question: 'Какой викинг-мореплаватель достиг Северной Америки около 1000 года?', options: ['Эрик Рыжий','Лейф Эрикссон','Харальд Суровый','Рагнар Лодброк'], explanation: 'Плавания Лейфа в «Винланд» подтверждены норвежским поселением Л\'Анс-о-Медоуз на Ньюфаундленде.' },
+    mk: { question: 'Кој викиншки истражувач стигна до Северна Америка околу 1000 година?', options: ['Ерик Црвениот','Леиф Ериксон','Харалд Хардрада','Рагнар Лодброк'], explanation: 'Патувањата на Леиф во „Винланд" се потврдени со нордиското наоѓалиште Л\'Анс о Медоуз во Њуфаундленд.' },
+  },
+  'mq47': {
+    es: { question: 'Los varegos — nórdicos activos en los ríos orientales — ayudaron a fundar ¿qué estado?', options: ['Polonia','Hungría','La Rus de Kiev','Bulgaria'], explanation: 'Élites guerrero-comerciantes nórdicas en torno a Nóvgorod y Kiev formaron la Rus de Kiev, antepasada de Rusia y Ucrania.' },
+    ru: { question: 'Варяги — норманны, действовавшие на восточных реках, — помогли основать какое государство?', options: ['Польшу','Венгрию','Киевскую Русь','Болгарию'], explanation: 'Военно-торговые элиты скандинавов вокруг Новгорода и Киева сложили Киевскую Русь — предка России и Украины.' },
+    mk: { question: 'Варјазите — Нордијци активни на источните реки — помогнаа да се основа која држава?', options: ['Полска','Унгарија','Киевска Русија','Бугарија'], explanation: 'Нордиски воено-трговски елити околу Новгород и Киев ја формираа Киевска Русија — предок на Русија и Украина.' },
+  },
+  'mq48': {
+    es: { question: 'Wat Tyler encabezó ¿qué levantamiento en Inglaterra en 1381?', options: ['La Jacquerie','La revuelta de los campesinos','La Peregrinación de Gracia','El alzamiento lolardo'], explanation: 'La ira por los impuestos de capitación tras la peste llevó ejércitos rebeldes a Londres antes de que la revuelta fuera aplastada.' },
+    ru: { question: 'Уот Тайлер возглавил какое восстание в Англии в 1381 году?', options: ['Жакерию','Крестьянское восстание','Благодатное паломничество','Восстание лоллардов'], explanation: 'Гнев из-за подушных налогов после чумы привёл армии восставших в Лондон, прежде чем восстание подавили.' },
+    mk: { question: 'Ват Тајлер го предводеше кое востание во Англија во 1381?', options: ['Жакеријата','Селското востание','Аџилакот на милоста','Лолардското востание'], explanation: 'Гневот поради даноците по глава по чумата донесе бунтовнички војски во Лондон пред востанието да биде задушено.' },
+  },
+  'mq49': {
+    es: { question: 'La Gran Hambruna de 1315–1317 fue causada principalmente por...', options: ['La guerra','Años de lluvias catastróficas y cosechas fallidas','Un terremoto','La peste'], explanation: 'Lluvias implacables pudrieron las cosechas por todo el norte de Europa — sombrío preludio de los desastres del siglo.' },
+    ru: { question: 'Великий голод 1315–1317 годов был вызван прежде всего чем?', options: ['Войной','Годами катастрофических дождей и неурожаев','Землетрясением','Чумой'], explanation: 'Непрекращающиеся дожди сгноили урожаи по всей северной Европе — мрачная прелюдия к бедствиям века.' },
+    mk: { question: 'Големиот глад од 1315–1317 беше предизвикан првенствено од...', options: ['Војна','Години катастрофални дождови и пропаднати жетви','Земјотрес','Чума'], explanation: 'Немилосрдни дождови ги скапеа посевите низ северна Европа — мрачен предвесник на катастрофите на векот.' },
+  },
+  'mq50': {
+    es: { question: '¿Qué concilio eclesiástico (1414–1418) puso fin al Cisma de Occidente de papas rivales?', options: ['Nicea','Trento','Constanza','Calcedonia'], explanation: 'El Concilio de Constanza depuso o aceptó la renuncia de tres pretendientes y eligió a Martín V.' },
+    ru: { question: 'Какой церковный собор (1414–1418) завершил Великий западный раскол соперничающих пап?', options: ['Никейский','Тридентский','Констанцский','Халкидонский'], explanation: 'Констанцский собор низложил или принял отречения трёх претендентов и избрал Мартина V.' },
+    mk: { question: 'Кој црковен собор (1414–1418) го заврши Западниот раскол на ривалски папи?', options: ['Никеjски','Тридентски','Констанцски','Халкидонски'], explanation: 'Соборот во Констанц симна или прифати оставки од тројцата претенденти и го избра Мартин V.' },
+  },
+  'eq16': {
+    es: { question: '¿Qué familia florentina financió gran parte del Renacimiento italiano?', options: ['Los Borgia','Los Sforza','Los Médici','Los Este'], explanation: 'La riqueza bancaria de los Médici financió a Brunelleschi, Botticelli y Miguel Ángel, haciendo de Florencia la capital del Renacimiento.' },
+    ru: { question: 'Какая флорентийская семья финансировала значительную часть итальянского Возрождения?', options: ['Борджиа','Сфорца','Медичи','Эсте'], explanation: 'Банковские богатства Медичи оплачивали Брунеллески, Боттичелли и Микеланджело, сделав Флоренцию столицей Ренессанса.' },
+    mk: { question: 'Која фирентинска фамилија финансираше голем дел од италијанската ренесанса?', options: ['Борџиите','Сфорците','Медичите','Естеите'], explanation: 'Банкарското богатство на Медичите ги плати Брунелески, Ботичели и Микеланџело, правејќи ја Фиренца престолнина на ренесансата.' },
+  },
+  'eq17': {
+    es: { question: 'La obra maestra de ingeniería de Brunelleschi en Florencia fue...', options: ['La basílica de San Pedro','La cúpula de la catedral de Florencia','Los Uffizi','El Ponte Vecchio'], explanation: 'Su cúpula de doble cáscara (terminada en 1436) fue la mayor cúpula de mampostería jamás construida — sin andamiaje desde el suelo.' },
+    ru: { question: 'Инженерным шедевром Брунеллески во Флоренции стал...', options: ['Собор Святого Петра','Купол Флорентийского собора','Уффици','Понте-Веккьо'], explanation: 'Его двухоболочечный купол (завершён в 1436) — крупнейший каменный купол в истории, возведённый без лесов с земли.' },
+    mk: { question: 'Инженерското ремек-дело на Брунелески во Фиренца беше...', options: ['Базиликата Свети Петар','Куполата на фирентинската катедрала','Уфици','Понте Векио'], explanation: 'Неговата купола со двојна обвивка (завршена 1436) беше најголемата ѕидана купола некогаш изградена — без скеле од земјата.' },
+  },
+  'eq18': {
+    es: { question: '¿Qué tratado de 1494 repartió las tierras recién halladas fuera de Europa entre España y Portugal?', options: ['Tratado de Utrecht','Tratado de Tordesillas','Paz de Augsburgo','Tratado de Zaragoza'], explanation: 'Un meridiano al oeste de Cabo Verde dividió el mundo no europeo — por eso Brasil habla portugués.' },
+    ru: { question: 'Какой договор 1494 года разделил новооткрытые земли вне Европы между Испанией и Португалией?', options: ['Утрехтский','Тордесильясский','Аугсбургский мир','Сарагосский'], explanation: 'Меридиан к западу от Кабо-Верде рассёк неевропейский мир — потому Бразилия говорит по-португальски.' },
+    mk: { question: 'Кој договор од 1494 ги подели новооткриените земји надвор од Европа меѓу Шпанија и Португалија?', options: ['Договорот од Утрехт','Договорот од Тордесиљас','Аугзбуршкиот мир','Договорот од Сарагоса'], explanation: 'Меридијан западно од Зеленортските Острови го подели неевропскиот свет — затоа Бразил зборува португалски.' },
+  },
+  'eq19': {
+    es: { question: 'La primera circunnavegación del globo (1519–1522) se completó bajo el mando de quién tras la muerte de Magallanes?', options: ['Francis Drake','Juan Sebastián Elcano','Vasco Núñez de Balboa','Américo Vespucio'], explanation: 'Elcano llevó la Victoria a casa con 18 supervivientes después de que Magallanes muriera en Filipinas.' },
+    ru: { question: 'Первое кругосветное плавание (1519–1522) завершилось под чьим командованием после гибели Магеллана?', options: ['Фрэнсиса Дрейка','Хуана Себастьяна Элькано','Васко Нуньеса де Бальбоа','Америго Веспуччи'], explanation: 'Элькано привёл «Викторию» домой с 18 выжившими после гибели Магеллана на Филиппинах.' },
+    mk: { question: 'Првото обиколување на светот (1519–1522) беше завршено под чија команда по смртта на Магелан?', options: ['Френсис Дрејк','Хуан Себастијан Елкано','Васко Нуњез де Балбоа','Америго Веспучи'], explanation: 'Елкано ја врати „Викторија" дома со 18 преживеани откако Магелан загина на Филипините.' },
+  },
+  'eq20': {
+    es: { question: 'Hernán Cortés conquistó ¿qué imperio en 1519–1521?', options: ['El inca','El maya','El azteca (mexica)','El olmeca'], explanation: 'Con acero, caballos, viruela y aliados nativos, Cortés derribó Tenochtitlán y el estado mexica.' },
+    ru: { question: 'Эрнан Кортес завоевал какую империю в 1519–1521 годах?', options: ['Инков','Майя','Ацтеков (мешика)','Ольмеков'], explanation: 'Сталью, конями, оспой и туземными союзниками Кортес сокрушил Теночтитлан и государство мешика.' },
+    mk: { question: 'Ернан Кортес ја освои која империја во 1519–1521?', options: ['Инките','Маите','Ацтеките (Мешика)','Олмеките'], explanation: 'Со челик, коњи, сипаници и домородни сојузници, Кортес ги собори Теночтитлан и државата Мешика.' },
+  },
+  'eq21': {
+    es: { question: '¿Qué emperador inca fue capturado y ejecutado por Francisco Pizarro en 1533?', options: ['Atahualpa','Huayna Cápac','Pachacútec','Túpac Amaru'], explanation: 'Atahualpa llenó una sala de oro como rescate, pero Pizarro lo ejecutó y tomó Cuzco.' },
+    ru: { question: 'Какой император инков был пленён и казнён Франсиско Писарро в 1533 году?', options: ['Атауальпа','Уайна Капак','Пачакутек','Тупак Амару'], explanation: 'Атауальпа наполнил комнату золотом как выкуп, но Писарро казнил его и захватил Куско.' },
+    mk: { question: 'Кој инкски император беше заробен и погубен од Франсиско Пизаро во 1533?', options: ['Атахуалпа','Хуаjна Капак','Пачакути','Тупак Амару'], explanation: 'Атахуалпа наполни соба со злато како откуп, но Пизаро го погуби и го зазеде Куско.' },
+  },
+  'eq22': {
+    es: { question: 'La Paz de Augsburgo (1555) estableció ¿qué principio en el Sacro Imperio?', options: ['Libertad de culto para todos','Cuius regio, eius religio — la fe del gobernante determina la del territorio','La supremacía papal','La abolición de los monasterios'], explanation: 'Cada príncipe eligió luteranismo o catolicismo para sus tierras; los disidentes podían emigrar.' },
+    ru: { question: 'Аугсбургский мир (1555) установил какой принцип в Священной Римской империи?', options: ['Свободу вероисповедания для всех','Cuius regio, eius religio — вера правителя определяет веру земли','Верховенство папы','Упразднение монастырей'], explanation: 'Каждый князь выбирал лютеранство или католичество для своих земель; несогласные могли эмигрировать.' },
+    mk: { question: 'Аугзбуршкиот мир (1555) го воспостави кој принцип во Светото Римско Царство?', options: ['Слобода на вероисповед за сите','Cuius regio, eius religio — верата на владетелот ја одредува верата на територијата','Папско првенство','Укинување на манастирите'], explanation: 'Секој кнез избираше лутеранство или католицизам за своите земји; несогласните можеа да се иселат.' },
+  },
+  'eq23': {
+    es: { question: 'Juan Calvino convirtió ¿qué ciudad en una comunidad protestante modelo?', options: ['Wittenberg','Zúrich','Ginebra','Estrasburgo'], explanation: 'La Ginebra de Calvino imponía disciplina estricta y formaba pastores que difundieron el cristianismo reformado por Europa.' },
+    ru: { question: 'Жан Кальвин превратил какой город в образцовую протестантскую общину?', options: ['Виттенберг','Цюрих','Женеву','Страсбург'], explanation: 'Женева Кальвина насаждала строгую дисциплину и готовила пасторов, разносивших реформатство по Европе.' },
+    mk: { question: 'Жан Калвин го претвори кој град во модел на протестантска заедница?', options: ['Витенберг','Цирих','Женева','Стразбур'], explanation: 'Калвиновата Женева наметнуваше строга дисциплина и обучуваше пастори што го ширеа реформираното христијанство низ Европа.' },
+  },
+  'eq24': {
+    es: { question: 'Enrique VIII rompió con Roma principalmente porque el papa se negó a...', options: ['Coronarlo emperador','Anular su matrimonio con Catalina de Aragón','Financiar sus guerras','Canonizar a un santo inglés'], explanation: 'El Acta de Supremacía (1534) hizo a Enrique cabeza de la Iglesia de Inglaterra tras negársele la anulación.' },
+    ru: { question: 'Генрих VIII порвал с Римом главным образом потому, что папа отказался...', options: ['Короновать его императором','Аннулировать его брак с Екатериной Арагонской','Финансировать его войны','Канонизировать английского святого'], explanation: 'Акт о супрематии (1534) сделал Генриха главой Церкви Англии после отказа в аннулировании.' },
+    mk: { question: 'Хенри VIII раскина со Рим првенствено затоа што папата одби да...', options: ['Го крунисa за император','Го поништи неговиот брак со Катерина Арагонска','Ги финансира неговите војни','Канонизира англиски светец'], explanation: 'Актот за супрематија (1534) го направи Хенри глава на Англиската црква откако поништувањето беше одбиено.' },
+  },
+  'eq25': {
+    es: { question: 'La Armada española fue derrotada en 1588 durante el reinado de ¿qué monarca inglés?', options: ['María I','Isabel I','Enrique VIII','Jacobo I'], explanation: 'Tormentas y brulotes ingleses destrozaron la flota de invasión de Felipe II, asegurando la Inglaterra protestante de Isabel.' },
+    ru: { question: 'Испанская армада была разгромлена в 1588 году в правление какого английского монарха?', options: ['Марии I','Елизаветы I','Генриха VIII','Якова I'], explanation: 'Штормы и английские брандеры погубили вторженческий флот Филиппа II, упрочив протестантскую Англию Елизаветы.' },
+    mk: { question: 'Шпанската армада беше поразена во 1588 за време на владеењето на кој англиски монарх?', options: ['Марија I','Елизабета I','Хенри VIII','Џејмс I'], explanation: 'Бури и англиски огнени бродови ја уништија инвазиската флота на Филип II, зацврстувајќи ја протестантска Англија на Елизабета.' },
+  },
+  'eq26': {
+    es: { question: '¿Qué sultán otomano sitió Viena en 1529, en la cima del poder otomano?', options: ['Mehmed II','Selim I','Solimán el Magnífico','Bayezid II'], explanation: 'Los ejércitos de Solimán llegaron a los muros de Viena; el clima y la logística forzaron la retirada.' },
+    ru: { question: 'Какой османский султан осадил Вену в 1529 году, на пике османского могущества?', options: ['Мехмед II','Селим I','Сулейман Великолепный','Баязид II'], explanation: 'Армии Сулеймана дошли до стен Вены; погода и снабжение вынудили отступить.' },
+    mk: { question: 'Кој османлиски султан ја опседна Виена во 1529, на врвот на османлиската моќ?', options: ['Мехмед II','Селим I','Сулејман Величествениот','Бајазит II'], explanation: 'Војските на Сулејман стигнаа до ѕидините на Виена; времето и логистиката принудија повлекување.' },
+  },
+  'eq27': {
+    es: { question: 'El sistema devshirme proveía al estado otomano de...', options: ['Madera naval','Muchachos cristianos formados como jenízaros y administradores','Rentas de la seda','Tributo de grano'], explanation: 'Los muchachos reclutados se convertían al islam y ascendían por mérito — algunos llegaron a grandes visires.' },
+    ru: { question: 'Система девширме поставляла османскому государству что?', options: ['Корабельный лес','Христианских мальчиков, воспитанных в янычар и чиновников','Шёлковые доходы','Зерновую дань'], explanation: 'Набранные мальчики принимали ислам и росли по заслугам — некоторые становились великими визирями.' },
+    mk: { question: 'Системот девширме ѝ обезбедуваше на османлиската држава...', options: ['Бродоградежно дрво','Христијански момчиња обучени за јаничари и администратори','Приходи од свила','Данок во жито'], explanation: 'Собраните момчиња преминуваа во ислам и напредуваа по заслуга — некои станаа големи везири.' },
+  },
+  'eq28': {
+    es: { question: 'Babur, fundador del Imperio mogol, ganó el trono de Delhi ¿en qué batalla de 1526?', options: ['Plassey','Panipat','Talikota','Haldighati'], explanation: 'En la primera Panipat, los cañones de campaña y la táctica de Babur derrotaron al ejército mucho mayor del sultán de Delhi.' },
+    ru: { question: 'Бабур, основатель империи Моголов, завоевал трон Дели в какой битве 1526 года?', options: ['При Плесси','При Панипате','При Таликоте','При Халдигхати'], explanation: 'В первой битве при Панипате полевые орудия и тактика Бабура разгромили куда большую армию делийского султана.' },
+    mk: { question: 'Бабур, основачот на Могулската империја, го освои тронот на Делхи во која битка од 1526?', options: ['Пласи','Панипат','Таликота','Халдигати'], explanation: 'Кај првиот Панипат, полските топови и тактиката на Бабур ја поразија многу поголемата војска на делхискиот султан.' },
+  },
+  'eq29': {
+    es: { question: '¿Qué emperador mogol fue famoso por la tolerancia religiosa y los diálogos entre credos en su corte?', options: ['Aurangzeb','Akbar','Shah Jahan','Jahangir'], explanation: 'Akbar abolió la jizya, se casó con princesas rajputs y organizó debates interreligiosos en Fatehpur Sikri.' },
+    ru: { question: 'Какой могольский император славился веротерпимостью и межконфессиональными диалогами при дворе?', options: ['Аурангзеб','Акбар','Шах-Джахан','Джахангир'], explanation: 'Акбар отменил джизью, женился на раджпутских принцессах и устраивал межконфессиональные диспуты в Фатехпур-Сикри.' },
+    mk: { question: 'Кој могулски император беше прочуен по верска толеранција и меѓуверски дијалози на својот двор?', options: ['Аурангзеб','Акбар','Шах Џахан','Џахангир'], explanation: 'Акбар го укина данокот џизја, се женеше со раџпутски принцези и организираше меѓуверски дебати во Фатехпур Сикри.' },
+  },
+  'eq30': {
+    es: { question: 'El Taj Mahal fue construido por Shah Jahan como...', options: ['Un monumento a la victoria','Una mezquita para Delhi','Una tumba para su esposa Mumtaz Mahal','Un palacio para su hijo'], explanation: 'El mausoleo de mármol blanco en Agra (terminado c.1648) conmemora a Mumtaz Mahal, muerta de parto.' },
+    ru: { question: 'Тадж-Махал был построен Шах-Джаханом как...', options: ['Памятник победе','Мечеть для Дели','Гробница для жены Мумтаз-Махал','Дворец для сына'], explanation: 'Беломраморный мавзолей в Агре (завершён ок. 1648) хранит память о Мумтаз-Махал, умершей в родах.' },
+    mk: { question: 'Таџ Махал беше изграден од Шах Џахан како...', options: ['Споменик на победа','Џамија за Делхи','Гробница за неговата сопруга Мумтаз Махал','Палата за неговиот син'], explanation: 'Мавзолејот од бел мермер во Агра (завршен околу 1648) ја овековечува Мумтаз Махал, која умре при породување.' },
+  },
+  'eq31': {
+    es: { question: '¿Qué batalla de 1600 abrió el camino de Tokugawa Ieyasu para gobernar Japón?', options: ['Nagashino','Okehazama','Sekigahara','Osaka'], explanation: 'La victoria en Sekigahara permitió a Ieyasu reclamar el shogunato en 1603 e iniciar 250 años de gobierno Tokugawa.' },
+    ru: { question: 'Какая битва 1600 года открыла Токугаве Иэясу путь к власти над Японией?', options: ['Нагасино','Окэхадзама','Сэкигахара','Осака'], explanation: 'Победа при Сэкигахаре позволила Иэясу получить сёгунат в 1603 году и начать 250 лет правления Токугава.' },
+    mk: { question: 'Која битка во 1600 му го отвори патот на Токугава Иejасу да владее со Јапонија?', options: ['Нагашино','Окехазама','Секигахара','Осака'], explanation: 'Победата кај Секигахара му дозволи на Иejасу да го земе шогунатот во 1603 и да почне 250 години Токугава владеење.' },
+  },
+  'eq32': {
+    es: { question: 'La política sakoku de Japón bajo el shogunato Tokugawa significaba...', options: ['Educación samurái obligatoria','Cierre casi total del país al contacto exterior','Expansión hacia Corea','Persecución del budismo'], explanation: 'Desde los años 1630, el comercio exterior se limitó sobre todo a holandeses y chinos en Nagasaki; los japoneses no podían salir.' },
+    ru: { question: 'Политика сакоку при сёгунате Токугава означала что?', options: ['Обязательное самурайское образование','Почти полное закрытие страны от внешних контактов','Экспансию в Корею','Гонения на буддизм'], explanation: 'С 1630-х внешняя торговля ограничивалась в основном голландцами и китайцами в Нагасаки; японцам запрещалось покидать страну.' },
+    mk: { question: 'Политиката сакоку на Јапонија под Токугава шогунатот значеше...', options: ['Задолжително самурајско образование','Речиси целосно затворање на земјата за странски контакт','Експанзија кон Кореја','Прогон на будизмот'], explanation: 'Од 1630-тите, надворешната трговија беше ограничена главно на Холанѓани и Кинези во Нагасаки; Јапонците не смееја да заминат.' },
+  },
+  'eq33': {
+    es: { question: 'Bajo el sakoku, ¿qué nación europea mantuvo en solitario un puesto comercial en Japón, en Dejima?', options: ['Portugal','España','Inglaterra','Los Países Bajos'], explanation: 'Los holandeses protestantes, vistos como comerciantes y no misioneros, conservaron el diminuto islote de Dejima en la bahía de Nagasaki.' },
+    ru: { question: 'При сакоку какая европейская страна одна сохраняла факторию в Японии — на Дэдзиме?', options: ['Португалия','Испания','Англия','Нидерланды'], explanation: 'Протестантские голландцы, воспринимаемые как торговцы, а не миссионеры, держали крошечный островок Дэдзима в бухте Нагасаки.' },
+    mk: { question: 'Под сакоку, која европска нација единствена задржа трговски пункт во Јапонија, на Деџима?', options: ['Португалија','Шпанија','Англија','Холандија'], explanation: 'Протестантските Холанѓани, гледани како трговци а не мисионери, го задржаа малечкото островче Деџима во заливот на Нагасаки.' },
+  },
+  'eq34': {
+    es: { question: 'Los grabados ukiyo-e del Japón Edo representaban ¿qué "mundo flotante"?', options: ['Paraísos budistas','Barrios de placer urbanos, actores de kabuki y paisajes','Ceremonias imperiales','Batallas navales'], explanation: 'Artistas como Hokusai e Hiroshige produjeron en masa imágenes de la vida urbana y los viajes — que luego electrizaron a los pintores europeos.' },
+    ru: { question: 'Гравюры укиё-э эпохи Эдо изображали какой «плывущий мир»?', options: ['Буддийские рай','Городские весёлые кварталы, актёров кабуки и пейзажи','Императорские церемонии','Морские сражения'], explanation: 'Художники вроде Хокусая и Хиросигэ тиражировали образы городской жизни и путешествий — позже потрясшие европейских живописцев.' },
+    mk: { question: 'Укијо-е дрворезите од Едо Јапонија прикажуваа каков „лебдечки свет"?', options: ['Будистички рајови','Урбани квартови за задоволство, кабуки актери и пејзажи','Царски церемонии','Поморски битки'], explanation: 'Уметници како Хокусаи и Хирошиге масовно произведуваа слики од градскиот живот и патувањата — кои подоцна ги наелектризираа европските сликари.' },
+  },
+  'eq35': {
+    es: { question: 'El "De revolutionibus" de Copérnico (1543) proponía que...', options: ['Las órbitas son elípticas','La Tierra y los planetas giran alrededor del Sol','La gravedad se debilita con la distancia','El universo es infinito'], explanation: 'Su modelo heliocéntrico desafió la astronomía ptolemaica y puso en marcha la Revolución Científica.' },
+    ru: { question: '«О вращении небесных сфер» Коперника (1543) предлагало что?', options: ['Орбиты эллиптичны','Земля и планеты вращаются вокруг Солнца','Гравитация слабеет с расстоянием','Вселенная бесконечна'], explanation: 'Его гелиоцентрическая модель бросила вызов птолемеевой астрономии и запустила научную революцию.' },
+    mk: { question: '„De revolutionibus" на Коперник (1543) предлагаше дека...', options: ['Орбитите се елиптични','Земјата и планетите кружат околу Сонцето','Гравитацијата слабее со растојание','Универзумот е бесконечен'], explanation: 'Неговиот хелиоцентричен модел ја предизвика птоломеjската астрономија и ја покрена Научната револуција.' },
+  },
+  'eq36': {
+    es: { question: 'Johannes Kepler descubrió que los planetas se mueven en...', options: ['Círculos perfectos','Espirales','Elipses con el Sol en un foco','Epiciclos'], explanation: 'Las leyes de Kepler, derivadas de los datos de Tycho Brahe, sustituyeron las órbitas circulares por elipses.' },
+    ru: { question: 'Иоганн Кеплер открыл, что планеты движутся по...', options: ['Идеальным кругам','Спиралям','Эллипсам с Солнцем в фокусе','Эпициклам'], explanation: 'Законы Кеплера, выведенные из данных Тихо Браге, заменили круговые орбиты эллипсами.' },
+    mk: { question: 'Јоханес Кеплер откри дека планетите се движат во...', options: ['Совршени кругови','Спирали','Елипси со Сонцето во едно жариште','Епицикли'], explanation: 'Кеплеровите закони, изведени од податоците на Тихо Брахе, ги заменија кружните орбити со елипси.' },
+  },
+  'eq37': {
+    es: { question: '¿A qué inglés se atribuye la formalización del "método científico" experimental?', options: ['Francis Bacon','Thomas Hobbes','Robert Boyle','William Harvey'], explanation: 'El "Novum Organum" de Bacon (1620) defendió la observación sistemática y la inducción frente a la autoridad heredada.' },
+    ru: { question: 'Какому англичанину приписывают формализацию экспериментального «научного метода»?', options: ['Фрэнсису Бэкону','Томасу Гоббсу','Роберту Бойлю','Уильяму Гарвею'], explanation: '«Новый органон» Бэкона (1620) отстаивал систематическое наблюдение и индукцию вместо унаследованных авторитетов.' },
+    mk: { question: 'На кој Англичанец му се припишува формализирањето на експерименталниот „научен метод"?', options: ['Френсис Бекон','Томас Хобс','Роберт Бојл','Вилијам Харви'], explanation: '„Novum Organum" на Бекон (1620) застапуваше систематско набљудување и индукција наместо наследен авторитет.' },
+  },
+  'eq38': {
+    es: { question: 'El ministro de finanzas de Luis XIV que construyó la industria estatal y la armada francesas fue...', options: ['El cardenal Richelieu','Jean-Baptiste Colbert','El cardenal Mazarino','Turgot'], explanation: 'El mercantilismo de Colbert — aranceles, manufacturas y flotas — financió las guerras del Rey Sol y Versalles.' },
+    ru: { question: 'Министром финансов Людовика XIV, создавшим государственную промышленность и флот Франции, был...', options: ['Кардинал Ришельё','Жан-Батист Кольбер','Кардинал Мазарини','Тюрго'], explanation: 'Меркантилизм Кольбера — тарифы, мануфактуры и флоты — оплачивал войны Короля-Солнца и Версаль.' },
+    mk: { question: 'Министерот за финансии на Луj XIV што ги изгради француската државна индустрија и морнарица беше...', options: ['Кардиналот Ришеље','Жан-Батист Колбер','Кардиналот Мазарен','Тирго'], explanation: 'Меркантилизмот на Колбер — царини, мануфактури и флоти — ги финансираше војните на Кралот Сонце и Версај.' },
+  },
+  'eq39': {
+    es: { question: 'El Edicto de Nantes (1598), revocado por Luis XIV en 1685, había concedido...', options: ['Libre comercio con Inglaterra','Tolerancia a los protestantes franceses (hugonotes)','La independencia a los Países Bajos','Tierras a los cruzados que volvían'], explanation: 'Su revocación empujó al exilio a cientos de miles de hugonotes cualificados — una herida económica autoinfligida.' },
+    ru: { question: 'Нантский эдикт (1598), отменённый Людовиком XIV в 1685-м, даровал что?', options: ['Свободную торговлю с Англией','Терпимость французским протестантам (гугенотам)','Независимость Нидерландам','Земли вернувшимся крестоносцам'], explanation: 'Его отмена изгнала сотни тысяч искусных гугенотов — самонанесённая экономическая рана.' },
+    mk: { question: 'Нантскиот едикт (1598), укинат од Луj XIV во 1685, беше доделил...', options: ['Слободна трговија со Англија','Толеранција за француските протестанти (хугеноти)','Независност на Холандија','Земја за крстоносците повратници'], explanation: 'Неговото укинување истера стотици илjади вешти хугеноти во егзил — самонанесена економска рана.' },
+  },
+  'eq40': {
+    es: { question: 'La Revolución Gloriosa inglesa de 1688 resultó en...', options: ['Una república bajo Cromwell','Guillermo y María aceptando una Declaración de Derechos que limitaba la corona','La restauración católica','La unión con Escocia'], explanation: 'La invitación del Parlamento a Guillermo de Orange estableció una monarquía constitucional sujeta a la ley.' },
+    ru: { question: 'Славная революция 1688 года в Англии привела к чему?', options: ['Республике под Кромвелем','Вильгельм и Мария приняли Билль о правах, ограничивший корону','Католической реставрации','Унии с Шотландией'], explanation: 'Приглашение парламентом Вильгельма Оранского установило конституционную, подзаконную монархию.' },
+    mk: { question: 'Славната револуција во Англија од 1688 резултираше со...', options: ['Република под Кромвел','Вилијам и Мери прифаќаат Повелба за права што ја ограничува круната','Католичка рестраврација','Унија со Шкотска'], explanation: 'Поканата на Парламентот до Вилијам Орански воспостави уставна монархија врзана со закон.' },
+  },
+  'eq41': {
+    es: { question: 'La guerra civil inglesa terminó con la ejecución de ¿qué rey en 1649?', options: ['Jacobo I','Carlos I','Carlos II','Jacobo II'], explanation: 'La decapitación de Carlos I ante Whitehall conmocionó a Europa; Inglaterra se volvió una Commonwealth bajo Cromwell.' },
+    ru: { question: 'Английская гражданская война завершилась казнью какого короля в 1649 году?', options: ['Якова I','Карла I','Карла II','Якова II'], explanation: 'Обезглавливание Карла I у Уайтхолла потрясло Европу; Англия стала Содружеством под Кромвелем.' },
+    mk: { question: 'Англиската граѓанска војна заврши со погубувањето на кој крал во 1649?', options: ['Џејмс I','Чарлс I','Чарлс II','Џејмс II'], explanation: 'Обезглавувањето на Чарлс I пред Вајтхол ја шокира Европа; Англија стана Комонвелт под Кромвел.' },
+  },
+  'eq42': {
+    es: { question: 'El Paso Medio se refiere a...', options: ['La Ruta de la Seda terrestre','La travesía atlántica sufrida por los africanos esclavizados','La ruta por el cabo de Hornos','Los viajes de peregrinos a América'], explanation: 'Unos 12,5 millones de africanos fueron embarcados a través del Atlántico en condiciones brutales; casi 2 millones murieron en el mar.' },
+    ru: { question: '«Средний переход» — это что?', options: ['Сухопутный Шёлковый путь','Атлантический переход, который претерпевали порабощённые африканцы','Маршрут вокруг мыса Горн','Паломнические плавания в Америку'], explanation: 'Около 12,5 миллиона африканцев перевезли через Атлантику в чудовищных условиях; почти 2 миллиона погибли в море.' },
+    mk: { question: 'Средниот премин се однесува на...', options: ['Копнениот Пат на свилата','Атлантското преминување што го трпеа поробените Африканци','Патот околу Кејп Хорн','Аџиски патувања во Америка'], explanation: 'Околу 12,5 милиони Африканци беа превезени преку Атлантикот во брутални услови; речиси 2 милиони умреа на море.' },
+  },
+  'eq43': {
+    es: { question: '¿Qué economía de cultivo impulsó el sistema esclavista de plantación del Caribe en los siglos XVII–XVIII?', options: ['El algodón','El azúcar','El té','El caucho'], explanation: 'El azúcar era la mercancía colonial más valiosa de la Europa moderna temprana — y la más mortífera para los esclavizados.' },
+    ru: { question: 'Какая культура двигала плантационную рабовладельческую систему Карибов в XVII–XVIII веках?', options: ['Хлопок','Сахар','Чай','Каучук'], explanation: 'Сахар был самым ценным колониальным товаром ранненововременной Европы — и самым смертоносным для порабощённых.' },
+    mk: { question: 'Која култура ја движеше плантажната робовладетелска економија на Карибите во XVII–XVIII век?', options: ['Памук','Шеќер','Чај','Гума'], explanation: 'Шеќерот беше највредната колонијална стока на раномодерна Европа — и најсмртоносна за поробените работници.' },
+  },
+  'eq44': {
+    es: { question: 'Pedro el Grande fundó ¿qué ciudad en 1703 como "ventana de Rusia a Europa"?', options: ['Moscú','Kiev','San Petersburgo','Odesa'], explanation: 'Construida sobre marismas bálticas a enorme costo humano, San Petersburgo se convirtió en la capital orientada a Occidente.' },
+    ru: { question: 'Пётр Великий основал какой город в 1703 году как «окно России в Европу»?', options: ['Москву','Киев','Санкт-Петербург','Одессу'], explanation: 'Построенный на балтийских болотах чудовищной человеческой ценой, Петербург стал обращённой на Запад столицей.' },
+    mk: { question: 'Петар Велики го основа кој град во 1703 како „прозорец на Русија кон Европа"?', options: ['Москва','Киев','Санкт Петербург','Одеса'], explanation: 'Изграден на балтички мочуришта по огромна човечка цена, Санкт Петербург стана престолнина свртена кон Западот.' },
+  },
+  'eq45': {
+    es: { question: '"El espíritu de las leyes" de Montesquieu (1748) abogaba por...', options: ['La monarquía absoluta','La separación de poderes entre ramas del gobierno','La abolición de la religión','El gobierno de los filósofos'], explanation: 'Su esquema tripartito — legislativo, ejecutivo, judicial — moldeó la Constitución de EE. UU.' },
+    ru: { question: '«О духе законов» Монтескьё (1748) отстаивал что?', options: ['Абсолютную монархию','Разделение властей между ветвями правления','Отмену религии','Правление философов'], explanation: 'Его трёхчастная схема — законодательная, исполнительная, судебная — сформировала Конституцию США.' },
+    mk: { question: '„Духот на законите" на Монтескjе (1748) застапуваше...', options: ['Апсолутна монархија','Поделба на власта меѓу гранките на владата','Укинување на религијата','Владеење на филозофите'], explanation: 'Неговата тројна шема — законодавна, извршна, судска — ја обликуваше Уставот на САД.' },
+  },
+  'eq46': {
+    es: { question: 'La Encyclopédie, el gran compendio ilustrado del saber, fue editada por...', options: ['Voltaire y Rousseau','Diderot y d\'Alembert','Kant y Hume','Locke y Newton'], explanation: 'Sus 28 volúmenes (1751–1772) difundieron el pensamiento racional y crítico pese a la censura.' },
+    ru: { question: '«Энциклопедию», великий просветительский свод знаний, редактировали...', options: ['Вольтер и Руссо','Дидро и д\'Аламбер','Кант и Юм','Локк и Ньютон'], explanation: 'Её 28 томов (1751–1772) распространяли рациональную, критическую мысль вопреки цензуре.' },
+    mk: { question: 'Енциклопедијата, големиот просветителски зборник на знаење, ја уредуваа...', options: ['Волтер и Русо','Дидро и д\'Аламбер','Кант и Хjум','Лок и Њутн'], explanation: 'Нејзините 28 тома (1751–1772) ширеа рационална, критичка мисла и покрај цензурата.' },
+  },
+  'eq47': {
+    es: { question: 'El Motín del Té de Boston (1773) fue una protesta contra...', options: ['La Ley del Timbre','La fiscalidad británica y el monopolio de la Ley del Té','La Ley de Acuartelamiento','El reclutamiento naval forzoso'], explanation: 'Los colonos arrojaron al puerto el té de la Compañía de las Indias Orientales antes que aceptar importaciones monopolísticas gravadas.' },
+    ru: { question: '«Бостонское чаепитие» (1773) было протестом против чего?', options: ['Гербового акта','Британских налогов и монополии Чайного акта','Квартирного акта','Принудительной вербовки во флот'], explanation: 'Колонисты выбросили в гавань чай Ост-Индской компании, лишь бы не принимать облагаемый монопольный импорт.' },
+    mk: { question: 'Бостонската чајна забава (1773) беше протест против...', options: ['Актот за марки','Британското оданочување и монополот на Актот за чај','Актот за сместување','Присилното регрутирање во морнарицата'], explanation: 'Колонистите го фрлија чајот на Источноиндиската компанија во пристаништето наместо да прифатат оданочен монополски увоз.' },
+  },
+  'eq48': {
+    es: { question: 'La Revolución francesa comenzó en 1789 con ¿qué acontecimiento icónico en París?', options: ['El Juramento del Juego de Pelota','La toma de la Bastilla','La ejecución de Luis XVI','La marcha sobre Versalles'], explanation: 'El 14 de julio de 1789 los parisinos asaltaron la fortaleza-prisión de la Bastilla — hoy fiesta nacional de Francia.' },
+    ru: { question: 'Французская революция началась в 1789 году с какого знакового события в Париже?', options: ['Клятвы в зале для игры в мяч','Взятия Бастилии','Казни Людовика XVI','Похода на Версаль'], explanation: '14 июля 1789 года парижане взяли крепость-тюрьму Бастилию — ныне национальный праздник Франции.' },
+    mk: { question: 'Француската револуција почна во 1789 со кој иконски настан во Париз?', options: ['Заклетвата во салата за топка','Заземањето на Бастилја','Погубувањето на Луj XVI','Маршот кон Версај'], explanation: 'На 14 јули 1789 Парижаните ја зазедоа тврдината-затвор Бастилја — денес национален празник на Франција.' },
+  },
+  'eq49': {
+    es: { question: '¿Qué documento de agosto de 1789 proclamó la libertad, la propiedad y la igualdad ante la ley en Francia?', options: ['El Código Napoleónico','La Declaración de los Derechos del Hombre y del Ciudadano','La Constitución de 1791','El Edicto de Tolerancia'], explanation: 'La Declaración destiló los principios ilustrados en derecho revolucionario, influyendo en constituciones de todo el mundo.' },
+    ru: { question: 'Какой документ августа 1789 года провозгласил во Франции свободу, собственность и равенство перед законом?', options: ['Кодекс Наполеона','Декларация прав человека и гражданина','Конституция 1791 года','Эдикт о терпимости'], explanation: 'Декларация переплавила принципы Просвещения в революционное право, повлияв на конституции всего мира.' },
+    mk: { question: 'Кој документ од август 1789 прогласи слобода, сопственост и еднаквост пред законот во Франција?', options: ['Наполеоновиот законик','Декларацијата за правата на човекот и граѓанинот','Уставот од 1791','Едиктот за толеранција'], explanation: 'Декларацијата ги дестилира просветителските принципи во револуционерно право, влијаејќи на устави ширум светот.' },
+  },
+  'eq50': {
+    es: { question: 'La Revolución haitiana (1791–1804), liderada por Toussaint Louverture, resultó en...', options: ['Una colonia francesa recuperada','La primera república negra libre y la abolición de la esclavitud allí','La anexión británica','Una monarquía restaurada'], explanation: 'Los esclavizados derrotaron a tres imperios; la independencia de Haití en 1804 aterró a las potencias esclavistas.' },
+    ru: { question: 'Гаитянская революция (1791–1804) под руководством Туссена Лувертюра привела к чему?', options: ['Возвращению французской колонии','Первой свободной чёрной республике и отмене там рабства','Британской аннексии','Реставрации монархии'], explanation: 'Порабощённые победили три империи; независимость Гаити в 1804 году ужаснула рабовладельческие державы.' },
+    mk: { question: 'Хаитската револуција (1791–1804), предводена од Тусен Лувертир, резултираше со...', options: ['Вратена француска колонија','Првата слободна црна република и укинување на ропството таму','Британска анексија','Обновена монархија'], explanation: 'Поробените победија три империи; независноста на Хаити во 1804 ги ужасна робовладетелските сили.' },
+  },
+  'mod16': {
+    es: { question: 'La máquina de vapor mejorada de James Watt (patentada en 1769) transformó la industria sobre todo al...', options: ['Usar electricidad','Hacer práctica y eficiente la energía rotativa lejos de los ríos','Funcionar con gasolina','Eliminar el uso de carbón'], explanation: 'El condensador separado y el engranaje rotativo de Watt liberaron a las fábricas de los emplazamientos con ruedas hidráulicas.' },
+    ru: { question: 'Усовершенствованная паровая машина Джеймса Уатта (патент 1769) преобразила промышленность прежде всего тем, что...', options: ['Использовала электричество','Сделала вращательную энергию практичной вдали от рек','Работала на бензине','Отказалась от угля'], explanation: 'Отдельный конденсатор и вращательная передача Уатта освободили фабрики от привязки к водяным колёсам.' },
+    mk: { question: 'Подобрената парна машина на Џејмс Ват (патентирана 1769) ја трансформира индустријата првенствено со тоа што...', options: ['Користеше електрична енергија','Ја направи ротациската моќ практична и ефикасна далеку од реките','Работеше на бензин','Го елиминира јагленот'], explanation: 'Одделниот кондензатор и ротацискиот пренос на Ват ги ослободија фабриките од локациите со воденици.' },
+  },
+  'mod17': {
+    es: { question: 'La primera línea ferroviaria comercial con locomotoras de vapor (1830) unió Manchester con...', options: ['Londres','Birmingham','Liverpool','Leeds'], explanation: 'El ferrocarril Liverpool–Manchester demostró la viabilidad comercial del tren de pasajeros y mercancías.' },
+    ru: { question: 'Первая коммерческая железная дорога с паровозами (1830) связала Манчестер с...', options: ['Лондоном','Бирмингемом','Ливерпулем','Лидсом'], explanation: 'Дорога Ливерпуль–Манчестер доказала коммерческую жизнеспособность пассажирских и грузовых перевозок по рельсам.' },
+    mk: { question: 'Првата комерцијална железничка линија со парни локомотиви (1830) го поврза Манчестер со...', options: ['Лондон','Бирмингем','Ливерпул','Лидс'], explanation: 'Железницата Ливерпул–Манчестер докажа дека патничкиот и товарниот железнички сообраќај се комерцијално исплатливи.' },
+  },
+  'mod18': {
+    es: { question: 'El Manifiesto Comunista (1848) fue escrito por Karl Marx y...', options: ['Vladimir Lenin','Friedrich Engels','Rosa Luxemburgo','Georgi Plejánov'], explanation: 'Marx y Engels lo publicaron en plena oleada revolucionaria de 1848 en Europa.' },
+    ru: { question: '«Манифест коммунистической партии» (1848) написали Карл Маркс и...', options: ['Владимир Ленин','Фридрих Энгельс','Роза Люксембург','Георгий Плеханов'], explanation: 'Маркс и Энгельс издали его среди революций 1848 года, охвативших Европу.' },
+    mk: { question: 'Комунистичкиот манифест (1848) го напишаа Карл Маркс и...', options: ['Владимир Ленин','Фридрих Енгелс','Роза Луксембург','Георги Плеханов'], explanation: 'Маркс и Енгелс го објавија среде револуциите од 1848 што ја зафатија Европа.' },
+  },
+  'mod19': {
+    es: { question: 'La Conferencia de Berlín de 1884–85 se asocia con...', options: ['La unificación alemana','Las reglas para el reparto europeo de África','El sistema de congresos','El desarme naval'], explanation: 'Las potencias europeas fijaron reclamaciones y reglas de "ocupación efectiva" para África — sin un solo representante africano.' },
+    ru: { question: 'Берлинская конференция 1884–85 годов связана с чем?', options: ['Объединением Германии','Правилами европейского раздела Африки','Системой конгрессов','Морским разоружением'], explanation: 'Европейские державы установили претензии и правила «эффективной оккупации» Африки — без единого африканского представителя.' },
+    mk: { question: 'Берлинската конференција од 1884–85 се поврзува со...', options: ['Германското обединување','Правилата за европската поделба на Африка','Конгресниот систем','Поморското разоружување'], explanation: 'Европските сили поставија претензии и правила за „ефективна окупација" на Африка — без ниту еден африкански претставник.' },
+  },
+  'mod20': {
+    es: { question: '¿Qué guerra de 1904–05 terminó con una potencia asiática derrotando a una gran potencia europea por primera vez en la era moderna?', options: ['La guerra de Crimea','La guerra ruso-japonesa','La guerra sino-japonesa','La guerra de los Bóxers'], explanation: 'La destrucción japonesa de la flota rusa en Tsushima conmocionó a Europa e inspiró a los movimientos anticoloniales.' },
+    ru: { question: 'Какая война 1904–05 годов завершилась первой в новой истории победой азиатской державы над европейской великой державой?', options: ['Крымская','Русско-японская','Японо-китайская','Боксёрская'], explanation: 'Уничтожение русского флота при Цусиме потрясло Европу и вдохновило антиколониальные движения.' },
+    mk: { question: 'Која војна од 1904–05 заврши со азиска сила што за првпат во модерната ера победи европска голема сила?', options: ['Кримската војна','Руско-јапонската војна','Кинеско-јапонската војна','Боксерската војна'], explanation: 'Јапонското уништување на руската флота кај Цушима ја шокира Европа и ги инспирира антиколонијалните движења.' },
+  },
+  'mod21': {
+    es: { question: '¿Qué batalla de 1916 se volvió sinónimo de la futilidad de la guerra de trincheras, con más de un millón de bajas?', options: ['Tannenberg','Verdún','El Somme','Galípoli'], explanation: 'Solo el primer día del Somme Gran Bretaña sufrió ~57.000 bajas; meses de lucha movieron la línea unos kilómetros.' },
+    ru: { question: 'Какая битва 1916 года стала синонимом бессмысленности окопной войны — более миллиона потерь?', options: ['Танненберг','Верден','Сомма','Галлиполи'], explanation: 'Только в первый день на Сомме Британия потеряла ~57 000 человек; месяцы боёв сдвинули фронт на несколько миль.' },
+    mk: { question: 'Која битка од 1916 стана синоним за залудноста на рововската војна, со над милион жртви?', options: ['Таненберг','Верден','Сома','Галиполе'], explanation: 'Само првиот ден на Сома Британија претрпе ~57.000 жртви; месеци борби ја поместија линијата неколку милји.' },
+  },
+  'mod22': {
+    es: { question: 'El Tratado de Versalles (1919) exigía a Alemania...', options: ['Ceder su armada a Francia','Aceptar la culpa de la guerra, pagar reparaciones y desarmarse','Unirse de inmediato a la Sociedad de Naciones','Restaurar al Káiser'], explanation: 'El artículo 231 (culpa de guerra), las reparaciones y los límites militares criaron un resentimiento que explotaron los extremistas.' },
+    ru: { question: 'Версальский договор (1919) требовал от Германии чего?', options: ['Передать флот Франции','Признать вину за войну, платить репарации и разоружиться','Немедленно вступить в Лигу Наций','Восстановить кайзера'], explanation: 'Статья 231 (вина за войну), репарации и военные ограничения взрастили озлобление, которым воспользовались экстремисты.' },
+    mk: { question: 'Версајскиот договор (1919) бараше од Германија да...', options: ['Ја предаде морнарицата на Франција','Прифати воена вина, плати репарации и се разоружа','Веднаш се приклучи на Лигата на народите','Го врати Кајзерот'], explanation: 'Членот 231 (воена вина), репарациите и воените ограничувања породија огорченост што ја искористија екстремистите.' },
+  },
+  'mod23': {
+    es: { question: 'La Revolución de Febrero de 1917 en Rusia forzó la abdicación de...', options: ['Lenin','Kérenski','El zar Nicolás II','El zar Alejandro III'], explanation: 'Los disturbios del pan y los motines en Petrogrado acabaron en días con tres siglos de gobierno Romanov.' },
+    ru: { question: 'Февральская революция 1917 года в России вынудила отречься кого?', options: ['Ленина','Керенского','Царя Николая II','Царя Александра III'], explanation: 'Хлебные бунты и мятежи в Петрограде за считанные дни покончили с тремя веками власти Романовых.' },
+    mk: { question: 'Февруарската револуција од 1917 во Русија ја принуди абдикацијата на...', options: ['Ленин','Керенски','Царот Николај II','Царот Александар III'], explanation: 'Бунтовите за леб и побуните во Петроград за неколку дена завршија три века владеење на Романови.' },
+  },
+  'mod24': {
+    es: { question: 'La toma bolchevique del poder en octubre de 1917 fue dirigida por Lenin y organizada en gran parte por...', options: ['Stalin','Trotski','Zinóviev','Bujarin'], explanation: 'Trotski presidía el Comité Militar Revolucionario del Sóviet de Petrogrado que tomó el Palacio de Invierno.' },
+    ru: { question: 'Большевистский захват власти в октябре 1917 года возглавил Ленин, а организовал в основном...', options: ['Сталин','Троцкий','Зиновьев','Бухарин'], explanation: 'Троцкий возглавлял Военно-революционный комитет Петроградского совета, взявший Зимний дворец.' },
+    mk: { question: 'Болшевичкото заземање на власта во октомври 1917 беше водено од Ленин, а организирано главно од...', options: ['Сталин','Троцки','Зиновjев','Бухарин'], explanation: 'Троцки претседаваше со Воено-револуционерниот комитет на Петроградскиот совет што го зазеде Зимскиот дворец.' },
+  },
+  'mod25': {
+    es: { question: 'El eslogan más asociado a los bolcheviques en 1917 era...', options: ['"Libertad, Igualdad, Fraternidad"','"Paz, Tierra y Pan"','Solo "Proletarios del mundo, uníos"','"Todo el poder a la Duma"'], explanation: '"Paz, Tierra y Pan" y "Todo el poder a los sóviets" capturaron a una Rusia agotada por la guerra y hambrienta de tierra.' },
+    ru: { question: 'Лозунг, наиболее связанный с большевиками в 1917 году, — это...', options: ['«Свобода, равенство, братство»','«Мир, земля и хлеб»','Только «Пролетарии всех стран, соединяйтесь»','«Вся власть Думе»'], explanation: '«Мир, земля и хлеб» и «Вся власть Советам» пленили измученную войной, жаждущую земли Россию.' },
+    mk: { question: 'Слоганот најповрзан со болшевиците во 1917 беше...', options: ['„Слобода, еднаквост, братство"','„Мир, земја и леб"','Само „Пролетери од сите земји, обединете се"','„Сета власт на Думата"'], explanation: '„Мир, земја и леб" и „Сета власт на советите" ја освоија Русија изморена од војна и гладна за земја.' },
+  },
+  'mod26': {
+    es: { question: 'La guerra civil rusa (1918–1922) se libró principalmente entre los rojos y...', options: ['Los verdes','Los blancos','Los negros','Los azules'], explanation: 'Los ejércitos blancos — una coalición antibolchevique laxa — fueron derrotados por partes por los rojos, situados en el centro.' },
+    ru: { question: 'Гражданская война в России (1918–1922) шла главным образом между красными и...', options: ['Зелёными','Белыми','Чёрными','Синими'], explanation: 'Белые армии — рыхлая антибольшевистская коалиция — были разбиты по частям централизованно расположенными красными.' },
+    mk: { question: 'Руската граѓанска војна (1918–1922) се водеше главно меѓу Црвените и...', options: ['Зелените','Белите','Црните','Сините'], explanation: 'Белите армии — лабава антиболшевичка коалиција — беа поразени дел по дел од централно поставените Црвени.' },
+  },
+  'mod27': {
+    es: { question: 'El primer plan quinquenal de Stalin (1928) apuntaba sobre todo a...', options: ['Bienes de consumo','La industrialización pesada rápida y la colectivización agrícola','La reforma de libre mercado','La expansión naval'], explanation: 'La industrialización a marchas forzadas se pagó con la colectivización, que desató la hambruna — incluido el Holodomor en Ucrania.' },
+    ru: { question: 'Первая пятилетка Сталина (1928) была нацелена прежде всего на что?', options: ['Товары народного потребления','Ускоренную тяжёлую индустриализацию и коллективизацию','Рыночные реформы','Морскую экспансию'], explanation: 'Форсированная индустриализация оплачивалась коллективизацией, вызвавшей голод — включая Голодомор в Украине.' },
+    mk: { question: 'Првиот петгодишен план на Сталин (1928) целеше пред сè кон...', options: ['Потрошувачки стоки','Брза тешка индустријализација и колективизација на земјоделството','Слободнопазарни реформи','Поморска експанзија'], explanation: 'Забрзаната индустријализација беше платена со колективизација што предизвика глад — вклучително Холодоморот во Украина.' },
+  },
+  'mod28': {
+    es: { question: 'La Gran Purga de 1936–38 en la URSS implicó...', options: ['Expulsar diplomáticos extranjeros','Juicios espectáculo y ejecuciones masivas de miembros del partido, el ejército y ciudadanos','Prohibir solo la religión','Redistribución de tierras'], explanation: 'El terror de Stalin consumió a viejos bolcheviques, oficiales del Ejército Rojo y cientos de miles de personas corrientes.' },
+    ru: { question: 'Большой террор 1936–38 годов в СССР включал что?', options: ['Высылку иностранных дипломатов','Показательные процессы и массовые казни партийцев, военных и граждан','Только запрет религии','Передел земли'], explanation: 'Сталинский террор поглотил старых большевиков, командиров Красной армии и сотни тысяч обычных людей.' },
+    mk: { question: 'Големата чистка од 1936–38 во СССР вклучуваше...', options: ['Протерување странски дипломати','Режирани процеси и масовни егзекуции на партијци, војска и граѓани','Само забрана на религијата','Прераспределба на земја'], explanation: 'Сталиновиот терор ги проголта старите болшевици, офицерите на Црвената армија и стотици илjади обични луѓе.' },
+  },
+  'mod29': {
+    es: { question: 'La hiperinflación de Weimar de 1923 se recuerda por...', options: ['Nacionalizaciones bancarias','Dinero tan sin valor que se llevaba en carretillas','Un marco respaldado en oro','Prohibiciones de divisas'], explanation: 'Los precios se doblaban en días; los ahorros se evaporaron, radicalizando a la clase media alemana.' },
+    ru: { question: 'Веймарская гиперинфляция 1923 года запомнилась чем?', options: ['Национализацией банков','Деньгами настолько обесцененными, что их возили тачками','Золотым маркой','Запретом иностранных валют'], explanation: 'Цены удваивались за дни; сбережения испарились, радикализировав немецкий средний класс.' },
+    mk: { question: 'Ваjмарската хиперинфлација од 1923 се памети по...', options: ['Национализации на банки','Пари толку безвредни што се носеа во колички','Марка поткрепена со злато','Забрани на странски валути'], explanation: 'Цените се дуплираа за денови; заштедите испарија, радикализирајќи ја германската средна класа.' },
+  },
+  'mod30': {
+    es: { question: 'El Acuerdo de Múnich de 1938 permitió a la Alemania nazi anexionarse...', options: ['Austria','El corredor polaco','Los Sudetes de Checoslovaquia','Alsacia-Lorena'], explanation: 'Gran Bretaña y Francia aceptaron la reclamación de Hitler sobre las regiones fronterizas checas — la "paz para nuestro tiempo" duró menos de un año.' },
+    ru: { question: 'Мюнхенское соглашение 1938 года позволило нацистской Германии аннексировать что?', options: ['Австрию','Польский коридор','Судеты Чехословакии','Эльзас-Лотарингию'], explanation: 'Британия и Франция признали претензии Гитлера на чешское пограничье — «мир для нашего времени» продержался меньше года.' },
+    mk: { question: 'Минхенскиот договор од 1938 ѝ дозволи на нацистичка Германија да ги анектира...', options: ['Австрија','Полскиот коридор','Судетите на Чехословачка','Алзас-Лорена'], explanation: 'Британија и Франција ја прифатија претензијата на Хитлер врз чешките погранични региони — „мирот за нашето време" траеше помалку од година.' },
+  },
+  'mod31': {
+    es: { question: 'La Operación Barbarroja (junio de 1941) fue...', options: ['El desembarco aliado en Normandía','La invasión alemana de la Unión Soviética','La ofensiva japonesa del Pacífico','La campaña del norte de África'], explanation: 'La mayor invasión de la historia rompió el pacto nazi-soviético y abrió el frente más mortífero de la guerra.' },
+    ru: { question: 'Операция «Барбаросса» (июнь 1941) — это...', options: ['Высадка союзников в Нормандии','Германское вторжение в Советский Союз','Японское наступление на Тихом океане','Североафриканская кампания'], explanation: 'Крупнейшее вторжение в истории разорвало советско-германский пакт и открыло самый кровавый фронт войны.' },
+    mk: { question: 'Операцијата Барбароса (јуни 1941) беше...', options: ['Сојузничкото истоварување во Нормандија','Германската инвазија на Советскиот Сојуз','Јапонската пацифичка офанзива','Северноафриканската кампања'], explanation: 'Најголемата инвазија во историјата го прекрши нацистичко-советскиот пакт и го отвори најсмртоносниот фронт на војната.' },
+  },
+  'mod32': {
+    es: { question: 'La batalla considerada el punto de inflexión del Frente Oriental, terminada en febrero de 1943, fue...', options: ['Moscú','Kursk','Stalingrado','Leningrado'], explanation: 'El cerco del 6.º Ejército alemán en Stalingrado destruyó el mito de la invencibilidad de la Wehrmacht.' },
+    ru: { question: 'Битвой-переломом Восточного фронта, завершившейся в феврале 1943 года, считается...', options: ['Московская','Курская','Сталинградская','Ленинградская'], explanation: 'Окружение немецкой 6-й армии под Сталинградом разрушило миф о непобедимости вермахта.' },
+    mk: { question: 'Битката сметана за пресвртница на Источниот фронт, завршена во февруари 1943, беше...', options: ['Москва','Курск','Сталинград','Ленинград'], explanation: 'Опколувањето на германската 6-та армија кај Сталинград го уништи митот за непобедливоста на Вермахтот.' },
+  },
+  'mod33': {
+    es: { question: 'El asesinato masivo industrializado del Holocausto se formalizó ¿en qué reunión de 1942?', options: ['Los mítines de Núremberg','La Conferencia de Wannsee','La Conferencia de Múnich','La Conferencia de Évian'], explanation: 'Funcionarios nazis coordinaron en Wannsee la "Solución Final" — el asesinato de los judíos de Europa, seis millones de los cuales fueron exterminados.' },
+    ru: { question: 'Индустриализированное массовое убийство Холокоста было оформлено на какой встрече 1942 года?', options: ['Нюрнбергских съездах','Ванзейской конференции','Мюнхенской конференции','Эвианской конференции'], explanation: 'Нацистские чиновники в Ванзее скоординировали «окончательное решение» — убийство евреев Европы; шесть миллионов были уничтожены.' },
+    mk: { question: 'Индустријализираното масовно убиство на Холокаустот беше формализирано на кој состанок во 1942?', options: ['Нирнбершките собири','Ванзеската конференција','Минхенската конференција','Евианската конференција'], explanation: 'Нацистички функционери во Ванзе ја координираа „Конечното решение" — убиството на европските Евреи, шест милиони од кои беа убиени.' },
+  },
+  'mod34': {
+    es: { question: 'Los desembarcos del Día D del 6 de junio de 1944 tuvieron lugar en las playas de...', options: ['Sicilia','Normandía','Provenza','Calais'], explanation: 'La Operación Overlord abrió el Frente Occidental con el mayor asalto anfibio de la historia.' },
+    ru: { question: 'Высадка «Дня Д» 6 июня 1944 года произошла на пляжах чего?', options: ['Сицилии','Нормандии','Прованса','Кале'], explanation: 'Операция «Оверлорд» открыла Западный фронт крупнейшим морским десантом в истории.' },
+    mk: { question: 'Истоварувањата на Денот Д на 6 јуни 1944 се случија на плажите на...', options: ['Сицилија','Нормандија','Прованса','Кале'], explanation: 'Операцијата Оверлорд го отвори Западниот фронт со најголемиот амфибиски напад во историјата.' },
+  },
+  'mod35': {
+    es: { question: 'Las Naciones Unidas se fundaron en 1945 en una conferencia ¿en qué ciudad?', options: ['Nueva York','Ginebra','San Francisco','Londres'], explanation: 'Cincuenta naciones firmaron la Carta de la ONU en San Francisco en junio de 1945.' },
+    ru: { question: 'Организация Объединённых Наций была основана в 1945 году на конференции в каком городе?', options: ['Нью-Йорке','Женеве','Сан-Франциско','Лондоне'], explanation: 'Пятьдесят государств подписали Устав ООН в Сан-Франциско в июне 1945 года.' },
+    mk: { question: 'Обединетите нации беа основани во 1945 на конференција во кој град?', options: ['Њујорк','Женева','Сан Франциско','Лондон'], explanation: 'Педесет нации ја потпишаа Повелбата на ОН во Сан Франциско во јуни 1945.' },
+  },
+  'mod36': {
+    es: { question: 'El Plan Marshall (1948) fue diseñado para...', options: ['Rearmar a Alemania','Reconstruir las economías europeas y frenar el atractivo del comunismo','Financiar la ONU','Crear la OTAN'], explanation: 'Unos 13.000 millones de dólares en ayuda estadounidense reactivaron las economías de Europa occidental devastadas por la guerra.' },
+    ru: { question: 'План Маршалла (1948) был задуман для чего?', options: ['Перевооружения Германии','Восстановления европейских экономик и подрыва привлекательности коммунизма','Финансирования ООН','Создания НАТО'], explanation: 'Около 13 миллиардов долларов американской помощи оживили разорённые войной экономики Западной Европы.' },
+    mk: { question: 'Маршаловиот план (1948) беше дизајниран да...', options: ['Ја вооружи повторно Германија','Ги обнови европските економии и ја затапи привлечноста на комунизмот','Ги финансира ОН','Го создаде НАТО'], explanation: 'Околу 13 милијарди долари американска помош ги оживеаја западноевропските економии опустошени од војната.' },
+  },
+  'mod37': {
+    es: { question: 'El puente aéreo de Berlín (1948–49) respondió a...', options: ['La construcción del Muro de Berlín','Un bloqueo soviético de las rutas terrestres a Berlín Occidental','Una hambruna en Alemania','Un golpe en Alemania Oriental'], explanation: 'Aviones aliados abastecieron a 2 millones de berlineses occidentales durante 11 meses hasta que Stalin levantó el bloqueo.' },
+    ru: { question: 'Берлинский воздушный мост (1948–49) был ответом на что?', options: ['Строительство Берлинской стены','Советскую блокаду наземных путей в Западный Берлин','Голод в Германии','Переворот в Восточной Германии'], explanation: 'Союзные самолёты 11 месяцев снабжали 2 миллиона западноберлинцев, пока Сталин не снял блокаду.' },
+    mk: { question: 'Берлинскиот воздушен мост (1948–49) одговори на...', options: ['Изградбата на Берлинскиот ѕид','Советска блокада на копнените патишта до Западен Берлин','Глад во Германија','Пуч во Источна Германија'], explanation: 'Сојузнички авиони снабдуваа 2 милиони западни Берлинчани 11 месеци додека Сталин не ја крена блокадата.' },
+  },
+  'mod38': {
+    es: { question: 'La Marcha de la Sal de Gandhi de 1930 protestaba contra...', options: ['Los aranceles del algodón','El monopolio y el impuesto británicos sobre la sal','La segregación ferroviaria','Las expropiaciones de tierras'], explanation: 'La marcha de 380 km hasta Dandi para hacer sal convirtió un impuesto mundano en una acusación moral del dominio colonial.' },
+    ru: { question: 'Соляной поход Ганди 1930 года был протестом против чего?', options: ['Хлопковых тарифов','Британской соляной монополии и налога','Сегрегации на железных дорогах','Захвата земель'], explanation: 'Поход в 380 км к морю у Данди превратил будничный налог в моральное обвинение колониальной власти.' },
+    mk: { question: 'Маршот на солта на Ганди од 1930 протестираше против...', options: ['Царините на памук','Британскиот монопол и данок на сол','Железничката сегрегација','Одземањето земја'], explanation: 'Маршот од 380 км до Данди за правење сол претвори обичен данок во морално обвинение на колонијалната власт.' },
+  },
+  'mod39': {
+    es: { question: 'La Partición de la India británica de 1947 creó ¿qué dos estados independientes?', options: ['India y Ceilán','India y Pakistán','India y Bangladés','India y Birmania'], explanation: 'La Partición desplazó a unos 14 millones de personas en medio de una violencia comunal que mató a cientos de miles.' },
+    ru: { question: 'Раздел Британской Индии в 1947 году создал какие два независимых государства?', options: ['Индию и Цейлон','Индию и Пакистан','Индию и Бангладеш','Индию и Бирму'], explanation: 'Раздел сорвал с мест около 14 миллионов человек среди межобщинного насилия, убившего сотни тысяч.' },
+    mk: { question: 'Поделбата на Британска Индија од 1947 создаде кои две независни држави?', options: ['Индија и Цејлон','Индија и Пакистан','Индија и Бангладеш','Индија и Бурма'], explanation: 'Поделбата растера околу 14 милиони луѓе среде меѓуверско насилство што уби стотици илjади.' },
+  },
+  'mod40': {
+    es: { question: 'El líder fundador de Pakistán, que encabezó la demanda de la Liga Musulmana de un estado separado, fue...', options: ['Jawaharlal Nehru','Muhammad Ali Jinnah','Liaquat Ali Khan','Abul Kalam Azad'], explanation: 'Jinnah se convirtió en el primer gobernador general de Pakistán en agosto de 1947.' },
+    ru: { question: 'Отцом-основателем Пакистана, возглавившим требование Мусульманской лиги об отдельном государстве, был...', options: ['Джавахарлал Неру','Мухаммад Али Джинна','Лиакат Али Хан','Абул Калам Азад'], explanation: 'Джинна стал первым генерал-губернатором Пакистана в августе 1947 года.' },
+    mk: { question: 'Основачкиот лидер на Пакистан, кој го предводеше барањето на Муслиманската лига за одделна држава, беше...', options: ['Џавахарлал Нехру','Мухамед Али Џина','Лиакат Али Кан','Абул Калам Азад'], explanation: 'Џина стана првиот генерален гувернер на Пакистан во август 1947.' },
+  },
+  'mod41': {
+    es: { question: 'La línea que dividió India y Pakistán en 1947 la trazó un abogado británico y se conoce como la...', options: ['Línea Durand','Línea Radcliffe','Línea McMahon','Línea Curzon'], explanation: 'Cyril Radcliffe, que nunca había estado en la India, tuvo cinco semanas para partir el Punyab y Bengala.' },
+    ru: { question: 'Линию раздела Индии и Пакистана в 1947 году провёл британский юрист; она известна как...', options: ['Линия Дюранда','Линия Рэдклиффа','Линия Мак-Магона','Линия Керзона'], explanation: 'Сирил Рэдклифф, никогда не бывавший в Индии, получил пять недель на раздел Пенджаба и Бенгалии.' },
+    mk: { question: 'Линијата што ги подели Индија и Пакистан во 1947 ја повлече британски адвокат и е позната како...', options: ['Дурандова линија','Радклифова линија','Мекмахонова линија','Курзонова линија'], explanation: 'Сирил Радклиф, кој никогаш не бил во Индија, имаше пет недели да ги подели Пенџаб и Бенгал.' },
+  },
+  'mod42': {
+    es: { question: 'Gandhi fue asesinado en enero de 1948 por...', options: ['Un oficial británico','Un nacionalista hindú','Un activista de la Liga Musulmana','Un comunista'], explanation: 'Nathuram Godse disparó a Gandhi por lo que consideraba concesiones a los musulmanes y a Pakistán.' },
+    ru: { question: 'Ганди был убит в январе 1948 года кем?', options: ['Британским офицером','Индуистским националистом','Активистом Мусульманской лиги','Коммунистом'], explanation: 'Натхурам Годсе застрелил Ганди за то, что считал уступками мусульманам и Пакистану.' },
+    mk: { question: 'Ганди беше убиен во јануари 1948 од...', options: ['Британски офицер','Хиндуистички националист','Активист на Муслиманската лига','Комунист'], explanation: 'Натурам Годсе го застрела Ганди поради она што го сметаше за отстапки кон муслиманите и Пакистан.' },
+  },
+  'mod43': {
+    es: { question: 'La crisis de los misiles de Cuba de 1962 terminó cuando la URSS retiró los misiles a cambio de...', options: ['La neutralidad cubana','Un compromiso de EE. UU. de no invadir Cuba (y la retirada discreta de misiles de Turquía)','El control de Cuba por la ONU','Nada'], explanation: 'Trece días al borde nuclear terminaron con concesiones mutuas — una pública, otra secreta.' },
+    ru: { question: 'Карибский кризис 1962 года завершился выводом советских ракет в обмен на что?', options: ['Нейтралитет Кубы','Обещание США не вторгаться на Кубу (и тихий вывод американских ракет из Турции)','Контроль ООН над Кубой','Ничего'], explanation: 'Тринадцать дней у ядерной черты закончились взаимными уступками — одной публичной, другой тайной.' },
+    mk: { question: 'Кубанската ракетна криза од 1962 заврши кога СССР ги повлече ракетите во замена за...', options: ['Кубанска неутралност','Ветување на САД дека нема да ја нападнат Куба (и тивко повлекување на американските ракети од Турција)','Контрола на ОН врз Куба','Ништо'], explanation: 'Тринаесет дена на нуклеарниот раб завршија со заемни отстапки — една јавна, една тајна.' },
+  },
+  'mod44': {
+    es: { question: 'El Muro de Berlín cayó ¿en qué año?', options: ['1987','1989','1991','1993'], explanation: 'El 9 de noviembre de 1989 Berlín Oriental abrió los pasos; el símbolo más famoso de la Guerra Fría fue desmantelado por las multitudes.' },
+    ru: { question: 'Берлинская стена пала в каком году?', options: ['1987','1989','1991','1993'], explanation: '9 ноября 1989 года Восточный Берлин открыл переходы; самый знаменитый символ Холодной войны разобрали толпы.' },
+    mk: { question: 'Берлинскиот ѕид падна во која година?', options: ['1987','1989','1991','1993'], explanation: 'На 9 ноември 1989 Источен Берлин ги отвори премините; најпознатиот симбол на Студената војна беше растурен од толпите.' },
+  },
+  'mod45': {
+    es: { question: 'La Unión Soviética se disolvió formalmente en...', options: ['1989','1990','1991','1993'], explanation: 'El 26 de diciembre de 1991 la URSS dejó de existir, sustituida por quince repúblicas independientes.' },
+    ru: { question: 'Советский Союз был формально распущен в каком году?', options: ['1989','1990','1991','1993'], explanation: '26 декабря 1991 года СССР прекратил существование, уступив место пятнадцати независимым республикам.' },
+    mk: { question: 'Советскиот Сојуз формално се распушти во...', options: ['1989','1990','1991','1993'], explanation: 'На 26 декември 1991 СССР престана да постои, заменет од петнаесет независни републики.' },
+  },
+  'mod46': {
+    es: { question: '¿Qué masacre de 1919, cuando tropas británicas dispararon contra una multitud desarmada en Amritsar, galvanizó el nacionalismo indio?', options: ['El incidente de Chauri Chaura','La masacre de Jallianwala Bagh','Las matanzas de Calcuta','La masacre de Kanpur'], explanation: 'Las tropas del general Dyer mataron a cientos de civiles en el jardín amurallado, desacreditando las pretensiones morales británicas.' },
+    ru: { question: 'Какая бойня 1919 года — расстрел британскими войсками безоружной толпы в Амритсаре — сплотила индийский национализм?', options: ['Инцидент в Чаури-Чаура','Бойня в Джаллианвала-багх','Калькуттская резня','Канпурская резня'], explanation: 'Войска генерала Дайера убили сотни мирных жителей в обнесённом стеной саду, подорвав моральные притязания Британии.' },
+    mk: { question: 'Кој масакр од 1919, кога британски трупи пукаа во невооружена толпа во Амритсар, го поттикна индискиот национализам?', options: ['Инцидентот Чаури Чаура','Масакрот во Џалијанвала Баг','Калкутските убиства','Канпурскиот масакр'], explanation: 'Трупите на генералот Дајер убија стотици цивили во заградената градина, дискредитирајќи ги британските морални тврдења.' },
+  },
+  'mod47': {
+    es: { question: 'El "Año de África" de la descolonización, cuando diecisiete naciones lograron la independencia, fue...', options: ['1955','1960','1963','1970'], explanation: 'Solo en 1960 diecisiete estados africanos — la mayoría antiguas colonias francesas — se independizaron.' },
+    ru: { question: '«Годом Африки», когда независимость получили семнадцать государств, стал...', options: ['1955','1960','1963','1970'], explanation: 'Только за 1960 год семнадцать африканских государств — в основном бывшие французские колонии — стали независимыми.' },
+    mk: { question: '„Годината на Африка" на деколонизацијата, кога седумнаесет нации добија независност, беше...', options: ['1955','1960','1963','1970'], explanation: 'Само во 1960, седумнаесет африкански држави — повеќето поранешни француски колонии — станаа независни.' },
+  },
+  'mod48': {
+    es: { question: 'Nelson Mandela se convirtió en el primer presidente elegido democráticamente de Sudáfrica en...', options: ['1990','1994','1996','1999'], explanation: 'Las elecciones de 1994 acabaron con el régimen del apartheid; Mandela había salido libre de prisión cuatro años antes.' },
+    ru: { question: 'Нельсон Мандела стал первым демократически избранным президентом ЮАР в каком году?', options: ['1990','1994','1996','1999'], explanation: 'Выборы 1994 года покончили с апартеидом; Мандела вышел из тюрьмы четырьмя годами ранее.' },
+    mk: { question: 'Нелсон Мандела стана прв демократски избран претседател на Јужна Африка во...', options: ['1990','1994','1996','1999'], explanation: 'Изборите во 1994 го завршија апартхеjдот; Мандела излезе слободен од затвор четири години порано.' },
+  },
+  'mod49': {
+    es: { question: 'El alunizaje del Apolo 11 ocurrió ¿en qué año?', options: ['1965','1967','1969','1972'], explanation: 'Armstrong y Aldrin caminaron sobre la Luna el 20 de julio de 1969, cumpliendo la promesa de Kennedy para fin de la década.' },
+    ru: { question: 'Высадка «Аполлона-11» на Луну произошла в каком году?', options: ['1965','1967','1969','1972'], explanation: 'Армстронг и Олдрин прошли по Луне 20 июля 1969 года, исполнив обещание Кеннеди до конца десятилетия.' },
+    mk: { question: 'Слетувањето на Месечината на Аполо 11 се случи во која година?', options: ['1965','1967','1969','1972'], explanation: 'Армстронг и Олдрин одеа по Месечината на 20 јули 1969, исполнувајќи го ветувањето на Кенеди до крајот на деценијата.' },
+  },
+  'mod50': {
+    es: { question: 'El antepasado militar-investigador directo de internet, conectado por primera vez en 1969, se llamaba...', options: ['ETHERNET','ARPANET','INTRANET','MILNET'], explanation: 'El primer mensaje de ARPANET ("LO" — el sistema se cayó a mitad de "LOGIN") pasó entre UCLA y Stanford.' },
+    ru: { question: 'Прямой военно-исследовательский предок интернета, впервые соединённый в 1969 году, назывался...', options: ['ETHERNET','ARPANET','INTRANET','MILNET'], explanation: 'Первое сообщение ARPANET («LO» — система рухнула на середине «LOGIN») прошло между UCLA и Стэнфордом.' },
+    mk: { question: 'Директниот воено-истражувачки предок на интернетот, првпат поврзан во 1969, се викаше...', options: ['ETHERNET','ARPANET','INTRANET','MILNET'], explanation: 'Првата порака на ARPANET („LO" — системот падна среде „LOGIN") помина меѓу UCLA и Стенфорд.' },
+  },
+};
