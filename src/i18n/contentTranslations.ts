@@ -2,7 +2,9 @@ import type { Language } from './translations';
 import type { Era } from '@/types';
 import { ANCIENT_MEDIEVAL_BODY_TRANS } from './lessonBodyTranslations_1';
 import { EARLYMOD_MODERN_BODY_TRANS } from './lessonBodyTranslations_2';
+import { DEFR_LESSON, DEFR_ERA } from './lessonMetaDeFr';
 import { WAVE3_BODY_TRANS } from './lessonBodyTranslations_3';
+import { DEFR_BODY } from './lessonBodyDeFr';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -11,6 +13,11 @@ const BODY_TRANS: Record<string, Partial<Record<ContentLang, string[]>>> = {
   ...EARLYMOD_MODERN_BODY_TRANS,
   ...WAVE3_BODY_TRANS,
 };
+
+// German + French section bodies merged per lesson (added incrementally).
+for (const [id, langs] of Object.entries(DEFR_BODY)) {
+  BODY_TRANS[id] = { ...BODY_TRANS[id], ...langs };
+}
 
 interface EraContent { name: string; shortName: string; dateRange: string; description: string; }
 interface LessonContent { title: string; subtitle: string; keyFacts: string[]; sectionHeadings: string[]; }
@@ -221,6 +228,14 @@ const LESSON_TRANS: Record<string, Partial<Record<ContentLang, LessonContent>>> 
     mk: { title: "Ганди и независноста на Индија", subtitle: "Ненасилство, слобода и Поделба", keyFacts: ["Сатјаграхата на Ганди го направи масовниот ненасилен отпор оружје што го промени светот", "Маршот на солта од 1930 претвори данок на сол во обвинение против империјата", "Независноста дојде на полноќ на 15 август 1947 — со поделен потконтинент", "Поделбата растера околу 14 милиони луѓе; Индија стана најголемата демократија на светот"], sectionHeadings: ["Скапоценоста на круната", "Сатјаграха: силата на вистината", "„Напуштете ја Индија“ и трката кон слободата", "Полноќна слобода, полноќна рана", "Амбедкар и најдолгиот устав на светот"] },
   },
 };
+
+// Merge German + French metadata into the base (es/ru/mk) catalogs.
+for (const [id, lc] of Object.entries(DEFR_LESSON)) {
+  LESSON_TRANS[id] = { ...LESSON_TRANS[id], de: lc.de, fr: lc.fr };
+}
+for (const [era, ec] of Object.entries(DEFR_ERA)) {
+  ERA_TRANS[era] = { ...ERA_TRANS[era], de: ec.de, fr: ec.fr };
+}
 
 export function getTranslatedEra(era: Era, lang: Language): Era {
   if (lang === 'en') return era;
