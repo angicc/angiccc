@@ -27,6 +27,10 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   'ancient-03': 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Roman_Republic_Empire_map.gif',
   'ancient-04': gif('1eZIvgcJFYuPSX7sT4jHKqVp6zkQYnA0J'), // Ancient East
   'ancient-06': gif('1M5xqCDt50TuU-bh2nMVYpG9s3a59fajv'), // The Phoenicians
+  // The Hellenistic age opens at Alexander's deathbed (Wikimedia Commons)
+  'ancient-08': 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Death_of_Alexander.gif',
+  // Animated map: the territory of Iran/Persia through time (Wikimedia Commons)
+  'ancient-09': 'https://upload.wikimedia.org/wikipedia/commons/9/93/The_territory_of_Iran_over_time.gif',
 
   // ── Middle Ages ──
   'medieval-01': gif('1ZStwdbw1ul6rWAuRsl6yEt-SVyqx6orr'), // Middle Ages
@@ -34,6 +38,10 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   'medieval-03': gif('1N2kM62RDPs9_jKSgYXOEpR3L0rnHmqEv'), // The Black Death and the Late Medieval Crisis
   'medieval-05': gif('1RDgidTwTuFKjinvJkCmp5p-AeHEDGhof'), // Mongol Empire
   'medieval-06': gif('1RJkjBSjNSK8SftVMZGSvY5xpsZbJz6-1'), // Medieval Japan
+  // Animated map of the Crown of Castile growing through the Reconquista
+  'medieval-08': 'https://upload.wikimedia.org/wikipedia/commons/c/c0/Crown_of_Castile_-_Map.gif',
+  // Animated map of France, 14th–15th c. — the Hundred Years' War frontiers
+  'medieval-09': 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Hundred_years_war.gif',
 
   // ── Early Modern ──
   'earlymod-01': gif('1Y3AHgo-ldZLm4rTGUVh24dh5ziQ4tYdP'), // The Renaissance
@@ -42,6 +50,10 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   'earlymod-05': gif('1m46_lEkfbGYTisPX4eSeXsBQIr_o5X_H'), // Transatlantic Slave Trade
   'earlymod-06': gif('19_-qh7THn8cBMqpwGKTs8LR-FlsH4hZa'), // The Ottoman Empire
   'earlymod-07': gif('1k2gmwPIk6uLBpAP7nt6daAi7euSzBU3o'), // The Age of Revolution
+  // Animated map of Mughal expansion (Wikimedia Commons)
+  'earlymod-08': 'https://upload.wikimedia.org/wikipedia/commons/8/86/Mughals.gif',
+  // Kabuki theater animation — the Edo "floating world" on stage
+  'earlymod-09': 'https://upload.wikimedia.org/wikipedia/commons/c/c4/Kabuki-theater.gif',
 
   // ── Modern Era ──
   'modern-01': gif('1P_BIE4lZgswJJzqHUOZK-I-8h9UaqI5C'), // Industrial Revolution
@@ -50,6 +62,10 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   'modern-04': gif('1r3K2DrEMcVfjjzJq_vYiNe5Upi6igG5g'), // Globalization and Contemporary World
   'modern-05': gif('1XGc0KGOM3z-DUfRy-wb11aSbKHyI3Gwz'), // Imperialism
   'modern-06': gif('19h9ddiRHiTwbjrMNiAzW4XlJ22GzRu5d'), // Yugoslav Wars
+  // Animated timeline map of the USSR (Wikimedia Commons)
+  'modern-08': 'https://upload.wikimedia.org/wikipedia/commons/d/dc/USSR_Map_timeline_Slower.gif',
+  // Animated map of the 1947 Partition of British India (Wikipedia)
+  'modern-09': 'https://upload.wikimedia.org/wikipedia/en/c/c1/India-partition.GIF',
 };
 
 // ── GIF banners hosted on external gallery pages (e.g. makeagif.com) ─────────
