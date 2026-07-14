@@ -399,6 +399,87 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
     ru: { title: 'Битва при Адуа', description: 'Эфиопия сокрушает вторгшуюся итальянскую армию при Адуа — величайшая победа африканцев над колониальной державой, сохранившая независимость Эфиопии.' },
     mk: { title: 'Битката кај Адва', description: 'Етиопија ја разбива италијанската освојувачка војска кај Адва — најголемата африканска победа над колонијална сила, зачувувајќи ја етиопската независност.' },
   },
+
+  't-diadochi': {
+    es: { title: "Muerte de Alejandro y guerras de los diádocos", description: "Alejandro Magno muere en Babilonia sin heredero. Sus generales — los diádocos — luchan durante cuarenta años, repartiendo el imperio en los reinos ptolemaico, seléucida y antigónida de la era helenística." },
+    ru: { title: "Смерть Александра и войны диадохов", description: "Александр Великий умирает в Вавилоне без наследника. Его полководцы — диадохи — сорок лет воюют, деля империю на Птолемеевское, Селевкидское и Антигонидское царства эллинистической эпохи." },
+    mk: { title: "Смртта на Александар и војните на дијадосите", description: "Александар Велики умира во Вавилон без наследник. Неговите генерали — дијадосите — војуваат четириесет години, делејќи ја империјата на Птолемејското, Селевкидското и Антигонидското кралство." },
+  },
+  't-library-alexandria': {
+    es: { title: "La Biblioteca de Alejandría", description: "Ptolomeo I y II fundan el Museo y su gran Biblioteca, que aspira a reunir todos los libros del mundo — haciendo de Alejandría la capital científica de la antigüedad." },
+    ru: { title: "Александрийская библиотека", description: "Птолемей I и II основывают Мусейон и великую Библиотеку, стремящуюся собрать все книги мира, — Александрия становится научной столицей древности." },
+    mk: { title: "Библиотеката во Александрија", description: "Птолемеј I и II ги основаат Мусеионот и големата Библиотека, која се стреми да ја собере секоја книга на светот — правејќи ја Александрија научна престолнина на антиката." },
+  },
+  't-persepolis': {
+    es: { title: "Darío I comienza Persépolis", description: "Darío el Grande funda Persépolis, la capital ceremonial del Imperio aqueménida, y organiza el reino en satrapías unidas por el Camino Real de 2.700 km." },
+    ru: { title: "Дарий I закладывает Персеполь", description: "Дарий Великий основывает Персеполь, церемониальную столицу державы Ахеменидов, и делит царство на сатрапии, связанные Царской дорогой длиной 2 700 км." },
+    mk: { title: "Дариј I го започнува Персеполис", description: "Дариј Велики го основа Персеполис, церемонијалната престолнина на Ахаеменидската империја, и го организира царството во сатрапии поврзани со Кралскиот пат од 2.700 км." },
+  },
+  't-tariq-iberia': {
+    es: { title: "Conquista musulmana de Iberia", description: "Tariq ibn Ziyad cruza el estrecho por Gibraltar y destruye el reino visigodo en Guadalete. En una década, casi toda la península se convierte en al-Ándalus." },
+    ru: { title: "Мусульманское завоевание Иберии", description: "Тарик ибн Зияд переправляется через пролив у Гибралтара и сокрушает вестготское королевство при Гвадалете. За десятилетие почти весь полуостров становится аль-Андалусом." },
+    mk: { title: "Муслиманско освојување на Иберија", description: "Тарик ибн Зијад го преминува теснецот кај Гибралтар и го уништува визиготското кралство кај Гвадалете. За една деценија речиси целиот полуостров станува ал-Андалуз." },
+  },
+  't-cordoba-caliphate': {
+    es: { title: "Proclamación del Califato de Córdoba", description: "Abd al-Rahman III se proclama califa. Córdoba se convierte en una de las ciudades más grandes y cultas de Europa — bibliotecas, calles iluminadas y una cultura de convivencia." },
+    ru: { title: "Провозглашение Кордовского халифата", description: "Абд ар-Рахман III провозглашает себя халифом. Кордова становится одним из крупнейших и учёнейших городов Европы — библиотеки, освещённые улицы и культура сосуществования." },
+    mk: { title: "Прогласен Кордопскиот калифат", description: "Абд ал-Рахман III се прогласува за калиф. Кордоба станува еден од најголемите и најучени градови во Европа — библиотеки, осветлени улици и култура на соживот." },
+  },
+  't-granada-1492': {
+    es: { title: "Caída de Granada", description: "El último estado musulmán de Iberia se rinde a Fernando e Isabel, poniendo fin a la Reconquista de siglos el mismo año en que Colón zarpa hacia el oeste." },
+    ru: { title: "Падение Гранады", description: "Последнее мусульманское государство Иберии сдаётся Фердинанду и Изабелле, завершая многовековую Реконкисту в тот самый год, когда Колумб отплывает на запад." },
+    mk: { title: "Падот на Гранада", description: "Последната муслиманска држава во Иберија им се предава на Фердинанд и Изабела, завршувајќи ја вековната Реконкиста истата година кога Колумбо плови на запад." },
+  },
+  't-crecy': {
+    es: { title: "Batalla de Crécy", description: "Los arqueros ingleses aniquilan a la caballería francesa en Crécy — el arma de un campesino derrota a la aristocracia acorazada, y la guerra de los Cien Años entra en la leyenda." },
+    ru: { title: "Битва при Креси", description: "Английские лучники уничтожают французское рыцарство при Креси — оружие крестьянина побеждает закованную в латы аристократию, и Столетняя война входит в легенду." },
+    mk: { title: "Битката кај Креси", description: "Англиските стрелци ја уништуваат француската коњаница кај Креси — оружјето на селанецот ја победува оклопената аристократија, а Стогодишната војна влегува во легенда." },
+  },
+  't-joan-arc': {
+    es: { title: "Juana de Arco libera Orleans", description: "Una campesina visionaria de diecisiete años levanta el asedio de Orleans en nueve días y conduce a Carlos VII a su coronación en Reims, cambiando el curso de la guerra de los Cien Años." },
+    ru: { title: "Жанна д'Арк освобождает Орлеан", description: "Семнадцатилетняя крестьянка-визионерка за девять дней снимает осаду Орлеана и ведёт Карла VII на коронацию в Реймс, переломив ход Столетней войны." },
+    mk: { title: "Јована Орлеанска го ослободува Орлеан", description: "Седумнаесетгодишна селанка-визионерка ја крева опсадата на Орлеан за девет дена и го води Шарл VII на крунисување во Ремс, свртувајќи го текот на Стогодишната војна." },
+  },
+  't-panipat': {
+    es: { title: "Babur funda el Imperio mogol", description: "En la primera batalla de Panipat, la artillería de campaña de Babur derrota a los elefantes de guerra del sultanato de Delhi, fundando la dinastía mogol que gobernará la India durante tres siglos." },
+    ru: { title: "Бабур основывает империю Моголов", description: "В первой битве при Панипате полевая артиллерия Бабура побеждает боевых слонов Делийского султаната, основывая династию Моголов, которая будет править Индией три века." },
+    mk: { title: "Бабур ја основа Могулската империја", description: "Во првата битка кај Панипат, артилеријата на Бабур ги победува воените слонови на Делхискиот султанат, основајќи ја могулската династија што ќе владее со Индија три века." },
+  },
+  't-taj-mahal': {
+    es: { title: "Comienza la construcción del Taj Mahal", description: "Shah Jahan ordena a 20.000 artesanos levantar una tumba de mármol blanco para su esposa Mumtaz Mahal — el monumento supremo de la era de esplendor de la India mogol." },
+    ru: { title: "Начало строительства Тадж-Махала", description: "Шах-Джахан велит 20 000 мастеров возвести беломраморную гробницу для жены Мумтаз-Махал — вершину века великолепия могольской Индии." },
+    mk: { title: "Почнува изградбата на Таџ Махал", description: "Шах Џахан наредува 20.000 занаетчии да подигнат гробница од бел мермер за неговата сопруга Мумтаз Махал — врвниот споменик на могулската ера на сјај." },
+  },
+  't-sekigahara': {
+    es: { title: "Batalla de Sekigahara", description: "Tokugawa Ieyasu destruye a sus rivales en un solo día, poniendo fin a las guerras civiles Sengoku y abriendo 265 años de gobierno Tokugawa desde Edo." },
+    ru: { title: "Битва при Сэкигахаре", description: "Токугава Иэясу за один день сокрушает соперников, завершая гражданские войны Сэнгоку и открывая 265 лет правления Токугава из Эдо." },
+    mk: { title: "Битката кај Секигахара", description: "Токугава Иejасу ги уништува своите ривали за еден ден, завршувајќи ги граѓанските војни Сенгоку и отворајќи 265 години Токугава владеење од Едо." },
+  },
+  't-sakoku': {
+    es: { title: "Japón cierra sus puertas (sakoku)", description: "El shogunato Tokugawa sella Japón: ningún japonés puede salir, casi ningún extranjero puede entrar, y solo un puesto holandés en Dejima mantiene una ventana filtrada a Occidente." },
+    ru: { title: "Япония закрывает двери (сакоку)", description: "Сёгунат Токугава запечатывает Японию: японцам нельзя уезжать, иностранцам почти нельзя въезжать, и лишь голландская фактория на Дэдзиме остаётся фильтрованным окном на Запад." },
+    mk: { title: "Јапонија ги затвора вратите (сакоку)", description: "Токугава шогунатот ја запечатува Јапонија: ниту еден Јапонец не смее да замине, речиси ниту еден странец да влезе, а само холандскиот пункт на Деџима останува филтриран прозорец кон Западот." },
+  },
+  't-october-revolution': {
+    es: { title: "Las revoluciones rusas", description: "Los disturbios del pan derrocan al zar en febrero; en octubre los bolcheviques de Lenin asaltan el Palacio de Invierno. Nace el primer estado socialista del mundo — y sigue la guerra civil." },
+    ru: { title: "Русские революции", description: "Хлебные бунты в феврале свергают царя; в октябре большевики Ленина берут Зимний дворец. Рождается первое социалистическое государство мира — за ним следует Гражданская война." },
+    mk: { title: "Руските револуции", description: "Бунтовите за леб го соборуваат царот во февруари; во октомври болшевиците на Ленин го заземаат Зимскиот дворец. Се раѓа првата социјалистичка држава — и следи граѓанска војна." },
+  },
+  't-ussr-founded': {
+    es: { title: "Fundación de la URSS", description: "Victoriosos en la guerra civil, los bolcheviques proclaman la Unión de Repúblicas Socialistas Soviéticas — el estado que se industrializará a un costo terrible y moldeará el siglo XX." },
+    ru: { title: "Образование СССР", description: "Победив в Гражданской войне, большевики провозглашают Союз Советских Социалистических Республик — государство, которое проведёт индустриализацию страшной ценой и сформирует двадцатый век." },
+    mk: { title: "Основање на СССР", description: "Победници во граѓанската војна, болшевиците го прогласуваат Сојузот на Советските Социјалистички Републики — државата што ќе се индустријализира по страшна цена и ќе го обликува XX век." },
+  },
+  't-salt-march': {
+    es: { title: "La Marcha de la Sal de Gandhi", description: "Gandhi camina 380 km hasta el mar en Dandi y recoge un puñado de sal, convirtiendo un impuesto colonial en una acusación moral contra el imperio, observada por el mundo entero." },
+    ru: { title: "Соляной поход Ганди", description: "Ганди проходит 380 км к морю у Данди и поднимает горсть соли, превращая колониальный налог в моральное обвинение империи на глазах у всего мира." },
+    mk: { title: "Маршот на солта на Ганди", description: "Ганди пешачи 380 км до морето кај Данди и крева грст сол, претворајќи колонијален данок во морално обвинение против империјата, гледано од целиот свет." },
+  },
+  't-partition-1947': {
+    es: { title: "Independencia y Partición de la India", description: "La India británica se libera a medianoche del 15 de agosto de 1947 — dividida en India y Pakistán. Unos 14 millones de personas cruzan la Línea Radcliffe en la mayor migración de la historia." },
+    ru: { title: "Независимость и Раздел Индии", description: "Британская Индия обретает свободу в полночь 15 августа 1947 года — разделённая на Индию и Пакистан. Около 14 миллионов человек пересекают линию Рэдклиффа в крупнейшей миграции в истории." },
+    mk: { title: "Независност и Поделба на Индија", description: "Британска Индија станува слободна на полноќ на 15 август 1947 — поделена на Индија и Пакистан. Околу 14 милиони луѓе ја преминуваат Радклифовата линија во најголемата миграција во историјата." },
+  },
 };
 
 export function getTranslatedTimelineEvent<T extends { id: string; title: string; description: string }>(

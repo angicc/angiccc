@@ -127,6 +127,47 @@ const TERRITORY_DESCS: Record<string, Partial<Record<ContentLang, string>>> = {
     ru: 'На фоне упадка Османской империи Македонский вопрос — болгарские, греческие и сербские претензии — вылился в партизанскую войну, Илинденское восстание (1903) и Балканские войны (1912–13).',
     mk: 'По отоманскиот пад, Македонското Прашање — бугарски, грчки и српски претензии — избувнало во партизанска војна, Илинденско Востание (1903) и Балканските Војни (1912–13).',
   },
+
+  'hellenistic-world': {
+    es: "Tras la muerte de Alejandro, sus mariscales dividieron el imperio en tres grandes reinos — el Egipto ptolemaico, el Oriente seléucida y la Macedonia antigónida — extendiendo las ciudades y la ciencia griegas del Nilo al Hindu Kush.",
+    ru: "После смерти Александра его военачальники разделили империю на три великих царства — Птолемеевский Египет, Селевкидский Восток и Антигонидскую Македонию, — распространив греческие города и науку от Нила до Гиндукуша.",
+    mk: "По смртта на Александар, неговите маршали ја поделија империјата на три големи кралства — Птолемејски Египет, Селевкидскиот Исток и Антигонидска Македонија — ширејќи ги грчките градови и наука од Нил до Хиндукуш.",
+  },
+  'achaemenid-persia': {
+    es: "La primera superpotencia: de la tolerancia de Ciro el Grande a las satrapías y el Camino Real de Darío, Persia gobernó del Egeo al Indo — la plantilla que copió todo imperio posterior.",
+    ru: "Первая сверхдержава: от терпимости Кира Великого до сатрапий и Царской дороги Дария — Персия правила от Эгейского моря до Инда, задав образец всем позднейшим империям.",
+    mk: "Првата суперсила: од толеранцијата на Кир Велики до сатрапиите и Кралскиот пат на Дариј, Персија владееше од Егејот до Инд — шаблонот што го копираше секоја подоцнежна империја.",
+  },
+  'al-andalus': {
+    es: "La Iberia islámica en el apogeo del Califato de Córdoba, frente a los reinos cristianos del norte — una contienda de 780 años que terminó en Granada en 1492.",
+    ru: "Исламская Иберия в зените Кордовского халифата против христианских королевств севера — 780-летнее противостояние, завершившееся у Гранады в 1492 году.",
+    mk: "Исламска Иберија на врвот на Кордопскиот калифат, наспроти христијанските кралства на северот — натпревар од 780 години што заврши кај Гранада во 1492.",
+  },
+  'hundred-years-war': {
+    es: "Inglaterra y Francia hacia 1400: las tierras de la corona inglesa frente al reino Valois en la guerra de Crécy, Agincourt y Juana de Arco — la fragua de ambas naciones.",
+    ru: "Англия и Франция около 1400 года: земли английской короны против королевства Валуа в войне Креси, Азенкура и Жанны д'Арк — кузница обеих наций.",
+    mk: "Англија и Франција околу 1400: земјите на англиската круна наспроти кралството Валоа во војната на Креси, Азенкур и Јована Орлеанска — ковачница на двете нации.",
+  },
+  'mughal-empire': {
+    es: "El Imperio mogol cerca de su máxima extensión bajo Aurangzeb (c. 1700), con la Persia safávida al oeste — la economía manufacturera más rica de la Tierra.",
+    ru: "Империя Великих Моголов близ наибольшего размаха при Аурангзебе (ок. 1700), с сефевидской Персией на западе — богатейшая мануфактурная экономика Земли.",
+    mk: "Могулската империја близу својот најголем опсег под Аурангзеб (околу 1700), со Сафавидска Персија на запад — најбогатата производствена економија на Земјата.",
+  },
+  'tokugawa-japan': {
+    es: "El país cerrado: 265 años de paz Tokugawa, con Edo entre las mayores ciudades del mundo y una única ventana holandesa en Dejima.",
+    ru: "Закрытая страна: 265 лет мира Токугава, Эдо — среди крупнейших городов мира, и единственное голландское окно на Дэдзиме.",
+    mk: "Затворената земја: 265 години Токугава мир, со Едо меѓу најголемите градови на светот и единствен холандски прозорец на Деџима.",
+  },
+  'soviet-rise': {
+    es: "La Rusia revolucionaria hacia 1920: el corazón rojo contra la Rusia blanca del sur, una Polonia renacida y una Ucrania disputada — el crisol de la URSS.",
+    ru: "Революционная Россия около 1920 года: красный центр против белого юга, возрождённая Польша и оспариваемая Украина — горнило СССР.",
+    mk: "Револуционерна Русија околу 1920: црвеното јадро против белата јужна Русија, преродена Полска и оспорувана Украина — казанот на СССР.",
+  },
+  'british-raj-partition': {
+    es: "La India británica hacia 1900 — el imperio que la satyagraha de Gandhi desharía, dividido a medianoche en 1947 entre India y Pakistán.",
+    ru: "Британская Индия около 1900 года — империя, которую разрушит сатьяграха Ганди, разделённая в полночь 1947 года на Индию и Пакистан.",
+    mk: "Британска Индија околу 1900 — империјата што сатјаграхата на Ганди ќе ја разгради, поделена на полноќ во 1947 на Индија и Пакистан.",
+  },
 };
 
 export function getTranslatedTerritoryDesc(topicId: string, lang: Language): string | null {
