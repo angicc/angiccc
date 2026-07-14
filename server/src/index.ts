@@ -16,6 +16,7 @@ import { socialRouter } from './routes/social';
 import { learningRouter } from './routes/learning';
 import { leaderboardRouter } from './routes/leaderboard';
 import { imperiumRouter } from './routes/imperium';
+import { reviewsPublicRouter, submitReviewHandler } from './routes/reviews';
 import { billingRouter, stripeWebhookHandler } from './routes/billing';
 import { rateLimit } from './middleware/rateLimit';
 import { presence } from './presence';
@@ -116,6 +117,10 @@ app.use('/api/billing', authenticate, billingRouter);
 app.use('/api/crisis', authenticate, requireTier('MASTER'), crisisRouter);
 app.use('/api/imperium', authenticate, requireTier('MASTER'), imperiumRouter);
 app.use('/api/clio', authenticate, requireTier('PRO'), clioRouter);
+
+// Public app reviews: anyone can read; posting requires a session.
+app.put('/api/reviews', authenticate, submitReviewHandler);
+app.use('/api/reviews', reviewsPublicRouter);
 
 // Lightweight global presence stat (no auth) — for status pages / health.
 app.get('/api/presence/count', (_req, res) => res.json({ online: presence.onlineCount() }));

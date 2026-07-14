@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Crown, Flame, Star } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { AppShell } from '@/components/layout/AppShell';
 import { useAuth } from '@/features/auth/AuthContext';
 import { calculateLevel } from '@/features/progress/xpSystem';
+import { loadProgress } from '@/features/progress/progressStore';
 import { getVideoXp } from '@/features/videoReview/videoReviewStore';
 import { getChessRank } from '@/features/ranks/chessRanks';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -15,18 +16,29 @@ import { useLanguage } from '@/contexts/LanguageContext';
 // videoXp is worth 2× regular XP on the leaderboard
 const leaderScore = (xp: number, videoXp: number) => xp + videoXp * 2;
 
-const MOCK_USERS = [
-  { id: 'm1', username: 'HistoriaClio',    xp: 5840, country: '🇩🇪', streak: 62, videoXp: 2200 },
-  { id: 'm2', username: 'ChronoMaster',   xp: 5210, country: '🇫🇷', streak: 44, videoXp: 1800 },
-  { id: 'm3', username: 'TimeTraveler99', xp: 4780, country: '🇬🇧', streak: 38, videoXp: 1400 },
-  { id: 'm4', username: 'AncientScholar', xp: 4120, country: '🇮🇹', streak: 27, videoXp: 900 },
-  { id: 'm5', username: 'MedievalMind',   xp: 3650, country: '🇪🇸', streak: 19, videoXp: 600 },
-  { id: 'm6', username: 'RenaissanceKid', xp: 3200, country: '🇵🇹', streak: 15, videoXp: 350 },
-  { id: 'm7', username: 'EmpireBuilder',  xp: 2750, country: '🇯🇵', streak: 11, videoXp: 150 },
-  { id: 'm8', username: 'RevolutionR',    xp: 2100, country: '🇧🇷', streak: 8,  videoXp: 80  },
-  { id: 'm9', username: 'WarChronicler',  xp: 1620, country: '🇰🇷', streak: 5,  videoXp: 30  },
-  { id: 'm10', username: 'NewExplorer',   xp: 980,  country: '🇦🇺', streak: 3,  videoXp: 0   },
-];
+const API_BASE = ((import.meta.env.VITE_API_URL as string | undefined) ?? '').replace(/\/$/, '');
+
+/** Real accounts registered on this device (localStorage multi-user store). */
+function localAccounts(): { id: string; username: string }[] {
+  try {
+    const raw = localStorage.getItem('historify:users');
+    if (!raw) return [];
+    const users = JSON.parse(raw) as { id: string; username: string }[];
+    return Array.isArray(users) ? users : [];
+  } catch { return []; }
+}
+
+/** Global top-100 from the backend when one is configured. */
+async function fetchServerBoard(): Promise<{ id: string; username: string; xp: number; streak: number; videoXp: number }[] | null> {
+  if (!API_BASE) return null;
+  try {
+    const res = await fetch(`${API_BASE}/api/leaderboard`, { credentials: 'include' });
+    if (!res.ok) return null;
+    const json = (await res.json()) as { leaderboard?: { userId: string; username: string; xp: number; streak: number }[] };
+    if (!json.leaderboard) return null;
+    return json.leaderboard.map(r => ({ id: r.userId, username: r.username, xp: r.xp, streak: r.streak, videoXp: 0 }));
+  } catch { return null; }
+}
 
 const RANK_STYLES = [
   { bg: 'bg-amber-500/10 border-amber-500/30',  icon: <Crown className="w-4 h-4 text-amber-400" />, label: 'text-amber-400' },
@@ -99,8 +111,21 @@ export default function LeaderboardPage() {
   const avatarKey = currentUser ? `historify:avatar:${currentUser.id}` : '';
   const [avatarUrl] = useState(() => (avatarKey ? localStorage.getItem(avatarKey) ?? '' : ''));
 
+  // Real players only: the global board when a server is configured, plus
+  // every account registered on this device — no demo users.
+  const [serverBoard, setServerBoard] = useState<{ id: string; username: string; xp: number; streak: number; videoXp: number }[] | null>(null);
+  useEffect(() => { void fetchServerBoard().then(setServerBoard); }, []);
+
+  const others = (serverBoard ?? localAccounts()
+    .filter(u => u.id !== currentUser?.id)
+    .map(u => {
+      const prog = loadProgress(u.id);
+      return { id: u.id, username: u.username, xp: prog?.xp ?? 0, streak: prog?.streak ?? 0, videoXp: getVideoXp(u.id) };
+    }))
+    .filter(u => u.id !== currentUser?.id);
+
   const allUsers = [
-    ...MOCK_USERS,
+    ...others.map(u => ({ ...u, country: '👤' })),
     { id: 'real', username: currentUser?.username ?? 'You', xp: userXP, country: '⭐', streak: userStreak, videoXp: userVideoXp },
   ].sort((a, b) => leaderScore(b.xp, b.videoXp ?? 0) - leaderScore(a.xp, a.videoXp ?? 0));
 

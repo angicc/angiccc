@@ -54,6 +54,7 @@ model User {
   sentMessages  DirectMessage[]   @relation("msgFrom")
   recvMessages  DirectMessage[]   @relation("msgTo")
   imperiumCampaigns ImperiumCampaign[]
+  appReview     AppReview?
 }
 
 // Accepted friendship (undirected pair, stored once with a < b ordering).
@@ -186,6 +187,22 @@ model StudySet {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
+}
+
+// One public app review per user, shown on the landing page. Upserted so a
+// user can revise their review; username is denormalized at write time so the
+// public listing never joins into private account data.
+model AppReview {
+  userId    String   @id
+  username  String
+  role      String   @default("")
+  rating    Int
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([updatedAt])
 }
 
 // ─── CHRONOS IMPERIUM (Part D): campaign persistence & turn snapshots ────────
