@@ -17,9 +17,10 @@ import {
   type BattleResolution, type LeaderProfile,
 } from './combatMatrix';
 import { sweepForCrises, crisisResolved, type CrisisEvent, type CrisisEffects } from './crisisGenerator';
-import { TERRITORY_TOPICS, type TerritoryTopic } from '@/features/content/timelineTerritoryData';
+import { provincesFor, theatreSpec, THEATRE_SPECS, type TheatreId } from './imperiumProvinces';
 
-export type Era = TerritoryTopic['era'];
+export type Era = 'ancient' | 'medieval' | 'early-modern' | 'modern';
+export type { TheatreId };
 
 export interface CampaignSnapshot {
   turn: number;
@@ -40,6 +41,8 @@ export interface CampaignSnapshot {
 
 export interface CampaignState {
   id: string;
+  /** Curated theatre this campaign is fought over. */
+  theatre: TheatreId;
   era: Era;
   seed: number;
   playerRosterId: string;
@@ -79,31 +82,28 @@ const WEATHER_TABLE: Weather[] = ['clear', 'clear', 'clear', 'rain', 'heat', 'st
 
 // ── Campaign creation ─────────────────────────────────────────────────────────
 
-const GRAPH_CACHE = new Map<Era, GeoGraph>();
-export function graphFor(era: Era): GeoGraph {
-  let g = GRAPH_CACHE.get(era);
-  if (!g) { g = buildGeoGraph({ era }); GRAPH_CACHE.set(era, g); }
+const GRAPH_CACHE = new Map<TheatreId, GeoGraph>();
+export function graphFor(theatre: TheatreId): GeoGraph {
+  let g = GRAPH_CACHE.get(theatre);
+  if (!g) { g = buildGeoGraph({ provinces: provincesFor(theatre) }); GRAPH_CACHE.set(theatre, g); }
   return g;
 }
 
-export function createCampaign(era: Era, seed = Date.now() & 0xffff): CampaignState {
+export function createCampaign(theatre: TheatreId, seed = Date.now() & 0xffff): CampaignState {
   const rng = seededRng(seed);
-  const graph = graphFor(era);
-  const ids = graph.territoryIds;
-  if (ids.length < 2) throw new Error(`Theatre ${era} has too few territories`);
+  const spec = theatreSpec(theatre);
+  const era = spec.era;
+  const graph = graphFor(theatre);
+  if (graph.territoryIds.length < 2) throw new Error(`Theatre ${theatre} has too few territories`);
 
-  // Split the theatre: player takes the west half, rival the east (by centroid lng).
-  const byLng = [...ids].sort((a, b) => {
-    const na = graph.nodes.get(graph.centroids.get(a)!)!;
-    const nb = graph.nodes.get(graph.centroids.get(b)!)!;
-    return na.lng - nb.lng;
-  });
-  const half = Math.ceil(byLng.length / 2);
+  // Curated starting ownership: the spec assigns each faction its historical
+  // bloc; anything unlisted starts neutral (free to occupy unopposed).
   const owners: Record<string, FactionId> = {};
-  byLng.forEach((t, i) => { owners[t] = i < half ? 'player' : 'rival'; });
+  for (const t of spec.playerProvinces) owners[t] = 'player';
+  for (const t of spec.rivalProvinces) owners[t] = 'rival';
 
-  const playerCapital = byLng[0];
-  const rivalCapital = byLng[byLng.length - 1];
+  const playerCapital = spec.playerProvinces[0];
+  const rivalCapital = spec.rivalProvinces[0];
   const ownership: OwnershipState = {
     owners,
     hubs: { player: [playerCapital], rival: [rivalCapital] },
@@ -115,13 +115,11 @@ export function createCampaign(era: Era, seed = Date.now() & 0xffff): CampaignSt
     strength: 100, morale: 100,
     supplied: true, isolationTicks: 0,
   });
-  const playerHome = byLng.slice(0, half);
-  const rivalHome = byLng.slice(half);
   const armies: Army[] = [
     mkArmy('player', playerCapital, 1),
-    mkArmy('player', playerHome[Math.min(1, playerHome.length - 1)], 2),
+    mkArmy('player', spec.playerProvinces[1] ?? playerCapital, 2),
     mkArmy('rival', rivalCapital, 1),
-    mkArmy('rival', rivalHome[Math.max(0, rivalHome.length - 2)], 2),
+    mkArmy('rival', spec.rivalProvinces[1] ?? rivalCapital, 2),
   ];
 
   const leaders = [...LEADERS];
@@ -152,8 +150,8 @@ export function createCampaign(era: Era, seed = Date.now() & 0xffff): CampaignSt
   };
 
   return {
-    id: `imperium-${era}-${seed.toString(36)}`,
-    era, seed,
+    id: `imperium-${theatre}-${seed.toString(36)}`,
+    theatre, era, seed,
     playerRosterId: playerRoster.id,
     rivalRosterId: rivalRoster.id,
     playerLeader, rivalLeader,
@@ -193,7 +191,7 @@ function rivalOrders(state: CampaignState, graph: GeoGraph, rng: () => number): 
 // ── The turn pipeline ─────────────────────────────────────────────────────────
 
 export function resolveTurn(state: CampaignState, orders: TurnOrders): TurnResult {
-  const graph = graphFor(state.era);
+  const graph = graphFor(state.theatre);
   const turn = state.current.turn + 1;
   const rng = seededRng(state.seed ^ (turn * 7919));
   let snap: CampaignSnapshot = structuredClone(state.current);
@@ -375,7 +373,9 @@ export function rollbackToTurn(state: CampaignState, turn: number): CampaignStat
   return { ...state, current: structuredClone(target), snapshots: keep };
 }
 
-/** Theatre labels for campaign setup (territory count per era). */
-export function theatreSummary(era: Era): { territories: number } {
-  return { territories: TERRITORY_TOPICS.filter(tp => tp.era === era && tp.polygons?.length).length };
+/** Theatre summary for the setup screen. */
+export function theatreSummary(theatre: TheatreId): { territories: number } {
+  return { territories: provincesFor(theatre).length };
 }
+
+export { THEATRE_SPECS };

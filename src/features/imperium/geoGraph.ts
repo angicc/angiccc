@@ -147,6 +147,8 @@ export interface GraphOptions {
   waypointsPerRing?: number;
   /** Restrict to one era's territories (a campaign theatre). */
   era?: TerritoryTopic['era'];
+  /** Curated province set (overrides era/topic sourcing entirely). */
+  provinces?: { id: string; anchor?: [number, number]; rings: [number, number][][] }[];
 }
 
 /**
@@ -155,8 +157,14 @@ export interface GraphOptions {
  * instance derive matching topology without shipping it over the wire.
  */
 export function buildGeoGraph(opts: GraphOptions = {}): GeoGraph {
-  const { adjacencyKm = 260, waypointsPerRing = 6, era } = opts;
-  const topics = TERRITORY_TOPICS.filter(tp => (era ? tp.era === era : true) && tp.polygons?.length);
+  const { adjacencyKm = 260, waypointsPerRing = 6, era, provinces } = opts;
+  // Source territories: a curated province list (largest ring is the body,
+  // the anchor — the historical capital — becomes the centroid node), or the
+  // Territory Map's topics filtered by era.
+  const topics: { id: string; ring: [number, number][]; anchor?: [number, number] }[] = provinces
+    ? provinces.map(pv => ({ id: pv.id, ring: pv.rings[0], anchor: pv.anchor }))
+    : TERRITORY_TOPICS.filter(tp => (era ? tp.era === era : true) && tp.polygons?.length)
+        .map(tp => ({ id: tp.id, ring: tp.polygons![0].coords }));
 
   const nodes = new Map<string, GeoNode>();
   const adj = new Map<string, GeoEdge[]>();
@@ -172,11 +180,11 @@ export function buildGeoGraph(opts: GraphOptions = {}): GeoGraph {
     (adj.get(b.id) ?? adj.set(b.id, []).get(b.id)!).push({ ...e, a: b.id, b: a.id });
   };
 
-  // 1. Nodes: centroid + sampled boundary waypoints per territory.
+  // 1. Nodes: centroid (or capital anchor) + sampled boundary waypoints.
   for (const tp of topics) {
-    const ring = tp.polygons![0].coords; // primary ring defines the territory body
+    const ring = tp.ring; // primary ring defines the territory body
     ringsByTerritory.set(tp.id, ring);
-    const [cLat, cLng] = ringCentroid(ring);
+    const [cLat, cLng] = tp.anchor ?? ringCentroid(ring);
     const centroid: GeoNode = {
       id: `${tp.id}::c`,
       territoryId: tp.id,

@@ -1,19 +1,15 @@
-// ─── CHRONOS IMPERIUM — the strategic-tactical campaign page (Master-only) ────
-// The four engine tiers meet the player here:
-//   Part A  · the strategic node web + A* marches render on a live Leaflet map
-//   Part B  · battles replay tick-by-tick from the combat matrix's triggers
-//   Part C  · emergent crises interrupt the turn flow as localized councils
-//   Part D  · every resolved turn persists locally + to the server store, and
-//             the rollback bar time-travels through stored snapshots
-// Everything the engine says arrives as catalog KEYS and resolves to the
-// active UI language right here at the render boundary.
+// ─── CHRONOS IMPERIUM — strategic-tactical campaign (Master-only) ─────────────
+// Rebuilt for clarity: four curated theatres of REAL, non-overlapping states
+// from the historical-basemaps dataset (no more stacked thematic layers), a
+// guided how-to-play council, named armies, an explicit objective tracker,
+// and a CSS-3D battlefield that replays every battle tick in motion.
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Swords, Crown, Flag, Zap, Target, Shield, ShieldOff, AlertTriangle, Skull,
-  ChevronRight, RotateCcw, Trash2, CloudSun, Coins, Scale3d, Network, Hourglass, MapPin,
+  Swords, Crown, Flag, Zap, Target, Shield, AlertTriangle,
+  ChevronRight, RotateCcw, Trash2, CloudSun, Coins, Scale3d, Network, Hourglass, MapPin, HelpCircle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -24,31 +20,30 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import type { Language } from '@/i18n/translations';
-import { TERRITORY_TOPICS } from '@/features/content/timelineTerritoryData';
 import { findTerritoryPath } from '@/features/imperium/geoGraph';
-import type { Tactic, AnimationTrigger, BattleResolution } from '@/features/imperium/combatMatrix';
-import { ROSTERS, LEADERS } from '@/features/imperium/combatMatrix';
+import type { Tactic } from '@/features/imperium/combatMatrix';
+import { ROSTERS } from '@/features/imperium/combatMatrix';
 import type { FactionId } from '@/features/imperium/logistics';
 import {
-  createCampaign, resolveTurn, rollbackToTurn, graphFor, theatreSummary,
-  type CampaignState, type Era, type TurnResult,
+  createCampaign, resolveTurn, rollbackToTurn, graphFor, theatreSummary, THEATRE_SPECS,
+  type CampaignState, type TheatreId, type TurnResult,
 } from '@/features/imperium/imperiumEngine';
+import { theatreSpec, provincesFor } from '@/features/imperium/imperiumProvinces';
 import { impText } from '@/features/imperium/imperiumCatalog';
 import type { CrisisEvent } from '@/features/imperium/crisisGenerator';
+import { Battle3D } from '@/features/imperium/Battle3D';
 import {
   saveCampaign, loadCampaign, listLocalCampaigns, deleteCampaign,
   pushTurnBlock, pushRollback,
 } from '@/features/imperium/imperiumStore';
 
-// ── Faction palette (map + panels share it) ───────────────────────────────────
+// ── Faction palette ───────────────────────────────────────────────────────────
 
 const FACTION_COLOR: Record<FactionId | 'neutral', string> = {
-  player: '#d9a54a',   // Historify gold
-  rival: '#c0455a',    // rival crimson
+  player: '#d9a54a',
+  rival: '#c0455a',
   neutral: '#5a6472',
 };
-
-const ERAS: Era[] = ['ancient', 'medieval', 'early-modern', 'modern'];
 
 const TACTICS: { id: Tactic; icon: typeof Zap; key: string }[] = [
   { id: 'charge', icon: Zap, key: 'imp_tactic_charge' },
@@ -56,19 +51,21 @@ const TACTICS: { id: Tactic; icon: typeof Zap; key: string }[] = [
   { id: 'hold', icon: Shield, key: 'imp_tactic_hold' },
 ];
 
-const TRIGGER_ICON: Record<AnimationTrigger['kind'], typeof Zap> = {
-  charge: Zap, volley: Target, melee: Swords, shatter: ShieldOff,
-  waver: AlertTriangle, rally: Flag, rout: Skull,
-};
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
-function territoryName(id: string, language: Language): string {
-  const tp = TERRITORY_TOPICS.find(t => t.id === id);
-  if (!tp) return id;
-  if (language === 'en') return tp.title;
-  return tp.titleI18n[language as Exclude<Language, 'en'>] ?? tp.title;
+function provinceName(id: string, language: Language): string {
+  return impText(`imp_prov_${id}`, language);
 }
 
-// ── Small shared bits ─────────────────────────────────────────────────────────
+/** Localized display name for an engine army id like "player-army-2". */
+function armyName(armyId: string, language: Language): string {
+  const n = Number(armyId.split('-').pop()) || 1;
+  return impText('imp_army_name', language, { n: ROMAN[n - 1] ?? String(n) });
+}
+
+const TUTORIAL_KEY = 'historify:imperium:tutorial-seen';
+
+// ── Shared bits ───────────────────────────────────────────────────────────────
 
 function StatBar({ label, value, color }: { label: string; value: number; color: string }) {
   return (
@@ -83,31 +80,68 @@ function StatBar({ label, value, color }: { label: string; value: number; color:
   );
 }
 
-// ── Battle replay overlay: the tick timeline made visible ────────────────────
-// Consumes the resolver's AnimationTriggers in order, animating both sides'
-// strength/morale down the exact same curve the engine computed.
+// ── How-to-play council (first-run overlay, reopenable) ───────────────────────
 
-function BattleReplay({ battle, language, onDone }: {
+function TutorialOverlay({ language, onClose }: { language: Language; onClose: () => void }) {
+  const ti = (k: string) => impText(k, language);
+  const STEPS = [
+    { icon: MapPin, t: 'imp_tut_1_t', b: 'imp_tut_1_b' },
+    { icon: Swords, t: 'imp_tut_2_t', b: 'imp_tut_2_b' },
+    { icon: Network, t: 'imp_tut_3_t', b: 'imp_tut_3_b' },
+    { icon: Flag, t: 'imp_tut_4_t', b: 'imp_tut_4_b' },
+  ];
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[1300] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <motion.div initial={{ scale: 0.92, rotateX: 8 }} animate={{ scale: 1, rotateX: 0 }}
+        style={{ transformPerspective: 900 }}
+        className="w-full max-w-lg rounded-2xl border border-primary/30 bg-layer-1 p-6 space-y-4">
+        <div className="flex items-center gap-2">
+          <HelpCircle className="w-5 h-5 text-primary" />
+          <h3 className="font-heading text-lg font-bold">{ti('imp_help')}</h3>
+        </div>
+        <div className="space-y-3">
+          {STEPS.map(({ icon: Icon, t, b }, i) => (
+            <motion.div key={t} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.12 + i * 0.1 }}
+              className="flex gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-3">
+              <div className="shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Icon className="w-4 h-4 text-primary" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold">{ti(t)}</p>
+                <p className="text-[12px] text-muted-foreground leading-relaxed">{ti(b)}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        <Button className="w-full" onClick={onClose}>{ti('imp_got_it')}</Button>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ── Battle replay: 3D stage + explained modifiers ─────────────────────────────
+
+function BattleReplay({ battle, language, weather, onDone }: {
   battle: TurnResult['battles'][number];
   language: Language;
+  weather: CampaignState['current']['weather'];
   onDone: () => void;
 }) {
   const { resolution, pending } = battle;
-  const [tickIdx, setTickIdx] = useState(-1); // -1 = intro frame
+  const [tickIdx, setTickIdx] = useState(-1);
   const done = tickIdx >= resolution.ticks.length - 1;
 
   useEffect(() => {
     if (done) return;
-    const timer = setTimeout(() => setTickIdx(i => i + 1), tickIdx < 0 ? 900 : 700);
+    const timer = setTimeout(() => setTickIdx(i => i + 1), tickIdx < 0 ? 1000 : 850);
     return () => clearTimeout(timer);
   }, [tickIdx, done]);
 
-  // Reconstruct on-screen strength/morale by replaying ticks up to tickIdx.
   const view = useMemo(() => {
-    let aS = 100, dS = 100, aM = 100, dM = 100;
-    // initial values: rewind from the final state through un-played ticks
-    aS = resolution.attacker.strength; dS = resolution.defender.strength;
-    aM = resolution.attacker.morale; dM = resolution.defender.morale;
+    let aS = resolution.attacker.strength, dS = resolution.defender.strength;
+    let aM = resolution.attacker.morale, dM = resolution.defender.morale;
     for (let i = resolution.ticks.length - 1; i > tickIdx; i--) {
       const t = resolution.ticks[i];
       aS += t.defenderDamage; dS += t.attackerDamage;
@@ -119,31 +153,28 @@ function BattleReplay({ battle, language, onDone }: {
     };
   }, [tickIdx, resolution]);
 
-  const feed = tickIdx < 0 ? [] : resolution.ticks.slice(0, tickIdx + 1).flatMap(t => t.triggers);
   const atkRoster = ROSTERS.find(r => r.id === resolution.attacker.rosterId);
   const defRoster = ROSTERS.find(r => r.id === resolution.defender.rosterId);
-
   const verdictKey = resolution.winner === 'stalemate' ? 'imp_stalemate'
     : resolution.winner === 'attacker' ? 'imp_victory' : 'imp_defeat';
+  const routedSide = resolution.routed
+    ? (resolution.winner === 'attacker' ? 'defender' : 'attacker')
+    : null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[1200] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
-    >
-      <motion.div
-        initial={{ scale: 0.94, y: 12 }} animate={{ scale: 1, y: 0 }}
-        className="w-full max-w-2xl rounded-2xl bg-layer-1 border border-white/10 overflow-hidden"
-      >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[1200] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <motion.div initial={{ scale: 0.94, y: 12, rotateX: 6 }} animate={{ scale: 1, y: 0, rotateX: 0 }}
+        style={{ transformPerspective: 1000 }}
+        className="w-full max-w-2xl rounded-2xl bg-layer-1 border border-white/10 overflow-hidden">
         <div className="px-5 py-4 border-b border-white/5 flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/10"><Swords className="w-4 h-4 text-primary" /></div>
           <div className="min-w-0">
             <h3 className="font-heading font-bold truncate">
-              {impText('imp_battle', language)} · {territoryName(pending.territoryId, language)}
+              {impText('imp_battle', language)} · {provinceName(pending.territoryId, language)}
             </h3>
             <p className="text-[11px] text-muted-foreground">
-              {impText('imp_weather', language)}: {impText(`imp_weather_clear`, language)} · {impText(`imp_mod_high_ground`, language) && ''}
-              {impText('imp_battle_report', language)}
+              {impText('imp_battlefield', language)} · {impText(`imp_weather_${weather}`, language)}
             </p>
           </div>
           <Badge variant="outline" className="ml-auto shrink-0 tabular-nums">
@@ -151,7 +182,20 @@ function BattleReplay({ battle, language, onDone }: {
           </Badge>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 p-5">
+        {/* ── The 3D battlefield ── */}
+        <div className="p-4 pb-2">
+          <Battle3D
+            ticks={resolution.ticks}
+            tickIdx={tickIdx}
+            attackerStrength={view.aS}
+            defenderStrength={view.dS}
+            weather={weather}
+            terrain={resolution.terrain}
+            routedSide={routedSide && done ? routedSide : null}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 px-4 py-3">
           {([
             ['attacker', atkRoster?.nameKey, view.aS, view.aM],
             ['defender', defRoster?.nameKey, view.dS, view.dM],
@@ -162,7 +206,7 @@ function BattleReplay({ battle, language, onDone }: {
                 <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
                   {impText(side === 'attacker' ? 'imp_attacker' : 'imp_defender', language)}
                 </span>
-                {resolution.routed && resolution.winner !== side && (
+                {routedSide === side && done && (
                   <Badge variant="destructive" className="text-[9px] px-1.5">{impText('imp_routed', language)}</Badge>
                 )}
               </div>
@@ -173,38 +217,12 @@ function BattleReplay({ battle, language, onDone }: {
           ))}
         </div>
 
-        {/* Trigger feed — the resolver's animation timeline, replayed */}
-        <div className="px-5 pb-3">
-          <ScrollArea className="h-28 rounded-lg bg-black/30 border border-white/5">
-            <div className="p-2 space-y-1">
-              {feed.slice(-14).map((tr, i) => {
-                const Icon = TRIGGER_ICON[tr.kind];
-                return (
-                  <motion.div key={`${tr.tick}-${tr.side}-${tr.kind}-${i}`}
-                    initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
-                    className="flex items-center gap-2 text-[11px]">
-                    <span className="tabular-nums text-muted-foreground/60 w-7">T{tr.tick}</span>
-                    <Icon className={cn('w-3 h-3', tr.side === 'attacker' ? 'text-primary' : 'text-red-400')} />
-                    <span className={tr.side === 'attacker' ? 'text-primary/90' : 'text-red-300/90'}>
-                      {impText(tr.side === 'attacker' ? 'imp_attacker' : 'imp_defender', language)}
-                    </span>
-                    <span className="text-muted-foreground">
-                      {impText(`imp_tactic_${tr.kind === 'melee' ? 'hold' : tr.kind === 'volley' ? 'volley' : 'charge'}`, language)}
-                    </span>
-                    <span className="ml-auto text-muted-foreground/50 tabular-nums">{Math.round(tr.magnitude * 100)}%</span>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </ScrollArea>
-        </div>
-
         {/* Modifier ledger — the matrix explains its math */}
-        <div className="px-5 pb-3 flex flex-wrap gap-1.5">
+        <div className="px-4 pb-3 flex flex-wrap gap-1.5">
           {resolution.modifiers.map((m, i) => (
             <Badge key={i} variant="outline" className={cn('text-[10px]',
               m.side === 'attacker' ? 'border-primary/40 text-primary' : 'border-red-400/40 text-red-300')}>
-              {impText(m.labelKey, language)} {m.side === 'attacker' ? '+' : '+'}{m.value}%
+              {impText(m.labelKey, language)} +{m.value}%
             </Badge>
           ))}
         </div>
@@ -212,7 +230,7 @@ function BattleReplay({ battle, language, onDone }: {
         <div className="px-5 pb-5 flex items-center justify-between">
           <AnimatePresence>
             {done && (
-              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              <motion.p initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
                 className={cn('font-heading text-lg font-bold',
                   resolution.winner === 'attacker' ? 'text-primary' : resolution.winner === 'defender' ? 'text-red-400' : 'text-muted-foreground')}>
                 {impText(verdictKey, language)}
@@ -229,7 +247,7 @@ function BattleReplay({ battle, language, onDone }: {
   );
 }
 
-// ── Crisis council modal (Part C surfaces here) ───────────────────────────────
+// ── Crisis council ────────────────────────────────────────────────────────────
 
 function CrisisCouncil({ crisis, language, chosen, onChoose }: {
   crisis: CrisisEvent;
@@ -238,9 +256,10 @@ function CrisisCouncil({ crisis, language, chosen, onChoose }: {
   onChoose: (optionId: string) => void;
 }) {
   const params: Record<string, string | number> = { ...crisis.params };
-  if (typeof params.territory === 'string') params.territory = territoryName(params.territory, language);
+  if (typeof params.territory === 'string') params.territory = provinceName(params.territory, language);
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+    <motion.div initial={{ opacity: 0, rotateY: -14, x: -10 }} animate={{ opacity: 1, rotateY: 0, x: 0 }}
+      style={{ transformPerspective: 700 }}
       className="rounded-xl border border-amber-400/30 bg-amber-400/5 p-3 space-y-2">
       <div className="flex items-center gap-2">
         <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
@@ -280,6 +299,7 @@ export default function ImperiumPage() {
   const [battleQueue, setBattleQueue] = useState<TurnResult['battles']>([]);
   const [showWeb, setShowWeb] = useState(false);
   const [resolving, setResolving] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   const savedCampaigns = useMemo(() => listLocalCampaigns(userId), [userId, campaign?.id]);
 
@@ -297,14 +317,12 @@ export default function ImperiumPage() {
     overlayLayerRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
 
-    const topics = TERRITORY_TOPICS.filter(tp => tp.era === campaign.era && tp.polygons?.length);
-    const bounds = L.latLngBounds(topics.flatMap(tp => tp.polygons![0].coords.map(([la, ln]) => L.latLng(la, ln))));
-    if (bounds.isValid()) map.fitBounds(bounds.pad(0.12));
+    const spec = theatreSpec(campaign.theatre);
+    map.fitBounds(L.latLngBounds(spec.viewBounds.map(([la, ln]) => L.latLng(la, ln))));
     return () => { map.remove(); mapRef.current = null; territoryLayerRef.current = null; overlayLayerRef.current = null; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [campaign?.id]);
 
-  // Redraw territories + armies + march previews on every snapshot change.
   const selectedArmyRef = useRef<string | null>(null);
   selectedArmyRef.current = selectedArmyId;
 
@@ -316,38 +334,45 @@ export default function ImperiumPage() {
     layer.clearLayers();
     overlay.clearLayers();
     const snap = campaign.current;
-    const graph = graphFor(campaign.era);
+    const graph = graphFor(campaign.theatre);
+    const provinces = provincesFor(campaign.theatre);
 
-    // Territory polygons, tinted by owner.
-    const topics = TERRITORY_TOPICS.filter(tp => tp.era === campaign.era && tp.polygons?.length);
-    for (const tp of topics) {
-      const owner = (snap.ownership.owners[tp.id] ?? 'neutral') as FactionId | 'neutral';
+    // Province polygons — every dataset ring, tinted by owner.
+    for (const pv of provinces) {
+      const owner = (snap.ownership.owners[pv.id] ?? 'neutral') as FactionId | 'neutral';
       const color = FACTION_COLOR[owner];
-      const isCapital = snap.capitals.player === tp.id || snap.capitals.rival === tp.id;
-      for (const poly of tp.polygons!) {
-        const p = L.polygon(poly.coords, {
-          color, weight: isCapital ? 2.4 : 1.4, opacity: 0.9,
-          fillColor: color, fillOpacity: owner === 'neutral' ? 0.08 : 0.22,
+      const isCapital = snap.capitals.player === pv.id || snap.capitals.rival === pv.id;
+      for (const ring of pv.rings) {
+        const p = L.polygon(ring, {
+          color, weight: isCapital ? 2.6 : 1.4, opacity: 0.95,
+          fillColor: color, fillOpacity: owner === 'neutral' ? 0.08 : 0.24,
           dashArray: owner === 'neutral' ? '4 4' : undefined,
         }).addTo(layer);
         p.bindTooltip(
-          `${territoryName(tp.id, language)}${isCapital ? ' ★' : ''}`,
+          `${provinceName(pv.id, language)}${isCapital ? ' ★' : ''}`,
           { direction: 'center', className: 'imp-tooltip', permanent: false },
         );
         p.on('click', () => {
           const armyId = selectedArmyRef.current;
           if (!armyId) return;
           const army = campaign.current.armies.find(ar => ar.id === armyId && ar.faction === 'player');
-          if (!army || army.territoryId === tp.id) return;
-          setPendingMarches(prev => ({ ...prev, [armyId]: tp.id }));
+          if (!army || army.territoryId === pv.id) return;
+          setPendingMarches(prev => ({ ...prev, [armyId]: pv.id }));
         });
       }
+      // Province name label at the anchor (capitals get a star).
+      const label = L.divIcon({
+        className: '',
+        html: `<div class="imp-prov-label ${owner}">${isCapital ? '★ ' : ''}${provinceName(pv.id, language)}</div>`,
+        iconSize: [120, 16], iconAnchor: [60, -8],
+      });
+      L.marker(pv.anchor, { icon: label, interactive: false }).addTo(layer);
     }
 
-    // Optional: the strategic node web (Part A made visible).
+    // Strategic node web (optional overlay).
     if (showWeb) {
       const seen = new Set<string>();
-      for (const [from, edges] of graph.adj) {
+      for (const [, edges] of graph.adj) {
         for (const e of edges) {
           const key = e.a < e.b ? `${e.a}|${e.b}` : `${e.b}|${e.a}`;
           if (seen.has(key)) continue;
@@ -360,11 +385,10 @@ export default function ImperiumPage() {
             interactive: false,
           }).addTo(overlay);
         }
-        void from;
       }
     }
 
-    // March previews: the actual A* corridor each pending order will follow.
+    // March previews: the exact A* corridor of each pending order.
     const hostileOf = (faction: FactionId) => new Set(
       Object.entries(snap.ownership.owners).filter(([, f]) => f !== faction && f !== undefined).map(([t]) => t),
     );
@@ -376,12 +400,12 @@ export default function ImperiumPage() {
       const path = findTerritoryPath(graph, army.territoryId, target, { hostile, hostilePenalty: 2.2, canSail: true });
       if (!path) continue;
       const pts = path.nodeIds.map(id => { const n = graph.nodes.get(id)!; return [n.lat, n.lng] as [number, number]; });
-      L.polyline(pts, { color: FACTION_COLOR.player, weight: 2, opacity: 0.85, dashArray: '6 6', interactive: false }).addTo(overlay);
+      L.polyline(pts, { color: FACTION_COLOR.player, weight: 2.2, opacity: 0.9, dashArray: '6 6', className: 'imp-march-line', interactive: false }).addTo(overlay);
       const end = pts[pts.length - 1];
       L.circleMarker(end, { radius: 5, color: FACTION_COLOR.player, fillColor: FACTION_COLOR.player, fillOpacity: 0.9, interactive: false }).addTo(overlay);
     }
 
-    // Armies in motion: draw the remaining path of active marches.
+    // Armies in motion: remaining path of active marches.
     for (const army of snap.armies) {
       if (!army.march) continue;
       const rest = army.march.path.nodeIds.slice(army.march.progress);
@@ -393,7 +417,7 @@ export default function ImperiumPage() {
       }
     }
 
-    // Army markers (chips) at territory centroids, offset when stacked.
+    // Army chips at anchors (stack offset), named I/II per faction.
     const perTerritory = new Map<string, number>();
     for (const army of snap.armies) {
       const cId = graph.centroids.get(army.territoryId);
@@ -404,8 +428,8 @@ export default function ImperiumPage() {
       const selected = army.id === selectedArmyId;
       const icon = L.divIcon({
         className: '',
-        html: `<div class="imp-army ${army.faction} ${selected ? 'sel' : ''} ${army.supplied ? '' : 'starve'}">⚔ ${Math.round(army.strength)}</div>`,
-        iconSize: [46, 20], iconAnchor: [23, 10 - n * 14],
+        html: `<div class="imp-army ${army.faction} ${selected ? 'sel' : ''} ${army.supplied ? '' : 'starve'}">⚔ ${armyName(army.id, language)} · ${Math.round(army.strength)}</div>`,
+        iconSize: [100, 20], iconAnchor: [50, 26 - n * 16],
       });
       const marker = L.marker([c.lat, c.lng], { icon, zIndexOffset: selected ? 1000 : 0 }).addTo(overlay);
       if (army.faction === 'player') {
@@ -415,17 +439,21 @@ export default function ImperiumPage() {
   }, [campaign, pendingMarches, selectedArmyId, showWeb, language]);
 
   // ── Campaign actions ──
-  const startCampaign = (era: Era) => {
-    const state = createCampaign(era);
+  const startCampaign = (theatre: TheatreId) => {
+    const state = createCampaign(theatre);
     setCampaign(state);
     setPendingMarches({}); setCrisisChoices({}); setSelectedArmyId(null); setBattleQueue([]);
     saveCampaign(userId, state);
     void pushTurnBlock(state);
+    try {
+      if (!localStorage.getItem(TUTORIAL_KEY)) { setShowTutorial(true); localStorage.setItem(TUTORIAL_KEY, '1'); }
+    } catch { /* storage unavailable */ }
   };
 
   const resumeCampaign = (id: string) => {
     const state = loadCampaign(userId, id);
-    if (state) { setCampaign(state); setPendingMarches({}); setCrisisChoices({}); setBattleQueue([]); }
+    if (state && state.theatre) { setCampaign(state); setPendingMarches({}); setCrisisChoices({}); setBattleQueue([]); }
+    else if (state) deleteCampaign(userId, id); // pre-theatre campaign: not loadable
   };
 
   const abandonCampaign = (id: string) => {
@@ -436,7 +464,6 @@ export default function ImperiumPage() {
   const endTurn = () => {
     if (!campaign || resolving || campaign.current.over) return;
     setResolving(true);
-    // Give the button's press state one frame, then run the pipeline.
     requestAnimationFrame(() => {
       const result = resolveTurn(campaign, { marches: pendingMarches, tactic, crisisChoices });
       setCampaign(result.state);
@@ -458,11 +485,14 @@ export default function ImperiumPage() {
   };
 
   const snap = campaign?.current;
+  const spec = campaign ? theatreSpec(campaign.theatre) : null;
   const playerArmies = snap?.armies.filter(a => a.faction === 'player') ?? [];
   const rivalArmies = snap?.armies.filter(a => a.faction === 'rival') ?? [];
   const holdings = snap ? Object.values(snap.ownership.owners).reduce(
     (acc, f) => { acc[f] += 1; return acc; }, { player: 0, rival: 0 } as Record<FactionId, number>,
   ) : { player: 0, rival: 0 };
+  const totalProvinces = campaign ? provincesFor(campaign.theatre).length : 0;
+  const rivalLeft = holdings.rival;
 
   return (
     <AppShell>
@@ -476,7 +506,9 @@ export default function ImperiumPage() {
                 {ti('imp_title')}
                 <Badge variant="outline" className="border-amber-400/50 text-amber-400 text-[10px] gap-1"><Crown className="w-3 h-3" />MASTER</Badge>
               </h1>
-              <p className="text-muted-foreground text-sm">{ti('imp_subtitle')}</p>
+              <p className="text-muted-foreground text-sm">
+                {campaign && spec ? `${ti(spec.nameKey)} · ${spec.year}` : ti('imp_subtitle')}
+              </p>
             </div>
           </div>
           {campaign && (
@@ -485,6 +517,9 @@ export default function ImperiumPage() {
               <Badge variant="outline" className="gap-1.5"><CloudSun className="w-3 h-3" />{ti(`imp_weather_${snap?.weather ?? 'clear'}`)}</Badge>
               <Badge variant="outline" className="gap-1.5 tabular-nums"><Coins className="w-3 h-3" />{ti('imp_treasury')} {snap?.treasury}</Badge>
               <Badge variant="outline" className="gap-1.5 tabular-nums"><Scale3d className="w-3 h-3" />{ti('imp_discipline')} {snap?.discipline ?? 0}</Badge>
+              <Button variant="ghost" size="sm" className="gap-1.5" onClick={() => setShowTutorial(true)}>
+                <HelpCircle className="w-3.5 h-3.5" />{ti('imp_help')}
+              </Button>
               <Button variant="ghost" size="sm" onClick={() => setCampaign(null)}>{ti('imp_theatre')}</Button>
             </div>
           )}
@@ -495,20 +530,28 @@ export default function ImperiumPage() {
           {!campaign && (
             <div className="space-y-6">
               <h2 className="font-heading text-lg font-semibold">{ti('imp_setup_pick')}</h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {ERAS.map(era => {
-                  const { territories } = theatreSummary(era);
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" style={{ perspective: 1200 }}>
+                {THEATRE_SPECS.map(sp => {
+                  const { territories } = theatreSummary(sp.id);
                   return (
-                    <motion.button key={era} whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }}
-                      onClick={() => startCampaign(era)}
+                    <motion.button key={sp.id}
+                      whileHover={{ y: -4, rotateX: 4, rotateY: -3, scale: 1.015 }}
+                      whileTap={{ scale: 0.98 }}
+                      style={{ transformStyle: 'preserve-3d' }}
+                      onClick={() => startCampaign(sp.id)}
                       className="text-left rounded-2xl border border-white/10 bg-layer-1 p-5 space-y-3 hover:border-primary/50 transition-colors">
                       <div className="flex items-center justify-between">
                         <MapPin className="w-5 h-5 text-primary" />
-                        <Badge variant="outline" className="text-[10px] tabular-nums">{territories} {ti('imp_territories')}</Badge>
+                        <Badge variant="outline" className="text-[10px] tabular-nums">{territories} {ti('imp_territories')} · {sp.year}</Badge>
                       </div>
                       <div>
-                        <p className="font-heading font-bold">{ti(`imp_era_${era}`)}</p>
-                        <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{ti('imp_new_here')}</p>
+                        <p className="font-heading font-bold">{ti(sp.nameKey)}</p>
+                        <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{ti(sp.taglineKey)}</p>
+                        <p className="text-[11px] mt-2">
+                          <span className="text-amber-400">{ti(sp.playerFactionKey)}</span>
+                          <span className="text-muted-foreground"> ⚔ </span>
+                          <span className="text-red-400">{ti(sp.rivalFactionKey)}</span>
+                        </p>
                       </div>
                       <span className="inline-flex items-center gap-1 text-[12px] text-primary font-medium">
                         {ti('imp_new_campaign')}<ChevronRight className="w-3.5 h-3.5" />
@@ -525,7 +568,12 @@ export default function ImperiumPage() {
                     {savedCampaigns.map(entry => (
                       <div key={entry.id} className="rounded-xl border border-white/10 bg-layer-1 p-4 flex items-center gap-3">
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-semibold truncate">{ti(`imp_era_${entry.era}`)}</p>
+                          <p className="text-sm font-semibold truncate">
+                            {(() => {
+                              const st = THEATRE_SPECS.find(sp => entry.id.includes(sp.id));
+                              return st ? ti(st.nameKey) : entry.id;
+                            })()}
+                          </p>
                           <p className="text-[11px] text-muted-foreground tabular-nums">
                             {ti('imp_turn')} {entry.turn}
                             {entry.over && ` · ${ti(entry.playerWon ? 'imp_victory' : 'imp_defeat')}`}
@@ -545,20 +593,37 @@ export default function ImperiumPage() {
           )}
 
           {/* ── Campaign board ── */}
-          {campaign && snap && (
+          {campaign && snap && spec && (
             <div className="grid lg:grid-cols-[1fr_340px] gap-4">
-              {/* Map column */}
               <div className="space-y-2 min-w-0">
+                {/* Objective banner */}
+                <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-layer-1 px-4 py-2.5">
+                  <Flag className="w-4 h-4 text-primary shrink-0" />
+                  <p className="text-[12px] text-muted-foreground flex-1 min-w-0 truncate">{ti('imp_objective')}</p>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-[11px] tabular-nums text-amber-400">{holdings.player}/{totalProvinces} {ti('imp_provinces_held')}</span>
+                    <div className="w-28 h-1.5 rounded-full bg-white/5 overflow-hidden">
+                      <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-300 transition-all duration-700"
+                        style={{ width: `${(holdings.player / Math.max(1, totalProvinces)) * 100}%` }} />
+                    </div>
+                    <span className="text-[11px] tabular-nums text-red-400">{rivalLeft}</span>
+                  </div>
+                </div>
+
                 <div className="relative rounded-2xl overflow-hidden border border-white/10">
-                  <div ref={mapDivRef} className="h-[46vh] lg:h-[calc(100vh-15rem)] w-full bg-layer-0" />
-                  {/* Holdings scoreboard */}
-                  <div className="absolute top-3 left-3 z-[1000] flex gap-2">
-                    {(['player', 'rival'] as FactionId[]).map(f => (
-                      <div key={f} className="px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur border border-white/10 flex items-center gap-1.5 text-[12px] tabular-nums">
-                        <span className="w-2 h-2 rounded-full" style={{ background: FACTION_COLOR[f] }} />
-                        {holdings[f]}
-                      </div>
-                    ))}
+                  <div ref={mapDivRef} className="h-[46vh] lg:h-[calc(100vh-19rem)] w-full bg-layer-0" />
+                  {/* Faction scoreboard */}
+                  <div className="absolute top-3 left-3 z-[1000] flex gap-2 flex-wrap">
+                    <div className="px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur border border-amber-400/40 flex items-center gap-1.5 text-[12px]">
+                      <span className="w-2 h-2 rounded-full" style={{ background: FACTION_COLOR.player }} />
+                      <span className="text-amber-300">{ti(spec.playerFactionKey)}</span>
+                      <span className="tabular-nums text-muted-foreground">{holdings.player}</span>
+                    </div>
+                    <div className="px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur border border-red-400/40 flex items-center gap-1.5 text-[12px]">
+                      <span className="w-2 h-2 rounded-full" style={{ background: FACTION_COLOR.rival }} />
+                      <span className="text-red-300">{ti(spec.rivalFactionKey)}</span>
+                      <span className="tabular-nums text-muted-foreground">{holdings.rival}</span>
+                    </div>
                     <button onClick={() => setShowWeb(w => !w)}
                       className={cn('px-2.5 py-1 rounded-lg backdrop-blur border text-[12px] flex items-center gap-1.5 transition-colors',
                         showWeb ? 'bg-primary/20 border-primary/50 text-primary' : 'bg-black/70 border-white/10 text-muted-foreground')}>
@@ -570,12 +635,13 @@ export default function ImperiumPage() {
                       {ti('imp_select_hint')}
                     </div>
                   )}
-                  {/* Campaign-over veil */}
                   <AnimatePresence>
                     {snap.over && (
                       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                         className="absolute inset-0 z-[1001] bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center gap-3 text-center p-6">
-                        <Crown className={cn('w-10 h-10', snap.playerWon ? 'text-primary' : 'text-red-400')} />
+                        <motion.div animate={{ rotateY: [0, 360] }} transition={{ duration: 1.6, ease: 'easeOut' }}>
+                          <Crown className={cn('w-12 h-12', snap.playerWon ? 'text-primary' : 'text-red-400')} />
+                        </motion.div>
                         <h2 className="font-heading text-3xl font-bold">{ti(snap.playerWon ? 'imp_victory' : 'imp_defeat')}</h2>
                         <p className="text-muted-foreground max-w-md">{ti(snap.playerWon ? 'imp_campaign_won' : 'imp_campaign_lost')}</p>
                         <Button className="mt-2" onClick={() => setCampaign(null)}>{ti('imp_new_campaign')}</Button>
@@ -584,7 +650,7 @@ export default function ImperiumPage() {
                   </AnimatePresence>
                 </div>
 
-                {/* Rollback bar — Part D's time travel, one chip per stored turn */}
+                {/* Rollback bar */}
                 <div className="flex items-center gap-1.5 overflow-x-auto py-1">
                   <RotateCcw className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                   <span className="text-[11px] text-muted-foreground shrink-0">{ti('imp_rollback')}</span>
@@ -602,22 +668,22 @@ export default function ImperiumPage() {
 
               {/* Command column */}
               <div className="space-y-3 min-w-0">
-                {/* War council: tactic + end turn */}
                 <div className="rounded-2xl border border-white/10 bg-layer-1 p-4 space-y-3">
                   <div className="flex items-center gap-2">
                     <Flag className="w-4 h-4 text-primary" />
                     <h3 className="font-heading font-semibold text-sm">{ti('imp_council')}</h3>
                   </div>
                   <p className="text-[11px] text-muted-foreground">{ti('imp_choose_tactic')} · {ti('imp_triangle_hint')}</p>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-2" style={{ perspective: 500 }}>
                     {TACTICS.map(({ id, icon: Icon, key }) => (
-                      <button key={id} onClick={() => setTactic(id)}
+                      <motion.button key={id} onClick={() => setTactic(id)}
+                        whileHover={{ rotateX: 8, y: -2 }} whileTap={{ scale: 0.95 }}
                         className={cn('rounded-xl border px-2 py-2.5 flex flex-col items-center gap-1 text-[11px] transition-all',
                           tactic === id
                             ? 'border-primary/60 bg-primary/15 text-primary scale-[1.02]'
                             : 'border-white/10 bg-white/[0.02] text-muted-foreground hover:border-primary/30')}>
                         <Icon className="w-4 h-4" />{ti(key)}
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
                   <div className="text-[11px] text-muted-foreground flex items-center justify-between">
@@ -629,7 +695,6 @@ export default function ImperiumPage() {
                   </Button>
                 </div>
 
-                {/* Crisis council */}
                 {snap.activeCrises.length > 0 && (
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
@@ -643,7 +708,6 @@ export default function ImperiumPage() {
                   </div>
                 )}
 
-                {/* Armies */}
                 <div className="rounded-2xl border border-white/10 bg-layer-1 p-4 space-y-3">
                   <h3 className="font-heading font-semibold text-sm">{ti('imp_your_armies')}</h3>
                   {playerArmies.length === 0 && <p className="text-[12px] text-muted-foreground">—</p>}
@@ -654,7 +718,9 @@ export default function ImperiumPage() {
                         className={cn('w-full text-left rounded-xl border p-3 space-y-2 transition-colors',
                           selectedArmyId === army.id ? 'border-primary/60 bg-primary/10' : 'border-white/10 bg-white/[0.02] hover:border-primary/30')}>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold truncate">{territoryName(army.territoryId, language)}</span>
+                          <span className="text-sm font-semibold truncate">
+                            {armyName(army.id, language)} · {ti('imp_at')} {provinceName(army.territoryId, language)}
+                          </span>
                           <Badge variant="outline" className={cn('ml-auto text-[9px] shrink-0',
                             army.supplied ? 'border-emerald-400/50 text-emerald-400' : 'border-red-400/60 text-red-400 animate-pulse')}>
                             {ti(army.supplied ? 'imp_supplied' : 'imp_isolated')}
@@ -667,30 +733,29 @@ export default function ImperiumPage() {
                         {marchTarget && (
                           <p className="text-[11px] text-primary flex items-center gap-1">
                             <ChevronRight className="w-3 h-3" />
-                            {ti(pendingMarches[army.id] ? 'imp_march_ordered' : 'imp_marching')}: {territoryName(marchTarget, language)}
+                            {ti(pendingMarches[army.id] ? 'imp_march_ordered' : 'imp_marching')}: {provinceName(marchTarget, language)}
                           </p>
                         )}
                       </button>
                     );
                   })}
-                  {/* Rival intelligence strip */}
                   <div className="pt-1 border-t border-white/5 flex items-center justify-between text-[11px] text-muted-foreground">
-                    <span>{ti(ROSTERS.find(r => r.id === campaign.rivalRosterId)?.nameKey ?? '')}</span>
+                    <span>{ti(spec.rivalFactionKey)}</span>
                     <span className="tabular-nums flex items-center gap-1">
                       <span className="w-2 h-2 rounded-full inline-block" style={{ background: FACTION_COLOR.rival }} />
-                      ⚔ {rivalArmies.length} · {ti(LEADERS.find(l => l.id === campaign.rivalLeader.id)?.nameKey ?? '')}
+                      ⚔ {rivalArmies.length} · {ti(campaign.rivalLeader.nameKey)}
                     </span>
                   </div>
                 </div>
 
-                {/* Campaign log */}
                 <div className="rounded-2xl border border-white/10 bg-layer-1 p-4">
                   <h3 className="font-heading font-semibold text-sm mb-2">{ti('imp_log')}</h3>
-                  <ScrollArea className="h-40">
+                  <ScrollArea className="h-36">
                     <div className="space-y-1 pr-2">
                       {[...snap.log].reverse().slice(0, 40).map((line, i) => {
                         const params: Record<string, string | number> = { ...(line.params ?? {}) };
-                        if (typeof params.territory === 'string') params.territory = territoryName(params.territory, language);
+                        if (typeof params.territory === 'string') params.territory = provinceName(params.territory, language);
+                        if (typeof params.army === 'string') params.army = armyName(params.army, language);
                         return (
                           <p key={i} className="text-[11px] text-muted-foreground leading-relaxed">
                             <span className="text-muted-foreground/50 tabular-nums">T{line.turn}</span>{' · '}
@@ -707,31 +772,42 @@ export default function ImperiumPage() {
         </PlanGate>
       </div>
 
-      {/* Battle replays play sequentially after each resolved turn */}
       <AnimatePresence>
-        {battleQueue.length > 0 && (
+        {battleQueue.length > 0 && snap && (
           <BattleReplay key={battleQueue[0].pending.id}
-            battle={battleQueue[0]} language={language}
+            battle={battleQueue[0]} language={language} weather={snap.weather}
             onDone={() => setBattleQueue(q => q.slice(1))} />
+        )}
+        {showTutorial && (
+          <TutorialOverlay key="tutorial" language={language} onClose={() => setShowTutorial(false)} />
         )}
       </AnimatePresence>
 
-      {/* Army chip styling (Leaflet divIcons live outside Tailwind's tree) */}
       <style>{`
         .imp-army {
           display: inline-flex; align-items: center; justify-content: center; gap: 3px;
-          min-width: 44px; padding: 2px 6px; border-radius: 9999px;
+          padding: 2px 8px; border-radius: 9999px; white-space: nowrap;
           font: 600 10px/1.4 system-ui, sans-serif; color: #0d0b07;
           border: 1.5px solid rgba(255,255,255,0.35);
-          box-shadow: 0 2px 8px rgba(0,0,0,0.55);
+          box-shadow: 0 3px 10px rgba(0,0,0,0.6);
           transition: transform .15s ease;
           cursor: pointer;
         }
         .imp-army.player { background: ${FACTION_COLOR.player}; }
         .imp-army.rival  { background: ${FACTION_COLOR.rival}; color: #fff; cursor: default; }
-        .imp-army.sel    { transform: scale(1.18); border-color: #fff; }
+        .imp-army.sel    { transform: scale(1.16) translateY(-2px); border-color: #fff; }
         .imp-army.starve { animation: impStarve 1.2s ease-in-out infinite; }
         @keyframes impStarve { 0%,100% { box-shadow: 0 0 0 0 rgba(220,60,80,.7);} 50% { box-shadow: 0 0 0 6px rgba(220,60,80,0);} }
+        .imp-prov-label {
+          text-align: center; font: 700 10px/1.2 var(--font-heading, serif);
+          letter-spacing: .06em; text-transform: uppercase; pointer-events: none;
+          text-shadow: 0 1px 4px rgba(0,0,0,.9), 0 0 10px rgba(0,0,0,.7);
+        }
+        .imp-prov-label.player { color: #ecd9ae; }
+        .imp-prov-label.rival { color: #f2b7c0; }
+        .imp-prov-label.neutral { color: #9aa3b2; }
+        .imp-march-line { animation: impMarchDash 1.2s linear infinite; }
+        @keyframes impMarchDash { to { stroke-dashoffset: -24; } }
         .imp-tooltip {
           background: rgba(10,10,14,.92); border: 1px solid rgba(217,165,74,.35);
           color: #e8e2d5; font-size: 11px; border-radius: 8px; padding: 3px 8px;
