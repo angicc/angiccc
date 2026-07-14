@@ -62,10 +62,10 @@ const HISTORICAL_QUOTES = [
 ];
 
 const FEATURES = [
-  { icon: BookOpen,   title: '28 In-Depth Lessons',   desc: 'Expert-written lessons from Ancient Egypt to the Digital Age, packed with rich historical context.',      color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
+  { icon: BookOpen,   title: '36 In-Depth Lessons',   desc: 'Nine expert-written lessons per era — from the Achaemenid Empire and the Hellenistic World to Tokugawa Japan and Indian Independence.',      color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
   { icon: Brain,      title: 'AI Tutor — Clio',        desc: 'Ask your personal AI tutor anything about history and get clear, scholarly answers instantly.',            color: 'text-blue-400',    bg: 'bg-blue-400/10',    border: 'border-blue-400/20'    },
-  { icon: ScrollText, title: 'Interactive Timeline',   desc: 'Explore 75+ pivotal events on a visual timeline, filterable by era and category.',                         color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
-  { icon: HelpCircle, title: 'Quizzes & XP',           desc: 'Test knowledge with 80+ quiz questions, earn XP, level up, and unlock achievements.',                      color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/20'    },
+  { icon: ScrollText, title: 'Interactive Timeline',   desc: 'Explore 95 pivotal events on a visual timeline, filterable by era and category.',                         color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
+  { icon: HelpCircle, title: 'Mastery Era Quizzes',    desc: '50 questions per era, 200 in all — score 48 of 50 to pass. True mastery, rewarded with XP and achievements.',                      color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/20'    },
   { icon: Layers,     title: 'Flashcard System',       desc: 'Reinforce learning with spaced repetition flashcards drawn from every lesson across all eras.',            color: 'text-violet-400',  bg: 'bg-violet-400/10',  border: 'border-violet-400/20'  },
   { icon: Globe,      title: 'Leaderboard',            desc: 'Compete with learners worldwide, climb the XP rankings, and earn legendary status.',                       color: 'text-cyan-400',    bg: 'bg-cyan-400/10',    border: 'border-cyan-400/20'    },
   { icon: PenLine,    title: 'Personal Notes',         desc: 'Capture insights as you learn — notes are linked directly to lessons and eras for easy review.',          color: 'text-orange-400',  bg: 'bg-orange-400/10',  border: 'border-orange-400/20'  },
@@ -75,39 +75,41 @@ const FEATURES = [
   { icon: Shield,     title: 'Historical Chess Ranks', desc: 'Earn Video XP to climb 10 ranks — from Pawn to Alexander the Great. Your rank dominates the Leaderboard.', color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/20'   },
   { icon: Scale,   title: 'Debate a Philosopher',    desc: 'Challenge Socrates, Nietzsche, Kant and more in daily philosophical debates. Make them concede and earn XP. One philosopher per day.', color: 'text-violet-400', bg: 'bg-violet-400/10', border: 'border-violet-400/20' },
   { icon: PenLine, title: 'AI Essay Challenge',       desc: 'Write historical essays graded live by Clio — accuracy, argument quality, and depth all scored. Exclusive to Master Student.', color: 'text-orange-400', bg: 'bg-orange-400/10', border: 'border-orange-400/20' },
-  { icon: Globe2,  title: 'Timeline Territory Map',   desc: 'Explore real geographic territories for 25 historical periods on a live OpenStreetMap. Click topics to fly the map to exact territories with annotated markers.', color: 'text-sky-400',    bg: 'bg-sky-400/10',    border: 'border-sky-400/20'    },
+  { icon: Globe2,  title: 'Timeline Territory Map',   desc: 'Explore real dataset-sourced territories for 33 historical periods — from the Achaemenid Empire to the Partition of India — on a live map with annotated markers.', color: 'text-sky-400',    bg: 'bg-sky-400/10',    border: 'border-sky-400/20'    },
   { icon: Hourglass, title: 'Chronos Crisis Room',    desc: 'Take command at nine real historical turning points — Salamis, the Rubicon, Hattin, Constantinople 1453, the Armada, July 1914, the Cuban Missile Crisis and more — with every decision judged by AI in real time.', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20' },
   { icon: Brain,   title: 'Clio Memory',              desc: 'Your AI tutor genuinely remembers you: interests, misconceptions she is correcting, facts you mastered, and your goals — personalizing every session across time.', color: 'text-blue-400', bg: 'bg-blue-400/10', border: 'border-blue-400/20' },
   { icon: Sparkles, title: 'AI Content Studio',       desc: 'Paste any historical text and Clio engineers it into a validated study kit — flashcards, quiz questions, and key facts — saved to your personal practice library.', color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
   { icon: BarChart2, title: 'Study Plan',             desc: 'A mastery model scores every era and builds your week: real lessons, adaptive quizzes and a measurement day — steps check themselves off as you learn.', color: 'text-cyan-400', bg: 'bg-cyan-400/10', border: 'border-cyan-400/20' },
+  { icon: Swords,  title: 'Chronos Imperium',         desc: 'A full strategic-tactical campaign over the real historical map: A* marches on a living node web, supply lines that can be cut, era-authentic battles replayed tick by tick, emergent crises, and turn-by-turn time travel. Master exclusive.', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20' },
+  { icon: Globe,   title: '6 Languages',              desc: 'Learn in English, Spanish, Russian, Macedonian, German or French — switchable anywhere, including this page.', color: 'text-sky-400', bg: 'bg-sky-400/10', border: 'border-sky-400/20' },
   { icon: Scale,   title: 'Philosopher Memory',       desc: 'Every philosopher remembers your past debates — the stances you argued, the points you conceded, your win record — and sharpens their arguments accordingly.', color: 'text-violet-400', bg: 'bg-violet-400/10', border: 'border-violet-400/20' },
 ];
 
 // ── "What's New" spotlight — the latest additions & improvements ─────────────
 const WHATS_NEW = [
   {
-    icon: Brain,
-    title: 'AI That Remembers You',
-    desc: 'Clio and every debate philosopher now carry a real memory of you — your interests, misconceptions, past stances and wins — and personalize every session with it.',
-    color: 'text-blue-400', border: 'border-blue-400/30', bg: 'bg-blue-400/10',
-  },
-  {
     icon: Swords,
-    title: 'Cinematic Conquest Battles',
-    desc: 'War-council tactics, era-authentic regiments, morale that can break an army, rout strikes and battlefield cinematics — the Conquest Campaign is now a full battle game.',
-    color: 'text-rose-400', border: 'border-rose-400/30', bg: 'bg-rose-400/10',
+    title: 'CHRONOS IMPERIUM',
+    desc: 'Command a whole theatre of history: strategic marches over a living map, supply corridors your enemy can sever, tactical battles resolved tick by tick, emergent crises — and rollback to any turn. Master exclusive.',
+    color: 'text-amber-400', border: 'border-amber-400/30', bg: 'bg-amber-400/10',
   },
   {
-    icon: Sparkles,
-    title: 'AI Content Studio & Study Plan',
-    desc: 'Turn any text into a validated study kit, and let the mastery model engineer your week — with Clio coaching it on Master.',
+    icon: Globe,
+    title: 'German & French',
+    desc: 'Historify now speaks six languages — English, Spanish, Russian, Macedonian, German and French — switchable from any page, including this one.',
+    color: 'text-sky-400', border: 'border-sky-400/30', bg: 'bg-sky-400/10',
+  },
+  {
+    icon: BookOpen,
+    title: '9 Lessons per Era',
+    desc: 'Eight new deep-dive lessons — Hellenistic World, Achaemenid Persia, Al-Andalus, the Hundred Years\' War, the Mughals, Tokugawa Japan, the Soviet Century, Indian Independence — each with its own animated banner.',
     color: 'text-emerald-400', border: 'border-emerald-400/30', bg: 'bg-emerald-400/10',
   },
   {
-    icon: MapIcon,
-    title: 'Atlas-Grade Territory Maps',
-    desc: 'Historical borders redrawn to reference cartography — flowing atlas frontiers, region labels, real coastlines — plus four new Crisis Room turning points.',
-    color: 'text-amber-400', border: 'border-amber-400/30', bg: 'bg-amber-400/10',
+    icon: HelpCircle,
+    title: '50-Question Mastery Quizzes',
+    desc: 'Era quizzes grew to 50 questions with a 48-correct passing bar — plus eight new dataset-sourced territory maps and sixteen new timeline events.',
+    color: 'text-rose-400', border: 'border-rose-400/30', bg: 'bg-rose-400/10',
   },
 ];
 
