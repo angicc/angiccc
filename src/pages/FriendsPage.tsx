@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Users, Search, UserPlus, UserCheck, Clock, X, Check, MessageSquare, Swords, Send } from 'lucide-react';
+import { Users, Search, UserPlus, UserCheck, Clock, X, Check, MessageSquare, Swords, Send, Gift } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +10,8 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/features/auth/AuthContext';
 import { getChessRank } from '@/features/ranks/chessRanks';
+import { sendGift, GIFTABLE_TIERS } from '@/features/subscription/gifts';
+import { PLANS } from '@/features/subscription/plans';
 import { DuelArena } from '@/features/friends/DuelArena';
 import {
   loadThread, saveThread, autoReplyFor, loadDuelRecord,
@@ -63,6 +65,8 @@ export default function FriendsPage() {
   const [received, setReceived]       = useState<RequestEntry[]>([]);
   // Messaging + duel state
   const [chatFriend, setChatFriend]   = useState<FriendEntry | null>(null);
+  const [giftFriend, setGiftFriend] = useState<FriendEntry | null>(null);
+  const [giftSentMsg, setGiftSentMsg] = useState('');
   const [duelFriend, setDuelFriend]   = useState<FriendEntry | null>(null);
 
   // Load from localStorage on mount
@@ -270,6 +274,15 @@ export default function FriendsPage() {
                           <Button
                             size="sm"
                             variant="outline"
+                            className="gap-1.5 shrink-0 border-amber-400/40 text-amber-400 hover:bg-amber-400/10"
+                            onClick={() => { setGiftFriend(friend); setGiftSentMsg(''); }}
+                          >
+                            <Gift className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">{t.gift_btn}</span>
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
                             className="gap-1.5 shrink-0"
                             onClick={() => setChatFriend(friend)}
                           >
@@ -404,6 +417,58 @@ export default function FriendsPage() {
       </AnimatePresence>
 
       {/* ── History 1v1 duel arena ── */}
+      {/* ── Gift-a-plan dialog ── */}
+      {giftFriend && currentUser && (
+        <div className="fixed inset-0 z-[1100] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setGiftFriend(null)}>
+          <div className="w-full max-w-md rounded-2xl border border-amber-400/30 bg-card p-6 space-y-4" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center gap-2">
+              <Gift className="w-5 h-5 text-amber-400" />
+              <h3 className="font-heading text-lg font-bold">{t.gift_title}</h3>
+            </div>
+            {giftSentMsg ? (
+              <>
+                <p className="text-sm text-emerald-400">{giftSentMsg}</p>
+                <div className="flex justify-end">
+                  <Button size="sm" onClick={() => setGiftFriend(null)}>OK</Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-muted-foreground">{t.gift_desc.replace('{name}', giftFriend.username)}</p>
+                <div className="grid gap-2">
+                  {GIFTABLE_TIERS.map(tier => {
+                    const plan = PLANS.find(pl => pl.id === tier)!;
+                    return (
+                      <button
+                        key={tier}
+                        className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-left hover:border-amber-400/50 hover:bg-amber-400/5 transition-colors"
+                        onClick={() => {
+                          void sendGift(
+                            { id: currentUser.id, username: currentUser.username },
+                            { id: giftFriend.id, username: giftFriend.username },
+                            tier,
+                          ).then(res => {
+                            if (res.ok) {
+                              setGiftSentMsg(t.gift_sent.replace('{name}', giftFriend.username).replace('{plan}', plan.name));
+                            } else {
+                              setGiftSentMsg(res.error ?? 'Gift failed.');
+                            }
+                          });
+                        }}
+                      >
+                        <span className="text-sm font-semibold">{plan.name}</span>
+                        <span className="text-sm text-muted-foreground">${plan.price}/mo</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-[11px] text-amber-400/90">{t.gift_reward_badge}</p>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {duelFriend && currentUser && (
         <DuelArena
           userId={userId}

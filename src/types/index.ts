@@ -12,6 +12,10 @@ export interface UserSubscription {
   userId: string; tier: SubscriptionTier; startedAt: string;
   renewsAt: string | null; aiMessagesUsedThisMonth: number; currentPeriodStart: string;
   aiMessagesUsedToday?: number; currentDayStart?: string;
+  /** Percent off the next renewal, earned by gifting a plan (consumed at renewal). */
+  nextRenewalDiscountPct?: number;
+  /** Username of the gifter when this tier came from a gift. */
+  giftedBy?: string;
 }
 export interface User {
   id: string; username: string; email: string;

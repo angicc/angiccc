@@ -82,6 +82,13 @@ export default function PricingPage() {
           <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-400/40 bg-emerald-400/10 text-emerald-400 text-sm font-medium">
             <ShieldCheck className="w-4 h-4" />{t.pricing_guarantee}
           </div>
+          {(subscription?.nextRenewalDiscountPct ?? 0) > 0 && (
+            <div className="mt-3 block">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-400 text-sm font-medium">
+                🎁 {t.gift_reward_badge}
+              </span>
+            </div>
+          )}
         </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
           {PLANS.map(plan => {

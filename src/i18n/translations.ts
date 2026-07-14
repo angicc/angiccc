@@ -164,6 +164,8 @@ export type TranslationKeys = {
   // ── Pricing ────────────────────────────────────────────────────
   pricing_title: string; pricing_subtitle: string; pricing_current: string;
   pricing_guarantee: string;
+  gift_btn: string; gift_title: string; gift_desc: string; gift_send: string;
+  gift_sent: string; gift_reward_badge: string;
   pricing_select: string; pricing_month: string; pricing_free_label: string;
   pricing_trial_note: string;
   pricing_back: string;
@@ -544,6 +546,12 @@ const EN: TranslationKeys = {
     // Pricing
     pricing_title: 'Choose Your Learning Plan', pricing_subtitle: 'From casual exploration to mastery-level study — a plan for every learner.',
     pricing_guarantee: '30-day money-back guarantee on every paid plan — full refund, no questions asked.',
+    gift_btn: 'Gift a plan',
+    gift_title: 'Gift a subscription',
+    gift_desc: 'Give {name} one month of a paid plan. Your reward: 50% off your own next renewal.',
+    gift_send: 'Send gift',
+    gift_sent: 'Gift sent! {name} now has one month of {plan} — and you earned 50% off your next renewal.',
+    gift_reward_badge: '50% off your next renewal',
     pricing_current: 'Current Plan', pricing_select: 'Get Started', pricing_month: '/month',
     pricing_trial_note: '5-day free trial — cancel anytime',
     pricing_free_label: 'Free', pricing_back: 'Back',
@@ -928,6 +936,12 @@ export const T: Translations = {
     report_type: 'Tipo de Problema',
     pricing_title: 'Elige tu Plan de Aprendizaje', pricing_subtitle: 'Desde exploración casual hasta estudio avanzado — un plan para cada estudiante.',
     pricing_guarantee: 'Garantía de devolución de 30 días en todos los planes de pago — reembolso completo, sin preguntas.',
+    gift_btn: 'Regalar un plan',
+    gift_title: 'Regalar una suscripción',
+    gift_desc: 'Regala a {name} un mes de un plan de pago. Tu recompensa: 50% de descuento en tu próxima renovación.',
+    gift_send: 'Enviar regalo',
+    gift_sent: '¡Regalo enviado! {name} ahora tiene un mes de {plan} — y tú ganaste 50% de descuento en tu próxima renovación.',
+    gift_reward_badge: '50% de descuento en tu próxima renovación',
     pricing_current: 'Plan Actual', pricing_select: 'Comenzar', pricing_month: '/mes',
     pricing_trial_note: '5 días de prueba gratis — cancela cuando quieras',
     pricing_free_label: 'Gratis', pricing_back: 'Volver',
@@ -1309,6 +1323,12 @@ export const T: Translations = {
     report_type: 'Тип проблемы',
     pricing_title: 'Выберите свой учебный план', pricing_subtitle: 'От лёгкого изучения до мастерства — план для каждого.',
     pricing_guarantee: '30-дневная гарантия возврата денег на все платные планы — полный возврат без лишних вопросов.',
+    gift_btn: 'Подарить план',
+    gift_title: 'Подарить подписку',
+    gift_desc: 'Подарите {name} месяц платного плана. Ваша награда: скидка 50% на ваше следующее продление.',
+    gift_send: 'Отправить подарок',
+    gift_sent: 'Подарок отправлен! У {name} теперь месяц плана {plan} — а вы получили скидку 50% на следующее продление.',
+    gift_reward_badge: 'Скидка 50% на следующее продление',
     pricing_current: 'Текущий план', pricing_select: 'Начать', pricing_month: '/мес',
     pricing_trial_note: '5 дней бесплатно — отмена в любой момент',
     pricing_free_label: 'Бесплатно', pricing_back: 'Назад',
@@ -1690,6 +1710,12 @@ export const T: Translations = {
     report_type: 'Вид на проблем',
     pricing_title: 'Избери го твојот план за учење', pricing_subtitle: 'Од лесно истражување до напредно учење — план за секој ученик.',
     pricing_guarantee: '30-дневна гаранција за враќање пари на секој платен план — целосен поврат, без прашања.',
+    gift_btn: 'Подари план',
+    gift_title: 'Подари претплата',
+    gift_desc: 'Подари му на {name} еден месец платен план. Твојата награда: 50% попуст на твоето следно обновување.',
+    gift_send: 'Испрати подарок',
+    gift_sent: 'Подарокот е испратен! {name} сега има еден месец {plan} — а ти доби 50% попуст на следното обновување.',
+    gift_reward_badge: '50% попуст на следното обновување',
     pricing_current: 'Тековен план', pricing_select: 'Почни', pricing_month: '/месец',
     pricing_trial_note: '5 дена бесплатен пробен период — откажи кога сакаш',
     pricing_free_label: 'Бесплатно', pricing_back: 'Назад',

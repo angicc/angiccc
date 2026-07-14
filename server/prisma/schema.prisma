@@ -55,6 +55,11 @@ model User {
   recvMessages  DirectMessage[]   @relation("msgTo")
   imperiumCampaigns ImperiumCampaign[]
   appReview     AppReview?
+  giftsSent     GiftSubscription[] @relation("giftsSent")
+  giftsReceived GiftSubscription[] @relation("giftsReceived")
+
+  // Gift reward: percent off the gifter's next renewal (consumed at billing).
+  nextRenewalDiscountPct Int @default(0)
 }
 
 // Accepted friendship (undirected pair, stored once with a < b ordering).
@@ -187,6 +192,24 @@ model StudySet {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
+}
+
+// A gifted month of a paid plan. Sending one grants the recipient the tier
+// for one month and books a 50% discount on the gifter's next renewal
+// (User.nextRenewalDiscountPct, consumed by the billing cycle).
+model GiftSubscription {
+  id          String   @id @default(cuid())
+  gifterId    String
+  recipientId String
+  tier        Tier
+  status      String   @default("active") // active | expired
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+  gifter      User     @relation("giftsSent", fields: [gifterId], references: [id], onDelete: Cascade)
+  recipient   User     @relation("giftsReceived", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, status])
+  @@index([gifterId, createdAt])
 }
 
 // One public app review per user, shown on the landing page. Upserted so a
