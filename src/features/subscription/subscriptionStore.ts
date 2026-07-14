@@ -46,8 +46,8 @@ export const canUseAI = (tier: SubscriptionTier, used: number, usedToday = 0): {
     if (usedToday >= 10) return { allowed: false, reason: 'You have used your 10 daily messages. Come back tomorrow or upgrade to Pro Student for 50 messages/month.' };
     return { allowed: true };
   }
-  if (tier === 'pro' && used >= 50) return { allowed: false, reason: 'You have used all 50 AI messages this month. Upgrade to Master for 300 messages/month.' };
-  if (tier === 'master' && used >= 300) return { allowed: false, reason: 'You have used all 300 AI messages this month. Your limit resets next month.' };
+  if (tier === 'pro' && used >= 50) return { allowed: false, reason: 'You have used all 50 AI messages this month. Upgrade to Master for 100 messages/month.' };
+  if (tier === 'master' && used >= 100) return { allowed: false, reason: 'You have used all 100 AI messages this month. Your limit resets next month.' };
   return { allowed: true };
 };
 export const canDownload = (tier: SubscriptionTier) => tier === 'master';

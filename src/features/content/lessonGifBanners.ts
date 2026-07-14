@@ -46,7 +46,8 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   // ── Early Modern ──
   'earlymod-01': gif('1Y3AHgo-ldZLm4rTGUVh24dh5ziQ4tYdP'), // The Renaissance
   'earlymod-03': gif('1l4llnA7Kx1oftiijriZZ-6tL0dqzabf9'), // Scientific Revolution
-  'earlymod-04': gif('1nx-W8ygSh_i5oFZt3f4txy_ZaRLcTL4H'), // Age of Absolutism
+  // Louis XIV's Versailles — Pierre Patel's royal view (Wikimedia Commons GIF)
+  'earlymod-04': 'https://upload.wikimedia.org/wikipedia/commons/8/8a/Palace_of_Versailles.gif',
   'earlymod-05': gif('1m46_lEkfbGYTisPX4eSeXsBQIr_o5X_H'), // Transatlantic Slave Trade
   'earlymod-06': gif('19_-qh7THn8cBMqpwGKTs8LR-FlsH4hZa'), // The Ottoman Empire
   'earlymod-07': gif('1k2gmwPIk6uLBpAP7nt6daAi7euSzBU3o'), // The Age of Revolution

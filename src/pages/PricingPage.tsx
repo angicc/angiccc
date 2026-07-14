@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Check, Crown, Zap, BookOpen, ArrowLeft, Star } from 'lucide-react';
+import { Check, Crown, Zap, BookOpen, ArrowLeft, Star, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -79,6 +79,9 @@ export default function PricingPage() {
         <div className="text-center mb-12">
           <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">{t.pricing_title}</h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t.pricing_subtitle}</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-400/40 bg-emerald-400/10 text-emerald-400 text-sm font-medium">
+            <ShieldCheck className="w-4 h-4" />{t.pricing_guarantee}
+          </div>
         </div>
         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
           {PLANS.map(plan => {

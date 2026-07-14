@@ -32,7 +32,7 @@ export function AppShell({ children, compact }: { children: React.ReactNode; com
       {/* Zone A — sidebar (Layer 0, blends into the base canvas) */}
       <Sidebar className="hidden lg:flex relative z-10" />
       {/* Zones B + C — the raised content panel (Layer 1) */}
-      <div className="flex flex-col flex-1 min-w-0 relative z-10 overflow-hidden bg-layer-1/95 lg:rounded-tl-2xl">
+      <div className="flex flex-col flex-1 min-w-0 relative z-10 overflow-hidden bg-layer-0 lg:rounded-tl-2xl">
         <TopBar />
         <main ref={mainRef} className={cn(
           'flex-1 animate-fade-in scroll-smooth',

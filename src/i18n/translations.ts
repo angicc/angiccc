@@ -163,6 +163,7 @@ export type TranslationKeys = {
   report_submit: string; report_thanks: string; report_type: string;
   // ── Pricing ────────────────────────────────────────────────────
   pricing_title: string; pricing_subtitle: string; pricing_current: string;
+  pricing_guarantee: string;
   pricing_select: string; pricing_month: string; pricing_free_label: string;
   pricing_trial_note: string;
   pricing_back: string;
@@ -542,6 +543,7 @@ const EN: TranslationKeys = {
     report_type: 'Problem Type',
     // Pricing
     pricing_title: 'Choose Your Learning Plan', pricing_subtitle: 'From casual exploration to mastery-level study — a plan for every learner.',
+    pricing_guarantee: '30-day money-back guarantee on every paid plan — full refund, no questions asked.',
     pricing_current: 'Current Plan', pricing_select: 'Get Started', pricing_month: '/month',
     pricing_trial_note: '5-day free trial — cancel anytime',
     pricing_free_label: 'Free', pricing_back: 'Back',
@@ -925,6 +927,7 @@ export const T: Translations = {
     report_submit: 'Enviar Reporte', report_thanks: '¡Gracias! Tu reporte ha sido recibido.',
     report_type: 'Tipo de Problema',
     pricing_title: 'Elige tu Plan de Aprendizaje', pricing_subtitle: 'Desde exploración casual hasta estudio avanzado — un plan para cada estudiante.',
+    pricing_guarantee: 'Garantía de devolución de 30 días en todos los planes de pago — reembolso completo, sin preguntas.',
     pricing_current: 'Plan Actual', pricing_select: 'Comenzar', pricing_month: '/mes',
     pricing_trial_note: '5 días de prueba gratis — cancela cuando quieras',
     pricing_free_label: 'Gratis', pricing_back: 'Volver',
@@ -1305,6 +1308,7 @@ export const T: Translations = {
     report_submit: 'Отправить', report_thanks: 'Спасибо! Ваш отчёт получен.',
     report_type: 'Тип проблемы',
     pricing_title: 'Выберите свой учебный план', pricing_subtitle: 'От лёгкого изучения до мастерства — план для каждого.',
+    pricing_guarantee: '30-дневная гарантия возврата денег на все платные планы — полный возврат без лишних вопросов.',
     pricing_current: 'Текущий план', pricing_select: 'Начать', pricing_month: '/мес',
     pricing_trial_note: '5 дней бесплатно — отмена в любой момент',
     pricing_free_label: 'Бесплатно', pricing_back: 'Назад',
@@ -1685,6 +1689,7 @@ export const T: Translations = {
     report_submit: 'Испрати Пријава', report_thanks: 'Благодариме! Твојата пријава е примена.',
     report_type: 'Вид на проблем',
     pricing_title: 'Избери го твојот план за учење', pricing_subtitle: 'Од лесно истражување до напредно учење — план за секој ученик.',
+    pricing_guarantee: '30-дневна гаранција за враќање пари на секој платен план — целосен поврат, без прашања.',
     pricing_current: 'Тековен план', pricing_select: 'Почни', pricing_month: '/месец',
     pricing_trial_note: '5 дена бесплатен пробен период — откажи кога сакаш',
     pricing_free_label: 'Бесплатно', pricing_back: 'Назад',
