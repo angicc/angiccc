@@ -66,16 +66,36 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     description: 'The Fertile Crescent — from Mesopotamia\'s Tigris-Euphrates to Egypt\'s Nile — hosted humanity\'s first cities, writing systems, and law codes.',
     polygons: [
       {
+        // Faithful Tigris–Euphrates basin: a crescent hugging both rivers from
+        // the Taurus foothills (Carchemish/Cizre) down the Tigris (Mosul,
+        // Baghdad) and back up the Euphrates (Ur, Babylon, Deir ez-Zor). Traced
+        // from real river/city coordinates, not a rectangle over the desert.
         label: 'Mesopotamia (Tigris-Euphrates)',
         color: '#f59e0b',
         fillOpacity: 0.25,
-        coords: [[38,38],[38,44],[36,48],[33,48],[30,47],[29,46],[30,44],[31,42],[33,39],[35,38],[38,38]],
+        coords: [
+          [37.15,38.30],[37.35,40.00],[37.30,41.60],[37.20,42.60],
+          [36.30,43.10],[35.00,44.40],[33.35,44.60],[32.00,46.10],
+          [31.00,47.35],[30.45,47.90],[30.00,48.45],[29.95,48.55],
+          [30.55,47.10],[31.55,45.55],[32.55,44.30],[34.05,42.00],
+          [35.35,40.10],[36.55,38.85],[37.15,38.30],
+        ],
       },
       {
+        // Faithful Nile: a thin valley ribbon from Aswan north, flaring into the
+        // Delta triangle (Alexandria–Damietta–Port Said). Egypt's real inhabited
+        // land follows the river, not a blob across the Western Desert.
         label: 'Ancient Egypt (Nile Valley)',
         color: '#10b981',
         fillOpacity: 0.25,
-        coords: [[31,33],[32,32],[31,30],[30,29],[28,29],[26,30],[24,32],[22,33],[22,31],[23,29],[25,28],[29,28],[31,31],[31,33]],
+        coords: [
+          [24.02,32.90],[25.70,32.35],[26.55,31.85],[27.20,30.95],
+          [28.30,30.70],[29.30,30.90],[30.05,30.95],[30.65,30.15],
+          [31.20,29.90],[31.55,30.45],[31.50,31.30],[31.40,31.85],
+          [31.25,32.30],[30.75,32.00],[30.10,31.55],[29.30,31.35],
+          [28.30,31.20],[27.20,31.55],[26.20,32.40],[25.70,33.00],
+          [24.02,33.25],[24.02,32.90],
+        ],
       },
     ],
     routes: [
@@ -84,7 +104,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
         nameI18n: { es: 'Corredor Comercial del Éufrates', ru: 'Торговый коридор Евфрата', mk: 'Трговски коридор Еуфрат' },
         type: 'trade',
         color: '#f59e0b',
-        points: [[38,38],[36,40],[34,42],[32,44],[30.5,47.8]],
+        points: [[37.0,38.2],[35.35,40.1],[34.0,42.0],[32.55,44.3],[31.0,46.2],[30.45,47.9]],
       },
       {
         name: 'Egypt–Levant Trade Route',
