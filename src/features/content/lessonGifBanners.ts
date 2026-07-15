@@ -67,7 +67,19 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   'modern-08': 'https://upload.wikimedia.org/wikipedia/commons/d/dc/USSR_Map_timeline_Slower.gif',
   // Animated map of the 1947 Partition of British India (Wikipedia)
   'modern-09': 'https://upload.wikimedia.org/wikipedia/en/c/c1/India-partition.GIF',
+  // ── Prehistoric Ages ──
+  // Referenced via Special:FilePath, which resolves by filename (no fragile MD5
+  // hash path). Any that fail to load fall through to the lesson's static image
+  // and then the era hero — the banner can never break.
+  'prehistoric-01': fp('Human_evolution_scheme.gif'),      // human evolution animation
+  'prehistoric-04': fp('Spreading_homo_sapiens_ver2.gif'), // Out-of-Africa migration animation
+  'prehistoric-07': fp('Mammuthus_trogontherii_-_animation.gif'), // mammoth
 };
+
+/** Wikimedia Special:FilePath resolves a file by name, avoiding hash-path rot. */
+function fp(filename: string): string {
+  return `https://commons.wikimedia.org/wiki/Special:FilePath/${filename}`;
+}
 
 // ── GIF banners hosted on external gallery pages (e.g. makeagif.com) ─────────
 // Some banner GIFs live on gallery pages whose direct media URL embeds an

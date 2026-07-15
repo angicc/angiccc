@@ -299,6 +299,7 @@ function ModernCavalry(p: SpriteProps) {
 // ═══════════════════════════ Registry + banner ═══════════════════════════
 
 const SPRITES: Record<EraId, Record<UnitClass, (p: SpriteProps) => JSX.Element>> = {
+  prehistoric: { infantry: AncientInfantry, ranged: AncientRanged, cavalry: AncientCavalry },
   ancient: { infantry: AncientInfantry, ranged: AncientRanged, cavalry: AncientCavalry },
   medieval: { infantry: MedievalInfantry, ranged: MedievalRanged, cavalry: MedievalCavalry },
   'early-modern': { infantry: EarlyModernInfantry, ranged: EarlyModernRanged, cavalry: EarlyModernCavalry },

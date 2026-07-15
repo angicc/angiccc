@@ -19,6 +19,10 @@ const LESSON_BANNER_OVERRIDES: Record<string, string> = {
 
 /** Era hero images — fixed, reliable, one per era. Final real-image stage. */
 export const ERA_HERO_IMAGES: Record<string, string> = {
+  // Stonehenge — a famous Wikimedia file referenced via Special:FilePath, which
+  // redirects by filename (no fragile MD5 hash path) — anchors the prehistoric
+  // fallback chain so a prehistoric lesson banner can never render blank.
+  prehistoric:    'https://commons.wikimedia.org/wiki/Special:FilePath/Stonehenge2007_07_30.jpg',
   ancient:        'https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=1200&q=60',
   'middle-ages':  'https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&w=1200&q=60',
   'early-modern': 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1200&q=60',

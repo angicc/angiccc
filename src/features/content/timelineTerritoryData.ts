@@ -34,7 +34,7 @@ export interface TerritoryPolygon {
 
 export interface TerritoryTopic {
   id: string;
-  era: 'ancient' | 'medieval' | 'early-modern' | 'modern';
+  era: 'prehistoric' | 'ancient' | 'medieval' | 'early-modern' | 'modern';
   period: string;
   yearRange: [number, number];
   center: [number, number];
@@ -50,6 +50,54 @@ export interface TerritoryTopic {
 }
 
 export const TERRITORY_TOPICS: TerritoryTopic[] = [
+
+  // ══════════════════════════════════════════════════════
+  // PREHISTORIC AGES
+  // ══════════════════════════════════════════════════════
+  {
+    id: 'human-origins',
+    era: 'prehistoric',
+    period: '300,000 – 10,000 BCE',
+    yearRange: [-300000, -10000],
+    center: [25, 40],
+    zoom: 2,
+    title: 'Out of Africa — The Human Journey',
+    titleI18n: { es: 'Fuera de África — El viaje humano', ru: 'Из Африки — путь человечества', mk: 'Од Африка — патувањето на човештвото', de: 'Aus Afrika — die Reise der Menschheit', fr: 'Hors d’Afrique — le voyage humain' },
+    description: 'Homo sapiens arose in Africa ~300,000 years ago and, from ~60,000 years ago, spread to nearly every corner of the Earth — reaching Australia by sea and the Americas across the Beringia land bridge.',
+    polygons: [
+      {
+        // The African homeland — where humanity spent most of its existence.
+        label: 'African Homeland of Homo sapiens',
+        color: '#fb923c',
+        fillOpacity: 0.22,
+        coords: [
+          [37,10],[33,11],[31,20],[24,35],[12,43],[11,51],[-1,42],[-11,40],
+          [-26,33],[-34,26],[-34,19],[-29,16],[-17,12],[-5,9],[4,9],[6,3],
+          [10,-16],[21,-17],[31,-10],[36,-6],[37,10],
+        ],
+      },
+    ],
+    routes: [
+      { name: 'Out of Africa (~60,000 years ago)', nameI18n: { es: 'Fuera de África (~60 000 años)', ru: 'Из Африки (~60 000 лет назад)', mk: 'Од Африка (~60.000 г.)', de: 'Aus Afrika (~vor 60.000 Jahren)', fr: 'Hors d’Afrique (~il y a 60 000 ans)' }, type: 'trade', color: '#fb923c', points: [[8,40],[13,43],[20,45],[27,52],[28,63],[27,72],[24,85],[20,98]] },
+      { name: 'Journey to Australia (~50,000 years ago)', nameI18n: { es: 'Viaje a Australia (~50 000 años)', ru: 'Путь в Австралию (~50 000 лет назад)', mk: 'Пат кон Австралија (~50.000 г.)', de: 'Reise nach Australien (~vor 50.000 Jahren)', fr: 'Voyage vers l’Australie (~il y a 50 000 ans)' }, type: 'trade', color: '#22d3ee', points: [[20,98],[8,105],[-2,120],[-9,130],[-20,138],[-33,143]] },
+      { name: 'Into Europe (~45,000 years ago)', nameI18n: { es: 'Hacia Europa (~45 000 años)', ru: 'В Европу (~45 000 лет назад)', mk: 'Во Европа (~45.000 г.)', de: 'Nach Europa (~vor 45.000 Jahren)', fr: 'Vers l’Europe (~il y a 45 000 ans)' }, type: 'trade', color: '#a78bfa', points: [[28,45],[36,36],[41,22],[45,8],[47,2]] },
+      { name: 'Peopling of the Americas (~15,000 years ago)', nameI18n: { es: 'Poblamiento de América (~15 000 años)', ru: 'Заселение Америки (~15 000 лет назад)', mk: 'Населување на Америка (~15.000 г.)', de: 'Besiedlung Amerikas (~vor 15.000 Jahren)', fr: 'Peuplement des Amériques (~il y a 15 000 ans)' }, type: 'trade', color: '#34d399', points: [[45,90],[55,110],[64,150],[66,-168],[60,-145],[48,-115],[30,-102],[10,-80],[-12,-70],[-34,-64]] },
+    ],
+    markers: [
+      { name: 'Jebel Irhoud', type: 'landmark', lat: 31.85, lng: -8.87, note: 'Oldest known Homo sapiens fossils (~300,000 years ago)', year: -300000 },
+      { name: 'Olduvai Gorge', type: 'landmark', lat: -2.99, lng: 35.35, note: 'The "Cradle of Humankind" — early hominin fossils and Oldowan tools', year: -1800000 },
+      { name: 'Blombos Cave', type: 'landmark', lat: -34.4, lng: 21.2, note: 'Engraved ochre and shell beads — early symbolic thought (~75,000 years ago)', year: -75000 },
+      { name: 'Denisova Cave', type: 'landmark', lat: 51.4, lng: 84.68, note: 'Home of the Denisovans — a human population known mainly from DNA', year: -50000 },
+      { name: 'Chauvet Cave', type: 'landmark', lat: 44.4, lng: 4.42, note: 'Painted lions and rhinos ~36,000 years old', year: -36000 },
+      { name: 'Lascaux', type: 'landmark', lat: 45.05, lng: 1.17, note: 'The Great Hall of the Bulls — Ice Age cave art (~17,000 years ago)', year: -17000 },
+      { name: 'Lake Mungo', type: 'landmark', lat: -33.75, lng: 143.05, note: 'Early human burials in Australia (~42,000 years ago)', year: -42000 },
+      { name: 'Zhoukoudian', type: 'landmark', lat: 39.68, lng: 115.92, note: '"Peking Man" — Homo erectus site near Beijing', year: -700000 },
+      { name: 'Göbekli Tepe', type: 'religious', lat: 37.22, lng: 38.92, note: 'Oldest monumental temple on Earth (~9500 BCE)', year: -9500 },
+      { name: 'Çatalhöyük', type: 'city', lat: 37.67, lng: 32.83, note: 'One of the first proto-cities — entered through the roof (~7500 BCE)', year: -7500 },
+      { name: 'Clovis', type: 'landmark', lat: 34.4, lng: -103.2, note: 'Distinctive fluted spear points of early Americans (~13,000 years ago)', year: -13000 },
+      { name: 'Monte Verde', type: 'landmark', lat: -41.5, lng: -73.2, note: 'Early human settlement in southern Chile (~14,500 years ago)', year: -14500 },
+    ],
+  },
 
   // ══════════════════════════════════════════════════════
   // ANCIENT WORLD

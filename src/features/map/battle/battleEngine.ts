@@ -65,6 +65,12 @@ export interface EraFlavor {
 }
 
 export const ERA_FLAVOR: Record<EraId, EraFlavor> = {
+  prehistoric: {
+    unitNames: { infantry: 'Spear hunters', ranged: 'Bow hunters', cavalry: 'Skirmishers' },
+    commanderTitle: 'Chieftain',
+    doctrine: [0.48, 0.22, 0.30],
+    warCry: 'To the hunt!',
+  },
   ancient: {
     unitNames: { infantry: 'Spear phalanx', ranged: 'Slingers', cavalry: 'Chariots' },
     commanderTitle: 'Warlord',

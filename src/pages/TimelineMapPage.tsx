@@ -36,11 +36,12 @@ import { toast } from 'sonner';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const ERA_COLORS = { ancient: 'text-amber-400', medieval: 'text-blue-400', 'early-modern': 'text-emerald-400', modern: 'text-rose-400' } as const;
-const ERA_BG    = { ancient: 'bg-amber-400/10', medieval: 'bg-blue-400/10', 'early-modern': 'bg-emerald-400/10', modern: 'bg-rose-400/10' } as const;
-const ERA_BORDER= { ancient: 'border-amber-400/40', medieval: 'border-blue-400/40', 'early-modern': 'border-emerald-400/40', modern: 'border-rose-400/40' } as const;
+const ERA_COLORS = { prehistoric: 'text-orange-400', ancient: 'text-amber-400', medieval: 'text-blue-400', 'early-modern': 'text-emerald-400', modern: 'text-rose-400' } as const;
+const ERA_BG    = { prehistoric: 'bg-orange-400/10', ancient: 'bg-amber-400/10', medieval: 'bg-blue-400/10', 'early-modern': 'bg-emerald-400/10', modern: 'bg-rose-400/10' } as const;
+const ERA_BORDER= { prehistoric: 'border-orange-400/40', ancient: 'border-amber-400/40', medieval: 'border-blue-400/40', 'early-modern': 'border-emerald-400/40', modern: 'border-rose-400/40' } as const;
 
 const ERA_LABELS: Record<string, Record<Language, string>> = {
+  prehistoric:    { en: 'Prehistoric Ages', es: 'Edades prehistóricas', ru: 'Доисторические эпохи', mk: 'Праисториски доба', de: 'Urgeschichte', fr: 'Âges préhistoriques' },
   ancient:        { en: 'Ancient World',  es: 'Mundo Antiguo',          ru: 'Древний мир',          mk: 'Античко доба', de: 'Antike Welt', fr: 'Monde antique' },
   medieval:       { en: 'Middle Ages',    es: 'Edad Media',              ru: 'Средние века',          mk: 'Среден век', de: 'Mittelalter', fr: 'Moyen Âge' },
   'early-modern': { en: 'Early Modern',   es: 'Época Moderna Temprana',  ru: 'Раннее Новое время',   mk: 'Рано модерно доба', de: 'Frühe Neuzeit', fr: 'Époque moderne' },
@@ -469,7 +470,7 @@ export default function TimelineMapPage() {
 
   function handleTopicClick(topic: TerritoryTopic, isActive: boolean) {
     if (mode === 'campaign') {
-      if (!allowedCampaignEras.includes(topic.era)) { toast.error(t.tmap_camp_era_locked); return; }
+      if (!(allowedCampaignEras as readonly string[]).includes(topic.era)) { toast.error(t.tmap_camp_era_locked); return; }
       const eraTopics = getEraCampaignTopics(topic.era);
       if (!isStageUnlocked(campaign, eraTopics, topic.id)) { toast.error(t.tmap_camp_locked); return; }
       setSelected(topic);
@@ -1100,7 +1101,7 @@ export default function TimelineMapPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode]);
 
-  const eras = ['ancient', 'medieval', 'early-modern', 'modern'] as const;
+  const eras = ['prehistoric', 'ancient', 'medieval', 'early-modern', 'modern'] as const;
   const currentStyle = CART_STYLES.find(s => s.id === styleId)!;
 
   const storyCurrentMarker = storyMarkers[storyIdx];
@@ -1161,7 +1162,7 @@ export default function TimelineMapPage() {
           <div className="flex-1 overflow-y-auto p-2 space-y-3">
             {eras.map(era => {
               const isCampaign = mode === 'campaign';
-              const eraAllowed = allowedCampaignEras.includes(era);
+              const eraAllowed = (allowedCampaignEras as readonly string[]).includes(era);
               const campaignTopics = isCampaign ? getEraCampaignTopics(era) : null;
               const topics = campaignTopics ?? TERRITORY_TOPICS.filter(tp => tp.era === era);
               return (
@@ -1564,7 +1565,7 @@ export default function TimelineMapPage() {
 
             // ── HQ: no stage selected ──
             if (!selected) {
-              const eraRows = eras.filter(e => allowedCampaignEras.includes(e)).map(e => ({ era: e, p: eraProgress(campaign, getEraCampaignTopics(e)) }));
+              const eraRows = eras.filter(e => (allowedCampaignEras as readonly string[]).includes(e)).map(e => ({ era: e, p: eraProgress(campaign, getEraCampaignTopics(e)) }));
               return (
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] w-[92%] max-w-lg bg-black/88 backdrop-blur-md text-white p-4 rounded-2xl border border-white/15 shadow-2xl">
                   <div className="flex items-center gap-2 mb-1">

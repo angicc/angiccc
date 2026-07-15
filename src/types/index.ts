@@ -33,8 +33,8 @@ export interface ActivityEvent {
   type: 'lesson_complete' | 'quiz_complete' | 'achievement_unlock' | 'ai_chat';
   title: string; xpGained: number; timestamp: string;
 }
-export type EraId = 'ancient' | 'middle-ages' | 'early-modern' | 'modern';
-export type EraIcon = 'scroll' | 'castle' | 'compass' | 'industry';
+export type EraId = 'prehistoric' | 'ancient' | 'middle-ages' | 'early-modern' | 'modern';
+export type EraIcon = 'flame' | 'scroll' | 'castle' | 'compass' | 'industry';
 export interface Era {
   id: EraId; name: string; shortName: string; dateRange: string;
   description: string; icon: EraIcon; color: string; bgGradient: string;
