@@ -5,6 +5,8 @@ import { EARLYMOD_MODERN_BODY_TRANS } from './lessonBodyTranslations_2';
 import { DEFR_LESSON, DEFR_ERA } from './lessonMetaDeFr';
 import { WAVE3_BODY_TRANS } from './lessonBodyTranslations_3';
 import { DEFR_BODY } from './lessonBodyDeFr';
+import { PREHISTORIC_ERA_TRANS, PREHISTORIC_LESSON_TRANS } from './prehistoricTranslations';
+import { PREHISTORIC_BODY_TRANS } from './prehistoricBodies';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -12,6 +14,7 @@ const BODY_TRANS: Record<string, Partial<Record<ContentLang, string[]>>> = {
   ...ANCIENT_MEDIEVAL_BODY_TRANS,
   ...EARLYMOD_MODERN_BODY_TRANS,
   ...WAVE3_BODY_TRANS,
+  ...PREHISTORIC_BODY_TRANS,
 };
 
 // German + French section bodies merged per lesson (added incrementally).
@@ -235,6 +238,12 @@ for (const [id, lc] of Object.entries(DEFR_LESSON)) {
 }
 for (const [era, ec] of Object.entries(DEFR_ERA)) {
   ERA_TRANS[era] = { ...ERA_TRANS[era], de: ec.de, fr: ec.fr };
+}
+
+// Prehistoric era metadata (all five languages live in one catalog).
+ERA_TRANS['prehistoric'] = { ...ERA_TRANS['prehistoric'], ...PREHISTORIC_ERA_TRANS };
+for (const [id, langs] of Object.entries(PREHISTORIC_LESSON_TRANS)) {
+  LESSON_TRANS[id] = { ...LESSON_TRANS[id], ...langs };
 }
 
 export function getTranslatedEra(era: Era, lang: Language): Era {
