@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { ParticleCanvas } from '@/components/shared/ParticleCanvas';
+import { GoldenDustOfTime } from '@/components/shared/GoldenDustOfTime';
 import { cn } from '@/lib/utils';
 
 export function AppShell({ children, compact }: { children: React.ReactNode; compact?: boolean }) {
@@ -28,6 +29,8 @@ export function AppShell({ children, compact }: { children: React.ReactNode; com
 
   return (
     <div className="flex h-screen bg-layer-0 relative overflow-hidden">
+      {/* Ambient layer 0 — Golden Dust of Time drifts behind the whole shell. */}
+      <GoldenDustOfTime position="fixed" zIndex={0} />
       <ParticleCanvas />
       {/* Zone A — sidebar (Layer 0, blends into the base canvas) */}
       <Sidebar className="hidden lg:flex relative z-10" />

@@ -15,6 +15,7 @@ import { LANGUAGE_LABELS, type Language } from '@/i18n/translations';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/shared/Logo';
+import { GoldenDustOfTime } from '@/components/shared/GoldenDustOfTime';
 import { streamChatResponse, LANDING_SYSTEM_PROMPT } from '@/services/aiGateway';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
 
@@ -674,7 +675,10 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background overflow-x-hidden relative isolate">
+      {/* Ambient — Golden Dust of Time drifts behind the entire landing page. */}
+      <GoldenDustOfTime position="fixed" zIndex={0} />
+      <div className="relative z-10">
 
       {/* ── Nav ── */}
       <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/90 backdrop-blur-sm">
@@ -997,6 +1001,7 @@ export default function LandingPage() {
           <span>© {new Date().getFullYear()} Historify. {L.footerRights}</span>
         </div>
       </footer>
+      </div>
     </div>
   );
 }
