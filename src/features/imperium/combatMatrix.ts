@@ -276,7 +276,9 @@ export interface BattleSide {
 
 export interface AnimationTrigger {
   tick: number;
-  kind: 'volley' | 'melee' | 'charge' | 'shatter' | 'waver' | 'rally' | 'rout';
+  // 'brace' is the Shield Wall (hold) signature: the line locks, raises shields
+  // and deflects the incoming blow — its own distinct motion, not a melee jab.
+  kind: 'volley' | 'melee' | 'charge' | 'brace' | 'shatter' | 'waver' | 'rally' | 'rout';
   side: 'attacker' | 'defender';
   leadClass: UnitClass;
   magnitude: number;        // 0–1 for the animation layer to scale intensity
@@ -303,6 +305,120 @@ export interface BattleResolution {
 }
 
 const TACTIC_LEAD: Record<Tactic, UnitClass> = { charge: 'cavalry', volley: 'ranged', hold: 'infantry' };
+
+/** Map a chosen tactic to its distinct battlefield animation signature. */
+function tacticKind(t: Tactic): AnimationTrigger['kind'] {
+  return t === 'volley' ? 'volley' : t === 'charge' ? 'charge' : 'brace';
+}
+
+// ── Clio's Tactical Read ─────────────────────────────────────────────────────
+// A deterministic, explainable evaluation of the player's chosen tactic against
+// the coming engagement. This is the "intellectual" spine of Chronos Imperium:
+// the player is not rolling dice, they are reasoning about a counter-triangle,
+// terrain, weather and the enemy's doctrine — and Clio grades that reasoning.
+
+export type TacticGrade = 'S' | 'A' | 'B' | 'C' | 'D';
+
+export interface TacticReason {
+  key: string;           // i18n key for the clause
+  delta: number;         // signed contribution to the score
+}
+
+export interface TacticRead {
+  tactic: Tactic;
+  score: number;         // ~ -60..+70, centred near 0
+  grade: TacticGrade;
+  headlineKey: string;   // one-line verdict i18n key
+  reasons: TacticReason[];
+  counters: Tactic;      // what THIS tactic beats
+  counteredBy: Tactic;   // what beats this tactic
+}
+
+export interface TacticReadInput {
+  tactic: Tactic;
+  enemyTactic: Tactic;
+  weather: Weather;
+  terrain: TerrainKind;
+  attackerUphill?: boolean;   // player attacking into high ground / mountain
+  crossingRiver?: boolean;
+  leaderSignature?: Tactic;   // the player's leader's signature tactic, if any
+}
+
+function gradeFor(score: number): TacticGrade {
+  if (score >= 45) return 'S';
+  if (score >= 22) return 'A';
+  if (score >= 4) return 'B';
+  if (score >= -16) return 'C';
+  return 'D';
+}
+
+/**
+ * Evaluate a tactic and return an explained grade. Pure + deterministic so the
+ * UI can show it live as the player toggles tactics, and Clio can narrate it.
+ */
+export function rateTactic(input: TacticReadInput): TacticRead {
+  const { tactic, enemyTactic, weather, terrain } = input;
+  const reasons: TacticReason[] = [];
+  let score = 0;
+
+  // 1. The counter-triangle — the heart of the decision.
+  if (tacticBeats(tactic, enemyTactic)) {
+    reasons.push({ key: 'imp_read_triangle_win', delta: 30 });
+    score += 30;
+  } else if (tacticBeats(enemyTactic, tactic)) {
+    reasons.push({ key: 'imp_read_triangle_lose', delta: -28 });
+    score -= 28;
+  } else {
+    reasons.push({ key: 'imp_read_triangle_mirror', delta: 0 });
+  }
+
+  // 2. Terrain synergy / friction.
+  if (tactic === 'charge') {
+    if (terrain === 'plain') { reasons.push({ key: 'imp_read_charge_open', delta: 16 }); score += 16; }
+    if (terrain === 'mountain' || input.attackerUphill) { reasons.push({ key: 'imp_read_charge_uphill', delta: -22 }); score -= 22; }
+    if (terrain === 'river' || input.crossingRiver) { reasons.push({ key: 'imp_read_charge_river', delta: -18 }); score -= 18; }
+    if (terrain === 'coast') { reasons.push({ key: 'imp_read_charge_broken', delta: -8 }); score -= 8; }
+  } else if (tactic === 'volley') {
+    if (terrain === 'plain' || terrain === 'desert') { reasons.push({ key: 'imp_read_volley_fields', delta: 12 }); score += 12; }
+    if (terrain === 'mountain') { reasons.push({ key: 'imp_read_volley_cover', delta: -10 }); score -= 10; }
+  } else { // hold — Shield Wall
+    if (terrain === 'mountain' || input.attackerUphill) { reasons.push({ key: 'imp_read_hold_highground', delta: 18 }); score += 18; }
+    if (terrain === 'river' || input.crossingRiver) { reasons.push({ key: 'imp_read_hold_chokepoint', delta: 15 }); score += 15; }
+    if (terrain === 'plain') { reasons.push({ key: 'imp_read_hold_exposed', delta: -6 }); score -= 6; }
+  }
+
+  // 3. Weather.
+  if (tactic === 'volley' && (weather === 'rain' || weather === 'storm')) {
+    reasons.push({ key: 'imp_read_volley_rain', delta: -20 }); score -= 20;
+  }
+  if (tactic === 'charge' && weather === 'heat') {
+    reasons.push({ key: 'imp_read_charge_heat', delta: -12 }); score -= 12;
+  }
+  if (tactic === 'charge' && weather === 'snow') {
+    reasons.push({ key: 'imp_read_charge_snow', delta: -10 }); score -= 10;
+  }
+  if (tactic === 'hold' && (weather === 'storm' || weather === 'snow')) {
+    reasons.push({ key: 'imp_read_hold_weather', delta: 8 }); score += 8;
+  }
+
+  // 4. Leader doctrine — fighting to your marshal's strength.
+  if (input.leaderSignature && input.leaderSignature === tactic) {
+    reasons.push({ key: 'imp_read_leader_signature', delta: 12 }); score += 12;
+  }
+
+  const grade = gradeFor(score);
+  const headlineKey =
+    grade === 'S' ? 'imp_read_headline_s' :
+    grade === 'A' ? 'imp_read_headline_a' :
+    grade === 'B' ? 'imp_read_headline_b' :
+    grade === 'C' ? 'imp_read_headline_c' : 'imp_read_headline_d';
+
+  return {
+    tactic, score, grade, headlineKey, reasons,
+    counters: TRIANGLE[tactic],
+    counteredBy: (Object.keys(TRIANGLE) as Tactic[]).find(t => TRIANGLE[t] === tactic)!,
+  };
+}
 
 function rosterPower(rosterId: string, tactic: Tactic): number {
   const roster = ROSTERS.find(r => r.id === rosterId) ?? ROSTERS[0];
@@ -358,14 +474,14 @@ export function resolveBattle(
     const triggers: AnimationTrigger[] = [
       {
         tick,
-        kind: a.tactic === 'volley' ? 'volley' : a.tactic === 'charge' ? 'charge' : 'melee',
+        kind: tacticKind(a.tactic),
         side: 'attacker',
         leadClass: TACTIC_LEAD[a.tactic],
         magnitude: Math.min(1, atkDamage / 20),
       },
       {
         tick,
-        kind: d.tactic === 'volley' ? 'volley' : d.tactic === 'charge' ? 'charge' : 'melee',
+        kind: tacticKind(d.tactic),
         side: 'defender',
         leadClass: TACTIC_LEAD[d.tactic],
         magnitude: Math.min(1, defDamage / 20),

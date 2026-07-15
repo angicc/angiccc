@@ -77,10 +77,20 @@ export function Battle3D({ ticks, tickIdx, attackerStrength, defenderStrength, w
     const dir = side === 'attacker' ? -1 : 1; // attacker pushes "up" the field
     if (routedSide === side) return { y: dir * -140, opacity: 0.15, transition: { duration: 1.4 } };
     if (has(side, 'charge')) return { y: [0, dir * 46, dir * 18], transition: { duration: 0.65, times: [0, 0.55, 1] } };
+    // Shield Wall (brace): the line does NOT lunge — it plants, shocks backward a
+    // hair as the blow lands, then re-sets. A held, immovable posture.
+    if (has(side, 'brace')) return { y: [0, dir * -6, dir * -2, 0], scale: [1, 0.985, 1], transition: { duration: 0.7, times: [0, 0.3, 0.6, 1] } };
     if (has(side, 'melee')) return { y: [0, dir * 14, 0], transition: { duration: 0.5 } };
     if (has(side, 'waver')) return { x: [0, -7, 7, -4, 0], transition: { duration: 0.6 } };
     return { y: 0, x: 0 };
   };
+
+  const braceAtk = has('attacker', 'brace');
+  const braceDef = has('defender', 'brace');
+  // Deflection sparks: arrows raining onto a braced shield wall skid off it.
+  const deflect: { key: string; side: 'attacker' | 'defender' }[] = [];
+  if (braceAtk && has('defender', 'volley')) for (let i = 0; i < 6; i++) deflect.push({ key: `da-${tickIdx}-${i}`, side: 'attacker' });
+  if (braceDef && has('attacker', 'volley')) for (let i = 0; i < 6; i++) deflect.push({ key: `dd-${tickIdx}-${i}`, side: 'defender' });
 
   return (
     <div className="imp3d-stage" data-weather={weather}>
@@ -106,6 +116,48 @@ export function Battle3D({ ticks, tickIdx, attackerStrength, defenderStrength, w
           ))}
         </motion.div>
 
+        {/* Shield Wall barriers — a locked wall of raised shields that slams up
+            in front of the bracing line, shimmers with a metallic parry, and
+            holds. This is the Shield Wall's own distinct, dynamic signature. */}
+        <AnimatePresence>
+          {braceDef && (
+            <motion.div key={`wall-def-${tickIdx}`} className="imp3d-wall imp3d-wall-def"
+              initial={{ opacity: 0, scaleX: 0.5, y: -10 }}
+              animate={{ opacity: [0, 1, 0.85], scaleX: [0.5, 1.06, 1], y: [-10, 0, 0] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.55, times: [0, 0.55, 1] }}>
+              <span className="imp3d-wall-shine" />
+              {Array.from({ length: 8 }).map((_, i) => <i key={i} className="imp3d-shield" style={{ left: `${4 + i * 12}%` }} />)}
+            </motion.div>
+          )}
+          {braceAtk && (
+            <motion.div key={`wall-atk-${tickIdx}`} className="imp3d-wall imp3d-wall-atk"
+              initial={{ opacity: 0, scaleX: 0.5, y: 10 }}
+              animate={{ opacity: [0, 1, 0.85], scaleX: [0.5, 1.06, 1], y: [10, 0, 0] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.55, times: [0, 0.55, 1] }}>
+              <span className="imp3d-wall-shine" />
+              {Array.from({ length: 8 }).map((_, i) => <i key={i} className="imp3d-shield" style={{ left: `${4 + i * 12}%` }} />)}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Deflection sparks where arrows skid off a raised shield wall. */}
+        <AnimatePresence>
+          {deflect.map((d, i) => (
+            <motion.div key={d.key} className="imp3d-deflect"
+              initial={{ left: `${14 + i * 12}%`, top: d.side === 'attacker' ? '66%' : '30%', opacity: 0, scale: 0.4, rotate: 0 }}
+              animate={{
+                left: `${14 + i * 12 + (i % 2 ? 6 : -6)}%`,
+                top: d.side === 'attacker' ? '58%' : '38%',
+                opacity: [0, 1, 0], scale: [0.4, 1.1, 0.5], rotate: (i % 2 ? 1 : -1) * 40,
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.04 }}
+            >✦</motion.div>
+          ))}
+        </AnimatePresence>
+
         {/* Projectile arcs */}
         <AnimatePresence>
           {volleys.map((v, i) => (
@@ -126,7 +178,7 @@ export function Battle3D({ ticks, tickIdx, attackerStrength, defenderStrength, w
 
         {/* Clash flash on melee contact */}
         <AnimatePresence>
-          {(has('attacker', 'melee') || has('attacker', 'charge') || has('defender', 'charge')) && tickIdx >= 0 && (
+          {(has('attacker', 'melee') || has('attacker', 'charge') || has('defender', 'charge') || braceAtk || braceDef) && tickIdx >= 0 && (
             <motion.div key={`clash-${tickIdx}`} className="imp3d-clash"
               initial={{ opacity: 0, scale: 0.4 }}
               animate={{ opacity: [0, 0.9, 0], scale: [0.4, 1.4, 1.8] }}
@@ -188,6 +240,25 @@ export function Battle3D({ ticks, tickIdx, attackerStrength, defenderStrength, w
         }
         .imp3d-arrow { position: absolute; z-index: 5; font-size: 15px; color: #e8d9a0;
           text-shadow: 0 0 6px rgba(232,217,160,.8); pointer-events: none; }
+        /* Shield Wall — a locked, gleaming barrier of interlocked shields. */
+        .imp3d-wall { position: absolute; left: 50%; width: 250px; margin-left: -125px; height: 22px; z-index: 4;
+          border-radius: 6px; pointer-events: none; transform-origin: 50% 50%;
+          background: linear-gradient(180deg, rgba(60,66,84,.96), rgba(30,34,46,.96));
+          box-shadow: 0 3px 10px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.18); overflow: hidden; }
+        .imp3d-wall-atk { bottom: 30%; border-top: 2px solid rgba(217,165,74,.9); }
+        .imp3d-wall-def { top: 34%; border-bottom: 2px solid rgba(192,69,90,.9); }
+        .imp3d-shield { position: absolute; top: 3px; width: 15px; height: 16px; margin-left: -7px;
+          border-radius: 3px 3px 7px 7px;
+          background: radial-gradient(ellipse at 50% 30%, rgba(210,180,120,.95), rgba(120,96,54,.9));
+          box-shadow: inset 0 0 3px rgba(0,0,0,.5), 0 0 4px rgba(0,0,0,.4); }
+        .imp3d-shield::after { content:''; position:absolute; left:50%; top:2px; width:1.5px; height:12px;
+          margin-left:-.75px; background: rgba(255,240,200,.6); }
+        .imp3d-wall-shine { position: absolute; top: 0; left: -40%; width: 40%; height: 100%;
+          background: linear-gradient(100deg, transparent, rgba(255,245,210,.85), transparent);
+          animation: imp3dParry .6s ease-out; }
+        @keyframes imp3dParry { from { left: -45%; } to { left: 115%; } }
+        .imp3d-deflect { position: absolute; z-index: 6; font-size: 13px; color: #fff4cf;
+          text-shadow: 0 0 7px rgba(255,225,150,.95); pointer-events: none; }
         .imp3d-clash { position: absolute; left: 50%; top: 46%; width: 90px; height: 90px; margin: -45px 0 0 -45px;
           border-radius: 50%; pointer-events: none;
           background: radial-gradient(circle, rgba(255,236,170,.9) 0%, rgba(255,170,80,.35) 45%, transparent 70%); }

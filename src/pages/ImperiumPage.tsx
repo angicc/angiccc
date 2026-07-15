@@ -20,9 +20,9 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import type { Language } from '@/i18n/translations';
-import { findTerritoryPath } from '@/features/imperium/geoGraph';
+import { findTerritoryPath, classifyTerrain } from '@/features/imperium/geoGraph';
 import type { Tactic } from '@/features/imperium/combatMatrix';
-import { ROSTERS } from '@/features/imperium/combatMatrix';
+import { ROSTERS, rateTactic } from '@/features/imperium/combatMatrix';
 import type { FactionId } from '@/features/imperium/logistics';
 import {
   createCampaign, resolveTurn, rollbackToTurn, graphFor, theatreSummary, THEATRE_SPECS,
@@ -52,6 +52,19 @@ const TACTICS: { id: Tactic; icon: typeof Zap; key: string }[] = [
 ];
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+
+/** Compact Clio mark for the tactical-read header. */
+function ClioMark() {
+  return (
+    <svg viewBox="0 0 24 24" width={16} height={16} aria-hidden style={{ flexShrink: 0 }}>
+      <circle cx="12" cy="12" r="11" fill="#1c0a02" stroke="#a78bfa" strokeWidth="1.4" />
+      <path d="M7 8 L9 5 L12 6.5 L15 5 L17 8" fill="none" stroke="#f59e0b" strokeWidth="1.3" strokeLinejoin="round" />
+      <circle cx="9.5" cy="12" r="1.1" fill="#f5f0e6" />
+      <circle cx="14.5" cy="12" r="1.1" fill="#f5f0e6" />
+      <path d="M10 15 Q12 16.4 14 15" stroke="#c8956c" strokeWidth="1" fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 function provinceName(id: string, language: Language): string {
   return impText(`imp_prov_${id}`, language);
@@ -686,6 +699,60 @@ export default function ImperiumPage() {
                       </motion.button>
                     ))}
                   </div>
+
+                  {/* ── Clio's Tactical Read — grades the chosen tactic live ── */}
+                  {(() => {
+                    const cLat = (spec.viewBounds[0][0] + spec.viewBounds[1][0]) / 2;
+                    const cLng = (spec.viewBounds[0][1] + spec.viewBounds[1][1]) / 2;
+                    const terrain = classifyTerrain(cLat, cLng);
+                    const enemyTactic = campaign.rivalLeader.signature as Tactic;
+                    const read = rateTactic({
+                      tactic, enemyTactic, weather: snap.weather, terrain,
+                      leaderSignature: campaign.playerLeader.signature as Tactic,
+                    });
+                    const TAC_KEY: Record<Tactic, string> = { charge: 'imp_tactic_charge', volley: 'imp_tactic_volley', hold: 'imp_tactic_hold' };
+                    const best = (['charge', 'volley', 'hold'] as Tactic[])
+                      .map(t => rateTactic({ tactic: t, enemyTactic, weather: snap.weather, terrain, leaderSignature: campaign.playerLeader.signature as Tactic }))
+                      .sort((a, b) => b.score - a.score)[0];
+                    const gradeColor = read.grade === 'S' ? 'text-emerald-300 border-emerald-400/50 bg-emerald-500/10'
+                      : read.grade === 'A' ? 'text-emerald-400 border-emerald-400/40 bg-emerald-500/[0.07]'
+                      : read.grade === 'B' ? 'text-amber-300 border-amber-400/40 bg-amber-500/[0.07]'
+                      : read.grade === 'C' ? 'text-orange-300 border-orange-400/40 bg-orange-500/[0.07]'
+                      : 'text-red-300 border-red-400/50 bg-red-500/10';
+                    return (
+                      <motion.div key={`${tactic}-${snap.turn}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
+                        className="rounded-xl border border-violet-400/20 bg-gradient-to-br from-violet-950/30 to-transparent p-3 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <ClioMark />
+                          <span className="text-[11px] font-heading font-semibold text-violet-200">{ti('imp_read_title')}</span>
+                          <span className={cn('ml-auto rounded-md border px-2 py-0.5 text-[13px] font-black tabular-nums', gradeColor)}>{read.grade}</span>
+                        </div>
+                        <p className="text-[11px] leading-snug text-foreground/90">{ti(read.headlineKey)}</p>
+                        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                          <span className="text-primary font-medium">{ti(TAC_KEY[tactic])}</span>
+                          <span>{ti('imp_read_vs')}</span>
+                          <span className="text-red-300 font-medium">{ti(TAC_KEY[enemyTactic])}</span>
+                        </div>
+                        <ul className="space-y-0.5">
+                          {read.reasons.filter(r => r.delta !== 0).slice(0, 4).map((r, i) => (
+                            <li key={i} className="flex items-start gap-1.5 text-[10.5px] leading-snug">
+                              <span className={cn('tabular-nums font-semibold shrink-0 w-7 text-right', r.delta > 0 ? 'text-emerald-400' : 'text-red-400')}>
+                                {r.delta > 0 ? '+' : ''}{r.delta}
+                              </span>
+                              <span className="text-muted-foreground">{ti(r.key)}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        <p className="text-[10px] italic text-violet-300/90 flex items-start gap-1 pt-0.5 border-t border-white/5">
+                          <span className="not-italic">💡</span>
+                          {best.tactic === tactic
+                            ? ti('imp_read_optimal')
+                            : ti('imp_read_switch').replace('{tactic}', ti(TAC_KEY[best.tactic]))}
+                        </p>
+                      </motion.div>
+                    );
+                  })()}
+
                   <div className="text-[11px] text-muted-foreground flex items-center justify-between">
                     <span>{ti('imp_leader')}: <span className="text-foreground">{ti(campaign.playerLeader.nameKey)}</span></span>
                     <span className="text-right">{ti(ROSTERS.find(r => r.id === campaign.playerRosterId)?.nameKey ?? '')}</span>
