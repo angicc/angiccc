@@ -234,6 +234,13 @@ const TERRITORY_DESCS: Record<string, Partial<Record<ContentLang, string>>> = {
     de: "Britisch-Indien um 1900 — das Reich, das Gandhis Satyagraha zunichtemachen sollte und das 1947 um Mitternacht in Indien und Pakistan geteilt wurde.",
     fr: "L’Inde britannique vers 1900 — l’empire que le satyagraha de Gandhi allait défaire, partitionné à minuit en 1947 entre l’Inde et le Pakistan.",
   },
+  'human-origins': {
+    es: "Homo sapiens surgió en África hace ~300.000 años y, desde hace ~60.000 años, se extendió a casi cada rincón de la Tierra — alcanzando Australia por mar y las Américas a través del puente de tierra de Beringia.",
+    ru: "Homo sapiens возник в Африке ~300 000 лет назад и с ~60 000 лет назад распространился почти в каждый уголок Земли — достигнув Австралии по морю и Америк через перешеек Берингии.",
+    mk: "Homo sapiens се појави во Африка пред ~300.000 години и, од пред ~60.000 години, се рашири до речиси секој агол на Земјата — стигнувајќи до Австралија по море и до Америките преку копнениот мост Берингија.",
+    de: "Homo sapiens entstand vor ~300.000 Jahren in Afrika und breitete sich ab ~60.000 Jahren in nahezu jeden Winkel der Erde aus — erreichte Australien über See und die Amerikas über die Landbrücke Beringia.",
+    fr: "Homo sapiens apparut en Afrique il y a ~300 000 ans et, à partir d'il y a ~60 000 ans, se répandit dans presque chaque recoin de la Terre — atteignant l'Australie par la mer et les Amériques par le pont terrestre de Béringie.",
+  },
 };
 
 export function getTranslatedTerritoryDesc(topicId: string, lang: Language): string | null {
