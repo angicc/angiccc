@@ -273,6 +273,26 @@ const CATALOG: Record<string, Entry> = {
   imp_got_it: { en: 'To battle!', es: '¡A la batalla!', ru: 'В бой!', mk: 'Во битка!', de: 'In die Schlacht!', fr: 'Au combat !' },
   imp_battlefield: { en: 'Battlefield', es: 'Campo de batalla', ru: 'Поле боя', mk: 'Бојно поле', de: 'Schlachtfeld', fr: 'Champ de bataille' },
   imp_new_here: { en: 'A new campaign will open on this theatre\'s living map.', es: 'Una nueva campaña se abrirá sobre el mapa vivo de este teatro.', ru: 'Новая кампания развернётся на живой карте этого театра.', mk: 'Нова кампања ќе се отвори на живата карта на овој театар.', de: 'Ein neuer Feldzug beginnt auf der lebenden Karte dieses Schauplatzes.', fr: 'Une nouvelle campagne s\'ouvrira sur la carte vivante de ce théâtre.' },
+  // ── On-map battle theatre ──
+  imp_theater_clash: { en: 'Clash at {territory}', es: 'Choque en {territory}', ru: 'Столкновение у {territory}', mk: 'Судир кај {territory}', de: 'Zusammenstoß bei {territory}', fr: 'Choc à {territory}' },
+  imp_theater_round: { en: 'Round', es: 'Ronda', ru: 'Раунд', mk: 'Рунда', de: 'Runde', fr: 'Manche' },
+  imp_theater_you: { en: 'You', es: 'Tú', ru: 'Вы', mk: 'Ти', de: 'Du', fr: 'Vous' },
+  imp_theater_enemy: { en: 'Enemy', es: 'Enemigo', ru: 'Враг', mk: 'Непријател', de: 'Feind', fr: 'Ennemi' },
+  imp_theater_your_move: { en: 'Your move', es: 'Tu jugada', ru: 'Ваш ход', mk: 'Твојот потег', de: 'Dein Zug', fr: 'Votre choix' },
+  imp_theater_grading: { en: 'Clio grades your move', es: 'Clío califica tu jugada', ru: 'Клио оценивает ваш ход', mk: 'Клио го оценува твојот потег', de: 'Clio benotet deinen Zug', fr: 'Clio note votre choix' },
+  imp_theater_skip: { en: 'Skip', es: 'Saltar', ru: 'Пропустить', mk: 'Прескокни', de: 'Überspringen', fr: 'Passer' },
+  imp_theater_replay3d: { en: '3D replay', es: 'Repetición 3D', ru: '3D-повтор', mk: '3D повтор', de: '3D-Wiederholung', fr: 'Rejeu 3D' },
+  imp_theater_next: { en: 'Next battle', es: 'Siguiente batalla', ru: 'Следующая битва', mk: 'Следна битка', de: 'Nächste Schlacht', fr: 'Bataille suivante' },
+  imp_theater_you_win: { en: 'You hold the field', es: 'Dominas el campo', ru: 'Поле за вами', mk: 'Полето е твое', de: 'Du hältst das Feld', fr: 'Vous tenez le terrain' },
+  imp_theater_you_lose: { en: 'Your line is broken', es: 'Tu línea se rompe', ru: 'Ваш строй сломлен', mk: 'Твојата линија е скршена', de: 'Deine Linie ist gebrochen', fr: 'Votre ligne est brisée' },
+  imp_theater_draw: { en: 'A bloody stalemate', es: 'Un empate sangriento', ru: 'Кровавая ничья', mk: 'Крваво нерешено', de: 'Ein blutiges Patt', fr: 'Une impasse sanglante' },
+  imp_clio_open: { en: 'Clio watches the lines close…', es: 'Clío observa cómo se cierran las líneas…', ru: 'Клио следит, как сходятся строи…', mk: 'Клио гледа како се спојуваат линиите…', de: 'Clio beobachtet, wie die Linien sich schließen…', fr: 'Clio observe les lignes se refermer…' },
+  imp_clio_shatter_enemy: { en: 'Their line cracks — your read is paying off.', es: 'Su línea se agrieta: tu lectura da frutos.', ru: 'Их строй трещит — ваш расчёт оправдывается.', mk: 'Нивната линија пука — твоето читање се исплати.', de: 'Ihre Linie bricht — deine Lesart zahlt sich aus.', fr: 'Leur ligne se fissure — votre lecture porte ses fruits.' },
+  imp_clio_shatter_you: { en: 'You are paying in blood for this ground.', es: 'Pagas con sangre este terreno.', ru: 'Вы платите кровью за эту землю.', mk: 'Плаќаш со крв за оваа земја.', de: 'Du bezahlst dieses Feld mit Blut.', fr: 'Vous payez ce terrain de votre sang.' },
+  imp_clio_rout_enemy: { en: 'They break and run — textbook execution.', es: 'Se rompen y huyen: ejecución de manual.', ru: 'Они бегут — образцовое исполнение.', mk: 'Тие се кршат и бегаат — учебничко изведување.', de: 'Sie brechen und fliehen — mustergültig ausgeführt.', fr: 'Ils rompent et fuient — exécution de manuel.' },
+  imp_clio_rout_you: { en: 'Your men rout — the counter was misjudged.', es: 'Tus hombres huyen: erraste el contraataque.', ru: 'Ваши бегут — контрманёвр был выбран неверно.', mk: 'Твоите луѓе бегаат — контрата беше погрешно проценета.', de: 'Deine Männer fliehen — der Konter war falsch gewählt.', fr: 'Vos hommes fuient — le contre a été mal jugé.' },
+  imp_clio_waver_enemy: { en: 'Enemy resolve is wavering — press it.', es: 'La moral enemiga flaquea: presiona.', ru: 'Дух врага дрогнул — дожимайте.', mk: 'Непријателската волја се колеба — притисни.', de: 'Der Wille des Feindes wankt — setze nach.', fr: 'La résolution ennemie vacille — poussez.' },
+  imp_clio_grind: { en: 'The lines grind — hold your nerve.', es: 'Las líneas se desgastan: mantén los nervios.', ru: 'Строи перемалывают друг друга — держите нервы.', mk: 'Линиите се мелат — задржи ги живците.', de: 'Die Linien mahlen — behalte die Nerven.', fr: 'Les lignes s’usent — gardez votre sang-froid.' },
 };
 
 /**

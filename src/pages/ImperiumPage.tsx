@@ -32,6 +32,7 @@ import { theatreSpec, provincesFor } from '@/features/imperium/imperiumProvinces
 import { impText } from '@/features/imperium/imperiumCatalog';
 import type { CrisisEvent } from '@/features/imperium/crisisGenerator';
 import { Battle3D } from '@/features/imperium/Battle3D';
+import { MapBattleTheater } from '@/features/imperium/MapBattleTheater';
 import {
   saveCampaign, loadCampaign, listLocalCampaigns, deleteCampaign,
   pushTurnBlock, pushRollback,
@@ -310,6 +311,7 @@ export default function ImperiumPage() {
   const [crisisChoices, setCrisisChoices] = useState<Record<string, string>>({});
   const [selectedArmyId, setSelectedArmyId] = useState<string | null>(null);
   const [battleQueue, setBattleQueue] = useState<TurnResult['battles']>([]);
+  const [inspectBattle, setInspectBattle] = useState<TurnResult['battles'][number] | null>(null);
   const [showWeb, setShowWeb] = useState(false);
   const [resolving, setResolving] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
@@ -481,7 +483,11 @@ export default function ImperiumPage() {
       const result = resolveTurn(campaign, { marches: pendingMarches, tactic, crisisChoices });
       setCampaign(result.state);
       setPendingMarches({}); setCrisisChoices({}); setSelectedArmyId(null);
-      setBattleQueue(result.battles);
+      // Only stage battles the player actually fought — the on-map theatre grades
+      // *your* tactical move, so rival-vs-neutral skirmishes are not replayed.
+      const pid = result.state.playerLeader.id;
+      setBattleQueue(result.battles.filter(b =>
+        b.resolution.attacker.leader?.id === pid || b.resolution.defender.leader?.id === pid));
       saveCampaign(userId, result.state);
       void pushTurnBlock(result.state);
       setResolving(false);
@@ -659,6 +665,23 @@ export default function ImperiumPage() {
                         <p className="text-muted-foreground max-w-md">{ti(snap.playerWon ? 'imp_campaign_won' : 'imp_campaign_lost')}</p>
                         <Button className="mt-2" onClick={() => setCampaign(null)}>{ti('imp_new_campaign')}</Button>
                       </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* On-map battle theatre: armies clash on the ground they contest */}
+                  <AnimatePresence>
+                    {battleQueue.length > 0 && (
+                      <MapBattleTheater
+                        key={battleQueue[0].pending.id}
+                        battle={battleQueue[0]}
+                        map={mapRef.current}
+                        playerLeaderId={campaign.playerLeader.id}
+                        weather={snap.weather}
+                        language={language}
+                        provinceName={(id) => provinceName(id, language)}
+                        onResolved={() => { setInspectBattle(null); setBattleQueue(q => q.slice(1)); }}
+                        onInspect={() => setInspectBattle(battleQueue[0])}
+                      />
                     )}
                   </AnimatePresence>
                 </div>
@@ -840,10 +863,10 @@ export default function ImperiumPage() {
       </div>
 
       <AnimatePresence>
-        {battleQueue.length > 0 && snap && (
-          <BattleReplay key={battleQueue[0].pending.id}
-            battle={battleQueue[0]} language={language} weather={snap.weather}
-            onDone={() => setBattleQueue(q => q.slice(1))} />
+        {inspectBattle && snap && (
+          <BattleReplay key={`inspect-${inspectBattle.pending.id}`}
+            battle={inspectBattle} language={language} weather={snap.weather}
+            onDone={() => setInspectBattle(null)} />
         )}
         {showTutorial && (
           <TutorialOverlay key="tutorial" language={language} onClose={() => setShowTutorial(false)} />
