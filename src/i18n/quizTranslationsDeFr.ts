@@ -810,6 +810,208 @@ export const QUIZ_TRANS_DEFR: Record<string, Partial<Record<DeFr, QuizQuestionTr
     de: { question: "Der direkte militärisch-forschungstechnische Vorläufer des Internets, erstmals 1969 verbunden, hieß …", options: ["ETHERNET", "ARPANET", "INTRANET", "MILNET"], explanation: "Die erste Nachricht des ARPANET („LO“ — das System stürzte mitten in „LOGIN“ ab) ging zwischen der UCLA und Stanford über." },
     fr: { question: "L’ancêtre direct de l’internet, issu de la recherche militaire et connecté pour la première fois en 1969, s’appelait…", options: ["ETHERNET", "ARPANET", "INTRANET", "MILNET"], explanation: "Le premier message d’ARPANET (« LO » — le système planta au milieu de « LOGIN ») passa entre l’UCLA et Stanford." },
   },
+
+  // ── PREHISTORIC (preq1–preq50) ───────────────────────────────────────────────
+  'preq1': {
+    de: { question: "Die ersten bekannten Homininen, wie Sahelanthropus (~7 Mio. Jahre), wurden in Afrika gefunden. Was war die erste große menschliche Anpassung?", options: ["Ein großes Gehirn", "Der aufrechte Gang auf zwei Beinen", "Der Gebrauch des Feuers", "Die gesprochene Sprache"], explanation: "Der aufrechte Gang — nicht ein großes Gehirn — kam zuerst und befreite die Hände. Alles Übrige folgte aus diesen befreiten Händen." },
+    fr: { question: "Les premiers hominidés connus, comme Sahélanthrope (~7 M.a.), furent trouvés en Afrique. Quelle fut la première grande adaptation humaine ?", options: ["Un grand cerveau", "La marche debout sur deux jambes", "L’usage du feu", "Le langage parlé"], explanation: "La bipédie — et non un grand cerveau — vint d’abord, libérant les mains. Tout le reste découla de ces mains libérées." },
+  },
+  'preq2': {
+    de: { question: "Das berühmte Fossil „Lucy“, das vor ~3,2 Mio. Jahren lebte, gehörte zu welcher Art?", options: ["Homo habilis", "Australopithecus afarensis", "Homo erectus", "Paranthropus boisei"], explanation: "Lucy war ein Australopithecus afarensis; ihr Becken und Knie beweisen, dass sie völlig aufrecht ging, obwohl ihr Gehirn klein war." },
+    fr: { question: "Le célèbre fossile « Lucy », qui vécut il y a ~3,2 M.a., appartenait à quelle espèce ?", options: ["Homo habilis", "Australopithecus afarensis", "Homo erectus", "Paranthropus boisei"], explanation: "Lucy était un Australopithecus afarensis ; son bassin et son genou prouvent qu’elle marchait pleinement debout bien que son cerveau fût petit." },
+  },
+  'preq3': {
+    de: { question: "Die Fußspuren von Laetoli in Tansania (~3,6 Mio. Jahre) sind wichtig, weil sie beweisen …", options: ["Den ersten Gebrauch von Steinwerkzeugen", "Dass Homininen lange vor großen Gehirnen oder Werkzeugen aufrecht gingen", "Die früheste Beherrschung des Feuers", "Die erste Bestattung der Toten"], explanation: "Die Spuren mit modernem Gewölbe und nach vorn weisender großer Zehe zeigen den aufrechten Gang eine Million Jahre vor den ersten Steinwerkzeugen." },
+    fr: { question: "Les empreintes de Laetoli en Tanzanie (~3,6 M.a.) sont importantes car elles prouvent…", options: ["Le premier usage d’outils de pierre", "Que les hominidés marchaient debout bien avant les grands cerveaux ou les outils", "La plus ancienne maîtrise du feu", "La première inhumation des morts"], explanation: "Les empreintes, à la voûte moderne et au gros orteil pointant vers l’avant, montrent la marche debout un million d’années avant les premiers outils de pierre." },
+  },
+  'preq4': {
+    de: { question: "Die ältesten Steinwerkzeuge der Erde — das Oldowan-Werkzeug (~2,6 Mio. Jahre) — wurden zuerst auf welchem Kontinent hergestellt?", options: ["Asien", "Europa", "Afrika", "Australien"], explanation: "Die Oldowan-Geröllgeräte und -Abschläge stammen aus Äthiopien; das Werkzeugmachen veränderte die Ernährung und mit der Zeit das Gehirn." },
+    fr: { question: "Les plus anciens outils de pierre de la Terre — l’outillage oldowayen (~2,6 M.a.) — furent d’abord fabriqués sur quel continent ?", options: ["Asie", "Europe", "Afrique", "Australie"], explanation: "Les choppers et éclats oldowayens proviennent d’Éthiopie ; la fabrication d’outils transforma le régime et, avec le temps, le cerveau." },
+  },
+  'preq5': {
+    de: { question: "Welcher Hominine war der erste, der Afrika verließ?", options: ["Australopithecus afarensis", "Homo erectus", "Homo sapiens", "Die Neandertaler"], explanation: "Homo erectus (~1,9 Mio. Jahre) breitete sich über Asien aus und hinterließ Fossilien bis nach Indonesien und China." },
+    fr: { question: "Quel hominidé fut le premier à quitter l’Afrique ?", options: ["Australopithecus afarensis", "Homo erectus", "Homo sapiens", "Les Néandertaliens"], explanation: "Homo erectus (~1,9 M.a.) se répandit à travers l’Asie, laissant des fossiles jusqu’en Indonésie et en Chine." },
+  },
+  'preq6': {
+    de: { question: "Der Primatologe Richard Wrangham argumentierte, welche Tätigkeit sei der wahre Motor der Evolution des menschlichen Gehirns gewesen?", options: ["Großwildjagd", "Das Kochen von Nahrung mit Feuer", "Das Herstellen von Steinwerkzeugen", "Weite Fußmärsche"], explanation: "Kochen „verdaut“ Nahrung vor und setzt mehr Kalorien bei weniger Kauen frei — Energie, die unsere großen, hungrigen Gehirne bezahlte." },
+    fr: { question: "Le primatologue Richard Wrangham a soutenu que quelle activité fut le véritable moteur de l’évolution du cerveau humain ?", options: ["La chasse au gros gibier", "La cuisson des aliments par le feu", "La fabrication d’outils de pierre", "La marche sur de longues distances"], explanation: "La cuisson « prédigère » les aliments, libérant plus de calories avec moins de mastication — l’énergie qui paya nos grands cerveaux affamés." },
+  },
+  'preq7': {
+    de: { question: "Der tropfenförmige acheuléische Faustkeil war vor allem bemerkenswert, weil …", options: ["Er aus Bronze bestand", "Er über eine Million Jahre nahezu unverändert auf drei Kontinenten gefertigt wurde", "Er nur für den Krieg verwendet wurde", "Er von Homo sapiens erfunden wurde"], explanation: "Derselbe symmetrische Entwurf wurde über eine Million Jahre in Afrika, Europa und Asien gefertigt — die langlebigste Technik der Menschheitsgeschichte." },
+    fr: { question: "Le biface acheuléen en forme de larme fut remarquable surtout parce que…", options: ["Il était fait de bronze", "Il fut fabriqué presque inchangé pendant plus d’un million d’années sur trois continents", "Il ne servait qu’à la guerre", "Il fut inventé par Homo sapiens"], explanation: "Le même dessin symétrique fut fabriqué en Afrique, en Europe et en Asie pendant plus d’un million d’années — la technologie la plus durable de l’histoire humaine." },
+  },
+  'preq8': {
+    de: { question: "Ungefähr wie viel Prozent Neandertaler-DNA tragen moderne Menschen nicht-afrikanischer Abstammung?", options: ["0 %", "1–2 %", "10–15 %", "Etwa die Hälfte"], explanation: "Die Vermischung vor etwa 50.000–60.000 Jahren hinterließ ~1–2 % Neandertaler-DNA bei allen Nachkommen derer, die Afrika verließen." },
+    fr: { question: "Environ quel pourcentage d’ADN néandertalien portent les humains modernes d’ascendance non africaine ?", options: ["0 %", "1–2 %", "10–15 %", "Environ la moitié"], explanation: "Le métissage d’il y a quelque 50 000–60 000 ans laissa ~1–2 % d’ADN néandertalien chez tous les descendants de ceux qui quittèrent l’Afrique." },
+  },
+  'preq9': {
+    de: { question: "Der Beweis, dass Neandertaler ihre Kranken und Verletzten pflegten, stammt vor allem aus welcher Höhle?", options: ["Lascaux", "Chauvet", "Shanidar", "Altamira"], explanation: "In der Shanidar-Höhle im Irak überlebte ein schwer verletzter Mann jahrelang — seine Gruppe muss ihn ernährt und gepflegt haben." },
+    fr: { question: "La preuve que les Néandertaliens soignaient leurs malades et blessés provient surtout de quelle grotte ?", options: ["Lascaux", "Chauvet", "Shanidar", "Altamira"], explanation: "Dans la grotte de Shanidar, en Irak, un homme gravement blessé survécut des années — sa bande dut le nourrir et le soigner." },
+  },
+  'preq10': {
+    de: { question: "Unsere eigene Art, Homo sapiens, entstand zuerst in Afrika vor ungefähr wie langer Zeit?", options: ["~50.000 Jahren", "~120.000 Jahren", "~300.000 Jahren", "~1 Mio. Jahren"], explanation: "Die ältesten Homo-sapiens-Fossilien aus Jebel Irhoud in Marokko datieren auf etwa 300.000 Jahre." },
+    fr: { question: "Notre propre espèce, Homo sapiens, apparut d’abord en Afrique il y a environ combien de temps ?", options: ["~50 000 ans", "~120 000 ans", "~300 000 ans", "~1 M d’années"], explanation: "Les plus anciens fossiles d’Homo sapiens, de Jebel Irhoud au Maroc, datent d’environ 300 000 ans." },
+  },
+  'preq11': {
+    de: { question: "Australien vor mindestens 50.000 Jahren zu erreichen ist erstaunlich, weil es … erforderte.", options: ["Eine Landbrücke zu Fuß zu überqueren", "Absichtliche Seereisen über offenen Ozean", "Eine Wüstendurchquerung zu überleben", "Die ersten Städte zu bauen"], explanation: "Selbst bei den niedrigsten eiszeitlichen Meeresspiegeln bedeutete Australien zu erreichen, offenen Ozean zu überqueren — der älteste Beleg für Seefahrt." },
+    fr: { question: "Atteindre l’Australie il y a au moins 50 000 ans est stupéfiant car cela exigeait…", options: ["De traverser un pont terrestre à pied", "Des traversées maritimes délibérées en haute mer", "De survivre à une traversée du désert", "De bâtir les premières villes"], explanation: "Même aux plus bas niveaux marins de la glaciation, atteindre l’Australie signifiait traverser la haute mer — la plus ancienne preuve de navigation." },
+  },
+  'preq12': {
+    de: { question: "Die Höhlenmalereien von Chauvet in Frankreich — Löwen, Nashörner und Pferde — sind ungefähr wie alt?", options: ["~5.000 Jahre", "~17.000 Jahre", "~36.000 Jahre", "~100.000 Jahre"], explanation: "Die Malereien von Chauvet sind etwa 36.000 Jahre alt; noch ältere figürliche Kunst (ein Warzenschwein) ist aus Indonesien bekannt." },
+    fr: { question: "Les peintures de la grotte Chauvet en France — lions, rhinocéros et chevaux — ont environ quel âge ?", options: ["~5 000 ans", "~17 000 ans", "~36 000 ans", "~100 000 ans"], explanation: "Les peintures de Chauvet ont environ 36 000 ans ; un art figuratif encore plus ancien (un cochon verruqueux) est connu d’Indonésie." },
+  },
+  'preq13': {
+    de: { question: "Die Landwirtschaft (die Neolithische Revolution) begann vor etwa 10.000 Jahren zuerst in welcher Region?", options: ["Das Niltal", "Der Fruchtbare Halbmond", "Nordchina", "Zentralmexiko"], explanation: "Der Fruchtbare Halbmond hatte eine seltene Ansammlung wilder Pflanzen und Tiere zur Domestikation — Weizen, Gerste, Schafe und Ziegen." },
+    fr: { question: "L’agriculture (la révolution néolithique) débuta il y a environ 10 000 ans d’abord dans quelle région ?", options: ["La vallée du Nil", "Le Croissant fertile", "Le nord de la Chine", "Le centre du Mexique"], explanation: "Le Croissant fertile avait un rare ensemble de plantes et d’animaux sauvages propices à la domestication — blé, orge, moutons et chèvres." },
+  },
+  'preq14': {
+    de: { question: "Göbekli Tepe (~9500 v. Chr.) stürzte alte Theorien um, weil diese monumentale Steinstätte errichtet wurde …", options: ["Von den ersten Königen Ägyptens", "Von Jägern und Sammlern, vor Landwirtschaft und Töpferei", "Mit Eisenwerkzeugen", "Nach der Erfindung der Schrift"], explanation: "Die älteste monumentale Architektur errichteten Jäger und Sammler, was andeutet, dass der Wunsch, sich zum Ritual zu versammeln, zur Sesshaftigkeit trieb." },
+    fr: { question: "Göbekli Tepe (~9500 av. J.-C.) renversa les vieilles théories car ce site monumental de pierre fut bâti…", options: ["Par les premiers rois d’Égypte", "Par des chasseurs-cueilleurs, avant l’agriculture et la poterie", "Avec des outils de fer", "Après l’invention de l’écriture"], explanation: "La plus ancienne architecture monumentale fut dressée par des chasseurs-cueilleurs, suggérant que le désir de se rassembler pour le rituel poussa vers la vie sédentaire." },
+  },
+  'preq15': {
+    de: { question: "Um welches ungefähre Datum begann das tiefe, wortlose Zeitalter der Urgeschichte den Städten und der Schrift zu weichen?", options: ["10.000 v. Chr.", "3000 v. Chr.", "500 v. Chr.", "1 n. Chr."], explanation: "Um etwa 3000 v. Chr. schwollen neolithische Dörfer der großen Flusstäler zu Städten an, und die erste Schrift beendete die Urgeschichte." },
+    fr: { question: "Vers quelle date approximative l’âge profond et sans mots de la préhistoire commença-t-il à céder la place aux villes et à l’écriture ?", options: ["10 000 av. J.-C.", "3000 av. J.-C.", "500 av. J.-C.", "1 apr. J.-C."], explanation: "Vers 3000 av. J.-C., les villages néolithiques des grandes vallées fluviales enflaient en villes, et la première écriture mit fin à la préhistoire." },
+  },
+  'preq16': {
+    de: { question: "Wer grub 1974 „Lucy“ in der Afar-Region Äthiopiens aus?", options: ["Mary Leakey", "Louis Leakey", "Donald Johanson", "Raymond Dart"], explanation: "Der Paläoanthropologe Donald Johanson fand rund 40 % von Lucys Skelett — dem berühmtesten Fossil der Welt." },
+    fr: { question: "Qui exhuma « Lucy » dans la région de l’Afar en Éthiopie en 1974 ?", options: ["Mary Leakey", "Louis Leakey", "Donald Johanson", "Raymond Dart"], explanation: "Le paléoanthropologue Donald Johanson trouva environ 40 % du squelette de Lucy — le fossile le plus célèbre du monde." },
+  },
+  'preq17': {
+    de: { question: "Das Fossil „Lucy“ erhielt seinen Spitznamen nach …", options: ["Der Tochter des Wissenschaftlers", "Einem Beatles-Lied, das im Lager lief", "Dem Tal, in dem es gefunden wurde", "Einem lokalen Afar-Wort"], explanation: "Sie wurde nach „Lucy in the Sky with Diamonds“ benannt, das im Ausgrabungslager lief." },
+    fr: { question: "Le fossile « Lucy » reçut son surnom d’après…", options: ["La fille du scientifique", "Une chanson des Beatles qui passait au campement", "La vallée où il fut trouvé", "Un mot afar local"], explanation: "Elle fut nommée d’après « Lucy in the Sky with Diamonds », qui passait au campement de fouilles." },
+  },
+  'preq18': {
+    de: { question: "Paranthropus boisei wurde wegen seiner … „Nussknackermensch“ genannt.", options: ["Angewohnheit, Nüsse mit Steinen zu knacken", "Massiven Zähne und Kiefer zum Zermahlen zäher Wurzeln und Samen", "Nussförmigen Schädels", "Ernährung nur aus Baumnüssen"], explanation: "Der schwerkiefrige „robuste“ Australopithecine hatte Zähne, die zum Zermahlen zäher Pflanzenkost gebaut waren." },
+    fr: { question: "Paranthropus boisei fut surnommé « l’Homme casse-noix » à cause de ses…", options: ["Habitude de casser des noix avec des pierres", "Dents et mâchoires massives pour broyer racines et graines coriaces", "Crâne en forme de noix", "Régime uniquement de noix d’arbre"], explanation: "L’australopithèque « robuste » à mâchoire lourde avait des dents faites pour broyer des végétaux coriaces." },
+  },
+  'preq19': {
+    de: { question: "Die moderne Wissenschaft beschreibt die menschliche Evolution nicht als Leiter, sondern als …", options: ["Einen geraden Marsch des Fortschritts", "Einen verzweigten Busch, dessen Äste fast alle Sackgassen sind", "Eine einzige ununterbrochene Linie", "Einen Kreis, der zum Ursprung zurückkehrt"], explanation: "Mehrere Homininenarten koexistierten oft; wir sind die einzigen Überlebenden einer einst dicht bevölkerten, verzweigten Familie." },
+    fr: { question: "La science moderne décrit l’évolution humaine non comme une échelle, mais comme…", options: ["Une marche rectiligne du progrès", "Un buisson ramifié dont presque toutes les branches sont des impasses", "Une seule lignée ininterrompue", "Un cercle revenant à son origine"], explanation: "Plusieurs espèces d’hominidés coexistèrent souvent ; nous sommes les seuls survivants d’une famille jadis populeuse et ramifiée." },
+  },
+  'preq20': {
+    de: { question: "Welcher jüngste wissenschaftliche Zeuge erlaubt es, die genetischen Beziehungen zwischen verschwundenen Völkern direkt zu lesen?", options: ["Radiokohlenstoffdatierung", "Alte DNA", "Pollenanalyse", "Dendrochronologie"], explanation: "Alte DNA aus alten Knochen offenbart die genetischen Verbindungen zwischen ausgestorbenen Menschenpopulationen." },
+    fr: { question: "Quel témoin scientifique récent permet de lire directement les liens génétiques entre des peuples disparus ?", options: ["La datation au radiocarbone", "L’ADN ancien", "L’analyse du pollen", "La dendrochronologie"], explanation: "L’ADN ancien extrait de vieux os révèle les liens génétiques entre des populations humaines éteintes." },
+  },
+  'preq21': {
+    de: { question: "„Java-Mensch“ und „Peking-Mensch“ sind berühmte Fossilien welcher Art?", options: ["Homo habilis", "Homo erectus", "Homo neanderthalensis", "Australopithecus afarensis"], explanation: "Homo erectus, der erste, der Afrika verließ, hinterließ Fossilien in ganz Asien, darunter Indonesien und nahe Peking." },
+    fr: { question: "« Homme de Java » et « Homme de Pékin » sont de célèbres fossiles de quelle espèce ?", options: ["Homo habilis", "Homo erectus", "Homo neanderthalensis", "Australopithecus afarensis"], explanation: "Homo erectus, le premier à quitter l’Afrique, laissa des fossiles dans toute l’Asie, dont l’Indonésie et les environs de Pékin." },
+  },
+  'preq22': {
+    de: { question: "Ungefähr wie lange bestand Homo erectus als Art?", options: ["Etwa 100.000 Jahre", "Etwa 500.000 Jahre", "Fast 2 Mio. Jahre", "Etwa 50.000 Jahre"], explanation: "Homo erectus bestand fast zwei Millionen Jahre — etwa zehnmal länger, als unsere eigene Art bislang existiert." },
+    fr: { question: "Environ combien de temps Homo erectus dura-t-il en tant qu’espèce ?", options: ["Environ 100 000 ans", "Environ 500 000 ans", "Près de 2 M d’années", "Environ 50 000 ans"], explanation: "Homo erectus dura près de deux millions d’années — environ dix fois plus longtemps que notre propre espèce jusqu’ici." },
+  },
+  'preq23': {
+    de: { question: "Verbrannte Knochen und Asche, die auf Feuergebrauch in einer Unterkunft vor mindestens einer Million Jahren hindeuten, stammen aus welcher Stätte?", options: ["Olduvai-Schlucht", "Wonderwerk-Höhle", "Zhoukoudian", "Blombos-Höhle"], explanation: "Die Wonderwerk-Höhle in Südafrika bewahrt einige der ältesten Belege für kontrolliertes Feuer." },
+    fr: { question: "Des os brûlés et des cendres suggérant l’usage du feu dans un abri il y a au moins un million d’années proviennent de quel site ?", options: ["Gorges d’Olduvai", "Grotte de Wonderwerk", "Zhoukoudian", "Grotte de Blombos"], explanation: "La grotte de Wonderwerk, en Afrique du Sud, conserve certaines des plus anciennes preuves de feu maîtrisé." },
+  },
+  'preq24': {
+    de: { question: "Das menschliche Gehirn ist metabolisch teuer und verbrennt in Ruhe etwa welchen Anteil unserer Kalorien?", options: ["Ein Zwanzigstel", "Ein Zehntel", "Ein Fünftel", "Die Hälfte"], explanation: "Das Gehirn verbrennt in Ruhe etwa ein Fünftel unserer Kalorien — Energie, die das Kochen der Nahrung liefern half." },
+    fr: { question: "Le cerveau humain est métaboliquement coûteux, brûlant au repos environ quelle part de nos calories ?", options: ["Un vingtième", "Un dixième", "Un cinquième", "La moitié"], explanation: "Le cerveau brûle environ un cinquième de nos calories au repos — une énergie que la cuisson des aliments aida à fournir." },
+  },
+  'preq25': {
+    de: { question: "Die Neandertaler wurden zuerst anhand eines Fundes von 1856 in welchem Land erkannt?", options: ["Frankreich", "Spanien", "Deutschland", "Irak"], explanation: "Das Typusexemplar wurde im Neandertal nahe Düsseldorf in Deutschland gefunden." },
+    fr: { question: "Les Néandertaliens furent d’abord reconnus à partir d’une découverte de 1856 dans quel pays ?", options: ["France", "Espagne", "Allemagne", "Irak"], explanation: "Le spécimen type fut trouvé dans la vallée de Neander (Neandertal), près de Düsseldorf, en Allemagne." },
+  },
+  'preq26': {
+    de: { question: "Der verfeinerte Neandertaler-Steinwerkzeugsatz, auf einer „Kernvorbereitungs“-Technik beruhend, heißt …", options: ["Oldowan", "Acheuléen", "Moustérien", "Aurignacien"], explanation: "Die Moustérien-Industrie löste Abschläge vorbestimmter Form von sorgfältig vorbereiteten Kernen ab." },
+    fr: { question: "L’outillage de pierre néandertalien raffiné, fondé sur une technique de « nucléus préparé », s’appelle…", options: ["Oldowayen", "Acheuléen", "Moustérien", "Aurignacien"], explanation: "L’industrie moustérienne détachait des éclats de forme prédéterminée à partir de nucléus soigneusement préparés." },
+  },
+  'preq27': {
+    de: { question: "In welcher Höhle überlebte ein Neandertaler jahrelang mit einem verkümmerten Arm und einer zerschmetterten Augenhöhle, was auf Pflege durch andere hindeutet?", options: ["Shanidar-Höhle", "Lascaux", "Denisova-Höhle", "Chauvet"], explanation: "Der Mann der Shanidar-Höhle im Irak hätte nicht jagen können; seine Gruppe muss ihn ernährt und gepflegt haben — ein Beleg für Mitgefühl." },
+    fr: { question: "Dans quelle grotte un Néandertalien survécut-il des années avec un bras atrophié et une orbite écrasée, impliquant des soins d’autrui ?", options: ["Grotte de Shanidar", "Lascaux", "Grotte de Denisova", "Chauvet"], explanation: "L’homme de la grotte de Shanidar, en Irak, n’aurait pu chasser ; sa bande dut le nourrir et le soigner — une preuve de compassion." },
+  },
+  'preq28': {
+    de: { question: "Neandertaler besaßen welches Gen, das bei modernen Menschen mit Sprache verknüpft ist?", options: ["BRCA1", "FOXP2", "HAR1", "MYH16"], explanation: "Neandertaler trugen das mit Sprechen und Sprache verbundene FOXP2-Gen, samt der Anatomie zum Sprechen." },
+    fr: { question: "Les Néandertaliens possédaient quel gène, lié chez les humains modernes au langage ?", options: ["BRCA1", "FOXP2", "HAR1", "MYH16"], explanation: "Les Néandertaliens portaient le gène FOXP2 associé à la parole et au langage, ainsi que l’anatomie de la parole." },
+  },
+  'preq29': {
+    de: { question: "Die Denisova-Menschen wurden 2010 erstmals anhand eines Fingerknochens aus einer Höhle wo identifiziert?", options: ["der Altai-Region in Sibirien", "dem Zagros-Gebirge", "der Levante", "der Insel Flores"], explanation: "Ein einzelner Fingerknochen aus der Denisova-Höhle in Sibirien lieferte die DNA einer zuvor unbekannten Menschenpopulation." },
+    fr: { question: "Les Dénisoviens furent identifiés pour la première fois en 2010 à partir d’un os de doigt trouvé dans une grotte où ?", options: ["la région de l’Altaï en Sibérie", "les monts Zagros", "le Levant", "l’île de Florès"], explanation: "Un seul os de doigt de la grotte de Denisova, en Sibérie, livra l’ADN d’une population humaine jusqu’alors inconnue." },
+  },
+  'preq30': {
+    de: { question: "Der winzige „Hobbit“-Mensch, der auf einer indonesischen Insel lebte, war …", options: ["Homo naledi", "Homo floresiensis", "Homo heidelbergensis", "Homo antecessor"], explanation: "Homo floresiensis, „Hobbit“ genannt, teilte die jüngere Welt mit Neandertalern, Denisova-Menschen und unserer eigenen Art." },
+    fr: { question: "Le minuscule humain « hobbit » qui vécut sur une île d’Indonésie était…", options: ["Homo naledi", "Homo floresiensis", "Homo heidelbergensis", "Homo antecessor"], explanation: "Homo floresiensis, surnommé le « hobbit », partagea le monde récent avec les Néandertaliens, les Dénisoviens et notre propre espèce." },
+  },
+  'preq31': {
+    de: { question: "Eine von den Denisova-Menschen ererbte Genvariante hilft heute welchem Volk, in großer Höhe zu gedeihen?", options: ["Den Inuit", "Den Tibetern", "Den andinen Quechua", "Den San"], explanation: "Eine Denisova-Variante hilft heutigen Tibetern, mit der dünnen Luft großer Höhen zurechtzukommen." },
+    fr: { question: "Une variante génique héritée des Dénisoviens aide aujourd’hui quel peuple à prospérer en altitude ?", options: ["Les Inuits", "Les Tibétains", "Les Quechuas andins", "Les San"], explanation: "Une variante dénisovienne aide les Tibétains modernes à composer avec l’air raréfié des hautes altitudes." },
+  },
+  'preq32': {
+    de: { question: "Die ältesten Fossilien, die wie Homo sapiens aussehen (~300.000 Jahre), stammen aus welcher Stätte?", options: ["Olduvai-Schlucht, Tansania", "Jebel Irhoud, Marokko", "Sterkfontein, Südafrika", "Omo, Äthiopien"], explanation: "Jebel Irhoud in Marokko verschob die Geburt unserer Art auf ~300.000 Jahre und über den ganzen Kontinent." },
+    fr: { question: "Les plus anciens fossiles ressemblant à Homo sapiens (~300 000 ans) proviennent de quel site ?", options: ["Gorges d’Olduvai, Tanzanie", "Jebel Irhoud, Maroc", "Sterkfontein, Afrique du Sud", "Omo, Éthiopie"], explanation: "Jebel Irhoud, au Maroc, repoussa la naissance de notre espèce à ~300 000 ans et à travers tout le continent." },
+  },
+  'preq33': {
+    de: { question: "Warum tragen Völker außerhalb Afrikas weniger genetische Vielfalt als Afrikaner?", options: ["Sie entwickelten sich langsamer", "Sie stammen von einer kleinen Gründerpopulation ab — einem „Flaschenhals“", "Sie vermischten sich weniger", "Afrikas Klima erhöhte die Mutation"], explanation: "Fast alle außerhalb Afrikas Lebenden stammen von einer vergleichsweise kleinen Gruppe ab, die Afrika vor ~60.000–70.000 Jahren verließ." },
+    fr: { question: "Pourquoi les peuples hors d’Afrique portent-ils moins de diversité génétique que les Africains ?", options: ["Ils ont évolué plus lentement", "Ils descendent d’une petite population fondatrice — un « goulot d’étranglement »", "Ils se sont moins métissés", "Le climat de l’Afrique augmenta la mutation"], explanation: "Presque tous ceux qui vivent hors d’Afrique descendent d’un groupe relativement petit qui quitta l’Afrique il y a ~60 000–70 000 ans." },
+  },
+  'preq34': {
+    de: { question: "Das riesige, wombatähnliche Beuteltier, das nach der Ankunft der Menschen in Australien verschwand, war der …", options: ["Megalania", "Diprotodon", "Thylacinus", "Glyptodon"], explanation: "Der zwei Tonnen schwere Diprotodon gehörte zu den Riesenbeutlern Australiens, die bald nach der Ankunft der Menschen verschwanden." },
+    fr: { question: "Le marsupial géant semblable à un wombat qui disparut après l’arrivée des humains en Australie était le…", options: ["Megalania", "Diprotodon", "Thylacine", "Glyptodon"], explanation: "Le Diprotodon de deux tonnes fut parmi les marsupiaux géants d’Australie qui disparurent peu après l’arrivée des gens." },
+  },
+  'preq35': {
+    de: { question: "Die Menschen betraten die Amerikas erstmals über welche freigelegte eiszeitliche Landbrücke?", options: ["Doggerland", "Sundaland", "Beringia", "Sahul"], explanation: "Beringia, eine breite Grassteppe dort, wo heute die Beringstraße liegt, verband Sibirien während der Eiszeit mit Alaska." },
+    fr: { question: "Les humains pénétrèrent d’abord dans les Amériques en franchissant quel pont terrestre glaciaire dégagé ?", options: ["Doggerland", "Sundaland", "Béringie", "Sahul"], explanation: "La Béringie, une large prairie là où se trouve aujourd’hui le détroit de Béring, reliait la Sibérie à l’Alaska pendant la glaciation." },
+  },
+  'preq36': {
+    de: { question: "Welche zwei Steine brechen vorhersehbar und glasartig, ideal zum Schlagen scharfer Werkzeuge?", options: ["Granit und Marmor", "Feuerstein und Obsidian", "Sandstein und Schiefer", "Basalt und Quarzit"], explanation: "Feuerstein und Obsidian brechen muschelig, sodass ein gut gezielter Schlag einen scharfen Abschlag ablöst." },
+    fr: { question: "Quelles deux pierres se fracturent de façon prévisible et vitreuse, idéales pour tailler des outils tranchants ?", options: ["Granit et marbre", "Silex et obsidienne", "Grès et ardoise", "Basalte et quartzite"], explanation: "Le silex et l’obsidienne se fracturent de façon conchoïdale, de sorte qu’un coup bien dirigé détache un éclat tranchant." },
+  },
+  'preq37': {
+    de: { question: "Die „Kernvorbereitungs“-Technik der Werkzeugherstellung verbreitete sich über die Alte Welt um wann?", options: ["Vor 2,6 Mio. Jahren", "Vor 1,7 Mio. Jahren", "Vor 300.000 Jahren", "Vor 12.000 Jahren"], explanation: "Vor etwa 300.000 Jahren formten Klopfer einen Kern so, dass ein Schlag einen Abschlag vorbestimmter Größe ablöste." },
+    fr: { question: "La technique de fabrication d’outils à « nucléus préparé » se répandit dans l’Ancien Monde vers quand ?", options: ["Il y a 2,6 M d’années", "Il y a 1,7 M d’années", "Il y a 300 000 ans", "Il y a 12 000 ans"], explanation: "Il y a environ 300 000 ans, les tailleurs façonnaient un nucléus de sorte qu’un coup détache un éclat de taille prédéterminée." },
+  },
+  'preq38': {
+    de: { question: "Die Erfindung von Nadeln mit Öhr im Jungpaläolithikum erlaubte den Menschen …", options: ["Mit Netzen zu fischen", "Passgenaue Kleidung zu nähen", "Körbe zu flechten", "Löcher in Stein zu bohren"], explanation: "Knochennadeln mit Öhr erlaubten eiszeitlichen Menschen, passgenaue Kleidung zu nähen, entscheidend zum Überleben der Kälte." },
+    fr: { question: "L’invention d’aiguilles à chas au Paléolithique supérieur permit aux gens de…", options: ["Pêcher au filet", "Coudre des vêtements ajustés", "Tresser des paniers", "Percer la pierre"], explanation: "Les aiguilles en os à chas permirent aux gens de la glaciation de coudre des vêtements ajustés, cruciaux pour survivre au froid." },
+  },
+  'preq39': {
+    de: { question: "Um welchen Zeitpunkt kamen Pfeil und Bogen in weiten Gebrauch?", options: ["Vor 2 Mio. Jahren", "Das Ende der Eiszeit", "Die Bronzezeit", "Die Römerzeit"], explanation: "Der Bogen — der einem Jäger erlaubte, lautlos aus der Ferne zu töten — war gegen Ende der Eiszeit weit verbreitet." },
+    fr: { question: "Vers quel moment l’arc et la flèche entrèrent-ils en usage répandu ?", options: ["Il y a 2 M d’années", "La fin de la glaciation", "L’âge du bronze", "L’époque romaine"], explanation: "L’arc — qui permettait à un chasseur de tuer silencieusement de loin — était d’usage répandu à la fin de la glaciation." },
+  },
+  'preq40': {
+    de: { question: "Die älteste bekannte figürliche Kunst, ein ~45.500 Jahre altes Warzenschwein, wurde wo gefunden?", options: ["Frankreich", "Spanien", "Indonesien", "Südafrika"], explanation: "Eine Warzenschwein-Malerei auf der Insel Sulawesi, Indonesien, ist das älteste bekannte figürliche Kunstwerk." },
+    fr: { question: "L’art figuratif le plus ancien connu, un cochon verruqueux de ~45 500 ans, fut trouvé où ?", options: ["France", "Espagne", "Indonésie", "Afrique du Sud"], explanation: "Une peinture de cochon verruqueux sur l’île de Célèbes (Sulawesi), en Indonésie, est la plus ancienne œuvre figurative connue." },
+  },
+  'preq41': {
+    de: { question: "Der 40.000 Jahre alte Löwenmensch von Hohlenstein-Stadel gilt vielleicht als wichtigstes Objekt der Urgeschichte, weil er …", options: ["Die älteste menschliche Skulptur ist", "Ein Wesen darstellt, das es in der Natur nicht gibt — Beleg der Vorstellungskraft", "Aus massivem Gold geschnitzt wurde", "Die ersten Schriftzeichen zeigt"], explanation: "Ein löwenköpfiger Mensch aus Mammutelfenbein stellt etwas nie Gesehenes dar — das Wesen des vorstellenden Geistes." },
+    fr: { question: "L’Homme-Lion de Hohlenstein-Stadel, vieux de 40 000 ans, est peut-être l’objet le plus important de la préhistoire car il…", options: ["Est la plus ancienne sculpture humaine", "Représente un être qui n’existe pas dans la nature — preuve d’imagination", "Fut sculpté dans l’or massif", "Montre les premiers signes écrits"], explanation: "Un humain à tête de lion sculpté dans l’ivoire de mammouth représente quelque chose de jamais vu — l’essence de l’esprit qui imagine." },
+  },
+  'preq42': {
+    de: { question: "Die berühmte Venusfigur von Willendorf wurde vor ungefähr wie langer Zeit geschnitzt?", options: ["~10.000 Jahren", "~25.000 Jahren", "~45.000 Jahren", "~5.000 Jahren"], explanation: "Die Venus von Willendorf, vor etwa 25.000 Jahren geschnitzt, ist eine von vielen ähnlichen eiszeitlichen „Venusfiguren“." },
+    fr: { question: "La célèbre figurine Vénus de Willendorf fut sculptée il y a environ combien de temps ?", options: ["~10 000 ans", "~25 000 ans", "~45 000 ans", "~5 000 ans"], explanation: "La Vénus de Willendorf, sculptée il y a quelque 25 000 ans, est l’une des nombreuses « figurines de Vénus » glaciaires similaires." },
+  },
+  'preq43': {
+    de: { question: "Im letzten glazialen Maximum (~20.000 Jahre) war so viel Wasser im Eis gebunden, dass der globale Meeresspiegel um mehr als … fiel.", options: ["10 Meter", "40 Meter", "100 Meter", "300 Meter"], explanation: "Der Meeresspiegel fiel um über hundert Meter und legte Landbrücken wie Beringia und ertrunkene Küstenebenen frei." },
+    fr: { question: "Au dernier maximum glaciaire (~20 000 ans), tant d’eau était emprisonnée dans la glace que le niveau global des mers baissa de plus de…", options: ["10 mètres", "40 mètres", "100 mètres", "300 mètres"], explanation: "Le niveau des mers baissa de plus de cent mètres, dégageant des ponts terrestres comme la Béringie et des plaines côtières noyées." },
+  },
+  'preq44': {
+    de: { question: "Die weite, kalte, trockene Grassteppe, die während der Eiszeit von Spanien über Eurasien bis zum Yukon reichte, heißt …", options: ["Taiga", "Mammutsteppe", "Tundragürtel", "Sahul-Ebene"], explanation: "Die Mammutsteppe wimmelte von Mammuts, Wollnashörnern, Pferden, Bisons und Rentieren." },
+    fr: { question: "La vaste steppe herbeuse froide et sèche qui allait de l’Espagne à travers l’Eurasie jusqu’au Yukon pendant la glaciation s’appelle la…", options: ["taïga", "steppe à mammouths", "ceinture de toundra", "plaine de Sahul"], explanation: "La steppe à mammouths grouillait de mammouths, rhinocéros laineux, chevaux, bisons et rennes." },
+  },
+  'preq45': {
+    de: { question: "Das Aussterben der eiszeitlichen Megafauna war in Afrika am mildesten. Die beste Erklärung ist, dass afrikanische Tiere …", options: ["Zu groß zum Jagen waren", "Sich Millionen Jahre mit Homininen gemeinsam entwickelt hatten", "Dort lebten, wo sich das Klima nie änderte", "Durch frühe Gesetze geschützt waren"], explanation: "Da sie sich über Zeitalter mit Homininen entwickelt hatten, war die afrikanische Megafauna vorsichtiger gegenüber Menschen; das Aussterben traf am härtesten, wo Tiere zum ersten Mal auf Menschen trafen." },
+    fr: { question: "Les extinctions de mégafaune glaciaire furent les plus douces en Afrique. La meilleure explication est que les animaux africains…", options: ["Étaient trop grands pour être chassés", "Avaient coévolué avec les hominidés pendant des millions d’années", "Vivaient là où le climat ne changeait jamais", "Étaient protégés par des lois anciennes"], explanation: "Ayant évolué aux côtés des hominidés durant des âges, la mégafaune africaine se méfiait davantage des humains ; les extinctions frappèrent le plus fort là où les animaux rencontrèrent les gens pour la première fois." },
+  },
+  'preq46': {
+    de: { question: "Die warme, stabile geologische Epoche, die vor ~11.700 Jahren begann und in der wir noch leben, ist das …", options: ["Pleistozän", "Holozän", "Pliozän", "Miozän"], explanation: "Das warme, stabile Klima des Holozäns bereitete die Bühne für die Erfindung der Landwirtschaft." },
+    fr: { question: "L’époque géologique chaude et stable qui commença il y a ~11 700 ans et dans laquelle nous vivons encore est l’…", options: ["Pléistocène", "Holocène", "Pliocène", "Miocène"], explanation: "Le climat chaud et stable de l’Holocène prépara la scène pour l’invention de l’agriculture." },
+  },
+  'preq47': {
+    de: { question: "Manche Gelehrte nennen die Landwirtschaft „den schlimmsten Fehler in der Geschichte des Menschengeschlechts“, weil die ersten Bauern oft … waren.", options: ["Von ihren Nachbarn ausgelöscht", "Kleiner, kränker und abgearbeiteter als die Sammler", "Unfähig, Nahrung zu lagern", "Gezwungen, das Feuer aufzugeben"], explanation: "Eine auf wenige Feldfrüchte verengte Ernährung brachte Mangel, faulende Zähne, neue Massenkrankheiten und Hungergefahr — doch die Landwirtschaft siegte, weil sie mehr Menschen ernährte." },
+    fr: { question: "Certains savants appellent l’agriculture « la pire erreur de l’histoire de la race humaine » parce que les premiers agriculteurs étaient souvent…", options: ["Exterminés par leurs voisins", "Plus petits, plus maladifs et plus usés que les cueilleurs", "Incapables de stocker la nourriture", "Contraints d’abandonner le feu"], explanation: "Un régime réduit à quelques cultures apportait carences, dents cariées, nouvelles maladies d’entassement et risque de famine — mais l’agriculture l’emporta en nourrissant plus de gens." },
+  },
+  'preq48': {
+    de: { question: "Im Hochland Mexikos wurde Mais aus welchem struppigen wilden Gras domestiziert?", options: ["Emmer", "Teosinte", "Sorghum", "Einkorn"], explanation: "Mais wurde über Generationen aus Teosinte gezüchtet, samt Bohnen und Kürbis — eine der unabhängigen Erfindungen der Landwirtschaft." },
+    fr: { question: "Dans les hautes terres du Mexique, le maïs fut domestiqué à partir de quelle herbe sauvage chétive ?", options: ["Amidonnier", "Téosinte", "Sorgho", "Engrain"], explanation: "Le maïs fut sélectionné au fil des générations à partir du téosinte, avec haricots et courges — l’une des inventions indépendantes de l’agriculture." },
+  },
+  'preq49': {
+    de: { question: "Die Protostadt Çatalhöyük war auffällig ungewöhnlich, weil ihre Häuser …", options: ["Aus Steinblöcken gebaut waren", "Keine Straßen oder ebenerdigen Türen hatten und durchs Dach betreten wurden", "Einen zentralen Palast umgaben", "Auf Holzpfählen standen"], explanation: "Ihre Lehmziegelhäuser waren Wand an Wand gedrängt; die Menschen gingen über die Dächer und stiegen über Leitern in ihre Häuser hinab." },
+    fr: { question: "La proto-ville de Çatalhöyük était frappante d’insolite car ses maisons…", options: ["Étaient faites de blocs de pierre", "N’avaient ni rues ni portes au niveau du sol et se pénétraient par le toit", "Entouraient un palais central", "Reposaient sur des pilotis de bois"], explanation: "Ses maisons de brique crue étaient serrées mur contre mur ; les gens marchaient sur les toits et descendaient par des échelles dans leurs logis." },
+  },
+  'preq50': {
+    de: { question: "Um 3300 v. Chr. stellten die Menschen die erste echte Bronze her, indem sie Kupfer mit … legierten.", options: ["Eisen", "Blei", "Zinn", "Silber"], explanation: "Mit Zinn legiertes Kupfer ergibt Bronze — hart genug für ernsthafte Werkzeuge und Waffen und schloss die Steinzeit ab." },
+    fr: { question: "Vers 3300 av. J.-C., les gens firent le premier vrai bronze en alliant le cuivre à…", options: ["Le fer", "Le plomb", "L’étain", "L’argent"], explanation: "Le cuivre allié à l’étain donne le bronze — assez dur pour des outils et des armes sérieux, refermant l’âge de pierre." },
+  },
 };
 
 export function getTranslatedQuestionDeFr(questionId: string, lang: Language): QuizQuestionTranslation | null {
