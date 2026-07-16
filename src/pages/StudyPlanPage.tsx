@@ -33,7 +33,7 @@ const KIND_ICON: Record<StepKind, React.ComponentType<{ className?: string }>> =
 };
 
 const ERA_BAR: Record<string, string> = {
-  ancient: 'bg-amber-400', 'middle-ages': 'bg-blue-400', 'early-modern': 'bg-emerald-400', modern: 'bg-rose-400',
+  prehistoric: 'bg-orange-400', ancient: 'bg-amber-400', 'middle-ages': 'bg-blue-400', 'early-modern': 'bg-emerald-400', modern: 'bg-rose-400',
 };
 
 export default function StudyPlanPage() {

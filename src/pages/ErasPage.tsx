@@ -17,7 +17,7 @@ import { LESSONS } from '@/features/content/lessonsData';
 import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslations';
 
 const ERA_PHOTOS: Record<string, string> = {
-  prehistoric:   'https://images.unsplash.com/photo-1615715616181-6ba854b7f6f?auto=format&fit=crop&w=700&q=60',
+  prehistoric:   'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?auto=format&fit=crop&w=700&q=60',
   ancient:       'https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=700&q=60',
   'middle-ages': 'https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&w=700&q=60',
   'early-modern':'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=700&q=60',
