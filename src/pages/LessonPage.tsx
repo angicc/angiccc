@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Telescope } from 'lucide-react';
 import { getLessonTheme, type LessonTheme } from '@/lib/lessonTheme';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
@@ -17,6 +17,7 @@ import { markLessonComplete } from '@/features/progress/progressStore';
 import { getLessonById, getEraLessons } from '@/features/content/lessonsData';
 import { getEraById } from '@/features/content/erasData';
 import { getTranslatedLesson, getTranslatedEra } from '@/i18n/contentTranslations';
+import { LESSON_DEEP_DIVES } from '@/i18n/lessonDeepDives';
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -248,20 +249,40 @@ export default function LessonPage() {
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Main content */}
           <div className="lg:col-span-2 space-y-6">
-            {lesson.sections.map((s, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.07, duration: 0.3 }}
-                className="space-y-3"
-              >
-                <h2 className="font-heading text-xl font-semibold">{s.heading}</h2>
-                <div className="text-muted-foreground leading-relaxed">
-                  {s.body.split('\n\n').map((p, j) => <p key={j} className="mb-4 text-[0.95rem]">{p}</p>)}
-                </div>
-              </motion.div>
-            ))}
+            {lesson.sections.map((s, i) => {
+              // The final section on a lesson with a deep dive gets a subtle
+              // premium accent so the extra depth reads as intentional.
+              const isDeepDive = !!LESSON_DEEP_DIVES[lesson.id] && i === lesson.sections.length - 1;
+              const DEEP_DIVE_LABEL: Record<string, string> = {
+                en: 'Deep Dive', es: 'Análisis a fondo', ru: 'Глубокое погружение',
+                mk: 'Длабоко нурнување', de: 'Vertiefung', fr: 'Approfondissement',
+              };
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.07, duration: 0.3 }}
+                  className={isDeepDive
+                    ? 'space-y-3 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.06] to-transparent p-5 pl-6 relative overflow-hidden'
+                    : 'space-y-3'}
+                >
+                  {isDeepDive && (
+                    <>
+                      <span className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-primary/70 to-primary/10" aria-hidden />
+                      <div className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
+                        <Telescope className="h-3.5 w-3.5" />
+                        {DEEP_DIVE_LABEL[language] ?? DEEP_DIVE_LABEL.en}
+                      </div>
+                    </>
+                  )}
+                  <h2 className="font-heading text-xl font-semibold">{s.heading}</h2>
+                  <div className="text-muted-foreground leading-relaxed">
+                    {s.body.split('\n\n').map((p, j) => <p key={j} className="mb-4 text-[0.95rem]">{p}</p>)}
+                  </div>
+                </motion.div>
+              );
+            })}
             <Separator />
             <div className="flex items-center justify-between">
               {prev
