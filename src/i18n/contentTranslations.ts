@@ -7,6 +7,7 @@ import { WAVE3_BODY_TRANS } from './lessonBodyTranslations_3';
 import { DEFR_BODY } from './lessonBodyDeFr';
 import { PREHISTORIC_ERA_TRANS, PREHISTORIC_LESSON_TRANS } from './prehistoricTranslations';
 import { PREHISTORIC_BODY_TRANS } from './prehistoricBodies';
+import { LESSON_DEEP_DIVES } from './lessonDeepDives';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -256,18 +257,30 @@ export function getTranslatedLesson<T extends { id: string; title: string; subti
   lesson: T,
   lang: Language
 ): T {
-  if (lang === 'en') return lesson;
+  // Optional extra "deep dive" section, merged in for every language (English
+  // included). Falls back to English when a language is missing.
+  const dive = LESSON_DEEP_DIVES[lesson.id];
+  const diveSection = dive ? (dive[lang] ?? dive.en) : null;
+
+  if (lang === 'en') {
+    if (!diveSection) return lesson;
+    return { ...lesson, sections: [...lesson.sections, { heading: diveSection.heading, body: diveSection.body }] };
+  }
+
   const trans = LESSON_TRANS[lesson.id]?.[lang as ContentLang];
-  if (!trans) return lesson;
-  return {
-    ...lesson,
-    title: trans.title,
-    subtitle: trans.subtitle,
-    keyFacts: trans.keyFacts,
-    sections: lesson.sections.map((s, i) => ({
-      ...s,
-      heading: trans.sectionHeadings[i] ?? s.heading,
-      body: BODY_TRANS[lesson.id]?.[lang as ContentLang]?.[i] ?? s.body,
-    })),
-  };
+  // Base sections: translated if we have a translation, else the English source.
+  const baseSections = trans
+    ? lesson.sections.map((s, i) => ({
+        ...s,
+        heading: trans.sectionHeadings[i] ?? s.heading,
+        body: BODY_TRANS[lesson.id]?.[lang as ContentLang]?.[i] ?? s.body,
+      }))
+    : lesson.sections.map(s => ({ ...s }));
+  const sections = diveSection
+    ? [...baseSections, { heading: diveSection.heading, body: diveSection.body }]
+    : baseSections;
+
+  return trans
+    ? { ...lesson, title: trans.title, subtitle: trans.subtitle, keyFacts: trans.keyFacts, sections }
+    : { ...lesson, sections };
 }
