@@ -22,11 +22,21 @@ import { OnboardingModal, hasCompletedOnboarding } from '@/components/shared/Onb
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
 const fadeUp = { hidden: { opacity: 0, y: 16, scale: 0.985 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const } } };
 
-const ERA_SHORT_KEY: Record<string, 'era_short_ancient' | 'era_short_medieval' | 'era_short_earlymod' | 'era_short_modern'> = {
+const ERA_SHORT_KEY: Record<string, 'era_short_prehistoric' | 'era_short_ancient' | 'era_short_medieval' | 'era_short_earlymod' | 'era_short_modern'> = {
+  prehistoric: 'era_short_prehistoric',
   ancient: 'era_short_ancient',
   'middle-ages': 'era_short_medieval',
   'early-modern': 'era_short_earlymod',
   modern: 'era_short_modern',
+};
+
+// Static per-era fill classes (kept literal so Tailwind's JIT emits them).
+const ERA_BAR: Record<string, string> = {
+  prehistoric: 'from-orange-500 to-orange-300',
+  ancient: 'from-amber-500 to-amber-300',
+  'middle-ages': 'from-blue-500 to-blue-300',
+  'early-modern': 'from-emerald-500 to-emerald-300',
+  modern: 'from-rose-500 to-rose-300',
 };
 
 export default function DashboardPage() {
@@ -65,8 +75,9 @@ export default function DashboardPage() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Welcome */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
-          className="p-6 rounded-xl border border-border bg-card">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          className="relative overflow-hidden p-6 rounded-xl border border-border bg-gradient-to-br from-primary/[0.07] via-card to-card">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/10 blur-3xl" aria-hidden />
+          <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="font-heading text-2xl font-bold">{t.dash_welcome} <span className="text-primary">{currentUser?.username}</span>!</h1>
               <StreakBadge streak={progress.streak} />
@@ -78,16 +89,19 @@ export default function DashboardPage() {
         {/* Stats */}
         <motion.div variants={stagger} initial="hidden" animate="visible" className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { label: t.dash_total_xp, value: progress.xp.toLocaleString(), icon: Star, color:'text-primary' },
-            { label: t.dash_level, value: progress.level, icon: Flame, color:'text-orange-400' },
-            { label: t.dash_lessons_done, value:`${progress.completedLessons.length} / ${LESSONS.length}`, icon: BookOpen, color:'text-emerald-400' },
-            { label: t.dash_quiz_avg, value: avgScore > 0 ? `${avgScore}%` : '—', icon: HelpCircle, color:'text-blue-400' },
-          ].map(({ label, value, icon: Icon, color }) => (
-            <motion.div key={label} variants={fadeUp}>
-              <Card className="hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+            { label: t.dash_total_xp, value: progress.xp.toLocaleString(), icon: Star, color:'text-primary', chip:'bg-primary/10 border-primary/20' },
+            { label: t.dash_level, value: progress.level, icon: Flame, color:'text-orange-400', chip:'bg-orange-400/10 border-orange-400/20' },
+            { label: t.dash_lessons_done, value:`${progress.completedLessons.length} / ${LESSONS.length}`, icon: BookOpen, color:'text-emerald-400', chip:'bg-emerald-400/10 border-emerald-400/20' },
+            { label: t.dash_quiz_avg, value: avgScore > 0 ? `${avgScore}%` : '—', icon: HelpCircle, color:'text-blue-400', chip:'bg-blue-400/10 border-blue-400/20' },
+          ].map(({ label, value, icon: Icon, color, chip }) => (
+            <motion.div key={label} variants={fadeUp} whileHover={{ y: -3 }}>
+              <Card className="relative overflow-hidden hover:shadow-lg hover:shadow-black/20 transition-all duration-200">
+                <div className={`pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full blur-2xl opacity-40 ${chip}`} aria-hidden />
                 <CardContent className="pt-5 pb-4">
-                  <Icon className={`w-5 h-5 ${color} mb-2`} />
-                  <div className="text-2xl font-bold font-heading">{value}</div>
+                  <div className={`mb-3 inline-flex h-9 w-9 items-center justify-center rounded-xl border ${chip}`}>
+                    <Icon className={`w-5 h-5 ${color}`} />
+                  </div>
+                  <div className="text-2xl font-bold font-heading tabular-nums">{value}</div>
                   <div className="text-xs text-muted-foreground mt-0.5">{label}</div>
                 </CardContent>
               </Card>
@@ -99,7 +113,7 @@ export default function DashboardPage() {
           {/* Left column */}
           <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.4 }} className="lg:col-span-2 space-y-4">
             {nextLesson && (
-              <Card className="border-primary/30 bg-primary/5 hover:shadow-md transition-shadow">
+              <Card className="border-primary/30 bg-gradient-to-br from-primary/10 to-primary/[0.02] hover:shadow-lg hover:shadow-primary/5 transition-shadow">
                 <CardHeader className="pb-3"><CardTitle className="text-base">{t.dash_continue}</CardTitle></CardHeader>
                 <CardContent className="flex items-center justify-between gap-4">
                   <div>
@@ -154,11 +168,11 @@ export default function DashboardPage() {
                     <div key={era.id} className="cursor-pointer group" onClick={() => navigate('/eras')}>
                       <div className="flex items-center justify-between mb-1 text-sm">
                         <span className={`font-medium group-hover:opacity-80 transition-opacity ${era.color}`}>{t[ERA_SHORT_KEY[era.id]] ?? era.shortName}</span>
-                        <span className="text-muted-foreground text-xs">{done}/{era.lessonIds.length}</span>
+                        <span className="text-muted-foreground text-xs tabular-nums">{pct === 100 ? '✓ ' : ''}{done}/{era.lessonIds.length}</span>
                       </div>
                       <div className="h-2 rounded-full bg-secondary overflow-hidden">
                         <motion.div
-                          className="h-full rounded-full bg-primary"
+                          className={`h-full rounded-full bg-gradient-to-r ${ERA_BAR[era.id] ?? 'from-primary to-primary'}`}
                           initial={{ width: 0 }}
                           animate={{ width: `${pct}%` }}
                           transition={{ delay: 0.4, duration: 0.6, ease: 'easeOut' }}

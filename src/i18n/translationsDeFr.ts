@@ -45,7 +45,7 @@ export const DE_OVERRIDES: Partial<TranslationKeys> = {
   daily_submit: 'Antwort absenden', daily_correct: 'Richtig!', daily_wrong: 'Leider falsch.',
   daily_tomorrow: 'Komm morgen für eine neue Frage wieder!', achievement_unlocked: 'Erfolg freigeschaltet!',
   difficulty_easy: 'Leicht', difficulty_medium: 'Mittel', difficulty_hard: 'Schwer',
-  era_short_ancient: 'Antike', era_short_medieval: 'Mittelalter', era_short_earlymod: 'Frühe Neuzeit', era_short_modern: 'Moderne',
+  era_short_prehistoric: 'Vorgeschichte', era_short_ancient: 'Antike', era_short_medieval: 'Mittelalter', era_short_earlymod: 'Frühe Neuzeit', era_short_modern: 'Moderne',
   // Eras & lessons
   eras_title: 'Epochen & Lektionen', eras_subtitle: 'Wähle eine Epoche und beginne deine Reise durch die Geschichte.',
   eras_lessons_label: 'Lektionen', eras_take_quiz: 'Epochen-Quiz starten', eras_view_lessons: 'Lektionen ansehen',
@@ -171,7 +171,7 @@ export const FR_OVERRIDES: Partial<TranslationKeys> = {
   daily_submit: 'Envoyer la réponse', daily_correct: 'Correct !', daily_wrong: 'Hélas, non.',
   daily_tomorrow: 'Reviens demain pour une nouvelle question !', achievement_unlocked: 'Succès débloqué !',
   difficulty_easy: 'Facile', difficulty_medium: 'Moyen', difficulty_hard: 'Difficile',
-  era_short_ancient: 'Antiquité', era_short_medieval: 'Moyen Âge', era_short_earlymod: 'Époque moderne', era_short_modern: 'Ère contemporaine',
+  era_short_prehistoric: 'Préhistoire', era_short_ancient: 'Antiquité', era_short_medieval: 'Moyen Âge', era_short_earlymod: 'Époque moderne', era_short_modern: 'Ère contemporaine',
   // Eras & lessons
   eras_title: 'Époques & Leçons', eras_subtitle: 'Choisis une époque et commence ton voyage à travers l\'histoire.',
   eras_lessons_label: 'Leçons', eras_take_quiz: 'Lancer le quiz d\'époque', eras_view_lessons: 'Voir les leçons',
