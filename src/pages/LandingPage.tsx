@@ -24,13 +24,14 @@ import { AiErrorCard } from '@/components/shared/AiErrorCard';
 // Visual config per era card; names/ranges/lesson titles resolve from the
 // localized catalogs at render time so the showcase always mirrors the app.
 const ERA_VISUALS = [
+  { eraId: 'prehistoric',  color: 'text-orange-400',  bg: 'from-orange-900/30 to-orange-950/60',   border: 'border-orange-500/30',  photo: 'photo-1600170311833-c2cf5280ce49' },
   { eraId: 'ancient',      color: 'text-amber-400',   bg: 'from-amber-900/30 to-amber-950/60',     border: 'border-amber-500/30',   photo: 'photo-1568322445389-f64ac2515020' },
   { eraId: 'middle-ages',  color: 'text-blue-400',    bg: 'from-blue-900/30 to-blue-950/60',       border: 'border-blue-500/30',    photo: 'photo-1548690312-e3b507d8c110' },
   { eraId: 'early-modern', color: 'text-emerald-400', bg: 'from-emerald-900/30 to-emerald-950/60', border: 'border-emerald-500/30', photo: 'photo-1516483638261-f4dbaf036963' },
   { eraId: 'modern',       color: 'text-rose-400',    bg: 'from-rose-900/30 to-rose-950/60',       border: 'border-rose-500/30',    photo: 'photo-1477959858617-67f85cf4f1df' },
 ];
 
-const STAT_VALUES = [ { value: 36, suffix: '' }, { value: 95, suffix: '' }, { value: 200, suffix: '' }, { value: 5000, suffix: '+' } ];
+const STAT_VALUES = [ { value: 45, suffix: '' }, { value: 114, suffix: '' }, { value: 250, suffix: '' }, { value: 5000, suffix: '+' } ];
 
 
 
@@ -792,7 +793,7 @@ export default function LandingPage() {
           <h2 className="font-heading text-3xl font-bold mb-3">{L.erasTitle}</h2>
           <p className="text-muted-foreground">{L.erasSubtitle}</p>
         </motion.div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
           {ERA_VISUALS.map((era, i) => (
             <motion.div
               key={era.eraId}
