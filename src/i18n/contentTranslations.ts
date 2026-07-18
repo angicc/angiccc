@@ -7,6 +7,7 @@ import { WAVE3_BODY_TRANS } from './lessonBodyTranslations_3';
 import { DEFR_BODY } from './lessonBodyDeFr';
 import { PREHISTORIC_ERA_TRANS, PREHISTORIC_LESSON_TRANS } from './prehistoricTranslations';
 import { PREHISTORIC_BODY_TRANS } from './prehistoricBodies';
+import { BYZANTINE_ERA_TRANS, BYZANTINE_LESSON_TRANS } from './byzantineTranslations';
 import { LESSON_DEEP_DIVES } from './lessonDeepDives';
 
 type ContentLang = Exclude<Language, 'en'>;
@@ -243,6 +244,10 @@ for (const [era, ec] of Object.entries(DEFR_ERA)) {
 
 // Prehistoric era metadata (all five languages live in one catalog).
 ERA_TRANS['prehistoric'] = { ...ERA_TRANS['prehistoric'], ...PREHISTORIC_ERA_TRANS };
+ERA_TRANS['byzantine'] = { ...ERA_TRANS['byzantine'], ...BYZANTINE_ERA_TRANS };
+for (const [id, langs] of Object.entries(BYZANTINE_LESSON_TRANS)) {
+  LESSON_TRANS[id] = { ...LESSON_TRANS[id], ...langs };
+}
 for (const [id, langs] of Object.entries(PREHISTORIC_LESSON_TRANS)) {
   LESSON_TRANS[id] = { ...LESSON_TRANS[id], ...langs };
 }
