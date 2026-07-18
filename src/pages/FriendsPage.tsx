@@ -19,6 +19,19 @@ import {
 } from '@/features/friends/friendInteractions';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import {
+  checkServerOnline, fetchOnlineFriendIds, apiAddFriend, apiSendMessage, socialApiConfigured,
+} from '@/services/social';
+
+// Connection-status chip labels (kept local, mirroring the deep-dive pattern).
+const NET_LABEL: Record<string, { live: string; offline: string }> = {
+  en: { live: 'Live · server connected', offline: 'Offline mode · saved locally' },
+  es: { live: 'En vivo · servidor conectado', offline: 'Modo sin conexión · guardado local' },
+  ru: { live: 'Онлайн · сервер подключён', offline: 'Офлайн-режим · данные локально' },
+  mk: { live: 'Во живо · сервер поврзан', offline: 'Офлајн режим · зачувано локално' },
+  de: { live: 'Live · Server verbunden', offline: 'Offline-Modus · lokal gespeichert' },
+  fr: { live: 'En direct · serveur connecté', offline: 'Mode hors ligne · sauvegarde locale' },
+};
 
 const MOCK_USERS = [
   { id: 'm1', username: 'HistoriaClio',    xp: 5840, videoXp: 2200, country: '🇩🇪', streak: 62 },
@@ -68,6 +81,9 @@ export default function FriendsPage() {
   const [giftFriend, setGiftFriend] = useState<FriendEntry | null>(null);
   const [giftSentMsg, setGiftSentMsg] = useState('');
   const [duelFriend, setDuelFriend]   = useState<FriendEntry | null>(null);
+  // Online layer: null = probing, then live server status + presence set.
+  const [serverOnline, setServerOnline] = useState<boolean | null>(null);
+  const [onlineIds, setOnlineIds]       = useState<Set<string>>(new Set());
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -75,6 +91,23 @@ export default function FriendsPage() {
     setFriends(loadJSON<FriendEntry[]>(storageKey('friends', userId), []));
     setSentIds(loadJSON<string[]>(storageKey('sent', userId), []));
     setReceived(loadJSON<RequestEntry[]>(storageKey('received', userId), []));
+  }, [userId]);
+
+  // Probe the backend and keep friend presence fresh while the page is open.
+  useEffect(() => {
+    let cancelled = false;
+    const tick = async () => {
+      const ok = await checkServerOnline();
+      if (cancelled) return;
+      setServerOnline(ok);
+      if (ok) {
+        const ids = await fetchOnlineFriendIds();
+        if (!cancelled && ids) setOnlineIds(new Set(ids));
+      }
+    };
+    void tick();
+    const timer = setInterval(tick, 30_000);
+    return () => { cancelled = true; clearInterval(timer); };
   }, [userId]);
 
   // Pool of searchable users: mock users minus current user and already-friends
@@ -95,6 +128,9 @@ export default function FriendsPage() {
     const targetReceived = loadJSON<RequestEntry[]>(storageKey('received', user.id), []);
     targetReceived.push({ fromId: userId, fromUsername: currentUser?.username ?? 'You', xp: 0 });
     saveJSON(storageKey('received', user.id), targetReceived);
+
+    // Best-effort server write — persists across devices when the backend is up.
+    if (socialApiConfigured()) void apiAddFriend(user.username);
 
     toast.success(`Friend request sent to ${user.username}`);
   }
@@ -138,14 +174,25 @@ export default function FriendsPage() {
     <AppShell>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <div className="p-2 rounded-xl bg-primary/10">
             <Users className="w-5 h-5 text-primary" />
           </div>
-          <div>
-            <h1 className="font-heading text-3xl font-bold">{t.fr_title}</h1>
+          <div className="min-w-0">
+            <h1 className="font-heading text-2xl sm:text-3xl font-bold">{t.fr_title}</h1>
             <p className="text-muted-foreground text-sm mt-0.5">{t.fr_subtitle}</p>
           </div>
+          {/* Live connection status — real /healthz probe, refreshed every 30s */}
+          {serverOnline !== null && (
+            <span className={`ml-auto inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium ${
+              serverOnline
+                ? 'border-emerald-400/40 bg-emerald-400/10 text-emerald-300'
+                : 'border-amber-400/30 bg-amber-400/5 text-amber-300/90'
+            }`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${serverOnline ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400/70'}`} />
+              {(NET_LABEL[language] ?? NET_LABEL.en)[serverOnline ? 'live' : 'offline']}
+            </span>
+          )}
         </div>
 
         {/* Search */}
@@ -250,13 +297,19 @@ export default function FriendsPage() {
                   <div className="space-y-2">
                     {friends.map(friend => {
                       const rank = getChessRank(friend.videoXp);
+                      const isOnline = onlineIds.has(friend.id);
                       return (
                         <div key={friend.id} className="flex items-center gap-3 p-3 rounded-xl border border-border hover:bg-accent/20 transition-colors">
-                          <Avatar className="h-10 w-10 shrink-0">
-                            <AvatarFallback className="bg-primary/20 text-primary text-sm font-semibold">
-                              {getInitials(friend.username)}
-                            </AvatarFallback>
-                          </Avatar>
+                          <div className="relative shrink-0">
+                            <Avatar className="h-10 w-10">
+                              <AvatarFallback className="bg-primary/20 text-primary text-sm font-semibold">
+                                {getInitials(friend.username)}
+                              </AvatarFallback>
+                            </Avatar>
+                            {isOnline && (
+                              <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-background" title="Online" />
+                            )}
+                          </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
                               <span className="text-sm font-semibold truncate">{friend.username}</span>
@@ -505,6 +558,8 @@ function ChatDrawer({ userId, friend, t, onClose, onChallenge }: {
     const next = [...thread, mine];
     setThread(next);
     saveThread(userId, friend.id, next);
+    // Best-effort durable copy on the server (socket relays it live when up).
+    if (socialApiConfigured()) void apiSendMessage(friend.id, text);
     setDraft('');
     // The friend replies shortly with a canned line, so the thread feels live.
     setTimeout(() => {

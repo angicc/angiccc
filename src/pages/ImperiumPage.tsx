@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Swords, Crown, Flag, Zap, Target, Shield, AlertTriangle,
   ChevronRight, RotateCcw, Trash2, CloudSun, Coins, Scale3d, Network, Hourglass, MapPin, HelpCircle,
+  ScrollText, X, Landmark,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -32,7 +33,9 @@ import { theatreSpec, provincesFor } from '@/features/imperium/imperiumProvinces
 import { impText } from '@/features/imperium/imperiumCatalog';
 import type { CrisisEvent } from '@/features/imperium/crisisGenerator';
 import { Battle3D } from '@/features/imperium/Battle3D';
-import { MapBattleTheater } from '@/features/imperium/MapBattleTheater';
+import { MapBattleTheater, type TheaterReport } from '@/features/imperium/MapBattleTheater';
+import { appendLedger, loadLedger, computeProfile, iqRankKey } from '@/features/imperium/commanderLedger';
+import { PARALLELS } from '@/features/imperium/battleParallels';
 import {
   saveCampaign, loadCampaign, listLocalCampaigns, deleteCampaign,
   pushTurnBlock, pushRollback,
@@ -261,6 +264,105 @@ function BattleReplay({ battle, language, weather, onDone }: {
   );
 }
 
+// ── Commander's Ledger: decision-quality analytics drawer ─────────────────────
+
+function LedgerPanel({ campaignId, language, onClose }: {
+  campaignId: string;
+  language: Language;
+  onClose: () => void;
+}) {
+  const entries = loadLedger(campaignId);
+  const profile = computeProfile(entries);
+  const TAC_KEY: Record<string, string> = { charge: 'imp_tactic_charge', volley: 'imp_tactic_volley', hold: 'imp_tactic_hold' };
+  const coachKey = profile.iq >= 68 ? 'imp_ledger_coach_high' : profile.iq >= 45 ? 'imp_ledger_coach_mid' : 'imp_ledger_coach_low';
+  const gradeColor = (g: string) =>
+    g === 'S' || g === 'A' ? 'text-emerald-300 border-emerald-400/40' :
+    g === 'B' ? 'text-amber-300 border-amber-400/40' :
+    g === 'C' ? 'text-orange-300 border-orange-400/40' : 'text-red-300 border-red-400/40';
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[1250] bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+      <motion.div initial={{ scale: 0.94, y: 14 }} animate={{ scale: 1, y: 0 }}
+        className="w-full max-w-xl max-h-[88vh] overflow-hidden flex flex-col rounded-2xl border border-white/10 bg-layer-1">
+        <div className="px-4 sm:px-5 py-4 border-b border-white/5 flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-primary/10"><ScrollText className="w-4 h-4 text-primary" /></div>
+          <div className="min-w-0">
+            <h3 className="font-heading font-bold truncate">{impText('imp_ledger_title', language)}</h3>
+            {profile.battles > 0 && (
+              <p className="text-[11px] text-muted-foreground">{impText(iqRankKey(profile.iq), language)}</p>
+            )}
+          </div>
+          <Button size="icon" variant="ghost" className="ml-auto shrink-0" onClick={onClose}><X className="w-4 h-4" /></Button>
+        </div>
+
+        {profile.battles === 0 ? (
+          <p className="p-6 text-sm text-muted-foreground">{impText('imp_ledger_empty', language)}</p>
+        ) : (
+          <ScrollArea className="flex-1">
+            <div className="p-4 sm:p-5 space-y-4">
+              {/* Strategic IQ headline */}
+              <div className="flex items-center gap-4 rounded-xl border border-violet-400/20 bg-gradient-to-br from-violet-950/30 to-transparent p-4">
+                <div className="text-center shrink-0">
+                  <p className="font-heading text-4xl font-black tabular-nums text-violet-200">{profile.iq}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{impText('imp_ledger_iq', language)}</p>
+                </div>
+                <p className="text-[12px] leading-relaxed text-violet-100/80 italic">{impText(coachKey, language)}</p>
+              </div>
+
+              {/* Stat tiles */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {[
+                  [impText('imp_ledger_battles', language), String(profile.battles)],
+                  [impText('imp_ledger_wins', language), String(profile.wins)],
+                  [impText('imp_ledger_counter', language), `${profile.counterRate}%`],
+                  [impText('imp_ledger_codex', language), `${profile.parallelsSeen.length}/${PARALLELS.length}`],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-xl border border-white/10 bg-white/[0.02] p-2.5 text-center">
+                    <p className="font-heading text-lg font-bold tabular-nums">{value}</p>
+                    <p className="text-[10px] text-muted-foreground leading-tight">{label}</p>
+                  </div>
+                ))}
+              </div>
+
+              {profile.favoriteTactic && (
+                <p className="text-[11px] text-muted-foreground">
+                  {impText('imp_ledger_favorite', language)}: <span className="text-primary font-medium">{impText(TAC_KEY[profile.favoriteTactic], language)}</span>
+                </p>
+              )}
+
+              {/* Journal rows, newest first */}
+              <div className="space-y-1.5">
+                {[...entries].reverse().slice(0, 14).map((e, i) => {
+                  const par = PARALLELS.find(p => p.id === e.parallelId);
+                  return (
+                    <div key={i} className="flex items-center gap-2.5 rounded-lg border border-white/5 bg-white/[0.015] px-2.5 py-2 text-[11px]">
+                      <span className={cn('shrink-0 rounded border px-1.5 py-0.5 font-black tabular-nums', gradeColor(e.grade))}>{e.grade}</span>
+                      <span className="min-w-0 flex-1 truncate">
+                        <span className="text-foreground/90">{provinceName(e.territoryId, language)}</span>
+                        <span className="text-muted-foreground"> · {impText(TAC_KEY[e.playerTactic], language)} {impText('imp_read_vs', language)} {impText(TAC_KEY[e.enemyTactic], language)}</span>
+                      </span>
+                      {par && (
+                        <span className="hidden sm:flex items-center gap-1 shrink-0 text-amber-300/80">
+                          <Landmark className="w-3 h-3" />{impText(par.titleKey, language)}
+                        </span>
+                      )}
+                      <span className={cn('shrink-0 font-semibold',
+                        e.outcome === 'won' ? 'text-amber-300' : e.outcome === 'lost' ? 'text-red-400' : 'text-muted-foreground')}>
+                        {impText(e.outcome === 'won' ? 'imp_victory' : e.outcome === 'lost' ? 'imp_defeat' : 'imp_stalemate', language)}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </ScrollArea>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
+
 // ── Crisis council ────────────────────────────────────────────────────────────
 
 function CrisisCouncil({ crisis, language, chosen, onChoose }: {
@@ -312,6 +414,8 @@ export default function ImperiumPage() {
   const [selectedArmyId, setSelectedArmyId] = useState<string | null>(null);
   const [battleQueue, setBattleQueue] = useState<TurnResult['battles']>([]);
   const [inspectBattle, setInspectBattle] = useState<TurnResult['battles'][number] | null>(null);
+  const [showLedger, setShowLedger] = useState(false);
+  const [ledgerVersion, setLedgerVersion] = useState(0);
   const [showWeb, setShowWeb] = useState(false);
   const [resolving, setResolving] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
@@ -536,6 +640,9 @@ export default function ImperiumPage() {
               <Badge variant="outline" className="gap-1.5"><CloudSun className="w-3 h-3" />{ti(`imp_weather_${snap?.weather ?? 'clear'}`)}</Badge>
               <Badge variant="outline" className="gap-1.5 tabular-nums"><Coins className="w-3 h-3" />{ti('imp_treasury')} {snap?.treasury}</Badge>
               <Badge variant="outline" className="gap-1.5 tabular-nums"><Scale3d className="w-3 h-3" />{ti('imp_discipline')} {snap?.discipline ?? 0}</Badge>
+              <Button variant="ghost" size="sm" className="gap-1.5" onClick={() => setShowLedger(true)}>
+                <ScrollText className="w-3.5 h-3.5" />{ti('imp_ledger_title')}
+              </Button>
               <Button variant="ghost" size="sm" className="gap-1.5" onClick={() => setShowTutorial(true)}>
                 <HelpCircle className="w-3.5 h-3.5" />{ti('imp_help')}
               </Button>
@@ -679,7 +786,24 @@ export default function ImperiumPage() {
                         weather={snap.weather}
                         language={language}
                         provinceName={(id) => provinceName(id, language)}
-                        onResolved={() => { setInspectBattle(null); setBattleQueue(q => q.slice(1)); }}
+                        onResolved={(report: TheaterReport) => {
+                          // Journal the decision into the Commander's Ledger.
+                          appendLedger(campaign.id, {
+                            turn: snap.turn,
+                            territoryId: report.territoryId,
+                            playerTactic: report.playerTactic,
+                            enemyTactic: report.enemyTactic,
+                            terrain: battleQueue[0].resolution.terrain,
+                            weather: snap.weather,
+                            grade: report.grade,
+                            outcome: report.outcome,
+                            parallelId: report.parallelId,
+                            at: new Date().toISOString(),
+                          });
+                          setLedgerVersion(v => v + 1);
+                          setInspectBattle(null);
+                          setBattleQueue(q => q.slice(1));
+                        }}
                         onInspect={() => setInspectBattle(battleQueue[0])}
                       />
                     )}
@@ -870,6 +994,9 @@ export default function ImperiumPage() {
         )}
         {showTutorial && (
           <TutorialOverlay key="tutorial" language={language} onClose={() => setShowTutorial(false)} />
+        )}
+        {showLedger && campaign && (
+          <LedgerPanel key={`ledger-${ledgerVersion}`} campaignId={campaign.id} language={language} onClose={() => setShowLedger(false)} />
         )}
       </AnimatePresence>
 

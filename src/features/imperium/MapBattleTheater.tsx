@@ -1,33 +1,43 @@
-// ─── CHRONOS IMPERIUM · On-Map Battle Theatre ────────────────────────────────
-// When two armies collide, the battle does not vanish into a modal — it plays
-// out RIGHT ON THE LEAFLET MAP, at the exact coordinates of the contested
-// province. Little formations of infantry, archers and cavalry march, loose
-// volleys, lock shield walls and charge home, tick by deterministic tick from
-// the combat matrix. Above them, Clio grades the tactical move the player chose
-// this turn — a live S–D verdict with a one-line read that updates as the lines
-// shatter, waver and rout. This is the "highly-intellectual, highly-animated"
-// spine of Imperium: you are not rolling dice, you are watching your reasoning
-// be tested, and being told how well you reasoned.
-//
-// The component anchors itself inside the map's `relative` wrapper, projecting
-// map lat/lng → container pixels every frame the map moves, so the arena stays
-// pinned to the ground it is fought over. All motion respects reduced-motion.
+// ─── CHRONOS IMPERIUM · On-Map 3D Battle Theatre ─────────────────────────────
+// When two armies collide, the battle plays out RIGHT ON THE LEAFLET MAP at
+// the contested province's coordinates — now as a true CSS-3D diorama. A
+// perspective ground plane is projected onto the map; each side fields ranks
+// of upright soldier sprites (counter-rotated billboards standing on the
+// receding plane) that march, loose volleys, lock shields, clash and — as
+// strength drains — fall and stay down. Above the arena Clio grades the
+// player's tactical read live, and when the dust settles her DEBRIEF opens:
+// the real historical battle this engagement echoed (Hastings, Agincourt,
+// Cannae…), what happened there, and the transferable principle — so every
+// battle is simultaneously a game moment and a history lesson. The debrief
+// feeds the Commander's Ledger for long-run decision analytics.
+// All motion respects prefers-reduced-motion; geometry clamps to the map.
 import { useEffect, useMemo, useState } from 'react';
 import type { Map as LeafletMap } from 'leaflet';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { ChevronRight, SkipForward, Film } from 'lucide-react';
+import { ChevronRight, SkipForward, Film, Landmark, Quote } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Language } from '@/i18n/translations';
 import { impText } from './imperiumCatalog';
 import {
   ROSTERS, rateTactic,
-  type BattleResolution, type Tactic, type UnitClass, type Weather,
+  type BattleResolution, type Tactic, type UnitClass, type Weather, type TacticGrade,
 } from './combatMatrix';
+import { findParallel, type HistoricalParallel } from './battleParallels';
 
 // ── Structural battle shape (compatible with engine TurnResult['battles'][n]) ──
 export interface TheaterBattle {
   pending: { id: string; territoryId: string; lat: number; lng: number };
   resolution: BattleResolution;
+}
+
+/** What the theatre reports back for the Commander's Ledger. */
+export interface TheaterReport {
+  playerTactic: Tactic;
+  enemyTactic: Tactic;
+  grade: TacticGrade;
+  outcome: 'won' | 'lost' | 'draw';
+  parallelId: string;
+  territoryId: string;
 }
 
 interface Props {
@@ -38,8 +48,8 @@ interface Props {
   weather: Weather;
   language: Language;
   provinceName: (id: string) => string;
-  /** Advance the queue (this battle resolved / dismissed). */
-  onResolved: () => void;
+  /** Advance the queue (battle resolved + debrief acknowledged). */
+  onResolved: (report: TheaterReport) => void;
   /** Open the detailed CSS-3D frame-by-frame replay for this battle. */
   onInspect: () => void;
 }
@@ -49,11 +59,10 @@ const ENEMY_COLOR = '#c0455a';
 
 const LEAD: Record<Tactic, UnitClass> = { charge: 'cavalry', volley: 'ranged', hold: 'infantry' };
 const CLASS_GLYPH: Record<UnitClass, string> = { infantry: '🛡️', ranged: '🏹', cavalry: '🐎' };
-// A small supporting order behind the lead, per tactic, so each side reads as a host.
 const SUPPORT: Record<Tactic, UnitClass[]> = {
-  charge: ['infantry', 'ranged'],
-  volley: ['infantry', 'cavalry'],
-  hold: ['ranged', 'cavalry'],
+  charge: ['cavalry', 'infantry', 'ranged'],
+  volley: ['ranged', 'ranged', 'infantry'],
+  hold: ['infantry', 'infantry', 'ranged'],
 };
 
 type Side = 'attacker' | 'defender';
@@ -71,9 +80,9 @@ const TAC_KEY: Record<Tactic, string> = {
   charge: 'imp_tactic_charge', volley: 'imp_tactic_volley', hold: 'imp_tactic_hold',
 };
 
-function ClioBadge() {
+function ClioBadge({ size = 15 }: { size?: number }) {
   return (
-    <svg viewBox="0 0 24 24" width={15} height={15} aria-hidden style={{ flexShrink: 0 }}>
+    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden style={{ flexShrink: 0 }}>
       <circle cx="12" cy="12" r="11" fill="#1c0a02" stroke="#a78bfa" strokeWidth="1.4" />
       <path d="M7 8 L9 5 L12 6.5 L15 5 L17 8" fill="none" stroke="#f59e0b" strokeWidth="1.3" strokeLinejoin="round" />
       <circle cx="9.5" cy="12" r="1.05" fill="#f5f0e6" />
@@ -83,111 +92,73 @@ function ClioBadge() {
   );
 }
 
-// ── A single side's formation: a lead block + a supporting order ──────────────
-function Formation({
-  side, tactic, color, strength, action, routed, reduce,
-}: {
-  side: Side;
-  tactic: Tactic;
+// ── One soldier: an upright billboard standing on the 3D ground plane ─────────
+// The ground is rotated ~56° away from the camera; each soldier counter-rotates
+// -56° around its feet so it stands vertically on the receding plane — the
+// classic CSS diorama. Fallen soldiers stay down as dimmed bodies.
+const GROUND_TILT = 56;
+
+function Soldier3D({ x, y, glyph, color, side, action, dead, routed, delay, reduce }: {
+  x: number;               // % across the ground plane (attacker left)
+  y: number;               // % down the ground plane (depth: smaller = further)
+  glyph: string;
   color: string;
-  strength: number;      // 0–100, drives how many tokens survive
-  action: string | null; // kind of this tick's action for this side
+  side: Side;
+  action: string | null;
+  dead: boolean;
   routed: boolean;
+  delay: number;
   reduce: boolean;
 }) {
   const dir = side === 'attacker' ? 1 : -1;
-  const lead = LEAD[tactic];
-  const support = SUPPORT[tactic];
-  const alive = Math.max(1, Math.round((strength / 100) * 5)); // 1..5 tokens
-
-  // Formation-wide shove toward the centre on aggressive actions.
-  const shove = reduce ? {}
-    : action === 'charge' ? { x: [0, dir * 26, dir * 12] }
-    : action === 'melee' ? { x: [0, dir * 14, dir * 5] }
-    : action === 'volley' ? { x: [0, -dir * 5, 0] }
-    : action === 'brace' ? { x: [0, -dir * 3, 0] }
-    : {};
-
-  const flee = routed ? { x: -dir * 120, opacity: 0, filter: 'grayscale(1)' } : {};
+  // Per-action body language, applied to the upright billboard.
+  const motionProps = reduce || dead ? {} :
+    routed ? { x: -dir * 160, opacity: 0 } :
+    action === 'charge' ? { x: [0, dir * 26, dir * 10], rotate: [0, dir * 8, 0] } :
+    action === 'melee' ? { x: [0, dir * 14, dir * 4], rotate: [0, dir * 10, -dir * 4, 0] } :
+    action === 'volley' ? { y: [0, -3, 0], rotate: [0, -dir * 6, 0] } :
+    action === 'brace' ? { scale: [1, 0.94, 1] } :
+    { y: [0, -1.5, 0] };
 
   return (
-    <motion.div
-      className="relative flex flex-col items-center gap-1"
-      animate={{ ...shove, ...flee }}
-      transition={routed ? { duration: 0.9, ease: 'easeIn' } : { duration: 0.5, ease: 'easeOut' }}
+    <div
+      className="absolute"
+      style={{
+        left: `${x}%`, top: `${y}%`,
+        transform: `rotateX(${-GROUND_TILT}deg)`,
+        transformOrigin: 'bottom center',
+        transformStyle: 'preserve-3d',
+      }}
     >
-      {/* ground shadow */}
-      <div className="absolute -bottom-1 h-2 w-14 rounded-[50%] bg-black/45 blur-[2px]" />
-      {/* lead block */}
+      {/* contact shadow lies flat on the ground */}
+      <div
+        className="absolute left-1/2 top-full h-2 w-6 -translate-x-1/2 rounded-[50%] bg-black/50 blur-[2px]"
+        style={{ transform: `translateX(-50%) rotateX(${GROUND_TILT}deg) translateZ(-1px)`, opacity: dead ? 0.25 : 0.6 }}
+      />
       <motion.div
-        key={`lead-${action}`}
-        animate={reduce ? {} :
-          action === 'charge' ? { x: [0, dir * 40, dir * 16], scale: [1, 1.18, 1.02], rotate: [0, dir * 4, 0] } :
-          action === 'melee' ? { x: [0, dir * 22, dir * 7], rotate: [0, dir * 6, 0] } :
-          action === 'volley' ? { x: [0, -dir * 8, 0], y: [0, -2, 0] } :
-          action === 'brace' ? { scale: [1, 1.1, 1.03] } : {}}
-        transition={{ duration: 0.55, ease: 'easeOut' }}
-        className="relative z-10 flex items-center justify-center rounded-md border text-[15px] leading-none"
-        style={{
-          width: 30, height: 26,
-          background: `${color}26`, borderColor: `${color}`,
-          boxShadow: `0 2px 8px rgba(0,0,0,.5), inset 0 0 8px ${color}33`,
-        }}
+        animate={dead
+          ? { rotate: dir * 84, opacity: 0.42, y: 4, filter: 'grayscale(0.9)' }
+          : motionProps}
+        transition={dead
+          ? { duration: 0.7, ease: 'easeIn' }
+          : routed
+            ? { duration: 1, ease: 'easeIn' }
+            : { duration: 0.55, ease: 'easeOut', delay, repeat: action ? 0 : Infinity, repeatDelay: 1.6 }}
+        className="relative flex flex-col items-center"
+        style={{ transformOrigin: 'bottom center' }}
       >
-        <span>{CLASS_GLYPH[lead]}</span>
-        {/* shield-wall bar — the distinct 'hold' signature: a solid locked wall */}
-        {action === 'brace' && (
-          <motion.div
-            key="wall"
-            initial={reduce ? { opacity: 1 } : { scaleY: 0, opacity: 0 }}
-            animate={{ scaleY: 1, opacity: 1 }}
-            transition={{ duration: 0.28, ease: 'backOut' }}
-            className="absolute top-1/2 -translate-y-1/2 rounded-sm"
-            style={{
-              [dir === 1 ? 'right' : 'left']: -7,
-              width: 5, height: 30,
-              background: `linear-gradient(180deg, ${color}, ${color}88)`,
-              boxShadow: `0 0 8px ${color}, 0 0 2px #fff`,
-            }}
-          >
-            <motion.div
-              className="absolute inset-0 rounded-sm"
-              initial={{ opacity: 0.9 }}
-              animate={reduce ? {} : { opacity: [0.9, 0.2, 0.9], y: [-14, 14, -14] }}
-              transition={{ duration: 1.1, repeat: Infinity, ease: 'linear' }}
-              style={{ background: 'linear-gradient(180deg, transparent, #ffffffaa, transparent)' }}
-            />
-          </motion.div>
-        )}
+        <span className="text-[15px] leading-none" style={{ transform: side === 'defender' ? 'scaleX(-1)' : undefined, filter: 'drop-shadow(0 2px 2px rgba(0,0,0,.7))' }}>
+          {glyph}
+        </span>
+        {/* faction base disc */}
+        <span className="mt-[1px] block h-[3px] w-4 rounded-full" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
       </motion.div>
-      {/* supporting order — a little rank of smaller tokens */}
-      <div className="flex gap-0.5 -mt-0.5">
-        {Array.from({ length: Math.min(alive, 4) }).map((_, i) => {
-          const cls = support[i % support.length];
-          return (
-            <motion.span
-              key={i}
-              className="flex items-center justify-center rounded-[3px] border text-[9px] leading-none"
-              animate={reduce ? {} : action === 'charge'
-                ? { y: [0, -2, 0], transition: { delay: i * 0.04, duration: 0.4 } } : {}}
-              style={{
-                width: 15, height: 14,
-                background: `${color}1f`, borderColor: `${color}99`,
-              }}
-            >
-              <span style={{ transform: side === 'defender' ? 'scaleX(-1)' : undefined }}>{CLASS_GLYPH[cls]}</span>
-            </motion.span>
-          );
-        })}
-      </div>
-    </motion.div>
+    </div>
   );
 }
 
-// ── Per-tick effects between the two hosts (arrows, sparks, clash flash) ──────
-function EffectsLayer({
-  tick, triggers, dmgToPlayer, dmgToEnemy, playerSide, reduce,
-}: {
+// ── Per-tick effects above the diorama (arrows, sparks, clash flash) ──────────
+function EffectsLayer({ tick, triggers, dmgToPlayer, dmgToEnemy, playerSide, reduce }: {
   tick: number;
   triggers: BattleResolution['ticks'][number]['triggers'];
   dmgToPlayer: number;
@@ -198,89 +169,77 @@ function EffectsLayer({
   if (reduce) return null;
   const has = (kind: string, side?: Side) => triggers.some(g => g.kind === kind && (!side || g.side === side));
   const enemySide: Side = playerSide === 'attacker' ? 'defender' : 'attacker';
-  // side → horizontal home position (% of arena width)
-  const home = (s: Side) => (s === 'attacker' ? 16 : 84);
+  const home = (s: Side) => (s === 'attacker' ? 18 : 82);
 
   return (
     <div key={tick} className="pointer-events-none absolute inset-0 overflow-visible">
-      {/* Volleys: arrows arc from each firing side to the other */}
       {(['attacker', 'defender'] as Side[]).flatMap(side =>
         has('volley', side)
-          ? Array.from({ length: 5 }).map((_, i) => {
+          ? Array.from({ length: 6 }).map((_, i) => {
               const from = home(side), to = home(side === 'attacker' ? 'defender' : 'attacker');
               return (
                 <motion.div
                   key={`arw-${side}-${i}`}
-                  className="absolute top-1/2 h-[2px] w-2 rounded-full"
+                  className="absolute top-[46%] h-[2px] w-2.5 rounded-full"
                   style={{ background: side === playerSide ? PLAYER_COLOR : ENEMY_COLOR }}
                   initial={{ left: `${from}%`, y: 0, opacity: 0 }}
-                  animate={{ left: `${to}%`, y: [0, -26 - i * 3, 6], opacity: [0, 1, 1, 0] }}
-                  transition={{ duration: 0.6, delay: i * 0.05, ease: 'easeIn' }}
+                  animate={{ left: `${to}%`, y: [0, -30 - i * 3, 8], opacity: [0, 1, 1, 0] }}
+                  transition={{ duration: 0.62, delay: i * 0.05, ease: 'easeIn' }}
                 />
               );
             })
           : [],
       )}
-
-      {/* Charge dust streak from the charging side */}
       {(['attacker', 'defender'] as Side[]).map(side =>
         has('charge', side) ? (
           <motion.div
             key={`dust-${side}`}
-            className="absolute top-1/2 h-6 -translate-y-1/2 rounded-full blur-[3px]"
+            className="absolute top-[52%] h-7 -translate-y-1/2 rounded-full blur-[3px]"
             style={{
               [side === 'attacker' ? 'left' : 'right']: `${home(side)}%`,
               width: '30%',
               background: `linear-gradient(${side === 'attacker' ? 90 : 270}deg, transparent, ${side === playerSide ? PLAYER_COLOR : ENEMY_COLOR}55)`,
             }}
             initial={{ opacity: 0, scaleX: 0.3 }}
-            animate={{ opacity: [0, 0.8, 0], scaleX: [0.3, 1, 1] }}
+            animate={{ opacity: [0, 0.85, 0], scaleX: [0.3, 1, 1] }}
             transition={{ duration: 0.6 }}
           />
         ) : null,
       )}
-
-      {/* Clash flash at the centre on melee/charge contact */}
       {(has('melee') || has('charge')) && (
         <motion.div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{ width: 34, height: 34, background: 'radial-gradient(circle, #fff8e0, #f59e0b00 70%)' }}
+          className="absolute left-1/2 top-[50%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{ width: 38, height: 38, background: 'radial-gradient(circle, #fff8e0, #f59e0b00 70%)' }}
           initial={{ opacity: 0, scale: 0.2 }}
-          animate={{ opacity: [0, 0.9, 0], scale: [0.2, 1.5, 1.9] }}
+          animate={{ opacity: [0, 0.95, 0], scale: [0.2, 1.6, 2] }}
           transition={{ duration: 0.5, delay: 0.15 }}
         />
       )}
-
-      {/* Deflect sparks when a shield wall holds */}
       {has('brace') && Array.from({ length: 5 }).map((_, i) => (
         <motion.span
           key={`spk-${i}`}
-          className="absolute left-1/2 top-1/2 text-[10px]"
+          className="absolute left-1/2 top-[48%] text-[10px]"
           style={{ color: '#ffe9a8' }}
           initial={{ opacity: 0, x: 0, y: 0 }}
-          animate={{ opacity: [0, 1, 0], x: (Math.random() - 0.5) * 40, y: (Math.random() - 0.5) * 34 }}
+          animate={{ opacity: [0, 1, 0], x: (Math.random() - 0.5) * 44, y: (Math.random() - 0.5) * 36 }}
           transition={{ duration: 0.5, delay: 0.1 + i * 0.03 }}
         >✦</motion.span>
       ))}
-
-      {/* Shatter bursts on whichever side lost a unit block */}
       {(['attacker', 'defender'] as Side[]).map(side =>
         has('shatter', side) ? (
           <motion.span
             key={`sht-${side}`}
-            className="absolute top-1/2 -translate-y-1/2 text-[16px]"
+            className="absolute top-[46%] -translate-y-1/2 text-[17px]"
             style={{ [side === 'attacker' ? 'left' : 'right']: `${home(side) - 4}%`, color: '#ff6b6b' }}
             initial={{ opacity: 0, scale: 0.4, rotate: -20 }}
-            animate={{ opacity: [0, 1, 0], scale: [0.4, 1.3, 1.6], rotate: 0 }}
+            animate={{ opacity: [0, 1, 0], scale: [0.4, 1.35, 1.7], rotate: 0 }}
             transition={{ duration: 0.6 }}
           >✸</motion.span>
         ) : null,
       )}
-
-      {/* Floating damage numbers over each host */}
       {dmgToEnemy > 0 && (
         <motion.span
-          className="absolute top-[26%] text-[11px] font-black tabular-nums"
+          className="absolute top-[24%] text-[11px] font-black tabular-nums"
           style={{ [enemySide === 'attacker' ? 'left' : 'right']: `${home(enemySide) - 3}%`, color: '#ffd3d3', textShadow: '0 1px 3px #000' }}
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: [0, 1, 1, 0], y: -20 }}
@@ -289,7 +248,7 @@ function EffectsLayer({
       )}
       {dmgToPlayer > 0 && (
         <motion.span
-          className="absolute top-[26%] text-[11px] font-black tabular-nums"
+          className="absolute top-[24%] text-[11px] font-black tabular-nums"
           style={{ [playerSide === 'attacker' ? 'left' : 'right']: `${home(playerSide) - 3}%`, color: '#ffd3d3', textShadow: '0 1px 3px #000' }}
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: [0, 1, 1, 0], y: -20 }}
@@ -316,6 +275,11 @@ export function MapBattleTheater({
     tactic: playerTactic, enemyTactic, weather, terrain: resolution.terrain,
     leaderSignature: resolution[playerSide].leader?.signature,
   }), [playerTactic, enemyTactic, weather, resolution, playerSide]);
+
+  const parallel: HistoricalParallel = useMemo(
+    () => findParallel({ playerTactic, enemyTactic, terrain: resolution.terrain, weather }),
+    [playerTactic, enemyTactic, resolution.terrain, weather],
+  );
 
   const playerRoster = ROSTERS.find(r => r.id === resolution[playerSide].rosterId);
   const enemyRoster = ROSTERS.find(r => r.id === resolution[enemySide].rosterId);
@@ -353,8 +317,12 @@ export function MapBattleTheater({
   // ── Deterministic tick stepper ──
   const [tickIdx, setTickIdx] = useState(-1);
   const done = tickIdx >= resolution.ticks.length - 1;
+  const [showDebrief, setShowDebrief] = useState(false);
   useEffect(() => {
-    if (done) return;
+    if (done) {
+      const t = setTimeout(() => setShowDebrief(true), reduce ? 0 : 900);
+      return () => clearTimeout(t);
+    }
     if (reduce) { setTickIdx(resolution.ticks.length - 1); return; }
     const t = setTimeout(() => setTickIdx(i => i + 1), tickIdx < 0 ? 720 : 780);
     return () => clearTimeout(t);
@@ -389,6 +357,43 @@ export function MapBattleTheater({
   const routedSide: Side | null = done && resolution.routed
     ? (resolution.winner === 'attacker' ? 'defender' : 'attacker') : null;
 
+  // ── Soldier ranks: 6 per side on the ground plane, advancing with the ticks ──
+  const progress = resolution.ticks.length > 1 ? Math.max(0, tickIdx) / (resolution.ticks.length - 1) : 1;
+  const soldiers = useMemo(() => {
+    const make = (side: Side, tactic: Tactic, strength: number, action: string | null, isRouted: boolean) => {
+      const alive = Math.max(1, Math.round((strength / 100) * 6));
+      const support = SUPPORT[tactic];
+      // Front line closes from 26% → 40% of the plane as the battle grinds on.
+      const frontBase = 26 + 14 * Math.min(1, progress * 1.35);
+      return Array.from({ length: 6 }).map((_, i) => {
+        const rank = i < 3 ? 0 : 1;                 // 0 = front rank
+        const file = i % 3;                         // 3 files per rank
+        const xFromEdge = frontBase - rank * 10;    // rear rank sits behind
+        const x = side === 'attacker' ? xFromEdge : 100 - xFromEdge;
+        const y = 22 + file * 24 + rank * 6;        // spread across the depth
+        const cls: UnitClass = i === 0 ? LEAD[tactic] : support[i % support.length];
+        return {
+          key: `${side}-${i}`, x, y,
+          glyph: CLASS_GLYPH[cls],
+          side, action,
+          dead: i >= alive && !isRouted,
+          routed: isRouted,
+          delay: (file * 0.06) + rank * 0.09,
+        };
+      });
+    };
+    return [
+      ...make('attacker', resolution.attacker.tactic, view.aS, actionFor('attacker'), routedSide === 'attacker'),
+      ...make('defender', resolution.defender.tactic, view.dS, actionFor('defender'), routedSide === 'defender'),
+    ];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tickIdx, view.aS, view.dS, routedSide, progress]);
+
+  const outcome: TheaterReport['outcome'] =
+    resolution.winner === 'stalemate' ? 'draw' : resolution.winner === playerSide ? 'won' : 'lost';
+  const outcomeKey = outcome === 'draw' ? 'imp_theater_draw' : outcome === 'won' ? 'imp_theater_you_win' : 'imp_theater_you_lose';
+  const outcomeColor = outcome === 'draw' ? 'text-muted-foreground' : outcome === 'won' ? 'text-amber-300' : 'text-red-400';
+
   // ── Clio's live read of the unfolding tick ──
   const clioLine = useMemo(() => {
     if (tickIdx < 0 || !curTick) return impText('imp_clio_open', language);
@@ -401,14 +406,14 @@ export function MapBattleTheater({
     return impText('imp_clio_grind', language);
   }, [tickIdx, curTick, enemySide, playerSide, language]);
 
-  const outcomeKey = resolution.winner === 'stalemate' ? 'imp_theater_draw'
-    : resolution.winner === playerSide ? 'imp_theater_you_win' : 'imp_theater_you_lose';
-  const outcomeColor = resolution.winner === 'stalemate' ? 'text-muted-foreground'
-    : resolution.winner === playerSide ? 'text-amber-300' : 'text-red-400';
+  const finish = () => onResolved({
+    playerTactic, enemyTactic, grade: read.grade, outcome,
+    parallelId: parallel.id, territoryId: pending.territoryId,
+  });
 
   // ── Arena geometry (clamped to stay on the map) ──
-  const arenaW = Math.min(320, Math.max(220, mapSize.x - 24));
-  const arenaH = 150;
+  const arenaW = Math.min(340, Math.max(230, mapSize.x - 24));
+  const arenaH = 170;
   const cx = pt ? Math.max(arenaW / 2 + 8, Math.min(mapSize.x - arenaW / 2 - 8, pt.x)) : mapSize.x / 2;
   const cy = pt
     ? Math.max(arenaH / 2 + 64, Math.min(mapSize.y - arenaH / 2 - 56, pt.y))
@@ -418,14 +423,12 @@ export function MapBattleTheater({
 
   return (
     <div className="absolute inset-0 z-[1100] overflow-hidden">
-      {/* battlefield dim + subtle vignette */}
       <motion.div
         className="pointer-events-none absolute inset-0"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
         style={{ background: 'radial-gradient(120% 80% at 50% 50%, rgba(0,0,0,.12), rgba(0,0,0,.55))' }}
       />
 
-      {/* exact-ground pulse marker (only if the arena had to be nudged away) */}
       {pt && (
         <motion.div
           className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2"
@@ -437,55 +440,56 @@ export function MapBattleTheater({
         </motion.div>
       )}
 
-      {/* ── The arena ── */}
+      {/* ── The 3D arena ── */}
       <motion.div
         className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2"
         style={{ left: cx, top: cy, width: arenaW, height: arenaH }}
         initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
       >
-        {/* battlefield floor */}
+        {/* perspective viewport */}
         <div
-          className="absolute inset-x-2 bottom-3 top-8 rounded-xl border border-white/10 overflow-hidden"
-          style={{ background: 'linear-gradient(180deg, rgba(20,16,10,.55), rgba(8,6,4,.72))', backdropFilter: 'blur(2px)' }}
+          className="absolute inset-x-1 bottom-2 top-7 overflow-hidden rounded-xl border border-white/10"
+          style={{ background: 'linear-gradient(180deg, rgba(24,20,12,.42), rgba(8,6,4,.66))', backdropFilter: 'blur(2px)' }}
         >
-          {/* weather sheen */}
+          <div className="absolute inset-0" style={{ perspective: 520, perspectiveOrigin: '50% 26%' }}>
+            {/* the receding ground plane */}
+            <div
+              className="absolute left-1/2 top-[54%]"
+              style={{
+                width: '124%', height: '150%',
+                transform: `translate(-50%, -32%) rotateX(${GROUND_TILT}deg)`,
+                transformStyle: 'preserve-3d',
+                background: `
+                  radial-gradient(60% 55% at 50% 46%, rgba(217,165,74,.10), transparent 70%),
+                  repeating-linear-gradient(0deg, transparent 0 23px, rgba(255,255,255,.045) 23px 24px),
+                  repeating-linear-gradient(90deg, transparent 0 23px, rgba(255,255,255,.045) 23px 24px),
+                  linear-gradient(180deg, rgba(52,42,24,.85), rgba(30,24,14,.9))`,
+                borderRadius: 18,
+                boxShadow: 'inset 0 0 40px rgba(0,0,0,.55)',
+              }}
+            >
+              {/* centre line of contact */}
+              <div className="absolute inset-y-[8%] left-1/2 w-[2px] -translate-x-1/2 bg-white/10" />
+              {/* the soldiers stand upright on this plane */}
+              {soldiers.map(s => (
+                <Soldier3D key={s.key} x={s.x} y={s.y} glyph={s.glyph}
+                  color={(s.side === playerSide) ? PLAYER_COLOR : ENEMY_COLOR}
+                  side={s.side} action={s.action} dead={s.dead} routed={s.routed}
+                  delay={s.delay} reduce={reduce} />
+              ))}
+            </div>
+          </div>
+
+          {/* weather sheen above the diorama */}
           {weather === 'rain' || weather === 'storm' ? (
-            <div className="absolute inset-0 opacity-40" style={{ background: 'repeating-linear-gradient(105deg, transparent, transparent 6px, rgba(150,180,220,.25) 7px, transparent 9px)' }} />
+            <div className="pointer-events-none absolute inset-0 opacity-40" style={{ background: 'repeating-linear-gradient(105deg, transparent, transparent 6px, rgba(150,180,220,.25) 7px, transparent 9px)' }} />
           ) : weather === 'snow' ? (
-            <div className="absolute inset-0 opacity-30" style={{ background: 'radial-gradient(circle at 30% 20%, #fff6, transparent 3px), radial-gradient(circle at 70% 60%, #fff5, transparent 2px)' }} />
+            <div className="pointer-events-none absolute inset-0 opacity-30" style={{ background: 'radial-gradient(circle at 30% 20%, #fff6, transparent 3px), radial-gradient(circle at 70% 60%, #fff5, transparent 2px)' }} />
           ) : weather === 'heat' ? (
-            <div className="absolute inset-0 opacity-25" style={{ background: 'linear-gradient(0deg, rgba(255,160,60,.35), transparent)' }} />
+            <div className="pointer-events-none absolute inset-0 opacity-25" style={{ background: 'linear-gradient(0deg, rgba(255,160,60,.35), transparent)' }} />
           ) : null}
-        </div>
 
-        {/* title strip */}
-        <div className="absolute inset-x-2 top-0 flex items-center justify-between px-1 text-[10px]">
-          <span className="rounded bg-black/70 px-1.5 py-0.5 font-heading font-bold text-amber-100/90 backdrop-blur">
-            {impText('imp_theater_clash', language, { territory: provinceName(pending.territoryId) })}
-          </span>
-          <span className="rounded bg-black/70 px-1.5 py-0.5 tabular-nums text-muted-foreground backdrop-blur">
-            {impText('imp_theater_round', language)} {tickIdx < 0 ? '—' : `${Math.min(tickIdx + 1, resolution.ticks.length)}/${resolution.ticks.length}`}
-          </span>
-        </div>
-
-        {/* the two hosts */}
-        <div className="absolute inset-x-4 bottom-8 top-11">
-          <div className="absolute left-[4%] top-1/2 -translate-y-1/2">
-            <Formation
-              side="attacker" tactic={resolution.attacker.tactic}
-              color={playerSide === 'attacker' ? PLAYER_COLOR : ENEMY_COLOR}
-              strength={view.aS} action={actionFor('attacker')}
-              routed={routedSide === 'attacker'} reduce={reduce}
-            />
-          </div>
-          <div className="absolute right-[4%] top-1/2 -translate-y-1/2">
-            <Formation
-              side="defender" tactic={resolution.defender.tactic}
-              color={playerSide === 'defender' ? PLAYER_COLOR : ENEMY_COLOR}
-              strength={view.dS} action={actionFor('defender')}
-              routed={routedSide === 'defender'} reduce={reduce}
-            />
-          </div>
+          {/* per-tick effects overlay */}
           <AnimatePresence mode="wait">
             {curTick && (
               <EffectsLayer
@@ -497,18 +501,29 @@ export function MapBattleTheater({
           </AnimatePresence>
         </div>
 
-        {/* strength bars for You / Enemy */}
-        <div className="absolute inset-x-3 bottom-0 flex items-end gap-2 text-[9px]">
+        {/* title strip */}
+        <div className="absolute inset-x-1 top-0 flex items-center justify-between px-1 text-[10px]">
+          <span className="rounded bg-black/70 px-1.5 py-0.5 font-heading font-bold text-amber-100/90 backdrop-blur">
+            {impText('imp_theater_clash', language, { territory: provinceName(pending.territoryId) })}
+          </span>
+          <span className="rounded bg-black/70 px-1.5 py-0.5 tabular-nums text-muted-foreground backdrop-blur">
+            {impText('imp_theater_round', language)} {tickIdx < 0 ? '—' : `${Math.min(tickIdx + 1, resolution.ticks.length)}/${resolution.ticks.length}`}
+          </span>
+        </div>
+
+        {/* strength bars */}
+        <div className="absolute inset-x-2 bottom-0 flex items-end gap-2 text-[9px]">
           <SideBar label={impText('imp_theater_you', language)} align="left" color={PLAYER_COLOR} strength={playerS} morale={playerM} />
           <SideBar label={impText('imp_theater_enemy', language)} align="right" color={ENEMY_COLOR} strength={enemyS} morale={enemyM} />
         </div>
 
-        {/* outcome banner */}
+        {/* outcome banner (brief — the debrief takes over) */}
         <AnimatePresence>
-          {done && (
+          {done && !showDebrief && (
             <motion.div
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
               initial={{ opacity: 0, scale: 0.6, rotateX: 40 }} animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+              exit={{ opacity: 0 }}
               style={{ transformPerspective: 600 }}
             >
               <span className={cn('rounded-lg border border-white/15 bg-black/80 px-3 py-1 font-heading text-sm font-black backdrop-blur', outcomeColor)}>
@@ -519,9 +534,9 @@ export function MapBattleTheater({
         </AnimatePresence>
       </motion.div>
 
-      {/* ── Clio's live grade panel (top-right of the map) ── */}
+      {/* ── Clio's live grade panel ── */}
       <motion.div
-        className="pointer-events-auto absolute right-3 top-3 w-60 rounded-xl border border-violet-400/25 bg-black/80 p-3 backdrop-blur"
+        className="pointer-events-auto absolute right-2 top-2 sm:right-3 sm:top-3 w-48 sm:w-60 rounded-xl border border-violet-400/25 bg-black/80 p-2.5 sm:p-3 backdrop-blur"
         initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
       >
         <div className="flex items-center gap-2">
@@ -543,34 +558,71 @@ export function MapBattleTheater({
         </div>
       </motion.div>
 
-      {/* ── Controls ── */}
-      <div className="pointer-events-auto absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2">
-        <button
-          onClick={onInspect}
-          className="flex items-center gap-1 rounded-lg border border-white/15 bg-black/75 px-2.5 py-1.5 text-[11px] text-muted-foreground backdrop-blur transition-colors hover:border-primary/40 hover:text-primary"
-        >
-          <Film className="h-3.5 w-3.5" />{impText('imp_theater_replay3d', language)}
-        </button>
-        {!done ? (
+      {/* ── Controls while the battle plays ── */}
+      {!showDebrief && (
+        <div className="pointer-events-auto absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2">
           <button
-            onClick={() => setTickIdx(resolution.ticks.length - 1)}
-            className="flex items-center gap-1 rounded-lg border border-white/15 bg-black/75 px-2.5 py-1.5 text-[11px] text-foreground/80 backdrop-blur transition-colors hover:border-white/30"
+            onClick={onInspect}
+            className="flex items-center gap-1 rounded-lg border border-white/15 bg-black/75 px-2.5 py-1.5 text-[11px] text-muted-foreground backdrop-blur transition-colors hover:border-primary/40 hover:text-primary"
           >
-            <SkipForward className="h-3.5 w-3.5" />{impText('imp_theater_skip', language)}
+            <Film className="h-3.5 w-3.5" />{impText('imp_theater_replay3d', language)}
           </button>
-        ) : (
-          <motion.button
-            initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-            onClick={onResolved}
-            className="flex items-center gap-1 rounded-lg border border-primary/50 bg-primary/20 px-3 py-1.5 text-[11px] font-semibold text-primary backdrop-blur transition-colors hover:bg-primary/30"
-          >
-            {impText('imp_theater_next', language)}<ChevronRight className="h-3.5 w-3.5" />
-          </motion.button>
-        )}
-      </div>
+          {!done && (
+            <button
+              onClick={() => setTickIdx(resolution.ticks.length - 1)}
+              className="flex items-center gap-1 rounded-lg border border-white/15 bg-black/75 px-2.5 py-1.5 text-[11px] text-foreground/80 backdrop-blur transition-colors hover:border-white/30"
+            >
+              <SkipForward className="h-3.5 w-3.5" />{impText('imp_theater_skip', language)}
+            </button>
+          )}
+        </div>
+      )}
 
-      {/* roster nameplates, faint, under the panel */}
-      <div className="pointer-events-none absolute right-3 top-[132px] w-60 text-right text-[9px] text-muted-foreground/70">
+      {/* ── Clio's Debrief: the historical parallel, taught on the spot ── */}
+      <AnimatePresence>
+        {showDebrief && (
+          <motion.div
+            initial={{ y: '105%' }} animate={{ y: 0 }} exit={{ y: '105%' }}
+            transition={{ type: 'spring', damping: 26, stiffness: 260 }}
+            className="pointer-events-auto absolute inset-x-2 bottom-2 sm:inset-x-auto sm:left-1/2 sm:w-[440px] sm:-translate-x-1/2 rounded-2xl border border-violet-400/30 bg-black/90 p-3.5 sm:p-4 backdrop-blur-md shadow-2xl"
+          >
+            <div className="flex items-center gap-2">
+              <ClioBadge size={18} />
+              <span className="font-heading text-sm font-bold text-violet-100">{impText('imp_debrief_title', language)}</span>
+              <span className={cn('ml-auto rounded-md border px-2 py-0.5 text-[12px] font-black tabular-nums', GRADE_STYLE[read.grade])}>
+                {impText('imp_debrief_grade', language)} · {read.grade}
+              </span>
+            </div>
+            <p className={cn('mt-1 font-heading text-[13px] font-bold', outcomeColor)}>{impText(outcomeKey, language)}</p>
+
+            <div className="mt-2 rounded-xl border border-amber-400/20 bg-amber-400/[0.06] p-2.5">
+              <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-amber-300">
+                <Landmark className="h-3.5 w-3.5" />
+                {impText('imp_debrief_parallel', language)} · {impText(parallel.titleKey, language)}
+              </div>
+              <p className="mt-1.5 text-[11.5px] leading-relaxed text-foreground/90">{impText(parallel.storyKey, language)}</p>
+            </div>
+
+            <div className="mt-2 flex items-start gap-2 rounded-xl border border-white/10 bg-white/[0.03] p-2.5">
+              <Quote className="mt-0.5 h-3.5 w-3.5 shrink-0 text-violet-300" />
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-violet-300">{impText('imp_debrief_principle', language)}</p>
+                <p className="mt-0.5 text-[11.5px] font-medium italic leading-snug text-violet-100/90">{impText(parallel.principleKey, language)}</p>
+              </div>
+            </div>
+
+            <button
+              onClick={finish}
+              className="mt-3 flex w-full items-center justify-center gap-1 rounded-lg border border-primary/50 bg-primary/20 px-3 py-2 text-[12px] font-semibold text-primary transition-colors hover:bg-primary/30"
+            >
+              {impText('imp_debrief_continue', language)}<ChevronRight className="h-4 w-4" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* roster nameplates, faint, under the grade panel */}
+      <div className="pointer-events-none absolute right-2 sm:right-3 top-[136px] w-48 sm:w-60 text-right text-[9px] text-muted-foreground/70">
         <span className="text-amber-300/80">{playerRoster ? impText(playerRoster.nameKey, language) : ''}</span>
         {' · '}
         <span className="text-red-300/80">{enemyRoster ? impText(enemyRoster.nameKey, language) : ''}</span>
@@ -588,10 +640,10 @@ function SideBar({ label, align, color, strength, morale }: {
         <span className="rounded bg-black/70 px-1 font-semibold uppercase tracking-wide text-white/80 backdrop-blur">{label}</span>
         <span className="tabular-nums text-white/60">{Math.round(strength)}</span>
       </div>
-      <div className={cn('h-1.5 overflow-hidden rounded-full bg-black/60')}>
+      <div className="h-1.5 overflow-hidden rounded-full bg-black/60">
         <div className="h-full rounded-full transition-all duration-500" style={{ width: `${strength}%`, background: color, marginLeft: align === 'right' ? 'auto' : undefined }} />
       </div>
-      <div className={cn('mt-0.5 h-1 overflow-hidden rounded-full bg-black/50')}>
+      <div className="mt-0.5 h-1 overflow-hidden rounded-full bg-black/50">
         <div className="h-full rounded-full transition-all duration-500" style={{ width: `${morale}%`, background: '#7aa2f7', marginLeft: align === 'right' ? 'auto' : undefined }} />
       </div>
     </div>

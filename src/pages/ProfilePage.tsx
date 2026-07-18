@@ -207,7 +207,7 @@ export default function ProfilePage() {
             <Button className="w-full" onClick={enable2FA}>{t.prof_2fa_verify}</Button>
             <div className="space-y-2">
               <p className="text-xs text-muted-foreground font-medium">{t.prof_2fa_backup}</p>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
                 {backupCodes.map(c => <code key={c} className="text-xs bg-muted rounded px-2 py-1 text-center font-mono">{c}</code>)}
               </div>
             </div>
@@ -217,7 +217,7 @@ export default function ProfilePage() {
 
       <div className="max-w-7xl mx-auto space-y-6">
         <Tabs defaultValue="overview">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto">
             <TabsTrigger value="overview">{t.prof_overview}</TabsTrigger>
             <TabsTrigger value="achievements">{t.prof_achievements}</TabsTrigger>
             <TabsTrigger value="bookmarks">{t.prof_bookmarks}</TabsTrigger>

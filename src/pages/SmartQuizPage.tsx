@@ -318,7 +318,7 @@ export default function SmartQuizPage() {
             <motion.div key="intro" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-5">
               <Card>
                 <CardContent className="pt-6 pb-5 space-y-4">
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {[
                       { icon: Brain,  color: 'text-violet-400 bg-violet-400/10', label: t.quiz_adaptive,      desc: t.sq_adaptive_desc },
                       { icon: Target, color: 'text-rose-400 bg-rose-400/10',     label: t.sq_questions_label, desc: t.sq_questions_desc },

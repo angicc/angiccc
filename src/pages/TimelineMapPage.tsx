@@ -349,6 +349,8 @@ export default function TimelineMapPage() {
 
   const [selected, setSelected]       = useState<TerritoryTopic | null>(null);
   const [mode, setMode]               = useState<MapMode>('explore');
+  // Mobile: the topic panel becomes a slide-over so the map keeps full width.
+  const [panelOpen, setPanelOpen]     = useState(false);
   const [styleId, setStyleId]         = useState('dark');
   const [showLayerPanel, setShowLayerPanel] = useState(false);
   const [showStylePanel, setShowStylePanel] = useState(false);
@@ -1121,18 +1123,40 @@ export default function TimelineMapPage() {
 
   return (
     <AppShell compact>
-      <div className="h-full flex overflow-hidden">
+      <div className="h-full flex overflow-hidden relative">
+
+        {/* Mobile: open-topics button (map keeps full width until requested) */}
+        <button
+          onClick={() => setPanelOpen(true)}
+          className={cn(
+            'sm:hidden absolute left-1/2 top-3 -translate-x-1/2 z-[1050] flex items-center gap-1.5 rounded-full border border-border bg-card/95 backdrop-blur px-3 py-1.5 text-xs font-semibold shadow-lg',
+            panelOpen && 'hidden',
+          )}
+        >
+          <Layers className="w-3.5 h-3.5 text-primary" />{t.tmap_title}
+        </button>
+        {/* Mobile: backdrop closes the slide-over */}
+        {panelOpen && (
+          <div className="sm:hidden absolute inset-0 z-[1090] bg-black/50" onClick={() => setPanelOpen(false)} />
+        )}
 
         {/* ════════════════════════════════════════════════════
-            LEFT PANEL
+            LEFT PANEL — static on ≥sm, slide-over on mobile
         ════════════════════════════════════════════════════ */}
-        <div className="w-60 sm:w-72 shrink-0 border-r border-border bg-card/95 backdrop-blur-sm flex flex-col overflow-hidden z-10">
+        <div className={cn(
+          'w-72 max-w-[85vw] sm:w-72 shrink-0 border-r border-border bg-card/95 backdrop-blur-sm flex flex-col overflow-hidden',
+          'absolute inset-y-0 left-0 z-[1100] transition-transform duration-300 sm:static sm:translate-x-0 sm:transition-none',
+          panelOpen ? 'translate-x-0' : '-translate-x-full',
+        )}>
 
           {/* Header */}
           <div className="px-3 pt-4 pb-3 border-b border-border">
             <div className="flex items-center gap-2 mb-0.5">
               <MapIcon className="w-4 h-4 text-primary shrink-0" />
               <h1 className="font-heading font-bold text-sm leading-tight">{t.tmap_title}</h1>
+              <button onClick={() => setPanelOpen(false)} className="sm:hidden ml-auto p-1 rounded-md hover:bg-accent">
+                <X className="w-4 h-4" />
+              </button>
             </div>
             <p className="text-[11px] text-muted-foreground leading-snug">{t.tmap_subtitle}</p>
 
