@@ -110,6 +110,7 @@ const TOPIC_RULES: Array<{
 // Era-based fallback themes
 const ERA_THEMES: Record<string, { accent: string; accentLight: string; category: string; icon: string; pattern: string }> = {
   'ancient':      { accent: '#d97706', accentLight: '#fde68a', category: 'Ancient World',   icon: '🏺', pattern: 'pattern-ancient' },
+  'byzantine':    { accent: '#7c3aed', accentLight: '#ddd6fe', category: 'Byzantine World',  icon: '☦', pattern: 'pattern-medieval' },
   'middle-ages':  { accent: '#1e3a5f', accentLight: '#93c5fd', category: 'Middle Ages',     icon: '⚜',  pattern: 'pattern-medieval' },
   'early-modern': { accent: '#047857', accentLight: '#a7f3d0', category: 'Early Modern',    icon: '🌍', pattern: 'pattern-trade' },
   'modern':       { accent: '#374151', accentLight: '#9ca3af', category: 'Modern Era',      icon: '⚙',  pattern: 'pattern-industry' },

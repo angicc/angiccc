@@ -59,13 +59,13 @@ const EVENT_TO_LESSON: Record<string, string> = {
 };
 
 const ERA_COLORS: Record<EraId, string> = {
-  prehistoric: 'bg-orange-400', ancient: 'bg-amber-400', 'middle-ages': 'bg-blue-400', 'early-modern': 'bg-emerald-400', modern: 'bg-rose-400',
+  prehistoric: 'bg-orange-400', ancient: 'bg-amber-400', byzantine: 'bg-violet-400', 'middle-ages': 'bg-blue-400', 'early-modern': 'bg-emerald-400', modern: 'bg-rose-400',
 };
 const ERA_TEXT: Record<EraId, string> = {
-  prehistoric: 'text-orange-400', ancient: 'text-amber-400', 'middle-ages': 'text-blue-400', 'early-modern': 'text-emerald-400', modern: 'text-rose-400',
+  prehistoric: 'text-orange-400', ancient: 'text-amber-400', byzantine: 'text-violet-400', 'middle-ages': 'text-blue-400', 'early-modern': 'text-emerald-400', modern: 'text-rose-400',
 };
 const ERA_GLOW: Record<EraId, string> = {
-  prehistoric: 'shadow-orange-400/40', ancient: 'shadow-amber-400/40', 'middle-ages': 'shadow-blue-400/40', 'early-modern': 'shadow-emerald-400/40', modern: 'shadow-rose-400/40',
+  prehistoric: 'shadow-orange-400/40', ancient: 'shadow-amber-400/40', byzantine: 'shadow-violet-400/40', 'middle-ages': 'shadow-blue-400/40', 'early-modern': 'shadow-emerald-400/40', modern: 'shadow-rose-400/40',
 };
 const CATEGORIES: TimelineCategory[] = ['war','politics','science','culture','religion','exploration'];
 const CAT_ICON: Record<TimelineCategory, string> = {

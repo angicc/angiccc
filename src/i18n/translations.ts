@@ -56,7 +56,7 @@ export type TranslationKeys = {
   daily_submit: string; daily_correct: string; daily_wrong: string; daily_tomorrow: string;
   achievement_unlocked: string;
   difficulty_easy: string; difficulty_medium: string; difficulty_hard: string;
-  era_short_prehistoric: string; era_short_ancient: string; era_short_medieval: string; era_short_earlymod: string; era_short_modern: string;
+  era_short_prehistoric: string; era_short_byzantine: string; era_short_ancient: string; era_short_medieval: string; era_short_earlymod: string; era_short_modern: string;
   // ── Eras ───────────────────────────────────────────────────────
   eras_title: string; eras_subtitle: string; eras_lessons_label: string;
   eras_take_quiz: string; eras_view_lessons: string; eras_locked: string;
@@ -407,7 +407,7 @@ const EN: TranslationKeys = {
     daily_wrong: 'Correct answer:', daily_tomorrow: 'Come back tomorrow for a new challenge!',
     achievement_unlocked: 'Achievement Unlocked!',
     difficulty_easy: 'Easy', difficulty_medium: 'Medium', difficulty_hard: 'Hard',
-    era_short_prehistoric: 'Prehistory', era_short_ancient: 'Ancient', era_short_medieval: 'Medieval', era_short_earlymod: 'Early Modern', era_short_modern: 'Modern',
+    era_short_prehistoric: 'Prehistory', era_short_byzantine: 'Byzantium', era_short_ancient: 'Ancient', era_short_medieval: 'Medieval', era_short_earlymod: 'Early Modern', era_short_modern: 'Modern',
     // Eras
     eras_title: 'Eras & Lessons', eras_subtitle: 'Choose your era and begin your journey',
     eras_lessons_label: 'lessons', eras_take_quiz: 'Take Era Quiz',
@@ -654,7 +654,7 @@ const EN: TranslationKeys = {
     tmap_perspective_trade: 'Trade', tmap_perspective_scholar: 'Scholar',
     tmap_year: 'Year', tmap_what_if: 'What If?', tmap_pro_only: 'Territory Map requires a Pro plan',
     tmap_what_if_desc: 'Explore counterfactual history', tmap_year_range: 'Year range', tmap_animate: 'Animate',
-    tmap_causality: 'Historical context', tmap_territories_hint: 'historical territories across 4 eras',
+    tmap_causality: 'Historical context', tmap_territories_hint: 'historical territories across 6 eras',
     essay_select_topic: 'Select a topic above',
     essay_write_more: 'Write at least {n} more words',
     essay_too_long: 'Essay is too long (max 600 words)',
@@ -815,7 +815,7 @@ export const T: Translations = {
     daily_wrong: 'Respuesta correcta:', daily_tomorrow: '¡Vuelve mañana para un nuevo desafío!',
     achievement_unlocked: '¡Logro Desbloqueado!',
     difficulty_easy: 'Fácil', difficulty_medium: 'Medio', difficulty_hard: 'Difícil',
-    era_short_prehistoric: 'Prehistoria', era_short_ancient: 'Antiguo', era_short_medieval: 'Medieval', era_short_earlymod: 'Moderno Temprano', era_short_modern: 'Moderno',
+    era_short_prehistoric: 'Prehistoria', era_short_byzantine: 'Bizancio', era_short_ancient: 'Antiguo', era_short_medieval: 'Medieval', era_short_earlymod: 'Moderno Temprano', era_short_modern: 'Moderno',
     eras_title: 'Eras y Lecciones', eras_subtitle: 'Elige tu era y comienza tu viaje',
     eras_lessons_label: 'lecciones', eras_take_quiz: 'Hacer Quiz de Era',
     eras_view_lessons: 'Ver Lecciones', eras_locked: 'Bloqueado', eras_completed: 'Completado',
@@ -1043,7 +1043,7 @@ export const T: Translations = {
     tmap_perspective_trade: 'Comercio', tmap_perspective_scholar: 'Académico',
     tmap_year: 'Año', tmap_what_if: '¿Qué pasaría si?', tmap_pro_only: 'El mapa de territorios requiere un plan Pro',
     tmap_what_if_desc: 'Explora la historia contrafactual', tmap_year_range: 'Rango de años', tmap_animate: 'Animar',
-    tmap_causality: 'Contexto histórico', tmap_territories_hint: 'territorios históricos en 4 eras',
+    tmap_causality: 'Contexto histórico', tmap_territories_hint: 'territorios históricos en 6 eras',
     essay_select_topic: 'Selecciona un tema arriba',
     essay_write_more: 'Escribe al menos {n} palabras más',
     essay_too_long: 'El ensayo es demasiado largo (máx. 600 palabras)',
@@ -1202,7 +1202,7 @@ export const T: Translations = {
     daily_wrong: 'Правильный ответ:', daily_tomorrow: 'Возвращайтесь завтра за новым заданием!',
     achievement_unlocked: 'Достижение Разблокировано!',
     difficulty_easy: 'Лёгкий', difficulty_medium: 'Средний', difficulty_hard: 'Сложный',
-    era_short_prehistoric: 'Доистория', era_short_ancient: 'Древний', era_short_medieval: 'Средневековье', era_short_earlymod: 'Раннее Новое', era_short_modern: 'Современный',
+    era_short_prehistoric: 'Доистория', era_short_byzantine: 'Византия', era_short_ancient: 'Древний', era_short_medieval: 'Средневековье', era_short_earlymod: 'Раннее Новое', era_short_modern: 'Современный',
     eras_title: 'Эпохи и Уроки', eras_subtitle: 'Выберите эпоху и начните путешествие',
     eras_lessons_label: 'уроков', eras_take_quiz: 'Пройти Викторину',
     eras_view_lessons: 'Смотреть Уроки', eras_locked: 'Заблокировано', eras_completed: 'Пройдено',
@@ -1430,7 +1430,7 @@ export const T: Translations = {
     tmap_perspective_trade: 'Торговля', tmap_perspective_scholar: 'Учёный',
     tmap_year: 'Год', tmap_what_if: 'А что, если?', tmap_pro_only: 'Карта территорий требует план Pro',
     tmap_what_if_desc: 'Исследуйте контрфактическую историю', tmap_year_range: 'Диапазон лет', tmap_animate: 'Анимация',
-    tmap_causality: 'Исторический контекст', tmap_territories_hint: 'исторических территорий в 4 эпохах',
+    tmap_causality: 'Исторический контекст', tmap_territories_hint: 'исторических территорий в 6 эпохах',
     essay_select_topic: 'Выберите тему выше',
     essay_write_more: 'Напишите ещё не менее {n} слов',
     essay_too_long: 'Эссе слишком длинное (макс. 600 слов)',
@@ -1589,7 +1589,7 @@ export const T: Translations = {
     daily_wrong: 'Точен одговор:', daily_tomorrow: 'Врати се утре за нов предизвик!',
     achievement_unlocked: 'Достигнување Отклучено!',
     difficulty_easy: 'Лесно', difficulty_medium: 'Средно', difficulty_hard: 'Тешко',
-    era_short_prehistoric: 'Праисторија', era_short_ancient: 'Антика', era_short_medieval: 'Средновековие', era_short_earlymod: 'Рано Модерно', era_short_modern: 'Модерно',
+    era_short_prehistoric: 'Праисторија', era_short_byzantine: 'Византија', era_short_ancient: 'Антика', era_short_medieval: 'Средновековие', era_short_earlymod: 'Рано Модерно', era_short_modern: 'Модерно',
     eras_title: 'Епохи и Лекции', eras_subtitle: 'Избери своја епоха и започни го патувањето',
     eras_lessons_label: 'лекции', eras_take_quiz: 'Направи Квиз за Епохата',
     eras_view_lessons: 'Прегледај Лекции', eras_locked: 'Заклучено', eras_completed: 'Завршено',
@@ -1817,7 +1817,7 @@ export const T: Translations = {
     tmap_perspective_trade: 'Трговија', tmap_perspective_scholar: 'Научен',
     tmap_year: 'Година', tmap_what_if: 'Што ако?', tmap_pro_only: 'Картата на територии бара Pro план',
     tmap_what_if_desc: 'Истражи контрафактуална историја', tmap_year_range: 'Временски опсег', tmap_animate: 'Анимирај',
-    tmap_causality: 'Историски контекст', tmap_territories_hint: 'историски територии низ 4 епохи',
+    tmap_causality: 'Историски контекст', tmap_territories_hint: 'историски територии низ 6 епохи',
     essay_select_topic: 'Избери тема погоре',
     essay_write_more: 'Напиши уште најмалку {n} зборови',
     essay_too_long: 'Есејот е предолг (макс. 600 зборови)',

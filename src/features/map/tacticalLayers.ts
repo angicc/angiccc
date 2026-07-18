@@ -65,6 +65,7 @@ export interface RegionTelemetry {
 const ERA_HAZARD: Record<TerritoryTopic['era'], string> = {
   prehistoric: 'tmap_hazard_dust',
   ancient: 'tmap_hazard_dust',
+  byzantine: 'tmap_hazard_storm',
   medieval: 'tmap_hazard_frost',
   'early-modern': 'tmap_hazard_storm',
   modern: 'tmap_hazard_scorched',
@@ -156,6 +157,7 @@ export interface EraTexture {
 export const ERA_TEXTURES: Record<TerritoryTopic['era'], EraTexture> = {
   prehistoric:    { id: 'hft-prehistoric', baseFrequency: 0.95, tint: '#c8894c', opacity: 0.10 },
   ancient:        { id: 'hft-ancient',  baseFrequency: 0.9,  tint: '#d4a24c', opacity: 0.10 },
+  byzantine:      { id: 'hft-byzantine', baseFrequency: 0.75, tint: '#c4b5fd', opacity: 0.09 },
   medieval:       { id: 'hft-medieval', baseFrequency: 0.7,  tint: '#9db8e8', opacity: 0.09 },
   'early-modern': { id: 'hft-early',    baseFrequency: 0.55, tint: '#5eead4', opacity: 0.08 },
   modern:         { id: 'hft-modern',   baseFrequency: 1.1,  tint: '#f87171', opacity: 0.07 },

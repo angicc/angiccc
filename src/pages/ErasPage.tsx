@@ -19,6 +19,7 @@ import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslation
 const ERA_PHOTOS: Record<string, string> = {
   prehistoric:   'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?auto=format&fit=crop&w=700&q=60',
   ancient:       'https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=700&q=60',
+  byzantine:     'https://upload.wikimedia.org/wikipedia/commons/2/22/Hagia_Sophia_Mars_2013.jpg',
   'middle-ages': 'https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&w=700&q=60',
   'early-modern':'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=700&q=60',
   modern:        'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=700&q=60',
@@ -47,7 +48,7 @@ export default function ErasPage() {
         <motion.div variants={stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
           {ERAS.map(rawEra => {
             const era = getTranslatedEra(rawEra, language);
-            const glowClass = { prehistoric: 'era-glow-ancient', ancient: 'era-glow-ancient', 'middle-ages': 'era-glow-medieval', 'early-modern': 'era-glow-earlymod', modern: 'era-glow-modern' }[era.id] ?? '';
+            const glowClass = { prehistoric: 'era-glow-ancient', ancient: 'era-glow-ancient', byzantine: 'era-glow-byzantine', 'middle-ages': 'era-glow-medieval', 'early-modern': 'era-glow-earlymod', modern: 'era-glow-modern' }[era.id] ?? '';
             const eraLessons = LESSONS.filter(l => l.eraId === era.id).sort((a, b) => a.order - b.order);
             const done = eraLessons.filter(l => progress?.completedLessons.includes(l.id)).length;
             const pct = eraLessons.length > 0 ? Math.round((done / eraLessons.length) * 100) : 0;

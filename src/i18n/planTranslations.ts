@@ -4,7 +4,7 @@ type ContentLang = Exclude<Language, 'en'>;
 
 const PLAN_FEATURES: Record<string, Partial<Record<ContentLang, string[]>>> = {
   free: {
-    es: ['1 lección por era (5 en total)', 'Quiz básico (solo puntuación)', 'Línea de tiempo – solo eventos principales', 'Seguimiento básico del progreso', 'Acceso al ranking', 'Tutor IA Clio – 5 mensajes/día'],
+    es: ['1 lección por era (6 en total)', 'Quiz básico (solo puntuación)', 'Línea de tiempo – solo eventos principales', 'Seguimiento básico del progreso', 'Acceso al ranking', 'Tutor IA Clio – 5 mensajes/día'],
     ru: ['1 урок на эпоху (5 всего)', 'Базовая викторина (только счёт)', 'Хронология – только крупные события', 'Базовое отслеживание прогресса', 'Доступ к рейтингу', 'ИИ-Наставник Клио – 5 сообщений/день'],
     mk: ['1 лекција по епоха (5 вкупно)', 'Основен квиз (само резултат)', 'Временска линија – само главни настани', 'Основно следење на напредок', 'Пристап до рангирање', 'Клио ВИ Тутор – 5 пораки/ден'],
   },
@@ -14,9 +14,9 @@ const PLAN_FEATURES: Record<string, Partial<Record<ContentLang, string[]>>> = {
     mk: ['Сè од Free', 'Целосна временска линија со филтри по епоха', 'Картички – сите шпилови', 'Клио ВИ Тутор – 10 пораки/ден', 'Објаснувања за секој одговор во квизот'],
   },
   pro: {
-    es: ['Todo lo de Beginner', 'Todas las lecciones de las 5 eras', 'Tutor IA – 50 mensajes/mes', 'Quiz Inteligente (IA adaptativa)', 'Plan de estudio – ruta semanal de aprendizaje', 'Estudio de Contenido IA – kits de estudio desde cualquier texto', 'Notas personales y marcadores', 'Analíticas de progreso y ranking', 'Debate con Filósofo (reinicio cada 12 h)', 'Mapa de Territorios – fronteras históricas interactivas'],
-    ru: ['Всё из Beginner', 'Все уроки по 5 эпохам', 'ИИ-Наставник – 50 сообщений/мес', 'Умная Викторина (адаптивный ИИ)', 'План занятий – недельный учебный маршрут', 'ИИ-студия контента – учебные наборы из любого текста', 'Личные заметки и закладки', 'Аналитика прогресса и рейтинг', 'Дискуссия с философом (каждые 12 ч)', 'Карта Территорий – интерактивные исторические границы'],
-    mk: ['Сè од Beginner', 'Сите лекции од 5 епохи', 'ВИ Тутор – 50 пораки/месец', 'Паметен Квиз (адаптивна ВИ)', 'План за учење – неделна патека за учење', 'ВИ Студио за содржина – комплети за учење од секој текст', 'Лични белешки и обележувачи', 'Аналитика на напредок и рангирање', 'Дебата со Филозоф (ресетирање на секои 12 ч)', 'Карта на Територии – интерактивни историски граници'],
+    es: ['Todo lo de Beginner', 'Todas las lecciones de las 6 eras', 'Tutor IA – 50 mensajes/mes', 'Quiz Inteligente (IA adaptativa)', 'Plan de estudio – ruta semanal de aprendizaje', 'Estudio de Contenido IA – kits de estudio desde cualquier texto', 'Notas personales y marcadores', 'Analíticas de progreso y ranking', 'Debate con Filósofo (reinicio cada 12 h)', 'Mapa de Territorios – fronteras históricas interactivas'],
+    ru: ['Всё из Beginner', 'Все уроки по 6 эпохам', 'ИИ-Наставник – 50 сообщений/мес', 'Умная Викторина (адаптивный ИИ)', 'План занятий – недельный учебный маршрут', 'ИИ-студия контента – учебные наборы из любого текста', 'Личные заметки и закладки', 'Аналитика прогресса и рейтинг', 'Дискуссия с философом (каждые 12 ч)', 'Карта Территорий – интерактивные исторические границы'],
+    mk: ['Сè од Beginner', 'Сите лекции од 6 епохи', 'ВИ Тутор – 50 пораки/месец', 'Паметен Квиз (адаптивна ВИ)', 'План за учење – неделна патека за учење', 'ВИ Студио за содржина – комплети за учење од секој текст', 'Лични белешки и обележувачи', 'Аналитика на напредок и рангирање', 'Дебата со Филозоф (ресетирање на секои 12 ч)', 'Карта на Територии – интерактивни историски граници'],
   },
   master: {
     es: ['Todo lo de Pro Student', 'Sala de Crisis Chronos (exclusivo)', 'Desafío de Ensayo IA (exclusivo)', 'Desafío de Revisión de Vídeo (exclusivo)', 'Campaña de Conquista – batallas animadas, las 4 eras + Modo Legendario (2× XP)', 'Plan de estudio – coaching «Mejorar con Clío»', 'Tutor IA – 100 mensajes/mes', 'Notas de lección descargables', 'Analíticas avanzadas y radar de habilidades', 'Rangos Históricos de Ajedrez (XP de Vídeo)', 'Insignia Master en el perfil'],

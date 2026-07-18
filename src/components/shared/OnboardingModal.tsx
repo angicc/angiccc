@@ -131,7 +131,7 @@ export function OnboardingModal({ userId, onDone }: { userId: string; onDone: ()
                   I'll be your guide through 5,000 years of human civilization — from the first cities of Mesopotamia to the digital age. Together we'll explore empires, revolutions, ideas, and the people who shaped the world.
                 </p>
                 <div className="grid grid-cols-3 gap-3 py-2">
-                  {[['28', 'Lessons'], ['75+', 'Timeline Events'], ['4', 'Eras']].map(([n, l]) => (
+                  {[['54', 'Lessons'], ['130+', 'Timeline Events'], ['6', 'Eras']].map(([n, l]) => (
                     <div key={l} className="text-center p-3 rounded-xl bg-primary/5 border border-primary/20">
                       <div className="font-heading text-xl font-bold text-primary">{n}</div>
                       <div className="text-xs text-muted-foreground mt-0.5">{l}</div>

@@ -37,6 +37,7 @@ import {
 const ARMY: Record<EraId, { player: string; playerAccent: string; enemy: string; enemyAccent: string; ground: string; sky: string; horizon: string }> = {
   prehistoric:    { player: '#fb923c', playerAccent: '#9a3412', enemy: '#a16207', enemyAccent: '#713f12', ground: '#2b2114', sky: '#140d05', horizon: '#6b4a1e' },
   ancient:        { player: '#fbbf24', playerAccent: '#b45309', enemy: '#f97316', enemyAccent: '#7c2d12', ground: '#3b2f1a', sky: '#1a1206', horizon: '#6b4400' },
+  byzantine:      { player: '#a78bfa', playerAccent: '#6d28d9', enemy: '#fbbf24', enemyAccent: '#b45309', ground: '#241a33', sky: '#0f0818', horizon: '#4c3573' },
   medieval:       { player: '#60a5fa', playerAccent: '#1d4ed8', enemy: '#a78bfa', enemyAccent: '#5b21b6', ground: '#1e293b', sky: '#0b1020', horizon: '#27417a' },
   'early-modern': { player: '#34d399', playerAccent: '#047857', enemy: '#2dd4bf', enemyAccent: '#0f5f5a', ground: '#14342b', sky: '#04140f', horizon: '#0d5a3f' },
   modern:         { player: '#f87171', playerAccent: '#991b1b', enemy: '#fb923c', enemyAccent: '#7c2d12', ground: '#2a1518', sky: '#140607', horizon: '#6b1f24' },
@@ -46,6 +47,8 @@ const ARMY: Record<EraId, { player: string; playerAccent: string; enemy: string;
 const BACKDROPS: Record<EraId, string> = {
   prehistoric: 'M0 60 L8 42 L16 60 L26 34 L36 60 L44 46 L54 60 L64 30 L76 60 L84 44 L92 60 L100 50 L100 100 L0 100 Z',
   ancient: 'M0 60 L8 42 L16 60 L26 34 L36 60 L44 46 L54 60 L64 30 L76 60 L84 44 L92 60 L100 50 L100 100 L0 100 Z',
+  // Domes of the City — Hagia Sophia silhouette between walls and towers.
+  byzantine: 'M0 60 L8 60 L8 50 L11 44 L14 50 L14 60 L26 60 L26 46 Q34 32 42 46 L42 60 L52 60 L52 48 Q58 38 64 48 L64 60 L76 60 L76 50 L79 42 L82 50 L82 60 L100 60 L100 100 L0 100 Z',
   medieval: 'M0 60 L10 60 L10 40 L13 40 L13 34 L16 40 L19 40 L19 60 L40 60 L40 45 L44 45 L44 38 L46 32 L48 38 L48 45 L52 45 L52 60 L74 60 L74 42 L78 42 L78 36 L81 42 L84 42 L84 60 L100 60 L100 100 L0 100 Z',
   'early-modern': 'M0 60 L14 60 L18 44 L22 60 L38 60 L38 48 L42 40 L46 48 L46 60 L62 60 L66 50 L70 60 L82 60 L86 46 L90 60 L100 60 L100 100 L0 100 Z',
   modern: 'M0 60 L8 60 L8 40 L14 40 L14 52 L22 52 L22 32 L30 32 L30 60 L44 60 L44 44 L54 44 L54 60 L66 60 L66 36 L74 36 L74 56 L84 56 L84 46 L92 46 L92 60 L100 60 L100 100 L0 100 Z',

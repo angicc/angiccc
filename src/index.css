@@ -133,6 +133,7 @@
   .era-glow:hover::before,
   .era-glow:focus-within::before { opacity: 0.6; }
   .era-glow-ancient  { --glow-color: rgba(245, 158, 11, 0.38); }
+  .era-glow-byzantine { --glow-color: rgba(167, 139, 250, 0.40); }
   .era-glow-medieval { --glow-color: rgba(124, 58, 237, 0.38); }
   .era-glow-earlymod { --glow-color: rgba(20, 184, 166, 0.36); }
   .era-glow-modern   { --glow-color: rgba(244, 63, 94, 0.32); }

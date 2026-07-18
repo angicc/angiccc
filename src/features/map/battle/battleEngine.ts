@@ -77,6 +77,12 @@ export const ERA_FLAVOR: Record<EraId, EraFlavor> = {
     doctrine: [0.42, 0.23, 0.35],
     warCry: 'Shields high!',
   },
+  byzantine: {
+    unitNames: { infantry: 'Skutatoi', ranged: 'Toxotai', cavalry: 'Cataphracts' },
+    commanderTitle: 'Strategos',
+    doctrine: [0.28, 0.30, 0.42],
+    warCry: 'For the City!',
+  },
   medieval: {
     unitNames: { infantry: 'Men-at-arms', ranged: 'Longbowmen', cavalry: 'Knights' },
     commanderTitle: 'Marshal',

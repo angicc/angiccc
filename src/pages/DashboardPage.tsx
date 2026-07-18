@@ -22,8 +22,9 @@ import { OnboardingModal, hasCompletedOnboarding } from '@/components/shared/Onb
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } } };
 const fadeUp = { hidden: { opacity: 0, y: 16, scale: 0.985 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const } } };
 
-const ERA_SHORT_KEY: Record<string, 'era_short_prehistoric' | 'era_short_ancient' | 'era_short_medieval' | 'era_short_earlymod' | 'era_short_modern'> = {
+const ERA_SHORT_KEY: Record<string, 'era_short_prehistoric' | 'era_short_byzantine' | 'era_short_ancient' | 'era_short_medieval' | 'era_short_earlymod' | 'era_short_modern'> = {
   prehistoric: 'era_short_prehistoric',
+  byzantine: 'era_short_byzantine',
   ancient: 'era_short_ancient',
   'middle-ages': 'era_short_medieval',
   'early-modern': 'era_short_earlymod',
@@ -34,6 +35,7 @@ const ERA_SHORT_KEY: Record<string, 'era_short_prehistoric' | 'era_short_ancient
 const ERA_BAR: Record<string, string> = {
   prehistoric: 'from-orange-500 to-orange-300',
   ancient: 'from-amber-500 to-amber-300',
+  byzantine: 'from-violet-500 to-violet-300',
   'middle-ages': 'from-blue-500 to-blue-300',
   'early-modern': 'from-emerald-500 to-emerald-300',
   modern: 'from-rose-500 to-rose-300',

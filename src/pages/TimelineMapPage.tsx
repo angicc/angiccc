@@ -36,13 +36,14 @@ import { toast } from 'sonner';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const ERA_COLORS = { prehistoric: 'text-orange-400', ancient: 'text-amber-400', medieval: 'text-blue-400', 'early-modern': 'text-emerald-400', modern: 'text-rose-400' } as const;
-const ERA_BG    = { prehistoric: 'bg-orange-400/10', ancient: 'bg-amber-400/10', medieval: 'bg-blue-400/10', 'early-modern': 'bg-emerald-400/10', modern: 'bg-rose-400/10' } as const;
-const ERA_BORDER= { prehistoric: 'border-orange-400/40', ancient: 'border-amber-400/40', medieval: 'border-blue-400/40', 'early-modern': 'border-emerald-400/40', modern: 'border-rose-400/40' } as const;
+const ERA_COLORS = { prehistoric: 'text-orange-400', ancient: 'text-amber-400', byzantine: 'text-violet-400', medieval: 'text-blue-400', 'early-modern': 'text-emerald-400', modern: 'text-rose-400' } as const;
+const ERA_BG    = { prehistoric: 'bg-orange-400/10', ancient: 'bg-amber-400/10', byzantine: 'bg-violet-400/10', medieval: 'bg-blue-400/10', 'early-modern': 'bg-emerald-400/10', modern: 'bg-rose-400/10' } as const;
+const ERA_BORDER= { prehistoric: 'border-orange-400/40', ancient: 'border-amber-400/40', byzantine: 'border-violet-400/40', medieval: 'border-blue-400/40', 'early-modern': 'border-emerald-400/40', modern: 'border-rose-400/40' } as const;
 
 const ERA_LABELS: Record<string, Record<Language, string>> = {
   prehistoric:    { en: 'Prehistoric Ages', es: 'Edades prehistóricas', ru: 'Доисторические эпохи', mk: 'Праисториски доба', de: 'Urgeschichte', fr: 'Âges préhistoriques' },
   ancient:        { en: 'Ancient World',  es: 'Mundo Antiguo',          ru: 'Древний мир',          mk: 'Античко доба', de: 'Antike Welt', fr: 'Monde antique' },
+  byzantine:      { en: 'The Byzantine World', es: 'El mundo bizantino', ru: 'Византийский мир',    mk: 'Византискиот свет', de: 'Die byzantinische Welt', fr: 'Le monde byzantin' },
   medieval:       { en: 'Middle Ages',    es: 'Edad Media',              ru: 'Средние века',          mk: 'Среден век', de: 'Mittelalter', fr: 'Moyen Âge' },
   'early-modern': { en: 'Early Modern',   es: 'Época Moderna Temprana',  ru: 'Раннее Новое время',   mk: 'Рано модерно доба', de: 'Frühe Neuzeit', fr: 'Époque moderne' },
   modern:         { en: 'Modern Era',     es: 'Era Moderna',             ru: 'Современная эпоха',    mk: 'Модерна ера', de: 'Moderne', fr: 'Ère contemporaine' },
@@ -1103,7 +1104,7 @@ export default function TimelineMapPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode]);
 
-  const eras = ['prehistoric', 'ancient', 'medieval', 'early-modern', 'modern'] as const;
+  const eras = ['prehistoric', 'ancient', 'byzantine', 'medieval', 'early-modern', 'modern'] as const;
   const currentStyle = CART_STYLES.find(s => s.id === styleId)!;
 
   const storyCurrentMarker = storyMarkers[storyIdx];

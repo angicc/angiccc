@@ -34,7 +34,7 @@ export interface TerritoryPolygon {
 
 export interface TerritoryTopic {
   id: string;
-  era: 'prehistoric' | 'ancient' | 'medieval' | 'early-modern' | 'modern';
+  era: 'prehistoric' | 'ancient' | 'byzantine' | 'medieval' | 'early-modern' | 'modern';
   period: string;
   yearRange: [number, number];
   center: [number, number];
@@ -410,26 +410,59 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
   // ══════════════════════════════════════════════════════
   {
     id: 'byzantine-empire',
-    era: 'medieval',
-    period: '476–1453 CE',
-    yearRange: [476, 1453],
-    center: [40, 33],
-    zoom: 5,
-    title: 'Byzantine Empire',
-    titleI18n: { es: 'Imperio Bizantino', ru: 'Византийская империя', mk: 'Византиската империја' },
-    description: 'The Eastern Roman Empire survived the fall of the West by nearly a millennium, preserving Greek-Roman culture and Orthodox Christianity until the Ottoman conquest of 1453.',
+    era: 'byzantine',
+    period: '330–1453 CE',
+    yearRange: [330, 1453],
+    center: [39, 26],
+    zoom: 4,
+    title: 'The Byzantine Empire at Its Height',
+    titleI18n: { es: 'El Imperio bizantino en su apogeo', ru: 'Византийская империя на вершине могущества', mk: 'Византиската империја на својот врв', de: 'Das Byzantinische Reich auf seinem Höhepunkt', fr: "L'Empire byzantin à son apogée" },
+    description: 'The Eastern Roman Empire survived the fall of the West by nearly a millennium. Under Justinian (555 CE) it re-took Italy and North Africa; behind the Theodosian Walls it preserved Roman law, Greek learning, and Orthodox Christianity until 1453.',
+    descriptionI18n: { es: 'El Imperio romano de Oriente sobrevivió casi un milenio a la caída de Occidente. Bajo Justiniano (555 d.C.) recuperó Italia y el norte de África; tras las murallas teodosianas preservó el derecho romano, el saber griego y el cristianismo ortodoxo hasta 1453.', ru: 'Восточная Римская империя пережила падение Запада почти на тысячу лет. При Юстиниане (555 г.) она вернула Италию и Северную Африку; за Феодосиевыми стенами хранила римское право, греческую учёность и православие до 1453 года.', mk: 'Источното Римско Царство го надживеа падот на Западот речиси илјада години. Под Јустинијан (555 г.) ги поврати Италија и Северна Африка; зад Теодосиевите ѕидишта го чуваше римското право, грчкото знаење и православието до 1453.', de: 'Das Oströmische Reich überlebte den Fall des Westens um fast ein Jahrtausend. Unter Justinian (555) gewann es Italien und Nordafrika zurück; hinter den Theodosianischen Mauern bewahrte es römisches Recht, griechische Gelehrsamkeit und die Orthodoxie bis 1453.', fr: "L'Empire romain d'Orient survécut près d'un millénaire à la chute de l'Occident. Sous Justinien (555), il reprit l'Italie et l'Afrique du Nord ; derrière les murailles théodosiennes, il préserva le droit romain, le savoir grec et l'orthodoxie jusqu'en 1453." },
     polygons: [
       {
-        label: 'Byzantine Empire (550 CE peak)',
+        label: 'Core: Balkans, Anatolia & the East (555 CE)',
         color: '#8b5cf6',
-        fillOpacity: 0.25,
-        coords: [[43,18],[42,22],[42,28],[41,30],[39,36],[37,38],[35,38],[33,36],[31,35],[30,33],[30,30],[31,28],[33,26],[35,26],[36,24],[38,24],[39,20],[41,18],[43,18]],
+        fillOpacity: 0.24,
+        coords: [
+          [44.5,19],[44.8,22.5],[44,25.5],[43.7,28.6],[41.5,29],[41,31.5],[41.8,35],[41.5,38.5],
+          [41.2,41.5],[39.5,43.5],[37.8,42],[37,40],[36.5,36.5],[35.8,36],[34.5,35.9],[33.2,35.2],
+          [31.6,34.5],[31,33],[30.6,32.3],[29.8,31],[30.8,28.5],[31.2,25.5],[30.6,22],[31.8,20],
+          [33.5,21.5],[35,23.5],[36.3,22.3],[36.8,21],[38.3,20.2],[39.5,19.3],[41,19.3],[42.5,18.5],[44.5,19],
+        ],
+      },
+      {
+        label: 'Reconquered Italy & Dalmatia (555 CE)',
+        color: '#8b5cf6',
+        fillOpacity: 0.2,
+        coords: [
+          [46.4,13.5],[45.6,13.8],[44.5,15],[43.2,16.5],[42.5,18.3],[41.9,19.4],[40.1,18.5],
+          [39.8,16.5],[38.2,16.2],[36.9,15.1],[37.1,13.4],[38.1,12.5],[38.9,16.1],[40,15],
+          [41.2,13],[42.4,11.5],[43.8,10.2],[44.4,8.8],[43.7,7.5],[45.5,9],[46.4,13.5],
+        ],
+      },
+      {
+        label: 'North Africa & Southern Spain (555 CE)',
+        color: '#8b5cf6',
+        fillOpacity: 0.18,
+        coords: [
+          [37.3,10],[36.9,11.1],[35.2,11.1],[33.9,10.1],[33.2,11.5],[32.9,13.2],[32.4,15.2],
+          [31.2,16.9],[30.8,15],[31.6,12.5],[32.7,10.5],[33.5,8],[34.8,6],[35.7,3],[35.2,-1],
+          [35.1,-3.5],[36,-5.5],[36.5,-6.2],[37.4,-5],[36.7,-3.5],[36.8,-0.5],[37,3],[37.1,6.5],[37.3,10],
+        ],
       },
     ],
     routes: [
       {
+        name: "Belisarius' Reconquest (533–540)",
+        nameI18n: { es: 'La reconquista de Belisario (533–540)', ru: 'Реконкиста Велисария (533–540)', mk: 'Реконквистата на Велизариј (533–540)', de: 'Belisars Rückeroberung (533–540)', fr: 'La reconquête de Bélisaire (533–540)' },
+        type: 'trade',
+        color: '#f59e0b',
+        points: [[41.01,28.98],[37.9,23.7],[36.1,14.3],[36.85,10.3],[37.1,13.4],[38.1,15.6],[40.85,14.25],[41.9,12.5],[44.42,12.2]],
+      },
+      {
         name: 'Constantinople–Alexandria Trade',
-        nameI18n: { es: 'Comercio Constantinopla–Alejandría', ru: 'Торговля Константинополь–Александрия', mk: 'Трговија Константинопол–Александрија' },
+        nameI18n: { es: 'Comercio Constantinopla–Alejandría', ru: 'Торговля Константинополь–Александрия', mk: 'Трговија Константинопол–Александрија', de: 'Handel Konstantinopel–Alexandria', fr: 'Commerce Constantinople–Alexandrie' },
         type: 'trade',
         color: '#8b5cf6',
         points: [[41.01,28.98],[37,36],[33.5,35],[31.2,30]],
@@ -444,6 +477,52 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
       { name: 'Ravenna', type: 'city', lat: 44.42, lng: 12.2, note: 'Byzantine Exarchate capital in Italy', year: 540 },
       { name: 'Battle of Yarmouk', type: 'battle', lat: 32.8, lng: 36.1, note: 'Arabs defeat Byzantines — empire loses Levant (636 CE)', year: 636 },
       { name: 'Manzikert', type: 'battle', lat: 39.06, lng: 42.52, note: 'Seljuk Turks destroy Byzantine army — Anatolia lost (1071)', year: 1071 },
+      { name: 'Alexandria', type: 'city', lat: 31.2, lng: 29.92, note: 'Patriarchate and grain port of the empire until 641', year: 400 },
+      { name: 'Carthage', type: 'city', lat: 36.85, lng: 10.33, note: 'Retaken from the Vandals by Belisarius (533–534)', year: 533 },
+      { name: 'Ohrid', type: 'religious', lat: 41.12, lng: 20.8, note: "Clement's Literary School (~893) — cradle of Cyrillic literacy", year: 893 },
+      { name: 'Mount Athos', type: 'religious', lat: 40.16, lng: 24.33, note: 'The Holy Mountain — monastic republic since 963', year: 963 },
+    ],
+  },
+
+  {
+    id: 'slavic-mission',
+    era: 'byzantine',
+    period: '863–988 CE',
+    yearRange: [863, 988],
+    center: [44, 24],
+    zoom: 4,
+    title: 'Cyril & Methodius and the Slavic World',
+    titleI18n: { es: 'Cirilo y Metodio y el mundo eslavo', ru: 'Кирилл и Мефодий и славянский мир', mk: 'Кирил и Методиј и словенскиот свет', de: 'Kyrill & Method und die slawische Welt', fr: 'Cyrille et Méthode et le monde slave' },
+    description: 'From Thessalonica to Moravia and back to Ohrid and Preslav: the mission that gave the Slavs an alphabet, a written language, and Orthodox Christianity — reaching Kiev with the baptism of the Rus in 988.',
+    descriptionI18n: { es: 'De Tesalónica a Moravia y de vuelta a Ohrid y Preslav: la misión que dio a los eslavos un alfabeto, una lengua escrita y el cristianismo ortodoxo, llegando a Kiev con el bautismo de la Rus en 988.', ru: 'Из Фессалоник в Моравию и обратно в Охрид и Преслав: миссия, давшая славянам алфавит, письменность и православие — до крещения Руси в 988 году.', mk: 'Од Солун до Моравија и назад кон Охрид и Преслав: мисијата што им даде на Словените азбука, писмен јазик и православие — сè до покрстувањето на Русите во 988.', de: 'Von Thessalonike nach Mähren und zurück nach Ohrid und Preslaw: die Mission, die den Slawen Alphabet, Schriftsprache und Orthodoxie gab — bis zur Taufe der Rus 988.', fr: 'De Thessalonique à la Moravie puis vers Ohrid et Preslav : la mission qui donna aux Slaves un alphabet, une langue écrite et l’orthodoxie — jusqu’au baptême de la Rus’ en 988.' },
+    routes: [
+      {
+        name: 'The Moravian Mission (863)',
+        nameI18n: { es: 'La misión morava (863)', ru: 'Моравская миссия (863)', mk: 'Моравската мисија (863)', de: 'Die Mährenmission (863)', fr: 'La mission morave (863)' },
+        type: 'trade', color: '#8b5cf6',
+        points: [[40.64,22.94],[41.01,28.98],[43.2,27.9],[45.8,21.2],[48.15,17.1],[49.2,16.6]],
+      },
+      {
+        name: 'The Disciples’ Exile to Ohrid & Preslav (886)',
+        nameI18n: { es: 'El exilio de los discípulos a Ohrid y Preslav (886)', ru: 'Изгнание учеников в Охрид и Преслав (886)', mk: 'Изгонот на учениците кон Охрид и Преслав (886)', de: 'Das Exil der Schüler nach Ohrid & Preslaw (886)', fr: 'L’exil des disciples vers Ohrid et Preslav (886)' },
+        type: 'trade', color: '#22d3ee',
+        points: [[49.2,16.6],[47.5,19.05],[44.8,20.5],[42.7,21.2],[41.12,20.8]],
+      },
+      {
+        name: 'Orthodoxy to the Rus (988)',
+        nameI18n: { es: 'La ortodoxia hacia la Rus (988)', ru: 'Православие на Русь (988)', mk: 'Православието кај Русите (988)', de: 'Die Orthodoxie zur Rus (988)', fr: 'L’orthodoxie vers la Rus’ (988)' },
+        type: 'trade', color: '#34d399',
+        points: [[41.01,28.98],[44.6,33.5],[46.6,32.6],[50.45,30.52]],
+      },
+    ],
+    markers: [
+      { name: 'Thessalonica', type: 'city', lat: 40.64, lng: 22.94, note: 'Home city of Cyril and Methodius — so Slavic-speaking that "everyone there spoke it"', year: 863 },
+      { name: 'Constantinople', type: 'capital', lat: 41.01, lng: 28.98, note: 'The mission was commissioned by the emperor and patriarch here', year: 862 },
+      { name: 'Velehrad (Great Moravia)', type: 'city', lat: 49.11, lng: 17.4, note: 'Rastislav’s realm — where the Slavic liturgy was first sung', year: 863 },
+      { name: 'Rome', type: 'religious', lat: 41.9, lng: 12.5, note: 'Pope Hadrian II blessed the Slavic books; Cyril died here in 869', year: 869 },
+      { name: 'Ohrid', type: 'religious', lat: 41.12, lng: 20.8, note: "Clement's school taught ~3,500 students; the Cyrillic alphabet took shape in this circle", year: 893 },
+      { name: 'Preslav', type: 'city', lat: 43.16, lng: 26.82, note: 'The parallel Bulgarian literary school of the disciples', year: 893 },
+      { name: 'Kiev', type: 'capital', lat: 50.45, lng: 30.52, note: 'Vladimir baptized the Rus in 988 — Orthodoxy and Cyrillic spread across the north', year: 988 },
     ],
   },
 

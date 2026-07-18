@@ -71,6 +71,11 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   // Referenced via Special:FilePath, which resolves by filename (no fragile MD5
   // hash path). Any that fail to load fall through to the lesson's static image
   // and then the era hero — the banner can never break.
+  // ── The Byzantine World ──
+  // The classic Commons animation of the empire's borders through 11 centuries;
+  // resolves by filename via Special:FilePath, falls back to statics if absent.
+  'byzantine-01': fp('Byzantine_Empire_animated.gif'),
+  'byzantine-09': fp('Byzantine_Empire_animated.gif'),
   'prehistoric-01': fp('Human_evolution_scheme.gif'),      // human evolution animation
   'prehistoric-04': fp('Spreading_homo_sapiens_ver2.gif'), // Out-of-Africa migration animation
   'prehistoric-07': fp('Mammuthus_trogontherii_-_animation.gif'), // mammoth

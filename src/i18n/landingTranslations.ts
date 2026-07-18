@@ -21,8 +21,8 @@ export interface LandingCopy {
   statLessons: string; statEvents: string; statQuestions: string; statXp: string;
   erasTitle: string;
   erasSubtitle: string;
-  eraNames: [string, string, string, string, string];
-  eraRanges: [string, string, string, string, string];
+  eraNames: [string, string, string, string, string, string];
+  eraRanges: [string, string, string, string, string, string];
   featuresTitle: string;
   featuresSubtitle: string;
   features: LandingFeature[];
@@ -52,10 +52,10 @@ const EN: LandingCopy = {
   ctaStart: 'Start Learning Free',
   ctaPlans: 'View Plans',
   statLessons: 'Lessons', statEvents: 'Timeline Events', statQuestions: 'Quiz Questions', statXp: 'XP to Earn',
-  erasTitle: 'Five Eras of Human History',
+  erasTitle: 'Six Eras of Human History',
   erasSubtitle: 'From the first hominins to the digital revolution — a complete journey through time. Nine lessons per era.',
-  eraNames: ['Prehistoric Ages', 'Ancient World', 'Middle Ages', 'Early Modern', 'Modern Era'],
-  eraRanges: ['4,000,000 – 3000 BCE', '3000 BCE – 500 CE', '500 – 1500 CE', '1500 – 1800 CE', '1800 – Present'],
+  eraNames: ['Prehistoric Ages', 'Ancient World', 'The Byzantine World', 'Middle Ages', 'Early Modern', 'Modern Era'],
+  eraRanges: ['4,000,000 – 3000 BCE', '3000 BCE – 500 CE', '330 – 1453 CE', '500 – 1500 CE', '1500 – 1800 CE', '1800 – Present'],
   featuresTitle: 'Everything You Need to Master History',
   featuresSubtitle: 'A complete learning system designed for curious, serious students of the past.',
   features: [
@@ -138,10 +138,10 @@ const ES: LandingCopy = {
   ctaStart: 'Empieza a aprender gratis',
   ctaPlans: 'Ver planes',
   statLessons: 'Lecciones', statEvents: 'Eventos de la línea de tiempo', statQuestions: 'Preguntas de quiz', statXp: 'XP por ganar',
-  erasTitle: 'Cinco eras de la historia humana',
+  erasTitle: 'Seis eras de la historia humana',
   erasSubtitle: 'De los primeros homínidos a la revolución digital — un viaje completo a través del tiempo. Nueve lecciones por era.',
-  eraNames: ['Edad Prehistórica', 'Mundo Antiguo', 'Edad Media', 'Edad Moderna', 'Era Contemporánea'],
-  eraRanges: ['4.000.000 – 3000 a.C.', '3000 a.C. – 500 d.C.', '500 – 1500 d.C.', '1500 – 1800 d.C.', '1800 – Presente'],
+  eraNames: ['Edad Prehistórica', 'Mundo Antiguo', 'El Mundo Bizantino', 'Edad Media', 'Edad Moderna', 'Era Contemporánea'],
+  eraRanges: ['4.000.000 – 3000 a.C.', '3000 a.C. – 500 d.C.', '330 – 1453 d.C.', '500 – 1500 d.C.', '1500 – 1800 d.C.', '1800 – Presente'],
   featuresTitle: 'Todo lo que necesitas para dominar la historia',
   featuresSubtitle: 'Un sistema de aprendizaje completo para estudiantes curiosos y serios del pasado.',
   features: [
@@ -224,10 +224,10 @@ const RU: LandingCopy = {
   ctaStart: 'Начать учиться бесплатно',
   ctaPlans: 'Смотреть планы',
   statLessons: 'Уроков', statEvents: 'Событий хронологии', statQuestions: 'Вопросов викторин', statXp: 'XP для получения',
-  erasTitle: 'Пять эпох истории человечества',
+  erasTitle: 'Шесть эпох истории человечества',
   erasSubtitle: 'От первых гоминин до цифровой революции — полное путешествие сквозь время. Девять уроков в каждой эпохе.',
-  eraNames: ['Доисторическая эпоха', 'Древний мир', 'Средние века', 'Раннее Новое время', 'Новейшее время'],
-  eraRanges: ['4 000 000 – 3000 до н.э.', '3000 до н.э. – 500 н.э.', '500 – 1500 н.э.', '1500 – 1800 н.э.', '1800 – наши дни'],
+  eraNames: ['Доисторическая эпоха', 'Древний мир', 'Византийский мир', 'Средние века', 'Раннее Новое время', 'Новейшее время'],
+  eraRanges: ['4 000 000 – 3000 до н.э.', '3000 до н.э. – 500 н.э.', '330 – 1453', '500 – 1500 н.э.', '1500 – 1800 н.э.', '1800 – наши дни'],
   featuresTitle: 'Всё, что нужно, чтобы овладеть историей',
   featuresSubtitle: 'Полная система обучения для любознательных и серьёзных исследователей прошлого.',
   features: [
@@ -310,10 +310,10 @@ const MK: LandingCopy = {
   ctaStart: 'Почни да учиш бесплатно',
   ctaPlans: 'Погледни планови',
   statLessons: 'Лекции', statEvents: 'Настани на линијата', statQuestions: 'Квиз прашања', statXp: 'XP за освојување',
-  erasTitle: 'Пет епохи на човечката историја',
+  erasTitle: 'Шест епохи на човечката историја',
   erasSubtitle: 'Од првите хоминини до дигиталната револуција — целосно патување низ времето. Девет лекции по епоха.',
-  eraNames: ['Праисториско доба', 'Античко време', 'Среден век', 'Ран нов век', 'Модерна ера'],
-  eraRanges: ['4.000.000 – 3000 п.н.е.', '3000 п.н.е. – 500 н.е.', '500 – 1500 н.е.', '1500 – 1800 н.е.', '1800 – денес'],
+  eraNames: ['Праисториско доба', 'Античко време', 'Византискиот свет', 'Среден век', 'Ран нов век', 'Модерна ера'],
+  eraRanges: ['4.000.000 – 3000 п.н.е.', '3000 п.н.е. – 500 н.е.', '330 – 1453', '500 – 1500 н.е.', '1500 – 1800 н.е.', '1800 – денес'],
   featuresTitle: 'Сè што ти треба за да ја совладаш историјата',
   featuresSubtitle: 'Целосен систем за учење за љубопитни и сериозни ученици на минатото.',
   features: [
@@ -396,10 +396,10 @@ const DE: LandingCopy = {
   ctaStart: 'Kostenlos lernen',
   ctaPlans: 'Pläne ansehen',
   statLessons: 'Lektionen', statEvents: 'Zeitleisten-Ereignisse', statQuestions: 'Quizfragen', statXp: 'XP zu verdienen',
-  erasTitle: 'Fünf Epochen der Menschheitsgeschichte',
+  erasTitle: 'Sechs Epochen der Menschheitsgeschichte',
   erasSubtitle: 'Von den ersten Homininen bis zur digitalen Revolution — eine vollständige Zeitreise. Neun Lektionen pro Epoche.',
-  eraNames: ['Urgeschichte', 'Antike', 'Mittelalter', 'Frühe Neuzeit', 'Moderne'],
-  eraRanges: ['4.000.000 – 3000 v. Chr.', '3000 v. Chr. – 500 n. Chr.', '500 – 1500 n. Chr.', '1500 – 1800 n. Chr.', '1800 – heute'],
+  eraNames: ['Urgeschichte', 'Antike', 'Die byzantinische Welt', 'Mittelalter', 'Frühe Neuzeit', 'Moderne'],
+  eraRanges: ['4.000.000 – 3000 v. Chr.', '3000 v. Chr. – 500 n. Chr.', '330 – 1453', '500 – 1500 n. Chr.', '1500 – 1800 n. Chr.', '1800 – heute'],
   featuresTitle: 'Alles, was du brauchst, um Geschichte zu meistern',
   featuresSubtitle: 'Ein vollständiges Lernsystem für neugierige, ernsthafte Erforscher der Vergangenheit.',
   features: [
@@ -482,10 +482,10 @@ const FR: LandingCopy = {
   ctaStart: 'Apprendre gratuitement',
   ctaPlans: 'Voir les forfaits',
   statLessons: 'Leçons', statEvents: 'Événements de la chronologie', statQuestions: 'Questions de quiz', statXp: 'XP à gagner',
-  erasTitle: 'Cinq ères de l\'histoire humaine',
+  erasTitle: 'Six ères de l\'histoire humaine',
   erasSubtitle: 'Des premiers hominidés à la révolution numérique — un voyage complet à travers le temps. Neuf leçons par ère.',
-  eraNames: ['Âge préhistorique', 'Monde antique', 'Moyen Âge', 'Époque moderne', 'Ère contemporaine'],
-  eraRanges: ['4 000 000 – 3000 av. J.-C.', '3000 av. J.-C. – 500 ap. J.-C.', '500 – 1500 ap. J.-C.', '1500 – 1800 ap. J.-C.', '1800 – aujourd\'hui'],
+  eraNames: ['Âge préhistorique', 'Monde antique', 'Le monde byzantin', 'Moyen Âge', 'Époque moderne', 'Ère contemporaine'],
+  eraRanges: ['4 000 000 – 3000 av. J.-C.', '3000 av. J.-C. – 500 ap. J.-C.', '330 – 1453', '500 – 1500 ap. J.-C.', '1500 – 1800 ap. J.-C.', '1800 – aujourd\'hui'],
   featuresTitle: 'Tout ce qu\'il faut pour maîtriser l\'histoire',
   featuresSubtitle: 'Un système d\'apprentissage complet pour les esprits curieux et sérieux du passé.',
   features: [
