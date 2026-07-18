@@ -15,7 +15,7 @@ import { LANGUAGE_LABELS, type Language } from '@/i18n/translations';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/shared/Logo';
-import { GoldenDustOfTime } from '@/components/shared/GoldenDustOfTime';
+import { CelestialAtlas } from '@/components/shared/CelestialAtlas';
 import { streamChatResponse, LANDING_SYSTEM_PROMPT } from '@/services/aiGateway';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
 
@@ -679,7 +679,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden relative isolate">
       {/* Ambient — Golden Dust of Time drifts behind the entire landing page. */}
-      <GoldenDustOfTime position="fixed" zIndex={0} />
+      <CelestialAtlas position="fixed" zIndex={0} />
       <div className="relative z-10">
 
       {/* ── Nav ── */}
