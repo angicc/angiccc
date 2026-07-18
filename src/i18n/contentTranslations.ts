@@ -8,6 +8,7 @@ import { DEFR_BODY } from './lessonBodyDeFr';
 import { PREHISTORIC_ERA_TRANS, PREHISTORIC_LESSON_TRANS } from './prehistoricTranslations';
 import { PREHISTORIC_BODY_TRANS } from './prehistoricBodies';
 import { BYZANTINE_ERA_TRANS, BYZANTINE_LESSON_TRANS } from './byzantineTranslations';
+import { BYZANTINE_BODY_TRANS } from './byzantineBodies';
 import { LESSON_DEEP_DIVES } from './lessonDeepDives';
 
 type ContentLang = Exclude<Language, 'en'>;
@@ -17,6 +18,7 @@ const BODY_TRANS: Record<string, Partial<Record<ContentLang, string[]>>> = {
   ...EARLYMOD_MODERN_BODY_TRANS,
   ...WAVE3_BODY_TRANS,
   ...PREHISTORIC_BODY_TRANS,
+  ...BYZANTINE_BODY_TRANS,
 };
 
 // German + French section bodies merged per lesson (added incrementally).
