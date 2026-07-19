@@ -1,5 +1,10 @@
 import type { Era } from '@/types';
+import { LESSONS } from './lessonsData';
 
+// lessonIds seeds below list the original nine per era; the block after the
+// array overwrites each with the live, order-sorted lesson list from LESSONS,
+// so every curriculum-expansion tranche propagates to era cards, progress
+// bars, and locking automatically — no hand-edited id arrays to maintain.
 export const ERAS: Era[] = [
   { id: 'prehistoric', name: 'Prehistoric Ages', shortName: 'Prehistory', dateRange: '~4,000,000 – 3000 BCE', description: 'Before writing, before cities — the deep human story. From the first upright hominins and the taming of fire to Ice Age hunters, cave painters, and the farmers whose Neolithic Revolution invented the settled world that everything after was built upon.', icon: 'flame', color: 'text-orange-400', bgGradient: 'from-orange-950/30 to-background', lessonIds: ['prehistoric-01','prehistoric-02','prehistoric-03','prehistoric-04','prehistoric-05','prehistoric-06','prehistoric-07','prehistoric-08','prehistoric-09'], quizId: 'quiz-prehistoric' },
   { id: 'ancient', name: 'Ancient History', shortName: 'Ancient', dateRange: '~3000 BCE – 500 CE', description: 'From the first writing systems of Mesopotamia to the fall of the Western Roman Empire. Explore civilizations that laid the foundations of human culture, law, philosophy, and empire.', icon: 'scroll', color: 'text-amber-400', bgGradient: 'from-amber-950/30 to-background', lessonIds: ['ancient-01','ancient-02','ancient-03','ancient-04','ancient-05','ancient-06','ancient-07','ancient-08','ancient-09'], quizId: 'quiz-ancient' },
@@ -8,6 +13,12 @@ export const ERAS: Era[] = [
   { id: 'early-modern', name: 'Early Modern', shortName: 'Early Modern', dateRange: '~1500 – 1800 CE', description: 'The age of exploration, scientific revolution, and political upheaval. From Columbus to the American Revolution, this era reshaped the globe and our understanding of the universe.', icon: 'compass', color: 'text-emerald-400', bgGradient: 'from-emerald-950/30 to-background', lessonIds: ['earlymod-01','earlymod-02','earlymod-03','earlymod-04','earlymod-05','earlymod-06','earlymod-07','earlymod-08','earlymod-09'], quizId: 'quiz-earlymod' },
   { id: 'modern', name: 'Modern Era', shortName: 'Modern', dateRange: '~1800 CE – Present', description: 'Industrial revolution to the digital age. Two World Wars, decolonization, the Cold War, and the rise of globalization transformed every corner of the earth.', icon: 'industry', color: 'text-rose-400', bgGradient: 'from-rose-950/30 to-background', lessonIds: ['modern-01','modern-02','modern-03','modern-04','modern-05','modern-06','modern-07','modern-08','modern-09'], quizId: 'quiz-modern' },
 ];
+
+// Derive each era's full, order-sorted lessonIds from the actual lesson data.
+for (const era of ERAS) {
+  const ids = LESSONS.filter(l => l.eraId === era.id).sort((a, b) => a.order - b.order).map(l => l.id);
+  if (ids.length > 0) era.lessonIds = ids;
+}
 
 export function getEraById(id: string) { return ERAS.find(e => e.id === id); }
 export function getEraLessons(eraId: string) { return ERAS.find(e => e.id === eraId)?.lessonIds ?? []; }

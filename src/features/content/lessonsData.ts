@@ -1,6 +1,7 @@
 import type { Lesson } from '@/types';
+import { LESSONS_EXPANSION } from './lessonsExpansion';
 
-export const LESSONS: Lesson[] = [
+const CORE_LESSONS: Lesson[] = [
   { id: 'ancient-01', eraId: 'ancient', order: 1, title: 'The First Civilizations', subtitle: 'Mesopotamia and Egypt', estimatedMinutes: 14, xpReward: 100, imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Ancient_ziggurat_at_Ali_Air_Base_Iraq_2005.jpg/1280px-Ancient_ziggurat_at_Ali_Air_Base_Iraq_2005.jpg',
     keyFacts: ['Sumer invented writing (cuneiform) around 3100 BCE', 'The Egyptian Old Kingdom built the pyramids c.2686–2181 BCE', 'Hammurabi\'s Code (c.1754 BCE) is one of history\'s earliest legal codes', 'Both civilizations depended on river systems for agriculture'],
     relatedTimeline: ['t-cuneiform','t-pyramid','t-hammurabi'],
@@ -587,6 +588,10 @@ export const LESSONS: Lesson[] = [
     ] },
 
 ];
+
+// The published curriculum is the core set plus the expansion tranches, always
+// sorted by era then order so new lessons slot into place automatically.
+export const LESSONS: Lesson[] = [...CORE_LESSONS, ...LESSONS_EXPANSION];
 
 export function getLessonById(id: string) { return LESSONS.find(l => l.id === id); }
 export function getEraLessons(eraId: string) { return LESSONS.filter(l => l.eraId === eraId).sort((a,b) => a.order - b.order); }
