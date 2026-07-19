@@ -706,6 +706,257 @@ export const QUIZ_TRANS_EXPANSION: Record<string, Partial<Record<ContentLang, QQ
     mk: { question: 'По пазарните реформи на Денг Сјаопинг започнати во 1978, Кина растеше со речиси која годишна стапка три децении — најбрзиот одржлив раст во историјата?', options: ['Речиси 3 %','Речиси 5 %','Речиси 10 %','Речиси 20 %'], explanation: 'Кина растеше со речиси 10 % годишно три децении по 1978, извлекувајќи стотици милиони луѓе од сиромаштија.' },
   },
 
+  // ── BYZANTINE (bq1–bq50) ─────────────────────────────────────────────────────
+  'bq1': {
+    es: { question: '¿En qué año fue dedicada Constantinopla como nueva capital del Imperio romano?', options: ['313 d.C.','330 d.C.','395 d.C.','476 d.C.'], explanation: 'Constantino dedicó su Nueva Roma el 11 de mayo de 330 sobre el emplazamiento de la ciudad griega de Bizancio.' },
+    ru: { question: 'В каком году Константинополь был освящён как новая столица Римской империи?', options: ['313 г.','330 г.','395 г.','476 г.'], explanation: 'Константин освятил свой Новый Рим 11 мая 330 года на месте греческого города Византий.' },
+    mk: { question: 'Во која година Константинопол беше посветен како нова престолнина на Римската империја?', options: ['313 н.е.','330 н.е.','395 н.е.','476 н.е.'], explanation: 'Константин го посвети својот Нов Рим на 11 мај 330 на местото на грчкиот град Византион.' },
+  },
+  'bq2': {
+    es: { question: '¿Sobre qué estrecho estratégicamente vital se alzaba Constantinopla?', options: ['El estrecho de Gibraltar','Los Dardanelos','El Bósforo','El estrecho de Mesina'], explanation: 'El Bósforo domina el paso entre el Mediterráneo y el mar Negro — y entre Europa y Asia.' },
+    ru: { question: 'На каком стратегически важном проливе стоял Константинополь?', options: ['Гибралтарский пролив','Дарданеллы','Босфор','Мессинский пролив'], explanation: 'Босфор господствует над проходом между Средиземным и Чёрным морями — и между Европой и Азией.' },
+    mk: { question: 'На кој стратешки клучен теснец стоеше Константинопол?', options: ['Гибралтарскиот теснец','Дарданелите','Босфорот','Месинскиот теснец'], explanation: 'Босфорот владее со преминот меѓу Средоземното и Црното Море — и меѓу Европа и Азија.' },
+  },
+  'bq3': {
+    es: { question: '¿Qué edicto de 313 legalizó el cristianismo en todo el Imperio romano?', options: ['El Edicto de Tesalónica','El Edicto de Milán','El Edicto de Nicea','El Edicto de Constantinopla'], explanation: 'El Edicto de Milán de Constantino puso fin a las persecuciones y legalizó el cristianismo en el imperio.' },
+    ru: { question: 'Какой эдикт 313 года сделал христианство законным по всей Римской империи?', options: ['Фессалоникийский эдикт','Миланский эдикт','Никейский эдикт','Константинопольский эдикт'], explanation: 'Миланский эдикт Константина прекратил гонения и узаконил христианство в империи.' },
+    mk: { question: 'Кој едикт од 313 го легализира христијанството низ целата Римска империја?', options: ['Солунскиот едикт','Миланскиот едикт','Никејскиот едикт','Константинополскиот едикт'], explanation: 'Миланскиот едикт на Константин ги заврши прогонствата и го озакони христијанството во империјата.' },
+  },
+  'bq4': {
+    es: { question: 'Las gentes que llamamos «bizantinos» se llamaban a sí mismas...', options: ['Bizantinos','Griegos','Romaioi — romanos','Helenos'], explanation: 'Veían su Estado simplemente como el Imperio de los romanos que continuaba; «Bizancio» es una etiqueta de historiadores posteriores.' },
+    ru: { question: 'Люди, которых мы зовём «византийцами», называли себя...', options: ['Византийцами','Греками','Ромеями — римлянами','Эллинами'], explanation: 'Они видели своё государство просто продолжающейся Империей римлян; «Византия» — ярлык позднейших историков.' },
+    mk: { question: 'Луѓето што ги нарекуваме „Византијци“ се нарекуваа себеси...', options: ['Византијци','Грци','Ромеи — Римјани','Хелени'], explanation: 'Тие ја гледаа својата држава едноставно како продолжение на Империјата на Римјаните; „Византија“ е ознака на подоцнежните историчари.' },
+  },
+  'bq5': {
+    es: { question: '¿Qué emperatriz se negó a huir durante los disturbios de Niká, diciendo que la púrpura real «es un buen sudario»?', options: ['Irene','Teodora','Zoe','Ana'], explanation: 'El temple de Teodora sostuvo a Justiniano; Belisario aplastó luego la revuelta en el hipódromo.' },
+    ru: { question: 'Какая императрица отказалась бежать во время восстания «Ника», сказав, что царский пурпур — «прекрасный саван»?', options: ['Ирина','Феодора','Зоя','Анна'], explanation: 'Твёрдость Феодоры укрепила Юстиниана; затем Велисарий подавил бунт на ипподроме.' },
+    mk: { question: 'Која царица одби да избега за време на бунтот Ника, велејќи дека царскиот пурпур „е убав покров“?', options: ['Ирина','Теодора','Зоја','Ана'], explanation: 'Храброста на Теодора го зацврсти Јустинијан; потоа Велизариј го здроби бунтот во хиподромот.' },
+  },
+  'bq6': {
+    es: { question: 'Santa Sofía, terminada en 537, mantuvo ¿qué récord durante más de nueve siglos?', options: ['El edificio más alto de la tierra','La iglesia más grande del mundo','El mayor palacio de Europa','El primer edificio con cúpula'], explanation: 'La Iglesia de la Santa Sabiduría de Justiniano siguió siendo la iglesia más grande del mundo durante más de 900 años.' },
+    ru: { question: 'Святая София, завершённая в 537 году, удерживала какой рекорд более девяти веков?', options: ['Высочайшее здание на земле','Крупнейшая церковь мира','Крупнейший дворец Европы','Первое купольное здание'], explanation: 'Храм Святой Премудрости Юстиниана более 900 лет оставался крупнейшей церковью мира.' },
+    mk: { question: 'Света Софија, завршена во 537, го држеше кој рекорд повеќе од девет века?', options: ['Највисока градба на земјата','Најголема црква во светот','Најголема палата во Европа','Прва градба со купола'], explanation: 'Црквата на Светата Мудрост на Јустинијан остана најголемата црква во светот повеќе од 900 години.' },
+  },
+  'bq7': {
+    es: { question: 'La gran codificación del derecho romano de Justiniano se conoce como...', options: ['Las Doce Tablas','El Código de Hammurabi','El Corpus Juris Civilis','La Carta Magna'], explanation: 'El Códice, el Digesto y las Institutas forman juntos el Corpus Juris Civilis — ancestro de los sistemas de derecho civil de Europa.' },
+    ru: { question: 'Великая кодификация римского права при Юстиниане известна как...', options: ['Двенадцать таблиц','Кодекс Хаммурапи','Corpus Juris Civilis','Великая хартия'], explanation: 'Кодекс, Дигесты и Институции вместе образуют Corpus Juris Civilis — предка систем континентального права Европы.' },
+    mk: { question: 'Големата кодификација на римското право на Јустинијан е позната како...', options: ['Дванаесетте таблици','Хамурабиевиот законик','Corpus Juris Civilis','Магна Карта'], explanation: 'Кодексот, Дигестите и Институциите заедно го образуваат Corpus Juris Civilis — предок на граѓанско-правните системи на Европа.' },
+  },
+  'bq8': {
+    es: { question: 'El arma incendiaria secreta bizantina que ardía incluso sobre la superficie del mar se llamaba...', options: ['Fuego griego','Trueno romano','Lluvia de nafta','Aliento de dragón'], explanation: 'Proyectado desde sifones de bronce en los barcos, el fuego griego destruyó las flotas árabes que asediaban Constantinopla.' },
+    ru: { question: 'Секретное византийское зажигательное оружие, горевшее даже на поверхности моря, называлось...', options: ['Греческий огонь','Римский гром','Нефтяной дождь','Дыхание дракона'], explanation: 'Выбрасываемый из бронзовых сифонов на кораблях, греческий огонь уничтожил арабские флоты, осаждавшие Константинополь.' },
+    mk: { question: 'Тајното византиско запаливо оружје што гореше дури и на површината на морето се викаше...', options: ['Грчки оган','Римски гром','Нафтен дожд','Змејски здив'], explanation: 'Исфрлан од бронзени сифони на бродовите, грчкиот оган ги уништи арапските флоти што го опсадуваа Константинопол.' },
+  },
+  'bq9': {
+    es: { question: 'El conflicto bizantino de un siglo sobre las imágenes religiosas se conoce como...', options: ['El Gran Cisma','La iconoclasia','La controversia hesicasta','La disputa del filioque'], explanation: 'De 726 a 843 el imperio luchó consigo mismo sobre si los iconos eran idolatría o ventanas al cielo.' },
+    ru: { question: 'Вековой византийский конфликт из-за религиозных образов известен как...', options: ['Великая схизма','Иконоборчество','Исихастский спор','Спор о филиокве'], explanation: 'С 726 по 843 год империя воевала сама с собой: иконы — идолопоклонство или окна в небо?' },
+    mk: { question: 'Вековниот византиски судир околу верските слики е познат како...', options: ['Големата шизма','Иконоборство','Исихастичката контроверза','Спорот за филиокве'], explanation: 'Од 726 до 843 империјата се бореше сама со себе дали иконите се идолопоклонство или прозорци кон небото.' },
+  },
+  'bq10': {
+    es: { question: 'Los hermanos Cirilo y Metodio, creadores del primer alfabeto eslavo, procedían ¿de qué ciudad?', options: ['Constantinopla','Tesalónica','Ohrid','Atenas'], explanation: 'Tesalónica estaba tan llena de habla eslava que los hermanos conocían la lengua desde la infancia.' },
+    ru: { question: 'Братья Кирилл и Мефодий, создатели первой славянской азбуки, происходили из какого города?', options: ['Константинополь','Фессалоники','Охрид','Афины'], explanation: 'Фессалоники были так полны славянской речи, что братья знали язык с детства.' },
+    mk: { question: 'Браќата Кирил и Методиј, творци на првата словенска азбука, потекнуваа од кој град?', options: ['Константинопол','Солун','Охрид','Атина'], explanation: 'Солун беше толку полн со словенски говор што браќата го знаеја јазикот од детството.' },
+  },
+  'bq11': {
+    es: { question: 'El alfabeto cirílico lo escriben hoy aproximadamente ¿cuántas personas?', options: ['25 millones','75 millones','250 millones','1.000 millones'], explanation: 'De Skopie a Vladivostok, unos 250 millones de personas escriben en cirílico — la mayor exportación cultural de Bizancio.' },
+    ru: { question: 'Кириллицей сегодня пишут примерно сколько человек?', options: ['25 миллионов','75 миллионов','250 миллионов','1 миллиард'], explanation: 'От Скопье до Владивостока кириллицей пишут около 250 миллионов человек — величайший культурный экспорт Византии.' },
+    mk: { question: 'Кирилицата денес ја пишуваат приближно колку луѓе?', options: ['25 милиони','75 милиони','250 милиони','1 милијарда'], explanation: 'Од Скопје до Владивосток, околу 250 милиони луѓе пишуваат на кирилица — најголемиот културен извоз на Византија.' },
+  },
+  'bq12': {
+    es: { question: 'En 1054, las excomuniones mutuas entre Roma y Constantinopla iniciaron...', options: ['La Querella de las Investiduras','El Gran Cisma','El Papado de Aviñón','La controversia iconoclasta'], explanation: 'La ruptura de 1054 dividió el cristianismo en el Occidente católico y el Oriente ortodoxo.' },
+    ru: { question: 'В 1054 году взаимные анафемы Рима и Константинополя положили начало...', options: ['Борьбе за инвеституру','Великой схизме','Авиньонскому пленению','Иконоборческому спору'], explanation: 'Разрыв 1054 года расколол христианство на католический Запад и православный Восток.' },
+    mk: { question: 'Во 1054, заемните исклучувања меѓу Рим и Константинопол ја започнаа...', options: ['Борбата за инвеститура','Големата шизма','Авињонското папство','Иконоборската контроверза'], explanation: 'Прекинот од 1054 го подели христијанството на католички Запад и православен Исток.' },
+  },
+  'bq13': {
+    es: { question: 'En 988 el príncipe Vladimir de Kiev convirtió su reino ¿a qué fe?', options: ['Catolicismo romano','Islam','Cristianismo ortodoxo','Judaísmo'], explanation: 'El bautismo de la Rus llevó el alfabeto cirílico, los iconos y el cristianismo bizantino al mundo eslavo oriental.' },
+    ru: { question: 'В 988 году князь Владимир Киевский обратил свою державу в какую веру?', options: ['Римское католичество','Ислам','Православное христианство','Иудаизм'], explanation: 'Крещение Руси принесло кириллицу, иконы и византийское христианство в восточнославянский мир.' },
+    mk: { question: 'Во 988 кнезот Владимир од Киев го преобрати своето царство во која вера?', options: ['Римокатолицизам','Ислам','Православно христијанство','Јудаизам'], explanation: 'Покрстувањето на Русите ги донесе кирилицата, иконите и византиското христијанство во источнословенскиот свет.' },
+  },
+  'bq14': {
+    es: { question: 'En 1204 Constantinopla fue saqueada por...', options: ['Los turcos selyúcidas','Los ejércitos de la Cuarta Cruzada','Los mongoles','Los persas'], explanation: 'Desviada de Egipto, la Cuarta Cruzada asaltó y saqueó durante tres días la mayor ciudad de la cristiandad.' },
+    ru: { question: 'В 1204 году Константинополь был разграблен...', options: ['Турками-сельджуками','Войсками Четвёртого крестового похода','Монголами','Персами'], explanation: 'Отклонившись от Египта, Четвёртый крестовый поход взял штурмом и три дня грабил величайший город христианского мира.' },
+    mk: { question: 'Во 1204 Константинопол беше ограбен од...', options: ['Турците Селџуци','Војските на Четвртата крстоносна војна','Монголите','Персијците'], explanation: 'Пренасочена од Египет, Четвртата крстоносна војна го зазеде и три дена го грабеше најголемиот град на христијанството.' },
+  },
+  'bq15': {
+    es: { question: 'Constantinopla cayó finalmente ante el sultán Mehmed II ¿en qué año?', options: ['1071','1204','1389','1453'], explanation: 'El 29 de mayo de 1453 las murallas teodosianas fueron abiertas por brecha y el último emperador murió luchando — el fin del Imperio romano.' },
+    ru: { question: 'Константинополь окончательно пал перед султаном Мехмедом II в каком году?', options: ['1071','1204','1389','1453'], explanation: '29 мая 1453 года Феодосиевы стены были пробиты, и последний император погиб в бою — конец Римской империи.' },
+    mk: { question: 'Константинопол конечно падна пред султанот Мехмед II во која година?', options: ['1071','1204','1389','1453'], explanation: 'На 29 мај 1453 Теодосиевите ѕидишта беа пробиени и последниот император загина борејќи се — крајот на Римската империја.' },
+  },
+  'bq16': {
+    es: { question: 'Las triples murallas terrestres que protegieron Constantinopla durante 1.000 años se construyeron bajo ¿qué emperador?', options: ['Constantino','Justiniano','Teodosio II','Heraclio'], explanation: 'Las murallas teodosianas del siglo V rechazaron a hunos, ávaros, árabes, búlgaros y rus hasta la era del cañón.' },
+    ru: { question: 'Тройные сухопутные стены, защищавшие Константинополь 1000 лет, были построены при каком императоре?', options: ['Константине','Юстиниане','Феодосии II','Ираклии'], explanation: 'Феодосиевы стены пятого века отражали гуннов, аваров, арабов, булгар и русов до эпохи пушек.' },
+    mk: { question: 'Тројните копнени ѕидишта што го штитеа Константинопол 1.000 години беа изградени под кој император?', options: ['Константин','Јустинијан','Теодосиј II','Ираклиј'], explanation: 'Теодосиевите ѕидишта од петтиот век ги одбиваа Хуните, Аварите, Арапите, Бугарите и Русите сè до ерата на топот.' },
+  },
+  'bq17': {
+    es: { question: 'El Concilio de Nicea de 325, convocado por Constantino, produjo...', options: ['El Corpus Juris Civilis','El Credo niceno','El Edicto de Milán','El Gran Cisma'], explanation: 'El primer concilio ecuménico definió la fe cristiana esencial en el Credo niceno, aún recitado hoy.' },
+    ru: { question: 'Никейский собор 325 года, созванный Константином, дал...', options: ['Corpus Juris Civilis','Никейский символ веры','Миланский эдикт','Великую схизму'], explanation: 'Первый вселенский собор определил основу христианской веры в Никейском символе, читаемом и поныне.' },
+    mk: { question: 'Никејскиот собор од 325, свикан од Константин, произведе...', options: ['Corpus Juris Civilis','Никејскиот симбол на верата','Миланскиот едикт','Големата шизма'], explanation: 'Првиот вселенски собор ја определи основната христијанска вера во Никејскиот симбол, што се чита и денес.' },
+  },
+  'bq18': {
+    es: { question: '¿Cuánto duró el Imperio romano de Oriente, desde la dedicación de Constantinopla hasta su caída?', options: ['Unos 500 años','Unos 800 años','1.123 años','2.000 años'], explanation: 'De 330 a 1453 — 1.123 años — uno de los Estados más longevos de la historia humana.' },
+    ru: { question: 'Сколько просуществовала Восточная Римская империя, от освящения Константинополя до его падения?', options: ['Около 500 лет','Около 800 лет','1123 года','2000 лет'], explanation: 'С 330 по 1453 год — 1123 года — одно из самых долговечных государств в истории человечества.' },
+    mk: { question: 'Колку траеше Источното Римско Царство, од посветувањето на Константинопол до неговиот пад?', options: ['Околу 500 години','Околу 800 години','1.123 години','2.000 години'], explanation: 'Од 330 до 1453 — 1.123 години — една од најдолговечните држави во човечката историја.' },
+  },
+  'bq19': {
+    es: { question: '¿Qué dos generales llevaron a cabo las reconquistas de África e Italia de Justiniano?', options: ['Belisario y Narsés','Heraclio y León','Basilio y Focio','Constantino y Justino'], explanation: 'Belisario tomó África a los vándalos y combatió a los ostrogodos en Italia; el general eunuco Narsés terminó la guerra.' },
+    ru: { question: 'Какие два полководца осуществили юстиниановы реконкисты Африки и Италии?', options: ['Велисарий и Нарсес','Ираклий и Лев','Василий и Фотий','Константин и Юстин'], explanation: 'Велисарий отнял Африку у вандалов и бился с остготами в Италии; евнух-полководец Нарсес довершил войну.' },
+    mk: { question: 'Кои двајца генерали ги извршија Јустинијановите реконквисти на Африка и Италија?', options: ['Велизариј и Нарсес','Ираклиј и Лав','Василиј и Фотиј','Константин и Јустин'], explanation: 'Велизариј ја зеде Африка од Вандалите и се бореше со Остроготите во Италија; генералот-евнух Нарсес ја доврши војната.' },
+  },
+  'bq20': {
+    es: { question: 'Los disturbios de Niká de 532 comenzaron entre las facciones ¿de qué institución?', options: ['El ejército','El Senado','El hipódromo de las carreras de carros','La iglesia'], explanation: 'Los Azules y los Verdes del hipódromo se unieron contra los impuestos de Justiniano y casi deshicieron el trono.' },
+    ru: { question: 'Восстание «Ника» 532 года началось среди партий какого учреждения?', options: ['Армии','Сената','Ипподрома колесничных бегов','Церкви'], explanation: 'Венеты и прасины ипподрома объединились против податей Юстиниана и едва не свергли трон.' },
+    mk: { question: 'Бунтот Ника од 532 започна меѓу фракциите на која институција?', options: ['Војската','Сенатот','Хиподромот со трки со коли','Црквата'], explanation: 'Сините и Зелените од хиподромот се обединија против даноците на Јустинијан и за малку ќе го соборе тронот.' },
+  },
+  'bq21': {
+    es: { question: 'Santa Sofía se construyó en el asombroso tiempo de...', options: ['Menos de 6 años','Exactamente 20 años','40 años','Más de un siglo'], explanation: 'Cinco años y diez meses — una rapidez inaudita para el mayor edificio de su época.' },
+    ru: { question: 'Святая София была построена за поразительный срок...', options: ['Менее 6 лет','Ровно 20 лет','40 лет','Более века'], explanation: 'Пять лет и десять месяцев — неслыханная быстрота для величайшего здания своей эпохи.' },
+    mk: { question: 'Света Софија беше изградена за зачудувачко време од...', options: ['Под 6 години','Точно 20 години','40 години','Повеќе од еден век'], explanation: 'Пет години и десет месеци — брзина нечуена за најголемата градба на своето време.' },
+  },
+  'bq22': {
+    es: { question: 'Desde 541 el reinado de Justiniano quedó ensombrecido por...', options: ['Una invasión goda','Una gran pandemia de peste','La pérdida de Egipto','La iconoclasia'], explanation: 'La Peste de Justiniano barrió el Mediterráneo, matando a millones y agotando tesoro y ejército.' },
+    ru: { question: 'С 541 года царствование Юстиниана омрачила...', options: ['Готская инвазия','Великая пандемия чумы','Потеря Египта','Иконоборчество'], explanation: 'Юстинианова чума прокатилась по Средиземноморью, убив миллионы и истощив казну и армию.' },
+    mk: { question: 'Од 541 владеењето на Јустинијан беше затемнето од...', options: ['Готска инвазија','Голема пандемија на чума','Загубата на Египет','Иконоборството'], explanation: 'Јустинијановата чума го зафати Средоземјето, убивајќи милиони и цедејќи ги трезорот и војската.' },
+  },
+  'bq23': {
+    es: { question: '¿Qué emperador derrotó a Persia en Nínive en 627 y recuperó la Vera Cruz?', options: ['Justiniano I','Heraclio','León III','Basilio II'], explanation: 'La audaz contraofensiva de Heraclio en Persia puso fin a la última gran guerra de la Antigüedad.' },
+    ru: { question: 'Какой император разгромил Персию при Ниневии в 627 году и вернул Истинный Крест?', options: ['Юстиниан I','Ираклий','Лев III','Василий II'], explanation: 'Дерзкое контрнаступление Ираклия в Персию завершило последнюю великую войну античности.' },
+    mk: { question: 'Кој император ја порази Персија кај Ниневија во 627 и го поврати Вистинскиот Крст?', options: ['Јустинијан I','Ираклиј','Лав III','Василиј II'], explanation: 'Смелата контраофанзива на Ираклиј во Персија ја заврши последната голема војна на антиката.' },
+  },
+  'bq24': {
+    es: { question: '¿En qué batalla de 636 los ejércitos árabes destruyeron el principal ejército de campaña bizantino?', options: ['Manzikert','Yarmuk','Nínive','Tours'], explanation: 'El Yarmuk abrió Siria, y pronto Egipto y el norte de África, al Califato.' },
+    ru: { question: 'В какой битве 636 года арабские армии уничтожили главную полевую армию Византии?', options: ['Манцикерт','Ярмук','Ниневия','Тур'], explanation: 'Ярмук открыл Халифату Сирию, а вскоре Египет и Северную Африку.' },
+    mk: { question: 'Во која битка од 636 арапските војски ја уништија главната византиска полска армија?', options: ['Манцикерт','Јармук','Ниневија','Тур'], explanation: 'Јармук му ги отвори на Калифатот Сирија, а набрзо Египет и Северна Африка.' },
+  },
+  'bq25': {
+    es: { question: 'El ingeniero al que se atribuye haber traído el fuego griego a Bizancio hacia 672 fue...', options: ['Calínico','Antemio','Urbano','Isidoro'], explanation: 'El fuego líquido del refugiado Calínico, disparado desde sifones de bronce, salvó la capital en 678 y 718.' },
+    ru: { question: 'Инженером, которому приписывают принесение греческого огня в Византию около 672 года, был...', options: ['Каллиник','Анфимий','Урбан','Исидор'], explanation: 'Жидкий огонь беженца Каллиника, выбрасываемый из бронзовых сифонов, спас столицу в 678 и 718 годах.' },
+    mk: { question: 'Инженерот кому му се припишува донесувањето на грчкиот оган во Византија околу 672 беше...', options: ['Калиник','Антемиј','Урбан','Исидор'], explanation: 'Течниот оган на бегалецот Калиник, истрелуван од бронзени сифони, ја спаси престолнината во 678 и 718.' },
+  },
+  'bq26': {
+    es: { question: 'El sistema de «themas» reorganizó el imperio mediante...', options: ['La división de la iglesia en diócesis','El asentamiento de soldados-campesinos en distritos militares','El cobro de impuestos a los monasterios','La contratación de mercenarios vikingos'], explanation: 'Soldados asentados en tierras hereditarias defendían sus propios hogares — un imperio más ligero y autosuficiente.' },
+    ru: { question: 'Система «фем» перестроила империю посредством...', options: ['Деления церкви на епархии','Расселения воинов-земледельцев по военным округам','Обложения монастырей налогами','Найма варяжских наёмников'], explanation: 'Воины на наследственной земле защищали собственные дома — более поджарая, самодостаточная империя.' },
+    mk: { question: 'Системот на „теми“ ја реорганизира империјата преку...', options: ['Делење на црквата на епархии','Населување војници-земјоделци во воени окрузи','Оданочување на манастирите','Најмување викиншки платеници'], explanation: 'Војници населени на наследна земја ги бранеа сопствените домови — повитка, самоодржлива империја.' },
+  },
+  'bq27': {
+    es: { question: 'Tras el siglo VII, la lengua de la administración bizantina pasó a ser...', options: ['El latín','El griego','El arameo','El eslavo'], explanation: 'El griego sustituyó al latín, y el emperador adoptó el título griego de basileus.' },
+    ru: { question: 'После седьмого века языком византийской администрации стал...', options: ['Латинский','Греческий','Арамейский','Славянский'], explanation: 'Греческий сменил латынь, и император принял греческий титул басилевса.' },
+    mk: { question: 'По седмиот век, јазикот на византиската администрација стана...', options: ['Латинскиот','Грчкиот','Арамејскиот','Словенскиот'], explanation: 'Грчкиот го замени латинскиот, а императорот ја зеде грчката титула басилевс.' },
+  },
+  'bq28': {
+    es: { question: 'La iconoclasia comenzó en 726 cuando ¿qué emperador retiró la imagen de Cristo de la puerta del palacio?', options: ['León III','Constantino V','Justiniano II','Miguel III'], explanation: 'Tras una erupción volcánica leída como ira divina, León III lanzó la campaña contra las imágenes.' },
+    ru: { question: 'Иконоборчество началось в 726 году, когда какой император снял образ Христа с дворцовых ворот?', options: ['Лев III','Константин V','Юстиниан II','Михаил III'], explanation: 'После извержения вулкана, истолкованного как гнев небес, Лев III начал кампанию против образов.' },
+    mk: { question: 'Иконоборството започна во 726 кога кој император ја отстрани сликата на Христос од палатната порта?', options: ['Лав III','Константин V','Јустинијан II','Михаил III'], explanation: 'По вулканска ерупција протолкувана како божји гнев, Лав III ја започна кампањата против сликите.' },
+  },
+  'bq29': {
+    es: { question: '¿Qué emperatriz convocó el concilio de 787 que restauró por primera vez los iconos?', options: ['Teodora','Irene','Zoe','Ana'], explanation: 'El Segundo Concilio de Nicea de Irene distinguió la veneración de las imágenes de la adoración a Dios.' },
+    ru: { question: 'Какая императрица созвала собор 787 года, впервые восстановивший иконы?', options: ['Феодора','Ирина','Зоя','Анна'], explanation: 'Второй Никейский собор Ирины отличил почитание образов от поклонения Богу.' },
+    mk: { question: 'Која царица го свика соборот од 787 што првпат ги врати иконите?', options: ['Теодора','Ирина','Зоја','Ана'], explanation: 'Вториот никејски собор на Ирина го разграничи почитувањето на сликите од обожавањето на Бога.' },
+  },
+  'bq30': {
+    es: { question: 'La restauración definitiva de los iconos en 843 se celebra en las iglesias ortodoxas como...', options: ['La Pascua','El Triunfo de la Ortodoxia','Pentecostés','La Exaltación de la Cruz'], explanation: 'La restauración de la emperatriz Teodora se conmemora cada año el primer domingo de la Gran Cuaresma.' },
+    ru: { question: 'Окончательное восстановление икон в 843 году празднуется в православных церквях как...', options: ['Пасха','Торжество Православия','Пятидесятница','Воздвижение Креста'], explanation: 'Восстановление императрицы Феодоры празднуется каждый год в первое воскресенье Великого поста.' },
+    mk: { question: 'Конечното враќање на иконите во 843 се празнува во православните цркви како...', options: ['Пасха','Триумфот на Православието','Педесетница','Воздвижение на Крстот'], explanation: 'Обновата на царицата Теодора се одбележува секоја година во првата недела од Великиот пост.' },
+  },
+  'bq31': {
+    es: { question: 'El primer alfabeto que Cirilo inventó para la lengua eslava fue...', options: ['El cirílico','El glagolítico','El latino','El rúnico'], explanation: 'El intrincado glagolítico llegó primero, en 863; el cirílico lo desarrollaron después los discípulos de los hermanos.' },
+    ru: { question: 'Первой азбукой, которую Кирилл изобрёл для славянского языка, была...', options: ['Кириллица','Глаголица','Латиница','Руны'], explanation: 'Затейливая глаголица появилась первой, в 863 году; кириллицу позже разработали ученики братьев.' },
+    mk: { question: 'Првата азбука што Кирил ја измисли за словенскиот јазик беше...', options: ['Кирилицата','Глаголицата','Латиницата','Руните'], explanation: 'Сложната глаголица дојде прва, во 863; кирилицата подоцна ја развија учениците на браќата.' },
+  },
+  'bq32': {
+    es: { question: 'La lengua de las traducciones bíblicas y litúrgicas de los hermanos se llama...', options: ['Griego bizantino','Antiguo eslavo eclesiástico','Búlgaro','Macedonio'], explanation: 'El antiguo eslavo eclesiástico se convirtió en la lengua sagrada y literaria del mundo eslavo ortodoxo.' },
+    ru: { question: 'Язык библейских и литургических переводов братьев называется...', options: ['Византийский греческий','Старославянский','Болгарский','Македонский'], explanation: 'Старославянский стал священным и книжным языком славянского православного мира.' },
+    mk: { question: 'Јазикот на библиските и литургиските преводи на браќата се вика...', options: ['Византиски грчки','Старословенски','Бугарски','Македонски'], explanation: 'Старословенскиот стана светиот и книжевен јазик на словенскиот православен свет.' },
+  },
+  'bq33': {
+    es: { question: 'Según la tradición, ¿a cuántos estudiantes enseñó Clemente de Ohrid en su escuela?', options: ['35','350','3.500','35.000'], explanation: 'La Escuela Literaria de Ohrid hizo de la ciudad junto al lago una cuna de la alfabetización eslava.' },
+    ru: { question: 'По преданию, скольких учеников обучил Климент Охридский в своей школе?', options: ['35','350','3500','35 000'], explanation: 'Охридская книжная школа сделала озёрный город колыбелью славянской грамотности.' },
+    mk: { question: 'Според преданието, колку ученици поучил Климент Охридски во својата школа?', options: ['35','350','3.500','35.000'], explanation: 'Охридската книжевна школа го направи езерскиот град лулка на словенската писменост.' },
+  },
+  'bq34': {
+    es: { question: 'Cirilo y Metodio se celebran en todo el mundo eslavo cada año el...', options: ['1 de enero','24 de mayo','29 de mayo','11 de septiembre'], explanation: 'El 24 de mayo es el día de los dos hermanos y de las letras y la cultura eslavas, festivo en Macedonia y Bulgaria.' },
+    ru: { question: 'Кирилла и Мефодия чествуют по всему славянскому миру каждый год...', options: ['1 января','24 мая','29 мая','11 сентября'], explanation: '24 мая — день двух братьев и славянской письменности и культуры, праздник в Македонии и Болгарии.' },
+    mk: { question: 'Кирил и Методиј се слават низ словенскиот свет секоја година на...', options: ['1 јануари','24 мај','29 мај','11 септември'], explanation: '24 мај е денот на двајцата браќа и на словенските букви и култура, празник во Македонија и Бугарија.' },
+  },
+  'bq35': {
+    es: { question: 'En 1054, el cardenal Humberto depositó la bula de excomunión sobre el altar de...', options: ['San Pedro de Roma','Santa Sofía','La iglesia de los Santos Apóstoles','San Marcos de Venecia'], explanation: 'Humberto entró en Santa Sofía durante la liturgia — el inicio simbólico del Gran Cisma.' },
+    ru: { question: 'В 1054 году кардинал Гумберт возложил буллу об отлучении на престол...', options: ['Собора Святого Петра в Риме','Святой Софии','Церкви Святых Апостолов','Собора Святого Марка в Венеции'], explanation: 'Гумберт вошёл в Святую Софию во время литургии — символическое начало Великой схизмы.' },
+    mk: { question: 'Во 1054, кардиналот Хумберт ја положи булата за исклучување врз олтарот на...', options: ['Свети Петар во Рим','Света Софија','Црквата на Светите Апостоли','Свети Марко во Венеција'], explanation: 'Хумберт влезе во Света Софија за време на литургијата — симболичниот почеток на Големата шизма.' },
+  },
+  'bq36': {
+    es: { question: 'La palabra disputada que la iglesia occidental añadió al Credo niceno se conoce como el...', options: ['Filioque','Theotokos','Homoousion','Anatema'], explanation: 'Declarar que el Espíritu procede del Padre «y del Hijo» — añadido sin concilio ecuménico — indignó a Oriente.' },
+    ru: { question: 'Спорное слово, добавленное западной церковью в Никейский символ веры, известно как...', options: ['Филиокве','Богородица','Единосущный','Анафема'], explanation: 'Провозглашение, что Дух исходит от Отца «и Сына», добавленное без вселенского собора, возмутило Восток.' },
+    mk: { question: 'Спорниот збор што западната црква го додаде во Никејскиот симбол е познат како...', options: ['Филиокве','Богородица','Единосуштен','Анатема'], explanation: 'Прогласувањето дека Духот исходи од Отецот „и од Синот“ — додадено без вселенски собор — го разгневи Истокот.' },
+  },
+  'bq37': {
+    es: { question: 'Las excomuniones mutuas de 1054 se levantaron formalmente en...', options: ['1204','1453','1815','1965'], explanation: 'El papa Pablo VI y el patriarca Atenágoras las levantaron 911 años después, en 1965.' },
+    ru: { question: 'Взаимные анафемы 1054 года были формально сняты в...', options: ['1204','1453','1815','1965'], explanation: 'Папа Павел VI и патриарх Афинагор сняли их 911 лет спустя, в 1965 году.' },
+    mk: { question: 'Заемните исклучувања од 1054 беа формално укинати во...', options: ['1204','1453','1815','1965'], explanation: 'Папата Павле VI и патријархот Атинагора ги укинаа 911 години подоцна, во 1965.' },
+  },
+  'bq38': {
+    es: { question: 'Basilio II ganó su sombrío apodo por la conquista ¿de qué imperio?', options: ['El imperio serbio de Dušan','El imperio búlgaro de Samuel','La Rus de Kiev','El sultanato selyúcida'], explanation: 'Su larga guerra contra Samuel — cuya capital estaba en Ohrid — le valió el nombre de «Matador de Búlgaros».' },
+    ru: { question: 'Василий II получил своё мрачное прозвище за покорение чьей державы?', options: ['Сербской державы Душана','Болгарской державы Самуила','Киевской Руси','Сельджукского султаната'], explanation: 'Его долгая война против Самуила — со столицей в Охриде — принесла ему имя «Болгаробойца».' },
+    mk: { question: 'Василиј II го доби својот мрачен прекар преку освојувањето на чија империја?', options: ['Српското царство на Душан','Бугарското царство на Самуил','Киевската Русија','Селџучкиот султанат'], explanation: 'Неговата долга војна против Самуил — чија престолнина беше во Охрид — му го донесе името „Бугароубиец“.' },
+  },
+  'bq39': {
+    es: { question: 'En Manzikert, en 1071, ¿qué ocurrió que no le había pasado a un emperador romano en siete siglos?', options: ['Murió en batalla','Fue capturado vivo por el enemigo','Se convirtió al islam','Abdicó en el campo'], explanation: 'Romano IV fue apresado por el sultán Alp Arslan; las guerras civiles que siguieron perdieron Anatolia.' },
+    ru: { question: 'При Манцикерте в 1071 году случилось то, чего не бывало с римским императором семь веков — что именно?', options: ['Он погиб в бою','Он был взят врагом живым','Он принял ислам','Он отрёкся на поле боя'], explanation: 'Роман IV попал в плен к султану Алп-Арслану; последовавшие гражданские войны погубили Анатолию.' },
+    mk: { question: 'Кај Манцикерт во 1071, што се случи што не му се случило на римски император седум века?', options: ['Загина во битка','Беше фатен жив од непријателот','Премина во ислам','Абдицира на теренот'], explanation: 'Роман IV беше заробен од султанот Алп Арслан; граѓанските војни што следеа ја изгубија Анадолија.' },
+  },
+  'bq40': {
+    es: { question: 'Los cuatro caballos de bronce saqueados del hipódromo de Constantinopla en 1204 se alzan hoy en...', options: ['París','Roma','Venecia','Viena'], explanation: 'Los socios venecianos de los cruzados se los llevaron a la basílica de San Marcos, donde permanecen.' },
+    ru: { question: 'Четыре бронзовых коня, похищенные с ипподрома Константинополя в 1204 году, стоят сегодня в...', options: ['Париже','Риме','Венеции','Вене'], explanation: 'Венецианские партнёры крестоносцев увезли их в собор Святого Марка, где они и остаются.' },
+    mk: { question: 'Четирите бронзени коњи ограбени од хиподромот на Константинопол во 1204 денес стојат во...', options: ['Париз','Рим','Венеција','Виена'], explanation: 'Венецијанските партнери на крстоносците ги однесоа во базиликата Свети Марко, каде што остануваат.' },
+  },
+  'bq41': {
+    es: { question: 'Al entrar en Santa Sofía en su consagración, se dice que Justiniano susurró que había superado a...', options: ['Augusto','Constantino','Salomón','Alejandro'], explanation: '«Salomón, te he superado» — midiendo su iglesia contra el Templo de Jerusalén.' },
+    ru: { question: 'Входя в Святую Софию при её освящении, Юстиниан, как говорят, прошептал, что превзошёл...', options: ['Августа','Константина','Соломона','Александра'], explanation: '«Соломон, я превзошёл тебя» — меря свой храм Иерусалимским храмом.' },
+    mk: { question: 'Влегувајќи во Света Софија при нејзиното осветување, се вели дека Јустинијан прошепотел дека го надминал...', options: ['Август','Константин','Соломон','Александар'], explanation: '„Соломоне, те надминав“ — мерејќи ја својата црква со Ерусалимскиот храм.' },
+  },
+  'bq42': {
+    es: { question: 'La audaz cúpula de Santa Sofía fue diseñada por Antemio e Isidoro, que eran de formación...', options: ['Maestros canteros','Matemáticos','Monjes','Ingenieros militares'], explanation: 'Justiniano confió la cúpula imposible a dos matemáticos — Antemio de Tralles e Isidoro de Mileto.' },
+    ru: { question: 'Дерзкий купол Святой Софии спроектировали Анфимий и Исидор, по образованию...', options: ['Мастера-каменщики','Математики','Монахи','Военные инженеры'], explanation: 'Юстиниан доверил невозможный купол двум математикам — Анфимию из Тралл и Исидору из Милета.' },
+    mk: { question: 'Смелата купола на Света Софија ја дизајнираа Антемиј и Исидор, кои по образование беа...', options: ['Мајстори-ѕидари','Математичари','Монаси','Воени инженери'], explanation: 'Јустинијан ја довери невозможната купола на двајца математичари — Антемиј од Трал и Исидор од Милет.' },
+  },
+  'bq43': {
+    es: { question: 'Los historiadores comparan la defensa de Constantinopla en 717–18 con la batalla de Tours porque ambas...', options: ['Terminaron la era de la caballería','Ayudaron a decidir el mapa religioso de Europa','Destruyeron el Imperio persa','Introdujeron la pólvora en la guerra'], explanation: 'Si la capital hubiera caído en 718, el camino del Califato hacia los Balcanes y Europa habría quedado abierto.' },
+    ru: { question: 'Историки ставят оборону Константинополя 717–718 годов рядом с битвой при Туре, потому что обе...', options: ['Завершили эпоху конницы','Помогли решить религиозную карту Европы','Уничтожили Персидскую империю','Ввели порох в войну'], explanation: 'Пади столица в 718 году — путь Халифата на Балканы и в Европу был бы открыт.' },
+    mk: { question: 'Историчарите ја ставаат одбраната на Константинопол во 717–18 покрај битката кај Тур бидејќи двете...', options: ['Ја завршија ерата на коњицата','Помогнаа да се реши религиозната карта на Европа','Ја уништија Персиската империја','Го воведоа барутот во војната'], explanation: 'Да паднеше престолнината во 718, патот на Калифатот кон Балканот и Европа ќе беше отворен.' },
+  },
+  'bq44': {
+    es: { question: 'La defensa decisiva de los iconos de Juan Damasceno sostenía que rechazar toda imagen de Cristo equivale a negar...', options: ['La Trinidad','La Resurrección','La Encarnación','El Segundo Mandamiento'], explanation: 'Puesto que Dios se hizo verdaderamente carne visible, representar a Cristo afirma la Encarnación; rechazar toda imagen la niega.' },
+    ru: { question: 'Решающая защита икон Иоанном Дамаскином гласила: отвергать всякий образ Христа — значит отрицать...', options: ['Троицу','Воскресение','Воплощение','Вторую заповедь'], explanation: 'Раз Бог истинно стал видимой плотью, изображение Христа утверждает Воплощение; отказ от всякого образа его отрицает.' },
+    mk: { question: 'Решавачката одбрана на иконите од Јован Дамаскин тврдеше дека одбивањето на секоја слика на Христос значи негирање на...', options: ['Троицата','Воскресението','Инкарнацијата','Втората заповед'], explanation: 'Бидејќи Бог навистина стана видливо тело, прикажувањето на Христос ја потврдува Инкарнацијата; одбивањето на секоја слика ја негира.' },
+  },
+  'bq45': {
+    es: { question: 'Aunque Cirilo inventó el glagolítico, el alfabeto llamado «cirílico» lo desarrolló realmente...', options: ['El propio Cirilo en Roma','El círculo de sus discípulos en Ohrid y Preslav, en su honor','La cancillería del emperador','Misioneros francos'], explanation: 'La generación de Clemente de Ohrid construyó la escritura más simple de base griega y la nombró en honor del fundador de la misión.' },
+    ru: { question: 'Хотя Кирилл изобрёл глаголицу, азбуку под названием «кириллица» на деле разработали...', options: ['Сам Кирилл в Риме','Круг его учеников в Охриде и Преславе, в его честь','Императорская канцелярия','Франкские миссионеры'], explanation: 'Поколение Климента Охридского создало более простое письмо на греческой основе и назвало его в честь основателя миссии.' },
+    mk: { question: 'Иако Кирил ја измисли глаголицата, азбуката наречена „кирилица“ всушност ја развија...', options: ['Самиот Кирил во Рим','Кругот на неговите ученици во Охрид и Преслав, во негова чест','Царската канцеларија','Франечки мисионери'], explanation: 'Генерацијата на Климент Охридски го изгради поедноставното писмо со грчка основа и го именуваше во чест на основачот на мисијата.' },
+  },
+  'bq46': {
+    es: { question: 'La «herejía de las tres lenguas» que combatió Cirilo sostenía que a Dios solo se le podía adorar en hebreo, griego y latín — las lenguas de...', options: ['Los tres reyes magos','La inscripción de la Cruz','La Septuaginta','Los apóstoles'], explanation: 'Cirilo despreció la pretensión, basada en la inscripción trilingüe sobre Cristo crucificado: ¿no cae la lluvia sobre todos los pueblos por igual?' },
+    ru: { question: '«Трёхъязычная ересь», с которой боролся Кирилл, гласила, что Богу можно молиться лишь на еврейском, греческом и латыни — языках...', options: ['Трёх волхвов','Надписи на Кресте','Септуагинты','Апостолов'], explanation: 'Кирилл презрел это притязание, опиравшееся на трёхъязычную надпись над распятым Христом: разве дождь не падает равно на все народы?' },
+    mk: { question: '„Тријазичната ерес“ против која се бореше Кирил тврдеше дека Бог може да се слави само на еврејски, грчки и латински — јазиците на...', options: ['Тројцата мудреци','Натписот на Крстот','Септуагинтата','Апостолите'], explanation: 'Кирил ја презре тезата, заснована на тријазичниот натпис над распнатиот Христос: зарем дождот не паѓа еднакво врз сите народи?' },
+  },
+  'bq47': {
+    es: { question: 'Gregorio Palamás defendió a los hesicastas con la distinción de que la ______ de Dios está fuera de alcance, pero sus ______ verdaderamente nos transforman.', options: ['misericordia … justicia','esencia … energías','palabra … espíritu','ley … gracia'], explanation: 'La distinción esencia–energías, vindicada en los concilios de 1341–51, se volvió doctrina ortodoxa y fijó la theosis como meta de la vida.' },
+    ru: { question: 'Григорий Палама защитил исихастов различением: ______ Бога недосягаема, но Его ______ истинно нас преображают.', options: ['милость … правда','сущность … энергии','слово … дух','закон … благодать'], explanation: 'Различение сущности и энергий, подтверждённое соборами 1341–51 годов, стало православным учением и закрепило теозис как цель жизни.' },
+    mk: { question: 'Григориј Палама ги одбрани исихастите со разграничувањето дека Божјата ______ е недостижна, но Неговите ______ вистински нè преобразуваат.', options: ['милост … правда','суштина … енергии','збор … дух','закон … благодат'], explanation: 'Разграничувањето суштина–енергии, потврдено на соборите 1341–51, стана православно учење и го зацврсти теозисот како цел на животот.' },
+  },
+  'bq48': {
+    es: { question: 'El edicto de 1046 sobre el Monte Athos, aún vigente hoy, decreta que...', options: ['Solo los griegos pueden ser monjes','Ninguna mujer puede pisar la península','Los monasterios no pagan impuestos','La montaña pertenece al emperador'], explanation: 'En el pensamiento monástico, la Montaña es el jardín de la Madre de Dios, reservado solo para ella.' },
+    ru: { question: 'Указ 1046 года о горе Афон, действующий и поныне, постановляет, что...', options: ['Монахами могут быть только греки','Ни одна женщина не может ступить на полуостров','Монастыри не платят налогов','Гора принадлежит императору'], explanation: 'В монашеской мысли Гора — сад Богородицы, оставленный ей одной.' },
+    mk: { question: 'Едиктот од 1046 за Света Гора, сè уште на сила, одредува дека...', options: ['Само Грци можат да бидат монаси','Ниедна жена не смее да стапне на полуостровот','Манастирите не плаќаат даноци','Гората му припаѓа на императорот'], explanation: 'Во монашката мисла, Гората е градината на Богородица, оставена само за неа.' },
+  },
+  'bq49': {
+    es: { question: 'Durante el asedio final de 1453, Mehmed II sorteó la cadena del Cuerno de Oro...', options: ['Rompiéndola a cañonazos','Arrastrando setenta naves por tierra sobre troncos engrasados','Sobornando a los genoveses para abrirla','Construyendo un puente de pontones'], explanation: 'Las naves botadas tras la cadena obligaron a los defensores a estirar sus pocos hombres por aún más murallas.' },
+    ru: { question: 'Во время последней осады 1453 года Мехмед II обошёл цепь поперёк Золотого Рога...', options: ['Разбив её пушечным огнём','Перетащив семьдесят кораблей посуху на смазанных катках','Подкупив генуэзцев, чтобы открыли её','Построив понтонный мост'], explanation: 'Спущенные за цепью корабли заставили защитников растянуть немногих бойцов по ещё большим стенам.' },
+    mk: { question: 'За време на последната опсада во 1453, Мехмед II го заобиколи синџирот преку Златниот Рог...', options: ['Кршејќи го со топовски оган','Влечејќи седумдесет бродови по копно врз намастени трупци','Поткупувајќи ги Џеновците да го отворат','Градејќи понтонски мост'], explanation: 'Бродовите спуштени зад синџирот ги принудија бранителите да ги растегнат малкуте луѓе по уште повеќе ѕидини.' },
+  },
+  'bq50': {
+    es: { question: 'Los refugiados bizantinos como Besarión moldearon el Renacimiento italiano sobre todo...', options: ['Introduciendo la pólvora','Llevando manuscritos griegos y la capacidad de leerlos','Financiando la banca florentina','Pintando los primeros frescos'], explanation: 'El torrente de libros y maestros griegos tras 1453 alimentó la recuperación humanista de Platón y los clásicos.' },
+    ru: { question: 'Византийские беженцы, такие как Виссарион, повлияли на итальянское Возрождение прежде всего...', options: ['Введя порох','Принеся греческие рукописи и умение их читать','Финансируя флорентийские банки','Написав первые фрески'], explanation: 'Поток греческих книг и учителей после 1453 года напитал гуманистическое возвращение Платона и классиков.' },
+    mk: { question: 'Византиските бегалци како Висарион ја обликуваа италијанската ренесанса пред сè...', options: ['Воведувајќи барут','Носејќи грчки ракописи и способноста да се читаат','Финансирајќи ги фирентинските банки','Сликајќи ги првите фрески'], explanation: 'Поројот грчки книги и учители по 1453 ја нахрани хуманистичката обнова на Платон и класиците.' },
+  },
   // ── PREHISTORIC (preq1–preq50) ───────────────────────────────────────────────
   'preq1': {
     es: { question: 'Los primeros homínidos conocidos, como Sahelanthropus (~7 millones de años), se hallaron en África. ¿Cuál fue la primera gran adaptación humana?', options: ['Un cerebro grande','Caminar erguido sobre dos piernas','El uso del fuego','El lenguaje hablado'], explanation: 'El bipedismo — no un cerebro grande — vino primero, liberando las manos. Todo lo demás siguió de esas manos liberadas.' },
