@@ -811,6 +811,207 @@ export const QUIZ_TRANS_DEFR: Record<string, Partial<Record<DeFr, QuizQuestionTr
     fr: { question: "Après les réformes de marché de Deng Xiaoping amorcées en 1978, la Chine crût à près de quel taux annuel pendant trois décennies — la croissance soutenue la plus rapide de l’histoire ?", options: ["Près de 3 %", "Près de 5 %", "Près de 10 %", "Près de 20 %"], explanation: "La Chine crût de près de 10 % par an pendant trois décennies après 1978, sortant des centaines de millions de personnes de la pauvreté." },
   },
 
+  // ── BYZANTINE (bq1–bq50) ─────────────────────────────────────────────────────
+  'bq1': {
+    de: { question: 'In welchem Jahr wurde Konstantinopel als neue Hauptstadt des Römischen Reiches geweiht?', options: ['313 n. Chr.','330 n. Chr.','395 n. Chr.','476 n. Chr.'], explanation: 'Konstantin weihte sein Neues Rom am 11. Mai 330 an der Stelle der griechischen Stadt Byzantion.' },
+    fr: { question: 'En quelle année Constantinople fut-elle dédiée comme nouvelle capitale de l’Empire romain ?', options: ['313 apr. J.-C.','330 apr. J.-C.','395 apr. J.-C.','476 apr. J.-C.'], explanation: 'Constantin dédia sa Nouvelle Rome le 11 mai 330 sur le site de la cité grecque de Byzance.' },
+  },
+  'bq2': {
+    de: { question: 'An welcher strategisch entscheidenden Meerenge lag Konstantinopel?', options: ['Straße von Gibraltar','Dardanellen','Bosporus','Straße von Messina'], explanation: 'Der Bosporus beherrscht die Passage zwischen Mittelmeer und Schwarzem Meer — und zwischen Europa und Asien.' },
+    fr: { question: 'Sur quel détroit stratégiquement vital se dressait Constantinople ?', options: ['Le détroit de Gibraltar','Les Dardanelles','Le Bosphore','Le détroit de Messine'], explanation: 'Le Bosphore commande le passage entre la Méditerranée et la mer Noire — et entre l’Europe et l’Asie.' },
+  },
+  'bq3': {
+    de: { question: 'Welches Edikt von 313 machte das Christentum im ganzen Römischen Reich legal?', options: ['Das Edikt von Thessaloniki','Das Edikt von Mailand','Das Edikt von Nizäa','Das Edikt von Konstantinopel'], explanation: 'Konstantins Edikt von Mailand beendete die Verfolgungen und legalisierte das Christentum im Reich.' },
+    fr: { question: 'Quel édit de 313 rendit le christianisme légal dans tout l’Empire romain ?', options: ['L’édit de Thessalonique','L’édit de Milan','L’édit de Nicée','L’édit de Constantinople'], explanation: 'L’édit de Milan de Constantin mit fin aux persécutions et légalisa le christianisme dans l’empire.' },
+  },
+  'bq4': {
+    de: { question: 'Die Menschen, die wir „Byzantiner“ nennen, nannten sich selbst...', options: ['Byzantiner','Griechen','Romaioi — Römer','Hellenen'], explanation: 'Sie sahen ihren Staat schlicht als das fortbestehende Reich der Römer; „Byzanz“ ist ein Etikett späterer Historiker.' },
+    fr: { question: 'Les gens que nous appelons « Byzantins » se nommaient eux-mêmes...', options: ['Byzantins','Grecs','Romaioi — Romains','Hellènes'], explanation: 'Ils voyaient leur État simplement comme l’Empire des Romains qui continuait ; « Byzance » est une étiquette d’historiens ultérieurs.' },
+  },
+  'bq5': {
+    de: { question: 'Welche Kaiserin weigerte sich während des Nika-Aufstands zu fliehen und sagte, der Kaiserpurpur sei „ein schönes Leichentuch“?', options: ['Irene','Theodora','Zoe','Anna'], explanation: 'Theodoras Nervenstärke festigte Justinian; Belisar zerschlug danach den Aufstand im Hippodrom.' },
+    fr: { question: 'Quelle impératrice refusa de fuir pendant la sédition Nika, disant que la pourpre impériale « fait un beau linceul » ?', options: ['Irène','Théodora','Zoé','Anne'], explanation: 'Le sang-froid de Théodora raffermit Justinien ; Bélisaire écrasa ensuite la révolte dans l’hippodrome.' },
+  },
+  'bq6': {
+    de: { question: 'Die 537 vollendete Hagia Sophia hielt welchen Rekord über neun Jahrhunderte?', options: ['Höchstes Gebäude der Erde','Größte Kirche der Welt','Größter Palast Europas','Erstes Kuppelgebäude überhaupt'], explanation: 'Justinians Kirche der Heiligen Weisheit blieb über 900 Jahre die größte Kirche der Welt.' },
+    fr: { question: 'Sainte-Sophie, achevée en 537, détint quel record pendant plus de neuf siècles ?', options: ['Plus haut bâtiment de la terre','Plus grande église du monde','Plus grand palais d’Europe','Premier bâtiment à coupole'], explanation: 'L’église de la Sainte-Sagesse de Justinien resta la plus grande église du monde pendant plus de 900 ans.' },
+  },
+  'bq7': {
+    de: { question: 'Justinians große Kodifikation des römischen Rechts ist bekannt als...', options: ['Die Zwölftafeln','Der Codex Hammurabi','Das Corpus Juris Civilis','Die Magna Carta'], explanation: 'Codex, Digesten und Institutionen bilden zusammen das Corpus Juris Civilis — den Ahnherrn der zivilrechtlichen Systeme Europas.' },
+    fr: { question: 'La grande codification du droit romain par Justinien est connue sous le nom de...', options: ['Les Douze Tables','Le Code de Hammourabi','Le Corpus Juris Civilis','La Magna Carta'], explanation: 'Le Code, le Digeste et les Institutes forment ensemble le Corpus Juris Civilis — l’ancêtre des systèmes de droit civil d’Europe.' },
+  },
+  'bq8': {
+    de: { question: 'Die geheime byzantinische Brandwaffe, die selbst auf der Meeresoberfläche brannte, hieß...', options: ['Griechisches Feuer','Römischer Donner','Naphtharegen','Drachenatem'], explanation: 'Aus bronzenen Siphonen auf Schiffen geschleudert, vernichtete das griechische Feuer die arabischen Belagerungsflotten.' },
+    fr: { question: 'L’arme incendiaire byzantine secrète qui brûlait jusque sur la surface de la mer s’appelait...', options: ['Le feu grégeois','Le tonnerre romain','La pluie de naphte','Le souffle de dragon'], explanation: 'Projeté depuis des siphons de bronze montés sur les navires, le feu grégeois détruisit les flottes arabes assiégeant Constantinople.' },
+  },
+  'bq9': {
+    de: { question: 'Der jahrhundertlange byzantinische Konflikt um religiöse Bilder ist bekannt als...', options: ['Das Große Schisma','Der Ikonoklasmus','Der Hesychasmus-Streit','Der Filioque-Streit'], explanation: 'Von 726 bis 843 rang das Reich mit sich selbst, ob Ikonen Götzendienst oder Fenster zum Himmel seien.' },
+    fr: { question: 'Le conflit byzantin d’un siècle sur les images religieuses est connu sous le nom de...', options: ['Le Grand Schisme','L’iconoclasme','La controverse hésychaste','La querelle du filioque'], explanation: 'De 726 à 843, l’empire se déchira pour savoir si les icônes étaient idolâtrie ou fenêtres sur le ciel.' },
+  },
+  'bq10': {
+    de: { question: 'Die Brüder Kyrill und Method, Schöpfer des ersten slawischen Alphabets, stammten aus welcher Stadt?', options: ['Konstantinopel','Thessalonike','Ohrid','Athen'], explanation: 'Thessalonike war so voll slawischer Rede, dass die Brüder die Sprache von Kindheit an kannten.' },
+    fr: { question: 'Les frères Cyrille et Méthode, créateurs du premier alphabet slave, venaient de quelle ville ?', options: ['Constantinople','Thessalonique','Ohrid','Athènes'], explanation: 'Thessalonique était si pleine de parler slave que les frères connaissaient la langue depuis l’enfance.' },
+  },
+  'bq11': {
+    de: { question: 'Das kyrillische Alphabet wird heute von ungefähr wie vielen Menschen geschrieben?', options: ['25 Millionen','75 Millionen','250 Millionen','1 Milliarde'], explanation: 'Von Skopje bis Wladiwostok schreiben rund 250 Millionen Menschen Kyrillisch — Byzanz’ größter Kulturexport.' },
+    fr: { question: 'L’alphabet cyrillique est écrit aujourd’hui par environ combien de personnes ?', options: ['25 millions','75 millions','250 millions','1 milliard'], explanation: 'De Skopje à Vladivostok, quelque 250 millions de personnes écrivent en cyrillique — la plus grande exportation culturelle de Byzance.' },
+  },
+  'bq12': {
+    de: { question: '1054 begannen die gegenseitigen Exkommunikationen zwischen Rom und Konstantinopel...', options: ['Den Investiturstreit','Das Große Schisma','Das Papsttum von Avignon','Den Ikonoklasten-Streit'], explanation: 'Der Bruch von 1054 spaltete die Christenheit in den katholischen Westen und den orthodoxen Osten.' },
+    fr: { question: 'En 1054, les excommunications mutuelles entre Rome et Constantinople commencèrent...', options: ['La querelle des Investitures','Le Grand Schisme','La papauté d’Avignon','La controverse iconoclaste'], explanation: 'La rupture de 1054 divisa la chrétienté en Occident catholique et Orient orthodoxe.' },
+  },
+  'bq13': {
+    de: { question: '988 bekehrte Fürst Wladimir von Kiew sein Reich zu welchem Glauben?', options: ['Römischer Katholizismus','Islam','Orthodoxes Christentum','Judentum'], explanation: 'Die Taufe der Rus brachte das kyrillische Alphabet, Ikonen und byzantinisches Christentum in die ostslawische Welt.' },
+    fr: { question: 'En 988, le prince Vladimir de Kiev convertit son royaume à quelle foi ?', options: ['Catholicisme romain','Islam','Christianisme orthodoxe','Judaïsme'], explanation: 'Le baptême de la Rus’ apporta l’alphabet cyrillique, les icônes et le christianisme byzantin au monde slave oriental.' },
+  },
+  'bq14': {
+    de: { question: '1204 wurde Konstantinopel geplündert von...', options: ['Den Seldschuken','Den Heeren des Vierten Kreuzzugs','Den Mongolen','Den Persern'], explanation: 'Von Ägypten abgelenkt, erstürmte und plünderte der Vierte Kreuzzug drei Tage lang die größte Stadt der Christenheit.' },
+    fr: { question: 'En 1204, Constantinople fut mise à sac par...', options: ['Les Turcs seldjoukides','Les armées de la quatrième croisade','Les Mongols','Les Perses'], explanation: 'Détournée de l’Égypte, la quatrième croisade prit d’assaut et pilla trois jours durant la plus grande ville de la chrétienté.' },
+  },
+  'bq15': {
+    de: { question: 'Konstantinopel fiel endgültig an Sultan Mehmed II. in welchem Jahr?', options: ['1071','1204','1389','1453'], explanation: 'Am 29. Mai 1453 wurden die Theodosianischen Mauern durchbrochen und der letzte Kaiser fiel kämpfend — das Ende des Römischen Reiches.' },
+    fr: { question: 'Constantinople tomba finalement devant le sultan Mehmed II en quelle année ?', options: ['1071','1204','1389','1453'], explanation: 'Le 29 mai 1453, les murailles théodosiennes furent percées et le dernier empereur mourut en combattant — la fin de l’Empire romain.' },
+  },
+  'bq16': {
+    de: { question: 'Die dreifachen Landmauern, die Konstantinopel 1.000 Jahre schützten, wurden unter welchem Kaiser errichtet?', options: ['Konstantin','Justinian','Theodosius II.','Herakleios'], explanation: 'Die Theodosianischen Mauern des fünften Jahrhunderts wehrten Hunnen, Awaren, Araber, Bulgaren und Rus ab, bis das Zeitalter der Kanone kam.' },
+    fr: { question: 'Les triples murailles terrestres qui protégèrent Constantinople pendant 1 000 ans furent bâties sous quel empereur ?', options: ['Constantin','Justinien','Théodose II','Héraclius'], explanation: 'Les murailles théodosiennes du Ve siècle repoussèrent Huns, Avars, Arabes, Bulgares et Rus’ jusqu’à l’âge du canon.' },
+  },
+  'bq17': {
+    de: { question: 'Das von Konstantin einberufene Konzil von Nizäa 325 brachte hervor...', options: ['Das Corpus Juris Civilis','Das Nizänische Glaubensbekenntnis','Das Edikt von Mailand','Das Große Schisma'], explanation: 'Das erste ökumenische Konzil bestimmte den christlichen Kernglauben im Nizänum, das bis heute gesprochen wird.' },
+    fr: { question: 'Le concile de Nicée de 325, convoqué par Constantin, produisit...', options: ['Le Corpus Juris Civilis','Le Credo de Nicée','L’édit de Milan','Le Grand Schisme'], explanation: 'Le premier concile œcuménique définit la foi chrétienne essentielle dans le Credo de Nicée, récité encore aujourd’hui.' },
+  },
+  'bq18': {
+    de: { question: 'Wie lange bestand das Oströmische Reich, von der Weihe Konstantinopels bis zu seinem Fall?', options: ['Etwa 500 Jahre','Etwa 800 Jahre','1.123 Jahre','2.000 Jahre'], explanation: 'Von 330 bis 1453 — 1.123 Jahre — einer der langlebigsten Staaten der Menschheitsgeschichte.' },
+    fr: { question: 'Combien de temps dura l’Empire romain d’Orient, de la dédicace de Constantinople à sa chute ?', options: ['Environ 500 ans','Environ 800 ans','1 123 ans','2 000 ans'], explanation: 'De 330 à 1453 — 1 123 ans — l’un des États les plus durables de l’histoire humaine.' },
+  },
+  'bq19': {
+    de: { question: 'Welche zwei Feldherren führten Justinians Rückeroberungen Afrikas und Italiens aus?', options: ['Belisar und Narses','Herakleios und Leo','Basileios und Photios','Konstantin und Justin'], explanation: 'Belisar nahm Afrika von den Vandalen und focht in Italien gegen die Ostgoten; der Eunuchen-General Narses beendete den Krieg.' },
+    fr: { question: 'Quels deux généraux menèrent les reconquêtes de l’Afrique et de l’Italie sous Justinien ?', options: ['Bélisaire et Narsès','Héraclius et Léon','Basile et Photius','Constantin et Justin'], explanation: 'Bélisaire prit l’Afrique aux Vandales et combattit les Ostrogoths en Italie ; le général eunuque Narsès acheva la guerre.' },
+  },
+  'bq20': {
+    de: { question: 'Der Nika-Aufstand von 532 begann unter den Parteien welcher Institution?', options: ['Des Heeres','Des Senats','Des Wagenrenn-Hippodroms','Der Kirche'], explanation: 'Die Blauen und Grünen des Hippodroms vereinten sich gegen Justinians Steuern und hätten den Thron fast gestürzt.' },
+    fr: { question: 'La sédition Nika de 532 commença parmi les factions de quelle institution ?', options: ['L’armée','Le Sénat','L’hippodrome des courses de chars','L’Église'], explanation: 'Les Bleus et les Verts de l’hippodrome s’unirent contre les impôts de Justinien et faillirent défaire le trône.' },
+  },
+  'bq21': {
+    de: { question: 'Die Hagia Sophia wurde in der erstaunlichen Zeit von ... gebaut.', options: ['Unter 6 Jahren','Genau 20 Jahren','40 Jahren','Über einem Jahrhundert'], explanation: 'Fünf Jahre und zehn Monate — eine unerhörte Geschwindigkeit für das größte Gebäude seiner Zeit.' },
+    fr: { question: 'Sainte-Sophie fut bâtie dans le temps stupéfiant de...', options: ['Moins de 6 ans','Exactement 20 ans','40 ans','Plus d’un siècle'], explanation: 'Cinq ans et dix mois — une rapidité inouïe pour le plus grand bâtiment de son époque.' },
+  },
+  'bq22': {
+    de: { question: 'Ab 541 wurde Justinians Herrschaft verdüstert durch...', options: ['Eine gotische Invasion','Eine große Pestpandemie','Den Verlust Ägyptens','Den Ikonoklasmus'], explanation: 'Die Justinianische Pest fegte über das Mittelmeer, tötete Millionen und erschöpfte Schatzkammer und Heer.' },
+    fr: { question: 'À partir de 541, le règne de Justinien fut assombri par...', options: ['Une invasion gothique','Une grande pandémie de peste','La perte de l’Égypte','L’iconoclasme'], explanation: 'La peste de Justinien balaya la Méditerranée, tuant des millions et épuisant le trésor et l’armée.' },
+  },
+  'bq23': {
+    de: { question: 'Welcher Kaiser besiegte Persien 627 bei Ninive und gewann das Wahre Kreuz zurück?', options: ['Justinian I.','Herakleios','Leo III.','Basileios II.'], explanation: 'Herakleios’ kühne Gegenoffensive nach Persien beendete den letzten großen Krieg der Antike.' },
+    fr: { question: 'Quel empereur vainquit la Perse à Ninive en 627 et récupéra la Vraie Croix ?', options: ['Justinien Ier','Héraclius','Léon III','Basile II'], explanation: 'L’audacieuse contre-offensive d’Héraclius en Perse acheva la dernière grande guerre de l’Antiquité.' },
+  },
+  'bq24': {
+    de: { question: 'In welcher Schlacht von 636 vernichteten arabische Heere das byzantinische Hauptfeldheer?', options: ['Manzikert','Jarmuk','Ninive','Tours'], explanation: 'Der Jarmuk öffnete dem Kalifat Syrien, bald auch Ägypten und Nordafrika.' },
+    fr: { question: 'À quelle bataille de 636 les armées arabes détruisirent-elles la principale armée de campagne byzantine ?', options: ['Manzikert','Yarmouk','Ninive','Tours'], explanation: 'Le Yarmouk ouvrit au Califat la Syrie, puis bientôt l’Égypte et l’Afrique du Nord.' },
+  },
+  'bq25': {
+    de: { question: 'Der Ingenieur, dem die Einführung des griechischen Feuers um 672 zugeschrieben wird, war...', options: ['Kallinikos','Anthemios','Urban','Isidor'], explanation: 'Das flüssige Feuer des Flüchtlings Kallinikos, aus bronzenen Siphonen geschossen, rettete die Hauptstadt 678 und 718.' },
+    fr: { question: 'L’ingénieur à qui l’on attribue l’apport du feu grégeois à Byzance vers 672 était...', options: ['Callinique','Anthémius','Urbain','Isidore'], explanation: 'Le feu liquide du réfugié Callinique, tiré de siphons de bronze, sauva la capitale en 678 et 718.' },
+  },
+  'bq26': {
+    de: { question: 'Das „Themen“-System organisierte das Reich neu durch...', options: ['Die Teilung der Kirche in Diözesen','Die Ansiedlung von Wehrbauern in Militärbezirken','Die Besteuerung der Klöster','Die Anwerbung wikingischer Söldner'], explanation: 'Auf Erbland angesiedelte Soldaten verteidigten ihre eigene Heimat — ein schlankeres, selbsttragendes Reich.' },
+    fr: { question: 'Le système des « thèmes » réorganisa l’empire par...', options: ['La division de l’Église en diocèses','L’installation de soldats-paysans dans des districts militaires','L’imposition des monastères','Le recrutement de mercenaires vikings'], explanation: 'Des soldats établis sur des terres héréditaires défendaient leurs propres foyers — un empire plus svelte et autosuffisant.' },
+  },
+  'bq27': {
+    de: { question: 'Nach dem siebten Jahrhundert wurde die Sprache der byzantinischen Verwaltung...', options: ['Latein','Griechisch','Aramäisch','Slawisch'], explanation: 'Griechisch verdrängte Latein, und der Kaiser nahm den griechischen Titel Basileus an.' },
+    fr: { question: 'Après le VIIe siècle, la langue de l’administration byzantine devint...', options: ['Le latin','Le grec','L’araméen','Le slavon'], explanation: 'Le grec remplaça le latin, et l’empereur prit le titre grec de basileus.' },
+  },
+  'bq28': {
+    de: { question: 'Der Ikonoklasmus begann 726, als welcher Kaiser das Christusbild vom Palasttor entfernen ließ?', options: ['Leo III.','Konstantin V.','Justinian II.','Michael III.'], explanation: 'Nach einem als Gotteszorn gedeuteten Vulkanausbruch eröffnete Leo III. den Feldzug gegen die Bilder.' },
+    fr: { question: 'L’iconoclasme commença en 726 quand quel empereur fit retirer l’image du Christ de la porte du palais ?', options: ['Léon III','Constantin V','Justinien II','Michel III'], explanation: 'Après une éruption volcanique lue comme colère divine, Léon III lança la campagne contre les images.' },
+  },
+  'bq29': {
+    de: { question: 'Welche Kaiserin berief das Konzil von 787 ein, das die Ikonen erstmals wiederherstellte?', options: ['Theodora','Irene','Zoe','Anna'], explanation: 'Irenes Zweites Konzil von Nizäa unterschied die Verehrung der Bilder von der Anbetung Gottes.' },
+    fr: { question: 'Quelle impératrice convoqua le concile de 787 qui restaura pour la première fois les icônes ?', options: ['Théodora','Irène','Zoé','Anne'], explanation: 'Le deuxième concile de Nicée d’Irène distingua la vénération des images de l’adoration due à Dieu.' },
+  },
+  'bq30': {
+    de: { question: 'Die endgültige Wiederherstellung der Ikonen 843 wird in orthodoxen Kirchen gefeiert als...', options: ['Pascha','Der Triumph der Orthodoxie','Pfingsten','Kreuzerhöhung'], explanation: 'Die Wiederherstellung der Kaiserin Theodora wird jedes Jahr am ersten Sonntag der Großen Fastenzeit begangen.' },
+    fr: { question: 'La restauration définitive des icônes en 843 est célébrée dans les églises orthodoxes comme...', options: ['La Pâque','Le Triomphe de l’Orthodoxie','La Pentecôte','L’Exaltation de la Croix'], explanation: 'La restauration de l’impératrice Théodora est commémorée chaque année le premier dimanche du Grand Carême.' },
+  },
+  'bq31': {
+    de: { question: 'Das erste Alphabet, das Kyrill für die slawische Sprache erfand, war...', options: ['Das Kyrillische','Das Glagolitische','Das Lateinische','Runen'], explanation: 'Die kunstvolle Glagoliza kam zuerst, 863; das Kyrillische entwickelten später die Schüler der Brüder.' },
+    fr: { question: 'Le premier alphabet que Cyrille inventa pour la langue slave fut...', options: ['Le cyrillique','Le glagolitique','Le latin','Les runes'], explanation: 'L’intriquée écriture glagolitique vint d’abord, en 863 ; le cyrillique fut développé plus tard par les disciples des frères.' },
+  },
+  'bq32': {
+    de: { question: 'Die Sprache der Bibel- und Liturgieübersetzungen der Brüder heißt...', options: ['Byzantinisches Griechisch','Altkirchenslawisch','Bulgarisch','Makedonisch'], explanation: 'Das Altkirchenslawische wurde die heilige und literarische Sprache der slawisch-orthodoxen Welt.' },
+    fr: { question: 'La langue des traductions bibliques et liturgiques des frères s’appelle...', options: ['Le grec byzantin','Le vieux-slave','Le bulgare','Le macédonien'], explanation: 'Le vieux-slave devint la langue sacrée et littéraire du monde slave orthodoxe.' },
+  },
+  'bq33': {
+    de: { question: 'Klemens von Ohrid lehrte der Überlieferung nach ungefähr wie viele Schüler an seiner Schule?', options: ['35','350','3.500','35.000'], explanation: 'Die Literarische Schule von Ohrid machte die Seestadt zu einer Wiege slawischer Schriftkultur.' },
+    fr: { question: 'Selon la tradition, Clément d’Ohrid enseigna à environ combien d’élèves dans son école ?', options: ['35','350','3 500','35 000'], explanation: 'L’École littéraire d’Ohrid fit de la ville lacustre un berceau de l’alphabétisation slave.' },
+  },
+  'bq34': {
+    de: { question: 'Kyrill und Method werden in der ganzen slawischen Welt jedes Jahr gefeiert am...', options: ['1. Januar','24. Mai','29. Mai','11. September'], explanation: 'Der 24. Mai ist der Tag der beiden Brüder und der slawischen Schrift und Kultur, ein Feiertag in Makedonien und Bulgarien.' },
+    fr: { question: 'Cyrille et Méthode sont célébrés dans tout le monde slave chaque année le...', options: ['1er janvier','24 mai','29 mai','11 septembre'], explanation: 'Le 24 mai est le jour des deux frères et des lettres et de la culture slaves, férié en Macédoine et en Bulgarie.' },
+  },
+  'bq35': {
+    de: { question: '1054 legte Kardinal Humbert die Exkommunikationsbulle auf den Altar von...', options: ['St. Peter in Rom','Der Hagia Sophia','Der Apostelkirche','San Marco in Venedig'], explanation: 'Humbert schritt während der Liturgie in die Hagia Sophia — der symbolische Beginn des Großen Schismas.' },
+    fr: { question: 'En 1054, le cardinal Humbert déposa la bulle d’excommunication sur l’autel de...', options: ['Saint-Pierre de Rome','Sainte-Sophie','L’église des Saints-Apôtres','Saint-Marc de Venise'], explanation: 'Humbert pénétra dans Sainte-Sophie pendant la liturgie — le début symbolique du Grand Schisme.' },
+  },
+  'bq36': {
+    de: { question: 'Das umstrittene Wort, das die Westkirche dem Nizänischen Credo hinzufügte, ist bekannt als...', options: ['Filioque','Theotokos','Homoousion','Anathema'], explanation: 'Die ohne ökumenisches Konzil eingefügte Erklärung, der Geist gehe vom Vater „und dem Sohn“ aus, empörte den Osten.' },
+    fr: { question: 'Le mot disputé que l’Église d’Occident ajouta au Credo de Nicée est connu comme le...', options: ['Filioque','Théotokos','Homoousion','Anathème'], explanation: 'Déclarer que l’Esprit procède du Père « et du Fils » — ajouté sans concile œcuménique — indigna l’Orient.' },
+  },
+  'bq37': {
+    de: { question: 'Die gegenseitigen Exkommunikationen von 1054 wurden förmlich aufgehoben...', options: ['1204','1453','1815','1965'], explanation: 'Papst Paul VI. und Patriarch Athenagoras hoben sie 911 Jahre später auf, 1965.' },
+    fr: { question: 'Les excommunications mutuelles de 1054 furent formellement levées en...', options: ['1204','1453','1815','1965'], explanation: 'Le pape Paul VI et le patriarche Athénagoras les levèrent 911 ans plus tard, en 1965.' },
+  },
+  'bq38': {
+    de: { question: 'Basileios II. verdiente seinen düsteren Beinamen durch die Eroberung wessen Reiches?', options: ['Des serbischen Reiches Dušans','Des bulgarischen Reiches Samuels','Der Kiewer Rus','Des Seldschukensultanats'], explanation: 'Sein langer Krieg gegen Samuel — dessen Hauptstadt in Ohrid lag — trug ihm den Namen „Bulgarentöter“ ein.' },
+    fr: { question: 'Basile II gagna son sinistre surnom par la conquête de quel empire ?', options: ['L’empire serbe de Dušan','L’empire bulgare de Samuel','La Rus’ de Kiev','Le sultanat seldjoukide'], explanation: 'Sa longue guerre contre Samuel — dont la capitale se trouvait à Ohrid — lui valut le nom de « tueur de Bulgares ».' },
+  },
+  'bq39': {
+    de: { question: 'Bei Manzikert 1071 geschah, was einem römischen Kaiser sieben Jahrhunderte nicht widerfahren war — was?', options: ['Er fiel in der Schlacht','Er wurde vom Feind lebend gefangen','Er trat zum Islam über','Er dankte auf dem Feld ab'], explanation: 'Romanos IV. geriet in die Gefangenschaft Sultan Alp Arslans; die folgenden Bürgerkriege verloren Anatolien.' },
+    fr: { question: 'À Manzikert en 1071, il arriva ce qui n’était pas arrivé à un empereur romain depuis sept siècles — quoi ?', options: ['Il mourut au combat','Il fut pris vivant par l’ennemi','Il se convertit à l’islam','Il abdiqua sur le champ'], explanation: 'Romain IV fut capturé par le sultan Alp Arslan ; les guerres civiles qui suivirent perdirent l’Anatolie.' },
+  },
+  'bq40': {
+    de: { question: 'Die vier bronzenen Pferde, 1204 aus Konstantinopels Hippodrom geraubt, stehen heute in...', options: ['Paris','Rom','Venedig','Wien'], explanation: 'Die venezianischen Partner der Kreuzfahrer brachten sie zur Basilika San Marco, wo sie geblieben sind.' },
+    fr: { question: 'Les quatre chevaux de bronze pillés à l’hippodrome de Constantinople en 1204 se dressent aujourd’hui à...', options: ['Paris','Rome','Venise','Vienne'], explanation: 'Les partenaires vénitiens des croisés les emportèrent à la basilique Saint-Marc, où ils demeurent.' },
+  },
+  'bq41': {
+    de: { question: 'Beim Betreten der Hagia Sophia zu ihrer Weihe soll Justinian geflüstert haben, er habe übertroffen...', options: ['Augustus','Konstantin','Salomo','Alexander'], explanation: '„Salomo, ich habe dich übertroffen“ — seine Kirche am Tempel von Jerusalem messend.' },
+    fr: { question: 'En entrant dans Sainte-Sophie lors de sa consécration, Justinien aurait murmuré qu’il avait surpassé...', options: ['Auguste','Constantin','Salomon','Alexandre'], explanation: '« Salomon, je t’ai surpassé » — mesurant son église au Temple de Jérusalem.' },
+  },
+  'bq42': {
+    de: { question: 'Die kühne Kuppel der Hagia Sophia entwarfen Anthemios und Isidor, von Beruf...', options: ['Meistermaurer','Mathematiker','Mönche','Militäringenieure'], explanation: 'Justinian vertraute die unmögliche Kuppel zwei Mathematikern an — Anthemios von Tralleis und Isidor von Milet.' },
+    fr: { question: 'L’audacieuse coupole de Sainte-Sophie fut conçue par Anthémius et Isidore, qui étaient de formation...', options: ['Maîtres maçons','Mathématiciens','Moines','Ingénieurs militaires'], explanation: 'Justinien confia la coupole impossible à deux mathématiciens — Anthémius de Tralles et Isidore de Milet.' },
+  },
+  'bq43': {
+    de: { question: 'Historiker stellen die Verteidigung Konstantinopels 717–18 neben die Schlacht von Tours, weil beide...', options: ['Das Zeitalter der Reiterei beendeten','Die religiöse Landkarte Europas mitentschieden','Das Perserreich zerstörten','Das Schießpulver in den Krieg einführten'], explanation: 'Wäre die Hauptstadt 718 gefallen, hätte dem Kalifat der Weg auf den Balkan und nach Europa offen gestanden.' },
+    fr: { question: 'Les historiens rangent la défense de Constantinople en 717–18 aux côtés de la bataille de Tours parce que les deux...', options: ['Terminèrent l’âge de la cavalerie','Aidèrent à décider la carte religieuse de l’Europe','Détruisirent l’Empire perse','Introduisirent la poudre dans la guerre'], explanation: 'Si la capitale était tombée en 718, la route du Califat vers les Balkans et l’Europe eût été ouverte.' },
+  },
+  'bq44': {
+    de: { question: 'Johannes von Damaskus’ entscheidende Verteidigung der Ikonen besagte: Alle Christusbilder zu verwerfen hieße zu leugnen...', options: ['Die Dreifaltigkeit','Die Auferstehung','Die Menschwerdung','Das Zweite Gebot'], explanation: 'Da Gott wahrhaft sichtbares Fleisch wurde, bekräftigt die Darstellung Christi die Menschwerdung; jedes Bild zu verwerfen leugnet sie.' },
+    fr: { question: 'La défense décisive des icônes par Jean Damascène soutenait que refuser toute image du Christ revient à nier...', options: ['La Trinité','La Résurrection','L’Incarnation','Le Deuxième Commandement'], explanation: 'Puisque Dieu s’est vraiment fait chair visible, représenter le Christ affirme l’Incarnation ; refuser toute image la nie.' },
+  },
+  'bq45': {
+    de: { question: 'Obwohl Kyrill die Glagoliza erfand, wurde das „Kyrillisch“ genannte Alphabet tatsächlich entwickelt von...', options: ['Kyrill selbst in Rom','Dem Schülerkreis in Ohrid und Preslaw, ihm zu Ehren','Der kaiserlichen Kanzlei','Fränkischen Missionaren'], explanation: 'Die Generation des Klemens von Ohrid baute die einfachere Schrift auf griechischer Grundlage und benannte sie nach dem Gründer der Mission.' },
+    fr: { question: 'Bien que Cyrille eût inventé le glagolitique, l’alphabet appelé « cyrillique » fut en réalité développé par...', options: ['Cyrille lui-même à Rome','Le cercle de ses disciples à Ohrid et Preslav, en son honneur','La chancellerie impériale','Des missionnaires francs'], explanation: 'La génération de Clément d’Ohrid bâtit l’écriture plus simple à base grecque et la nomma en l’honneur du fondateur de la mission.' },
+  },
+  'bq46': {
+    de: { question: 'Die „Dreisprachen-Häresie“, die Kyrill bekämpfte, besagte, Gott dürfe nur auf Hebräisch, Griechisch und Latein verehrt werden — den Sprachen...', options: ['Der drei Weisen','Der Kreuzesinschrift','Der Septuaginta','Der Apostel'], explanation: 'Kyrill verachtete den Anspruch, der auf der dreisprachigen Inschrift über dem gekreuzigten Christus fußte: Fällt der Regen nicht auf alle Völker gleich?' },
+    fr: { question: 'L’« hérésie des trois langues » que combattit Cyrille soutenait que Dieu ne pouvait être adoré qu’en hébreu, grec et latin — les langues de...', options: ['Des trois mages','De l’inscription de la Croix','De la Septante','Des apôtres'], explanation: 'Cyrille méprisa cette prétention, fondée sur l’inscription trilingue au-dessus du Christ crucifié : la pluie ne tombe-t-elle pas également sur tous les peuples ?' },
+  },
+  'bq47': {
+    de: { question: 'Gregor Palamas verteidigte die Hesychasten mit der Unterscheidung: Gottes ______ ist unerreichbar, doch seine ______ verwandeln uns wahrhaft.', options: ['Gnade … Gericht','Wesen … Energien','Wort … Geist','Gesetz … Gnade'], explanation: 'Die Wesen-Energien-Unterscheidung, 1341–51 bestätigt, wurde orthodoxe Lehre und verankerte die Theosis als Ziel des Lebens.' },
+    fr: { question: 'Grégoire Palamas défendit les hésychastes par la distinction : l’______ de Dieu est hors d’atteinte, mais ses ______ nous transforment vraiment.', options: ['miséricorde … justice','essence … énergies','parole … esprit','loi … grâce'], explanation: 'La distinction essence–énergies, confirmée aux conciles de 1341–51, devint doctrine orthodoxe et fixa la théosis comme but de la vie.' },
+  },
+  'bq48': {
+    de: { question: 'Das Edikt von 1046 über den Berg Athos, bis heute in Kraft, verfügt, dass...', options: ['Nur Griechen Mönche werden dürfen','Keine Frau die Halbinsel betreten darf','Klöster keine Steuern zahlen','Der Berg dem Kaiser gehört'], explanation: 'Im monastischen Denken ist der Berg der Garten der Gottesmutter, ihr allein vorbehalten.' },
+    fr: { question: 'L’édit de 1046 concernant le mont Athos, toujours en vigueur, décrète que...', options: ['Seuls les Grecs peuvent devenir moines','Aucune femme ne peut poser le pied sur la péninsule','Les monastères ne paient pas d’impôts','La montagne appartient à l’empereur'], explanation: 'Dans la pensée monastique, la Montagne est le jardin de la Mère de Dieu, réservé à elle seule.' },
+  },
+  'bq49': {
+    de: { question: 'Während der letzten Belagerung 1453 umging Mehmed II. die Kette über das Goldene Horn, indem er...', options: ['Sie mit Kanonenfeuer zerschoss','Siebzig Schiffe über Land auf gefetteten Balken schleppen ließ','Die Genuesen bestach, sie zu öffnen','Eine Pontonbrücke baute'], explanation: 'Die hinter der Kette zu Wasser gelassenen Schiffe zwangen die Verteidiger, ihre wenigen Männer über noch mehr Mauern zu verteilen.' },
+    fr: { question: 'Pendant le siège final de 1453, Mehmed II contourna la chaîne de la Corne d’Or en...', options: ['La brisant à coups de canon','Faisant haler soixante-dix navires par voie de terre sur des rondins graissés','Soudoyant les Génois pour l’ouvrir','Construisant un pont de pontons'], explanation: 'Les navires lancés derrière la chaîne forcèrent les défenseurs à étirer leurs rares hommes sur encore plus de murailles.' },
+  },
+  'bq50': {
+    de: { question: 'Byzantinische Flüchtlinge wie Bessarion prägten die italienische Renaissance vor allem, indem sie...', options: ['Das Schießpulver einführten','Griechische Handschriften und die Fähigkeit, sie zu lesen, mitbrachten','Florentiner Banken finanzierten','Die ersten Fresken malten'], explanation: 'Die Flut griechischer Bücher und Lehrer nach 1453 nährte die humanistische Wiedergewinnung Platons und der Klassiker.' },
+    fr: { question: 'Les réfugiés byzantins comme Bessarion façonnèrent la Renaissance italienne avant tout en...', options: ['Introduisant la poudre à canon','Apportant des manuscrits grecs et la capacité de les lire','Finançant les banques florentines','Peignant les premières fresques'], explanation: 'Le flot de livres et de maîtres grecs après 1453 nourrit la redécouverte humaniste de Platon et des classiques.' },
+  },
   // ── PREHISTORIC (preq1–preq50) ───────────────────────────────────────────────
   'preq1': {
     de: { question: "Die ersten bekannten Homininen, wie Sahelanthropus (~7 Mio. Jahre), wurden in Afrika gefunden. Was war die erste große menschliche Anpassung?", options: ["Ein großes Gehirn", "Der aufrechte Gang auf zwei Beinen", "Der Gebrauch des Feuers", "Die gesprochene Sprache"], explanation: "Der aufrechte Gang — nicht ein großes Gehirn — kam zuerst und befreite die Hände. Alles Übrige folgte aus diesen befreiten Händen." },
