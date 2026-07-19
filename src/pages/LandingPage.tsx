@@ -9,6 +9,8 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { Textarea } from '@/components/ui/textarea';
 import { LANDING_I18N } from '@/i18n/landingTranslations';
 import { LESSONS } from '@/features/content/lessonsData';
+import { TIMELINE_EVENTS } from '@/features/content/timelineData';
+import { QUIZZES } from '@/features/quiz/quizData';
 import { getTranslatedLesson } from '@/i18n/contentTranslations';
 import { fetchReviews, submitReview, localReviews, type AppReview } from '@/features/reviews/reviewStore';
 import { LANGUAGE_LABELS, type Language } from '@/i18n/translations';
@@ -32,7 +34,14 @@ const ERA_VISUALS = [
   { eraId: 'modern',       color: 'text-rose-400',    bg: 'from-rose-900/30 to-rose-950/60',       border: 'border-rose-500/30',    photo: 'photo-1477959858617-67f85cf4f1df' },
 ];
 
-const STAT_VALUES = [ { value: 54, suffix: '' }, { value: 130, suffix: '' }, { value: 300, suffix: '' }, { value: 5000, suffix: '+' } ];
+// Live counts derived from the content catalogs — every curriculum tranche
+// propagates here automatically instead of via hand-edited numbers.
+const STAT_VALUES = [
+  { value: LESSONS.length, suffix: '' },
+  { value: TIMELINE_EVENTS.length, suffix: '' },
+  { value: QUIZZES.reduce((n, q) => n + q.questions.length, 0), suffix: '' },
+  { value: 5000, suffix: '+' },
+];
 
 
 

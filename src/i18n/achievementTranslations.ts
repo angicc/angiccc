@@ -44,9 +44,9 @@ const ACHIEVEMENT_TRANS: Record<string, Partial<Record<ContentLang, { title: str
     mk: { title: 'Тројна Круна', description: 'Освои 100% на 3 различни квизови за епохи' },
   },
   'quiz-all': {
-    es: { title: 'Gran Maestro', description: 'Obtén 100% en los 4 quizzes de era' },
-    ru: { title: 'Гроссмейстер', description: 'Набери 100% во всех 4 викторинах по эпохам' },
-    mk: { title: 'Гранд Мајстор', description: 'Освои 100% на сите 4 квизови за епохи' },
+    es: { title: 'Gran Maestro', description: 'Obtén 100% en todos los quizzes de era' },
+    ru: { title: 'Гроссмейстер', description: 'Набери 100% во всех викторинах по эпохам' },
+    mk: { title: 'Гранд Мајстор', description: 'Освои 100% на сите квизови за епохи' },
   },
   'streak-3': {
     es: { title: 'Dedicado', description: 'Mantén una racha de 3 días' },
@@ -128,9 +128,206 @@ const ACHIEVEMENT_TRANS: Record<string, Partial<Record<ContentLang, { title: str
     ru: { title: 'Мастер Дебатов', description: 'Выиграй 5 философских дебатов' },
     mk: { title: 'Мајстор на Дебати', description: 'Победи во 5 филозофски дебати' },
   },
+  'lessons-40': {
+    es: { title: 'Leyenda del Aula', description: 'Completa 40 lecciones' },
+    ru: { title: 'Легенда Лектория', description: 'Пройди 40 уроков' },
+    mk: { title: 'Легенда на Предавалната', description: 'Заврши 40 лекции' },
+  },
+  'lessons-60': {
+    es: { title: 'Conquistador del Currículo', description: 'Completa 60 lecciones' },
+    ru: { title: 'Покоритель Программы', description: 'Пройди 60 уроков' },
+    mk: { title: 'Освојувач на Програмата', description: 'Заврши 60 лекции' },
+  },
+  'lessons-all': {
+    es: { title: 'Historiador Omnisciente', description: 'Completa todas las lecciones de Historify' },
+    ru: { title: 'Всеведущий Историк', description: 'Пройди все уроки Historify' },
+    mk: { title: 'Сезнаен Историчар', description: 'Заврши ги сите лекции во Historify' },
+  },
+  'prehistoric-master': {
+    es: { title: 'Caminante del Tiempo Profundo', description: 'Completa todas las lecciones de la Prehistoria' },
+    ru: { title: 'Странник Глубокого Времени', description: 'Пройди все уроки Доисторической эпохи' },
+    mk: { title: 'Патник низ Длабокото Време', description: 'Заврши ги сите лекции од Праисторијата' },
+  },
+  'byzantine-master': {
+    es: { title: 'Porfirogéneta', description: 'Completa todas las lecciones del Mundo Bizantino' },
+    ru: { title: 'Багрянородный', description: 'Пройди все уроки Византийского мира' },
+    mk: { title: 'Порфирогенет', description: 'Заврши ги сите лекции од Византискиот свет' },
+  },
+  'analysis-first': {
+    es: { title: 'El Visto Bueno del Examinador', description: 'Aprueba tu primer análisis de Clío (nota B o mejor)' },
+    ru: { title: 'Кивок Экзаменатора', description: 'Сдай свой первый анализ Клио (оценка B или выше)' },
+    mk: { title: 'Одобрувањето на Испитувачот', description: 'Положи ја твојата прва анализа кај Клио (оценка B или подобра)' },
+  },
+  'analysis-5': {
+    es: { title: 'Ensayista', description: 'Aprueba 5 análisis de lección de Clío' },
+    ru: { title: 'Эссеист', description: 'Сдай 5 анализов уроков Клио' },
+    mk: { title: 'Есеист', description: 'Положи 5 анализи на лекции кај Клио' },
+  },
+  'analysis-15': {
+    es: { title: 'Retórico', description: 'Aprueba 15 análisis de lección de Clío' },
+    ru: { title: 'Ритор', description: 'Сдай 15 анализов уроков Клио' },
+    mk: { title: 'Ретор', description: 'Положи 15 анализи на лекции кај Клио' },
+  },
+  'analysis-40': {
+    es: { title: 'Maestro del Argumento', description: 'Aprueba 40 análisis de lección de Clío' },
+    ru: { title: 'Мастер Аргумента', description: 'Сдай 40 анализов уроков Клио' },
+    mk: { title: 'Мајстор на Аргументот', description: 'Положи 40 анализи на лекции кај Клио' },
+  },
+  'analysis-aplus': {
+    es: { title: 'La Favorita de Clío', description: 'Obtén una A+ en un análisis de lección' },
+    ru: { title: 'Любимец Клио', description: 'Получи A+ за анализ урока' },
+    mk: { title: 'Миленик на Клио', description: 'Освои A+ на анализа на лекција' },
+  },
+};
+
+
+// ── German + French layer ───────────────────────────────────────────────────
+// Kept as a separate record (same lookup contract) so the es/ru/mk block above
+// stays byte-stable for diffing; getTranslatedAchievement consults both.
+const ACHIEVEMENT_TRANS_DEFR: Record<string, Partial<Record<ContentLang, { title: string; description: string }>>> = {
+  'first-lesson': {
+    de: { title: 'Erste Schritte', description: 'Schließe deine erste Lektion ab' },
+    fr: { title: 'Premiers Pas', description: 'Termine ta première leçon' },
+  },
+  'scholar': {
+    de: { title: 'Gelehrter', description: 'Schließe 5 Lektionen ab' },
+    fr: { title: 'Érudit', description: 'Termine 5 leçons' },
+  },
+  'lessons-10': {
+    de: { title: 'Eifriger Student', description: 'Schließe 10 Lektionen ab' },
+    fr: { title: 'Étudiant Dévoué', description: 'Termine 10 leçons' },
+  },
+  'lessons-15': {
+    de: { title: 'Erfahrener Lerner', description: 'Schließe 15 Lektionen ab' },
+    fr: { title: 'Apprenant Aguerri', description: 'Termine 15 leçons' },
+  },
+  'historian': {
+    de: { title: 'Historiker', description: 'Schließe 20 Lektionen ab' },
+    fr: { title: 'Historien', description: 'Termine 20 leçons' },
+  },
+  'lessons-25': {
+    de: { title: 'Großer Historiker', description: 'Schließe 25 Lektionen ab' },
+    fr: { title: 'Grand Historien', description: 'Termine 25 leçons' },
+  },
+  'lessons-40': {
+    de: { title: 'Legende des Hörsaals', description: 'Schließe 40 Lektionen ab' },
+    fr: { title: 'Légende de l’Amphithéâtre', description: 'Termine 40 leçons' },
+  },
+  'lessons-60': {
+    de: { title: 'Bezwinger des Lehrplans', description: 'Schließe 60 Lektionen ab' },
+    fr: { title: 'Conquérant du Programme', description: 'Termine 60 leçons' },
+  },
+  'lessons-all': {
+    de: { title: 'Allwissender Historiker', description: 'Schließe jede Lektion in Historify ab' },
+    fr: { title: 'Historien Omniscient', description: 'Termine toutes les leçons de Historify' },
+  },
+  'quiz-ace': {
+    de: { title: 'Quiz-Ass', description: 'Erreiche 100 % in einem beliebigen Quiz' },
+    fr: { title: 'As du Quiz', description: 'Obtiens 100 % à n’importe quel quiz' },
+  },
+  'quiz-3-ace': {
+    de: { title: 'Dreifache Krone', description: 'Erreiche 100 % in 3 verschiedenen Epochen-Quizzen' },
+    fr: { title: 'Triple Couronne', description: 'Obtiens 100 % à 3 quiz d’époque différents' },
+  },
+  'quiz-all': {
+    de: { title: 'Großmeister', description: 'Erreiche 100 % in jedem Epochen-Quiz' },
+    fr: { title: 'Grand Maître', description: 'Obtiens 100 % à tous les quiz d’époque' },
+  },
+  'streak-3': {
+    de: { title: 'Engagiert', description: 'Halte eine Serie von 3 Tagen' },
+    fr: { title: 'Assidu', description: 'Maintiens une série de 3 jours' },
+  },
+  'streak-7': {
+    de: { title: 'Unaufhaltsam', description: 'Halte eine Serie von 7 Tagen' },
+    fr: { title: 'Inarrêtable', description: 'Maintiens une série de 7 jours' },
+  },
+  'streak-14': {
+    de: { title: 'Eiserner Wille', description: 'Halte eine Serie von 14 Tagen' },
+    fr: { title: 'Volonté de Fer', description: 'Maintiens une série de 14 jours' },
+  },
+  'streak-30': {
+    de: { title: 'Legende', description: 'Halte eine Serie von 30 Tagen' },
+    fr: { title: 'Légende', description: 'Maintiens une série de 30 jours' },
+  },
+  'xp-1000': {
+    de: { title: 'Wissenssucher', description: 'Verdiene 1.000 XP' },
+    fr: { title: 'Chercheur de Savoir', description: 'Gagne 1 000 XP' },
+  },
+  'xp-5000': {
+    de: { title: 'Wissenssüchtiger', description: 'Verdiene 5.000 XP' },
+    fr: { title: 'Accro au Savoir', description: 'Gagne 5 000 XP' },
+  },
+  'xp-10000': {
+    de: { title: 'Titan des Wissens', description: 'Verdiene 10.000 XP' },
+    fr: { title: 'Titan du Savoir', description: 'Gagne 10 000 XP' },
+  },
+  'ai-curious': {
+    de: { title: 'Neugieriger Geist', description: 'Stelle dem KI-Tutor 10 Fragen' },
+    fr: { title: 'Esprit Curieux', description: 'Pose 10 questions au tuteur IA' },
+  },
+  'ai-philosopher': {
+    de: { title: 'Philosoph', description: 'Stelle dem KI-Tutor 50 Fragen' },
+    fr: { title: 'Philosophe', description: 'Pose 50 questions au tuteur IA' },
+  },
+  'explorer': {
+    de: { title: 'Entdecker', description: 'Beginne Lektionen in jeder Epoche' },
+    fr: { title: 'Explorateur', description: 'Commence des leçons dans chaque époque' },
+  },
+  'prehistoric-master': {
+    de: { title: 'Wanderer der Tiefenzeit', description: 'Schließe alle Lektionen der Urgeschichte ab' },
+    fr: { title: 'Marcheur du Temps Profond', description: 'Termine toutes les leçons de la Préhistoire' },
+  },
+  'ancient-master': {
+    de: { title: 'Gelehrter der Antike', description: 'Schließe alle Lektionen der Antike ab' },
+    fr: { title: 'Savant de l’Antiquité', description: 'Termine toutes les leçons de l’Antiquité' },
+  },
+  'byzantine-master': {
+    de: { title: 'Porphyrogennetos', description: 'Schließe alle Lektionen der Byzantinischen Welt ab' },
+    fr: { title: 'Porphyrogénète', description: 'Termine toutes les leçons du Monde Byzantin' },
+  },
+  'medieval-master': {
+    de: { title: 'Mittelalterlicher Ritter', description: 'Schließe alle Lektionen des Mittelalters ab' },
+    fr: { title: 'Chevalier Médiéval', description: 'Termine toutes les leçons du Moyen Âge' },
+  },
+  'earlymod-master': {
+    de: { title: 'Renaissance-Geist', description: 'Schließe alle Lektionen der Frühen Neuzeit ab' },
+    fr: { title: 'Esprit de la Renaissance', description: 'Termine toutes les leçons de l’Époque Moderne' },
+  },
+  'modern-master': {
+    de: { title: 'Moderner Denker', description: 'Schließe alle Lektionen der Moderne ab' },
+    fr: { title: 'Penseur Moderne', description: 'Termine toutes les leçons de l’Ère Contemporaine' },
+  },
+  'debate-first': {
+    de: { title: 'Philosophenbezwinger', description: 'Gewinne deine erste Philosophen-Debatte' },
+    fr: { title: 'Vainqueur de Philosophes', description: 'Gagne ton premier débat philosophique' },
+  },
+  'debate-master': {
+    de: { title: 'Meister der Debatte', description: 'Gewinne 5 Philosophen-Debatten' },
+    fr: { title: 'Maître du Débat', description: 'Gagne 5 débats philosophiques' },
+  },
+  'analysis-first': {
+    de: { title: 'Das Nicken des Prüfers', description: 'Bestehe deine erste Clio-Analyse (Note B oder besser)' },
+    fr: { title: 'L’Approbation de l’Examinateur', description: 'Réussis ta première analyse de Clio (note B ou mieux)' },
+  },
+  'analysis-5': {
+    de: { title: 'Essayist', description: 'Bestehe 5 Clio-Lektionsanalysen' },
+    fr: { title: 'Essayiste', description: 'Réussis 5 analyses de leçon de Clio' },
+  },
+  'analysis-15': {
+    de: { title: 'Rhetoriker', description: 'Bestehe 15 Clio-Lektionsanalysen' },
+    fr: { title: 'Rhétoricien', description: 'Réussis 15 analyses de leçon de Clio' },
+  },
+  'analysis-40': {
+    de: { title: 'Meister des Arguments', description: 'Bestehe 40 Clio-Lektionsanalysen' },
+    fr: { title: 'Maître de l’Argument', description: 'Réussis 40 analyses de leçon de Clio' },
+  },
+  'analysis-aplus': {
+    de: { title: 'Klios Liebling', description: 'Erhalte ein A+ für eine Lektionsanalyse' },
+    fr: { title: 'Favori de Clio', description: 'Obtiens un A+ à une analyse de leçon' },
+  },
 };
 
 export function getTranslatedAchievement(id: string, lang: Language): { title: string; description: string } | null {
   if (lang === 'en') return null;
-  return ACHIEVEMENT_TRANS[id]?.[lang as ContentLang] ?? null;
+  return ACHIEVEMENT_TRANS[id]?.[lang as ContentLang] ?? ACHIEVEMENT_TRANS_DEFR[id]?.[lang as ContentLang] ?? null;
 }

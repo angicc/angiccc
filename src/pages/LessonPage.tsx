@@ -13,7 +13,7 @@ import { XPBadge } from '@/components/shared/XPBadge';
 import { AchievementToast } from '@/components/shared/AchievementToast';
 import { useAuth } from '@/features/auth/AuthContext';
 import type { Achievement } from '@/types';
-import { markLessonComplete, addBonusXp } from '@/features/progress/progressStore';
+import { markLessonComplete, recordAnalysisResult } from '@/features/progress/progressStore';
 import { ClioAnalysisGate } from '@/features/progress/ClioAnalysisGate';
 import {
   isAnalysisPassed, startCooldown, getLessonLock, useCooldownRemaining, formatCooldown,
@@ -281,7 +281,7 @@ export default function LessonPage() {
   function handleAnalysisPassed(v: import('@/features/progress/analysisGrader').AnalysisVerdict) {
     if (!currentUser || !lesson) return;
     setAnalysisDone(true);
-    const { newAchievements } = addBonusXp(currentUser.id, 60, `Analysis passed: ${lesson.title} (${v.grade})`);
+    const { newAchievements } = recordAnalysisResult(currentUser.id, lesson.title, v.grade, v.score);
     refreshProgress();
     setXpAmt(60);
     if (newAchievements.length > 0) setUnlockedAchievements(newAchievements);

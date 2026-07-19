@@ -41,6 +41,19 @@ export function recordQuizAttempt(userId: string, attempt: QuizAttempt, eraName:
   return { progress: p, newAchievements };
 }
 
+/** A passing Clio lesson analysis: bonus XP + achievement counters. */
+export function recordAnalysisResult(userId: string, lessonTitle: string, grade: string, score: number): { progress: UserProgress; newAchievements: Achievement[] } {
+  const p = loadProgress(userId);
+  p.analysisPasses = (p.analysisPasses ?? 0) + 1;
+  p.analysisBestScore = Math.max(p.analysisBestScore ?? 0, score);
+  p.xp += XP_REWARDS.ANALYSIS_PASS; p.level = calculateLevel(p.xp);
+  addActivity(p, { type: 'lesson_complete', title: `Analysis passed: ${lessonTitle} (${grade})`, xpGained: XP_REWARDS.ANALYSIS_PASS, timestamp: new Date().toISOString() });
+  updateStreak(p);
+  const newAchievements = unlockAchievements(p);
+  saveProgress(p);
+  return { progress: p, newAchievements };
+}
+
 export function recordAiMessage(userId: string): { progress: UserProgress; newAchievements: Achievement[] } {
   const p = loadProgress(userId);
   p.aiMessageCount = (p.aiMessageCount ?? 0) + 1;

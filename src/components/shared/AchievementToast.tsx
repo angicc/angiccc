@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, BookOpen, GraduationCap, Award, Trophy, Flame, Zap, Star, MessageSquare, Map } from 'lucide-react';
+import {
+  X, BookOpen, GraduationCap, Award, Trophy, Flame, Zap, Star, MessageSquare, Map,
+  BookMarked, Scroll, Library, Landmark, Globe, Crown, Medal, Shield, Gem, Sparkles,
+  Diamond, Brain, Footprints, Church, Compass, Swords, Feather, PenTool, Quote, Scale, BadgeCheck,
+} from 'lucide-react';
 import type { Achievement } from '@/types';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getTranslatedAchievement } from '@/i18n/achievementTranslations';
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   BookOpen, GraduationCap, Award, Trophy, Flame, Zap, Star, MessageSquare, Map,
+  BookMarked, Scroll, Library, Landmark, Globe, Crown, Medal, Shield, Gem, Sparkles,
+  Diamond, Brain, Footprints, Church, Compass, Swords, Feather, PenTool, Quote, Scale, BadgeCheck,
 };
 
 export function AchievementToast({ achievements, onDone }: { achievements: Achievement[]; onDone: () => void }) {

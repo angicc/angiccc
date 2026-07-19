@@ -28,6 +28,7 @@ export interface UserProgress {
   quizScores: Record<string, number>; achievements: string[];
   recentActivity: ActivityEvent[]; aiMessageCount: number;
   videoXp?: number; debateWins?: number;
+  analysisPasses?: number; analysisBestScore?: number;
 }
 export interface ActivityEvent {
   type: 'lesson_complete' | 'quiz_complete' | 'achievement_unlock' | 'ai_chat';
@@ -68,5 +69,8 @@ export type AchievementCondition =
   | { type: 'all_eras_started' } | { type: 'ai_messages'; count: number }
   | { type: 'all_quizzes_perfect' } | { type: 'quizzes_perfect_count'; count: number }
   | { type: 'era_lessons_complete'; eraId: EraId; count: number }
-  | { type: 'debate_wins'; count: number };
+  | { type: 'debate_wins'; count: number }
+  | { type: 'analysis_passes'; count: number }
+  | { type: 'analysis_aplus' }
+  | { type: 'all_lessons_complete' };
 export interface Achievement { id: string; title: string; description: string; icon: string; xpBonus: number; condition: AchievementCondition; }
