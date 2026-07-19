@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Lock, HelpCircle, Clock, Star, CheckCircle2 } from 'lucide-react';
+import { Lock, HelpCircle, Clock, Star, CheckCircle2, Hourglass } from 'lucide-react';
 import { getLessonTheme } from '@/lib/lessonTheme';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
@@ -15,6 +15,7 @@ import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { ERAS } from '@/features/content/erasData';
 import { LESSONS } from '@/features/content/lessonsData';
 import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslations';
+import { getLessonLock, useCooldownRemaining, formatCooldown } from '@/features/progress/analysisGate';
 
 const ERA_PHOTOS: Record<string, string> = {
   prehistoric:   'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?auto=format&fit=crop&w=700&q=60',
@@ -29,10 +30,13 @@ const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.12 } }
 const card = { hidden: { opacity: 0, y: 20, scale: 0.985 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } } };
 
 export default function ErasPage() {
-  const { progress } = useAuth();
+  const { currentUser, progress } = useAuth();
   const { canLesson } = useSubscription();
   const { t, language } = useLanguage();
   const navigate = useNavigate();
+  // Ticks once per second while the 30-minute post-lesson cooldown runs, so
+  // hourglass locks below release live without a reload.
+  const cooldownMs = useCooldownRemaining(currentUser?.id);
 
   return (
     <AppShell>
@@ -101,7 +105,15 @@ export default function ErasPage() {
                     {/* Lesson list */}
                     <div className="space-y-2">
                       {eraLessons.map(lesson => {
-                        const locked = !canLesson(lesson.order);
+                        // A lesson row can be sealed by subscription tier OR by
+                        // the progression gate (analysis owed on the previous
+                        // lesson / 30-minute reflection cooldown running).
+                        const subLocked = !canLesson(lesson.order);
+                        const gateLock = currentUser
+                          ? getLessonLock(currentUser.id, lesson, progress?.completedLessons ?? [])
+                          : { locked: false, reason: null as null };
+                        const locked = subLocked || gateLock.locked;
+                        const cooldownLocked = !subLocked && gateLock.reason === 'cooldown';
                         const complete = progress?.completedLessons.includes(lesson.id);
                         const theme = getLessonTheme(lesson);
                         return (
@@ -125,7 +137,9 @@ export default function ErasPage() {
                             )}
                             <div className="shrink-0">
                               {locked ? (
-                                <Lock className="w-4 h-4 text-muted-foreground" />
+                                cooldownLocked
+                                  ? <Hourglass className="w-4 h-4 text-amber-400/80" />
+                                  : <Lock className="w-4 h-4 text-muted-foreground" />
                               ) : complete ? (
                                 <CheckCircle2 className="w-4 h-4 text-primary" />
                               ) : (
@@ -136,6 +150,11 @@ export default function ErasPage() {
                               {getTranslatedLesson(lesson, language).title}
                             </span>
                             <div className="flex items-center gap-3 shrink-0 text-xs text-muted-foreground">
+                              {cooldownLocked && (
+                                <span className="flex items-center gap-1 text-amber-400/90 font-medium tabular-nums">
+                                  <Hourglass className="w-3 h-3" />{formatCooldown(cooldownMs)}
+                                </span>
+                              )}
                               <span className="flex items-center gap-1">
                                 <Clock className="w-3 h-3" />{lesson.estimatedMinutes}m
                               </span>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Telescope } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Telescope, Lock, Hourglass, ScrollText } from 'lucide-react';
 import { getLessonTheme, type LessonTheme } from '@/lib/lessonTheme';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
@@ -13,7 +13,11 @@ import { XPBadge } from '@/components/shared/XPBadge';
 import { AchievementToast } from '@/components/shared/AchievementToast';
 import { useAuth } from '@/features/auth/AuthContext';
 import type { Achievement } from '@/types';
-import { markLessonComplete } from '@/features/progress/progressStore';
+import { markLessonComplete, addBonusXp } from '@/features/progress/progressStore';
+import { ClioAnalysisGate } from '@/features/progress/ClioAnalysisGate';
+import {
+  isAnalysisPassed, startCooldown, getLessonLock, useCooldownRemaining, formatCooldown,
+} from '@/features/progress/analysisGate';
 import { getLessonById, getEraLessons } from '@/features/content/lessonsData';
 import { getEraById } from '@/features/content/erasData';
 import { getTranslatedLesson, getTranslatedEra } from '@/i18n/contentTranslations';
@@ -163,13 +167,29 @@ function LessonBanner({
   );
 }
 
+// Progression-gate microcopy in all six UI languages (local to this page,
+// same pattern as DEEP_DIVE_LABEL below).
+const GATE_LABELS: Record<string, { analysisNeeded: string; submitAnalysis: string; cooldownShort: string; lockedTitle: string; lockedAnalysis: string; lockedCooldown: string; backToEra: string }> = {
+  en: { analysisNeeded: 'Analysis required', submitAnalysis: 'Submit analysis', cooldownShort: 'Cooldown', lockedTitle: 'This lesson is still sealed', lockedAnalysis: 'Pass the written analysis of the previous lesson (grade B or better) to open it.', lockedCooldown: 'Your 30-minute reflection period is still running.', backToEra: 'Back to eras' },
+  es: { analysisNeeded: 'Análisis requerido', submitAnalysis: 'Enviar análisis', cooldownShort: 'Espera', lockedTitle: 'Esta lección sigue sellada', lockedAnalysis: 'Aprueba el análisis escrito de la lección anterior (nota B o mejor) para abrirla.', lockedCooldown: 'Tu período de reflexión de 30 minutos sigue en curso.', backToEra: 'Volver a las eras' },
+  ru: { analysisNeeded: 'Требуется анализ', submitAnalysis: 'Отправить анализ', cooldownShort: 'Пауза', lockedTitle: 'Этот урок ещё запечатан', lockedAnalysis: 'Сдайте письменный анализ предыдущего урока (оценка B или выше), чтобы открыть его.', lockedCooldown: 'Ваш 30-минутный период осмысления ещё идёт.', backToEra: 'К эпохам' },
+  mk: { analysisNeeded: 'Потребна е анализа', submitAnalysis: 'Испрати анализа', cooldownShort: 'Пауза', lockedTitle: 'Оваа лекција е сè уште запечатена', lockedAnalysis: 'Положи ја писмената анализа на претходната лекција (оценка B или подобра) за да ја отвориш.', lockedCooldown: 'Твојот 30-минутен период на размислување сè уште трае.', backToEra: 'Назад кон ерите' },
+  de: { analysisNeeded: 'Analyse erforderlich', submitAnalysis: 'Analyse einreichen', cooldownShort: 'Wartezeit', lockedTitle: 'Diese Lektion ist noch versiegelt', lockedAnalysis: 'Bestehe die schriftliche Analyse der vorherigen Lektion (Note B oder besser), um sie zu öffnen.', lockedCooldown: 'Deine 30-minütige Reflexionsphase läuft noch.', backToEra: 'Zurück zu den Epochen' },
+  fr: { analysisNeeded: 'Analyse requise', submitAnalysis: "Soumettre l'analyse", cooldownShort: 'Attente', lockedTitle: 'Cette leçon est encore scellée', lockedAnalysis: "Réussis l'analyse écrite de la leçon précédente (note B ou mieux) pour l'ouvrir.", lockedCooldown: 'Ta période de réflexion de 30 minutes est encore en cours.', backToEra: 'Retour aux ères' },
+};
+
 export default function LessonPage() {
   const { t, language } = useLanguage();
   const { eraId, lessonId } = useParams<{ eraId: string; lessonId: string }>();
-  const { currentUser, refreshProgress } = useAuth();
+  const { currentUser, progress, refreshProgress } = useAuth();
   const navigate = useNavigate();
   const [xpAmt, setXpAmt] = useState(0);
   const [completed, setCompleted] = useState(false);
+  const [gateOpen, setGateOpen] = useState(false);
+  const [analysisDone, setAnalysisDone] = useState(() =>
+    currentUser && lessonId ? isAnalysisPassed(currentUser.id, lessonId) : false
+  );
+  const cooldownMs = useCooldownRemaining(currentUser?.id);
   const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
   const [bookmarked, setBookmarked] = useState(() =>
     currentUser && lessonId ? isBookmarked(currentUser.id, lessonId) : false
@@ -184,6 +204,18 @@ export default function LessonPage() {
     window.scrollTo(0, 0);
   }, [lessonId]);
 
+  // Re-sync per-lesson state when navigating between lessons: this component
+  // stays mounted across "Next Lesson" navigation, so `completed`, the gate,
+  // and the analysis flag must be re-derived for the new lesson id.
+  useEffect(() => {
+    if (!currentUser || !lessonId) return;
+    setCompleted(progress?.completedLessons.includes(lessonId) ?? false);
+    setAnalysisDone(isAnalysisPassed(currentUser.id, lessonId));
+    setGateOpen(false);
+    setBookmarked(isBookmarked(currentUser.id, lessonId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lessonId, currentUser?.id]);
+
   const rawLesson = getLessonById(lessonId ?? '');
   const lesson = rawLesson ? getTranslatedLesson(rawLesson, language) : undefined;
   const eraRaw = getEraById(eraId ?? '');
@@ -196,9 +228,44 @@ export default function LessonPage() {
   const prev = idx > 0 ? eraLessons[idx - 1] : null;
   const next = idx < eraLessons.length - 1 ? eraLessons[idx + 1] : null;
 
+  // Progression gate: is THIS lesson sealed (deep link into a locked lesson),
+  // and is the NEXT lesson sealed (analysis owed / cooldown running)? Both
+  // re-evaluate every render — the cooldown hook ticks once per second, so
+  // countdowns and lock releases surface live without a reload.
+  const gl = GATE_LABELS[language] ?? GATE_LABELS.en;
+  const completedIds = progress?.completedLessons ?? [];
+  const selfLock = currentUser && rawLesson ? getLessonLock(currentUser.id, rawLesson, completedIds) : null;
+  const nextRaw = next ? eraLessonsRaw[idx + 1] : null;
+  const nextLock = currentUser && nextRaw ? getLessonLock(currentUser.id, nextRaw, completedIds) : null;
+
+  if (selfLock?.locked) {
+    return (
+      <AppShell>
+        <div className="max-w-md mx-auto text-center py-24 space-y-5">
+          <div className="mx-auto w-16 h-16 rounded-full border border-amber-400/30 bg-amber-500/10 flex items-center justify-center">
+            {selfLock.reason === 'cooldown'
+              ? <Hourglass className="w-7 h-7 text-amber-400" />
+              : <Lock className="w-7 h-7 text-amber-400" />}
+          </div>
+          <h1 className="font-heading text-2xl font-bold">{gl.lockedTitle}</h1>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            {selfLock.reason === 'cooldown' ? gl.lockedCooldown : gl.lockedAnalysis}
+          </p>
+          {selfLock.reason === 'cooldown' && (
+            <p className="font-heading text-3xl font-bold text-amber-400 tabular-nums">{formatCooldown(cooldownMs)}</p>
+          )}
+          <Button variant="outline" onClick={() => navigate('/eras')}>{gl.backToEra}</Button>
+        </div>
+      </AppShell>
+    );
+  }
+
   function handleComplete() {
     if (!currentUser || completed || !lesson) return;
     const { newAchievements } = markLessonComplete(currentUser.id, lesson.id, lesson.title);
+    // Completion opens the 30-minute reflection window and summons Clio's
+    // analysis gate — the next lesson stays sealed until a B-or-better pass.
+    startCooldown(currentUser.id);
     refreshProgress();
     setXpAmt(lesson.xpReward);
     setCompleted(true);
@@ -207,6 +274,27 @@ export default function LessonPage() {
     if (newAchievements.length > 0) {
       setUnlockedAchievements(newAchievements);
       confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff','#fde68a'] });
+    }
+    if (!isAnalysisPassed(currentUser.id, lesson.id)) setGateOpen(true);
+  }
+
+  function handleAnalysisPassed(v: import('@/features/progress/analysisGrader').AnalysisVerdict) {
+    if (!currentUser || !lesson) return;
+    setAnalysisDone(true);
+    const { newAchievements } = addBonusXp(currentUser.id, 60, `Analysis passed: ${lesson.title} (${v.grade})`);
+    refreshProgress();
+    setXpAmt(60);
+    if (newAchievements.length > 0) setUnlockedAchievements(newAchievements);
+  }
+
+  function handleNextLocked() {
+    if (!nextLock) return;
+    if (nextLock.reason === 'analysis' && nextLock.blockingLessonId === lesson?.id) {
+      setGateOpen(true);
+    } else if (nextLock.reason === 'analysis') {
+      toast.info(gl.lockedAnalysis);
+    } else {
+      toast.info(`${gl.lockedCooldown} ${formatCooldown(cooldownMs)}`);
     }
   }
 
@@ -292,7 +380,15 @@ export default function LessonPage() {
                 <CheckCircle className="w-4 h-4" />{completed ? t.lesson_already_done : t.lesson_complete_btn}
               </Button>
               {next
-                ? <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${next.id}`)}>{ t.btn_next}<ArrowRight className="w-4 h-4" /></Button>
+                ? nextLock?.locked
+                  ? (
+                    <Button variant="outline" size="sm" className="gap-2 border-amber-400/30 text-amber-300 hover:bg-amber-400/10" onClick={handleNextLocked}>
+                      {nextLock.reason === 'cooldown'
+                        ? <><Hourglass className="w-4 h-4" /><span className="tabular-nums">{formatCooldown(cooldownMs)}</span></>
+                        : <><Lock className="w-4 h-4" />{gl.analysisNeeded}</>}
+                    </Button>
+                  )
+                  : <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${next.id}`)}>{ t.btn_next}<ArrowRight className="w-4 h-4" /></Button>
                 : <Button variant="outline" size="sm" onClick={() => navigate(`/eras/${eraId}/quiz`)}>{t.lesson_take_quiz}</Button>}
             </div>
           </div>
@@ -316,6 +412,11 @@ export default function LessonPage() {
                 keeping the vertical rhythm balanced after the Historical Map
                 node was removed. */}
             <div className="flex flex-col gap-2.5">
+              {completed && !analysisDone && (
+                <Button size="sm" className="w-full gap-2 h-9 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-semibold" onClick={() => setGateOpen(true)}>
+                  <ScrollText className="w-4 h-4" />{gl.submitAnalysis}
+                </Button>
+              )}
               <Button variant="outline" size="sm" className="w-full gap-2 h-9" onClick={() => navigate(`/tutor?context=${encodeURIComponent(lesson.title)}`)}>
                 <MessageSquare className="w-4 h-4" />{t.lesson_discuss}
               </Button>
@@ -331,6 +432,15 @@ export default function LessonPage() {
           </div>
         </div>
       </div>
+      {currentUser && (
+        <ClioAnalysisGate
+          open={gateOpen}
+          lesson={lesson}
+          userId={currentUser.id}
+          onClose={() => setGateOpen(false)}
+          onPassed={handleAnalysisPassed}
+        />
+      )}
     </AppShell>
   );
 }
