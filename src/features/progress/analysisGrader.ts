@@ -6,6 +6,7 @@
 // never brick the learner's path forward.
 import type { Lesson } from '@/types';
 import { streamChatResponse } from '@/services/aiGateway';
+import { safeJsonParse } from '@/lib/safeJsonParse';
 import { type AnalysisGrade, PASS_SCORE, countWords } from './analysisGate';
 
 export interface AnalysisVerdict {
@@ -46,21 +47,6 @@ Be a demanding examiner: a generic summary with no analytical reasoning must sco
 Respond with RAW JSON ONLY, no prose before or after, exactly this shape:
 {"score": <integer 0-100>, "feedback": "<2-3 sentence verdict in the student's language>", "strengths": ["<short point>", "<short point>"], "improvements": ["<short point>", "<short point>"]}`;
 
-/** Pull the first balanced JSON object out of a model reply, tolerating stray prose. */
-function extractJson(text: string): unknown {
-  const start = text.indexOf('{');
-  if (start === -1) throw new Error('no JSON');
-  let depth = 0;
-  for (let i = start; i < text.length; i++) {
-    if (text[i] === '{') depth++;
-    else if (text[i] === '}') {
-      depth--;
-      if (depth === 0) return JSON.parse(text.slice(start, i + 1));
-    }
-  }
-  throw new Error('unbalanced JSON');
-}
-
 const asStrings = (v: unknown, max: number): string[] =>
   Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string' && x.trim().length > 0).slice(0, max) : [];
 
@@ -71,7 +57,9 @@ async function gradeWithAi(text: string, lesson: Lesson): Promise<AnalysisVerdic
     undefined,
     GRADER_SYSTEM(lesson)
   )) full += chunk;
-  const raw = extractJson(full) as { score?: unknown; feedback?: unknown; strengths?: unknown; improvements?: unknown };
+  // Shared repair-tolerant parser: handles the student's own quoted text echoed
+  // verbatim into feedback, truncated streams, and markdown fences.
+  const raw = safeJsonParse<{ score?: unknown; feedback?: unknown; strengths?: unknown; improvements?: unknown }>(full);
   const score = Math.max(0, Math.min(100, Math.round(Number(raw.score))));
   if (!Number.isFinite(score)) throw new Error('bad score');
   return {
