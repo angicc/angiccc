@@ -79,6 +79,10 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   'prehistoric-01': fp('Human_evolution_scheme.gif'),      // human evolution animation
   'prehistoric-04': fp('Spreading_homo_sapiens_ver2.gif'), // Out-of-Africa migration animation
   'prehistoric-07': fp('Mammuthus_trogontherii_-_animation.gif'), // mammoth
+  // Curriculum Expansion II banners (Wikimedia Commons animated GIFs)
+  'prehistoric-21': fp('Berezovsk_stegosaur_(walking).gif'),      // walking stegosaur — Age of Dinosaurs
+  'prehistoric-22': fp('Mammuthus_trogontherii_-_animation.gif'), // woolly mammoth — the Ice Ages
+  'modern-21': fp('AnimApolloLaunch,16mm.gif'),                   // Apollo/Saturn V launch — the Space Age
 };
 
 /** Wikimedia Special:FilePath resolves a file by name, avoiding hash-path rot. */
