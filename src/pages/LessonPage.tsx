@@ -20,7 +20,8 @@ import {
 } from '@/features/progress/analysisGate';
 import { getLessonById, getEraLessons } from '@/features/content/lessonsData';
 import { getEraById } from '@/features/content/erasData';
-import { getTranslatedLesson, getTranslatedEra } from '@/i18n/contentTranslations';
+import { getTranslatedLesson, getTranslatedEra, hasStaticLessonTranslation } from '@/i18n/contentTranslations';
+import { translateLessonBodies } from '@/i18n/dynamicLessonTranslation';
 import { LESSON_DEEP_DIVES } from '@/i18n/lessonDeepDives';
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
@@ -217,6 +218,17 @@ export default function LessonPage() {
   }, [lessonId, currentUser?.id]);
 
   const rawLesson = getLessonById(lessonId ?? '');
+
+  // Translate this lesson's long body paragraphs on demand for non-English
+  // languages when it has no hand-authored translation. Cached after the first
+  // open; the LanguageProvider re-renders the page as each section lands.
+  useEffect(() => {
+    if (!rawLesson || language === 'en') return;
+    if (hasStaticLessonTranslation(rawLesson.id)) return;
+    void translateLessonBodies(rawLesson, language);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rawLesson?.id, language]);
+
   const lesson = rawLesson ? getTranslatedLesson(rawLesson, language) : undefined;
   const eraRaw = getEraById(eraId ?? '');
   const era = eraRaw ? getTranslatedEra(eraRaw, language) : eraRaw;

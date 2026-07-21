@@ -137,7 +137,8 @@ function localeDirective(): string {
 export async function* streamChatResponse(
   messages: { role: 'user' | 'assistant'; content: string }[],
   lessonContext?: string,
-  systemOverride?: string
+  systemOverride?: string,
+  maxTokens = 1024
 ): AsyncGenerator<string> {
   const key  = clientKey();
   const mode: GatewayMode = key ? 'direct' : 'proxy';
@@ -160,7 +161,7 @@ export async function* streamChatResponse(
     res = await fetch(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ model: MODEL, max_tokens: 1024, system, messages: trimmedMessages, stream: true }),
+      body: JSON.stringify({ model: MODEL, max_tokens: maxTokens, system, messages: trimmedMessages, stream: true }),
     });
   } catch {
     // fetch itself threw → offline / DNS / CORS. Always retryable.

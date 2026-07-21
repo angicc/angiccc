@@ -10,6 +10,7 @@ import { PREHISTORIC_BODY_TRANS } from './prehistoricBodies';
 import { BYZANTINE_ERA_TRANS, BYZANTINE_LESSON_TRANS } from './byzantineTranslations';
 import { BYZANTINE_BODY_TRANS } from './byzantineBodies';
 import { LESSON_DEEP_DIVES } from './lessonDeepDives';
+import { getCachedLessonTranslation } from './dynamicLessonTranslation';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -275,19 +276,45 @@ export function getTranslatedLesson<T extends { id: string; title: string; subti
   }
 
   const trans = LESSON_TRANS[lesson.id]?.[lang as ContentLang];
-  // Base sections: translated if we have a translation, else the English source.
+  // Runtime fallback: for lessons with no hand-authored translation, use any
+  // AI-translated text cached in the browser (see dynamicLessonTranslation.ts).
+  const dyn = trans ? null : getCachedLessonTranslation(lesson.id, lang);
+
+  // Base sections: static translation first, then cached AI translation, then
+  // the English source — always the same section count and order.
   const baseSections = trans
     ? lesson.sections.map((s, i) => ({
         ...s,
         heading: trans.sectionHeadings[i] ?? s.heading,
         body: BODY_TRANS[lesson.id]?.[lang as ContentLang]?.[i] ?? s.body,
       }))
-    : lesson.sections.map(s => ({ ...s }));
+    : lesson.sections.map((s, i) => ({
+        ...s,
+        heading: dyn?.h?.[i] ?? s.heading,
+        body: dyn?.b?.[i] ?? s.body,
+      }));
   const sections = diveSection
     ? [...baseSections, { heading: diveSection.heading, body: diveSection.body }]
     : baseSections;
 
-  return trans
-    ? { ...lesson, title: trans.title, subtitle: trans.subtitle, keyFacts: trans.keyFacts, sections }
-    : { ...lesson, sections };
+  if (trans) {
+    return { ...lesson, title: trans.title, subtitle: trans.subtitle, keyFacts: trans.keyFacts, sections };
+  }
+  if (dyn) {
+    return {
+      ...lesson,
+      title: dyn.t ?? lesson.title,
+      subtitle: dyn.s ?? lesson.subtitle,
+      keyFacts: dyn.k ?? lesson.keyFacts,
+      sections,
+    };
+  }
+  return { ...lesson, sections };
+}
+
+/** True when a lesson has hand-authored static translations (lessons 01–09 per
+ *  era). The runtime AI layer only needs to translate lessons for which this is
+ *  false. Language-agnostic: static entries always ship all content languages. */
+export function hasStaticLessonTranslation(id: string): boolean {
+  return LESSON_TRANS[id] !== undefined;
 }
