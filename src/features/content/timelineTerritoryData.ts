@@ -1428,6 +1428,130 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
       { name: 'Calcutta', type: 'city', lat: 22.57, lng: 88.36, note: 'Gandhi\'s fast against partition violence', year: 1947 },
     ],
   },
+
+  // ══════════════════════════════════════════════════════
+  // CURRICULUM EXPANSION II — world-history territories
+  // Coordinates for cities are real modern positions; empire extents are traced
+  // from sourced historical descriptions of each realm's greatest reach.
+  // ══════════════════════════════════════════════════════
+  {
+    id: 'olmec-mesoamerica',
+    era: 'ancient',
+    period: '1200–400 BCE',
+    yearRange: [-1200, -400],
+    center: [17.9, -94.6],
+    zoom: 7,
+    title: 'The Olmec — Mother Culture of the Americas',
+    titleI18n: { es: 'Los olmecas — la cultura madre de América', ru: 'Ольмеки — материнская культура Америки', mk: 'Олмеките — мајката-култура на Америка' },
+    description: 'The Olmec heartland on the Gulf coast of Mexico (Veracruz and Tabasco), where the first Mesoamerican civilization raised colossal stone heads and seeded the traditions the Maya and Aztec would inherit.',
+    polygons: [
+      {
+        label: 'Olmec Heartland (Gulf Coast)',
+        color: '#84cc16',
+        fillOpacity: 0.22,
+        coords: [
+          [18.55,-96.10],[18.70,-95.00],[18.45,-93.80],[17.95,-93.15],
+          [17.35,-93.60],[17.30,-94.65],[17.65,-95.60],[18.15,-96.25],[18.55,-96.10],
+        ],
+      },
+    ],
+    markers: [
+      { name: 'San Lorenzo', type: 'capital', lat: 17.75, lng: -94.73, note: 'Earliest great Olmec center — colossal heads carved by ~1200 BCE', year: -1200 },
+      { name: 'La Venta', type: 'capital', lat: 18.10, lng: -94.03, note: 'Great clay pyramid and jade offerings (~900 BCE)', year: -900 },
+      { name: 'Tres Zapotes', type: 'city', lat: 18.47, lng: -95.44, note: 'Late Olmec center — early Long Count calendar nearby', year: -400 },
+      { name: 'Laguna de los Cerros', type: 'city', lat: 18.03, lng: -95.03, note: 'Olmec center near the basalt sources of the Tuxtla Mountains', year: -800 },
+    ],
+  },
+  {
+    id: 'khmer-empire',
+    era: 'medieval',
+    period: '802–1431 CE',
+    yearRange: [802, 1431],
+    center: [14, 104],
+    zoom: 5,
+    title: 'The Khmer Empire & Angkor',
+    titleI18n: { es: 'El Imperio jemer y Angkor', ru: 'Кхмерская империя и Ангкор', mk: 'Кмерската империја и Ангкор' },
+    description: 'The Khmer Empire near its greatest extent under Jayavarman VII (c. 1200), reaching into modern Laos, Thailand, and the Malay Peninsula — ruled from Angkor, the largest city of the pre-industrial world.',
+    polygons: [
+      {
+        label: 'Khmer Empire (c. 1200)',
+        color: '#14b8a6',
+        fillOpacity: 0.22,
+        coords: [
+          [18.4,102.4],[17.5,105.4],[16.0,107.4],[13.6,109.2],[10.6,106.6],
+          [9.6,104.5],[11.4,102.4],[13.9,99.6],[16.0,99.2],[17.6,100.6],[18.4,102.4],
+        ],
+      },
+    ],
+    markers: [
+      { name: 'Angkor', type: 'capital', lat: 13.44, lng: 103.86, note: 'Angkor Thom and the Bayon — capital of Jayavarman VII', year: 1181 },
+      { name: 'Angkor Wat', type: 'landmark', lat: 13.41, lng: 103.87, note: 'Largest religious monument on Earth (early 12th c.)', year: 1150 },
+      { name: 'Hariharalaya', type: 'city', lat: 13.35, lng: 103.97, note: 'Early Khmer capital at Roluos', year: 802 },
+      { name: 'Phimai', type: 'landmark', lat: 15.22, lng: 102.49, note: 'Great Khmer temple in the Khorat plateau (now Thailand)', year: 1100 },
+      { name: 'Wat Phu', type: 'landmark', lat: 14.85, lng: 105.82, note: 'Mountain temple in southern Laos', year: 1080 },
+      { name: 'Vijaya', type: 'battle', lat: 13.90, lng: 109.10, note: 'Champa capital sacked by the Khmer (1177–1203)', year: 1190 },
+      { name: 'Lopburi', type: 'city', lat: 14.80, lng: 100.62, note: 'Khmer provincial center in central Thailand', year: 1100 },
+    ],
+  },
+  {
+    id: 'songhai-empire',
+    era: 'early-modern',
+    period: '1464–1591 CE',
+    yearRange: [1464, 1591],
+    center: [16.5, -2],
+    zoom: 4,
+    title: 'The Songhai Empire',
+    titleI18n: { es: 'El Imperio songhai', ru: 'Империя Сонгай', mk: 'Царството Сонгај' },
+    description: 'The largest empire in West African history at its height (c. 1500), spanning the Sahel from the Atlantic to central Niger and controlling the trans-Saharan gold and salt trade from Gao, Timbuktu, and Djenné.',
+    polygons: [
+      {
+        label: 'Songhai Empire (c. 1500)',
+        color: '#eab308',
+        fillOpacity: 0.22,
+        coords: [
+          [17.6,-16.2],[18.6,-6.0],[19.0,2.0],[18.0,8.6],[15.6,9.6],
+          [12.6,6.2],[12.0,-1.0],[12.6,-8.0],[13.6,-12.0],[14.3,-16.6],[17.6,-16.2],
+        ],
+      },
+    ],
+    routes: [
+      { name: 'Trans-Saharan gold & salt road', nameI18n: { es: 'Ruta transahariana del oro y la sal', ru: 'Транссахарский путь золота и соли', mk: 'Транссахарски пат на злато и сол' }, type: 'trade', color: '#eab308', points: [[13.91,-4.55],[16.77,-3.01],[20.0,-4.0],[23.6,-5.0]] },
+    ],
+    markers: [
+      { name: 'Gao', type: 'capital', lat: 16.27, lng: -0.04, note: 'Capital on the Niger — seat of Sonni Ali and Askia the Great', year: 1464 },
+      { name: 'Timbuktu', type: 'city', lat: 16.77, lng: -3.01, note: 'City of books — University of Sankore and vast libraries', year: 1468 },
+      { name: 'Djenné', type: 'city', lat: 13.91, lng: -4.55, note: 'Great mud-brick mosque and river trade hub (taken 1475)', year: 1475 },
+      { name: 'Walata', type: 'city', lat: 17.30, lng: -7.03, note: 'Saharan caravan town on the desert trade routes', year: 1480 },
+      { name: 'Taghaza', type: 'resource', lat: 23.60, lng: -5.00, note: 'Saharan salt mines — salt traded nearly ounce-for-ounce with gold', year: 1500 },
+      { name: 'Agadez', type: 'city', lat: 16.97, lng: 7.99, note: 'Eastern sultanate and trade gateway to the Aïr', year: 1500 },
+      { name: 'Tondibi', type: 'battle', lat: 16.45, lng: -0.20, note: 'Moroccan gunpowder shatters Songhai (1591) — the empire falls', year: 1591 },
+    ],
+  },
+  {
+    id: 'polynesian-expansion',
+    era: 'early-modern',
+    period: '1000–1500 CE',
+    yearRange: [1000, 1500],
+    center: [-12, -155],
+    zoom: 3,
+    title: 'Voyagers of the Pacific',
+    titleI18n: { es: 'Navegantes del Pacífico', ru: 'Мореплаватели Тихого океана', mk: 'Морепловците на Пацификот' },
+    description: 'The Polynesian settlement of the vast Pacific — the last great human colonization of the Earth. Using only the stars, swells, and birds, voyagers reached every corner of the Polynesian Triangle: Hawaii, Rapa Nui, and Aotearoa.',
+    routes: [
+      { name: 'Voyage north to Hawaii', nameI18n: { es: 'Viaje al norte a Hawái', ru: 'Путь на север к Гавайям', mk: 'Пат на север кон Хаваи' }, type: 'trade', color: '#22d3ee', points: [[-13.76,-172.10],[-9.78,-139.06],[5.0,-152.0],[19.60,-155.50]] },
+      { name: 'Voyage east to Rapa Nui', nameI18n: { es: 'Viaje al este a Rapa Nui', ru: 'Путь на восток к Рапа-Нуи', mk: 'Пат на исток кон Рапа Нуи' }, type: 'trade', color: '#a78bfa', points: [[-17.65,-149.43],[-23.0,-129.0],[-27.11,-109.35]] },
+      { name: 'Voyage south to Aotearoa', nameI18n: { es: 'Viaje al sur a Aotearoa', ru: 'Путь на юг к Аотеароа', mk: 'Пат на југ кон Аотеароа' }, type: 'trade', color: '#34d399', points: [[-17.65,-149.43],[-21.23,-159.78],[-29.0,-175.0],[-37.80,-185.00]] },
+    ],
+    markers: [
+      { name: 'Samoa', type: 'landmark', lat: -13.76, lng: -172.10, note: 'Ancient homeland of the Polynesians', year: 1000 },
+      { name: 'Tonga', type: 'landmark', lat: -21.18, lng: -175.20, note: 'Seat of a far-reaching Pacific maritime chiefdom', year: 1200 },
+      { name: 'Marquesas', type: 'landmark', lat: -9.78, lng: -139.06, note: 'Springboard for the longest voyages, to Hawaii and beyond', year: 1000 },
+      { name: 'Tahiti (Society Is.)', type: 'port', lat: -17.65, lng: -149.43, note: 'Great voyaging hub of central Polynesia', year: 1100 },
+      { name: 'Hawaii', type: 'landmark', lat: 19.60, lng: -155.50, note: 'Northern apex of the Polynesian Triangle', year: 1000 },
+      { name: 'Rapa Nui (Easter Island)', type: 'landmark', lat: -27.11, lng: -109.35, note: 'Eastern apex — home of the moai statues', year: 1200 },
+      { name: 'Aotearoa (New Zealand)', type: 'landmark', lat: -37.80, lng: 175.00, note: 'Southern apex — last major land settled (~1300), ancestors of the Māori', year: 1300 },
+    ],
+  },
 ].map(topic => {
   // Prefer the high-detail boundary data, then run every ring through the
   // full rectification pipeline: coordinate clamping/wrapping, duplicate-vertex
