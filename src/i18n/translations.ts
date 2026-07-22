@@ -63,7 +63,7 @@ export type TranslationKeys = {
   eras_completed: string; eras_quiz_label: string; eras_lessons_count: string;
   // ── Lesson ─────────────────────────────────────────────────────
   lesson_key_facts: string; lesson_min_read: string; lesson_complete_btn: string;
-  lesson_already_done: string; lesson_next: string; lesson_prev: string;
+  lesson_already_done: string; lesson_next: string; lesson_prev: string; toast_lesson_complete: string; toast_bookmarked: string; toast_bookmark_removed: string;
   lesson_take_quiz: string; lesson_discuss: string; lesson_notes_title: string;
   lesson_bookmarked: string; lesson_save: string; lesson_eras_breadcrumb: string;
   // ── Quiz ───────────────────────────────────────────────────────
@@ -415,7 +415,7 @@ const EN: TranslationKeys = {
     eras_quiz_label: 'Era Quiz', eras_lessons_count: 'lessons',
     // Lesson
     lesson_key_facts: 'Key Facts', lesson_min_read: 'min read',
-    lesson_complete_btn: 'Mark as Complete', lesson_already_done: 'Lesson Complete',
+    lesson_complete_btn: 'Mark as Complete', lesson_already_done: 'Lesson Complete', toast_lesson_complete: 'Lesson complete! +{xp} XP', toast_bookmarked: 'Lesson bookmarked!', toast_bookmark_removed: 'Bookmark removed.',
     lesson_next: 'Next Lesson', lesson_prev: 'Previous Lesson',
     lesson_take_quiz: 'Take Era Quiz', lesson_discuss: 'Discuss with Clio',
     lesson_notes_title: 'My Notes',
@@ -821,7 +821,7 @@ export const T: Translations = {
     eras_view_lessons: 'Ver Lecciones', eras_locked: 'Bloqueado', eras_completed: 'Completado',
     eras_quiz_label: 'Quiz de Era', eras_lessons_count: 'lecciones',
     lesson_key_facts: 'Hechos Clave', lesson_min_read: 'min de lectura',
-    lesson_complete_btn: 'Marcar como Completada', lesson_already_done: 'Lección Completada',
+    lesson_complete_btn: 'Marcar como Completada', lesson_already_done: 'Lección Completada', toast_lesson_complete: '¡Lección completada! +{xp} XP', toast_bookmarked: '¡Lección guardada!', toast_bookmark_removed: 'Marcador eliminado.',
     lesson_next: 'Siguiente Lección', lesson_prev: 'Lección Anterior',
     lesson_take_quiz: 'Hacer Quiz de Era', lesson_discuss: 'Comentar con Clio',
     lesson_notes_title: 'Mis Notas',
@@ -1208,7 +1208,7 @@ export const T: Translations = {
     eras_view_lessons: 'Смотреть Уроки', eras_locked: 'Заблокировано', eras_completed: 'Пройдено',
     eras_quiz_label: 'Викторина', eras_lessons_count: 'уроков',
     lesson_key_facts: 'Ключевые Факты', lesson_min_read: 'мин чтения',
-    lesson_complete_btn: 'Отметить как завершённый', lesson_already_done: 'Урок завершён',
+    lesson_complete_btn: 'Отметить как завершённый', lesson_already_done: 'Урок завершён', toast_lesson_complete: 'Урок завершён! +{xp} XP', toast_bookmarked: 'Урок добавлен в закладки!', toast_bookmark_removed: 'Закладка удалена.',
     lesson_next: 'Следующий Урок', lesson_prev: 'Предыдущий Урок',
     lesson_take_quiz: 'Пройти Викторину', lesson_discuss: 'Обсудить с Клио',
     lesson_notes_title: 'Мои Заметки',
@@ -1595,7 +1595,7 @@ export const T: Translations = {
     eras_view_lessons: 'Прегледај Лекции', eras_locked: 'Заклучено', eras_completed: 'Завршено',
     eras_quiz_label: 'Квиз за епоха', eras_lessons_count: 'лекции',
     lesson_key_facts: 'Клучни факти', lesson_min_read: 'мин читање',
-    lesson_complete_btn: 'Означи како Завршена', lesson_already_done: 'Лекцијата е Завршена',
+    lesson_complete_btn: 'Означи како Завршена', lesson_already_done: 'Лекцијата е Завршена', toast_lesson_complete: 'Лекцијата е завршена! +{xp} XP', toast_bookmarked: 'Лекцијата е зачувана!', toast_bookmark_removed: 'Обележувачот е отстранет.',
     lesson_next: 'Следна Лекција', lesson_prev: 'Претходна Лекција',
     lesson_take_quiz: 'Направи Квиз за Епохата', lesson_discuss: 'Разговарај со Клио',
     lesson_notes_title: 'Мои Белешки',

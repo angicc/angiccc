@@ -275,7 +275,7 @@ export default function LessonPage() {
     refreshProgress();
     setXpAmt(lesson.xpReward);
     setCompleted(true);
-    toast.success(`Lesson complete! +${lesson.xpReward} XP`);
+    toast.success(t.toast_lesson_complete.replace('{xp}', String(lesson.xpReward)));
     confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 }, colors: ['#f59e0b','#fbbf24','#d97706','#ffffff'] });
     if (newAchievements.length > 0) {
       setUnlockedAchievements(newAchievements);
@@ -297,7 +297,7 @@ export default function LessonPage() {
     if (!currentUser || !lesson) return;
     const next = toggleBookmark(currentUser.id, lesson.id);
     setBookmarked(next);
-    toast.success(next ? 'Lesson bookmarked!' : 'Bookmark removed.');
+    toast.success(next ? t.toast_bookmarked : t.toast_bookmark_removed);
   }
 
   return (
