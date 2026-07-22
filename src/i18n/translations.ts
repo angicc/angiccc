@@ -185,7 +185,7 @@ export type TranslationKeys = {
   essay_accuracy: string; essay_argument_quality: string; essay_depth_detail: string;
   essay_overall: string; essay_study_more: string; essay_your_essay: string;
   // ── Progress extended ─────────────────────────────────────────
-  prog_lessons_by_era: string; prog_quiz_by_era: string; prog_knowledge_radar: string;
+  prog_lessons_by_era: string; prog_analysis_title: string; prog_analysis_passes: string; prog_analysis_avg: string; prog_analysis_best: string; prog_analysis_empty: string; prog_time_title: string; prog_time_total: string; prog_momentum_title: string; prog_momentum_active: string; prog_quiz_by_era: string; prog_knowledge_radar: string;
   prog_xp_timeline: string; prog_radar_desc: string; prog_adv_analytics_title: string;
   prog_adv_analytics_desc: string; prog_no_quiz: string; prog_no_xp: string;
   prog_quiz_score_chart: string; prog_xp_activity_graph: string; prog_knowledge_radar_chart: string;
@@ -335,7 +335,7 @@ export type TranslationKeys = {
   studio_practice_score: string; studio_done: string; studio_show_answer: string; studio_next_card: string;
   path_title: string; path_subtitle: string; path_mastery_title: string; path_focus: string;
   path_lessons_done: string; path_quiz_score: string; path_adaptive_acc: string;
-  path_generate: string; path_regenerate: string; path_enhance: string; path_enhancing: string;
+  path_generate: string; path_regenerate: string; path_refresh: string; path_enhance: string; path_enhancing: string;
   path_enhance_upsell: string; path_done_of: string; path_deep_analysis: string;
   path_day: string; path_empty: string;
   path_step_lesson: string; path_step_quiz: string; path_step_smart_quiz: string;
@@ -577,7 +577,7 @@ const EN: TranslationKeys = {
     essay_argument_quality: 'Argument Quality', essay_depth_detail: 'Depth & Detail',
     essay_overall: 'Overall', essay_study_more: 'Study More', essay_your_essay: 'Your Essay',
     // Progress extended
-    prog_lessons_by_era: 'Lessons by Era', prog_quiz_by_era: 'Quiz Scores by Era',
+    prog_lessons_by_era: 'Lessons by Era', prog_analysis_title: "Clio's Analyses", prog_analysis_passes: 'passed', prog_analysis_avg: 'avg. score', prog_analysis_best: 'best grade', prog_analysis_empty: 'Complete a lesson and pass its written analysis to see your record here.', prog_time_title: 'Time Invested', prog_time_total: 'total study time', prog_momentum_title: 'Learning Momentum', prog_momentum_active: 'active days in the last 14', prog_quiz_by_era: 'Quiz Scores by Era',
     prog_knowledge_radar: 'Knowledge Radar', prog_xp_timeline: 'XP Activity Timeline',
     prog_radar_desc: 'Combined lesson completion + quiz score per era',
     prog_adv_analytics_title: 'Advanced Analytics — Pro Learner',
@@ -739,7 +739,7 @@ const EN: TranslationKeys = {
     path_title: 'Study Plan', path_subtitle: 'Your week, engineered around what you most need to learn',
     path_mastery_title: 'Era mastery', path_focus: 'focus',
     path_lessons_done: 'Lessons', path_quiz_score: 'Quiz', path_adaptive_acc: 'Adaptive',
-    path_generate: 'Generate my week', path_regenerate: 'Regenerate week',
+    path_generate: 'Generate my week', path_regenerate: 'Regenerate week', path_refresh: 'Refresh',
     path_enhance: 'Enhance with Clio', path_enhancing: 'Clio is studying your data…',
     path_enhance_upsell: "Clio's coaching notes on your plan are a Master Student exclusive.",
     path_done_of: 'steps done', path_deep_analysis: 'Master analysis', path_day: 'Day',
@@ -967,7 +967,7 @@ export const T: Translations = {
     essay_argument_quality: 'Calidad del Argumento', essay_depth_detail: 'Profundidad y Detalle',
     essay_overall: 'Total', essay_study_more: 'Estudiar Más', essay_your_essay: 'Tu Ensayo',
     // Progress extended
-    prog_lessons_by_era: 'Lecciones por Era', prog_quiz_by_era: 'Puntuaciones de Quiz por Era',
+    prog_lessons_by_era: 'Lecciones por Era', prog_analysis_title: 'Análisis de Clío', prog_analysis_passes: 'aprobados', prog_analysis_avg: 'nota media', prog_analysis_best: 'mejor nota', prog_analysis_empty: 'Completa una lección y aprueba su análisis escrito para ver tu registro aquí.', prog_time_title: 'Tiempo invertido', prog_time_total: 'tiempo total de estudio', prog_momentum_title: 'Impulso de aprendizaje', prog_momentum_active: 'días activos en los últimos 14', prog_quiz_by_era: 'Puntuaciones de Quiz por Era',
     prog_knowledge_radar: 'Radar de Conocimiento', prog_xp_timeline: 'Línea de Tiempo de XP',
     prog_radar_desc: 'Completación de lecciones + puntuación de quiz por era',
     prog_adv_analytics_title: 'Analíticas Avanzadas — Pro Learner',
@@ -1128,7 +1128,7 @@ export const T: Translations = {
     path_title: 'Plan de estudio', path_subtitle: 'Tu semana, diseñada en torno a lo que más necesitas aprender',
     path_mastery_title: 'Dominio por era', path_focus: 'enfoque',
     path_lessons_done: 'Lecciones', path_quiz_score: 'Cuestionario', path_adaptive_acc: 'Adaptativo',
-    path_generate: 'Generar mi semana', path_regenerate: 'Regenerar semana',
+    path_generate: 'Generar mi semana', path_regenerate: 'Regenerar semana', path_refresh: 'Actualizar',
     path_enhance: 'Mejorar con Clío', path_enhancing: 'Clío está estudiando tus datos…',
     path_enhance_upsell: 'Las notas de entrenamiento de Clío sobre tu plan son exclusivas de Master Student.',
     path_done_of: 'pasos completados', path_deep_analysis: 'Análisis Master', path_day: 'Día',
@@ -1354,7 +1354,7 @@ export const T: Translations = {
     essay_argument_quality: 'Качество Аргументации', essay_depth_detail: 'Глубина и Детали',
     essay_overall: 'Итого', essay_study_more: 'Учиться дальше', essay_your_essay: 'Ваше Эссе',
     // Progress extended
-    prog_lessons_by_era: 'Уроки по Эпохам', prog_quiz_by_era: 'Результаты Викторин по Эпохам',
+    prog_lessons_by_era: 'Уроки по Эпохам', prog_analysis_title: 'Анализы Клио', prog_analysis_passes: 'сдано', prog_analysis_avg: 'средний балл', prog_analysis_best: 'лучшая оценка', prog_analysis_empty: 'Завершите урок и сдайте письменный анализ, чтобы увидеть здесь свои результаты.', prog_time_title: 'Вложенное время', prog_time_total: 'всего времени на учёбу', prog_momentum_title: 'Темп обучения', prog_momentum_active: 'активных дней из последних 14', prog_quiz_by_era: 'Результаты Викторин по Эпохам',
     prog_knowledge_radar: 'Радар Знаний', prog_xp_timeline: 'История Активности XP',
     prog_radar_desc: 'Прохождение уроков + результат викторины по эпохам',
     prog_adv_analytics_title: 'Расширенная Аналитика — Pro',
@@ -1515,7 +1515,7 @@ export const T: Translations = {
     path_title: 'План занятий', path_subtitle: 'Ваша неделя, построенная вокруг того, что вам нужнее всего',
     path_mastery_title: 'Освоение эпох', path_focus: 'фокус',
     path_lessons_done: 'Уроки', path_quiz_score: 'Викторина', path_adaptive_acc: 'Адаптивная',
-    path_generate: 'Составить мою неделю', path_regenerate: 'Пересоставить неделю',
+    path_generate: 'Составить мою неделю', path_regenerate: 'Пересоставить неделю', path_refresh: 'Обновить',
     path_enhance: 'Усилить с Клио', path_enhancing: 'Клио изучает ваши данные…',
     path_enhance_upsell: 'Тренерские заметки Клио к вашему плану — эксклюзив Master Student.',
     path_done_of: 'шагов выполнено', path_deep_analysis: 'Анализ Master', path_day: 'День',
@@ -1741,7 +1741,7 @@ export const T: Translations = {
     essay_argument_quality: 'Квалитет на Аргументот', essay_depth_detail: 'Длабочина и Детали',
     essay_overall: 'Вкупно', essay_study_more: 'Учи Повеќе', essay_your_essay: 'Твојот Есеј',
     // Progress extended
-    prog_lessons_by_era: 'Лекции по Епохи', prog_quiz_by_era: 'Резултати по Квизови по Епохи',
+    prog_lessons_by_era: 'Лекции по Епохи', prog_analysis_title: 'Анализите на Клио', prog_analysis_passes: 'положени', prog_analysis_avg: 'просечен резултат', prog_analysis_best: 'најдобра оценка', prog_analysis_empty: 'Заврши лекција и положи ја писмената анализа за да го видиш твојот запис тука.', prog_time_title: 'Вложено време', prog_time_total: 'вкупно време на учење', prog_momentum_title: 'Момент на учење', prog_momentum_active: 'активни денови во последните 14', prog_quiz_by_era: 'Резултати по Квизови по Епохи',
     prog_knowledge_radar: 'Радар на Знаење', prog_xp_timeline: 'Временска Линија на XP Активност',
     prog_radar_desc: 'Комбинирано завршување лекции + резултат на квиз по епоха',
     prog_adv_analytics_title: 'Напредна Аналитика — Pro Learner',
@@ -1902,7 +1902,7 @@ export const T: Translations = {
     path_title: 'План за учење', path_subtitle: 'Твојата недела, изградена околу она што најмногу ти треба',
     path_mastery_title: 'Совладаност по епоха', path_focus: 'фокус',
     path_lessons_done: 'Лекции', path_quiz_score: 'Квиз', path_adaptive_acc: 'Адаптивно',
-    path_generate: 'Состави ми недела', path_regenerate: 'Состави нова недела',
+    path_generate: 'Состави ми недела', path_regenerate: 'Состави нова недела', path_refresh: 'Освежи',
     path_enhance: 'Засили со Клио', path_enhancing: 'Клио ги проучува твоите податоци…',
     path_enhance_upsell: 'Тренерските белешки од Клио кон твојот план се ексклузивни за Master Student.',
     path_done_of: 'чекори завршени', path_deep_analysis: 'Master анализа', path_day: 'Ден',

@@ -46,21 +46,40 @@ export default function StudyPlanPage() {
   const [plan, setPlan] = useState<WeekPlan | null>(() => (currentUser ? loadWeekPlan(currentUser.id) : null));
   const [enhancing, setEnhancing] = useState(false);
   const [error, setError] = useState<unknown>(null);
+  // Bumped by the Refresh button and on window focus: mastery + step completion
+  // read quiz scores and analysis passes straight from localStorage, which the
+  // AuthContext `progress` object doesn't always track — without this tick,
+  // Era Mastery could sit stale until a full reload.
+  const [refreshTick, setRefreshTick] = useState(0);
 
-  // Mastery recomputes whenever progress changes (lesson done, quiz passed...).
+  // Mastery recomputes whenever progress changes (lesson done, quiz passed...)
+  // or a refresh is requested.
   const mastery: MasterySnapshot | null = useMemo(
     () => (currentUser ? computeMastery(currentUser.id) : null),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentUser, progress],
+    [currentUser, progress, refreshTick],
   );
 
   const completion = useMemo(
     () => (currentUser && plan ? stepCompletion(currentUser.id, plan) : {}),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentUser, plan, progress],
+    [currentUser, plan, progress, refreshTick],
   );
 
-  useEffect(() => { if (currentUser) setPlan(loadWeekPlan(currentUser.id)); }, [currentUser]);
+  useEffect(() => { if (currentUser) setPlan(loadWeekPlan(currentUser.id)); }, [currentUser, refreshTick]);
+
+  const refresh = useCallback(() => setRefreshTick(v => v + 1), []);
+
+  // Activity completed on another page/tab (quiz, lesson, flashcards) →
+  // re-derive everything the moment the user comes back to this one.
+  useEffect(() => {
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', refresh);
+    return () => {
+      window.removeEventListener('focus', refresh);
+      document.removeEventListener('visibilitychange', refresh);
+    };
+  }, [refresh]);
 
   const generate = useCallback(() => {
     if (!currentUser || !mastery) return;
@@ -115,6 +134,10 @@ export default function StudyPlanPage() {
               <Badge variant="outline" className="gap-1 text-primary border-primary/40">
                 <TrendingUp className="w-3 h-3" />{mastery.overall}%
               </Badge>
+              <Button variant="outline" size="sm" className="gap-1.5 h-7 px-2.5" onClick={refresh} title={t.path_refresh}>
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline text-xs">{t.path_refresh}</span>
+              </Button>
             </div>
           )}
         </motion.div>

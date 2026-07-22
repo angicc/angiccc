@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { BarChart2, Star, Flame, Trophy, BookOpen, Target, Crown, Lock, TrendingUp, Brain } from 'lucide-react';
+import { BarChart2, Star, Flame, Trophy, BookOpen, Target, Crown, Lock, TrendingUp, Brain, ScrollText, Clock3, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area, RadarChart, Radar, PolarGrid, PolarAngleAxis } from 'recharts';
@@ -15,9 +15,12 @@ import { ACHIEVEMENTS } from '@/features/progress/xpSystem';
 import { QUIZZES } from '@/features/quiz/quizData';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getTranslatedAchievement } from '@/i18n/achievementTranslations';
+import { loadAnalysisState } from '@/features/progress/analysisGate';
 
 const ERA_COLORS: Record<string, string> = {
+  prehistoric: '#fb923c',
   ancient: '#f59e0b',
+  byzantine: '#a78bfa',
   'middle-ages': '#60a5fa',
   'early-modern': '#34d399',
   modern: '#fb7185',
@@ -28,15 +31,19 @@ const fadeUp = { hidden: { opacity: 0, y: 16, scale: 0.985 }, visible: { opacity
 
 export default function ProgressPage() {
   const { t, language } = useLanguage();
-  const { progress } = useAuth();
+  const { currentUser, progress } = useAuth();
   const { subscription } = useSubscription();
   const tier = subscription?.tier ?? 'free';
   const isAdvanced = tier !== 'free';
 
   // Era short names must come from the locale map, never the raw dataset —
-  // otherwise English axis labels leak into translated dashboards.
+  // otherwise English axis labels leak into translated dashboards. All six
+  // eras are mapped explicitly: the old 4-era fallthrough labeled both
+  // Prehistoric and Byzantine as "Modern" on the Lessons-by-Era chart.
   const eraShortName = (eraId: string): string =>
-    eraId === 'ancient' ? t.era_short_ancient
+    eraId === 'prehistoric' ? t.era_short_prehistoric
+    : eraId === 'ancient' ? t.era_short_ancient
+    : eraId === 'byzantine' ? t.era_short_byzantine
     : eraId === 'middle-ages' ? t.era_short_medieval
     : eraId === 'early-modern' ? t.era_short_earlymod
     : t.era_short_modern;
@@ -85,6 +92,48 @@ export default function ProgressPage() {
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, language]);
+
+  // ── New progress types ──────────────────────────────────────────────────
+  // 1. Clio's Analyses: passes, average score, and best grade from the
+  //    written-analysis gate — the intellectual backbone of progression.
+  const analysisStats = useMemo(() => {
+    if (!currentUser) return null;
+    const s = loadAnalysisState(currentUser.id);
+    const records = Object.values(s.passes);
+    if (s.attempts === 0 && records.length === 0) return { passes: 0, attempts: 0, avg: 0, best: '—' };
+    const avg = records.length ? Math.round(records.reduce((sum, r) => sum + r.score, 0) / records.length) : 0;
+    const best = records.length ? records.reduce((a, b) => (b.score > a.score ? b : a)).grade : '—';
+    return { passes: records.length, attempts: s.attempts, avg, best };
+  }, [currentUser, progress]); // progress: re-derive after each completion
+
+  // 2. Time Invested: estimated minutes of every completed lesson, per era.
+  const timeInvested = useMemo(() => {
+    if (!progress) return { total: 0, byEra: [] as { name: string; minutes: number; fill: string }[] };
+    let total = 0;
+    const byEra = ERAS.map(era => {
+      const minutes = LESSONS
+        .filter(l => l.eraId === era.id && progress.completedLessons.includes(l.id))
+        .reduce((sum, l) => sum + l.estimatedMinutes, 0);
+      total += minutes;
+      return { name: eraShortName(era.id), minutes, fill: ERA_COLORS[era.id] };
+    });
+    return { total, byEra };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [progress, language]);
+
+  // 3. Learning Momentum: which of the last 14 days had any XP activity.
+  const momentum = useMemo(() => {
+    if (!progress) return { days: [] as { active: boolean }[], activeCount: 0 };
+    const activeDays = new Set(
+      progress.recentActivity.map(a => new Date(a.timestamp).toDateString())
+    );
+    const days = Array.from({ length: 14 }, (_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - (13 - i));
+      return { active: activeDays.has(d.toDateString()) };
+    });
+    return { days, activeCount: days.filter(d => d.active).length };
+  }, [progress]);
 
   if (!progress) return null;
 
@@ -153,6 +202,95 @@ export default function ProgressPage() {
             </CardContent>
           </Card>
         </motion.div>
+
+        {/* ── New progress types: analyses, time invested, momentum ── */}
+        <div className="grid md:grid-cols-3 gap-4">
+          {/* Clio's Analyses */}
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}>
+            <Card className="h-full">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <ScrollText className="w-4 h-4 text-violet-400" />{t.prog_analysis_title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {analysisStats && (analysisStats.attempts > 0 || analysisStats.passes > 0) ? (
+                  <div className="grid grid-cols-3 gap-3 text-center">
+                    <div>
+                      <div className="text-2xl font-bold font-heading text-violet-300">{analysisStats.passes}</div>
+                      <div className="text-[11px] text-muted-foreground mt-0.5">{t.prog_analysis_passes}</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold font-heading">{analysisStats.avg}%</div>
+                      <div className="text-[11px] text-muted-foreground mt-0.5">{t.prog_analysis_avg}</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold font-heading text-amber-400">{analysisStats.best}</div>
+                      <div className="text-[11px] text-muted-foreground mt-0.5">{t.prog_analysis_best}</div>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-xs text-muted-foreground text-center py-4">{t.prog_analysis_empty}</p>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Time Invested */}
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }}>
+            <Card className="h-full">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <Clock3 className="w-4 h-4 text-emerald-400" />{t.prog_time_title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold font-heading text-center mb-3">
+                  {timeInvested.total >= 60
+                    ? `${Math.floor(timeInvested.total / 60)}h ${timeInvested.total % 60}m`
+                    : `${timeInvested.total}m`}
+                  <span className="block text-[11px] font-normal text-muted-foreground mt-0.5">{t.prog_time_total}</span>
+                </div>
+                <div className="flex items-end justify-between gap-1.5 h-12">
+                  {timeInvested.byEra.map(e => {
+                    const max = Math.max(1, ...timeInvested.byEra.map(x => x.minutes));
+                    return (
+                      <div key={e.name} className="flex-1 flex flex-col items-center gap-1" title={`${e.name}: ${e.minutes}m`}>
+                        <div className="w-full rounded-t" style={{ height: `${Math.max(4, (e.minutes / max) * 100)}%`, backgroundColor: e.fill, opacity: e.minutes ? 1 : 0.25 }} />
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Learning Momentum */}
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.26 }}>
+            <Card className="h-full">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-rose-400" />{t.prog_momentum_title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold font-heading text-center mb-3">
+                  {momentum.activeCount}/14
+                  <span className="block text-[11px] font-normal text-muted-foreground mt-0.5">{t.prog_momentum_active}</span>
+                </div>
+                <div className="grid grid-cols-7 gap-1.5">
+                  {momentum.days.map((d, i) => (
+                    <div
+                      key={i}
+                      className={`aspect-square rounded ${d.active ? 'bg-rose-400/80' : 'bg-secondary'}`}
+                      title={d.active ? '✓' : ''}
+                    />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
 
         {/* ── ADVANCED ANALYTICS — Pro/Master only ── */}
         {!isAdvanced ? (
