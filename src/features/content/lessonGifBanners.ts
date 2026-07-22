@@ -90,6 +90,57 @@ function fp(filename: string): string {
   return `https://commons.wikimedia.org/wiki/Special:FilePath/${filename}`;
 }
 
+// ── Guaranteed animated banner for EVERY lesson ──────────────────────────────
+// A lesson without an explicit entry above still gets an animated GIF: one is
+// chosen deterministically from its era's pool (by lesson order, so an era's
+// lessons rotate through several rather than all sharing one). Every URL here
+// is a real, currently-serving Wikimedia Commons animation. If any fails to
+// load in the browser, the banner falls through to the lesson's static image
+// chain — so this can only ever ADD an animation, never break a banner.
+const ERA_GIF_POOL: Record<string, string[]> = {
+  prehistoric: [
+    fp('Human_evolution_scheme.gif'),
+    fp('Spreading_homo_sapiens_ver2.gif'),
+    fp('Mammuthus_trogontherii_-_animation.gif'),
+    fp('Berezovsk_stegosaur_(walking).gif'),
+  ],
+  ancient: [
+    'https://upload.wikimedia.org/wikipedia/commons/e/ea/Roman_Republic_Empire_map.gif',
+    'https://upload.wikimedia.org/wikipedia/commons/5/5f/Race-on-Greek-vase.gif',
+    'https://upload.wikimedia.org/wikipedia/commons/f/ff/Death_of_Alexander.gif',
+    'https://upload.wikimedia.org/wikipedia/commons/9/93/The_territory_of_Iran_over_time.gif',
+  ],
+  byzantine: [
+    fp('Byzantine_Empire_animated.gif'),
+    'https://upload.wikimedia.org/wikipedia/commons/e/ea/Roman_Republic_Empire_map.gif',
+  ],
+  'middle-ages': [
+    'https://upload.wikimedia.org/wikipedia/commons/c/c0/Crown_of_Castile_-_Map.gif',
+    'https://upload.wikimedia.org/wikipedia/commons/e/e0/Hundred_years_war.gif',
+  ],
+  'early-modern': [
+    'https://upload.wikimedia.org/wikipedia/commons/8/86/Mughals.gif',
+    'https://upload.wikimedia.org/wikipedia/commons/8/8a/Palace_of_Versailles.gif',
+    'https://upload.wikimedia.org/wikipedia/commons/c/c4/Kabuki-theater.gif',
+  ],
+  modern: [
+    'https://upload.wikimedia.org/wikipedia/commons/d/dc/USSR_Map_timeline_Slower.gif',
+    fp('AnimApolloLaunch,16mm.gif'),
+    'https://upload.wikimedia.org/wikipedia/en/c/c1/India-partition.GIF',
+  ],
+};
+
+/** An animated GIF for any lesson: its explicit banner if mapped, else a
+ *  deterministic pick from its era's pool. Guarantees every lesson is animated. */
+export function eraGifBanner(lessonId: string, eraId: string): string | undefined {
+  if (LESSON_GIF_BANNERS[lessonId]) return LESSON_GIF_BANNERS[lessonId];
+  const pool = ERA_GIF_POOL[eraId];
+  if (!pool || pool.length === 0) return undefined;
+  const n = parseInt(lessonId.split('-').pop() ?? '1', 10);
+  const idx = (Number.isFinite(n) ? n - 1 : 0) % pool.length;
+  return pool[idx];
+}
+
 // ── GIF banners hosted on external gallery pages (e.g. makeagif.com) ─────────
 // Some banner GIFs live on gallery pages whose direct media URL embeds an
 // upload-date path segment that cannot be derived from the page URL alone
