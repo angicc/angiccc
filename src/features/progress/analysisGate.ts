@@ -94,16 +94,24 @@ export interface LessonLock {
   blockingLessonId?: string;
 }
 
+/** Called when a lesson's analysis passes: ends the reflection cooldown early
+ *  so the learner can proceed to the next lesson immediately. */
+export function endCooldown(userId: string) {
+  const s = loadAnalysisState(userId);
+  s.cooldownUntil = 0;
+  saveAnalysisState(userId, s);
+}
+
 /**
- * Resolve the progression lock for a lesson. Strict sequential rules that
- * apply identically on EVERY subscription plan:
+ * Resolve the progression lock for a lesson. Rules (identical on EVERY plan):
  *  - Completed lessons are always open (revisiting is free).
  *  - A lesson whose predecessor in the era is NOT completed → locked
- *    ('sequence') — no skipping ahead, on any plan.
- *  - Predecessor completed but its written analysis has not passed → locked
- *    ('analysis') — Clio's gate is owed first.
- *  - Otherwise, while the reflection cooldown is active, every not-yet-
- *    completed lesson is locked ('cooldown').
+ *    ('sequence') — no skipping ahead.
+ *  - Predecessor completed: a 30-minute reflection cooldown gates the next
+ *    lesson ('cooldown'). Passing the predecessor's written analysis ENDS the
+ *    cooldown immediately, so the learner can either wait it out or reflect
+ *    their way past it. Once analysis is passed OR the cooldown has elapsed,
+ *    the lesson opens.
  * Subscription gating (canLesson) is a separate, additive concern; it can
  * lock further, never unlock past this gate.
  */
@@ -115,10 +123,12 @@ export function getLessonLock(userId: string, lesson: Lesson, completedLessons: 
   if (prev && !completedLessons.includes(prev.id)) {
     return { locked: true, reason: 'sequence', blockingLessonId: prev.id };
   }
-  if (prev && !isAnalysisPassed(userId, prev.id)) {
-    return { locked: true, reason: 'analysis', blockingLessonId: prev.id };
+  // Passing the previous lesson's analysis clears the wait entirely.
+  if (prev && isAnalysisPassed(userId, prev.id)) return { locked: false, reason: null };
+  // Otherwise the 30-minute reflection cooldown gates the next lesson.
+  if (prev && getCooldownRemaining(userId) > 0) {
+    return { locked: true, reason: 'cooldown', blockingLessonId: prev.id };
   }
-  if (getCooldownRemaining(userId) > 0) return { locked: true, reason: 'cooldown' };
   return { locked: false, reason: null };
 }
 
