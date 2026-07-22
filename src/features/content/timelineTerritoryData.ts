@@ -1443,23 +1443,45 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     zoom: 7,
     title: 'The Olmec — Mother Culture of the Americas',
     titleI18n: { es: 'Los olmecas — la cultura madre de América', ru: 'Ольмеки — материнская культура Америки', mk: 'Олмеките — мајката-култура на Америка' },
-    description: 'The Olmec heartland on the Gulf coast of Mexico (Veracruz and Tabasco), where the first Mesoamerican civilization raised colossal stone heads and seeded the traditions the Maya and Aztec would inherit.',
+    description: 'The Olmec heartland on the Gulf coast of Mexico (Veracruz and Tabasco), where the first Mesoamerican civilization raised colossal stone heads and seeded the traditions the Maya and Aztec would inherit — and the wider sphere its jade, obsidian, and art reached across early Mesoamerica.',
     polygons: [
       {
+        // Core heartland — the humid Gulf lowlands of the San Lorenzo and La
+        // Venta centers, traced along the coast and the Coatzacoalcos basin.
         label: 'Olmec Heartland (Gulf Coast)',
         color: '#84cc16',
-        fillOpacity: 0.22,
+        fillOpacity: 0.28,
         coords: [
-          [18.55,-96.10],[18.70,-95.00],[18.45,-93.80],[17.95,-93.15],
-          [17.35,-93.60],[17.30,-94.65],[17.65,-95.60],[18.15,-96.25],[18.55,-96.10],
+          [18.62,-96.15],[18.78,-95.05],[18.55,-93.95],[18.20,-93.05],
+          [17.75,-92.75],[17.30,-93.35],[17.20,-94.35],[17.35,-95.25],
+          [17.70,-95.95],[18.10,-96.35],[18.62,-96.15],
         ],
       },
+      {
+        // Broader Olmec cultural sphere — where Olmec-style art, jade, and
+        // iconography spread across the Mesoamerican highlands and Pacific side.
+        label: 'Olmec Cultural Sphere',
+        color: '#a3e635',
+        fillOpacity: 0.10,
+        coords: [
+          [19.40,-96.60],[19.20,-93.20],[17.90,-91.30],[16.20,-92.20],
+          [15.40,-93.90],[16.10,-96.20],[17.10,-98.90],[18.30,-99.30],
+          [19.10,-98.20],[19.40,-96.60],
+        ],
+      },
+    ],
+    routes: [
+      { name: 'Jade & obsidian exchange', nameI18n: { es: 'Intercambio de jade y obsidiana', ru: 'Обмен нефрита и обсидиана', mk: 'Размена на жад и опсидијан' }, type: 'trade', color: '#84cc16', points: [[18.10,-94.03],[17.75,-94.73],[17.55,-96.72],[16.75,-98.60]] },
     ],
     markers: [
       { name: 'San Lorenzo', type: 'capital', lat: 17.75, lng: -94.73, note: 'Earliest great Olmec center — colossal heads carved by ~1200 BCE', year: -1200 },
       { name: 'La Venta', type: 'capital', lat: 18.10, lng: -94.03, note: 'Great clay pyramid and jade offerings (~900 BCE)', year: -900 },
       { name: 'Tres Zapotes', type: 'city', lat: 18.47, lng: -95.44, note: 'Late Olmec center — early Long Count calendar nearby', year: -400 },
       { name: 'Laguna de los Cerros', type: 'city', lat: 18.03, lng: -95.03, note: 'Olmec center near the basalt sources of the Tuxtla Mountains', year: -800 },
+      { name: 'Tuxtla Mountains', type: 'resource', lat: 18.55, lng: -95.20, note: 'Basalt source — colossal heads and thrones hauled dozens of km from here', year: -1000 },
+      { name: 'Chalcatzingo', type: 'landmark', lat: 18.68, lng: -98.77, note: 'Highland site with Olmec-style rock reliefs — the sphere reaches inland', year: -700 },
+      { name: 'Teopantecuanitlan', type: 'landmark', lat: 17.93, lng: -99.13, note: 'Olmec-influenced ceremonial site in Guerrero, far to the west', year: -900 },
+      { name: 'Río Pesquero', type: 'landmark', lat: 17.90, lng: -93.40, note: 'Cache of superb Olmec jade offerings recovered from the wetlands', year: -800 },
     ],
   },
   {
@@ -1471,26 +1493,50 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     zoom: 5,
     title: 'The Khmer Empire & Angkor',
     titleI18n: { es: 'El Imperio jemer y Angkor', ru: 'Кхмерская империя и Ангкор', mk: 'Кмерската империја и Ангкор' },
-    description: 'The Khmer Empire near its greatest extent under Jayavarman VII (c. 1200), reaching into modern Laos, Thailand, and the Malay Peninsula — ruled from Angkor, the largest city of the pre-industrial world.',
+    description: 'The Khmer Empire near its greatest extent under Jayavarman VII (c. 1200), reaching into modern Laos, Thailand, and the Malay Peninsula — ruled from Angkor, the largest city of the pre-industrial world, and knit together by a network of royal roads.',
     polygons: [
       {
+        // Greatest extent c. 1200 — from the Khorat plateau and southern Laos
+        // across Cambodia to the central-Thai plains and the Champa frontier.
         label: 'Khmer Empire (c. 1200)',
         color: '#14b8a6',
         fillOpacity: 0.22,
         coords: [
-          [18.4,102.4],[17.5,105.4],[16.0,107.4],[13.6,109.2],[10.6,106.6],
-          [9.6,104.5],[11.4,102.4],[13.9,99.6],[16.0,99.2],[17.6,100.6],[18.4,102.4],
+          [18.35,102.30],[17.60,104.20],[17.30,105.60],[16.20,107.30],
+          [14.40,108.30],[13.40,109.05],[11.60,107.30],[10.35,106.20],
+          [9.65,104.60],[10.60,103.30],[11.60,102.20],[12.90,100.60],
+          [13.90,99.65],[15.10,99.10],[16.20,99.40],[17.35,100.40],
+          [18.00,101.50],[18.35,102.30],
         ],
       },
+      {
+        // Core royal domain — the Cambodian heartland around Angkor and the
+        // Tonlé Sap, the empire's rice bowl and ceremonial center.
+        label: 'Royal Heartland (Angkor & the Tonlé Sap)',
+        color: '#2dd4bf',
+        fillOpacity: 0.30,
+        coords: [
+          [14.30,103.30],[14.10,104.60],[13.10,105.10],[12.20,104.90],
+          [11.90,103.80],[12.60,102.90],[13.60,102.90],[14.30,103.30],
+        ],
+      },
+    ],
+    routes: [
+      { name: 'Royal road: Angkor to Phimai', nameI18n: { es: 'Calzada real: Angkor a Phimai', ru: 'Царская дорога: Ангкор — Пхимай', mk: 'Кралски пат: Ангкор до Пимаи' }, type: 'military', color: '#2dd4bf', points: [[13.44,103.86],[14.35,102.98],[15.22,102.49]] },
+      { name: 'Royal road: Angkor to Vijaya (Champa)', nameI18n: { es: 'Calzada real: Angkor a Vijaya', ru: 'Царская дорога: Ангкор — Виджая', mk: 'Кралски пат: Ангкор до Виџаја' }, type: 'military', color: '#5eead4', points: [[13.44,103.86],[13.90,105.60],[13.95,107.40],[13.90,109.10]] },
     ],
     markers: [
       { name: 'Angkor', type: 'capital', lat: 13.44, lng: 103.86, note: 'Angkor Thom and the Bayon — capital of Jayavarman VII', year: 1181 },
       { name: 'Angkor Wat', type: 'landmark', lat: 13.41, lng: 103.87, note: 'Largest religious monument on Earth (early 12th c.)', year: 1150 },
       { name: 'Hariharalaya', type: 'city', lat: 13.35, lng: 103.97, note: 'Early Khmer capital at Roluos', year: 802 },
+      { name: 'Koh Ker', type: 'city', lat: 13.78, lng: 104.54, note: 'Briefly the capital under Jayavarman IV (928–944)', year: 928 },
+      { name: 'Preah Vihear', type: 'landmark', lat: 14.39, lng: 104.68, note: 'Cliff-top Shaiva temple on the Dângrêk escarpment', year: 1080 },
       { name: 'Phimai', type: 'landmark', lat: 15.22, lng: 102.49, note: 'Great Khmer temple in the Khorat plateau (now Thailand)', year: 1100 },
       { name: 'Wat Phu', type: 'landmark', lat: 14.85, lng: 105.82, note: 'Mountain temple in southern Laos', year: 1080 },
-      { name: 'Vijaya', type: 'battle', lat: 13.90, lng: 109.10, note: 'Champa capital sacked by the Khmer (1177–1203)', year: 1190 },
+      { name: 'Sambor Prei Kuk', type: 'landmark', lat: 12.87, lng: 105.06, note: 'Isanapura — pre-Angkorian Chenla capital', year: 620 },
       { name: 'Lopburi', type: 'city', lat: 14.80, lng: 100.62, note: 'Khmer provincial center in central Thailand', year: 1100 },
+      { name: 'Vijaya', type: 'battle', lat: 13.90, lng: 109.10, note: 'Champa capital sacked by the Khmer (1177–1203)', year: 1190 },
+      { name: 'Oc Eo', type: 'port', lat: 10.23, lng: 105.15, note: 'Ancient Mekong-delta port linking the Khmer world to maritime trade', year: 1100 },
     ],
   },
   {
@@ -1502,28 +1548,47 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     zoom: 4,
     title: 'The Songhai Empire',
     titleI18n: { es: 'El Imperio songhai', ru: 'Империя Сонгай', mk: 'Царството Сонгај' },
-    description: 'The largest empire in West African history at its height (c. 1500), spanning the Sahel from the Atlantic to central Niger and controlling the trans-Saharan gold and salt trade from Gao, Timbuktu, and Djenné.',
+    description: 'The largest empire in West African history at its height (c. 1500), spanning the Sahel from the Atlantic to central Niger and controlling the trans-Saharan gold and salt trade from Gao, Timbuktu, and Djenné — its lifeline the great bend of the Niger River.',
     polygons: [
       {
+        // Greatest extent c. 1500 — the Sahel band from the Atlantic (Senegal)
+        // east to the Aïr, bounded by the Sahara north and the savanna south.
         label: 'Songhai Empire (c. 1500)',
         color: '#eab308',
-        fillOpacity: 0.22,
+        fillOpacity: 0.20,
         coords: [
-          [17.6,-16.2],[18.6,-6.0],[19.0,2.0],[18.0,8.6],[15.6,9.6],
-          [12.6,6.2],[12.0,-1.0],[12.6,-8.0],[13.6,-12.0],[14.3,-16.6],[17.6,-16.2],
+          [17.60,-16.20],[18.20,-11.00],[18.70,-6.00],[19.05,-1.00],
+          [19.00,3.50],[18.20,7.20],[17.40,9.20],[15.60,9.60],[14.00,7.60],
+          [12.80,4.00],[12.10,-1.00],[12.40,-5.00],[12.80,-8.00],
+          [13.60,-12.00],[14.30,-16.60],[17.60,-16.20],
+        ],
+      },
+      {
+        // Core Songhai domain — the Niger bend from Djenné through Timbuktu to
+        // the capital at Gao, the empire's populous, directly-ruled heartland.
+        label: 'Niger Bend Heartland',
+        color: '#facc15',
+        fillOpacity: 0.30,
+        coords: [
+          [17.30,-4.20],[17.40,-1.50],[16.60,0.60],[15.30,0.40],
+          [13.60,-3.20],[13.60,-4.90],[14.90,-4.60],[16.20,-3.60],[17.30,-4.20],
         ],
       },
     ],
     routes: [
       { name: 'Trans-Saharan gold & salt road', nameI18n: { es: 'Ruta transahariana del oro y la sal', ru: 'Транссахарский путь золота и соли', mk: 'Транссахарски пат на злато и сол' }, type: 'trade', color: '#eab308', points: [[13.91,-4.55],[16.77,-3.01],[20.0,-4.0],[23.6,-5.0]] },
+      { name: 'The Niger River artery', nameI18n: { es: 'La arteria del río Níger', ru: 'Артерия реки Нигер', mk: 'Артеријата на реката Нигер' }, type: 'trade', color: '#38bdf8', points: [[13.91,-4.55],[15.35,-4.28],[16.77,-3.01],[16.27,-0.04],[15.40,0.80]] },
     ],
     markers: [
       { name: 'Gao', type: 'capital', lat: 16.27, lng: -0.04, note: 'Capital on the Niger — seat of Sonni Ali and Askia the Great', year: 1464 },
       { name: 'Timbuktu', type: 'city', lat: 16.77, lng: -3.01, note: 'City of books — University of Sankore and vast libraries', year: 1468 },
       { name: 'Djenné', type: 'city', lat: 13.91, lng: -4.55, note: 'Great mud-brick mosque and river trade hub (taken 1475)', year: 1475 },
+      { name: 'Kukiya', type: 'city', lat: 15.40, lng: 0.80, note: 'Early Songhai capital downstream on the Niger', year: 1010 },
       { name: 'Walata', type: 'city', lat: 17.30, lng: -7.03, note: 'Saharan caravan town on the desert trade routes', year: 1480 },
       { name: 'Taghaza', type: 'resource', lat: 23.60, lng: -5.00, note: 'Saharan salt mines — salt traded nearly ounce-for-ounce with gold', year: 1500 },
       { name: 'Agadez', type: 'city', lat: 16.97, lng: 7.99, note: 'Eastern sultanate and trade gateway to the Aïr', year: 1500 },
+      { name: 'Kano', type: 'city', lat: 12.00, lng: 8.52, note: 'Wealthy Hausa trade city — a tributary on the southeastern frontier', year: 1513 },
+      { name: 'Tadmekka (Es-Souk)', type: 'landmark', lat: 18.60, lng: 1.00, note: 'Saharan caravan town where West African gold coins were struck', year: 1400 },
       { name: 'Tondibi', type: 'battle', lat: 16.45, lng: -0.20, note: 'Moroccan gunpowder shatters Songhai (1591) — the empire falls', year: 1591 },
     ],
   },
@@ -1537,6 +1602,21 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     title: 'Voyagers of the Pacific',
     titleI18n: { es: 'Navegantes del Pacífico', ru: 'Мореплаватели Тихого океана', mk: 'Морепловците на Пацификот' },
     description: 'The Polynesian settlement of the vast Pacific — the last great human colonization of the Earth. Using only the stars, swells, and birds, voyagers reached every corner of the Polynesian Triangle: Hawaii, Rapa Nui, and Aotearoa.',
+    polygons: [
+      {
+        // The Polynesian Triangle — the immense oceanic realm settled by
+        // Polynesian voyagers, its three apexes Hawaii, Rapa Nui, and Aotearoa.
+        // (Aotearoa's longitude is written as -185 = 175°E so the ring stays
+        // continuous across the antimeridian instead of wrapping the long way.)
+        label: 'The Polynesian Triangle',
+        color: '#22d3ee',
+        fillOpacity: 0.10,
+        coords: [
+          [19.60,-155.50],[-5.00,-140.00],[-27.11,-109.35],
+          [-32.00,-147.00],[-37.80,-185.00],[-9.00,-170.00],[19.60,-155.50],
+        ],
+      },
+    ],
     routes: [
       { name: 'Voyage north to Hawaii', nameI18n: { es: 'Viaje al norte a Hawái', ru: 'Путь на север к Гавайям', mk: 'Пат на север кон Хаваи' }, type: 'trade', color: '#22d3ee', points: [[-13.76,-172.10],[-9.78,-139.06],[5.0,-152.0],[19.60,-155.50]] },
       { name: 'Voyage east to Rapa Nui', nameI18n: { es: 'Viaje al este a Rapa Nui', ru: 'Путь на восток к Рапа-Нуи', mk: 'Пат на исток кон Рапа Нуи' }, type: 'trade', color: '#a78bfa', points: [[-17.65,-149.43],[-23.0,-129.0],[-27.11,-109.35]] },
@@ -1550,6 +1630,10 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
       { name: 'Hawaii', type: 'landmark', lat: 19.60, lng: -155.50, note: 'Northern apex of the Polynesian Triangle', year: 1000 },
       { name: 'Rapa Nui (Easter Island)', type: 'landmark', lat: -27.11, lng: -109.35, note: 'Eastern apex — home of the moai statues', year: 1200 },
       { name: 'Aotearoa (New Zealand)', type: 'landmark', lat: -37.80, lng: 175.00, note: 'Southern apex — last major land settled (~1300), ancestors of the Māori', year: 1300 },
+      { name: 'Rarotonga (Cook Is.)', type: 'port', lat: -21.23, lng: -159.78, note: 'Staging point on the long southern voyage to Aotearoa', year: 1250 },
+      { name: 'Fiji', type: 'landmark', lat: -17.71, lng: 178.07, note: 'Western gateway — the Lapita ancestors of the Polynesians passed through', year: 900 },
+      { name: 'Mangareva', type: 'landmark', lat: -23.12, lng: -134.97, note: 'Remote outpost linking central Polynesia toward Rapa Nui', year: 1150 },
+      { name: 'Chatham Islands', type: 'landmark', lat: -43.95, lng: -176.55, note: 'Bleak southeastern limit — settled by the Moriori', year: 1400 },
     ],
   },
 ].map(topic => {
