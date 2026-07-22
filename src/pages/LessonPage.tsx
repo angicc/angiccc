@@ -22,8 +22,6 @@ import { getLessonById, getEraLessons } from '@/features/content/lessonsData';
 import { getEraById } from '@/features/content/erasData';
 import { getTranslatedLesson, getTranslatedEra, hasStaticLessonTranslation } from '@/i18n/contentTranslations';
 import { translateLessonBodies } from '@/i18n/dynamicLessonTranslation';
-import { CATALOG_BY_LESSON_KEY } from '@/data/lessonsCatalog';
-import { LessonBannerHeader } from '@/components/lessons/LessonBannerHeader';
 import { LESSON_DEEP_DIVES } from '@/i18n/lessonDeepDives';
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
@@ -314,41 +312,22 @@ export default function LessonPage() {
           <span className="text-foreground truncate">{lesson.title}</span>
         </div>
 
-        {/* Hero banner. Macedonian UI + a catalog lesson → the catalog-driven
-            LessonBannerHeader with hand-corrected Cyrillic title and animated
-            asset pipeline; every other case keeps the classic LessonBanner. */}
-        {language === 'mk' && CATALOG_BY_LESSON_KEY[lesson.id] ? (
-          <div className="mb-6">
-            <LessonBannerHeader
-              key={lesson.id}
-              lesson={CATALOG_BY_LESSON_KEY[lesson.id]}
-              onBack={() => navigate('/eras')}
-              actions={
-                <button
-                  onClick={handleBookmark}
-                  aria-label="Bookmark"
-                  className="flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700/50 backdrop-blur-md text-slate-200 hover:text-white hover:border-slate-500/60 transition-colors"
-                >
-                  {bookmarked ? <BookmarkCheck className="w-3.5 h-3.5 text-amber-400" /> : <Bookmark className="w-3.5 h-3.5" />}
-                </button>
-              }
-            />
-          </div>
-        ) : (
-          <LessonBanner
-            key={lesson.id}
-            lessonId={lesson.id}
-            imageUrl={lesson.imageUrl}
-            eraId={lesson.eraId}
-            estimatedMinutes={lesson.estimatedMinutes}
-            xpReward={lesson.xpReward}
-            title={lesson.title}
-            subtitle={lesson.subtitle}
-            bookmarked={bookmarked}
-            onBookmark={handleBookmark}
-            theme={getLessonTheme(lesson)}
-          />
-        )}
+        {/* Hero banner — the animated GIF/asset chain plus the translated
+            title & subtitle (Macedonian titles come from the corrected catalog
+            via getTranslatedLesson, so no separate header is needed). */}
+        <LessonBanner
+          key={lesson.id}
+          lessonId={lesson.id}
+          imageUrl={lesson.imageUrl}
+          eraId={lesson.eraId}
+          estimatedMinutes={lesson.estimatedMinutes}
+          xpReward={lesson.xpReward}
+          title={lesson.title}
+          subtitle={lesson.subtitle}
+          bookmarked={bookmarked}
+          onBookmark={handleBookmark}
+          theme={getLessonTheme(lesson)}
+        />
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Main content */}

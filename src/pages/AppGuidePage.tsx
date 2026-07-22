@@ -25,6 +25,9 @@ const STEP_VISUALS = [
   { icon: Hourglass,color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/30' },
   { icon: Route,    color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/30' },
   { icon: Wand2,    color: 'text-primary',     bg: 'bg-primary/10',     border: 'border-primary/30' },
+  { icon: Crown,    color: 'text-amber-400',   bg: 'bg-amber-400/10',   border: 'border-amber-400/30' },   // Chronos Imperium
+  { icon: User,     color: 'text-cyan-400',    bg: 'bg-cyan-400/10',    border: 'border-cyan-400/30' },    // Friends
+  { icon: Trophy,   color: 'text-rose-400',    bg: 'bg-rose-400/10',    border: 'border-rose-400/30' },    // Leaderboard
 ];
 
 export default function AppGuidePage() {
@@ -73,7 +76,9 @@ export default function AppGuidePage() {
         {/* Steps */}
         <div className="space-y-4">
           {steps.map((s, i) => {
-            const visual = STEP_VISUALS[i];
+            // Defensive: never let a step index outrun the visuals table (that
+            // blanked the whole guide when the step list grew past the icons).
+            const visual = STEP_VISUALS[i] ?? STEP_VISUALS[i % STEP_VISUALS.length];
             const StepIcon = visual.icon;
             return (
               <motion.div
