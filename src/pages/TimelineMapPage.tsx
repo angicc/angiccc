@@ -8,6 +8,7 @@ import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { addBonusXp } from '@/features/progress/progressStore';
 import { TERRITORY_TOPICS, type TerritoryTopic, type TerritoryRoute, type MarkerType } from '@/features/content/timelineTerritoryData';
+import { loadRealPolygons, type RealPolygon } from '@/features/content/territoryGeojson';
 import type { Language } from '@/i18n/translations';
 import { getTranslatedTerritoryDesc } from '@/i18n/territoryDescTranslations';
 import { getQuestionsForTopic, getTranslatedTerritoryQuestion, type TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
@@ -490,6 +491,10 @@ export default function TimelineMapPage() {
   const storyMarkerRef    = useRef<L.Marker | null>(null);
   // Current zoom-based fill opacity
   const zoomOpacityRef    = useRef<number>(0.22);
+  // Real historical geometry (from public/data/map-territories via the GIS
+  // pipeline) keyed by topic id — replaces the curated rings when present.
+  const realGeomRef       = useRef<Record<string, RealPolygon[]>>({});
+  const [geomVersion, setGeomVersion] = useState(0);
 
   // ── Init map ────────────────────────────────────────────────────────────────
   // Re-runs when the plan gate opens: if the first render early-returned the
@@ -684,8 +689,11 @@ export default function TimelineMapPage() {
     // Polygons — strict 3-tier border system, clean solid strokes.
     // Unexplored territories render as fog: desaturated slate fill, details
     // withheld until the user scouts the region with a click.
-    if (layers.territory && selected.polygons) {
-      selected.polygons.forEach(poly => {
+    // Prefer verified historical geometry (from the GIS pipeline) over the
+    // curated rings whenever it has loaded for this topic.
+    const territoryPolys = realGeomRef.current[selected.id] ?? selected.polygons;
+    if (layers.territory && territoryPolys) {
+      territoryPolys.forEach(poly => {
         const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
 
         const tier = ((poly as unknown as { borderTier?: string }).borderTier ?? 'primary') as BorderTier;
@@ -993,11 +1001,27 @@ export default function TimelineMapPage() {
         .addTo(lg);
       (marker as unknown as { _tmapType: string })._tmapType = m.type;
     });
-  }, [selected, layers, styleId, language, explored, markExplored, t]);
+  }, [selected, layers, styleId, language, explored, markExplored, t, geomVersion]);
 
   useEffect(() => {
     renderLayers();
   }, [renderLayers]);
+
+  // Lazy-load real historical geometry for the selected topic; when it arrives
+  // (or is already cached) bump geomVersion so renderLayers redraws with the
+  // verified borders instead of the curated rings.
+  useEffect(() => {
+    if (!selected) return;
+    if (realGeomRef.current[selected.id]) return;
+    let alive = true;
+    loadRealPolygons(selected.id).then(polys => {
+      if (alive && polys && polys.length) {
+        realGeomRef.current[selected.id] = polys;
+        setGeomVersion(v => v + 1);
+      }
+    });
+    return () => { alive = false; };
+  }, [selected]);
 
   // Fly to topic on selection
   useEffect(() => {

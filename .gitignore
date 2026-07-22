@@ -34,3 +34,4 @@ dist-ssr
 # Claude Code internal files
 .claude/
 public/angiccc-latest.zip
+scripts/.cache/
