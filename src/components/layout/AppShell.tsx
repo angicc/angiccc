@@ -11,6 +11,7 @@ import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { ParticleCanvas } from '@/components/shared/ParticleCanvas';
 import { CelestialAtlas } from '@/components/shared/CelestialAtlas';
+import { AuroraBackdrop } from '@/components/shared/AuroraBackdrop';
 import { cn } from '@/lib/utils';
 
 export function AppShell({ children, compact }: { children: React.ReactNode; compact?: boolean }) {
@@ -29,7 +30,9 @@ export function AppShell({ children, compact }: { children: React.ReactNode; com
 
   return (
     <div className="flex h-screen bg-layer-0 relative overflow-hidden">
-      {/* Ambient layer 0 — the Celestial Atlas star chart behind the whole shell. */}
+      {/* Ambient layers behind the whole shell: the Gilded Aurora wash, then
+          the Celestial Atlas star chart, then drifting particles. */}
+      <AuroraBackdrop zIndex={0} />
       <CelestialAtlas position="fixed" zIndex={0} />
       <ParticleCanvas />
       {/* Zone A — sidebar (Layer 0, blends into the base canvas) */}
