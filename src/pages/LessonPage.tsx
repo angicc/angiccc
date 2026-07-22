@@ -22,6 +22,8 @@ import { getLessonById, getEraLessons } from '@/features/content/lessonsData';
 import { getEraById } from '@/features/content/erasData';
 import { getTranslatedLesson, getTranslatedEra, hasStaticLessonTranslation } from '@/i18n/contentTranslations';
 import { translateLessonBodies } from '@/i18n/dynamicLessonTranslation';
+import { CATALOG_BY_LESSON_KEY } from '@/data/lessonsCatalog';
+import { LessonBannerHeader } from '@/components/lessons/LessonBannerHeader';
 import { LESSON_DEEP_DIVES } from '@/i18n/lessonDeepDives';
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
@@ -170,13 +172,13 @@ function LessonBanner({
 
 // Progression-gate microcopy in all six UI languages (local to this page,
 // same pattern as DEEP_DIVE_LABEL below).
-const GATE_LABELS: Record<string, { analysisNeeded: string; submitAnalysis: string; cooldownShort: string; lockedTitle: string; lockedAnalysis: string; lockedCooldown: string; backToEra: string }> = {
-  en: { analysisNeeded: 'Analysis required', submitAnalysis: 'Submit analysis', cooldownShort: 'Cooldown', lockedTitle: 'This lesson is still sealed', lockedAnalysis: 'Pass the written analysis of the previous lesson (grade B or better) to open it.', lockedCooldown: 'Your 30-minute reflection period is still running.', backToEra: 'Back to eras' },
-  es: { analysisNeeded: 'Análisis requerido', submitAnalysis: 'Enviar análisis', cooldownShort: 'Espera', lockedTitle: 'Esta lección sigue sellada', lockedAnalysis: 'Aprueba el análisis escrito de la lección anterior (nota B o mejor) para abrirla.', lockedCooldown: 'Tu período de reflexión de 30 minutos sigue en curso.', backToEra: 'Volver a las eras' },
-  ru: { analysisNeeded: 'Требуется анализ', submitAnalysis: 'Отправить анализ', cooldownShort: 'Пауза', lockedTitle: 'Этот урок ещё запечатан', lockedAnalysis: 'Сдайте письменный анализ предыдущего урока (оценка B или выше), чтобы открыть его.', lockedCooldown: 'Ваш 30-минутный период осмысления ещё идёт.', backToEra: 'К эпохам' },
-  mk: { analysisNeeded: 'Потребна е анализа', submitAnalysis: 'Испрати анализа', cooldownShort: 'Пауза', lockedTitle: 'Оваа лекција е сè уште запечатена', lockedAnalysis: 'Положи ја писмената анализа на претходната лекција (оценка B или подобра) за да ја отвориш.', lockedCooldown: 'Твојот 30-минутен период на размислување сè уште трае.', backToEra: 'Назад кон ерите' },
-  de: { analysisNeeded: 'Analyse erforderlich', submitAnalysis: 'Analyse einreichen', cooldownShort: 'Wartezeit', lockedTitle: 'Diese Lektion ist noch versiegelt', lockedAnalysis: 'Bestehe die schriftliche Analyse der vorherigen Lektion (Note B oder besser), um sie zu öffnen.', lockedCooldown: 'Deine 30-minütige Reflexionsphase läuft noch.', backToEra: 'Zurück zu den Epochen' },
-  fr: { analysisNeeded: 'Analyse requise', submitAnalysis: "Soumettre l'analyse", cooldownShort: 'Attente', lockedTitle: 'Cette leçon est encore scellée', lockedAnalysis: "Réussis l'analyse écrite de la leçon précédente (note B ou mieux) pour l'ouvrir.", lockedCooldown: 'Ta période de réflexion de 30 minutes est encore en cours.', backToEra: 'Retour aux ères' },
+const GATE_LABELS: Record<string, { analysisNeeded: string; submitAnalysis: string; cooldownShort: string; lockedTitle: string; lockedAnalysis: string; lockedCooldown: string; lockedSequence: string; backToEra: string }> = {
+  en: { analysisNeeded: 'Analysis required', submitAnalysis: 'Submit analysis', cooldownShort: 'Cooldown', lockedTitle: 'This lesson is still sealed', lockedAnalysis: 'Pass the written analysis of the previous lesson (grade B or better) to open it.', lockedCooldown: 'Your 30-minute reflection period is still running.', lockedSequence: 'Complete the previous lesson first — the path through each era is walked in order.', backToEra: 'Back to eras' },
+  es: { analysisNeeded: 'Análisis requerido', submitAnalysis: 'Enviar análisis', cooldownShort: 'Espera', lockedTitle: 'Esta lección sigue sellada', lockedAnalysis: 'Aprueba el análisis escrito de la lección anterior (nota B o mejor) para abrirla.', lockedCooldown: 'Tu período de reflexión de 30 minutos sigue en curso.', lockedSequence: 'Completa primero la lección anterior: el camino de cada era se recorre en orden.', backToEra: 'Volver a las eras' },
+  ru: { analysisNeeded: 'Требуется анализ', submitAnalysis: 'Отправить анализ', cooldownShort: 'Пауза', lockedTitle: 'Этот урок ещё запечатан', lockedAnalysis: 'Сдайте письменный анализ предыдущего урока (оценка B или выше), чтобы открыть его.', lockedCooldown: 'Ваш 30-минутный период осмысления ещё идёт.', lockedSequence: 'Сначала завершите предыдущий урок — путь по каждой эпохе проходится по порядку.', backToEra: 'К эпохам' },
+  mk: { analysisNeeded: 'Потребна е анализа', submitAnalysis: 'Испрати анализа', cooldownShort: 'Пауза', lockedTitle: 'Оваа лекција е сè уште запечатена', lockedAnalysis: 'Положи ја писмената анализа на претходната лекција (оценка B или подобра) за да ја отвориш.', lockedCooldown: 'Твојот 30-минутен период на размислување сè уште трае.', lockedSequence: 'Прво заврши ја претходната лекција — патот низ секоја ера се минува по ред.', backToEra: 'Назад кон ерите' },
+  de: { analysisNeeded: 'Analyse erforderlich', submitAnalysis: 'Analyse einreichen', cooldownShort: 'Wartezeit', lockedTitle: 'Diese Lektion ist noch versiegelt', lockedAnalysis: 'Bestehe die schriftliche Analyse der vorherigen Lektion (Note B oder besser), um sie zu öffnen.', lockedCooldown: 'Deine 30-minütige Reflexionsphase läuft noch.', lockedSequence: 'Schließe zuerst die vorherige Lektion ab — der Weg durch jede Epoche wird der Reihe nach gegangen.', backToEra: 'Zurück zu den Epochen' },
+  fr: { analysisNeeded: 'Analyse requise', submitAnalysis: "Soumettre l'analyse", cooldownShort: 'Attente', lockedTitle: 'Cette leçon est encore scellée', lockedAnalysis: "Réussis l'analyse écrite de la leçon précédente (note B ou mieux) pour l'ouvrir.", lockedCooldown: 'Ta période de réflexion de 30 minutes est encore en cours.', lockedSequence: "Termine d'abord la leçon précédente — le chemin de chaque ère se parcourt dans l'ordre.", backToEra: 'Retour aux ères' },
 };
 
 export default function LessonPage() {
@@ -234,21 +236,13 @@ export default function LessonPage() {
   const era = eraRaw ? getTranslatedEra(eraRaw, language) : eraRaw;
   if (!lesson || !era) return <AppShell><div className="text-center py-20 text-muted-foreground">Lesson not found.</div></AppShell>;
 
-  const eraLessonsRaw = getEraLessons(eraId ?? '');
-  const eraLessons = eraLessonsRaw.map(l => getTranslatedLesson(l, language));
-  const idx = eraLessons.findIndex(l => l.id === lessonId);
-  const prev = idx > 0 ? eraLessons[idx - 1] : null;
-  const next = idx < eraLessons.length - 1 ? eraLessons[idx + 1] : null;
 
-  // Progression gate: is THIS lesson sealed (deep link into a locked lesson),
-  // and is the NEXT lesson sealed (analysis owed / cooldown running)? Both
-  // re-evaluate every render — the cooldown hook ticks once per second, so
+  // Progression gate: is THIS lesson sealed (deep link into a locked lesson)?
+  // Re-evaluated every render — the cooldown hook ticks once per second, so
   // countdowns and lock releases surface live without a reload.
   const gl = GATE_LABELS[language] ?? GATE_LABELS.en;
   const completedIds = progress?.completedLessons ?? [];
   const selfLock = currentUser && rawLesson ? getLessonLock(currentUser.id, rawLesson, completedIds) : null;
-  const nextRaw = next ? eraLessonsRaw[idx + 1] : null;
-  const nextLock = currentUser && nextRaw ? getLessonLock(currentUser.id, nextRaw, completedIds) : null;
 
   if (selfLock?.locked) {
     return (
@@ -261,7 +255,7 @@ export default function LessonPage() {
           </div>
           <h1 className="font-heading text-2xl font-bold">{gl.lockedTitle}</h1>
           <p className="text-muted-foreground text-sm leading-relaxed">
-            {selfLock.reason === 'cooldown' ? gl.lockedCooldown : gl.lockedAnalysis}
+            {selfLock.reason === 'cooldown' ? gl.lockedCooldown : selfLock.reason === 'sequence' ? gl.lockedSequence : gl.lockedAnalysis}
           </p>
           {selfLock.reason === 'cooldown' && (
             <p className="font-heading text-3xl font-bold text-amber-400 tabular-nums">{formatCooldown(cooldownMs)}</p>
@@ -299,17 +293,6 @@ export default function LessonPage() {
     if (newAchievements.length > 0) setUnlockedAchievements(newAchievements);
   }
 
-  function handleNextLocked() {
-    if (!nextLock) return;
-    if (nextLock.reason === 'analysis' && nextLock.blockingLessonId === lesson?.id) {
-      setGateOpen(true);
-    } else if (nextLock.reason === 'analysis') {
-      toast.info(gl.lockedAnalysis);
-    } else {
-      toast.info(`${gl.lockedCooldown} ${formatCooldown(cooldownMs)}`);
-    }
-  }
-
   function handleBookmark() {
     if (!currentUser || !lesson) return;
     const next = toggleBookmark(currentUser.id, lesson.id);
@@ -331,20 +314,41 @@ export default function LessonPage() {
           <span className="text-foreground truncate">{lesson.title}</span>
         </div>
 
-        {/* Hero banner */}
-        <LessonBanner
-          key={lesson.id}
-          lessonId={lesson.id}
-          imageUrl={lesson.imageUrl}
-          eraId={lesson.eraId}
-          estimatedMinutes={lesson.estimatedMinutes}
-          xpReward={lesson.xpReward}
-          title={lesson.title}
-          subtitle={lesson.subtitle}
-          bookmarked={bookmarked}
-          onBookmark={handleBookmark}
-          theme={getLessonTheme(lesson)}
-        />
+        {/* Hero banner. Macedonian UI + a catalog lesson → the catalog-driven
+            LessonBannerHeader with hand-corrected Cyrillic title and animated
+            asset pipeline; every other case keeps the classic LessonBanner. */}
+        {language === 'mk' && CATALOG_BY_LESSON_KEY[lesson.id] ? (
+          <div className="mb-6">
+            <LessonBannerHeader
+              key={lesson.id}
+              lesson={CATALOG_BY_LESSON_KEY[lesson.id]}
+              onBack={() => navigate('/eras')}
+              actions={
+                <button
+                  onClick={handleBookmark}
+                  aria-label="Bookmark"
+                  className="flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700/50 backdrop-blur-md text-slate-200 hover:text-white hover:border-slate-500/60 transition-colors"
+                >
+                  {bookmarked ? <BookmarkCheck className="w-3.5 h-3.5 text-amber-400" /> : <Bookmark className="w-3.5 h-3.5" />}
+                </button>
+              }
+            />
+          </div>
+        ) : (
+          <LessonBanner
+            key={lesson.id}
+            lessonId={lesson.id}
+            imageUrl={lesson.imageUrl}
+            eraId={lesson.eraId}
+            estimatedMinutes={lesson.estimatedMinutes}
+            xpReward={lesson.xpReward}
+            title={lesson.title}
+            subtitle={lesson.subtitle}
+            bookmarked={bookmarked}
+            onBookmark={handleBookmark}
+            theme={getLessonTheme(lesson)}
+          />
+        )}
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Main content */}
@@ -384,24 +388,16 @@ export default function LessonPage() {
               );
             })}
             <Separator />
+            {/* Deliberately no "Next" button: the era list is the only way
+                forward, so the sequential analysis gate can never be skipped.
+                Completing the lesson opens Clio's analysis right here. */}
             <div className="flex items-center justify-between">
-              {prev
-                ? <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${prev.id}`)}><ArrowLeft className="w-4 h-4" />{t.btn_back}</Button>
-                : <div />}
+              <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate('/eras')}>
+                <ArrowLeft className="w-4 h-4" />{t.btn_back}
+              </Button>
               <Button className="gap-2" onClick={handleComplete} disabled={completed} variant={completed ? 'secondary' : 'default'}>
                 <CheckCircle className="w-4 h-4" />{completed ? t.lesson_already_done : t.lesson_complete_btn}
               </Button>
-              {next
-                ? nextLock?.locked
-                  ? (
-                    <Button variant="outline" size="sm" className="gap-2 border-amber-400/30 text-amber-300 hover:bg-amber-400/10" onClick={handleNextLocked}>
-                      {nextLock.reason === 'cooldown'
-                        ? <><Hourglass className="w-4 h-4" /><span className="tabular-nums">{formatCooldown(cooldownMs)}</span></>
-                        : <><Lock className="w-4 h-4" />{gl.analysisNeeded}</>}
-                    </Button>
-                  )
-                  : <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate(`/eras/${eraId}/lessons/${next.id}`)}>{ t.btn_next}<ArrowRight className="w-4 h-4" /></Button>
-                : <Button variant="outline" size="sm" onClick={() => navigate(`/eras/${eraId}/quiz`)}>{t.lesson_take_quiz}</Button>}
             </div>
           </div>
 

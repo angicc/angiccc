@@ -594,5 +594,24 @@ const CORE_LESSONS: Lesson[] = [
 // sorted by era then order so new lessons slot into place automatically.
 export const LESSONS: Lesson[] = [...CORE_LESSONS, ...LESSONS_EXPANSION, ...LESSONS_EXPANSION_2];
 
+// ── Prehistoric chronology fix ──────────────────────────────────────────────
+// Deep time comes first: the Age of Dinosaurs and the Ice Ages open the era
+// (before human origins), instead of dangling at the end where their tranche
+// happened to append them. Order values are remapped in place; ids never
+// change, so completed-lesson records and analysis passes are unaffected.
+const PREHISTORIC_ORDER: string[] = [
+  'prehistoric-21', // The Age of Dinosaurs — before humanity
+  'prehistoric-22', // The Ice Ages — the world that shaped us
+  'prehistoric-01', 'prehistoric-02', 'prehistoric-03', 'prehistoric-04',
+  'prehistoric-05', 'prehistoric-06', 'prehistoric-07', 'prehistoric-08',
+  'prehistoric-09', 'prehistoric-10', 'prehistoric-11', 'prehistoric-12',
+  'prehistoric-13', 'prehistoric-14', 'prehistoric-15', 'prehistoric-16',
+  'prehistoric-17', 'prehistoric-18', 'prehistoric-19', 'prehistoric-20',
+];
+for (const lesson of LESSONS) {
+  const pos = PREHISTORIC_ORDER.indexOf(lesson.id);
+  if (pos !== -1) lesson.order = pos + 1;
+}
+
 export function getLessonById(id: string) { return LESSONS.find(l => l.id === id); }
 export function getEraLessons(eraId: string) { return LESSONS.filter(l => l.eraId === eraId).sort((a,b) => a.order - b.order); }

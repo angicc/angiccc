@@ -85,30 +85,37 @@ export function getCooldownRemaining(userId: string): number {
   return Math.max(0, loadAnalysisState(userId).cooldownUntil - Date.now());
 }
 
-export type LessonLockReason = 'analysis' | 'cooldown';
+export type LessonLockReason = 'analysis' | 'cooldown' | 'sequence';
 
 export interface LessonLock {
   locked: boolean;
   reason: LessonLockReason | null;
-  /** For 'analysis' locks: the completed lesson whose analysis is still owed. */
+  /** For 'analysis'/'sequence' locks: the predecessor lesson that blocks. */
   blockingLessonId?: string;
 }
 
 /**
- * Resolve the analysis/cooldown lock for a lesson. Rules:
+ * Resolve the progression lock for a lesson. Strict sequential rules that
+ * apply identically on EVERY subscription plan:
  *  - Completed lessons are always open (revisiting is free).
- *  - A not-yet-completed lesson whose predecessor in the era IS completed but
- *    whose predecessor's analysis has not passed → locked ('analysis').
+ *  - A lesson whose predecessor in the era is NOT completed → locked
+ *    ('sequence') — no skipping ahead, on any plan.
+ *  - Predecessor completed but its written analysis has not passed → locked
+ *    ('analysis') — Clio's gate is owed first.
  *  - Otherwise, while the reflection cooldown is active, every not-yet-
  *    completed lesson is locked ('cooldown').
- * Subscription gating (canLesson) is a separate, additive concern.
+ * Subscription gating (canLesson) is a separate, additive concern; it can
+ * lock further, never unlock past this gate.
  */
 export function getLessonLock(userId: string, lesson: Lesson, completedLessons: string[]): LessonLock {
   if (completedLessons.includes(lesson.id)) return { locked: false, reason: null };
   const eraLessons = getEraLessons(lesson.eraId);
   const idx = eraLessons.findIndex(l => l.id === lesson.id);
   const prev = idx > 0 ? eraLessons[idx - 1] : null;
-  if (prev && completedLessons.includes(prev.id) && !isAnalysisPassed(userId, prev.id)) {
+  if (prev && !completedLessons.includes(prev.id)) {
+    return { locked: true, reason: 'sequence', blockingLessonId: prev.id };
+  }
+  if (prev && !isAnalysisPassed(userId, prev.id)) {
     return { locked: true, reason: 'analysis', blockingLessonId: prev.id };
   }
   if (getCooldownRemaining(userId) > 0) return { locked: true, reason: 'cooldown' };

@@ -11,6 +11,7 @@ import { BYZANTINE_ERA_TRANS, BYZANTINE_LESSON_TRANS } from './byzantineTranslat
 import { BYZANTINE_BODY_TRANS } from './byzantineBodies';
 import { LESSON_DEEP_DIVES } from './lessonDeepDives';
 import { getCachedLessonTranslation } from './dynamicLessonTranslation';
+import { CATALOG_BY_LESSON_KEY } from '@/data/lessonsCatalog';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -300,12 +301,15 @@ export function getTranslatedLesson<T extends { id: string; title: string; subti
   if (trans) {
     return { ...lesson, title: trans.title, subtitle: trans.subtitle, keyFacts: trans.keyFacts, sections };
   }
-  if (dyn) {
+  // Curated Macedonian titles from the master banner catalog take precedence
+  // over runtime AI titles — they are hand-corrected Cyrillic.
+  const catalogMkTitle = lang === 'mk' ? CATALOG_BY_LESSON_KEY[lesson.id]?.correctedTitle : undefined;
+  if (dyn || catalogMkTitle) {
     return {
       ...lesson,
-      title: dyn.t ?? lesson.title,
-      subtitle: dyn.s ?? lesson.subtitle,
-      keyFacts: dyn.k ?? lesson.keyFacts,
+      title: catalogMkTitle ?? dyn?.t ?? lesson.title,
+      subtitle: dyn?.s ?? lesson.subtitle,
+      keyFacts: dyn?.k ?? lesson.keyFacts,
       sections,
     };
   }
