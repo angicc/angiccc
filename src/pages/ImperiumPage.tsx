@@ -10,10 +10,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Swords, Crown, Flag, Zap, Target, Shield, AlertTriangle,
   ChevronRight, RotateCcw, Trash2, CloudSun, Coins, Scale3d, Network, Hourglass, MapPin, HelpCircle,
-  ScrollText, X, Landmark,
+  ScrollText, X, Landmark, Brain,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { AppShell } from '@/components/layout/AppShell';
 import { PlanGate } from '@/features/subscription/planGate';
@@ -24,6 +25,7 @@ import type { Language } from '@/i18n/translations';
 import { findTerritoryPath, classifyTerrain } from '@/features/imperium/geoGraph';
 import type { Tactic } from '@/features/imperium/combatMatrix';
 import { ROSTERS, rateTactic } from '@/features/imperium/combatMatrix';
+import { loadDoctrine, recordTurnJudgment, clearDoctrine, campaignStanding, type DoctrineState } from '@/features/imperium/warCouncil';
 import type { FactionId } from '@/features/imperium/logistics';
 import {
   createCampaign, resolveTurn, rollbackToTurn, graphFor, theatreSummary, THEATRE_SPECS,
@@ -419,6 +421,9 @@ export default function ImperiumPage() {
   const [showWeb, setShowWeb] = useState(false);
   const [resolving, setResolving] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
+  // The War Council's running verdict on the ruler's judgment (the intellectual
+  // 65% of the campaign). Re-synced whenever the active campaign changes.
+  const [doctrine, setDoctrine] = useState<DoctrineState>({ intellectPoints: 0, intellectMax: 0, decisions: 0 });
 
   const savedCampaigns = useMemo(() => listLocalCampaigns(userId), [userId, campaign?.id]);
 
@@ -558,8 +563,15 @@ export default function ImperiumPage() {
   }, [campaign, pendingMarches, selectedArmyId, showWeb, language]);
 
   // ── Campaign actions ──
+  // Keep the War Council verdict in step with whichever campaign is loaded.
+  useEffect(() => {
+    if (campaign) setDoctrine(loadDoctrine(userId, campaign.id));
+  }, [campaign?.id, userId]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const startCampaign = (theatre: TheatreId) => {
     const state = createCampaign(theatre);
+    clearDoctrine(userId, state.id);
+    setDoctrine({ intellectPoints: 0, intellectMax: 0, decisions: 0 });
     setCampaign(state);
     setPendingMarches({}); setCrisisChoices({}); setSelectedArmyId(null); setBattleQueue([]);
     saveCampaign(userId, state);
@@ -571,8 +583,22 @@ export default function ImperiumPage() {
 
   const resumeCampaign = (id: string) => {
     const state = loadCampaign(userId, id);
-    if (state && state.theatre) { setCampaign(state); setPendingMarches({}); setCrisisChoices({}); setBattleQueue([]); }
-    else if (state) deleteCampaign(userId, id); // pre-theatre campaign: not loadable
+    // A resumable campaign needs both its theatre and a current snapshot. When
+    // the body is missing (storage evicted, older/partial save) the index entry
+    // is stale — remove it and tell the player, rather than leaving a dead
+    // "Continue" button that does nothing on click.
+    if (state && state.theatre && state.current) {
+      setResolving(false);
+      setPendingMarches({}); setCrisisChoices({}); setBattleQueue([]);
+      setSelectedArmyId(null);
+      setTactic(state.playerLeader.signature as Tactic);
+      setCampaign(state);
+      void pushTurnBlock(state);
+      requestAnimationFrame(() => { document.querySelector('main')?.scrollTo({ top: 0 }); window.scrollTo(0, 0); });
+    } else {
+      deleteCampaign(userId, id);
+      toast.error(ti('imp_resume_failed'));
+    }
   };
 
   const abandonCampaign = (id: string) => {
@@ -583,8 +609,22 @@ export default function ImperiumPage() {
   const endTurn = () => {
     if (!campaign || resolving || campaign.current.over) return;
     setResolving(true);
+    // Snapshot the intellectual signals of THIS turn before it resolves: how
+    // many crises the ruler faced, how many they actually answered, and how
+    // sound their chosen tactic was. The War Council weighs these into Doctrine.
+    const facedCrises = campaign.current.activeCrises;
+    const answered = facedCrises.filter(c => crisisChoices[c.id]).length;
+    const cLat = (theatreSpec(campaign.theatre).viewBounds[0][0] + theatreSpec(campaign.theatre).viewBounds[1][0]) / 2;
+    const cLng = (theatreSpec(campaign.theatre).viewBounds[0][1] + theatreSpec(campaign.theatre).viewBounds[1][1]) / 2;
+    const turnTacticGrade = rateTactic({
+      tactic, enemyTactic: campaign.rivalLeader.signature as Tactic, weather: campaign.current.weather,
+      terrain: classifyTerrain(cLat, cLng), leaderSignature: campaign.playerLeader.signature as Tactic,
+    }).grade;
     requestAnimationFrame(() => {
       const result = resolveTurn(campaign, { marches: pendingMarches, tactic, crisisChoices });
+      setDoctrine(recordTurnJudgment(userId, campaign.id, {
+        crisesFaced: facedCrises.length, crisesAnswered: answered, tacticGrade: turnTacticGrade,
+      }));
       setCampaign(result.state);
       setPendingMarches({}); setCrisisChoices({}); setSelectedArmyId(null);
       // Only stage battles the player actually fought — the on-map theatre grades
@@ -616,6 +656,7 @@ export default function ImperiumPage() {
   ) : { player: 0, rival: 0 };
   const totalProvinces = campaign ? provincesFor(campaign.theatre).length : 0;
   const rivalLeft = holdings.rival;
+  const standing = campaign ? campaignStanding(doctrine, holdings.player, totalProvinces) : null;
 
   return (
     <AppShell>
@@ -640,6 +681,11 @@ export default function ImperiumPage() {
               <Badge variant="outline" className="gap-1.5"><CloudSun className="w-3 h-3" />{ti(`imp_weather_${snap?.weather ?? 'clear'}`)}</Badge>
               <Badge variant="outline" className="gap-1.5 tabular-nums"><Coins className="w-3 h-3" />{ti('imp_treasury')} {snap?.treasury}</Badge>
               <Badge variant="outline" className="gap-1.5 tabular-nums"><Scale3d className="w-3 h-3" />{ti('imp_discipline')} {snap?.discipline ?? 0}</Badge>
+              {standing && (
+                <Badge variant="outline" className="gap-1.5 tabular-nums border-violet-400/50 text-violet-300" title={ti('imp_standing')}>
+                  <Brain className="w-3 h-3" />{ti('imp_doctrine')} {standing.intellect}%
+                </Badge>
+              )}
               <Button variant="ghost" size="sm" className="gap-1.5" onClick={() => setShowLedger(true)}>
                 <ScrollText className="w-3.5 h-3.5" />{ti('imp_ledger_title')}
               </Button>
@@ -919,6 +965,34 @@ export default function ImperiumPage() {
                       <CrisisCouncil key={c.id} crisis={c} language={language} chosen={crisisChoices[c.id]}
                         onChoose={opt => setCrisisChoices(prev => ({ ...prev, [c.id]: opt }))} />
                     ))}
+                  </div>
+                )}
+
+                {/* ── War Council: the intellectual 65% of the campaign ── */}
+                {standing && (
+                  <div className="rounded-2xl border border-violet-400/25 bg-gradient-to-br from-violet-950/30 to-transparent p-4 space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Brain className="w-4 h-4 text-violet-300" />
+                      <h3 className="font-heading font-semibold text-sm text-violet-100">{ti('imp_council_title')}</h3>
+                      <span className="ml-auto text-lg font-black tabular-nums text-violet-200">{standing.standing}</span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground leading-snug">{ti('imp_council_intro')}</p>
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between text-[10.5px]">
+                        <span className="text-violet-300 font-medium">{ti('imp_council_intellect')}</span>
+                        <span className="tabular-nums text-violet-200">{standing.intellect}%</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+                        <div className="h-full rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400" style={{ width: `${standing.intellect}%` }} />
+                      </div>
+                      <div className="flex items-center justify-between text-[10.5px] pt-0.5">
+                        <span className="text-amber-300/90 font-medium">{ti('imp_council_might')}</span>
+                        <span className="tabular-nums text-amber-200/90">{standing.might}%</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+                        <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-400" style={{ width: `${standing.might}%` }} />
+                      </div>
+                    </div>
                   </div>
                 )}
 
