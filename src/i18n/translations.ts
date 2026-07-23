@@ -10,6 +10,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
 };
 
 import { DE_OVERRIDES, FR_OVERRIDES } from './translationsDeFr';
+import { DE_OVERRIDES_2, FR_OVERRIDES_2 } from './translationsDeFr2';
 
 export type TranslationKeys = {
   // ── Sidebar / Nav ──────────────────────────────────────────────
@@ -1936,6 +1937,6 @@ export const T: Translations = {
   // a hand-translated core covering the high-traffic UI. Remaining keys serve
   // English until their translations land — the same graceful-fallback contract
   // the content layer has always used.
-  de: { ...EN, ...DE_OVERRIDES },
-  fr: { ...EN, ...FR_OVERRIDES },
+  de: { ...EN, ...DE_OVERRIDES, ...DE_OVERRIDES_2 },
+  fr: { ...EN, ...FR_OVERRIDES, ...FR_OVERRIDES_2 },
 };
