@@ -13,6 +13,7 @@ import type { Language } from '@/i18n/translations';
 import { getTranslatedTerritoryDesc } from '@/i18n/territoryDescTranslations';
 import { getQuestionsForTopic, getTranslatedTerritoryQuestion, type TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
 import { generateTopicQuestions, questionsForTopicSafe } from '@/features/map/territoryQuizFallback';
+import { buildCampaignData, type CampaignData } from '@/features/map/campaignData';
 import { getTranslatedMarkerName, getTranslatedMarkerNote, getTranslatedMarkerType, getTranslatedPolyLabel } from '@/i18n/territoryMarkerTranslations';
 import {
   Map as MapIcon, ChevronRight, Layers, Palette, BookOpen, HelpCircle, Play, Pause,
@@ -526,6 +527,7 @@ export default function TimelineMapPage() {
   const [legendary, setLegendary]       = useState(false);
   // The battle arena replaces the old quiz-style campaign panel entirely.
   const [battleQuestions, setBattleQuestions] = useState<TerritoryQuizQuestion[]>([]);
+  const [battleCampaign, setBattleCampaign] = useState<CampaignData | null>(null);
   const [battleActive, setBattleActive] = useState(false);
 
   function startCampaignStage(topic: TerritoryTopic) {
@@ -537,6 +539,8 @@ export default function TimelineMapPage() {
     }
     if (qs.length === 0) { toast.error(t.tmap_camp_no_questions); return; }
     setBattleQuestions(qs);
+    // Typed per-timeline CampaignData (named foe + unit rosters) drives the arena.
+    setBattleCampaign(buildCampaignData(topic, qs, language, t));
     setBattleActive(true);
   }
 
@@ -1770,9 +1774,10 @@ export default function TimelineMapPage() {
               key={`${selected.id}-${battleQuestions.map(q => q.id).join('')}`}
               topic={selected}
               questions={battleQuestions}
+              campaign={battleCampaign ?? undefined}
               language={language}
               legendary={legendary}
-              playerName={currentUser?.username ?? 'Your army'}
+              playerName={currentUser?.username ?? t.tmap_camp_your_army}
               t={t as unknown as Record<string, string>}
               onFinish={finishBattle}
               onExit={() => setBattleActive(false)}

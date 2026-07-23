@@ -21,10 +21,11 @@ import { cn } from '@/lib/utils';
 import type { TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
 import type { TerritoryTopic } from '@/features/content/timelineTerritoryData';
 import type { Language } from '@/i18n/translations';
+import type { CampaignData } from './campaignData';
 import { getTranslatedTerritoryQuestion } from '@/i18n/territoryMapQuizData';
 import {
   createBattle, resolveRound, enemyPickTactic, battleStars, moraleBand, aliveInRegiment,
-  ARMY_COMPOSITION, ERA_FLAVOR, TACTICS, STREAK_FOR_CRIT, MAX_HP, MAX_MORALE,
+  ARMY_COMPOSITION, TACTICS, STREAK_FOR_CRIT, MAX_HP, MAX_MORALE,
   type BattleState, type Tactic, type RoundResolution, type EraId,
 } from './battle/battleEngine';
 import { UnitSprite, ArmyBanner, type UnitPose } from './battle/unitSprites';
@@ -64,7 +65,7 @@ interface EffectFrame {
 }
 
 export function BattleArena({
-  topic, questions, language, legendary, playerName, t, onFinish, onExit,
+  topic, questions, language, legendary, playerName, t, onFinish, onExit, campaign,
 }: {
   topic: TerritoryTopic;
   questions: TerritoryQuizQuestion[];
@@ -74,9 +75,12 @@ export function BattleArena({
   t: Record<string, string>;
   onFinish: (o: BattleOutcome) => void;
   onExit: () => void;
+  /** Typed per-timeline campaign: names the foe + supplies the unit rosters. */
+  campaign?: CampaignData;
 }) {
   const pal = ARMY[topic.era];
-  const flavor = ERA_FLAVOR[topic.era];
+  // The named opponent for this timeline (falls back to the region's own name).
+  const enemyName = campaign?.opponentName ?? topic.title;
 
   const [battle, setBattle] = useState<BattleState>(() => createBattle(topic.era, questions.length, legendary));
   const [phase, setPhase] = useState<Phase>('briefing');
@@ -219,7 +223,7 @@ export function BattleArena({
               )}
             </div>
             <ArmyHud
-              label={topic.title} hp={battle.enemy.hp} morale={battle.enemy.morale}
+              label={enemyName} hp={battle.enemy.hp} morale={battle.enemy.morale}
               streak={battle.enemy.streak} color={pal.enemy} align="right"
               lastTactic={battle.enemy.lastTactic} tacticLabel={tacticLabel} t={t}
             />
@@ -288,9 +292,31 @@ export function BattleArena({
             <p className="text-white/60 text-xs leading-relaxed">
               {t.tmap_battle_brief2 ?? 'Each round: choose a tactic at the war council, then answer the order. Correct — your tactic strikes. Wrong — theirs does. Charge beats volley, volley beats shield wall, shield wall beats charge. Break their army — or their morale.'}
             </p>
-            <div className="flex items-center justify-center gap-4 text-[10px] text-white/45 uppercase tracking-wider">
-              <span>{flavor.unitNames.infantry}</span>·<span>{flavor.unitNames.ranged}</span>·<span>{flavor.unitNames.cavalry}</span>
-            </div>
+            {/* Order of battle — the two rosters that take the field (CampaignData) */}
+            {campaign && (
+              <div className="grid grid-cols-2 gap-3 max-w-md mx-auto pt-1">
+                {[
+                  { name: playerName, units: campaign.playerUnits, color: pal.player, label: t.tmap_camp_your_army ?? 'Your army' },
+                  { name: enemyName, units: campaign.opponentUnits, color: pal.enemy, label: t.tmap_camp_enemy_army ?? 'Enemy army' },
+                ].map((army, k) => (
+                  <div key={k} className="rounded-xl border border-white/12 bg-white/[0.03] p-2.5 text-left">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Shield className="w-3 h-3 shrink-0" style={{ color: army.color }} />
+                      <span className="text-[11px] font-bold text-white/90 truncate">{army.name}</span>
+                    </div>
+                    <div className="space-y-0.5">
+                      {army.units.map((u, ui) => (
+                        <div key={ui} className="flex items-center gap-1.5 text-[10.5px] text-white/60">
+                          <span className="text-sm leading-none">{u.sprite}</span>
+                          <span className="tabular-nums text-white/80 font-semibold">{u.count}</span>
+                          <span className="truncate">{u.type}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="flex gap-2 justify-center">
               <Button variant="outline" size="sm" className="border-white/25 bg-transparent text-white hover:bg-white/10" onClick={onExit}>
                 {t.btn_back ?? 'Back'}

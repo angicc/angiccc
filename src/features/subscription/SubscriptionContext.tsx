@@ -3,7 +3,7 @@ import type { UserSubscription, SubscriptionTier } from '@/types';
 import { loadSubscription, upgradeSubscription, recordAiMessageSub, canAccessLesson, canUseAI, canDownload, canAdvancedStats, canFilterTimeline, canSeeExplanations } from './subscriptionStore';
 import { useAuth } from '@/features/auth/AuthContext';
 
-export type CampaignEraId = 'ancient' | 'medieval' | 'early-modern' | 'modern';
+export type CampaignEraId = 'prehistoric' | 'ancient' | 'byzantine' | 'medieval' | 'early-modern' | 'modern';
 
 interface SubCtx {
   subscription: UserSubscription | null; upgrade(t: SubscriptionTier): void; trackAiMessage(): void;
@@ -39,7 +39,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   const usedToday = subscription?.aiMessagesUsedToday ?? 0;
 
   return (
-    <SubContext.Provider value={{ subscription, upgrade, trackAiMessage, canLesson: o => canAccessLesson(tier, o), canAI: () => canUseAI(tier, used, usedToday), canDownload: () => canDownload(tier), canAdvancedStats: () => canAdvancedStats(tier), canTimeline: () => canFilterTimeline(tier), canExplanations: () => canSeeExplanations(tier), canTerritoryMap: () => tier === 'pro' || tier === 'master', campaignEras: () => tier === 'master' ? ['ancient', 'medieval', 'early-modern', 'modern'] : [], canLegendary: () => tier === 'master', refreshSubscription }}>
+    <SubContext.Provider value={{ subscription, upgrade, trackAiMessage, canLesson: o => canAccessLesson(tier, o), canAI: () => canUseAI(tier, used, usedToday), canDownload: () => canDownload(tier), canAdvancedStats: () => canAdvancedStats(tier), canTimeline: () => canFilterTimeline(tier), canExplanations: () => canSeeExplanations(tier), canTerritoryMap: () => tier === 'pro' || tier === 'master', campaignEras: () => tier === 'master' ? ['prehistoric', 'ancient', 'byzantine', 'medieval', 'early-modern', 'modern'] : [], canLegendary: () => tier === 'master', refreshSubscription }}>
       {children}
     </SubContext.Provider>
   );

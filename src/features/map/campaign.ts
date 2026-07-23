@@ -12,7 +12,8 @@ import { getQuestionsForTopic, type TerritoryQuizQuestion } from '@/i18n/territo
 
 export type CampaignEra = TerritoryTopic['era'];
 
-export const CAMPAIGN_ERAS: CampaignEra[] = ['ancient', 'medieval', 'early-modern', 'modern'];
+// All six eras run a campaign, so EVERY timeline topic is conquerable.
+export const CAMPAIGN_ERAS: CampaignEra[] = ['prehistoric', 'ancient', 'byzantine', 'medieval', 'early-modern', 'modern'];
 
 /** Stage count of questions per conquest attempt. */
 export const STAGE_QUESTIONS = 5;

@@ -6,6 +6,8 @@
 import type { TranslationKeys } from './translations';
 
 export const DE_OVERRIDES_2: Partial<TranslationKeys> = {
+  tmap_camp_foe: 'Verteidiger von {name}', tmap_camp_your_army: 'Deine Armee', tmap_camp_enemy_army: 'Feindliche Armee',
+  tmap_unit_infantry: 'Infanterie', tmap_unit_archers: 'Bogenschützen', tmap_unit_cavalry: 'Kavallerie',
   tmap_title: "Zeitleisten-Territorienkarte",
   tmap_subtitle: "Erkunde reale geografische Territorien für jede historische Epoche",
   tmap_select_topic: "Wähle ein Thema, um sein Territorium zu sehen",
@@ -483,6 +485,8 @@ export const DE_OVERRIDES_2: Partial<TranslationKeys> = {
 };
 
 export const FR_OVERRIDES_2: Partial<TranslationKeys> = {
+  tmap_camp_foe: 'Défenseurs de {name}', tmap_camp_your_army: 'Ton armée', tmap_camp_enemy_army: 'Armée ennemie',
+  tmap_unit_infantry: 'Infanterie', tmap_unit_archers: 'Archers', tmap_unit_cavalry: 'Cavalerie',
   tmap_title: "Carte des territoires chronologiques",
   tmap_subtitle: "Explore les territoires géographiques réels de chaque période historique",
   tmap_select_topic: "Sélectionne un sujet pour voir son territoire",
