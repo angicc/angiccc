@@ -47,6 +47,13 @@ export interface TerritoryTopic {
   markers: TerritoryMarker[];
   polygons?: TerritoryPolygon[];
   routes?: TerritoryRoute[];
+  /**
+   * Oceanic / maritime-route topics (voyages, sea trade). These are NOT solid
+   * land empires: any polygon is rendered as a dashed nautical boundary corridor
+   * (stroke only, no fill/glow/texture) rather than a filled blob, and the topic
+   * auto-reveals — a sea voyage has no "territory" to scout out of the fog.
+   */
+  oceanic?: boolean;
 }
 
 export const TERRITORY_TOPICS: TerritoryTopic[] = [
@@ -748,6 +755,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     yearRange: [1500, 1866],
     center: [10, -35],
     zoom: 3,
+    oceanic: true,
     title: 'The Transatlantic Slave Trade',
     titleI18n: { es: 'El comercio transatlántico de esclavos', ru: 'Трансатлантическая работорговля', mk: 'Трансатлантската трговија со робови' },
     description: 'Over 12.5 million enslaved Africans were shipped across the Atlantic on the triangular trade — manufactured goods to Africa, human beings to the Americas, sugar and cotton back to Europe.',
@@ -1599,6 +1607,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     yearRange: [1000, 1500],
     center: [-12, -155],
     zoom: 3,
+    oceanic: true,
     title: 'Voyagers of the Pacific',
     titleI18n: { es: 'Navegantes del Pacífico', ru: 'Мореплаватели Тихого океана', mk: 'Морепловците на Пацификот' },
     description: 'The Polynesian settlement of the vast Pacific — the last great human colonization of the Earth. Using only the stars, swells, and birds, voyagers reached every corner of the Polynesian Triangle: Hawaii, Rapa Nui, and Aotearoa.',

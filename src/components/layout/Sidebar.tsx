@@ -87,29 +87,44 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
 
   return (
     <aside className={cn('flex flex-col w-60 shrink-0 bg-layer-0 h-screen sticky top-0', className)}>
-      {/* ── Top: wordmark + profile avatar shortcut ── */}
-      <div className="px-5 pt-5 pb-4 space-y-3">
-        <div className="flex items-center justify-between gap-2">
-          <Link to="/dashboard" onClick={onNavigate} className="font-accent text-[15px] font-bold tracking-[0.28em] text-foreground select-none">
-            HISTOR<span className="text-primary">IFY</span>
-          </Link>
-          {currentUser && (
-            <Link to="/profile" onClick={onNavigate} title={currentUser.username} className="shrink-0 rounded-full transition-transform hover:scale-105">
-              <Avatar className="h-8 w-8 ring-1 ring-white/10">
+      {/* ── Top: wordmark + full profile card (avatar, name, tier, rank) ── */}
+      <div className="px-4 pt-5 pb-3 space-y-3">
+        <Link to="/dashboard" onClick={onNavigate} className="block px-1 font-accent text-[15px] font-bold tracking-[0.28em] text-foreground select-none">
+          HISTOR<span className="text-primary">IFY</span>
+        </Link>
+        {currentUser && (
+          <Link
+            to="/profile"
+            onClick={onNavigate}
+            title={t.nav_profile}
+            className="block rounded-xl bg-layer-2/70 ring-1 ring-white/5 p-3 transition-all hover:bg-layer-2 hover:ring-primary/30"
+          >
+            <div className="flex items-center gap-3">
+              <Avatar className="h-11 w-11 shrink-0 ring-1 ring-primary/30">
                 {avatarUrl && <AvatarImage src={avatarUrl} alt={currentUser.username} />}
-                <AvatarFallback className="bg-layer-2 text-primary text-[11px] font-semibold">
+                <AvatarFallback className="bg-gradient-to-br from-primary/30 to-primary/[0.04] text-primary text-sm font-bold">
                   {currentUser.avatarInitials}
                 </AvatarFallback>
               </Avatar>
-            </Link>
-          )}
-        </div>
-        {currentUser && (
-          <div className="flex items-center gap-2 min-w-0">
-            <Crown className={cn('w-3 h-3 shrink-0', tier === 'master' ? 'text-amber-400' : tier === 'pro' ? 'text-primary' : 'text-muted-foreground')} />
-            <span className="text-[11px] text-muted-foreground truncate">{currentUser.username} · {tierLabel}</span>
-            <span className="ml-auto text-sm leading-none shrink-0" title={rank.name}>{rank.icon}</span>
-          </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm font-semibold text-foreground truncate">{currentUser.username}</span>
+                  <span className="text-sm leading-none shrink-0" title={rank.name}>{rank.icon}</span>
+                </div>
+                <div className="mt-0.5 flex items-center gap-1">
+                  <Crown className={cn('w-3 h-3 shrink-0', tier === 'master' ? 'text-amber-400' : tier === 'pro' ? 'text-primary' : 'text-muted-foreground')} />
+                  <span className="text-[11px] text-muted-foreground truncate">{tierLabel}</span>
+                </div>
+              </div>
+            </div>
+            {progress && (
+              <div className="mt-2.5 flex items-center justify-between text-[10px] text-muted-foreground/90 tabular-nums">
+                <span className="flex items-center gap-1"><Flame className="w-3 h-3 text-primary" />{progress.streak}{t.sidebar_streak}</span>
+                <span>Lv.{progress.level}</span>
+                <span className="truncate max-w-[46%] text-right" title={rank.name}>{rank.name}</span>
+              </div>
+            )}
+          </Link>
         )}
       </div>
 

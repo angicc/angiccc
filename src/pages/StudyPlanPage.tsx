@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Route as RouteIcon, Sparkles, RefreshCw, TrendingUp, Target, BookOpen, HelpCircle, Layers, Wand2, Hourglass, Globe2, CheckCircle2, Circle, ChevronRight, Crown, Flame } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -51,6 +52,9 @@ export default function StudyPlanPage() {
   // AuthContext `progress` object doesn't always track — without this tick,
   // Era Mastery could sit stale until a full reload.
   const [refreshTick, setRefreshTick] = useState(0);
+  // Short-lived flag that spins the Refresh icon so the click always reads as
+  // an action even when nothing changed underneath.
+  const [refreshing, setRefreshing] = useState(false);
 
   // Mastery recomputes whenever progress changes (lesson done, quiz passed...)
   // or a refresh is requested.
@@ -69,6 +73,15 @@ export default function StudyPlanPage() {
   useEffect(() => { if (currentUser) setPlan(loadWeekPlan(currentUser.id)); }, [currentUser, refreshTick]);
 
   const refresh = useCallback(() => setRefreshTick(v => v + 1), []);
+
+  // The Refresh button: re-derive mastery/completion/plan AND give tactile
+  // feedback (spinning icon + toast), so the click is never a silent no-op.
+  const manualRefresh = useCallback(() => {
+    setRefreshing(true);
+    setRefreshTick(v => v + 1);
+    toast.success(t.path_refreshed);
+    window.setTimeout(() => setRefreshing(false), 650);
+  }, [t.path_refreshed]);
 
   // Activity completed on another page/tab (quiz, lesson, flashcards) →
   // re-derive everything the moment the user comes back to this one.
@@ -134,8 +147,8 @@ export default function StudyPlanPage() {
               <Badge variant="outline" className="gap-1 text-primary border-primary/40">
                 <TrendingUp className="w-3 h-3" />{mastery.overall}%
               </Badge>
-              <Button variant="outline" size="sm" className="gap-1.5 h-7 px-2.5" onClick={refresh} title={t.path_refresh}>
-                <RefreshCw className="w-3.5 h-3.5" />
+              <Button variant="outline" size="sm" className="gap-1.5 h-7 px-2.5" onClick={manualRefresh} disabled={refreshing} title={t.path_refresh}>
+                <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
                 <span className="hidden sm:inline text-xs">{t.path_refresh}</span>
               </Button>
             </div>

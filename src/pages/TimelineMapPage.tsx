@@ -218,6 +218,78 @@ function formatYear(y: number, bceLabel: string, ceLabel: string): string {
   return v < 0 ? `${Math.abs(v)} ${bceLabel}` : `${v} ${ceLabel}`;
 }
 
+// Area-weighted polygon centroid (shoelace) in [lat,lng], plus the |signed
+// area| of the ring. The area is used to pick the most prominent sub-polygon of
+// a real MultiPolygon so a territory label is drawn ONCE, inside its largest
+// landmass — never repeated over every island / sub-ring. Degenerate
+// (collinear) rings fall back to the vertex mean.
+function polygonCentroid(coords: [number, number][]): { lat: number; lng: number; area: number } {
+  const n = coords.length;
+  if (n === 0) return { lat: 0, lng: 0, area: 0 };
+  let twiceArea = 0, cx = 0, cy = 0;
+  for (let i = 0; i < n; i++) {
+    const [lat1, lng1] = coords[i];
+    const [lat2, lng2] = coords[(i + 1) % n];
+    const cross = lng1 * lat2 - lng2 * lat1; // x = lng, y = lat
+    twiceArea += cross;
+    cx += (lng1 + lng2) * cross;
+    cy += (lat1 + lat2) * cross;
+  }
+  if (Math.abs(twiceArea) < 1e-9) {
+    let mLat = 0, mLng = 0;
+    for (const [la, ln] of coords) { mLat += la; mLng += ln; }
+    return { lat: mLat / n, lng: mLng / n, area: 0 };
+  }
+  return { lat: cy / (3 * twiceArea), lng: cx / (3 * twiceArea), area: Math.abs(twiceArea) / 2 };
+}
+
+// Draw each territory's small-caps name ONCE, at its feature centroid, with a
+// simple screen-space collision pass so overlapping tags don't stack when the
+// map is zoomed out. Larger features are placed first, so on collision the more
+// prominent label wins. Every tag is non-interactive (pointer-events:none) so it
+// never steals polygon hover/telemetry. This is the single source of territory
+// labels — replacing the old per-sub-polygon rendering that duplicated a name
+// across every ring of a MultiPolygon.
+function renderTerritoryLabels(
+  map: L.Map,
+  lg: L.LayerGroup,
+  candidates: Map<string, { lat: number; lng: number; area: number; color: string }>,
+  language: Language,
+) {
+  const ordered = [...candidates.entries()].sort((a, b) => b[1].area - a[1].area);
+  const placed: { x: number; y: number }[] = [];
+  const MIN_PX_X = 96;
+  const MIN_PX_Y = 26;
+  for (const [rawLabel, cand] of ordered) {
+    let pt: L.Point;
+    try { pt = map.latLngToContainerPoint([cand.lat, cand.lng]); } catch { continue; }
+    if (placed.some(p => Math.abs(p.x - pt.x) < MIN_PX_X && Math.abs(p.y - pt.y) < MIN_PX_Y)) continue;
+    placed.push({ x: pt.x, y: pt.y });
+    const labelText = getTranslatedPolyLabel(rawLabel, language).toUpperCase();
+    L.marker([cand.lat, cand.lng], {
+      interactive: false,
+      keyboard: false,
+      icon: L.divIcon({
+        className: '',
+        html: `<div style="
+          transform: translate(-50%, -50%);
+          font-family: 'Playfair Display', Georgia, serif;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.22em;
+          color: ${cand.color};
+          filter: brightness(1.35);
+          text-shadow: 0 0 4px rgba(0,0,0,0.95), 0 1px 2px rgba(0,0,0,0.9);
+          white-space: nowrap;
+          pointer-events: none;
+          opacity: 0.92;
+        ">${escapeHtml(labelText)}</div>`,
+        iconSize: [0, 0],
+      }),
+    }).addTo(lg);
+  }
+}
+
 // Animate a polygon border "drawing" itself via stroke-dashoffset, then settle
 // into its intended dash pattern. Gives frontiers a premium hand-drawn sweep on
 // load and whenever the time scrubber morphs territories.
@@ -682,19 +754,60 @@ export default function TimelineMapPage() {
 
     if (!selected) return;
 
-    const isExplored = explored.has(selected.id);
+    // Prefer verified historical geometry (from the GIS pipeline) over the
+    // curated rings whenever it has loaded for this topic.
+    const oceanicTopic = !!selected.oceanic;
+    const territoryPolys = realGeomRef.current[selected.id] ?? selected.polygons;
+    // Fog of war only applies to LAND empires that actually have polygons to
+    // scout. Oceanic voyages and route/mission topics (no land polygons) reveal
+    // immediately — there is no territory to uncover, and gating them behind a
+    // polygon-click left those maps looking empty.
+    const hasScoutableLand = !oceanicTopic && !!(territoryPolys && territoryPolys.length);
+    const isExplored = explored.has(selected.id) || !hasScoutableLand;
     const currentZoom = map.getZoom();
     zoomOpacityRef.current = getFillOpacityForZoom(currentZoom);
+
+    // Collected here, rendered once after the loop — never per sub-polygon.
+    const labelCandidates = new Map<string, { lat: number; lng: number; area: number; color: string }>();
 
     // Polygons — strict 3-tier border system, clean solid strokes.
     // Unexplored territories render as fog: desaturated slate fill, details
     // withheld until the user scouts the region with a click.
-    // Prefer verified historical geometry (from the GIS pipeline) over the
-    // curated rings whenever it has loaded for this topic.
-    const territoryPolys = realGeomRef.current[selected.id] ?? selected.polygons;
     if (layers.territory && territoryPolys) {
       territoryPolys.forEach(poly => {
         const latlngs = poly.coords.map(([lat, lng]) => [lat, lng] as [number, number]);
+
+        // Record the territory name once per unique feature; the largest
+        // sub-polygon wins so the tag sits inside the main landmass.
+        if (isExplored && poly.label) {
+          const c = polygonCentroid(poly.coords);
+          const prev = labelCandidates.get(poly.label);
+          if (!prev || c.area > prev.area) {
+            labelCandidates.set(poly.label, { lat: c.lat, lng: c.lng, area: c.area, color: poly.color });
+          }
+        }
+
+        // Oceanic topics: dashed nautical boundary corridor — stroke only, no
+        // filled blob / casing / glow / texture over open sea.
+        if (oceanicTopic) {
+          const corridor = L.polygon(latlngs, {
+            color: poly.color,
+            weight: 2.5,
+            opacity: 0.9,
+            fill: false,
+            dashArray: '10,9',
+            lineJoin: 'round',
+            lineCap: 'round',
+            interactive: false,
+            smoothFactor: 0.5,
+          } as L.PathOptions);
+          corridor.addTo(lg);
+          requestAnimationFrame(() => {
+            const el = corridor.getElement() as SVGPathElement | null;
+            if (el) animateBorderDraw(el, '10,9');
+          });
+          return;
+        }
 
         const tier = ((poly as unknown as { borderTier?: string }).borderTier ?? 'primary') as BorderTier;
         const border = BORDER_STYLES[tier];
@@ -824,39 +937,6 @@ export default function TimelineMapPage() {
           animateBorderDraw(pathEl, strokeDash);
         });
 
-        // ── Atlas region label: the small-caps territory name set inside the
-        // region at its visual centre — the signature of historical
-        // cartography. Rendered as a non-interactive divIcon so it pans/zooms
-        // with the territory and never intercepts polygon hover telemetry.
-        if (isExplored && poly.label) {
-          const ringPts = poly.coords;
-          let cLat = 0, cLng = 0;
-          for (const [la, ln] of ringPts) { cLat += la; cLng += ln; }
-          cLat /= ringPts.length; cLng /= ringPts.length;
-          const labelText = getTranslatedPolyLabel(poly.label, language).toUpperCase();
-          L.marker([cLat, cLng], {
-            interactive: false,
-            keyboard: false,
-            icon: L.divIcon({
-              className: '',
-              html: `<div style="
-                transform: translate(-50%, -50%);
-                font-family: 'Playfair Display', Georgia, serif;
-                font-size: 11px;
-                font-weight: 600;
-                letter-spacing: 0.22em;
-                color: ${poly.color};
-                filter: brightness(1.35);
-                text-shadow: 0 0 4px rgba(0,0,0,0.95), 0 1px 2px rgba(0,0,0,0.9);
-                white-space: nowrap;
-                pointer-events: none;
-                opacity: 0.92;
-              ">${escapeHtml(labelText)}</div>`,
-              iconSize: [0, 0],
-            }),
-          }).addTo(lg);
-        }
-
         // ── Biome-sensitive shading: era-keyed fractal-noise texture overlay ─
         if (isExplored) {
           const tex = ERA_TEXTURES[selected.era];
@@ -878,6 +958,10 @@ export default function TimelineMapPage() {
           });
         }
       });
+
+      // Territory names: exactly one label per feature, at the centroid, with a
+      // screen-space collision pass. This is the single place labels are drawn.
+      renderTerritoryLabels(map, lg, labelCandidates, language);
     }
 
     // Routes — supply networks stay hidden under fog until the region is scouted

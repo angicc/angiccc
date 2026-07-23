@@ -11,6 +11,16 @@ import { getEraLessons } from '@/features/content/lessonsData';
 export const ANALYSIS_MIN_WORDS = 150;
 export const ANALYSIS_MAX_WORDS = 300;
 export const COOLDOWN_MS = 30 * 60 * 1000;
+
+/**
+ * MASTER UNLOCK — when true, EVERY lesson is open regardless of sequence,
+ * cooldown, or analysis state, so the whole curriculum can be walked end-to-end
+ * to inspect content, translations, GIF banners, and layout for glitches.
+ * The analysis popup + cooldown machinery still runs (nothing below is removed);
+ * this switch only stops those gates from *locking* a lesson. Flip to `false`
+ * to restore the strict sequential + 30-minute reflection gate.
+ */
+export const UNLOCK_ALL_LESSONS = true;
 /** Score (0–100) at which a grade counts as a B — the minimum passing bar. */
 export const PASS_SCORE = 80;
 
@@ -116,6 +126,7 @@ export function endCooldown(userId: string) {
  * lock further, never unlock past this gate.
  */
 export function getLessonLock(userId: string, lesson: Lesson, completedLessons: string[]): LessonLock {
+  if (UNLOCK_ALL_LESSONS) return { locked: false, reason: null };
   if (completedLessons.includes(lesson.id)) return { locked: false, reason: null };
   const eraLessons = getEraLessons(lesson.eraId);
   const idx = eraLessons.findIndex(l => l.id === lesson.id);

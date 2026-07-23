@@ -15,7 +15,7 @@ import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { ERAS } from '@/features/content/erasData';
 import { LESSONS } from '@/features/content/lessonsData';
 import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslations';
-import { getLessonLock, useCooldownRemaining, formatCooldown } from '@/features/progress/analysisGate';
+import { getLessonLock, useCooldownRemaining, formatCooldown, UNLOCK_ALL_LESSONS } from '@/features/progress/analysisGate';
 
 const ERA_PHOTOS: Record<string, string> = {
   prehistoric:   'https://images.unsplash.com/photo-1600170311833-c2cf5280ce49?auto=format&fit=crop&w=700&q=60',
@@ -108,7 +108,7 @@ export default function ErasPage() {
                         // A lesson row can be sealed by subscription tier OR by
                         // the progression gate (analysis owed on the previous
                         // lesson / 30-minute reflection cooldown running).
-                        const subLocked = !canLesson(lesson.order);
+                        const subLocked = !UNLOCK_ALL_LESSONS && !canLesson(lesson.order);
                         const gateLock = currentUser
                           ? getLessonLock(currentUser.id, lesson, progress?.completedLessons ?? [])
                           : { locked: false, reason: null as null };

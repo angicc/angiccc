@@ -6,7 +6,6 @@ import { Lock } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
 import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
-import { useAuth } from '@/features/auth/AuthContext';
 import { getSortedTimeline } from '@/features/content/timelineData';
 import { ERAS } from '@/features/content/erasData';
 import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslations';
@@ -17,46 +16,74 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { EraId, TimelineCategory } from '@/types';
+import type { EraId, TimelineCategory, Lesson } from '@/types';
+import { UNLOCK_ALL_LESSONS } from '@/features/progress/analysisGate';
 
-// Maps each timeline event to the lesson that covers it
-const EVENT_TO_LESSON: Record<string, string> = {
+// Explicit deep-link overrides for timeline events that no lesson lists in its
+// own `relatedTimeline` (or where a more specific lesson is a better landing
+// spot than the first that happens to reference the event). Combined with the
+// auto-built map below, every one of the 160 events resolves to a real lesson.
+const EVENT_LESSON_OVERRIDES: Record<string, string> = {
+  // Prehistoric
+  't-earth-formed': 'prehistoric-21', 't-dino-age': 'prehistoric-21', 't-dino-end': 'prehistoric-21',
+  't-first-australians': 'prehistoric-11', 't-green-sahara': 'prehistoric-15',
   // Ancient
-  't-cuneiform':     'ancient-01', 't-hammurabi':   'ancient-01', 't-troy':      'ancient-02',
-  't-pyramid':       'ancient-05', 't-egypt-afterlife': 'ancient-05', 't-ramesses': 'ancient-05',
-  't-cyrus-great':   'ancient-04', 't-ashoka':     'ancient-04', 't-han-dynasty': 'ancient-04',
-  't-democracy':     'ancient-02', 't-persian-wars':'ancient-02', 't-parthenon': 'ancient-02',
-  't-roman-republic':'ancient-03', 't-caesar':      'ancient-03', 't-pax-romana':'ancient-03', 't-rome-fall': 'ancient-03',
-  't-silk-road':     'ancient-04',
-  't-phoenician-alphabet': 'ancient-06', 't-carthage-founded': 'ancient-06',
-  't-alexander':     'ancient-07', 't-chaeronea':  'ancient-07', 't-gaugamela': 'ancient-07',
+  't-troy': 'ancient-13', 't-parthenon': 'ancient-02',
+  't-phoenician-alphabet': 'ancient-06', 't-carthage-founded': 'ancient-06', 't-carthage': 'ancient-06',
+  't-chaeronea': 'ancient-07', 't-gaugamela': 'ancient-07',
+  't-indus': 'ancient-10', 't-caral': 'ancient-16', 't-olmec': 'ancient-22', 't-nok': 'ancient-21',
+  't-kush-meroe': 'ancient-14', 't-aksum': 'ancient-14', 't-eratosthenes': 'ancient-19', 't-qin-unify': 'ancient-11',
   // Middle Ages
-  't-charlemagne':   'medieval-01', 't-hastings':   'medieval-01',
-  't-islam':         'medieval-02', 't-golden-age': 'medieval-02', 't-crusades':  'medieval-02',
-  't-black-death':   'medieval-03',
-  't-magna-carta':   'medieval-04', 't-hanseatic':  'medieval-04',
-  't-mongols':       'medieval-05', 't-marco-polo': 'medieval-05',
-  't-kamakura':      'medieval-06', 't-kamikaze':   'medieval-06',
-  't-lindisfarne':   'medieval-07', 't-vinland':    'medieval-07',
+  't-magna-carta': 'medieval-04', 't-hanseatic': 'medieval-04',
+  't-mongols': 'medieval-05', 't-marco-polo': 'medieval-05',
+  't-kamakura': 'medieval-06', 't-kamikaze': 'medieval-06',
+  't-lindisfarne': 'medieval-07', 't-vinland': 'medieval-07',
+  't-tang': 'medieval-19', 't-angkor': 'medieval-22', 't-great-zimbabwe': 'medieval-21',
+  't-mansa-musa': 'medieval-15', 't-timbuktu': 'medieval-15',
   // Early Modern
-  't-printing-press':'earlymod-01', 't-columbus':   'earlymod-01', 't-vasco':     'earlymod-01', 't-armada': 'earlymod-01',
-  't-luther':        'earlymod-02', 't-thirty-years-war': 'earlymod-02',
-  't-copernicus':    'earlymod-03', 't-galileo':    'earlymod-03', 't-newton':    'earlymod-03', 't-steam-engine': 'earlymod-03',
-  't-westphalia':    'earlymod-04', 't-versailles-court': 'earlymod-04',
+  't-armada': 'earlymod-01', 't-columbian-exchange': 'earlymod-10',
   't-first-slave-voyage': 'earlymod-05', 't-asiento': 'earlymod-05',
-  't-suleiman':      'earlymod-06', 't-vienna-siege': 'earlymod-06',
-  't-glorious-revolution': 'earlymod-07', 't-american-revolution': 'earlymod-07',
-  't-french-revolution': 'earlymod-07', 't-napoleon': 'earlymod-07',
+  't-suleiman': 'earlymod-06', 't-vienna-siege': 'earlymod-06', 't-versailles-court': 'earlymod-04',
+  't-glorious-revolution': 'earlymod-07', 't-napoleon': 'earlymod-07',
+  't-songhai': 'earlymod-21', 't-tondibi': 'earlymod-21', 't-polynesia-nz': 'earlymod-22',
   // Modern
   't-american-civil-war': 'modern-05', 't-berlin-conference': 'modern-05', 't-adwa': 'modern-05',
-  't-railways':      'modern-01', 't-communist-manifesto':'modern-01', 't-darwin': 'modern-01',
-  't-wwi':           'modern-02', 't-russian-revolution':'modern-02', 't-versailles':'modern-02',
-  't-great-depression':'modern-02', 't-wwii': 'modern-02', 't-holocaust':'modern-02', 't-hiroshima':'modern-02',
-  't-cold-war':      'modern-03', 't-decolonization':'modern-03', 't-moon':'modern-03', 't-berlin-wall':'modern-03',
-  't-internet':      'modern-04', 't-9-11': 'modern-04',
-  't-yugoslav-wars': 'modern-06', 't-srebrenica': 'modern-06',
-  't-macedonian-struggle': 'modern-07', 't-balkan-wars': 'modern-07',
+  't-darwin': 'modern-01', 't-russian-revolution': 'modern-08', 't-great-depression': 'modern-02',
+  't-vaccination': 'modern-22', 't-germ-theory': 'modern-22', 't-smallpox-eradicated': 'modern-22',
+  't-sputnik': 'modern-21', 't-gagarin': 'modern-21', 't-moon-landing': 'modern-21', 't-www': 'modern-20',
 };
+
+// The first (lowest-order) lesson in each era — the guaranteed fallback target
+// so a directory entry always opens a lesson rather than a generic era page.
+const FIRST_LESSON_BY_ERA: Record<string, string> = (() => {
+  const first: Record<string, string> = {};
+  for (const l of [...LESSONS].sort((a, b) => a.order - b.order)) {
+    if (!(l.eraId in first)) first[l.eraId] = l.id;
+  }
+  return first;
+})();
+
+// Event → lesson map, built from every lesson's own `relatedTimeline` (kept in
+// sync automatically as lessons change), then topped with the explicit
+// overrides above, which win.
+const EVENT_TO_LESSON: Record<string, string> = (() => {
+  const map: Record<string, string> = {};
+  for (const l of LESSONS) {
+    for (const evId of (l.relatedTimeline ?? [])) {
+      if (!map[evId]) map[evId] = l.id; // first lesson that references it wins
+    }
+  }
+  return { ...map, ...EVENT_LESSON_OVERRIDES };
+})();
+
+// Resolve the lesson for an event, always returning a target: explicit/derived
+// map → the era's first lesson. The returned Lesson carries the correct eraId
+// for the route, so the deep link resolves even when the event's era label and
+// the lesson's era differ (e.g. a Tang-China event landing in a China lesson).
+function lessonForEvent(event: { id: string; eraId: string }): Lesson | null {
+  const id = EVENT_TO_LESSON[event.id] ?? FIRST_LESSON_BY_ERA[event.eraId];
+  return id ? (LESSONS.find(l => l.id === id) ?? null) : null;
+}
 
 const ERA_COLORS: Record<EraId, string> = {
   prehistoric: 'bg-orange-400', ancient: 'bg-amber-400', byzantine: 'bg-violet-400', 'middle-ages': 'bg-blue-400', 'early-modern': 'bg-emerald-400', modern: 'bg-rose-400',
@@ -78,7 +105,6 @@ const CAT_LABEL: Record<TimelineCategory, 'cat_war' | 'cat_politics' | 'cat_scie
 
 export default function TimelinePage() {
   const { canTimeline, canLesson } = useSubscription();
-  const { progress } = useAuth();
   const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [eraFilter, setEraFilter] = useState<EraId | 'all'>('all');
@@ -90,23 +116,9 @@ export default function TimelinePage() {
     (catFilter === 'all' || e.category === catFilter)
   );
 
-  function handleExplore(eraId: string, eventId: string) {
-    const specificLessonId = EVENT_TO_LESSON[eventId];
-    if (specificLessonId) {
-      navigate(`/eras/${eraId}/lessons/${specificLessonId}`);
-      return;
-    }
-    // fallback: navigate to next uncompleted or first lesson in era
-    const eraLessons = LESSONS.filter(l => l.eraId === eraId).sort((a, b) => a.order - b.order);
-    if (eraLessons.length === 0) return;
-    const completed = eraLessons.filter(l => progress?.completedLessons.includes(l.id));
-    if (completed.length > 0) {
-      const lastIdx = eraLessons.findIndex(l => l.id === completed[completed.length - 1].id);
-      const next = lastIdx + 1 < eraLessons.length ? eraLessons[lastIdx + 1] : eraLessons[lastIdx];
-      navigate(`/eras/${eraId}/lessons/${next.id}`);
-    } else {
-      navigate(`/eras/${eraId}/lessons/${eraLessons[0].id}`);
-    }
+  function handleExplore(event: { id: string; eraId: string }) {
+    const lesson = lessonForEvent(event);
+    if (lesson) navigate(`/eras/${lesson.eraId}/lessons/${lesson.id}`);
   }
 
   return (
@@ -171,10 +183,9 @@ export default function TimelinePage() {
             {events.map((event) => {
               const tEvent = getTranslatedTimelineEvent(event, language);
               const isMajor = event.significance === 'major';
-              const lessonId = EVENT_TO_LESSON[event.id];
-              const lessonRaw = lessonId ? LESSONS.find(l => l.id === lessonId) : null;
+              const lessonRaw = lessonForEvent(event);
               const lesson = lessonRaw ? getTranslatedLesson(lessonRaw, language) : null;
-              const locked = lesson ? !canLesson(lesson.order) : false;
+              const locked = !UNLOCK_ALL_LESSONS && !!lessonRaw && !canLesson(lessonRaw.order);
               const eraRaw = ERAS.find(e => e.id === event.eraId);
               const eraName = eraRaw ? getTranslatedEra(eraRaw, language).shortName : '';
 
@@ -229,7 +240,7 @@ export default function TimelinePage() {
                           size="sm"
                           variant="outline"
                           className="w-full"
-                          onClick={() => handleExplore(event.eraId, event.id)}
+                          onClick={() => handleExplore(event)}
                         >
                           {lesson ? `${t.tl_go_to} ${lesson.title.length > 28 ? lesson.title.slice(0, 28) + '…' : lesson.title} →` : `${t.tl_explore_era}: ${eraName} →`}
                         </Button>

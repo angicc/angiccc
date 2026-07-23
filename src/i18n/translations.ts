@@ -335,7 +335,7 @@ export type TranslationKeys = {
   studio_practice_score: string; studio_done: string; studio_show_answer: string; studio_next_card: string;
   path_title: string; path_subtitle: string; path_mastery_title: string; path_focus: string;
   path_lessons_done: string; path_quiz_score: string; path_adaptive_acc: string;
-  path_generate: string; path_regenerate: string; path_refresh: string; path_enhance: string; path_enhancing: string;
+  path_generate: string; path_regenerate: string; path_refresh: string; path_refreshed: string; path_enhance: string; path_enhancing: string;
   path_enhance_upsell: string; path_done_of: string; path_deep_analysis: string;
   path_day: string; path_empty: string;
   path_step_lesson: string; path_step_quiz: string; path_step_smart_quiz: string;
@@ -739,7 +739,7 @@ const EN: TranslationKeys = {
     path_title: 'Study Plan', path_subtitle: 'Your week, engineered around what you most need to learn',
     path_mastery_title: 'Era mastery', path_focus: 'focus',
     path_lessons_done: 'Lessons', path_quiz_score: 'Quiz', path_adaptive_acc: 'Adaptive',
-    path_generate: 'Generate my week', path_regenerate: 'Regenerate week', path_refresh: 'Refresh',
+    path_generate: 'Generate my week', path_regenerate: 'Regenerate week', path_refresh: 'Refresh', path_refreshed: 'Plan refreshed',
     path_enhance: 'Enhance with Clio', path_enhancing: 'Clio is studying your data…',
     path_enhance_upsell: "Clio's coaching notes on your plan are a Master Student exclusive.",
     path_done_of: 'steps done', path_deep_analysis: 'Master analysis', path_day: 'Day',
@@ -1128,7 +1128,7 @@ export const T: Translations = {
     path_title: 'Plan de estudio', path_subtitle: 'Tu semana, diseñada en torno a lo que más necesitas aprender',
     path_mastery_title: 'Dominio por era', path_focus: 'enfoque',
     path_lessons_done: 'Lecciones', path_quiz_score: 'Cuestionario', path_adaptive_acc: 'Adaptativo',
-    path_generate: 'Generar mi semana', path_regenerate: 'Regenerar semana', path_refresh: 'Actualizar',
+    path_generate: 'Generar mi semana', path_regenerate: 'Regenerar semana', path_refresh: 'Actualizar', path_refreshed: 'Plan actualizado',
     path_enhance: 'Mejorar con Clío', path_enhancing: 'Clío está estudiando tus datos…',
     path_enhance_upsell: 'Las notas de entrenamiento de Clío sobre tu plan son exclusivas de Master Student.',
     path_done_of: 'pasos completados', path_deep_analysis: 'Análisis Master', path_day: 'Día',
@@ -1515,7 +1515,7 @@ export const T: Translations = {
     path_title: 'План занятий', path_subtitle: 'Ваша неделя, построенная вокруг того, что вам нужнее всего',
     path_mastery_title: 'Освоение эпох', path_focus: 'фокус',
     path_lessons_done: 'Уроки', path_quiz_score: 'Викторина', path_adaptive_acc: 'Адаптивная',
-    path_generate: 'Составить мою неделю', path_regenerate: 'Пересоставить неделю', path_refresh: 'Обновить',
+    path_generate: 'Составить мою неделю', path_regenerate: 'Пересоставить неделю', path_refresh: 'Обновить', path_refreshed: 'План обновлён',
     path_enhance: 'Усилить с Клио', path_enhancing: 'Клио изучает ваши данные…',
     path_enhance_upsell: 'Тренерские заметки Клио к вашему плану — эксклюзив Master Student.',
     path_done_of: 'шагов выполнено', path_deep_analysis: 'Анализ Master', path_day: 'День',
@@ -1902,7 +1902,7 @@ export const T: Translations = {
     path_title: 'План за учење', path_subtitle: 'Твојата недела, изградена околу она што најмногу ти треба',
     path_mastery_title: 'Совладаност по епоха', path_focus: 'фокус',
     path_lessons_done: 'Лекции', path_quiz_score: 'Квиз', path_adaptive_acc: 'Адаптивно',
-    path_generate: 'Состави ми недела', path_regenerate: 'Состави нова недела', path_refresh: 'Освежи',
+    path_generate: 'Состави ми недела', path_regenerate: 'Состави нова недела', path_refresh: 'Освежи', path_refreshed: 'Планот е освежен',
     path_enhance: 'Засили со Клио', path_enhancing: 'Клио ги проучува твоите податоци…',
     path_enhance_upsell: 'Тренерските белешки од Клио кон твојот план се ексклузивни за Master Student.',
     path_done_of: 'чекори завршени', path_deep_analysis: 'Master анализа', path_day: 'Ден',
