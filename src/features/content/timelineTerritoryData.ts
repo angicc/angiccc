@@ -117,7 +117,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [30, 38.5],
     zoom: 5,
     title: 'Mesopotamia & Ancient Egypt',
-    titleI18n: { es: 'Mesopotamia y Antiguo Egipto', ru: 'Месопотамия и Древний Египет', mk: 'Месопотамија и антички Египет' },
+    titleI18n: { de: 'Mesopotamien & das Alte Ägypten', fr: 'Mésopotamie et Égypte antique', es: 'Mesopotamia y Antiguo Egipto', ru: 'Месопотамия и Древний Египет', mk: 'Месопотамија и антички Египет' },
     description: 'The Fertile Crescent — from Mesopotamia\'s Tigris-Euphrates to Egypt\'s Nile — hosted humanity\'s first cities, writing systems, and law codes.',
     polygons: [
       {
@@ -193,7 +193,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [38.5, 24],
     zoom: 6,
     title: 'Classical Greece',
-    titleI18n: { es: 'Grecia Clásica', ru: 'Классическая Греция', mk: 'Класична Грција' },
+    titleI18n: { de: 'Klassisches Griechenland', fr: 'La Grèce classique', es: 'Grecia Clásica', ru: 'Классическая Греция', mk: 'Класична Грција' },
     description: 'Greek city-states forged democracy, philosophy, and science — foundations of Western civilisation. From Athens to Ionia, Greek colonies carried this culture across the Mediterranean.',
     polygons: [
       {
@@ -238,7 +238,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [39, 30],
     zoom: 4,
     title: 'Ancient Macedonia — Alexander the Great',
-    titleI18n: { es: 'Antigua Macedonia — Alejandro Magno', ru: 'Древняя Македония — Александр Великий', mk: 'Античка Македонија — Александар Велики' },
+    titleI18n: { de: 'Antikes Makedonien — Alexander der Große', fr: 'La Macédoine antique — Alexandre le Grand', es: 'Antigua Macedonia — Alejandro Magno', ru: 'Древняя Македония — Александр Великий', mk: 'Античка Македонија — Александар Велики' },
     description: 'From the kingdom Philip II forged, Alexander the Great led the Macedonian army across three continents — toppling Persia and carrying Hellenistic civilisation from the Nile to the Indus in just eleven years.',
     polygons: [
       {
@@ -288,7 +288,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [33, 50],
     zoom: 4,
     title: 'The Persian Empire',
-    titleI18n: { es: 'El Imperio Persa', ru: 'Персидская империя', mk: 'Персиската империја' },
+    titleI18n: { de: 'Das Perserreich', fr: 'L’Empire perse', es: 'El Imperio Persa', ru: 'Персидская империя', mk: 'Персиската империја' },
     description: 'The Achaemenid Persian Empire — stretching from Egypt to the Indus River — was the largest empire the world had yet seen, unified by the Royal Road and Zoroastrian faith.',
     polygons: [
       {
@@ -329,7 +329,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [41, 14],
     zoom: 4,
     title: 'The Roman Empire',
-    titleI18n: { es: 'El Imperio Romano', ru: 'Римская империя', mk: 'Римската империја' },
+    titleI18n: { de: 'Das Römische Reich', fr: 'L’Empire romain', es: 'El Imperio Romano', ru: 'Римская империя', mk: 'Римската империја' },
     description: 'At its height under Trajan (117 CE), Rome unified the Mediterranean world — from Britain to Mesopotamia — with roads, Latin law, and legions.',
     polygons: [
       {
@@ -382,7 +382,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [35, 110],
     zoom: 4,
     title: 'Ancient China — Qin & Han Dynasties',
-    titleI18n: { es: 'China Antigua — dinastías Qin y Han', ru: 'Древний Китай — династии Цинь и Хань', mk: 'Античка Кина — династиите Цин и Хан' },
+    titleI18n: { de: 'Das Alte China — Qin- & Han-Dynastie', fr: 'La Chine antique — dynasties Qin et Han', es: 'China Antigua — dinastías Qin y Han', ru: 'Древний Китай — династии Цинь и Хань', mk: 'Античка Кина — династиите Цин и Хан' },
     description: 'The Qin Dynasty unified China under Legalist rule; the Han Dynasty consolidated it under Confucian bureaucracy and opened the Silk Road to the West.',
     polygons: [
       {
@@ -541,7 +541,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [28, 30],
     zoom: 3,
     title: 'Islamic Caliphates',
-    titleI18n: { es: 'Califatos Islámicos', ru: 'Исламские халифаты', mk: 'Исламски калифати' },
+    titleI18n: { de: 'Islamische Kalifate', fr: 'Les califats islamiques', es: 'Califatos Islámicos', ru: 'Исламские халифаты', mk: 'Исламски калифати' },
     description: 'From Arabia, Islam spread across the Middle East, North Africa, Spain, and Central Asia within a century — creating a civilisation that preserved Greek science and pioneered algebra, astronomy, and medicine.',
     polygons: [
       {
@@ -589,7 +589,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [48, 90],
     zoom: 3,
     title: 'The Mongol Empire',
-    titleI18n: { es: 'El Imperio Mongol', ru: 'Монгольская империя', mk: 'Монголската империја' },
+    titleI18n: { de: 'Das Mongolische Reich', fr: 'L’Empire mongol', es: 'El Imperio Mongol', ru: 'Монгольская империя', mk: 'Монголската империја' },
     description: "Genghis Khan's descendants forged the largest contiguous land empire in history — from Korea to Hungary — connecting East and West through the Pax Mongolica.",
     polygons: [
       {
@@ -628,7 +628,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [34, 37],
     zoom: 6,
     title: 'Crusades & the Holy Land',
-    titleI18n: { es: 'Cruzadas y Tierra Santa', ru: 'Крестовые походы и Святая земля', mk: 'Крстоносните походи и Светата Земја' },
+    titleI18n: { de: 'Kreuzzüge & das Heilige Land', fr: 'Les croisades et la Terre sainte', es: 'Cruzadas y Tierra Santa', ru: 'Крестовые походы и Святая земля', mk: 'Крстоносните походи и Светата Земја' },
     description: 'Nine major Crusades shaped medieval Europe — the First captured Jerusalem (1099), Saladin recaptured it (1187), and the last Crusader stronghold fell at Acre in 1291.',
     polygons: [
       {
@@ -674,7 +674,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [58, 5],
     zoom: 4,
     title: 'The Viking Age',
-    titleI18n: { es: 'La Era Vikinga', ru: 'Эпоха викингов', mk: 'Викиншката ера' },
+    titleI18n: { de: 'Das Wikingerzeitalter', fr: 'L’ère viking', es: 'La Era Vikinga', ru: 'Эпоха викингов', mk: 'Викиншката ера' },
     description: 'From the raid on Lindisfarne (793) to Stamford Bridge (1066), Norse seafarers raided, traded, and settled from Newfoundland to Baghdad — founding Iceland, the Danelaw, Normandy, and Kievan Rus.',
     routes: [
       {
@@ -724,7 +724,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [36, 137],
     zoom: 5,
     title: 'Medieval Japan — Feudal Age',
-    titleI18n: { es: 'Japón medieval — era feudal', ru: 'Средневековая Япония — Феодальная эпоха', mk: 'Средновековна Јапонија — феудална ера' },
+    titleI18n: { de: 'Mittelalterliches Japan — Feudalzeit', fr: 'Le Japon médiéval — l’âge féodal', es: 'Japón medieval — era feudal', ru: 'Средневековая Япония — Феодальная эпоха', mk: 'Средновековна Јапонија — феудална ера' },
     description: "Japan's feudal age saw samurai clans battle for supremacy through the Genpei War, the Kamakura and Ashikaga shogunates, and the Sengoku warring period.",
     polygons: [
       {
@@ -757,7 +757,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     zoom: 3,
     oceanic: true,
     title: 'The Transatlantic Slave Trade',
-    titleI18n: { es: 'El comercio transatlántico de esclavos', ru: 'Трансатлантическая работорговля', mk: 'Трансатлантската трговија со робови' },
+    titleI18n: { de: 'Der transatlantische Sklavenhandel', fr: 'La traite transatlantique des esclaves', es: 'El comercio transatlántico de esclavos', ru: 'Трансатлантическая работорговля', mk: 'Трансатлантската трговија со робови' },
     description: 'Over 12.5 million enslaved Africans were shipped across the Atlantic on the triangular trade — manufactured goods to Africa, human beings to the Americas, sugar and cotton back to Europe.',
     routes: [
       {
@@ -804,7 +804,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [39, 32],
     zoom: 4,
     title: 'Ottoman Empire at its Peak',
-    titleI18n: { es: 'Imperio Otomano en su apogeo', ru: 'Османская империя на пике могущества', mk: 'Отоманската империја на врвот' },
+    titleI18n: { de: 'Das Osmanische Reich auf seinem Höhepunkt', fr: 'L’Empire ottoman à son apogée', es: 'Imperio Otomano en su apogeo', ru: 'Османская империя на пике могущества', mk: 'Отоманската империја на врвот' },
     description: "Under Suleiman the Magnificent (1520–66), the Ottomans controlled three continents — from the gates of Vienna to the Persian Gulf — the dominant power of the 16th century.",
     polygons: [
       {
@@ -844,7 +844,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [43, 12],
     zoom: 6,
     title: 'Renaissance Italy',
-    titleI18n: { es: 'Italia del Renacimiento', ru: 'Ренессансная Италия', mk: 'Ренесансна Италија' },
+    titleI18n: { de: 'Das Renaissance-Italien', fr: 'L’Italie de la Renaissance', es: 'Italia del Renacimiento', ru: 'Ренессансная Италия', mk: 'Ренесансна Италија' },
     description: 'The Italian city-states became the epicentre of the Renaissance — a rebirth of classical art, learning, and humanism funded by Medici banking wealth and Papal patronage.',
     polygons: [
       {
@@ -873,7 +873,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [10, -30],
     zoom: 2,
     title: 'Age of Exploration',
-    titleI18n: { es: 'La época de las exploraciones', ru: 'Эпоха Великих открытий', mk: 'Доба на географските откритија' },
+    titleI18n: { de: 'Das Zeitalter der Entdeckungen', fr: 'L’ère des grandes découvertes', es: 'La época de las exploraciones', ru: 'Эпоха Великих открытий', mk: 'Доба на географските откритија' },
     description: 'Portuguese and Spanish explorers mapped Africa\'s coasts, reached India by sea, landed in the Americas, and circumnavigated the globe — reshaping the world forever.',
     polygons: [
       {
@@ -927,7 +927,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [51, 12],
     zoom: 5,
     title: 'Protestant Reformation',
-    titleI18n: { es: 'La Reforma Protestante', ru: 'Протестантская Реформация', mk: 'Протестантската реформација' },
+    titleI18n: { de: 'Die protestantische Reformation', fr: 'La Réforme protestante', es: 'La Reforma Protestante', ru: 'Протестантская Реформация', mk: 'Протестантската реформација' },
     description: "Luther's 95 Theses (1517) fractured Western Christianity, unleashing a century of religious wars culminating in the Peace of Westphalia (1648) that established modern nation-states.",
     polygons: [
       {
@@ -967,7 +967,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [38, -78],
     zoom: 4,
     title: 'American Revolution',
-    titleI18n: { es: 'Revolución americana', ru: 'Американская революция', mk: 'Американска револуција' },
+    titleI18n: { de: 'Die Amerikanische Revolution', fr: 'La révolution américaine', es: 'Revolución americana', ru: 'Американская революция', mk: 'Американска револуција' },
     description: 'The 13 British colonies declared independence in 1776, creating the United States — the first modern democratic republic, inspiring revolutions worldwide.',
     polygons: [
       {
@@ -1005,7 +1005,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [47, 8],
     zoom: 4,
     title: 'French Revolution & Napoleon',
-    titleI18n: { es: 'Revolución francesa y Napoleón', ru: 'Французская революция и Наполеон', mk: 'Француска револуција и Наполеон' },
+    titleI18n: { de: 'Französische Revolution & Napoleon', fr: 'Révolution française et Napoléon', es: 'Revolución francesa y Napoleón', ru: 'Французская революция и Наполеон', mk: 'Француска револуција и Наполеон' },
     description: 'The French Revolution overthrew the monarchy (1789), and Napoleon\'s conquests spread revolutionary ideals across Europe before his defeat at Waterloo (1815).',
     polygons: [
       {
@@ -1050,7 +1050,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [52, -2],
     zoom: 5,
     title: 'Industrial Revolution',
-    titleI18n: { es: 'Revolución industrial', ru: 'Промышленная революция', mk: 'Индустриска револуција' },
+    titleI18n: { de: 'Die Industrielle Revolution', fr: 'La révolution industrielle', es: 'Revolución industrial', ru: 'Промышленная революция', mk: 'Индустриска револуција' },
     description: 'Britain led the world\'s first Industrial Revolution — steam power, railways, textile mills, and urbanisation transformed society from agrarian to industrial by 1850, then spread to Europe and America.',
     polygons: [
       {
@@ -1096,7 +1096,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [49, 14],
     zoom: 4,
     title: 'World War I',
-    titleI18n: { es: 'Primera Guerra Mundial', ru: 'Первая мировая война', mk: 'Прва светска војна' },
+    titleI18n: { de: 'Der Erste Weltkrieg', fr: 'La Première Guerre mondiale', es: 'Primera Guerra Mundial', ru: 'Первая мировая война', mk: 'Прва светска војна' },
     description: 'The Great War killed 20 million people — trench warfare on the Western Front, collapse of four empires, and the redrawing of Europe\'s map at Versailles (1919).',
     polygons: [
       {
@@ -1148,7 +1148,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [50, 15],
     zoom: 4,
     title: 'World War II',
-    titleI18n: { es: 'Segunda Guerra Mundial', ru: 'Вторая мировая война', mk: 'Втора светска војна' },
+    titleI18n: { de: 'Der Zweite Weltkrieg', fr: 'La Seconde Guerre mondiale', es: 'Segunda Guerra Mundial', ru: 'Вторая мировая война', mk: 'Втора светска војна' },
     description: 'The deadliest conflict in history — 70–85 million killed, the Holocaust, atomic bombs on Japan, and the post-war world order with the UN, NATO, and Cold War.',
     polygons: [
       {
@@ -1195,7 +1195,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [55, 30],
     zoom: 3,
     title: 'Cold War',
-    titleI18n: { es: 'Guerra Fría', ru: 'Холодная война', mk: 'Студена војна' },
+    titleI18n: { de: 'Der Kalte Krieg', fr: 'La guerre froide', es: 'Guerra Fría', ru: 'Холодная война', mk: 'Студена војна' },
     description: 'The USA and USSR divided the world into competing blocs — NATO vs Warsaw Pact — in a nuclear standoff that shaped politics, culture, and technology until the USSR\'s collapse in 1991.',
     polygons: [
       {
@@ -1246,7 +1246,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [44, 19],
     zoom: 6,
     title: 'Yugoslav Wars',
-    titleI18n: { es: 'Guerras yugoslavas', ru: 'Югославские войны', mk: 'Југословенски војни' },
+    titleI18n: { de: 'Die Jugoslawienkriege', fr: 'Les guerres de Yougoslavie', es: 'Guerras yugoslavas', ru: 'Югославские войны', mk: 'Југословенски војни' },
     description: 'The dissolution of Yugoslavia produced the bloodiest conflict in Europe since WWII — ethnic cleansing, siege of Sarajevo, NATO intervention, and the emergence of seven new nations.',
     polygons: [
       {
@@ -1276,7 +1276,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [41.5, 22],
     zoom: 6,
     title: 'Macedonian Struggle',
-    titleI18n: { es: 'La lucha macedonia', ru: 'Македонская борьба', mk: 'Македонската борба' },
+    titleI18n: { de: 'Der Makedonische Kampf', fr: 'La lutte macédonienne', es: 'La lucha macedonia', ru: 'Македонская борьба', mk: 'Македонската борба' },
     description: 'Following Ottoman decline, the Macedonian Question — Bulgarian, Greek, and Serbian claims — erupted in guerrilla war, the Ilinden Uprising (1903), and the Balkan Wars (1912–13).',
     polygons: [
       {
@@ -1305,7 +1305,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [33, 38],
     zoom: 4,
     title: 'The Hellenistic World',
-    titleI18n: { es: 'El mundo helen\u00edstico', ru: '\u042d\u043b\u043b\u0438\u043d\u0438\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u043c\u0438\u0440', mk: '\u0425\u0435\u043b\u0435\u043d\u0438\u0441\u0442\u0438\u0447\u043a\u0438\u043e\u0442 \u0441\u0432\u0435\u0442' },
+    titleI18n: { de: 'Die hellenistische Welt', fr: 'Le monde hellénistique', es: 'El mundo helen\u00edstico', ru: '\u042d\u043b\u043b\u0438\u043d\u0438\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u043c\u0438\u0440', mk: '\u0425\u0435\u043b\u0435\u043d\u0438\u0441\u0442\u0438\u0447\u043a\u0438\u043e\u0442 \u0441\u0432\u0435\u0442' },
     description: 'After Alexander\'s death his marshals carved the empire into three great kingdoms \u2014 Ptolemaic Egypt, the Seleucid East, and Antigonid Macedon \u2014 spreading Greek cities and science from the Nile to the Hindu Kush.',
     markers: [
       { name: 'Alexandria', nameI18n: { es: 'Alejandr\u00eda', ru: '\u0410\u043b\u0435\u043a\u0441\u0430\u043d\u0434\u0440\u0438\u044f', mk: '\u0410\u043b\u0435\u043a\u0441\u0430\u043d\u0434\u0440\u0438\u0458\u0430' }, type: 'capital', lat: 31.2, lng: 29.92, note: 'Ptolemaic capital \u2014 the Library and Pharos lighthouse', year: -305 },
@@ -1322,7 +1322,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [33, 50],
     zoom: 4,
     title: 'The Achaemenid Persian Empire',
-    titleI18n: { es: 'El Imperio aquem\u00e9nida', ru: '\u0414\u0435\u0440\u0436\u0430\u0432\u0430 \u0410\u0445\u0435\u043c\u0435\u043d\u0438\u0434\u043e\u0432', mk: '\u0410\u0445\u0430\u0435\u043c\u0435\u043d\u0438\u0434\u0441\u043a\u0430\u0442\u0430 \u0438\u043c\u043f\u0435\u0440\u0438\u0458\u0430' },
+    titleI18n: { de: 'Das Achämenidische Perserreich', fr: 'L’Empire perse achéménide', es: 'El Imperio aquem\u00e9nida', ru: '\u0414\u0435\u0440\u0436\u0430\u0432\u0430 \u0410\u0445\u0435\u043c\u0435\u043d\u0438\u0434\u043e\u0432', mk: '\u0410\u0445\u0430\u0435\u043c\u0435\u043d\u0438\u0434\u0441\u043a\u0430\u0442\u0430 \u0438\u043c\u043f\u0435\u0440\u0438\u0458\u0430' },
     description: 'The first superpower: from Cyrus the Great\'s tolerance to Darius\'s satrapies and Royal Road, Persia ruled from the Aegean to the Indus \u2014 the template every later empire copied.',
     markers: [
       { name: 'Persepolis', type: 'capital', lat: 29.93, lng: 52.89, note: 'Ceremonial capital begun by Darius I', year: -518 },
@@ -1339,7 +1339,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [40, -4],
     zoom: 5,
     title: 'Al-Andalus & the Reconquista',
-    titleI18n: { es: 'Al-\u00c1ndalus y la Reconquista', ru: '\u0410\u043b\u044c-\u0410\u043d\u0434\u0430\u043b\u0443\u0441 \u0438 \u0420\u0435\u043a\u043e\u043d\u043a\u0438\u0441\u0442\u0430', mk: '\u0410\u043b-\u0410\u043d\u0434\u0430\u043b\u0443\u0437 \u0438 \u0420\u0435\u043a\u043e\u043d\u043a\u0438\u0441\u0442\u0430\u0442\u0430' },
+    titleI18n: { de: 'Al-Andalus & die Reconquista', fr: 'Al-Andalus et la Reconquista', es: 'Al-\u00c1ndalus y la Reconquista', ru: '\u0410\u043b\u044c-\u0410\u043d\u0434\u0430\u043b\u0443\u0441 \u0438 \u0420\u0435\u043a\u043e\u043d\u043a\u0438\u0441\u0442\u0430', mk: '\u0410\u043b-\u0410\u043d\u0434\u0430\u043b\u0443\u0437 \u0438 \u0420\u0435\u043a\u043e\u043d\u043a\u0438\u0441\u0442\u0430\u0442\u0430' },
     description: 'Islamic Iberia at the height of the Caliphate of C\u00f3rdoba, facing the Christian kingdoms of the north \u2014 a 780-year contest that ended at Granada in 1492.',
     markers: [
       { name: 'C\u00f3rdoba', type: 'capital', lat: 37.88, lng: -4.78, note: 'Caliphal capital \u2014 \u201cornament of the world\u201d', year: 929 },
@@ -1357,7 +1357,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [47.5, 1],
     zoom: 5,
     title: 'The Hundred Years\' War',
-    titleI18n: { es: 'La guerra de los Cien A\u00f1os', ru: '\u0421\u0442\u043e\u043b\u0435\u0442\u043d\u044f\u044f \u0432\u043e\u0439\u043d\u0430', mk: '\u0421\u0442\u043e\u0433\u043e\u0434\u0438\u0448\u043d\u0430\u0442\u0430 \u0432\u043e\u0458\u043d\u0430' },
+    titleI18n: { de: 'Der Hundertjährige Krieg', fr: 'La guerre de Cent Ans', es: 'La guerra de los Cien A\u00f1os', ru: '\u0421\u0442\u043e\u043b\u0435\u0442\u043d\u044f\u044f \u0432\u043e\u0439\u043d\u0430', mk: '\u0421\u0442\u043e\u0433\u043e\u0434\u0438\u0448\u043d\u0430\u0442\u0430 \u0432\u043e\u0458\u043d\u0430' },
     description: 'England and France, c. 1400: English crown lands face the Valois kingdom in the war of Cr\u00e9cy, Agincourt, and Joan of Arc \u2014 the forge of both nations.',
     markers: [
       { name: 'Cr\u00e9cy', type: 'battle', lat: 50.25, lng: 1.88, note: 'Longbow victory over French chivalry (1346)', year: 1346 },
@@ -1375,7 +1375,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [23, 78],
     zoom: 4,
     title: 'The Mughal Empire',
-    titleI18n: { es: 'El Imperio mogol', ru: '\u0418\u043c\u043f\u0435\u0440\u0438\u044f \u0412\u0435\u043b\u0438\u043a\u0438\u0445 \u041c\u043e\u0433\u043e\u043b\u043e\u0432', mk: '\u041c\u043e\u0433\u0443\u043b\u0441\u043a\u0430\u0442\u0430 \u0438\u043c\u043f\u0435\u0440\u0438\u0458\u0430' },
+    titleI18n: { de: 'Das Mogulreich', fr: 'L’Empire moghol', es: 'El Imperio mogol', ru: '\u0418\u043c\u043f\u0435\u0440\u0438\u044f \u0412\u0435\u043b\u0438\u043a\u0438\u0445 \u041c\u043e\u0433\u043e\u043b\u043e\u0432', mk: '\u041c\u043e\u0433\u0443\u043b\u0441\u043a\u0430\u0442\u0430 \u0438\u043c\u043f\u0435\u0440\u0438\u0458\u0430' },
     description: 'The Mughal Empire near its greatest extent under Aurangzeb (c. 1700), with Safavid Persia to the west \u2014 the richest manufacturing economy on Earth.',
     markers: [
       { name: 'Delhi', type: 'capital', lat: 28.66, lng: 77.23, note: 'Shahjahanabad \u2014 Red Fort and Jama Masjid', year: 1648 },
@@ -1392,7 +1392,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [37, 137.5],
     zoom: 5,
     title: 'Tokugawa Japan',
-    titleI18n: { es: 'El Jap\u00f3n Tokugawa', ru: '\u042f\u043f\u043e\u043d\u0438\u044f \u0422\u043e\u043a\u0443\u0433\u0430\u0432\u0430', mk: '\u0422\u043e\u043a\u0443\u0433\u0430\u0432\u0430 \u0408\u0430\u043f\u043e\u043d\u0438\u0458\u0430' },
+    titleI18n: { de: 'Das Tokugawa-Japan', fr: 'Le Japon des Tokugawa', es: 'El Jap\u00f3n Tokugawa', ru: '\u042f\u043f\u043e\u043d\u0438\u044f \u0422\u043e\u043a\u0443\u0433\u0430\u0432\u0430', mk: '\u0422\u043e\u043a\u0443\u0433\u0430\u0432\u0430 \u0408\u0430\u043f\u043e\u043d\u0438\u0458\u0430' },
     description: 'The closed country: 265 years of Tokugawa peace, with Edo among the world\'s largest cities and a single Dutch window at Dejima.',
     markers: [
       { name: 'Edo', type: 'capital', lat: 35.69, lng: 139.69, note: 'Shogunal capital \u2014 over a million people by 1720', year: 1603 },
@@ -1409,7 +1409,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [55, 45],
     zoom: 4,
     title: 'The Russian Revolution & Civil War',
-    titleI18n: { es: 'La Revoluci\u00f3n rusa y la guerra civil', ru: '\u0420\u0435\u0432\u043e\u043b\u044e\u0446\u0438\u044f \u0438 \u0413\u0440\u0430\u0436\u0434\u0430\u043d\u0441\u043a\u0430\u044f \u0432\u043e\u0439\u043d\u0430', mk: '\u0420\u0443\u0441\u043a\u0430\u0442\u0430 \u0440\u0435\u0432\u043e\u043b\u0443\u0446\u0438\u0458\u0430 \u0438 \u0433\u0440\u0430\u0453\u0430\u043d\u0441\u043a\u0430\u0442\u0430 \u0432\u043e\u0458\u043d\u0430' },
+    titleI18n: { de: 'Die Russische Revolution & der Bürgerkrieg', fr: 'La révolution russe et la guerre civile', es: 'La Revoluci\u00f3n rusa y la guerra civil', ru: '\u0420\u0435\u0432\u043e\u043b\u044e\u0446\u0438\u044f \u0438 \u0413\u0440\u0430\u0436\u0434\u0430\u043d\u0441\u043a\u0430\u044f \u0432\u043e\u0439\u043d\u0430', mk: '\u0420\u0443\u0441\u043a\u0430\u0442\u0430 \u0440\u0435\u0432\u043e\u043b\u0443\u0446\u0438\u0458\u0430 \u0438 \u0433\u0440\u0430\u0453\u0430\u043d\u0441\u043a\u0430\u0442\u0430 \u0432\u043e\u0458\u043d\u0430' },
     description: 'Revolutionary Russia c. 1920: the Red heartland against White south Russia, a reborn Poland, and a contested Ukraine \u2014 the crucible of the USSR.',
     markers: [
       { name: 'Petrograd', type: 'capital', lat: 59.94, lng: 30.31, note: 'February and October 1917 \u2014 the Winter Palace', year: 1917 },
@@ -1426,7 +1426,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [22, 80],
     zoom: 4,
     title: 'The British Raj & Partition',
-    titleI18n: { es: 'El Raj brit\u00e1nico y la Partici\u00f3n', ru: '\u0411\u0440\u0438\u0442\u0430\u043d\u0441\u043a\u0430\u044f \u0418\u043d\u0434\u0438\u044f \u0438 \u0420\u0430\u0437\u0434\u0435\u043b', mk: '\u0411\u0440\u0438\u0442\u0430\u043d\u0441\u043a\u0430 \u0418\u043d\u0434\u0438\u0458\u0430 \u0438 \u041f\u043e\u0434\u0435\u043b\u0431\u0430\u0442\u0430' },
+    titleI18n: { de: 'Britisch-Indien & die Teilung', fr: 'Le Raj britannique et la partition', es: 'El Raj brit\u00e1nico y la Partici\u00f3n', ru: '\u0411\u0440\u0438\u0442\u0430\u043d\u0441\u043a\u0430\u044f \u0418\u043d\u0434\u0438\u044f \u0438 \u0420\u0430\u0437\u0434\u0435\u043b', mk: '\u0411\u0440\u0438\u0442\u0430\u043d\u0441\u043a\u0430 \u0418\u043d\u0434\u0438\u0458\u0430 \u0438 \u041f\u043e\u0434\u0435\u043b\u0431\u0430\u0442\u0430' },
     description: 'British India c. 1900 \u2014 the empire Gandhi\'s satyagraha would unmake, partitioned at midnight in 1947 into India and Pakistan.',
     markers: [
       { name: 'Delhi', type: 'capital', lat: 28.66, lng: 77.23, note: 'Imperial capital from 1911; freedom at midnight, 1947', year: 1947 },
@@ -1450,7 +1450,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [17.9, -94.6],
     zoom: 7,
     title: 'The Olmec — Mother Culture of the Americas',
-    titleI18n: { es: 'Los olmecas — la cultura madre de América', ru: 'Ольмеки — материнская культура Америки', mk: 'Олмеките — мајката-култура на Америка' },
+    titleI18n: { de: 'Die Olmeken — Mutterkultur Amerikas', fr: 'Les Olmèques — culture mère des Amériques', es: 'Los olmecas — la cultura madre de América', ru: 'Ольмеки — материнская культура Америки', mk: 'Олмеките — мајката-култура на Америка' },
     description: 'The Olmec heartland on the Gulf coast of Mexico (Veracruz and Tabasco), where the first Mesoamerican civilization raised colossal stone heads and seeded the traditions the Maya and Aztec would inherit — and the wider sphere its jade, obsidian, and art reached across early Mesoamerica.',
     polygons: [
       {
@@ -1500,7 +1500,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [14, 104],
     zoom: 5,
     title: 'The Khmer Empire & Angkor',
-    titleI18n: { es: 'El Imperio jemer y Angkor', ru: 'Кхмерская империя и Ангкор', mk: 'Кмерската империја и Ангкор' },
+    titleI18n: { de: 'Das Khmer-Reich & Angkor', fr: 'L’Empire khmer et Angkor', es: 'El Imperio jemer y Angkor', ru: 'Кхмерская империя и Ангкор', mk: 'Кмерската империја и Ангкор' },
     description: 'The Khmer Empire near its greatest extent under Jayavarman VII (c. 1200), reaching into modern Laos, Thailand, and the Malay Peninsula — ruled from Angkor, the largest city of the pre-industrial world, and knit together by a network of royal roads.',
     polygons: [
       {
@@ -1555,7 +1555,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     center: [16.5, -2],
     zoom: 4,
     title: 'The Songhai Empire',
-    titleI18n: { es: 'El Imperio songhai', ru: 'Империя Сонгай', mk: 'Царството Сонгај' },
+    titleI18n: { de: 'Das Songhai-Reich', fr: 'L’Empire songhaï', es: 'El Imperio songhai', ru: 'Империя Сонгай', mk: 'Царството Сонгај' },
     description: 'The largest empire in West African history at its height (c. 1500), spanning the Sahel from the Atlantic to central Niger and controlling the trans-Saharan gold and salt trade from Gao, Timbuktu, and Djenné — its lifeline the great bend of the Niger River.',
     polygons: [
       {
@@ -1609,7 +1609,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     zoom: 3,
     oceanic: true,
     title: 'Voyagers of the Pacific',
-    titleI18n: { es: 'Navegantes del Pacífico', ru: 'Мореплаватели Тихого океана', mk: 'Морепловците на Пацификот' },
+    titleI18n: { de: 'Seefahrer des Pazifiks', fr: 'Les navigateurs du Pacifique', es: 'Navegantes del Pacífico', ru: 'Мореплаватели Тихого океана', mk: 'Морепловците на Пацификот' },
     description: 'The Polynesian settlement of the vast Pacific — the last great human colonization of the Earth. Using only the stars, swells, and birds, voyagers reached every corner of the Polynesian Triangle: Hawaii, Rapa Nui, and Aotearoa.',
     polygons: [
       {
