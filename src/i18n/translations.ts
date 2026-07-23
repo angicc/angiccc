@@ -307,6 +307,7 @@ export type TranslationKeys = {
   tmap_camp_rank_4: string; tmap_camp_rank_5: string;
   tmap_camp_legendary: string; tmap_camp_legendary_hint: string;
   tmap_camp_xp: string; tmap_camp_era_locked: string; tmap_camp_no_questions: string;
+  tmap_genq_belong: string; tmap_genq_period: string; tmap_genq_exp: string;
   // ── Territory Conquest battle arena ───────────────────────────
   tmap_battle_brief: string; tmap_battle_start: string; tmap_battle_round: string;
   tmap_battle_hit: string; tmap_battle_counter: string; tmap_battle_won: string;
@@ -707,6 +708,7 @@ const EN: TranslationKeys = {
     tmap_camp_rank_4: 'Warlord', tmap_camp_rank_5: 'Strategos',
     tmap_camp_legendary: 'Legendary Mode', tmap_camp_legendary_hint: 'Master exclusive — only flawless conquests count, XP is doubled',
     tmap_camp_xp: 'XP earned', tmap_camp_era_locked: 'This era\'s campaign requires the Master plan', tmap_camp_no_questions: 'No challenges available for this region yet.',
+    tmap_genq_belong: 'Which of these belonged to {name}?', tmap_genq_period: 'In which period did {name} flourish?', tmap_genq_exp: '{answer} is part of the story of {name}.',
     tmap_battle_brief: 'Answer correctly to charge and break the enemy line. A wrong answer lets them counter-charge. Rout their army to seize the region.', tmap_battle_start: 'Sound the charge', tmap_battle_round: 'Round',
     tmap_battle_hit: 'Direct hit!', tmap_battle_counter: 'Counter-charge!', tmap_battle_won: 'The region is yours!',
     tmap_battle_lost: 'Your army is routed.', tmap_battle_correct: 'blows landed', tmap_battle_left: 'remaining',
@@ -1096,6 +1098,7 @@ export const T: Translations = {
     tmap_camp_rank_4: 'Señor de la guerra', tmap_camp_rank_5: 'Estratego',
     tmap_camp_legendary: 'Modo Legendario', tmap_camp_legendary_hint: 'Exclusivo Master — solo cuentan conquistas perfectas, XP duplicada',
     tmap_camp_xp: 'XP ganada', tmap_camp_era_locked: 'La campaña de esta era requiere el plan Master', tmap_camp_no_questions: 'Aún no hay desafíos disponibles para esta región.',
+    tmap_genq_belong: '¿Cuál de estos pertenecía a {name}?', tmap_genq_period: '¿En qué período floreció {name}?', tmap_genq_exp: '{answer} forma parte de la historia de {name}.',
     tmap_battle_brief: 'Responde bien para cargar y romper la línea enemiga. Una respuesta incorrecta les deja contraatacar. Derrota a su ejército para tomar la región.', tmap_battle_start: 'Toca la carga', tmap_battle_round: 'Ronda',
     tmap_battle_hit: '¡Impacto directo!', tmap_battle_counter: '¡Contracarga!', tmap_battle_won: '¡La región es tuya!',
     tmap_battle_lost: 'Tu ejército es derrotado.', tmap_battle_correct: 'golpes acertados', tmap_battle_left: 'restante',
@@ -1483,6 +1486,7 @@ export const T: Translations = {
     tmap_camp_rank_4: 'Полководец', tmap_camp_rank_5: 'Стратег',
     tmap_camp_legendary: 'Легендарный режим', tmap_camp_legendary_hint: 'Эксклюзив Master — засчитываются только безупречные победы, XP удваивается',
     tmap_camp_xp: 'Получено XP', tmap_camp_era_locked: 'Кампания этой эпохи доступна на плане Master', tmap_camp_no_questions: 'Для этого региона пока нет испытаний.',
+    tmap_genq_belong: 'Что из перечисленного относилось к {name}?', tmap_genq_period: 'В какой период процветало «{name}»?', tmap_genq_exp: '{answer} — часть истории «{name}».',
     tmap_battle_brief: 'Отвечайте верно, чтобы атаковать и прорвать строй врага. Ошибка даёт врагу контратаку. Разбейте их армию, чтобы захватить регион.', tmap_battle_start: 'В атаку!', tmap_battle_round: 'Раунд',
     tmap_battle_hit: 'Прямое попадание!', tmap_battle_counter: 'Контратака!', tmap_battle_won: 'Регион ваш!',
     tmap_battle_lost: 'Ваша армия разбита.', tmap_battle_correct: 'ударов нанесено', tmap_battle_left: 'осталось',
@@ -1870,6 +1874,7 @@ export const T: Translations = {
     tmap_camp_rank_4: 'Војсководец', tmap_camp_rank_5: 'Стратег',
     tmap_camp_legendary: 'Легендарен режим', tmap_camp_legendary_hint: 'Ексклузивно за Master — се бројат само беспрекорни освојувања, XP се дуплира',
     tmap_camp_xp: 'Заработено XP', tmap_camp_era_locked: 'Кампањата на оваа епоха бара Master план', tmap_camp_no_questions: 'Сè уште нема предизвици за овој регион.',
+    tmap_genq_belong: 'Што од ова припаѓало на {name}?', tmap_genq_period: 'Во кој период процветал(а) „{name}“?', tmap_genq_exp: '{answer} е дел од приказната за „{name}“.',
     tmap_battle_brief: 'Одговори точно за да јуришаш и да ја пробиеш непријателската линија. Погрешен одговор им дозволува контранапад. Разбиј ја нивната војска за да го освоиш регионот.', tmap_battle_start: 'Труби на јуриш', tmap_battle_round: 'Рунда',
     tmap_battle_hit: 'Директен погодок!', tmap_battle_counter: 'Контранапад!', tmap_battle_won: 'Регионот е твој!',
     tmap_battle_lost: 'Твојата војска е разбиена.', tmap_battle_correct: 'удари погодени', tmap_battle_left: 'преостанато',

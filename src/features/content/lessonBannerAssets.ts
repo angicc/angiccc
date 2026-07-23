@@ -30,16 +30,30 @@ export const ERA_HERO_IMAGES: Record<string, string> = {
 };
 
 /**
+ * A locally-hosted, self-contained ANIMATED SVG banner per era (public/gifs/).
+ * It has no external dependency, so it renders and animates in every browser —
+ * the guaranteed animated banner that sits between the (host-dependent) external
+ * GIFs and the static image fallbacks. This is why a lesson banner is always
+ * animated even when Wikimedia / Drive hotlinks are blocked or rate-limited.
+ */
+export function eraAnimatedBanner(eraId: string): string {
+  const known = ['prehistoric', 'ancient', 'byzantine', 'middle-ages', 'early-modern', 'modern'];
+  return `/gifs/era-${known.includes(eraId) ? eraId : 'ancient'}.svg`;
+}
+
+/**
  * The full deterministic candidate chain for a lesson banner. Duplicates are
  * collapsed so a failing URL is never retried at a later stage.
- * Order: explicit lesson GIF → guaranteed era-pool GIF (so EVERY lesson is
- * animated) → curated override → lesson image → era hero. If every animated
- * source fails to load, the static images below keep the banner filled.
+ * Order: explicit lesson GIF → guaranteed era-pool GIF → LOCAL animated SVG
+ * (always renders) → curated override → lesson image → era hero. The local
+ * animated banner guarantees every lesson shows motion; the static images below
+ * it are deep fallbacks only reached if the local asset itself were unavailable.
  */
 export function resolveBannerCandidates(lessonId: string, eraId: string, imageUrl?: string): string[] {
   const chain = [
     LESSON_GIF_BANNERS[lessonId],
     eraGifBanner(lessonId, eraId),
+    eraAnimatedBanner(eraId),
     LESSON_BANNER_OVERRIDES[lessonId],
     imageUrl,
     ERA_HERO_IMAGES[eraId] ?? ERA_HERO_IMAGES.ancient,

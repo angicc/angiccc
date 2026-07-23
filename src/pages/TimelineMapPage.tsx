@@ -12,6 +12,7 @@ import { loadRealPolygons, type RealPolygon } from '@/features/content/territory
 import type { Language } from '@/i18n/translations';
 import { getTranslatedTerritoryDesc } from '@/i18n/territoryDescTranslations';
 import { getQuestionsForTopic, getTranslatedTerritoryQuestion, type TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
+import { generateTopicQuestions, questionsForTopicSafe } from '@/features/map/territoryQuizFallback';
 import { getTranslatedMarkerName, getTranslatedMarkerNote, getTranslatedMarkerType, getTranslatedPolyLabel } from '@/i18n/territoryMarkerTranslations';
 import {
   Map as MapIcon, ChevronRight, Layers, Palette, BookOpen, HelpCircle, Play, Pause,
@@ -528,7 +529,12 @@ export default function TimelineMapPage() {
   const [battleActive, setBattleActive] = useState(false);
 
   function startCampaignStage(topic: TerritoryTopic) {
-    const qs = drawStageQuestions(topic.id);
+    let qs = drawStageQuestions(topic.id);
+    if (qs.length === 0) {
+      // No bank questions → generate a localized set so the campaign is always
+      // playable for every region.
+      qs = generateTopicQuestions(topic, TERRITORY_TOPICS, language, t, 5);
+    }
     if (qs.length === 0) { toast.error(t.tmap_camp_no_questions); return; }
     setBattleQuestions(qs);
     setBattleActive(true);
@@ -1153,7 +1159,9 @@ export default function TimelineMapPage() {
     const pool = topic ? [topic] : TERRITORY_TOPICS;
     const pick = pool[Math.floor(Math.random() * pool.length)];
     setQuizTopic(pick);
-    const allQuestions = getQuestionsForTopic(pick.id);
+    // Topics with no hand-authored questions fall back to a localized generated
+    // set derived from their own markers/period, so every region is playable.
+    const allQuestions = questionsForTopicSafe(getQuestionsForTopic(pick.id), pick, TERRITORY_TOPICS, language, t);
     // Filter out already-used questions; if all used, reset for this topic
     let available = allQuestions.filter(q => !usedQuestionIds.current.has(q.id));
     if (available.length === 0) {

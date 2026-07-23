@@ -121,18 +121,32 @@ export default function ProgressPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, language]);
 
-  // 3. Learning Momentum: which of the last 14 days had any XP activity.
+  // 3. Learning Momentum: a 14-day activity heatmap with per-day XP intensity
+  //    and the current consecutive-day study run.
   const momentum = useMemo(() => {
-    if (!progress) return { days: [] as { active: boolean }[], activeCount: 0 };
-    const activeDays = new Set(
-      progress.recentActivity.map(a => new Date(a.timestamp).toDateString())
-    );
-    const days = Array.from({ length: 14 }, (_, i) => {
+    if (!progress) return { days: [] as { active: boolean; level: number; xp: number }[], activeCount: 0, streak: 0 };
+    const byDay = new Map<string, number>();
+    for (const a of progress.recentActivity) {
+      const key = new Date(a.timestamp).toDateString();
+      byDay.set(key, (byDay.get(key) ?? 0) + (a.xpGained ?? 0));
+    }
+    const raw = Array.from({ length: 14 }, (_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - (13 - i));
-      return { active: activeDays.has(d.toDateString()) };
+      const key = d.toDateString();
+      const active = byDay.has(key);
+      const xp = byDay.get(key) ?? 0;
+      return { active, xp };
     });
-    return { days, activeCount: days.filter(d => d.active).length };
+    const maxXp = Math.max(1, ...raw.map(d => d.xp));
+    const days = raw.map(d => ({
+      ...d,
+      // 0 = idle, 1–4 = heat by share of the fortnight's best day
+      level: !d.active ? 0 : Math.min(4, 1 + Math.floor((d.xp / maxXp) * 3)),
+    }));
+    let streak = 0;
+    for (let i = days.length - 1; i >= 0; i--) { if (days[i].active) streak++; else break; }
+    return { days, activeCount: days.filter(d => d.active).length, streak };
   }, [progress]);
 
   if (!progress) return null;
@@ -205,58 +219,90 @@ export default function ProgressPage() {
 
         {/* ── New progress types: analyses, time invested, momentum ── */}
         <div className="grid md:grid-cols-3 gap-4">
-          {/* Clio's Analyses */}
+          {/* Clio's Analyses — donut ring of average score */}
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}>
-            <Card className="h-full">
-              <CardHeader className="pb-3">
+            <Card className="h-full overflow-hidden relative">
+              <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-violet-500/10 to-transparent pointer-events-none" />
+              <CardHeader className="pb-2">
                 <CardTitle className="text-sm flex items-center gap-2">
                   <ScrollText className="w-4 h-4 text-violet-400" />{t.prog_analysis_title}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {analysisStats && (analysisStats.attempts > 0 || analysisStats.passes > 0) ? (
-                  <div className="grid grid-cols-3 gap-3 text-center">
-                    <div>
-                      <div className="text-2xl font-bold font-heading text-violet-300">{analysisStats.passes}</div>
-                      <div className="text-[11px] text-muted-foreground mt-0.5">{t.prog_analysis_passes}</div>
+                  <div className="flex items-center gap-4">
+                    <div className="relative w-[92px] h-[92px] shrink-0">
+                      <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" className="text-secondary" strokeWidth="9" />
+                        <motion.circle
+                          cx="50" cy="50" r="42" fill="none" stroke="url(#analysisGrad)" strokeWidth="9" strokeLinecap="round"
+                          strokeDasharray={2 * Math.PI * 42}
+                          initial={{ strokeDashoffset: 2 * Math.PI * 42 }}
+                          animate={{ strokeDashoffset: 2 * Math.PI * 42 * (1 - analysisStats.avg / 100) }}
+                          transition={{ delay: 0.3, duration: 1, ease: 'easeOut' }}
+                        />
+                        <defs>
+                          <linearGradient id="analysisGrad" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stopColor="#a78bfa" />
+                            <stop offset="100%" stopColor="#7c3aed" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className="text-xl font-bold font-heading text-violet-200 leading-none">{analysisStats.avg}%</span>
+                        <span className="text-[9px] uppercase tracking-wide text-muted-foreground mt-0.5">{t.prog_analysis_avg}</span>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-2xl font-bold font-heading">{analysisStats.avg}%</div>
-                      <div className="text-[11px] text-muted-foreground mt-0.5">{t.prog_analysis_avg}</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold font-heading text-amber-400">{analysisStats.best}</div>
-                      <div className="text-[11px] text-muted-foreground mt-0.5">{t.prog_analysis_best}</div>
+                    <div className="flex-1 space-y-2.5">
+                      <div className="flex items-center justify-between rounded-lg bg-violet-500/10 px-3 py-2">
+                        <span className="text-[11px] text-muted-foreground">{t.prog_analysis_passes}</span>
+                        <span className="text-lg font-bold font-heading text-violet-200 leading-none">{analysisStats.passes}</span>
+                      </div>
+                      <div className="flex items-center justify-between rounded-lg bg-amber-400/10 px-3 py-2">
+                        <span className="text-[11px] text-muted-foreground">{t.prog_analysis_best}</span>
+                        <span className="text-lg font-bold font-heading text-amber-400 leading-none">{analysisStats.best}</span>
+                      </div>
                     </div>
                   </div>
                 ) : (
-                  <p className="text-xs text-muted-foreground text-center py-4">{t.prog_analysis_empty}</p>
+                  <p className="text-xs text-muted-foreground text-center py-8">{t.prog_analysis_empty}</p>
                 )}
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* Time Invested */}
+          {/* Time Invested — labelled per-era columns */}
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }}>
-            <Card className="h-full">
-              <CardHeader className="pb-3">
+            <Card className="h-full overflow-hidden relative">
+              <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-emerald-500/10 to-transparent pointer-events-none" />
+              <CardHeader className="pb-2">
                 <CardTitle className="text-sm flex items-center gap-2">
                   <Clock3 className="w-4 h-4 text-emerald-400" />{t.prog_time_title}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold font-heading text-center mb-3">
-                  {timeInvested.total >= 60
-                    ? `${Math.floor(timeInvested.total / 60)}h ${timeInvested.total % 60}m`
-                    : `${timeInvested.total}m`}
-                  <span className="block text-[11px] font-normal text-muted-foreground mt-0.5">{t.prog_time_total}</span>
+                <div className="flex items-baseline gap-2 mb-4">
+                  <span className="text-3xl font-bold font-heading bg-gradient-to-br from-emerald-300 to-emerald-500 bg-clip-text text-transparent">
+                    {timeInvested.total >= 60
+                      ? `${Math.floor(timeInvested.total / 60)}h ${timeInvested.total % 60}m`
+                      : `${timeInvested.total}m`}
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">{t.prog_time_total}</span>
                 </div>
-                <div className="flex items-end justify-between gap-1.5 h-12">
+                <div className="flex items-end justify-between gap-2 h-[70px]">
                   {timeInvested.byEra.map(e => {
                     const max = Math.max(1, ...timeInvested.byEra.map(x => x.minutes));
                     return (
-                      <div key={e.name} className="flex-1 flex flex-col items-center gap-1" title={`${e.name}: ${e.minutes}m`}>
-                        <div className="w-full rounded-t" style={{ height: `${Math.max(4, (e.minutes / max) * 100)}%`, backgroundColor: e.fill, opacity: e.minutes ? 1 : 0.25 }} />
+                      <div key={e.name} className="flex-1 flex flex-col items-center justify-end gap-1 h-full" title={`${e.name}: ${e.minutes}m`}>
+                        <span className="text-[9px] tabular-nums text-muted-foreground leading-none">{e.minutes || ''}</span>
+                        <motion.div
+                          className="w-full rounded-md min-h-[4px]"
+                          style={{ backgroundColor: e.fill, opacity: e.minutes ? 0.9 : 0.2 }}
+                          initial={{ height: 0 }}
+                          animate={{ height: `${Math.max(6, (e.minutes / max) * 100)}%` }}
+                          transition={{ delay: 0.3, duration: 0.6, ease: 'easeOut' }}
+                        />
+                        <span className="text-[9px] text-muted-foreground leading-none truncate max-w-full">{e.name}</span>
                       </div>
                     );
                   })}
@@ -265,27 +311,41 @@ export default function ProgressPage() {
             </Card>
           </motion.div>
 
-          {/* Learning Momentum */}
+          {/* Learning Momentum — 14-day intensity heatmap + current run */}
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.26 }}>
-            <Card className="h-full">
-              <CardHeader className="pb-3">
+            <Card className="h-full overflow-hidden relative">
+              <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-rose-500/10 to-transparent pointer-events-none" />
+              <CardHeader className="pb-2">
                 <CardTitle className="text-sm flex items-center gap-2">
                   <Activity className="w-4 h-4 text-rose-400" />{t.prog_momentum_title}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold font-heading text-center mb-3">
-                  {momentum.activeCount}/14
-                  <span className="block text-[11px] font-normal text-muted-foreground mt-0.5">{t.prog_momentum_active}</span>
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <span className="text-3xl font-bold font-heading text-rose-300">{momentum.activeCount}</span>
+                    <span className="text-sm text-muted-foreground">/14</span>
+                    <span className="block text-[11px] text-muted-foreground">{t.prog_momentum_active}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 rounded-full bg-orange-400/10 px-3 py-1.5" title={t.prog_streak}>
+                    <Flame className="w-4 h-4 text-orange-400" />
+                    <span className="text-lg font-bold font-heading text-orange-300 leading-none">{momentum.streak}</span>
+                  </div>
                 </div>
                 <div className="grid grid-cols-7 gap-1.5">
-                  {momentum.days.map((d, i) => (
-                    <div
-                      key={i}
-                      className={`aspect-square rounded ${d.active ? 'bg-rose-400/80' : 'bg-secondary'}`}
-                      title={d.active ? '✓' : ''}
-                    />
-                  ))}
+                  {momentum.days.map((d, i) => {
+                    const heat = ['bg-secondary', 'bg-rose-400/25', 'bg-rose-400/45', 'bg-rose-400/70', 'bg-rose-400'][d.level];
+                    return (
+                      <motion.div
+                        key={i}
+                        initial={{ scale: 0.6, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.3 + i * 0.02 }}
+                        className={`aspect-square rounded-[5px] ${heat}`}
+                        title={d.active ? `+${d.xp} XP` : ''}
+                      />
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
