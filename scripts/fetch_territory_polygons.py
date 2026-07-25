@@ -259,9 +259,12 @@ def main() -> int:
         generated.append(entry["topic_id"])
         print(f"    ↳ wrote {out.relative_to(ROOT)}  ({out.stat().st_size // 1024} KB)")
 
-    (OUT_DIR / "_index.json").write_text(json.dumps(sorted(generated)))
-    print(f"\n✓ generated {len(generated)}/{len(topics)} topics → {OUT_DIR.relative_to(ROOT)}")
-    print(f"  registry: {(OUT_DIR / '_index.json').relative_to(ROOT)}")
+    # The registry is the UNION of every generated file on disk — not just this
+    # run's topics — so an incremental `--only` run never drops the others.
+    present = sorted(p.stem for p in OUT_DIR.glob("*.json") if p.name != "_index.json")
+    (OUT_DIR / "_index.json").write_text(json.dumps(present))
+    print(f"\n✓ generated {len(generated)}/{len(topics)} topics this run → {OUT_DIR.relative_to(ROOT)}")
+    print(f"  registry now lists {len(present)} topics: {(OUT_DIR / '_index.json').relative_to(ROOT)}")
     return 0
 
 
