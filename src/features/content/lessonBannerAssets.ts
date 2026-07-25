@@ -9,6 +9,7 @@
 // SVG backdrop (see EraBannerBackdrop) — styled per era, never blank.
 
 import { LESSON_GIF_BANNERS } from '@/features/content/lessonGifBanners';
+import { localLessonBanner, DEFAULT_BANNER_GIF } from '@/features/content/lessonLocalBanners';
 
 /** Curated per-lesson replacements where the dataset asset is generic or frail. */
 const LESSON_BANNER_OVERRIDES: Record<string, string> = {
@@ -87,19 +88,27 @@ export function lessonAnimatedBanner(lessonId: string, eraId: string, emblem = '
 /**
  * The full deterministic candidate chain for a lesson banner. Duplicates are
  * collapsed so a failing URL is never retried at a later stage.
- * Order: explicit lesson-specific GIF → per-lesson animated banner (always
- * renders, unique to this lesson) → curated override → lesson image → era hero.
- * The per-lesson animated banner guarantees every lesson shows its own distinct
- * motion even when external GIF hosts are blocked; the static images below it
- * are deep fallbacks only reached if a data-URI could not render.
+ * Order: curated local GIF (owner's per-lesson banner set) → explicit
+ * lesson-specific external GIF → per-lesson animated banner (always renders,
+ * unique to this lesson) → curated override → lesson image → era hero →
+ * generic default GIF.
+ *
+ * The curated local GIF (public/assets/banners/{era}/{slug}.gif) sits at the
+ * head: when the file exists it becomes the banner; when it is absent the
+ * <img onError> chain simply advances, so a lesson keeps its own distinct
+ * existing banner rather than ever showing blank. The per-lesson animated
+ * banner (a self-contained data-URI) is the guaranteed always-rendering stage;
+ * the static images and DEFAULT_BANNER_GIF below it are deep safety nets.
  */
 export function resolveBannerCandidates(lessonId: string, eraId: string, imageUrl?: string, emblem?: string): string[] {
   const chain = [
+    localLessonBanner(lessonId),
     LESSON_GIF_BANNERS[lessonId],
     lessonAnimatedBanner(lessonId, eraId, emblem ?? ''),
     LESSON_BANNER_OVERRIDES[lessonId],
     imageUrl,
     ERA_HERO_IMAGES[eraId] ?? ERA_HERO_IMAGES.ancient,
+    DEFAULT_BANNER_GIF,
   ].filter((u): u is string => Boolean(u));
   return [...new Set(chain)];
 }
