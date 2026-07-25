@@ -231,7 +231,9 @@ export default function EssayPage() {
       for await (const chunk of streamChatResponse(
         [{ role: 'user', content: prompt }],
         undefined,
-        makeEssaySystem(language)
+        makeEssaySystem(language),
+        2560, // rubric scores + per-criterion feedback + strengths/improvements;
+              // the default 1024 truncates the grade JSON in verbose languages.
       )) {
         buf += chunk;
         setRawBuffer(buf);

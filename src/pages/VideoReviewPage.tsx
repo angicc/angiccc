@@ -161,6 +161,7 @@ ${review}`;
         [{ role: 'user', content: prompt }],
         undefined,
         GRADE_SYSTEM,
+        2048, // grade JSON + per-section feedback; default 1024 truncates it.
       )) {
         buf += chunk;
         setStreamBuf(buf);

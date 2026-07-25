@@ -141,7 +141,9 @@ export default function SmartQuizPage() {
     });
     try {
       let acc = '';
-      for await (const chunk of streamChatResponse([{ role: 'user', content: prompt }])) acc += chunk;
+      // 2048: the study-plan JSON (per-era recommendations) runs past the
+      // default 1024 in Cyrillic and truncated mid-array before parsing.
+      for await (const chunk of streamChatResponse([{ role: 'user', content: prompt }], undefined, undefined, 2048)) acc += chunk;
       const parsed = parseStudyPlan(acc);
       if (parsed) setPlan(parsed);
       else setClioRec(acc.trim() || t.sq_clio_fallback);

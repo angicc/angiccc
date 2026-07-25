@@ -141,7 +141,11 @@ function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, t
       );
       let raw = '';
       for await (const chunk of streamChatResponse([{ role: 'user', content: prompt }], undefined,
-        'You are a meticulous educational content engineer. Follow the user instructions exactly and answer only with the requested JSON.')) {
+        'You are a meticulous educational content engineer. Follow the user instructions exactly and answer only with the requested JSON.',
+        4096, // a full kit (summary + up to 10 flashcards + up to 10 quiz questions
+              // with explanations) is large, especially in Cyrillic; the default
+              // 1024 truncates the JSON mid-array and the kit fails to parse.
+      )) {
         raw += chunk;
       }
       trackAiMessage();

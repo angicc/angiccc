@@ -113,7 +113,9 @@ export default function StudyPlanPage() {
       const prompt = buildPlanNotesPrompt(mastery, plan, language, tier === 'master');
       let raw = '';
       for await (const chunk of streamChatResponse([{ role: 'user', content: prompt }], undefined,
-        'You are Clio, an expert history mentor. Answer only with the requested JSON.')) raw += chunk;
+        'You are Clio, an expert history mentor. Answer only with the requested JSON.',
+        2048, // structured plan-notes JSON; default 1024 truncates in verbose langs.
+      )) raw += chunk;
       trackAiMessage();
       const notes = parsePlanNotes(raw);
       if (notes) {

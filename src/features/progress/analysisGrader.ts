@@ -55,7 +55,9 @@ async function gradeWithAi(text: string, lesson: Lesson): Promise<AnalysisVerdic
   for await (const chunk of streamChatResponse(
     [{ role: 'user', content: `Student analysis (${countWords(text)} words):\n\n${text}` }],
     undefined,
-    GRADER_SYSTEM(lesson)
+    GRADER_SYSTEM(lesson),
+    2048, // {score, feedback, strengths[], improvements[]} — the same JSON shape
+          // that truncated in the Crisis tribunal; runs long in Macedonian.
   )) full += chunk;
   // Shared repair-tolerant parser: handles the student's own quoted text echoed
   // verbatim into feedback, truncated streams, and markdown fences.
