@@ -50,9 +50,14 @@ export function computeMastery(userId: string): MasterySnapshot {
     const eraLessons = LESSONS.filter(l => l.eraId === era.id);
     const lessonsDone = eraLessons.filter(l => prog.completedLessons.includes(l.id)).length;
     const coveragePct = eraLessons.length > 0 ? (lessonsDone / eraLessons.length) * 100 : 0;
-    const quizPct = typeof prog.quizScores[era.quizId] === 'number' ? prog.quizScores[era.quizId] : null;
+    // Quiz + adaptive only count once the learner has actually STARTED the era
+    // (≥1 completed lesson). Without this gate, a high Smart-Quiz accuracy could
+    // show an era the learner hasn't touched (0 lessons) as more "mastered" than
+    // one they've studied — the counterintuitive glitch on the Study Plan card.
+    const started = lessonsDone >= 1;
+    const quizPct = started && typeof prog.quizScores[era.quizId] === 'number' ? prog.quizScores[era.quizId] : null;
     const acc = eraAcc[era.id];
-    const adaptivePct = acc && acc.total >= 4 ? (acc.correct / acc.total) * 100 : null;
+    const adaptivePct = started && acc && acc.total >= 4 ? (acc.correct / acc.total) * 100 : null;
 
     // Re-normalize weights across the signals that actually exist.
     const parts: { w: number; v: number }[] = [{ w: WEIGHTS.coverage, v: coveragePct }];

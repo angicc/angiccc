@@ -182,11 +182,12 @@ export async function resolveGifPageBanner(lessonId: string): Promise<string | n
   }
 }
 
-/** True when a resolved banner src is one of the animated banners (external GIF
- *  or the locally-hosted animated era SVG in /gifs/). */
+/** True when a resolved banner src is one of the animated banners (external GIF,
+ *  the /gifs/ era SVG, or the per-lesson animated SVG data-URI). */
 export function isGifBanner(src: string): boolean {
   return src.startsWith('https://lh3.googleusercontent.com/d/')
     || src.includes('.makeagif.com/')
     || src.startsWith('/gifs/')
+    || src.startsWith('data:image/svg+xml')
     || /\.gif(\?.*)?$/i.test(src);
 }

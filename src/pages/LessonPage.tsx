@@ -52,7 +52,7 @@ function LessonBanner({
   // The full candidate chain is fixed at mount (this component is keyed by
   // lesson id in the parent, so each lesson gets a fresh, correctly-seeded
   // chain rather than inheriting the previously-viewed lesson's state).
-  const [candidates, setCandidates] = useState(() => resolveBannerCandidates(lessonId, eraId, imageUrl));
+  const [candidates, setCandidates] = useState(() => resolveBannerCandidates(lessonId, eraId, imageUrl, theme.categoryIcon));
   const [candidateIdx, setCandidateIdx] = useState(0);
 
   // Lessons whose animated banner lives behind a gallery page (makeagif.com)

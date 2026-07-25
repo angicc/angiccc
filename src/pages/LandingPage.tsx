@@ -763,7 +763,7 @@ export default function LandingPage() {
             </Link>
             <Link to="/pricing">
               <Button size="lg" variant="outline" className="gap-2 px-8 text-base h-12">
-                <Crown className="w-4 h-4" /> View Plans
+                <Crown className="w-4 h-4" /> {L.ctaPlans}
               </Button>
             </Link>
           </motion.div>
@@ -990,7 +990,7 @@ export default function LandingPage() {
             <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">{L.ctaSubtitle}</p>
             <Link to="/register">
               <Button size="lg" className="gap-2 px-10 h-12 text-base">
-                Create Free Account <ArrowRight className="w-4 h-4" />
+                {L.ctaCreate} <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
           </motion.div>
