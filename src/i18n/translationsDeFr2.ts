@@ -6,6 +6,7 @@
 import type { TranslationKeys } from './translations';
 
 export const DE_OVERRIDES_2: Partial<TranslationKeys> = {
+  tutor_attach_image: 'Bild anhängen', tutor_image_ready: 'Bild bereit — sende es an Clio',
   tmap_camp_foe: 'Verteidiger von {name}', tmap_camp_your_army: 'Deine Armee', tmap_camp_enemy_army: 'Feindliche Armee',
   tmap_unit_infantry: 'Infanterie', tmap_unit_archers: 'Bogenschützen', tmap_unit_cavalry: 'Kavallerie',
   tmap_title: "Zeitleisten-Territorienkarte",
@@ -485,6 +486,7 @@ export const DE_OVERRIDES_2: Partial<TranslationKeys> = {
 };
 
 export const FR_OVERRIDES_2: Partial<TranslationKeys> = {
+  tutor_attach_image: 'Joindre une image', tutor_image_ready: 'Image prête — envoie-la à Clio',
   tmap_camp_foe: 'Défenseurs de {name}', tmap_camp_your_army: 'Ton armée', tmap_camp_enemy_army: 'Armée ennemie',
   tmap_unit_infantry: 'Infanterie', tmap_unit_archers: 'Archers', tmap_unit_cavalry: 'Cavalerie',
   tmap_title: "Carte des territoires chronologiques",

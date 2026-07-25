@@ -7,6 +7,7 @@
 // actually happened. One strict-JSON AI call; everything is validated and
 // clamped before rendering, and XP is banked once per concluded run.
 import { safeJsonParse } from '@/lib/safeJsonParse';
+import { languageDirective } from '@/services/aiLanguage';
 import type { CrisisScenario } from './crisisScenarios';
 import type { CrisisRunState } from './crisisEngine';
 
@@ -38,10 +39,7 @@ export interface CrisisAssessment {
   xpAwarded: number;             // XP banked when this assessment was first sealed
 }
 
-const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian', de: 'German', fr: 'French' };
-
 export function buildAssessmentPrompt(scenario: CrisisScenario, run: CrisisRunState, language: string): string {
-  const langName = LANG_NAMES[language] ?? 'English';
   const log = run.decisionHistory
     .map(d => `Turn ${d.step}: [${d.optionId}] ${d.text}${d.revealedConsequence ? ` → consequence: ${d.revealedConsequence}` : ''}`)
     .join('\n');
@@ -63,7 +61,8 @@ Grade the run strictly and fairly across five command dimensions (0–100 each):
 
 Also produce: an overallScore (0–100, a weighted judgement, not an average), a letter grade ("S" only for near-flawless legendary runs, then "A"–"D"), a short evocative commanderTitle for this play style, 2–3 strengths, 2–3 improvements, a counterfactual paragraph (3–4 sentences) contrasting the player's timeline with what the real historical actors did and what followed, and a single-sentence epitaph for the run.
 
-IMPORTANT: Write ALL text fields in ${langName}. Use plain text only — no markdown syntax anywhere.
+IMPORTANT — LANGUAGE:
+${languageDirective(language)}
 
 Respond ONLY with this exact JSON shape (no markdown fences, no extra text):
 {

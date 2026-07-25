@@ -89,6 +89,7 @@ export type TranslationKeys = {
   cat_war: string; cat_politics: string; cat_science: string; cat_culture: string; cat_religion: string; cat_exploration: string;
   // ── AI Tutor ───────────────────────────────────────────────────
   tutor_hello: string; tutor_desc: string; tutor_placeholder: string; tutor_examples: string;
+  tutor_attach_image: string; tutor_image_ready: string;
   tutor_history: string; tutor_thread_first: string; tutor_thread_untitled: string;
   tutor_new_chat: string; tutor_upgrade_msg: string;
   tutor_clear_title: string; tutor_clear_confirm: string;
@@ -451,6 +452,7 @@ const EN: TranslationKeys = {
     tutor_hello: "Hello, I'm Clio — your guide through history!", tutor_examples: 'Or load an example dialogue',
     tutor_history: 'History', tutor_thread_first: 'First conversation', tutor_thread_untitled: 'New conversation', tutor_desc: "Welcome! I'm the Muse of History, here to make the past click for you. Ask me anything — a battle, an empire, a strange custom, or \"why did this happen?\" — and I'll explain it clearly, connect it to the bigger picture, and help you remember it. New here? Try a suggestion below, revisit a lesson with me, or just tell me what you're curious about.",
     tutor_placeholder: 'Ask Clio about any moment in history…', tutor_new_chat: 'New Chat',
+    tutor_attach_image: 'Attach an image', tutor_image_ready: 'Image ready — send it to Clio',
     tutor_clear_title: 'Clear this conversation', tutor_clear_confirm: 'Clear this conversation? The messages will be permanently deleted from this thread.',
     tutor_upgrade_msg: 'Upgrade to use the AI Tutor',
     // Leaderboard
@@ -856,6 +858,7 @@ export const T: Translations = {
     tutor_hello: '¡Hola, soy Clio, tu guía por la historia!', tutor_examples: 'O carga un diálogo de ejemplo',
     tutor_history: 'Historial', tutor_thread_first: 'Primera conversación', tutor_thread_untitled: 'Nueva conversación', tutor_desc: '¡Bienvenido! Soy la Musa de la Historia, aquí para que el pasado cobre sentido. Pregúntame lo que sea — una batalla, un imperio, una costumbre extraña o "¿por qué pasó esto?" — y te lo explicaré con claridad, lo conectaré con el panorama general y te ayudaré a recordarlo. ¿Nuevo por aquí? Prueba una sugerencia, repasa una lección conmigo o dime qué te da curiosidad.',
     tutor_placeholder: 'Pregunta a Clio sobre cualquier momento de la historia…', tutor_new_chat: 'Nuevo Chat',
+    tutor_attach_image: 'Adjuntar una imagen', tutor_image_ready: 'Imagen lista — envíala a Clio',
     tutor_clear_title: 'Borrar esta conversación', tutor_clear_confirm: '¿Borrar esta conversación? Los mensajes se eliminarán permanentemente de este hilo.',
     tutor_upgrade_msg: 'Actualiza para usar el Tutor IA',
     lb_title: 'Clasificación', lb_subtitle: 'Los mejores estudiantes clasificados por XP total.',
@@ -1246,6 +1249,7 @@ export const T: Translations = {
     tutor_hello: 'Привет, я Клио — ваш проводник по истории!', tutor_examples: 'Или загрузите пример диалога',
     tutor_history: 'История', tutor_thread_first: 'Первый разговор', tutor_thread_untitled: 'Новый разговор', tutor_desc: 'Добро пожаловать! Я — Муза Истории, и я помогу вам понять прошлое. Спрашивайте о чём угодно — о битве, империи, странном обычае или "почему это случилось?" — я объясню ясно, свяжу с общей картиной и помогу запомнить. Впервые здесь? Попробуйте подсказку ниже, повторите со мной урок или просто скажите, что вам интересно.',
     tutor_placeholder: 'Спросите Клио о любом историческом событии…', tutor_new_chat: 'Новый Чат',
+    tutor_attach_image: 'Прикрепить изображение', tutor_image_ready: 'Изображение готово — отправьте его Клио',
     tutor_clear_title: 'Очистить этот разговор', tutor_clear_confirm: 'Очистить этот разговор? Сообщения будут безвозвратно удалены из этой ветки.',
     tutor_upgrade_msg: 'Обновите план, чтобы использовать ИИ-Наставника',
     lb_title: 'Рейтинг', lb_subtitle: 'Лучшие ученики, отсортированные по общему XP.',
@@ -1636,6 +1640,7 @@ export const T: Translations = {
     tutor_hello: 'Здраво, јас сум Клио — твој водич низ историјата!', tutor_examples: 'Или вчитај пример на дијалог',
     tutor_history: 'Историја', tutor_thread_first: 'Прв разговор', tutor_thread_untitled: 'Нов разговор', tutor_desc: 'Добредојде! Јас сум Музата на Историјата и тука сум за да ти го доловам минатото. Прашај ме било што — битка, империја, чуден обичај или „зошто се случило ова?" — и ќе ти објаснам јасно, ќе го поврзам со целината и ќе ти помогнам да го запомниш. Нов си тука? Пробај предлог подолу, повтори лекција со мене или само кажи ми што те интересира.',
     tutor_placeholder: 'Прашај ја Клио за секој историски момент…', tutor_new_chat: 'Нов Разговор',
+    tutor_attach_image: 'Прикачи слика', tutor_image_ready: 'Сликата е подготвена — испрати ѝ ја на Клио',
     tutor_clear_title: 'Исчисти го овој разговор', tutor_clear_confirm: 'Да се исчисти овој разговор? Пораките трајно ќе се избришат од оваа нишка.',
     tutor_upgrade_msg: 'Надгради го планот за да го користиш ВИ Туторот',
     lb_title: 'Рангирање', lb_subtitle: 'Најдобри ученици рангирани по вкупно XP.',

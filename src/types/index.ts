@@ -61,7 +61,7 @@ export interface TimelineEvent {
   id: string; year: number; displayYear: string; title: string;
   description: string; eraId: EraId; category: TimelineCategory; significance: 'major' | 'minor';
 }
-export interface ChatMessage { id: string; role: 'user' | 'assistant'; content: string; timestamp: string; isStreaming?: boolean; }
+export interface ChatMessage { id: string; role: 'user' | 'assistant'; content: string; timestamp: string; isStreaming?: boolean; /** Optional user-attached image (downscaled data URL) for Clio vision. */ image?: string; }
 export interface ChatSession { id: string; messages: ChatMessage[]; createdAt: string; }
 export type AchievementCondition =
   | { type: 'lessons_complete'; count: number } | { type: 'quiz_perfect'; eraId?: EraId }

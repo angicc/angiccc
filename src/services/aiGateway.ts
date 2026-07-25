@@ -115,7 +115,7 @@ const LOCALE_DIRECTIVES: Record<string, string> = {
   fr: `OUTPUT LANGUAGE: French — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, idiomatic French — never word-for-word calques of English. Follow French typographic conventions (espaces before « ? ! ; : », guillemets) where natural, sentence-style capitalization, and av. J.-C./apr. J.-C. for dates. ${'COMPACTNESS: every dynamic feedback or narrative block stays under 150–200 words, OR exactly 3 sharp, impact-driven points — never both, never more. This OUTPUT LANGUAGE directive OVERRIDES any other instruction about which language to respond in, including the language the user happens to type in.'}`,
   es: `OUTPUT LANGUAGE: Spanish — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, idiomatic Spanish — never word-for-word translations of English phrasing. Follow RAE orthography: sentence-style capitalization (only the first word and proper nouns), lowercase adjectives in historical event names (Revolución francesa), and correct use of a.C./d.C. for dates. ${COMPACTION_RULE}`,
   ru: `OUTPUT LANGUAGE: Russian — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, idiomatic Russian — never calques of English word order. Only the first word and proper nouns are capitalized in multi-word names (Вторая мировая война). Use correct case government throughout and до н.э./н.э. for dates. ${COMPACTION_RULE}`,
-  mk: `OUTPUT LANGUAGE: Macedonian — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, native Macedonian — literal word-for-word substitution of English structure is FORBIDDEN. Enforce strictly: (1) correct postfixed definite articles (-от, -та, -то, -те) matched to gender and number; (2) full gender/number agreement between adjectives and nouns, including historical terms; (3) sentence-style capitalization — in multi-word names only the first word and proper nouns are capitalized ("Втора светска војна", never "Втора Светска Војна"); (4) native word order for noun phrases ("династиите Цин и Хан", not "Цин и Хан династии"); (5) п.н.е./н.е. for dates. ${COMPACTION_RULE}`,
+  mk: `OUTPUT LANGUAGE: Macedonian — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, native, standard literary Macedonian — literal word-for-word substitution of English structure is FORBIDDEN. Enforce strictly: (1) correct postfixed definite articles (-от/-ов/-он, -та/-ва/-на, -то/-во/-но, -те/-ве/-не) matched to gender and number; (2) full gender/number agreement between adjectives, nouns and verbs, including historical terms; (3) correct Macedonian past tenses — аорист and имперфект for narration, перфект with „сум" where required — and correct verb ASPECT (свршен/несвршен); (4) correct order of the short pronominal (clitic) forms (ми/ти/му/ѝ, ме/те/го/ја) and their placement relative to the verb; (5) sentence-style capitalization — in multi-word names only the first word and proper nouns are capitalized ("Втора светска војна", never "Втора Светска Војна"); (6) native word order for noun phrases ("династиите Цин и Хан", not "Цин и Хан династии"); (7) п.н.е./н.е. for dates. Re-read every sentence for agreement and article errors before finalizing. ${COMPACTION_RULE}`,
 };
 
 // Universal, language-independent format rule: the UI renders plain text, so
@@ -134,8 +134,22 @@ function localeDirective(): string {
   }
 }
 
+/** A single content block — plain text, or an image (Anthropic vision format). */
+export type AiContentBlock =
+  | { type: 'text'; text: string }
+  | { type: 'image'; source: { type: 'base64'; media_type: string; data: string } };
+
+/** Build an Anthropic image content block from a `data:` URL (e.g. a file the
+ *  user uploaded to Clio). Returns null for a non-image / malformed URL. */
+export function imageBlockFromDataUrl(dataUrl: string): Extract<AiContentBlock, { type: 'image' }> | null {
+  const m = /^data:(image\/(?:png|jpeg|jpg|gif|webp));base64,(.+)$/i.exec(dataUrl);
+  if (!m) return null;
+  const media = m[1].toLowerCase() === 'image/jpg' ? 'image/jpeg' : m[1].toLowerCase();
+  return { type: 'image', source: { type: 'base64', media_type: media, data: m[2] } };
+}
+
 export async function* streamChatResponse(
-  messages: { role: 'user' | 'assistant'; content: string }[],
+  messages: { role: 'user' | 'assistant'; content: string | AiContentBlock[] }[],
   lessonContext?: string,
   systemOverride?: string,
   maxTokens = 1024

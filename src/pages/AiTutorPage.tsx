@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { stripMarkdown } from '@/lib/utils';
 import { useSearchParams } from 'react-router-dom';
-import { Send, RotateCcw, Sword, Globe, BookOpen, Scroll, Sparkles, Landmark, History, Trash2, Plus } from 'lucide-react';
+import { Send, RotateCcw, Sword, Globe, BookOpen, Scroll, Sparkles, Landmark, History, Trash2, Plus, ImagePlus, X } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { recordAiMessage } from '@/features/progress/progressStore';
 import { getGapSummary } from '@/features/progress/conceptGaps';
-import { streamChatResponse } from '@/services/aiGateway';
+import { streamChatResponse, imageBlockFromDataUrl, type AiContentBlock } from '@/services/aiGateway';
 import { buildMemoryAwareSystem, noteExchangeAndMaybeExtract } from '@/features/ai/learnerProfile';
 import { ClioMemoryPanel } from '@/components/shared/ClioMemoryPanel';
 import { usePersistentChat, listThreads, createThread, titleThread, deleteThread, threadModule, type ChatThread } from '@/services/chatStore';
@@ -23,6 +23,21 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import type { ChatMessage } from '@/types';
 
 const SUGGESTION_ICONS = [Landmark, Globe, BookOpen, Scroll, Sparkles, Sword];
+
+type ApiMessage = { role: 'user' | 'assistant'; content: string | AiContentBlock[] };
+
+// Convert a stored chat message into the API shape, promoting an attached image
+// into an Anthropic vision content block so Clio can actually see it.
+function toApiMessage(m: ChatMessage): ApiMessage {
+  if (m.role === 'user' && m.image) {
+    const block = imageBlockFromDataUrl(m.image);
+    const parts: AiContentBlock[] = [];
+    if (block) parts.push(block);
+    parts.push({ type: 'text', text: m.content || 'Please look at this image and help me understand it.' });
+    return { role: m.role, content: parts };
+  }
+  return { role: m.role, content: m.content };
+}
 
 function ClioAvatar({ size = 60 }: { size?: number }) {
   return (
@@ -137,10 +152,42 @@ export default function AiTutorPage() {
   useEffect(() => { try { localStorage.setItem(activeThreadKey, threadId); } catch { /* ignore */ } }, [activeThreadKey, threadId]);
   const [messages, setMessages, clearChat] = usePersistentChat(threadModule('tutor', threadId), currentUser?.id);
   const [input, setInput] = useState('');
+  const [image, setImage] = useState<string | null>(null); // pending upload (data URL)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
-  const retryRef = useRef<{ history: { role: 'user' | 'assistant'; content: string }[] } | null>(null);
+  const retryRef = useRef<{ history: ApiMessage[] } | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  // Downscale an uploaded image to a sane size (max 1024px, JPEG) so it stays
+  // small in storage and cheap for the vision model, then keep it as a data URL.
+  const onPickImage = useCallback(async (file: File | undefined) => {
+    if (!file || !file.type.startsWith('image/')) return;
+    try {
+      const raw = await new Promise<string>((res, rej) => {
+        const fr = new FileReader();
+        fr.onload = () => res(String(fr.result));
+        fr.onerror = rej;
+        fr.readAsDataURL(file);
+      });
+      const img = await new Promise<HTMLImageElement>((res, rej) => {
+        const i = new Image();
+        i.onload = () => res(i);
+        i.onerror = rej;
+        i.src = raw;
+      });
+      const max = 1024;
+      const scale = Math.min(1, max / Math.max(img.width, img.height));
+      const w = Math.max(1, Math.round(img.width * scale));
+      const h = Math.max(1, Math.round(img.height * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d')?.drawImage(img, 0, 0, w, h);
+      setImage(canvas.toDataURL('image/jpeg', 0.85));
+    } catch {
+      setImage(null);
+    }
+  }, []);
 
   const avatarKey = currentUser ? `historify:avatar:${currentUser.id}` : '';
   const [avatarUrl] = useState(() => (avatarKey ? localStorage.getItem(avatarKey) ?? '' : ''));
@@ -150,7 +197,7 @@ export default function AiTutorPage() {
   // Runs one streaming exchange against an already-built history. On failure
   // the empty bubble is dropped, the history is stashed for the retry card,
   // and any partial text is kept so nothing the model said is lost.
-  const stream = useCallback(async (history: { role: 'user' | 'assistant'; content: string }[]) => {
+  const stream = useCallback(async (history: ApiMessage[]) => {
     const assistantMsg: ChatMessage = { id: crypto.randomUUID(), role: 'assistant', content: '', timestamp: new Date().toISOString(), isStreaming: true };
     setMessages(prev => [...prev, assistantMsg]);
     setLoading(true);
@@ -167,8 +214,13 @@ export default function AiTutorPage() {
       setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, isStreaming: false } : m));
       retryRef.current = null;
       // Background memory extraction — throttled, silent, never blocks the UI.
+      // Flatten any image blocks to a text marker so the memory layer stays text.
       if (currentUser && acc) {
-        noteExchangeAndMaybeExtract(currentUser.id, [...history, { role: 'assistant', content: acc }]);
+        const memHistory = [...history, { role: 'assistant' as const, content: acc }].map(m => ({
+          role: m.role,
+          content: typeof m.content === 'string' ? m.content : m.content.map(b => (b.type === 'text' ? b.text : '[image]')).join(' '),
+        }));
+        noteExchangeAndMaybeExtract(currentUser.id, memHistory);
       }
     } catch (err) {
       retryRef.current = { history };
@@ -181,21 +233,26 @@ export default function AiTutorPage() {
 
   const send = useCallback(async (text: string) => {
     const { allowed } = canAI();
-    if (!allowed || !text.trim() || loading) return;
+    // An attached image can be sent with no text; text alone still requires text.
+    if (!allowed || loading || (!text.trim() && !image)) return;
 
-    const userMsg: ChatMessage = { id: crypto.randomUUID(), role: 'user', content: text.trim(), timestamp: new Date().toISOString() };
+    const userMsg: ChatMessage = {
+      id: crypto.randomUUID(), role: 'user', content: text.trim(),
+      timestamp: new Date().toISOString(), image: image ?? undefined,
+    };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
+    setImage(null);
 
     if (currentUser) { recordAiMessage(currentUser.id); trackAiMessage(); refreshProgress(); }
     if (threadId !== 'main' && messages.length === 0) {
-      titleThread('tutor', threadId, text.trim(), currentUser?.id);
+      titleThread('tutor', threadId, text.trim() || 'Image', currentUser?.id);
       setThreads(listThreads('tutor', currentUser?.id));
     }
 
-    const history = [...messages, userMsg].map(m => ({ role: m.role, content: m.content }));
+    const history = [...messages, userMsg].map(toApiMessage);
     void stream(history);
-  }, [messages, canAI, currentUser, loading, refreshProgress, trackAiMessage, setMessages, stream, threadId]);
+  }, [messages, canAI, currentUser, loading, image, refreshProgress, trackAiMessage, setMessages, stream, threadId]);
 
   const retry = useCallback(() => {
     const saved = retryRef.current;
@@ -404,7 +461,12 @@ export default function AiTutorPage() {
                           : 'bg-secondary text-secondary-foreground rounded-tl-sm'
                       } ${msg.isStreaming ? 'streaming-cursor' : ''}`}
                     >
-                      {msg.role === 'assistant' ? stripMarkdown(msg.content || (msg.isStreaming ? ' ' : '...')) : (msg.content || '...')}
+                      {msg.role === 'user' && msg.image && (
+                        <img src={msg.image} alt="" className="mb-2 max-h-52 rounded-lg border border-white/25 object-contain" />
+                      )}
+                      {msg.role === 'assistant'
+                        ? stripMarkdown(msg.content || (msg.isStreaming ? ' ' : '...'))
+                        : (msg.content || (msg.image ? '' : '...'))}
                     </div>
                   </motion.div>
                 ))}
@@ -421,7 +483,38 @@ export default function AiTutorPage() {
             </div>
           </ScrollArea>
 
+          {/* Pending image preview */}
+          {image && (
+            <div className="mt-3 flex items-center gap-2">
+              <div className="relative">
+                <img src={image} alt="" className="h-16 w-16 rounded-lg border border-border object-cover" />
+                <button
+                  onClick={() => setImage(null)}
+                  className="absolute -top-1.5 -right-1.5 rounded-full bg-black/80 text-white p-0.5 hover:bg-black"
+                  aria-label="Remove image"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </div>
+              <span className="text-xs text-muted-foreground">{t.tutor_image_ready}</span>
+            </div>
+          )}
           <div className="mt-3 flex gap-2">
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/gif"
+              className="hidden"
+              onChange={e => { void onPickImage(e.target.files?.[0]); e.target.value = ''; }}
+            />
+            <Button
+              size="icon" variant="outline"
+              onClick={() => fileRef.current?.click()}
+              disabled={!allowed || loading}
+              title={t.tutor_attach_image}
+            >
+              <ImagePlus className="w-4 h-4" />
+            </Button>
             <Textarea
               value={input}
               onChange={e => setInput(e.target.value)}
@@ -431,7 +524,7 @@ export default function AiTutorPage() {
               disabled={!allowed || loading}
               onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input); } }}
             />
-            <Button size="icon" onClick={() => send(input)} disabled={!input.trim() || !allowed || loading}>
+            <Button size="icon" onClick={() => send(input)} disabled={(!input.trim() && !image) || !allowed || loading}>
               <Send className="w-4 h-4" />
             </Button>
           </div>

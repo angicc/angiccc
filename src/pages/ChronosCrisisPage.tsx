@@ -176,6 +176,9 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
         [{ role: 'user', content: 'Deliver the tribunal assessment of this run now.' }],
         undefined,
         tribunalPrompt,
+        3072, // large enough for the full 5-metric JSON + lists in verbose languages
+              // (Cyrillic/Macedonian runs long); the default 1024 truncated it,
+              // cutting off Strengths and dropping Improvements entirely.
       )) acc += chunk;
       onAiMessage();
       const parsed = parseAssessment(acc);
