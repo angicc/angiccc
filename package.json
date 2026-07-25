@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "i18n:lessons": "node scripts/generate_lesson_translations.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

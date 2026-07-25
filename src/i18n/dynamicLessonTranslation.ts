@@ -18,6 +18,7 @@
 import type { Language } from './translations';
 import { streamChatResponse } from '@/services/aiGateway';
 import { safeJsonParse } from '@/lib/safeJsonParse';
+import { GENERATED_LESSON_T, type GenContentLang } from './lessonTranslationsGenerated';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -45,15 +46,19 @@ const CACHE_KEY = (lang: string, id: string) => `historify:xlate:${lang}:${id}`;
 
 // ── Cache read / write ───────────────────────────────────────────────────────
 
-/** Synchronous cache read — safe to call from render. Returns null if absent. */
+/** Synchronous cache read — safe to call from render. Returns null if absent.
+ *  Baked translations (lessonTranslationsGenerated.ts) take priority over the
+ *  runtime localStorage cache, so once a lesson is generated it needs no AI. */
 export function getCachedLessonTranslation(id: string, lang: Language): CachedLessonT | null {
   if (lang === 'en') return null;
+  const baked = GENERATED_LESSON_T[id]?.[lang as GenContentLang];
+  let local: CachedLessonT | null = null;
   try {
     const raw = localStorage.getItem(CACHE_KEY(lang, id));
-    return raw ? (JSON.parse(raw) as CachedLessonT) : null;
-  } catch {
-    return null;
-  }
+    if (raw) local = JSON.parse(raw) as CachedLessonT;
+  } catch { /* storage unavailable */ }
+  if (baked && (baked.t || baked.b)) return { ...local, ...baked };
+  return local;
 }
 
 function mergeCache(id: string, lang: ContentLang, patch: CachedLessonT) {
@@ -154,13 +159,15 @@ export async function warmMetaForLanguage(lessons: LessonLike[], lang: Language)
   await Promise.all(Array.from({ length: Math.min(POOL, pending.length) }, worker));
 }
 
-/** Translate + cache a lesson's BODY paragraphs. Idempotent; on demand. */
-export async function translateLessonBodies(lesson: LessonLike, lang: Language): Promise<void> {
-  if (lang === 'en') return;
+/** Translate + cache a lesson's BODY paragraphs. Idempotent; on demand.
+ *  Resolves true when the lesson's bodies are cached (already or now), false if
+ *  the AI gateway was unreachable so the UI can offer a retry. */
+export async function translateLessonBodies(lesson: LessonLike, lang: Language): Promise<boolean> {
+  if (lang === 'en') return true;
   const cl = lang as ContentLang;
   const guard = `${cl}:${lesson.id}`;
-  if (bodyInFlight.has(guard)) return;
-  if (getCachedLessonTranslation(lesson.id, cl)?.b) return; // already have bodies
+  if (getCachedLessonTranslation(lesson.id, cl)?.b) return true; // already have bodies
+  if (bodyInFlight.has(guard)) return false;
   bodyInFlight.add(guard);
   try {
     const bodies = lesson.sections.map(s => s.body);
@@ -172,7 +179,11 @@ export async function translateLessonBodies(lesson: LessonLike, lang: Language):
       const out = await translateBatch(slice, cl, 4096);
       result.push(...out);
     }
-    mergeCache(lesson.id, cl, { b: result });
-  } catch { /* leave English bodies */ }
+    // translateBatch returns originals on failure; only treat as success when at
+    // least one body actually changed (otherwise the gateway was unreachable).
+    const changed = result.some((b, i) => b !== bodies[i]);
+    if (changed) { mergeCache(lesson.id, cl, { b: result }); return true; }
+    return false;
+  } catch { return false; /* leave English bodies */ }
   finally { bodyInFlight.delete(guard); }
 }

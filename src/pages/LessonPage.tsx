@@ -1,6 +1,6 @@
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Telescope, Lock, Hourglass, ScrollText } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Telescope, Lock, Hourglass, ScrollText, Languages, Loader2, RefreshCw } from 'lucide-react';
 import { getLessonTheme, type LessonTheme } from '@/lib/lessonTheme';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
@@ -21,7 +21,8 @@ import {
 import { getLessonById, getEraLessons } from '@/features/content/lessonsData';
 import { getEraById } from '@/features/content/erasData';
 import { getTranslatedLesson, getTranslatedEra, hasStaticLessonTranslation } from '@/i18n/contentTranslations';
-import { translateLessonBodies } from '@/i18n/dynamicLessonTranslation';
+import { translateLessonBodies, getCachedLessonTranslation } from '@/i18n/dynamicLessonTranslation';
+import { LANGUAGE_LABELS } from '@/i18n/translations';
 import { LESSON_DEEP_DIVES } from '@/i18n/lessonDeepDives';
 import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore';
 import { toast } from 'sonner';
@@ -221,11 +222,29 @@ export default function LessonPage() {
 
   // Translate this lesson's long body paragraphs on demand for non-English
   // languages when it has no hand-authored translation. Cached after the first
-  // open; the LanguageProvider re-renders the page as each section lands.
-  useEffect(() => {
+  // open; the LanguageProvider re-renders the page as each section lands. The
+  // status drives a visible "auto-translating / retry" chip so the lesson never
+  // just sits silently in English (which reads as a glitch).
+  const [bodyXlate, setBodyXlate] = useState<'idle' | 'working' | 'failed'>('idle');
+  const runBodyTranslation = useCallback(() => {
     if (!rawLesson || language === 'en') return;
     if (hasStaticLessonTranslation(rawLesson.id)) return;
-    void translateLessonBodies(rawLesson, language);
+    if (getCachedLessonTranslation(rawLesson.id, language)?.b) { setBodyXlate('idle'); return; }
+    setBodyXlate('working');
+    translateLessonBodies(rawLesson, language)
+      .then(ok => setBodyXlate(ok ? 'idle' : 'failed'))
+      .catch(() => setBodyXlate('failed'));
+  }, [rawLesson, language]);
+  useEffect(() => { runBodyTranslation(); }, [runBodyTranslation]);
+
+  // Warm the NEXT lesson's bodies in the background so intra-era navigation is
+  // already localized when the learner moves on.
+  useEffect(() => {
+    if (!rawLesson || language === 'en') return;
+    const eraLessons = getEraLessons(rawLesson.eraId);
+    const idx = eraLessons.findIndex(l => l.id === rawLesson.id);
+    const next = idx >= 0 ? eraLessons[idx + 1] : undefined;
+    if (next && !hasStaticLessonTranslation(next.id)) void translateLessonBodies(next, language);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawLesson?.id, language]);
 
@@ -331,6 +350,34 @@ export default function LessonPage() {
           onBookmark={handleBookmark}
           theme={getLessonTheme(lesson)}
         />
+
+        {/* Auto-translation status — only for non-English lessons without a
+            hand-authored translation whose AI translation hasn't landed yet. */}
+        {language !== 'en' && bodyXlate !== 'idle' && (() => {
+          const LBL: Record<string, { working: string; failed: string; retry: string }> = {
+            es: { working: 'Traduciendo al', failed: 'No se pudo traducir automáticamente — mostrando inglés.', retry: 'Reintentar' },
+            ru: { working: 'Перевод на', failed: 'Не удалось перевести автоматически — показан английский.', retry: 'Повторить' },
+            mk: { working: 'Преведување на', failed: 'Не успеа автоматскиот превод — прикажан е англиски.', retry: 'Обиди се пак' },
+            de: { working: 'Übersetzen ins', failed: 'Automatische Übersetzung fehlgeschlagen — Englisch wird angezeigt.', retry: 'Erneut versuchen' },
+            fr: { working: 'Traduction en', failed: 'Traduction automatique impossible — anglais affiché.', retry: 'Réessayer' },
+          };
+          const l = LBL[language] ?? { working: 'Translating to', failed: 'Auto-translation failed — showing English.', retry: 'Retry' };
+          return (
+            <div className={`mb-4 flex items-center gap-2 rounded-lg border px-3 py-2 text-xs ${bodyXlate === 'working' ? 'border-primary/30 bg-primary/5 text-primary' : 'border-amber-500/30 bg-amber-500/5 text-amber-300'}`}>
+              {bodyXlate === 'working' ? (
+                <><Loader2 className="w-3.5 h-3.5 animate-spin shrink-0" /><span>{l.working} {LANGUAGE_LABELS[language]}…</span></>
+              ) : (
+                <>
+                  <Languages className="w-3.5 h-3.5 shrink-0" />
+                  <span className="flex-1">{l.failed}</span>
+                  <button onClick={runBodyTranslation} className="inline-flex items-center gap-1 font-semibold hover:underline shrink-0">
+                    <RefreshCw className="w-3 h-3" />{l.retry}
+                  </button>
+                </>
+              )}
+            </div>
+          );
+        })()}
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Main content */}
