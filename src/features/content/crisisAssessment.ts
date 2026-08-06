@@ -86,31 +86,69 @@ Respond ONLY with this exact JSON shape (no markdown fences, no extra text):
 const clamp = (n: unknown): number =>
   typeof n === 'number' && Number.isFinite(n) ? Math.max(0, Math.min(100, Math.round(n))) : 0;
 const str = (s: unknown): string => (typeof s === 'string' ? s.trim() : '');
-const strList = (v: unknown, max: number): string[] =>
-  Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string' && x.trim().length > 0).slice(0, max) : [];
+const strList = (v: unknown, max: number): string[] => {
+  // Tolerate a single string where a list is expected (the model occasionally
+  // returns one strength/improvement as a bare string instead of an array).
+  const arr = Array.isArray(v) ? v : typeof v === 'string' ? [v] : [];
+  return arr
+    .filter((x): x is string => typeof x === 'string' && x.trim().length > 0)
+    .map(s => s.trim())
+    .slice(0, max);
+};
 
-/** Parse + coerce the tribunal's raw output; null when unusable. */
+/** Parse + coerce the tribunal's raw output; null only when genuinely unusable.
+ *  Resilience: smaller models (and long Cyrillic/Macedonian runs) sometimes drop
+ *  a single metric, nest it loosely, or omit feedback. Nuking the whole verdict
+ *  on any such gap is what surfaced to the player as an "unreadable verdict" that
+ *  blanked out Strengths & Improvements. Instead a missing metric is defaulted
+ *  from the overall score so a partial-but-real assessment still renders; we bail
+ *  out only when the output carries no usable signal whatsoever. */
 export function parseAssessment(raw: string): Omit<CrisisAssessment, 'xpAwarded'> | null {
   let parsed: Record<string, unknown>;
   try { parsed = safeJsonParse<Record<string, unknown>>(raw); } catch { return null; }
-  const rawMetrics = parsed.metrics as Record<string, unknown> | undefined;
-  if (!rawMetrics || typeof rawMetrics !== 'object') return null;
+  if (!parsed || typeof parsed !== 'object') return null;
+
+  const rawMetrics = (parsed.metrics && typeof parsed.metrics === 'object')
+    ? (parsed.metrics as Record<string, unknown>)
+    : {};
+  const overall = clamp(parsed.overallScore);
+
   const metrics = {} as Record<AssessmentMetricKey, AssessmentMetric>;
+  let metricsPresent = 0;
   for (const key of ASSESSMENT_METRIC_KEYS) {
     const m = rawMetrics[key] as { score?: unknown; feedback?: unknown } | undefined;
-    if (!m || typeof m !== 'object') return null;
-    metrics[key] = { score: clamp(m.score), feedback: str(m.feedback) };
+    if (m && typeof m === 'object') {
+      metrics[key] = { score: clamp(m.score), feedback: str(m.feedback) };
+      metricsPresent++;
+    } else {
+      // Missing metric → fall back to the overall score with empty feedback so
+      // the radar/bars still render rather than the entire tribunal failing.
+      metrics[key] = { score: overall, feedback: '' };
+    }
   }
+
+  const strengths = strList(parsed.strengths, 3);
+  const improvements = strList(parsed.improvements, 3);
+  const commanderTitle = str(parsed.commanderTitle);
+  const counterfactual = str(parsed.counterfactual);
+  const epitaph = str(parsed.epitaph);
+
+  // Genuine-garbage guard: no metrics, no score, and no textual verdict at all.
+  const hasSignal =
+    metricsPresent > 0 || overall > 0 || strengths.length > 0 ||
+    improvements.length > 0 || !!commanderTitle || !!counterfactual || !!epitaph;
+  if (!hasSignal) return null;
+
   const grade = str(parsed.grade).toUpperCase();
   return {
     metrics,
-    overallScore: clamp(parsed.overallScore),
+    overallScore: overall,
     grade: (['S', 'A', 'B', 'C', 'D'].includes(grade) ? grade : 'C') as LetterGrade,
-    commanderTitle: str(parsed.commanderTitle),
-    strengths: strList(parsed.strengths, 3),
-    improvements: strList(parsed.improvements, 3),
-    counterfactual: str(parsed.counterfactual),
-    epitaph: str(parsed.epitaph),
+    commanderTitle,
+    strengths,
+    improvements,
+    counterfactual,
+    epitaph,
   };
 }
 
