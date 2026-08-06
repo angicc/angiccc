@@ -457,7 +457,7 @@ export const MARKER_NOTE_I18N: Record<string, MT> = {
   'Babylon': {
     es: 'Código de Hammurabi, Jardines Colgantes, corazón del Imperio Babilónico',
     ru: 'Кодекс Хаммурапи, Висячие сады, сердце Вавилонской империи',
-    mk: 'Хамурабиевиот Кодекс, Висечките Градини, срцето на Вавилонската Империја', de: "Von Kyros ins Perserreich eingegliedert (539 v. Chr.)", fr: "Intégrée à l’Empire perse par Cyrus (539 av. J.-C.)" 
+    mk: 'Хамурабиевиот Кодекс, Висечките Градини, срцето на Вавилонската империја', de: "Von Kyros ins Perserreich eingegliedert (539 v. Chr.)", fr: "Intégrée à l’Empire perse par Cyrus (539 av. J.-C.)" 
   },
   'Rome': {
     es: 'Capital de la República y el Imperio Romano — 1 millón de habitantes en su apogeo',
@@ -527,7 +527,7 @@ export const MARKER_NOTE_I18N: Record<string, MT> = {
   'Karakorum': {
     es: 'Capital del Imperio Mongol bajo Ögedei Khan',
     ru: 'Столица Монгольской империи при Угэдэй-хане',
-    mk: 'Главен град на Монголската Империја под Оогедеј Хан', de: "Dschingis Khans mongolische Hauptstadt — Drehscheibe der eroberten Welt", fr: "Capitale mongole de Gengis Khan — plaque tournante du monde conquis" 
+    mk: 'Главен град на Монголската империја под Оогедеј Хан', de: "Dschingis Khans mongolische Hauptstadt — Drehscheibe der eroberten Welt", fr: "Capitale mongole de Gengis Khan — plaque tournante du monde conquis" 
   },
   'Krak des Chevaliers': {
     es: 'Mayor castillo cruzado de Siria — mantuvo frente a Saladino',

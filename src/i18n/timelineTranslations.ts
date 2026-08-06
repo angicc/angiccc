@@ -22,7 +22,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-troy': {
     es: { title: 'Caída de Troya', description: 'La legendaria guerra de Troya termina con el saqueo griego, como lo conmemoró Homero en la Ilíada.' },
     ru: { title: 'Падение Трои', description: 'Легендарная Троянская война заканчивается разорением Трои греками, воспетым Гомером в «Илиаде».' },
-    mk: { title: 'Падот на Троја', description: 'Легендарната Тројанска Војна завршува со грчкото освојување, овековечено во Хомеровата Илијада.' },
+    mk: { title: 'Падот на Троја', description: 'Легендарната Тројанска војна завршува со грчкото освојување, овековечено во Хомеровата Илијада.' },
   },
   't-democracy': {
     es: { title: 'Democracia Ateniense', description: 'Clístenes introduce la democracia en Atenas — el primer sistema democrático del mundo, donde los ciudadanos votan directamente sobre las leyes.' },
@@ -67,7 +67,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-cyrus-great': {
     es: { title: 'Ciro el Grande Funda el Imperio Persa', description: 'Ciro II de Persia derrota a los imperios medo, lidio y babilonio para crear el mayor imperio del mundo hasta entonces, introduciendo una política de tolerancia religiosa.' },
     ru: { title: 'Кир Великий основывает Персидскую империю', description: 'Кир II Персидский побеждает мидийцев, лидийцев и вавилонян, создавая крупнейшую империю своего времени и вводя политику религиозной терпимости.' },
-    mk: { title: 'Кир Велики ја Основал Персиската Империја', description: 'Кир II ги покорува Медијците, Лидијците и Вавилонците создавајќи ја најголемата империја на дотогашниот свет, воведувајќи политика на верска толеранција.' },
+    mk: { title: 'Кир Велики ја Основал Персиската империја', description: 'Кир II ги покорува Медијците, Лидијците и Вавилонците создавајќи ја најголемата империја на дотогашниот свет, воведувајќи политика на верска толеранција.' },
   },
   't-ashoka': {
     es: { title: 'Emperador Ashoka y la Difusión del Budismo', description: 'Tras la brutal conquista de Kalinga, el emperador maurya Ashoka se convierte al budismo y gobierna por el dharma, enviando misioneros por Asia.' },
@@ -92,7 +92,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-rome-fall': {
     es: { title: 'Caída de Roma Occidental', description: 'El caudillo germánico Odoacro depone al último emperador romano occidental, marcando el fin tradicional del Imperio Romano de Occidente.' },
     ru: { title: 'Падение Западного Рима', description: 'Германский вождь Одоакр свергает последнего западноримского императора, ознаменовав традиционный конец Западной Римской империи.' },
-    mk: { title: 'Падот на Западниот Рим', description: 'Германскиот старешина Одоакар го детронизира последниот западен римски цар, означувајќи го традиционалниот крај на Западната Римска Империја.' },
+    mk: { title: 'Падот на Западниот Рим', description: 'Германскиот старешина Одоакар го детронизира последниот западен римски цар, означувајќи го традиционалниот крај на Западната Римска империја.' },
   },
   't-charlemagne': {
     es: { title: 'Carlomagno Coronado Emperador', description: 'El papa León III corona a Carlomagno "Emperador de los Romanos" la noche de Navidad en Roma, creando el concepto de un imperio cristiano europeo.' },
@@ -127,7 +127,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-mongols': {
     es: { title: 'Fundación del Imperio Mongol', description: 'Gengis Kan une a las tribus mongolas e inicia conquistas que crearán el mayor imperio contiguo de la historia.' },
     ru: { title: 'Основание Монгольской империи', description: 'Чингисхан объединяет монгольские племена и начинает завоевания, создавшие крупнейшую сухопутную империю в истории.' },
-    mk: { title: 'Основање на Монголската Империја', description: 'Џингис Кан ги обединил монголските племиња и ги започнал освојувањата кои ќе создадат најголемата копнена империја во историјата.' },
+    mk: { title: 'Основање на Монголската империја', description: 'Џингис Кан ги обединил монголските племиња и ги започнал освојувањата кои ќе создадат најголемата копнена империја во историјата.' },
   },
   't-black-death': {
     es: { title: 'La Peste Negra llega a Europa', description: 'La peste bubónica llega a Sicilia, iniciando una pandemia que matará al 30-60% de la población europea en los siguientes seis años.' },
@@ -157,7 +157,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-copernicus': {
     es: { title: 'Revolución Copernicana', description: 'Nicolás Copérnico publica su modelo heliocéntrico del sistema solar, iniciando la Revolución Científica.' },
     ru: { title: 'Коперниканская революция', description: 'Николай Коперник публикует гелиоцентрическую модель Солнечной системы, положив начало Научной революции.' },
-    mk: { title: 'Коперниканска Револуција', description: 'Николај Коперник го публикувал хелиоцентричниот модел на сончевиот систем, почнувајќи ја Научната Револуција.' },
+    mk: { title: 'Коперниканска револуција', description: 'Николај Коперник го публикувал хелиоцентричниот модел на сончевиот систем, почнувајќи ја Научната револуција.' },
   },
   't-armada': {
     es: { title: 'Derrota de la Armada Española', description: 'Inglaterra derrota a la Armada Española, señalando el declive del dominio naval español y el ascenso del poder marítimo inglés.' },
@@ -172,12 +172,12 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-thirty-years-war': {
     es: { title: 'Inicio de la Guerra de los Treinta Años', description: 'Una guerra religiosa y política devastadora desgarra Europa central, matando a 8 millones de personas y rediseñando el continente.' },
     ru: { title: 'Начало Тридцатилетней войны', description: 'Разрушительная религиозно-политическая война раздирает Центральную Европу, унося 8 миллионов жизней и перекраивая континент.' },
-    mk: { title: 'Почеток на Триесетгодишната Војна', description: 'Разурнувачка верска и политичка војна ја раскинала Централна Европа, убивајќи 8 милиони луѓе и преобликувајќи го континентот.' },
+    mk: { title: 'Почеток на Триесетгодишната војна', description: 'Разурнувачка верска и политичка војна ја раскинала Централна Европа, убивајќи 8 милиони луѓе и преобликувајќи го континентот.' },
   },
   't-westphalia': {
     es: { title: 'Paz de Westfalia', description: 'Los tratados que ponen fin a la Guerra de los Treinta Años establecen el principio de soberanía nacional, fundamento del orden internacional moderno.' },
     ru: { title: 'Вестфальский мир', description: 'Договоры, завершившие Тридцатилетнюю войну, устанавливают принцип национального суверенитета — основу современного международного порядка.' },
-    mk: { title: 'Мирот во Вестфалија', description: 'Договорите со кои завршила Триесетгодишната Војна го воспоставиле принципот на национален суверенитет — темелот на современиот меѓународен поредок.' },
+    mk: { title: 'Мирот во Вестфалија', description: 'Договорите со кои завршила Триесетгодишната војна го воспоставиле принципот на национален суверенитет — темелот на современиот меѓународен поредок.' },
   },
   't-newton': {
     es: { title: 'Principia de Newton', description: 'Isaac Newton publica sus leyes del movimiento y la gravitación universal, proporcionando un marco matemático para comprender el universo físico.' },
@@ -187,7 +187,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-glorious-revolution': {
     es: { title: 'Revolución Gloriosa', description: 'La Revolución Gloriosa de Inglaterra establece la monarquía constitucional y la supremacía parlamentaria, influyendo en los gobiernos democráticos del mundo.' },
     ru: { title: 'Славная революция', description: 'Английская Славная революция устанавливает конституционную монархию и парламентское верховенство, влияя на демократические правительства во всём мире.' },
-    mk: { title: 'Славна Револуција', description: 'Англиската Славна Револуција ја воспоставила уставната монархија и парламентарната супремација, влијаејќи на демократски влади низ светот.' },
+    mk: { title: 'Славна револуција', description: 'Англиската Славна револуција ја воспоставила уставната монархија и парламентарната супремација, влијаејќи на демократски влади низ светот.' },
   },
   't-american-revolution': {
     es: { title: 'Declaración de Independencia de los Estados Unidos', description: 'Las trece colonias americanas declaran la independencia de Gran Bretaña, fundando una república basada en los principios ilustrados de libertad y derechos naturales.' },
@@ -197,12 +197,12 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-french-revolution': {
     es: { title: 'Revolución Francesa', description: 'La Revolución Francesa derroca la monarquía y la aristocracia, difundiendo los ideales de libertad, igualdad y soberanía nacional por toda Europa.' },
     ru: { title: 'Французская революция', description: 'Французская революция свергает монархию и аристократию, распространяя идеалы свободы, равенства и народного суверенитета по всей Европе.' },
-    mk: { title: 'Француска Револуција', description: 'Француската Револуција ги урнала монархијата и аристократијата, ширејќи ги идеалите на слобода, еднаквост и национален суверенитет низ Европа.' },
+    mk: { title: 'Француска револуција', description: 'Француската револуција ги урнала монархијата и аристократијата, ширејќи ги идеалите на слобода, еднаквост и национален суверенитет низ Европа.' },
   },
   't-steam-engine': {
     es: { title: 'La Máquina de Vapor de Watt', description: 'James Watt patenta una máquina de vapor mejorada, proporcionando la fuente de energía para la Revolución Industrial británica.' },
     ru: { title: 'Паровая машина Уатта', description: 'Джеймс Уатт патентует усовершенствованную паровую машину, обеспечивая источник энергии для британской промышленной революции.' },
-    mk: { title: 'Парната Машина на Ват', description: 'Џејмс Ват го патентирал подобрениот паров мотор, обезбедувајќи извор на енергија за британската Индустриска Револуција.' },
+    mk: { title: 'Парната Машина на Ват', description: 'Џејмс Ват го патентирал подобрениот паров мотор, обезбедувајќи извор на енергија за британската Индустриска револуција.' },
   },
   't-napoleon': {
     es: { title: 'Napoleón Coronado Emperador', description: 'Napoleón Bonaparte se corona Emperador de Francia, iniciando una década de conquista europea que difunde los ideales revolucionarios y remodela el continente.' },
@@ -222,7 +222,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-american-civil-war': {
     es: { title: 'Guerra Civil Americana', description: 'La Guerra Civil de los Estados Unidos (1861-1865) pone fin a la esclavitud y preserva la Unión, convirtiéndose en la guerra más sangrienta de la historia americana.' },
     ru: { title: 'Американская Гражданская война', description: 'Гражданская война в США (1861–1865) отменяет рабство и сохраняет Союз, став самой кровопролитной войной в американской истории.' },
-    mk: { title: 'Американска Граѓанска Војна', description: 'Американската Граѓанска Војна (1861-1865) го укинала ропството и ја зачувала Унијата, станувајќи најкрвавата војна во американската историја.' },
+    mk: { title: 'Американска Граѓанска војна', description: 'Американската Граѓанска војна (1861-1865) го укинала ропството и ја зачувала Унијата, станувајќи најкрвавата војна во американската историја.' },
   },
   't-darwin': {
     es: { title: 'El Origen de las Especies de Darwin', description: 'Charles Darwin publica su teoría de la evolución por selección natural, una de las ideas científicas más revolucionarias de la historia.' },
@@ -232,17 +232,17 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-wwi': {
     es: { title: 'Comienza la Primera Guerra Mundial', description: 'El asesinato del archiduque Francisco Fernando desencadena una reacción en cadena que hunde a Europa y gran parte del mundo en cuatro años de devastadora guerra industrial.' },
     ru: { title: 'Начало Первой мировой войны', description: 'Убийство эрцгерцога Франца Фердинанда запускает цепную реакцию, погружая Европу и большую часть мира в четыре года опустошительной промышленной войны.' },
-    mk: { title: 'Почеток на Првата Светска Војна', description: 'Атентатот врз Ерцхерцогот Франц Фердинанд предизвикал синџирна реакција која ја потопила Европа и голем дел од светот во четири години разурнувачка индустриска војна.' },
+    mk: { title: 'Почеток на Првата Светска војна', description: 'Атентатот врз Ерцхерцогот Франц Фердинанд предизвикал синџирна реакција која ја потопила Европа и голем дел од светот во четири години разурнувачка индустриска војна.' },
   },
   't-russian-revolution': {
     es: { title: 'Revolución Rusa', description: 'La Revolución Bolchevique bajo Lenin derroca al Zar y establece el primer estado comunista del mundo, la Unión Soviética.' },
     ru: { title: 'Русская революция', description: 'Большевистская революция под руководством Ленина свергает царя и создаёт первое в мире коммунистическое государство — Советский Союз.' },
-    mk: { title: 'Руска Револуција', description: 'Болшевичката Револуција под Ленин го урнала Царот и го воспоставила првиот комунистички режим во светот, Советскиот Сојуз.' },
+    mk: { title: 'Руска револуција', description: 'Болшевичката револуција под Ленин го урнала Царот и го воспоставила првиот комунистички режим во светот, Советскиот Сојуз.' },
   },
   't-versailles': {
     es: { title: 'Tratado de Versalles', description: 'El acuerdo de paz que pone fin a la Primera Guerra Mundial impone condiciones duras a Alemania, contribuyendo a los resentimientos que llevaron a la Segunda Guerra Mundial.' },
     ru: { title: 'Версальский договор', description: 'Мирное соглашение, завершившее Первую мировую войну, налагает суровые условия на Германию, способствуя обидам, которые привели ко Второй мировой войне.' },
-    mk: { title: 'Версајскиот Договор', description: 'Мировниот договор со кој завршила Первата Светска Војна наметнал тешки услови на Германија, придонесувајќи кон незадоволствата кои доведоа до Втората Светска Војна.' },
+    mk: { title: 'Версајскиот Договор', description: 'Мировниот договор со кој завршила Первата Светска војна наметнал тешки услови на Германија, придонесувајќи кон незадоволствата кои доведоа до Втората Светска војна.' },
   },
   't-great-depression': {
     es: { title: 'Comienza la Gran Depresión', description: 'El Crack de Wall Street desencadena una depresión económica global, causando desempleo masivo e inestabilidad política que impulsa movimientos extremistas.' },
@@ -252,7 +252,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-wwii': {
     es: { title: 'Comienza la Segunda Guerra Mundial', description: 'La invasión de Polonia por Alemania el 1 de septiembre desencadena la Segunda Guerra Mundial — el conflicto más mortífero de la historia humana, con 70-85 millones de muertos.' },
     ru: { title: 'Начало Второй мировой войны', description: 'Вторжение Германии в Польшу 1 сентября развязывает Вторую мировую войну — самый смертоносный конфликт в истории человечества, унёсший 70–85 миллионов жизней.' },
-    mk: { title: 'Почеток на Втората Светска Војна', description: 'Германската инвазија на Полска на 1 септември ја покренала Втората Светска Војна — најсмртоносниот конфликт во историјата на човештвото, со 70-85 милиони мртви.' },
+    mk: { title: 'Почеток на Втората Светска војна', description: 'Германската инвазија на Полска на 1 септември ја покренала Втората Светска војна — најсмртоносниот конфликт во историјата на човештвото, со 70-85 милиони мртви.' },
   },
   't-holocaust': {
     es: { title: 'Holocausto — Conferencia de Wannsee', description: 'La Alemania nazi implementa la "Solución Final", asesinando sistemáticamente a 6 millones de judíos y millones más en un genocidio industrial.' },
@@ -262,12 +262,12 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-hiroshima': {
     es: { title: 'Bombas Atómicas sobre Japón', description: 'EEUU lanza bombas atómicas sobre Hiroshima y Nagasaki, poniendo fin a la Segunda Guerra Mundial e inaugurando la era nuclear.' },
     ru: { title: 'Атомные бомбы на Японию', description: 'США сбрасывают атомные бомбы на Хиросиму и Нагасаки, завершая Вторую мировую войну и открывая ядерную эпоху.' },
-    mk: { title: 'Атомски Бомби врз Јапонија', description: 'САД фрлиле атомски бомби на Хирошима и Нагасаки, завршувајќи ја Втората Светска Војна и отворајќи ја нуклеарната ера.' },
+    mk: { title: 'Атомски Бомби врз Јапонија', description: 'САД фрлиле атомски бомби на Хирошима и Нагасаки, завршувајќи ја Втората Светска војна и отворајќи ја нуклеарната ера.' },
   },
   't-cold-war': {
     es: { title: 'Comienza la Guerra Fría', description: 'Estados Unidos anuncia la Doctrina Truman para contener el comunismo, iniciando cuatro décadas de competencia geopolítica entre las superpotencias.' },
     ru: { title: 'Начало холодной войны', description: 'США объявляют доктрину Трумэна для сдерживания коммунизма, начиная четыре десятилетия геополитического соперничества между сверхдержавами.' },
-    mk: { title: 'Почеток на Студената Војна', description: 'САД ја прогласиле Труман Доктрината за задржување на комунизмот, почнувајќи четири децении геополитичка конкуренција меѓу суперсилите.' },
+    mk: { title: 'Почеток на Студената војна', description: 'САД ја прогласиле Труман Доктрината за задржување на комунизмот, почнувајќи четири децении геополитичка конкуренција меѓу суперсилите.' },
   },
   't-decolonization': {
     es: { title: 'Independencia de India', description: 'India y Pakistán obtienen la independencia de Gran Bretaña, iniciando una ola de descolonización que da independencia a decenas de nuevas naciones en las siguientes décadas.' },
@@ -282,7 +282,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-berlin-wall': {
     es: { title: 'Caída del Muro de Berlín', description: 'El Muro de Berlín cae el 9 de noviembre de 1989, simbolizando el colapso de la Europa comunista oriental y el fin de la Guerra Fría.' },
     ru: { title: 'Падение Берлинской стены', description: 'Берлинская стена падает 9 ноября 1989 года, символизируя крах коммунистической Восточной Европы и конец холодной войны.' },
-    mk: { title: 'Падот на Берлинскиот Ѕид', description: 'Берлинскиот Ѕид паднал на 9 ноември 1989, симболизирајќи го распадот на комунистичка Источна Европа и крајот на Студената Војна.' },
+    mk: { title: 'Падот на Берлинскиот Ѕид', description: 'Берлинскиот Ѕид паднал на 9 ноември 1989, симболизирајќи го распадот на комунистичка Источна Европа и крајот на Студената војна.' },
   },
   't-internet': {
     es: { title: 'La World Wide Web se hace pública', description: 'Tim Berners-Lee pone la World Wide Web a disposición del público, iniciando la era de Internet y transformando la comunicación y el comercio humanos.' },
@@ -297,7 +297,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-yugoslav-wars': {
     es: { title: 'Las Guerras Yugoslavas', description: 'La violenta disolución de Yugoslavia produce una serie de guerras. La Guerra de Bosnia (1992-1995) incluye el genocidio de Srebrenica, el peor de Europa desde la Segunda Guerra Mundial.' },
     ru: { title: 'Югославские войны', description: 'Насильственный распад Югославии порождает серию войн. Боснийская война (1992–1995) включает Сребреницкий геноцид — худший в Европе со времён Второй мировой войны.' },
-    mk: { title: 'Југословенски Војни', description: 'Насилниот распад на Југославија создал серија войни. Босанската Војна (1992-1995) го вклучила геноцидот во Сребреница — најлошиот во Европа по Втората Светска Војна.' },
+    mk: { title: 'Југословенски Војни', description: 'Насилниот распад на Југославија создал серија войни. Босанската војна (1992-1995) го вклучила геноцидот во Сребреница — најлошиот во Европа по Втората Светска војна.' },
   },
   't-srebrenica': {
     es: { title: 'Masacre de Srebrenica', description: 'Fuerzas serbobosnias asesinan a más de 8.000 hombres y niños bosníacos en una zona segura declarada por la ONU, el peor acto de genocidio en Europa desde el Holocausto.' },
@@ -312,7 +312,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-balkan-wars': {
     es: { title: 'Las Guerras de los Balcanes', description: 'Grecia, Bulgaria, Serbia y Montenegro derrotan al Imperio Otomano, luego se enfrentan entre ellos por el botín. Macedonia queda particionada, trazando las fronteras modernas de los Balcanes occidentales.' },
     ru: { title: 'Балканские войны', description: 'Греция, Болгария, Сербия и Черногория побеждают Османскую империю, затем воюют между собой за добычу. Македония разделена, образуя современные границы западных Балкан.' },
-    mk: { title: 'Балканските Војни', description: 'Грција, Бугарија, Србија и Црна Гора ја поразиле Отоманската Империја, потоа се бореле меѓу себе за пленот. Македонија е поделена, одредувајќи ги современите граници на Западен Балкан.' },
+    mk: { title: 'Балканските војни', description: 'Грција, Бугарија, Србија и Црна Гора ја поразиле Отоманската империја, потоа се бореле меѓу себе за пленот. Македонија е поделена, одредувајќи ги современите граници на Западен Балкан.' },
   },
   't-phoenician-alphabet': {
     es: { title: 'El Alfabeto Fenicio se Difunde', description: 'Los comerciantes fenicios perfeccionan un alfabeto de 22 letras — antepasado del griego, del latín y de la mayoría de las escrituras modernas — y lo llevan a cada puerto del Mediterráneo.' },
