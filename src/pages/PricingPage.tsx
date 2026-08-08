@@ -13,7 +13,7 @@ import { Logo } from '@/components/shared/Logo';
 import { toast } from 'sonner';
 import type { SubscriptionTier } from '@/types';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { getTranslatedPlanFeatures } from '@/i18n/planTranslations';
+import { getTranslatedPlanFeatures, getTranslatedPlanDescription } from '@/i18n/planTranslations';
 
 const ICONS: Record<SubscriptionTier, React.ReactNode> = { free: <BookOpen className="w-6 h-6" />, beginner: <Star className="w-6 h-6" />, pro: <Zap className="w-6 h-6" />, master: <Crown className="w-6 h-6" /> };
 const TIER_ORDER: SubscriptionTier[] = ['free', 'beginner', 'pro', 'master'];
@@ -104,7 +104,7 @@ export default function PricingPage() {
                     {plan.price === 0 ? <span className="text-4xl font-bold font-heading">{t.pricing_price_free}</span> : <><span className="text-4xl font-bold font-heading">${plan.price}</span><span className="text-muted-foreground text-sm">{t.pricing_month}</span></>}
                   </div>
                   {plan.price > 0 && <div className="text-xs font-semibold text-emerald-400 mb-1">{t.pricing_trial_note}</div>}
-                  <p className="text-muted-foreground text-sm">{plan.description}</p>
+                  <p className="text-muted-foreground text-sm">{getTranslatedPlanDescription(plan.id, language) ?? plan.description}</p>
                 </CardHeader>
                 <CardContent className="flex flex-col flex-1 gap-6">
                   <ul className="space-y-3 flex-1">{(getTranslatedPlanFeatures(plan.id, language) ?? plan.features).map(f => <li key={f} className="flex items-start gap-2 text-sm"><Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /><span>{f}</span></li>)}</ul>
