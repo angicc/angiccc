@@ -6,6 +6,7 @@
 // counterfactual timeline with what actually happened.
 
 import type { Language } from '@/i18n/translations';
+import { CRISIS_DEFR, type CrisisLocaleEntry } from './crisisScenariosDeFr';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -339,23 +340,28 @@ export const CRISIS_SCENARIOS: CrisisScenario[] = [
   },
 ];
 
+// de/fr live in a companion table (the main literals carry es/ru/mk inline).
+function deFr(id: string, language: Language): CrisisLocaleEntry | undefined {
+  return language === 'de' || language === 'fr' ? CRISIS_DEFR[id]?.[language] : undefined;
+}
+
 export function getCrisisTitle(s: CrisisScenario, language: Language): string {
-  return language === 'en' ? s.title : s.titleI18n[language as ContentLang] ?? s.title;
+  return language === 'en' ? s.title : s.titleI18n[language as ContentLang] ?? deFr(s.id, language)?.title ?? s.title;
 }
 export function getCrisisRole(s: CrisisScenario, language: Language): string {
-  return language === 'en' ? s.role : s.roleI18n[language as ContentLang] ?? s.role;
+  return language === 'en' ? s.role : s.roleI18n[language as ContentLang] ?? deFr(s.id, language)?.role ?? s.role;
 }
 export function getCrisisTagline(s: CrisisScenario, language: Language): string {
-  return language === 'en' ? s.tagline : s.taglineI18n[language as ContentLang] ?? s.tagline;
+  return language === 'en' ? s.tagline : s.taglineI18n[language as ContentLang] ?? deFr(s.id, language)?.tagline ?? s.tagline;
 }
 export function getCrisisYearLabel(s: CrisisScenario, language: Language): string {
-  return language === 'en' ? s.yearLabel : s.yearLabelI18n[language as ContentLang] ?? s.yearLabel;
+  return language === 'en' ? s.yearLabel : s.yearLabelI18n[language as ContentLang] ?? deFr(s.id, language)?.yearLabel ?? s.yearLabel;
 }
 export function getCrisisBriefing(s: CrisisScenario, language: Language): string {
-  return language === 'en' ? s.briefing : s.briefingI18n[language as ContentLang] ?? s.briefing;
+  return language === 'en' ? s.briefing : s.briefingI18n[language as ContentLang] ?? deFr(s.id, language)?.briefing ?? s.briefing;
 }
 export function getCrisisObjectives(s: CrisisScenario, language: Language): string[] {
-  return language === 'en' ? s.objectives : s.objectivesI18n[language as ContentLang] ?? s.objectives;
+  return language === 'en' ? s.objectives : s.objectivesI18n[language as ContentLang] ?? deFr(s.id, language)?.objectives ?? s.objectives;
 }
 
 /** Game-master system prompt for the Chronos Engine, seeded with a scenario. */

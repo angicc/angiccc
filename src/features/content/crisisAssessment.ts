@@ -59,7 +59,9 @@ Grade the run strictly and fairly across five command dimensions (0–100 each):
 - decisiveness: clarity, timeliness and risk calibration of the choices made.
 - adaptability: how well did the commander adjust after setbacks and revealed consequences?
 
-Also produce: an overallScore (0–100, a weighted judgement, not an average), a letter grade ("S" only for near-flawless legendary runs, then "A"–"D"), a short evocative commanderTitle for this play style, 2–3 strengths, 2–3 improvements, a counterfactual paragraph (3–4 sentences) contrasting the player's timeline with what the real historical actors did and what followed, and a single-sentence epitaph for the run.
+Also produce: an overallScore (0–100, a weighted judgement, not an average), a letter grade ("S" only for near-flawless legendary runs, then "A"–"D"), a short evocative commanderTitle for this play style, a counterfactual paragraph (3–4 sentences) contrasting the player's timeline with what the real historical actors did and what followed, and a single-sentence epitaph for the run.
+
+You MUST return at least 2 "strengths" AND at least 2 "improvements" — neither list may ever be empty. If the run was flawless, frame the improvements as ways to push from great to legendary; if it was a disaster, still credit at least two genuine strengths. Both lists are required, always.
 
 IMPORTANT — LANGUAGE:
 ${languageDirective(language)}
