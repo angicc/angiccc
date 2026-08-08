@@ -14,6 +14,7 @@ import { authRouter } from './routes/auth';
 import { syncRouter } from './routes/sync';
 import { socialRouter } from './routes/social';
 import { learningRouter } from './routes/learning';
+import { bookmarksRouter } from './routes/bookmarks';
 import { leaderboardRouter } from './routes/leaderboard';
 import { imperiumRouter } from './routes/imperium';
 import { reviewsPublicRouter, submitReviewHandler } from './routes/reviews';
@@ -113,6 +114,7 @@ app.use('/api/social', authenticate, socialRouter);
 // resource (clio proxy is PRO+), so a downgraded user keeps read/write access
 // to material they already generated.
 app.use('/api/learning', authenticate, learningRouter);
+app.use('/api/bookmarks', authenticate, bookmarksRouter);
 app.use('/api/leaderboard', authenticate, leaderboardRouter);
 app.use('/api/billing', authenticate, billingRouter);
 app.use('/api/gifts', authenticate, giftsRouter);

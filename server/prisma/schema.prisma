@@ -24,39 +24,40 @@ enum Sender {
 }
 
 model User {
-  id            String            @id @default(cuid())
-  email         String            @unique
-  username      String
-  passwordHash  String
-  tier          Tier              @default(FREE)
-  language      String            @default("en") // en | es | ru | mk
-  createdAt     DateTime          @default(now())
-  lastSeenAt    DateTime          @default(now()) // presence heartbeat
+  id           String   @id @default(cuid())
+  email        String   @unique
+  username     String
+  passwordHash String
+  tier         Tier     @default(FREE)
+  language     String   @default("en") // en | es | ru | mk
+  createdAt    DateTime @default(now())
+  lastSeenAt   DateTime @default(now()) // presence heartbeat
 
   // ── Billing (Stripe subscription + free trial) ──
   stripeCustomerId   String?   @unique
   subscriptionId     String?
-  subscriptionStatus String?   // trialing | active | past_due | canceled
+  subscriptionStatus String? // trialing | active | past_due | canceled
   trialEndsAt        DateTime?
   renewsAt           DateTime?
 
-  chatSessions  ClioChatSession[]
-  crisisStates  CrisisRoomState[]
-  progress      ProgressSnapshot?
-  campaign      CampaignProgress?
-  learnerProfile LearnerProfile?
-  weekPlan      WeekPlanRecord?
-  studySets     StudySet[]
-  notes         NotesSnapshot?
+  chatSessions      ClioChatSession[]
+  crisisStates      CrisisRoomState[]
+  progress          ProgressSnapshot?
+  campaign          CampaignProgress?
+  learnerProfile    LearnerProfile?
+  weekPlan          WeekPlanRecord?
+  studySets         StudySet[]
+  bookmarks         Bookmark[]
+  notes             NotesSnapshot?
   philosopherMemory PhilosopherMemoryRecord?
-  friendsA      Friendship[]      @relation("friendA")
-  friendsB      Friendship[]      @relation("friendB")
-  sentMessages  DirectMessage[]   @relation("msgFrom")
-  recvMessages  DirectMessage[]   @relation("msgTo")
+  friendsA          Friendship[]             @relation("friendA")
+  friendsB          Friendship[]             @relation("friendB")
+  sentMessages      DirectMessage[]          @relation("msgFrom")
+  recvMessages      DirectMessage[]          @relation("msgTo")
   imperiumCampaigns ImperiumCampaign[]
-  appReview     AppReview?
-  giftsSent     GiftSubscription[] @relation("giftsSent")
-  giftsReceived GiftSubscription[] @relation("giftsReceived")
+  appReview         AppReview?
+  giftsSent         GiftSubscription[]       @relation("giftsSent")
+  giftsReceived     GiftSubscription[]       @relation("giftsReceived")
 
   // Gift reward: percent off the gifter's next renewal (consumed at billing).
   nextRenewalDiscountPct Int @default(0)
@@ -79,14 +80,14 @@ model Friendship {
 // Durable direct message between two users. Relayed live over sockets when the
 // recipient is online, and persisted so it is delivered on next connect.
 model DirectMessage {
-  id         String   @id @default(cuid())
-  fromId     String
-  toId       String
-  text       String
-  createdAt  DateTime @default(now())
-  readAt     DateTime?
-  from       User     @relation("msgFrom", fields: [fromId], references: [id], onDelete: Cascade)
-  to         User     @relation("msgTo", fields: [toId], references: [id], onDelete: Cascade)
+  id        String    @id @default(cuid())
+  fromId    String
+  toId      String
+  text      String
+  createdAt DateTime  @default(now())
+  readAt    DateTime?
+  from      User      @relation("msgFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to        User      @relation("msgTo", fields: [toId], references: [id], onDelete: Cascade)
 
   @@index([toId, createdAt])
   @@index([fromId, toId])
@@ -94,11 +95,11 @@ model DirectMessage {
 
 // A pending History 1v1 challenge from one user to another.
 model DuelChallenge {
-  id         String   @id @default(cuid())
-  fromId     String
-  toId       String
-  status     String   @default("pending") // pending | accepted | declined | expired
-  createdAt  DateTime @default(now())
+  id        String   @id @default(cuid())
+  fromId    String
+  toId      String
+  status    String   @default("pending") // pending | accepted | declined | expired
+  createdAt DateTime @default(now())
 
   @@index([toId, status])
 }
@@ -194,6 +195,19 @@ model StudySet {
   @@index([userId, createdAt])
 }
 
+// A single lesson the user has bookmarked. One row per (user, lesson); the
+// composite primary key makes add/remove idempotent and the set naturally
+// de-duplicated. Mirrors the client-side bookmarkStore (a list of lessonIds).
+model Bookmark {
+  userId    String
+  lessonId  String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, lessonId])
+  @@index([userId, createdAt])
+}
+
 // A gifted month of a paid plan. Sending one grants the recipient the tier
 // for one month and books a 50% discount on the gifter's next renewal
 // (User.nextRenewalDiscountPct, consumed by the billing cycle).
@@ -236,7 +250,7 @@ model AppReview {
 // one $transaction, always touching tables in the same order (campaign →
 // snapshots) so concurrent rollbacks/appends cannot deadlock.
 model ImperiumCampaign {
-  id             String   @id // client-generated: "imperium-<era>-<seed36>"
+  id             String                 @id // client-generated: "imperium-<era>-<seed36>"
   userId         String
   era            String
   seed           Int
@@ -244,12 +258,12 @@ model ImperiumCampaign {
   rivalRosterId  String
   playerLeaderId String
   rivalLeaderId  String
-  currentTurn    Int      @default(0)
-  over           Boolean  @default(false)
-  playerWon      Boolean  @default(false)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentTurn    Int                    @default(0)
+  over           Boolean                @default(false)
+  playerWon      Boolean                @default(false)
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  user           User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
   snapshots      ImperiumTurnSnapshot[]
 
   @@index([userId, updatedAt])
@@ -260,12 +274,12 @@ model ImperiumCampaign {
 // signature over the canonical JSON so a tampered or truncated snapshot is
 // rejected instead of silently restored.
 model ImperiumTurnSnapshot {
-  id         String   @id @default(cuid())
+  id         String           @id @default(cuid())
   campaignId String
   turn       Int
   state      Json
   checksum   String
-  createdAt  DateTime @default(now())
+  createdAt  DateTime         @default(now())
   campaign   ImperiumCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
 
   @@unique([campaignId, turn])
@@ -275,7 +289,7 @@ model ImperiumTurnSnapshot {
 model CrisisRoomState {
   id              String   @id @default(cuid())
   userId          String
-  crisisId        String   // e.g. "crisis-rubicon"
+  crisisId        String // e.g. "crisis-rubicon"
   activeStep      Int      @default(0)
   concluded       Boolean  @default(false)
   // [{ step, optionId, text, revealedConsequence? }]
