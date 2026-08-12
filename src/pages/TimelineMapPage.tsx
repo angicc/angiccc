@@ -11,6 +11,7 @@ import { TERRITORY_TOPICS, type TerritoryTopic, type TerritoryRoute, type Marker
 import { loadRealPolygons, type RealPolygon } from '@/features/content/territoryGeojson';
 import type { Language } from '@/i18n/translations';
 import { getTranslatedTerritoryDesc } from '@/i18n/territoryDescTranslations';
+import { getTerritoryCartography } from '@/features/content/territoryCartography';
 import { getQuestionsForTopic, getTranslatedTerritoryQuestion, type TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
 import { generateTopicQuestions, questionsForTopicSafe } from '@/features/map/territoryQuizFallback';
 import { buildCampaignData, type CampaignData } from '@/features/map/campaignData';
@@ -1571,6 +1572,19 @@ export default function TimelineMapPage() {
           {/* ── SELECTED TOPIC INFO (top-left below header) ─ */}
           {selected && mode === 'explore' && (
             <div className="absolute top-3 left-3 max-w-[240px] z-[1000] bg-black/80 backdrop-blur-md text-white p-3 rounded-xl text-xs shadow-xl border border-white/10 pointer-events-none">
+              {getTerritoryCartography(selected.id) && (
+                <img
+                  src={getTerritoryCartography(selected.id)!}
+                  alt=""
+                  loading="lazy"
+                  className="w-full h-16 object-cover rounded-lg mb-2 border border-white/10"
+                  onError={e => {
+                    // No asset dropped in yet (or it failed to load): hide the
+                    // strip so the card falls back to text only.
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              )}
               <div className={cn('text-[9px] font-bold uppercase tracking-widest mb-1', ERA_COLORS[selected.era])}>
                 {ERA_LABELS[selected.era][language]} · {localizePeriod(selected.period, t.year_bce, t.year_ce)}
               </div>
