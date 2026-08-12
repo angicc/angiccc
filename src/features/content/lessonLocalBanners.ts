@@ -1,7 +1,12 @@
 // ─── Per-lesson local GIF banner overrides ───────────────────────────────────
 // AUTO-GENERATED from the owner's Master Banner GIF mapping. Each app lesson id
-// (lessonKey) maps to a curated animated banner under
-// `public/assets/banners/{era}/{slug}.gif`.
+// (lessonKey) maps to a curated banner under
+// `public/assets/banners/{era}/{slug}.{ext}`.
+//
+// EXTENSIONS VARY BY ASSET: most banners are animated .gif, but the curated set
+// also includes .webp, .jpg and .png stills. The extension is part of the value
+// here rather than assumed, so each entry points at the file that actually
+// exists. Keep it in sync when an asset is replaced with a different format.
 //
 // WHY KEY BY LESSON ID, NOT TITLE: the source payload was authored with
 // Macedonian lesson titles, but banners must be identical in every UI language.
@@ -30,7 +35,7 @@ export const LESSON_LOCAL_BANNERS: Record<string, string> = {
   'prehistoric-07': '/assets/banners/prehistoric/ice-age-world.gif',
   'prehistoric-08': '/assets/banners/prehistoric/neolithic-revolution.gif',
   'prehistoric-09': '/assets/banners/prehistoric/first-villages-monuments.gif',
-  'prehistoric-10': '/assets/banners/prehistoric/settling-of-americas.gif',
+  'prehistoric-10': '/assets/banners/prehistoric/settling-of-americas.png',
   'prehistoric-11': '/assets/banners/prehistoric/first-australians.gif',
   'prehistoric-12': '/assets/banners/prehistoric/metal-from-stone.gif',
   'prehistoric-13': '/assets/banners/prehistoric/temples-before-cities.gif',
@@ -38,9 +43,9 @@ export const LESSON_LOCAL_BANNERS: Record<string, string> = {
   'prehistoric-15': '/assets/banners/prehistoric/green-sahara.gif',
   'prehistoric-16': '/assets/banners/prehistoric/before-writing.gif',
   'prehistoric-17': '/assets/banners/prehistoric/otzi-ice-man.gif',
-  'prehistoric-18': '/assets/banners/prehistoric/hidden-half.gif',
-  'prehistoric-19': '/assets/banners/prehistoric/first-eastern-settlements.gif',
-  'prehistoric-20': '/assets/banners/prehistoric/edge-of-history.gif',
+  'prehistoric-18': '/assets/banners/prehistoric/hidden-half.jpg',
+  'prehistoric-19': '/assets/banners/prehistoric/first-eastern-settlements.jpg',
+  'prehistoric-20': '/assets/banners/prehistoric/edge-of-history.jpg',
   'prehistoric-21': '/assets/banners/prehistoric/dinosaur-era.gif',
   'prehistoric-22': '/assets/banners/prehistoric/ice-age-survival.gif',
   // ── ancient ──
@@ -48,7 +53,7 @@ export const LESSON_LOCAL_BANNERS: Record<string, string> = {
   'ancient-02': '/assets/banners/ancient/classical-greece.gif',
   'ancient-03': '/assets/banners/ancient/roman-republic-empire.gif',
   'ancient-04': '/assets/banners/ancient/ancient-near-east.gif',
-  'ancient-05': '/assets/banners/ancient/ancient-egypt.gif',
+  'ancient-05': '/assets/banners/ancient/ancient-egypt.webp',
   'ancient-06': '/assets/banners/ancient/phoenicians-sea-masters.gif',
   'ancient-07': '/assets/banners/ancient/ancient-macedonia-alexander.gif',
   'ancient-08': '/assets/banners/ancient/hellenistic-world.gif',
@@ -60,35 +65,35 @@ export const LESSON_LOCAL_BANNERS: Record<string, string> = {
   'ancient-14': '/assets/banners/ancient/kush-and-aksum.gif',
   'ancient-15': '/assets/banners/ancient/first-builders-americas.gif',
   'ancient-16': '/assets/banners/ancient/andean-empires.gif',
-  'ancient-17': '/assets/banners/ancient/glory-of-rome.gif',
-  'ancient-18': '/assets/banners/ancient/the-celts.gif',
+  'ancient-17': '/assets/banners/ancient/glory-of-rome.jpg',
+  'ancient-18': '/assets/banners/ancient/the-celts.webp',
   'ancient-19': '/assets/banners/ancient/measure-of-the-world.gif',
   'ancient-20': '/assets/banners/ancient/silk-roads.gif',
-  'ancient-21': '/assets/banners/ancient/africa-before-rome.gif',
+  'ancient-21': '/assets/banners/ancient/africa-before-rome.jpg',
   'ancient-22': '/assets/banners/ancient/olmecs-mesoamerica.gif',
   // ── byzantine ──
   'byzantine-01': '/assets/banners/byzantine/new-rome-constantinople.gif',
-  'byzantine-02': '/assets/banners/byzantine/justinian-theodora.gif',
-  'byzantine-03': '/assets/banners/byzantine/empire-under-siege.gif',
+  'byzantine-02': '/assets/banners/byzantine/justinian-theodora.jpg',
+  'byzantine-03': '/assets/banners/byzantine/empire-under-siege.webp',
   'byzantine-04': '/assets/banners/byzantine/iconoclasm.gif',
-  'byzantine-05': '/assets/banners/byzantine/cyril-methodius.gif',
-  'byzantine-06': '/assets/banners/byzantine/great-schism-1054.gif',
+  'byzantine-05': '/assets/banners/byzantine/cyril-methodius.png',
+  'byzantine-06': '/assets/banners/byzantine/great-schism-1054.jpg',
   'byzantine-07': '/assets/banners/byzantine/byzantine-golden-age.gif',
   'byzantine-08': '/assets/banners/byzantine/mount-athos.gif',
-  'byzantine-09': '/assets/banners/byzantine/fall-of-constantinople.gif',
-  'byzantine-10': '/assets/banners/byzantine/roman-law-justice.gif',
-  'byzantine-11': '/assets/banners/byzantine/scholars-second-rome.gif',
+  'byzantine-09': '/assets/banners/byzantine/fall-of-constantinople.jpg',
+  'byzantine-10': '/assets/banners/byzantine/roman-law-justice.png',
+  'byzantine-11': '/assets/banners/byzantine/scholars-second-rome.webp',
   'byzantine-12': '/assets/banners/byzantine/golden-bezant.gif',
   'byzantine-13': '/assets/banners/byzantine/life-in-constantinople.gif',
-  'byzantine-14': '/assets/banners/byzantine/baptism-of-rus.gif',
-  'byzantine-15': '/assets/banners/byzantine/empresses-of-byzantium.gif',
-  'byzantine-16': '/assets/banners/byzantine/last-byzantine-recovery.gif',
-  'byzantine-17': '/assets/banners/byzantine/windows-to-heaven.gif',
-  'byzantine-18': '/assets/banners/byzantine/crescent-and-cross.gif',
+  'byzantine-14': '/assets/banners/byzantine/baptism-of-rus.jpg',
+  'byzantine-15': '/assets/banners/byzantine/empresses-of-byzantium.jpg',
+  'byzantine-16': '/assets/banners/byzantine/last-byzantine-recovery.jpg',
+  'byzantine-17': '/assets/banners/byzantine/windows-to-heaven.jpg',
+  'byzantine-18': '/assets/banners/byzantine/crescent-and-cross.webp',
   'byzantine-19': '/assets/banners/byzantine/empire-in-exile.gif',
-  'byzantine-20': '/assets/banners/byzantine/empire-that-never-dies.gif',
-  'byzantine-21': '/assets/banners/byzantine/macedonian-renaissance.gif',
-  'byzantine-22': '/assets/banners/byzantine/heirs-of-constantinople.gif',
+  'byzantine-20': '/assets/banners/byzantine/empire-that-never-dies.webp',
+  'byzantine-21': '/assets/banners/byzantine/macedonian-renaissance.webp',
+  'byzantine-22': '/assets/banners/byzantine/heirs-of-constantinople.jpg',
   // ── medieval ──
   'medieval-01': '/assets/banners/middle-ages/fall-of-rome.gif',
   'medieval-02': '/assets/banners/middle-ages/crusades-islamic-golden-age.gif',

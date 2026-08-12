@@ -1,10 +1,15 @@
 # Lesson banner GIFs
 
-Drop an animated `.gif` at any path below and it becomes that lesson's
-banner automatically — highest priority, ahead of the app's built-in
-animated banners. No code change is needed; the mapping already lives in
+Drop an image at any path below and it becomes that lesson's banner
+automatically — highest priority, ahead of the app's built-in animated
+banners. No code change is needed; the mapping already lives in
 `src/features/content/lessonLocalBanners.ts` (keyed by lesson id, so a
 banner is identical in every UI language).
+
+Animated `.gif` is preferred, but `.webp`, `.jpg` and `.png` all work. The
+paths below show the extension each lesson's mapping currently points at —
+if you swap an asset for a different format, update the matching entry in
+`lessonLocalBanners.ts` so the path still resolves.
 
 If a file here is missing or fails to load, the lesson keeps its existing
 built-in animated banner (and, as a final safety net, `default-history.gif`).
@@ -25,7 +30,7 @@ Recommended size: 840×360 (or any 21:9-ish ratio); the banner renders with
 - `prehistoric/ice-age-world.gif` — The Ice Age World (prehistoric-07)
 - `prehistoric/neolithic-revolution.gif` — The Neolithic Revolution (prehistoric-08)
 - `prehistoric/first-villages-monuments.gif` — The First Villages and Monuments (prehistoric-09)
-- `prehistoric/settling-of-americas.gif` — The Peopling of the Americas (prehistoric-10)
+- `prehistoric/settling-of-americas.png` — The Peopling of the Americas (prehistoric-10)
 - `prehistoric/first-australians.gif` — The First Australians (prehistoric-11)
 - `prehistoric/metal-from-stone.gif` — Metal from Stone (prehistoric-12)
 - `prehistoric/temples-before-cities.gif` — Temples Before Cities (prehistoric-13)
@@ -33,9 +38,9 @@ Recommended size: 840×360 (or any 21:9-ish ratio); the banner renders with
 - `prehistoric/green-sahara.gif` — The Green Sahara (prehistoric-15)
 - `prehistoric/before-writing.gif` — Before Writing, the Word (prehistoric-16)
 - `prehistoric/otzi-ice-man.gif` — The Iceman's Secrets (prehistoric-17)
-- `prehistoric/hidden-half.gif` — The Hidden Half (prehistoric-18)
-- `prehistoric/first-eastern-settlements.gif` — The First Villages of the East (prehistoric-19)
-- `prehistoric/edge-of-history.gif` — On the Edge of History (prehistoric-20)
+- `prehistoric/hidden-half.jpg` — The Hidden Half (prehistoric-18)
+- `prehistoric/first-eastern-settlements.jpg` — The First Villages of the East (prehistoric-19)
+- `prehistoric/edge-of-history.jpg` — On the Edge of History (prehistoric-20)
 - `prehistoric/dinosaur-era.gif` — The Age of Dinosaurs (prehistoric-21)
 - `prehistoric/ice-age-survival.gif` — The Ice Ages (prehistoric-22)
 
@@ -45,7 +50,7 @@ Recommended size: 840×360 (or any 21:9-ish ratio); the banner renders with
 - `ancient/classical-greece.gif` — Classical Greece (ancient-02)
 - `ancient/roman-republic-empire.gif` — The Roman Republic and Empire (ancient-03)
 - `ancient/ancient-near-east.gif` — The Ancient East (ancient-04)
-- `ancient/ancient-egypt.gif` — Ancient Egypt: Gods, Pharaohs, and the Afterlife (ancient-05)
+- `ancient/ancient-egypt.webp` — Ancient Egypt: Gods, Pharaohs, and the Afterlife (ancient-05)
 - `ancient/phoenicians-sea-masters.gif` — The Phoenicians: Masters of the Sea (ancient-06)
 - `ancient/ancient-macedonia-alexander.gif` — Ancient Macedonia: Alexander the Great (ancient-07)
 - `ancient/hellenistic-world.gif` — The Hellenistic World (ancient-08)
@@ -57,37 +62,37 @@ Recommended size: 840×360 (or any 21:9-ish ratio); the banner renders with
 - `ancient/kush-and-aksum.gif` — The Kingdoms of Kush and Aksum (ancient-14)
 - `ancient/first-builders-americas.gif` — The First Americans Build (ancient-15)
 - `ancient/andean-empires.gif` — Empires of the Andes (ancient-16)
-- `ancient/glory-of-rome.gif` — The Glory of Rome in Verse (ancient-17)
-- `ancient/the-celts.gif` — The Celts (ancient-18)
+- `ancient/glory-of-rome.jpg` — The Glory of Rome in Verse (ancient-17)
+- `ancient/the-celts.webp` — The Celts (ancient-18)
 - `ancient/measure-of-the-world.gif` — The Measure of the World (ancient-19)
 - `ancient/silk-roads.gif` — The Silk Roads (ancient-20)
-- `ancient/africa-before-rome.gif` — Africa Before Rome (ancient-21)
+- `ancient/africa-before-rome.jpg` — Africa Before Rome (ancient-21)
 - `ancient/olmecs-mesoamerica.gif` — The Olmec and Early Mesoamerica (ancient-22)
 
 ## byzantine/  (byzantine)
 
 - `byzantine/new-rome-constantinople.gif` — New Rome: The Founding of Constantinople (byzantine-01)
-- `byzantine/justinian-theodora.gif` — Justinian and Theodora (byzantine-02)
-- `byzantine/empire-under-siege.gif` — The Empire Besieged (byzantine-03)
+- `byzantine/justinian-theodora.jpg` — Justinian and Theodora (byzantine-02)
+- `byzantine/empire-under-siege.webp` — The Empire Besieged (byzantine-03)
 - `byzantine/iconoclasm.gif` — Iconoclasm: The War over Holy Images (byzantine-04)
-- `byzantine/cyril-methodius.gif` — Cyril and Methodius: Alphabets for the Slavs (byzantine-05)
-- `byzantine/great-schism-1054.gif` — The Great Schism of 1054 (byzantine-06)
+- `byzantine/cyril-methodius.png` — Cyril and Methodius: Alphabets for the Slavs (byzantine-05)
+- `byzantine/great-schism-1054.jpg` — The Great Schism of 1054 (byzantine-06)
 - `byzantine/byzantine-golden-age.gif` — Golden Age and Betrayal (byzantine-07)
 - `byzantine/mount-athos.gif` — Mount Athos and the Orthodox Soul (byzantine-08)
-- `byzantine/fall-of-constantinople.gif` — 1453: The Fall of Constantinople (byzantine-09)
-- `byzantine/roman-law-justice.gif` — The Justice of Rome (byzantine-10)
-- `byzantine/scholars-second-rome.gif` — Scholars of the Second Rome (byzantine-11)
+- `byzantine/fall-of-constantinople.jpg` — 1453: The Fall of Constantinople (byzantine-09)
+- `byzantine/roman-law-justice.png` — The Justice of Rome (byzantine-10)
+- `byzantine/scholars-second-rome.webp` — Scholars of the Second Rome (byzantine-11)
 - `byzantine/golden-bezant.gif` — The Golden Bezant (byzantine-12)
 - `byzantine/life-in-constantinople.gif` — Life in the Queen of Cities (byzantine-13)
-- `byzantine/baptism-of-rus.gif` — The Baptism of the Rus (byzantine-14)
-- `byzantine/empresses-of-byzantium.gif` — The Empresses of Byzantium (byzantine-15)
-- `byzantine/last-byzantine-recovery.gif` — The Last Great Recovery (byzantine-16)
-- `byzantine/windows-to-heaven.gif` — Windows into Heaven (byzantine-17)
-- `byzantine/crescent-and-cross.gif` — The Crescent and the Cross (byzantine-18)
+- `byzantine/baptism-of-rus.jpg` — The Baptism of the Rus (byzantine-14)
+- `byzantine/empresses-of-byzantium.jpg` — The Empresses of Byzantium (byzantine-15)
+- `byzantine/last-byzantine-recovery.jpg` — The Last Great Recovery (byzantine-16)
+- `byzantine/windows-to-heaven.jpg` — Windows into Heaven (byzantine-17)
+- `byzantine/crescent-and-cross.webp` — The Crescent and the Cross (byzantine-18)
 - `byzantine/empire-in-exile.gif` — Empire in Exile (byzantine-19)
-- `byzantine/empire-that-never-dies.gif` — The Immortal Empire (byzantine-20)
-- `byzantine/macedonian-renaissance.gif` — The Macedonian Renaissance (byzantine-21)
-- `byzantine/heirs-of-constantinople.gif` — Heirs of Constantinople (byzantine-22)
+- `byzantine/empire-that-never-dies.webp` — The Immortal Empire (byzantine-20)
+- `byzantine/macedonian-renaissance.webp` — The Macedonian Renaissance (byzantine-21)
+- `byzantine/heirs-of-constantinople.jpg` — Heirs of Constantinople (byzantine-22)
 
 ## middle-ages/  (medieval)
 
