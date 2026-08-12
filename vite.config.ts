@@ -1,7 +1,10 @@
+import fs from 'fs';
 import path from 'path';
 import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import { T, LANGUAGE_LABELS, type Language } from './src/i18n/translations';
+import { LESSON_LOCAL_BANNERS } from './src/features/content/lessonLocalBanners';
+import { TERRITORY_CARTOGRAPHY } from './src/features/content/territoryCartography';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -117,11 +120,56 @@ function translationCoveragePlugin(): Plugin {
   };
 }
 
+/**
+ * Curated art (lesson banners, territory cartography) is referenced by path and
+ * rendered with an onError fallback, so a wrong path degrades silently — that is
+ * how `middle_ages/` and `early_modern/` went 44 banners unnoticed.
+ *
+ * A missing FILE is expected: assets are dropped in separately, and the fallback
+ * covers it, so that is only reported. A missing DIRECTORY is not — it means the
+ * path itself is wrong, since every era/asset folder is committed. That fails.
+ */
+function assetPathPlugin(): Plugin {
+  return {
+    name: 'asset-path-check',
+    buildStart() {
+      const mapped = [
+        ...Object.entries(LESSON_LOCAL_BANNERS).map(([k, p]) => ({ k, p, kind: 'banner' })),
+        ...Object.entries(TERRITORY_CARTOGRAPHY).map(([k, p]) => ({ k, p, kind: 'cartography' })),
+      ];
+
+      const badDirs: string[] = [];
+      let absent = 0;
+      for (const { k, p, kind } of mapped) {
+        const onDisk = path.resolve(__dirname, 'public', p.replace(/^\//, ''));
+        if (!fs.existsSync(path.dirname(onDisk))) {
+          badDirs.push(`  ${kind} ${k} -> ${p} (no such directory)`);
+        } else if (!fs.existsSync(onDisk)) {
+          absent++;
+        }
+      }
+
+      if (badDirs.length > 0) {
+        this.error(
+          `[assets] ${badDirs.length} mapped path(s) point at a directory that does not exist:\n` +
+            `${badDirs.join('\n')}\n` +
+            `        Fix the path, or create the folder if it is genuinely new.`
+        );
+      }
+      const present = mapped.length - absent;
+      console.info(
+        `\x1b[32m✔\x1b[0m assets: ${mapped.length} mapped paths resolve to real folders ` +
+          `(${present} present, ${absent} awaiting drop-in)`
+      );
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
-    plugins: [translationCoveragePlugin(), react()],
+    plugins: [translationCoveragePlugin(), assetPathPlugin(), react()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
