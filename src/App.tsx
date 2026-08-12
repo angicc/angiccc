@@ -8,33 +8,42 @@ import { ProtectedRoute } from '@/features/auth/ProtectedRoute';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { LogoutScreen } from '@/components/shared/LogoutScreen';
 import { BetaGate } from '@/components/BetaGate';
+import { Suspense, lazy } from 'react';
+import { HistoryLoadingScreen } from '@/components/shared/HistoryLoadingScreen';
+
+// Entry routes stay eager: they are what a cold visitor paints first, so
+// deferring them would only add a loading screen in front of the landing page.
 import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
-import PricingPage from '@/pages/PricingPage';
-import DashboardPage from '@/pages/DashboardPage';
-import ErasPage from '@/pages/ErasPage';
-import LessonPage from '@/pages/LessonPage';
-import QuizPage from '@/pages/QuizPage';
-import TimelinePage from '@/pages/TimelinePage';
-import AiTutorPage from '@/pages/AiTutorPage';
-import ProfilePage from '@/pages/ProfilePage';
-import LeaderboardPage from '@/pages/LeaderboardPage';
-import FlashcardsPage from '@/pages/FlashcardsPage';
-import NotesPage from '@/pages/NotesPage';
-import ProgressPage from '@/pages/ProgressPage';
-import SmartQuizPage from '@/pages/SmartQuizPage';
-import AppGuidePage from '@/pages/AppGuidePage';
-import ReportPage from '@/pages/ReportPage';
-import EssayPage from '@/pages/EssayPage';
-import VideoReviewPage from '@/pages/VideoReviewPage';
-import FriendsPage from '@/pages/FriendsPage';
-import DebatePhilosopherPage from '@/pages/DebatePhilosopherPage';
-import TimelineMapPage from '@/pages/TimelineMapPage';
-import ChronosCrisisPage from '@/pages/ChronosCrisisPage';
-import ImperiumPage from '@/pages/ImperiumPage';
-import StudioPage from '@/pages/StudioPage';
-import StudyPlanPage from '@/pages/StudyPlanPage';
+
+// Everything behind them is split out. These pages carry the app's bulk — baked
+// lesson/quiz translations, map geometry, Leaflet — and a visitor needs only the
+// route they actually open, not all 24 at once.
+const PricingPage = lazy(() => import('@/pages/PricingPage'));
+const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
+const ErasPage = lazy(() => import('@/pages/ErasPage'));
+const LessonPage = lazy(() => import('@/pages/LessonPage'));
+const QuizPage = lazy(() => import('@/pages/QuizPage'));
+const TimelinePage = lazy(() => import('@/pages/TimelinePage'));
+const AiTutorPage = lazy(() => import('@/pages/AiTutorPage'));
+const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
+const LeaderboardPage = lazy(() => import('@/pages/LeaderboardPage'));
+const FlashcardsPage = lazy(() => import('@/pages/FlashcardsPage'));
+const NotesPage = lazy(() => import('@/pages/NotesPage'));
+const ProgressPage = lazy(() => import('@/pages/ProgressPage'));
+const SmartQuizPage = lazy(() => import('@/pages/SmartQuizPage'));
+const AppGuidePage = lazy(() => import('@/pages/AppGuidePage'));
+const ReportPage = lazy(() => import('@/pages/ReportPage'));
+const EssayPage = lazy(() => import('@/pages/EssayPage'));
+const VideoReviewPage = lazy(() => import('@/pages/VideoReviewPage'));
+const FriendsPage = lazy(() => import('@/pages/FriendsPage'));
+const DebatePhilosopherPage = lazy(() => import('@/pages/DebatePhilosopherPage'));
+const TimelineMapPage = lazy(() => import('@/pages/TimelineMapPage'));
+const ChronosCrisisPage = lazy(() => import('@/pages/ChronosCrisisPage'));
+const ImperiumPage = lazy(() => import('@/pages/ImperiumPage'));
+const StudioPage = lazy(() => import('@/pages/StudioPage'));
+const StudyPlanPage = lazy(() => import('@/pages/StudyPlanPage'));
 
 function LogoutOverlay() {
   const { loggingOut } = useAuth();
@@ -43,6 +52,7 @@ function LogoutOverlay() {
 
 function AppRoutes() {
   return (
+    <Suspense fallback={<HistoryLoadingScreen show />}>
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
@@ -73,6 +83,7 @@ function AppRoutes() {
       <Route path="/study-plan" element={<ProtectedRoute><StudyPlanPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </Suspense>
   );
 }
 
