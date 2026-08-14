@@ -110,6 +110,25 @@ function translationCoveragePlugin(): Plugin {
         }
       }
 
+      // The baked lesson translations ship as per-language chunks generated from
+      // lessonTranslationsGenerated.ts. Nothing imports that file at runtime, so
+      // a regeneration without a re-split would silently serve stale text.
+      const bakedSource = path.resolve(__dirname, 'src/i18n/lessonTranslationsGenerated.ts');
+      const bakedDir = path.resolve(__dirname, 'src/i18n/generated');
+      if (fs.existsSync(bakedSource) && fs.existsSync(bakedDir)) {
+        const sourceAt = fs.statSync(bakedSource).mtimeMs;
+        const stale = fs
+          .readdirSync(bakedDir)
+          .filter(f => f.endsWith('.ts'))
+          .filter(f => fs.statSync(path.join(bakedDir, f)).mtimeMs < sourceAt);
+        if (stale.length > 0) {
+          problems.push(
+            `[i18n] ${stale.length} baked language chunk(s) are older than lessonTranslationsGenerated.ts: ${stale.join(', ')}\n` +
+              `        Run \`npm run i18n:split\` to regenerate them.`
+          );
+        }
+      }
+
       if (problems.length > 0) {
         this.error(problems.join('\n'));
       }

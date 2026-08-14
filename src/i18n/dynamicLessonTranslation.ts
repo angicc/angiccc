@@ -18,7 +18,8 @@
 import type { Language } from './translations';
 import { streamChatResponse } from '@/services/aiGateway';
 import { safeJsonParse } from '@/lib/safeJsonParse';
-import { GENERATED_LESSON_T, type GenContentLang } from './lessonTranslationsGenerated';
+import type { GenContentLang } from './lessonTranslationsGenerated';
+import { ensureBaked, getBaked, isBakedLoaded } from './bakedLessons';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -51,7 +52,7 @@ const CACHE_KEY = (lang: string, id: string) => `historify:xlate:${lang}:${id}`;
  *  runtime localStorage cache, so once a lesson is generated it needs no AI. */
 export function getCachedLessonTranslation(id: string, lang: Language): CachedLessonT | null {
   if (lang === 'en') return null;
-  const baked = GENERATED_LESSON_T[id]?.[lang as GenContentLang];
+  const baked = getBaked(id, lang as GenContentLang);
   let local: CachedLessonT | null = null;
   try {
     const raw = localStorage.getItem(CACHE_KEY(lang, id));
@@ -90,6 +91,20 @@ function notify() {
   else setTimeout(flush, 16);
 }
 
+/**
+ * Fetch the baked translations for the active language and re-render once they
+ * land. Lookups are synchronous and miss until then, so lessons show English
+ * for the moment the chunk is in flight — the same way an AI translation
+ * arriving late is handled. Call this whenever the language changes.
+ */
+export async function warmBakedTranslations(lang: Language): Promise<void> {
+  if (lang === 'en') return;
+  const cl = lang as GenContentLang;
+  if (isBakedLoaded(cl)) return;
+  await ensureBaked(cl);
+  notify();
+}
+
 // ── Core AI translate call ───────────────────────────────────────────────────
 
 const SYSTEM = (lang: ContentLang) =>
@@ -122,6 +137,9 @@ const bodyInFlight = new Set<string>();
 export async function translateLessonMeta(lesson: LessonLike, lang: Language): Promise<void> {
   if (lang === 'en') return;
   const cl = lang as ContentLang;
+  // The baked set must be resident before a miss is treated as "needs the AI",
+  // or we would pay to translate text that already ships with the app.
+  await ensureBaked(cl as GenContentLang);
   const guard = `${cl}:${lesson.id}`;
   if (metaInFlight.has(guard)) return;
   if (getCachedLessonTranslation(lesson.id, cl)?.t) return; // already have meta
@@ -146,6 +164,7 @@ export async function translateLessonMeta(lesson: LessonLike, lang: Language): P
 export async function warmMetaForLanguage(lessons: LessonLike[], lang: Language): Promise<void> {
   if (lang === 'en') return;
   const cl = lang as ContentLang;
+  await ensureBaked(cl as GenContentLang);
   const pending = lessons.filter(l => !getCachedLessonTranslation(l.id, cl)?.t);
   if (pending.length === 0) return;
   const POOL = 3;
@@ -165,6 +184,7 @@ export async function warmMetaForLanguage(lessons: LessonLike[], lang: Language)
 export async function translateLessonBodies(lesson: LessonLike, lang: Language): Promise<boolean> {
   if (lang === 'en') return true;
   const cl = lang as ContentLang;
+  await ensureBaked(cl as GenContentLang);
   const guard = `${cl}:${lesson.id}`;
   if (getCachedLessonTranslation(lesson.id, cl)?.b) return true; // already have bodies
   if (bodyInFlight.has(guard)) return false;

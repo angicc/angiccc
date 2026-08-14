@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import { T, LANGUAGE_LABELS, type Language } from '@/i18n/translations';
 import { LESSONS } from '@/features/content/lessonsData';
 import { hasStaticLessonTranslation } from '@/i18n/contentTranslations';
-import { subscribeTranslations, warmMetaForLanguage } from '@/i18n/dynamicLessonTranslation';
+import { subscribeTranslations, warmMetaForLanguage, warmBakedTranslations } from '@/i18n/dynamicLessonTranslation';
 
 type LanguageContextValue = {
   language: Language;
@@ -37,6 +37,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (language === 'en') return;
     let cancelled = false;
+
+    // The baked translations for this language are a separate chunk, so fetch
+    // them first and re-render when they land. warmMetaForLanguage also awaits
+    // them, but returns without notifying when every lesson is already baked —
+    // which is the common case, and would otherwise leave the UI on English.
+    void warmBakedTranslations(language);
+
     const pending = LESSONS.filter(l => !hasStaticLessonTranslation(l.id));
     // Defer past first paint so it never blocks initial render.
     const timer = setTimeout(() => {
