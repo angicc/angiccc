@@ -2,7 +2,7 @@ import { useMemo, useState, useEffect } from 'react';
 import { BarChart2, Star, Flame, Trophy, BookOpen, Target, Crown, Lock, TrendingUp, Brain, ScrollText, Clock3, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area, RadarChart, Radar, PolarGrid, PolarAngleAxis } from 'recharts';
+import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area, RadarChart, Radar, PolarGrid, PolarAngleAxis } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -62,6 +62,9 @@ export default function ProgressPage() {
     return ERAS.map(era => {
       const eraLessons = LESSONS.filter(l => l.eraId === era.id);
       const done = eraLessons.filter(l => progress.completedLessons.includes(l.id)).length;
+      // `taken` distinguishes "sat the quiz and scored 0%" from "never sat it".
+      // The chart previously filtered on quiz > 0, which erased a genuine zero.
+      const taken = era.quizId in progress.quizScores;
       const quizScore = progress.quizScores[era.quizId] ?? 0;
       return {
         name: eraShortName(era.id),
@@ -69,6 +72,7 @@ export default function ProgressPage() {
         total: eraLessons.length,
         pct: eraLessons.length > 0 ? Math.round((done / eraLessons.length) * 100) : 0,
         quiz: quizScore,
+        taken,
         fill: ERA_COLORS[era.id],
       };
     });
@@ -431,16 +435,27 @@ export default function ProgressPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    {Object.keys(progress.quizScores).length === 0 ? (
+                    {/* Emptiness is decided by era quizzes actually sat — not by
+                        quizScores having any key at all. Smart Quiz writes a
+                        'smart-quiz' entry there, so the old check reported "has
+                        data" while the chart, which only plots era quizzes,
+                        rendered blank. */}
+                    {eraData.filter(e => e.taken).length === 0 ? (
                       <p className="text-sm text-muted-foreground text-center py-8">{t.prog_no_quiz}</p>
                     ) : (
                       <ResponsiveContainer width="100%" height={200}>
-                        <BarChart data={eraData.filter(e => e.quiz > 0)} barSize={28}>
+                        <BarChart data={eraData.filter(e => e.taken)} barSize={28}>
                           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                           <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} />
                           <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} />
                           <Tooltip contentStyle={{ background: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: 8, fontSize: 12 }} formatter={(v: number) => [`${v}%`, t.quiz_score]} />
-                          <Bar dataKey="quiz" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                          {/* Per-era colour, matching every other chart here —
+                              eraData already carried `fill` and it went unused. */}
+                          <Bar dataKey="quiz" radius={[4, 4, 0, 0]}>
+                            {eraData.filter(e => e.taken).map(e => (
+                              <Cell key={e.name} fill={e.fill} />
+                            ))}
+                          </Bar>
                         </BarChart>
                       </ResponsiveContainer>
                     )}

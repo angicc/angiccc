@@ -31,7 +31,14 @@ export function markLessonComplete(userId: string, lessonId: string, lessonTitle
 
 export function recordQuizAttempt(userId: string, attempt: QuizAttempt, eraName: string): { progress: UserProgress; newAchievements: Achievement[] } {
   const p = loadProgress(userId);
-  if (attempt.score > (p.quizScores[attempt.quizId] ?? 0)) p.quizScores[attempt.quizId] = attempt.score;
+  // Keep the best score, but record the FIRST attempt whatever it was. The old
+  // `score > (prev ?? 0)` treated a missing entry as 0, so a first attempt
+  // scoring 0% was never stored — the quiz then looked untaken on the Progress
+  // chart, which is the one result a learner most needs to see.
+  const previousBest = p.quizScores[attempt.quizId];
+  if (previousBest === undefined || attempt.score > previousBest) {
+    p.quizScores[attempt.quizId] = attempt.score;
+  }
   if (!p.completedQuizzes.includes(attempt.quizId)) p.completedQuizzes.push(attempt.quizId);
   p.xp += attempt.xpEarned; p.level = calculateLevel(p.xp);
   addActivity(p, { type: 'quiz_complete', title: `${eraName} Quiz — ${attempt.score}%`, xpGained: attempt.xpEarned, timestamp: new Date().toISOString() });
