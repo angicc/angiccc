@@ -199,7 +199,14 @@ function assetPathPlugin(): Plugin {
     buildStart() {
       const mapped = [
         ...Object.entries(LESSON_LOCAL_BANNERS).map(([k, p]) => ({ k, p, kind: 'banner' })),
-        ...Object.entries(TERRITORY_CARTOGRAPHY).map(([k, p]) => ({ k, p, kind: 'cartography' })),
+        // A topic may carry several time-phased plates; every one must resolve.
+        ...Object.entries(TERRITORY_CARTOGRAPHY).flatMap(([k, plates]) =>
+          plates.map((plate, i) => ({
+            k: plates.length > 1 ? `${k}[${i}]` : k,
+            p: plate.src,
+            kind: 'cartography',
+          }))
+        ),
       ];
 
       const badDirs: string[] = [];

@@ -11,7 +11,7 @@ import { TERRITORY_TOPICS, type TerritoryTopic, type TerritoryRoute, type Marker
 import { loadRealPolygons, type RealPolygon } from '@/features/content/territoryGeojson';
 import type { Language } from '@/i18n/translations';
 import { getTranslatedTerritoryDesc } from '@/i18n/territoryDescTranslations';
-import { getTerritoryCartography } from '@/features/content/territoryCartography';
+import { getTerritoryCartography, getTerritoryPlates } from '@/features/content/territoryCartography';
 import { getQuestionsForTopic, getTranslatedTerritoryQuestion, type TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
 import { generateTopicQuestions, questionsForTopicSafe } from '@/features/map/territoryQuizFallback';
 import { buildCampaignData, type CampaignData } from '@/features/map/campaignData';
@@ -455,6 +455,8 @@ export default function TimelineMapPage() {
   // Mobile: the topic panel becomes a slide-over so the map keeps full width.
   const [panelOpen, setPanelOpen]     = useState(false);
   const [styleId, setStyleId]         = useState('dark');
+  // Which plate is shown for topics that carry more than one (Al-Andalus).
+  const [plateIndex, setPlateIndex] = useState(0);
   const [showLayerPanel, setShowLayerPanel] = useState(false);
   const [showStylePanel, setShowStylePanel] = useState(false);
   const [layers, setLayers]           = useState<Record<LayerKey, boolean>>({
@@ -529,6 +531,9 @@ export default function TimelineMapPage() {
     if (!selected) return;
     const [s, e] = selected.yearRange;
     if (scrubYear < s || scrubYear > e) setScrubYear(Math.round((s + e) / 2));
+    // A new topic starts on its first plate rather than inheriting the last
+    // topic's phase.
+    setPlateIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
@@ -810,7 +815,7 @@ export default function TimelineMapPage() {
     // Not gated behind fog of war: the plate is the reference material the
     // topic is about, and hiding it until the region is scouted meant it was
     // almost never seen.
-    const plate = getTerritoryCartography(selected.id);
+    const plate = getTerritoryCartography(selected.id, plateIndex);
     if (layers.cartography && plate) {
       const bounds = cartographyBounds(selected);
       if (bounds) {
@@ -1140,7 +1145,7 @@ export default function TimelineMapPage() {
         .addTo(lg);
       (marker as unknown as { _tmapType: string })._tmapType = m.type;
     });
-  }, [selected, layers, styleId, language, explored, markExplored, t, geomVersion]);
+  }, [selected, layers, styleId, language, explored, markExplored, t, geomVersion, plateIndex]);
 
   useEffect(() => {
     renderLayers();
@@ -1465,6 +1470,25 @@ export default function TimelineMapPage() {
                 </div>
               )}
             </div>
+
+            {/* Plate switcher — only for topics whose folder supplied more than
+                one map, e.g. Al-Andalus at its height vs the Reconquista. */}
+            {selected && mode === 'explore' && layers.cartography && getTerritoryPlates(selected.id).length > 1 && (
+              <div className="flex items-center gap-1 bg-black/80 backdrop-blur-md rounded-full border border-white/15 shadow-lg p-1">
+                {getTerritoryPlates(selected.id).map((plate, i) => (
+                  <button
+                    key={plate.src}
+                    onClick={() => setPlateIndex(i)}
+                    className={cn(
+                      'text-[10px] font-semibold px-2.5 py-1 rounded-full transition-all',
+                      i === plateIndex ? 'bg-white/90 text-black' : 'text-white/70 hover:text-white'
+                    )}
+                  >
+                    {plate.label ?? `${i + 1}`}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Layer toggle button */}
             {selected && mode === 'explore' && (
