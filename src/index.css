@@ -240,3 +240,15 @@ body, .bg-background, .bg-card, .border-border {
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
 }
 
+
+/* Historical cartography draped on the Territory Map.
+   The plates are bright paper scans and the map styles are mostly dark, so a
+   slight desaturation and blend keeps them from flaring out over the vector
+   borders drawn on top of them. */
+.historify-cartography {
+  /* No blend mode: these plates colour-code empires, and blending against the
+     basemap would drain exactly the information the plate is carrying. Opacity
+     alone lets the tiles read through without recolouring the map itself. */
+  filter: saturate(0.92) contrast(1.04);
+  pointer-events: none;
+}

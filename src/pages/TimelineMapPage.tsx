@@ -103,13 +103,39 @@ const CART_STYLES: CartographicStyle[] = [
 ];
 
 type MapMode = 'explore' | 'story' | 'quiz' | 'campaign';
-type LayerKey = 'territory' | 'capitals' | 'cities' | 'battles' | 'ports' | 'resources' | 'routes';
+type LayerKey = 'territory' | 'cartography' | 'capitals' | 'cities' | 'battles' | 'ports' | 'resources' | 'routes';
+
+/**
+ * Geographic extent to drape a topic's historical cartography over.
+ *
+ * The plates are scans with no georeferencing of their own, so there are no
+ * real-world bounds baked into them. The topic's own geometry is the best
+ * available anchor: the polygons it already draws cover the same ground the
+ * plate depicts, so the image lines up with the territory rather than floating
+ * at an arbitrary place on the globe. Padded slightly, since a historical map
+ * always shows some surrounding context beyond the border itself.
+ */
+function cartographyBounds(topic: TerritoryTopic): L.LatLngBounds | null {
+  const pts: [number, number][] = [];
+  topic.polygons?.forEach(p => pts.push(...p.coords));
+  if (pts.length < 3) topic.markers.forEach(m => pts.push([m.lat, m.lng]));
+  if (pts.length < 2) return null;
+
+  const lats = pts.map(p => p[0]);
+  const lngs = pts.map(p => p[1]);
+  const padLat = Math.max((Math.max(...lats) - Math.min(...lats)) * 0.12, 1.5);
+  const padLng = Math.max((Math.max(...lngs) - Math.min(...lngs)) * 0.12, 1.5);
+  return L.latLngBounds(
+    [Math.min(...lats) - padLat, Math.min(...lngs) - padLng],
+    [Math.max(...lats) + padLat, Math.max(...lngs) + padLng]
+  );
+}
 type AnnMode = 'off' | 'pin' | 'draw';
 
 // Multi-category data filter matrix — each strategic category governs a group
 // of concrete layer toggles.
 const FILTER_MATRIX: { labelKey: 'tmap_cat_assets' | 'tmap_cat_diplomatic' | 'tmap_cat_resources' | 'tmap_cat_enemy'; keys: LayerKey[] }[] = [
-  { labelKey: 'tmap_cat_assets',     keys: ['territory', 'capitals', 'cities', 'ports'] },
+  { labelKey: 'tmap_cat_assets',     keys: ['territory', 'cartography', 'capitals', 'cities', 'ports'] },
   { labelKey: 'tmap_cat_diplomatic', keys: ['routes'] },
   { labelKey: 'tmap_cat_resources',  keys: ['resources'] },
   { labelKey: 'tmap_cat_enemy',      keys: ['battles'] },
@@ -432,7 +458,7 @@ export default function TimelineMapPage() {
   const [showLayerPanel, setShowLayerPanel] = useState(false);
   const [showStylePanel, setShowStylePanel] = useState(false);
   const [layers, setLayers]           = useState<Record<LayerKey, boolean>>({
-    territory: true, capitals: true, cities: true, battles: true, ports: true, resources: true, routes: true,
+    territory: true, cartography: true, capitals: true, cities: true, battles: true, ports: true, resources: true, routes: true,
   });
 
   // ── Fog of war: regions stay strategically opaque until scouted ────────────
@@ -777,6 +803,24 @@ export default function TimelineMapPage() {
     const isExplored = explored.has(selected.id) || !hasScoutableLand;
     const currentZoom = map.getZoom();
     zoomOpacityRef.current = getFillOpacityForZoom(currentZoom);
+
+    // ── Historical cartography, draped on the map itself ──────────────────
+    // Added before the polygons so the vector borders and markers stay legible
+    // on top of the plate rather than being buried under it.
+    // Not gated behind fog of war: the plate is the reference material the
+    // topic is about, and hiding it until the region is scouted meant it was
+    // almost never seen.
+    const plate = getTerritoryCartography(selected.id);
+    if (layers.cartography && plate) {
+      const bounds = cartographyBounds(selected);
+      if (bounds) {
+        L.imageOverlay(plate, bounds, {
+          opacity: 0.75,
+          interactive: false,
+          className: 'historify-cartography',
+        }).addTo(lg);
+      }
+    }
 
     // Collected here, rendered once after the loop — never per sub-polygon.
     const labelCandidates = new Map<string, { lat: number; lng: number; area: number; color: string }>();
@@ -1440,7 +1484,7 @@ export default function TimelineMapPage() {
                     <p className="text-[9px] font-bold uppercase tracking-widest text-white/40">{t.tmap_layers}</p>
                     {FILTER_MATRIX.map(cat => {
                       const colors: Record<LayerKey, string> = {
-                        territory: '#6366f1', capitals: '#fbbf24', cities: '#60a5fa',
+                        territory: '#6366f1', cartography: '#d6bd8a', capitals: '#fbbf24', cities: '#60a5fa',
                         battles: '#ef4444', ports: '#34d399', resources: '#a78bfa', routes: '#f59e0b',
                       };
                       const CatIcon = cat.labelKey === 'tmap_cat_assets' ? Shield
@@ -1572,19 +1616,6 @@ export default function TimelineMapPage() {
           {/* ── SELECTED TOPIC INFO (top-left below header) ─ */}
           {selected && mode === 'explore' && (
             <div className="absolute top-3 left-3 max-w-[240px] z-[1000] bg-black/80 backdrop-blur-md text-white p-3 rounded-xl text-xs shadow-xl border border-white/10 pointer-events-none">
-              {getTerritoryCartography(selected.id) && (
-                <img
-                  src={getTerritoryCartography(selected.id)!}
-                  alt=""
-                  loading="lazy"
-                  className="w-full h-16 object-cover rounded-lg mb-2 border border-white/10"
-                  onError={e => {
-                    // No asset dropped in yet (or it failed to load): hide the
-                    // strip so the card falls back to text only.
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              )}
               <div className={cn('text-[9px] font-bold uppercase tracking-widest mb-1', ERA_COLORS[selected.era])}>
                 {ERA_LABELS[selected.era][language]} · {localizePeriod(selected.period, t.year_bce, t.year_ce)}
               </div>
