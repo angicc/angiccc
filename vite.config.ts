@@ -164,6 +164,13 @@ function translationCoveragePlugin(): Plugin {
           if (latin.length < 2 || ALLOWED_LATIN.has(latin)) continue;
           fused.push(`${file}: ${m[0]}`);
         }
+        // A SINGLE Latin letter between two Cyrillic ones is the same defect and
+        // the harder one to see: Latin "j" for Cyrillic "ј" is pixel-identical,
+        // so "аjт" reads correctly and sorts, searches and renders wrong. The
+        // length>=2 rule above skips these, so they need their own pass.
+        for (const m of text.matchAll(/[Ѐ-ӿ][A-Za-z][Ѐ-ӿ]/g)) {
+          fused.push(`${file}: ${m[0]} (Latin '${m[0][1]}' inside a Cyrillic word)`);
+        }
       }
       const uniqueFused = [...new Set(fused)];
       if (uniqueFused.length > 0) {
