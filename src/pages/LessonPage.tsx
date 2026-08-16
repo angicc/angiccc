@@ -30,6 +30,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { resolveBannerCandidates } from '@/features/content/lessonBannerAssets';
 import { isGifBanner, resolveGifPageBanner } from '@/features/content/lessonGifBanners';
 import { EraBannerBackdrop } from '@/components/shared/EraBannerBackdrop';
+import { useStudyTimer } from '@/hooks/useStudyTimer';
 
 // Banner image resolution is a strict, deterministic chain routed per lesson
 // ID (see lessonBannerAssets.ts) — NO Wikipedia search, NO randomised
@@ -199,6 +200,8 @@ export default function LessonPage() {
     currentUser && lessonId ? isAnalysisPassed(currentUser.id, lessonId) : false
   );
   const cooldownMs = useCooldownRemaining(currentUser?.id);
+  // Records real seconds studied while this lesson is open, visible and active.
+  useStudyTimer(currentUser?.id, eraId ?? null);
   const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
   const [bookmarked, setBookmarked] = useState(() =>
     currentUser && lessonId ? isBookmarked(currentUser.id, lessonId) : false

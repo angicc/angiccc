@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { BarChart2, Star, Flame, Trophy, BookOpen, Target, Crown, Lock, TrendingUp, Brain, ScrollText, Clock3, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -11,6 +11,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { ERAS } from '@/features/content/erasData';
 import { LESSONS } from '@/features/content/lessonsData';
+import { getTimeSpent, formatDuration } from '@/features/progress/timeTracking';
 import { ACHIEVEMENTS } from '@/features/progress/xpSystem';
 import { QUIZZES } from '@/features/quiz/quizData';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -30,6 +31,14 @@ const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.07 } }
 const fadeUp = { hidden: { opacity: 0, y: 16, scale: 0.985 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const } } };
 
 export default function ProgressPage() {
+  // Re-derive Time Invested every few seconds so the figure moves while the
+  // page is open, rather than only on navigation.
+  const [timeTick, setTimeTick] = useState(0);
+  useEffect(() => {
+    const id = window.setInterval(() => setTimeTick((n: number) => n + 1), 5000);
+    return () => window.clearInterval(id);
+  }, []);
+
   const { t, language } = useLanguage();
   const { currentUser, progress } = useAuth();
   const { subscription } = useSubscription();
@@ -106,20 +115,43 @@ export default function ProgressPage() {
     return { passes: records.length, attempts: s.attempts, avg, best };
   }, [currentUser, progress]); // progress: re-derive after each completion
 
-  // 2. Time Invested: estimated minutes of every completed lesson, per era.
+  // 2. Time Invested: seconds actually studied, per era.
+  //
+  // This used to sum lesson.estimatedMinutes over completed lessons — the
+  // catalogue's guess at how long a lesson should take, the same for everyone
+  // and unaffected by how long anyone actually spent. useStudyTimer now records
+  // real seconds while a lesson is open, visible and being used.
+  //
+  // Lessons finished before tracking existed have no recorded time, so their
+  // estimate is still used for those and only those; otherwise every learner's
+  // history would reset to zero. `measured` reports how much of the total is
+  // real, so the UI can be honest about the mix.
   const timeInvested = useMemo(() => {
-    if (!progress) return { total: 0, byEra: [] as { name: string; minutes: number; fill: string }[] };
-    let total = 0;
+    if (!progress || !currentUser) {
+      return { totalSeconds: 0, measuredSeconds: 0, byEra: [] as { name: string; minutes: number; fill: string }[] };
+    }
+    const tracked = getTimeSpent(currentUser.id);
+    let totalSeconds = 0;
+    let measuredSeconds = 0;
+
     const byEra = ERAS.map(era => {
-      const minutes = LESSONS
-        .filter(l => l.eraId === era.id && progress.completedLessons.includes(l.id))
-        .reduce((sum, l) => sum + l.estimatedMinutes, 0);
-      total += minutes;
-      return { name: eraShortName(era.id), minutes, fill: ERA_COLORS[era.id] };
+      const recorded = tracked.byEra[era.id] ?? 0;
+      const estimated = recorded > 0
+        ? 0
+        : LESSONS
+            .filter(l => l.eraId === era.id && progress.completedLessons.includes(l.id))
+            .reduce((sum, l) => sum + l.estimatedMinutes, 0) * 60;
+      const seconds = recorded + estimated;
+      totalSeconds += seconds;
+      measuredSeconds += recorded;
+      return { name: eraShortName(era.id), minutes: Math.round(seconds / 60), fill: ERA_COLORS[era.id] };
     });
-    return { total, byEra };
+
+    totalSeconds += tracked.other;
+    measuredSeconds += tracked.other;
+    return { totalSeconds, measuredSeconds, byEra };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progress, language]);
+  }, [progress, currentUser, language, timeTick]);
 
   // 3. Learning Momentum: a 14-day activity heatmap with per-day XP intensity
   //    and the current consecutive-day study run.
@@ -283,9 +315,7 @@ export default function ProgressPage() {
               <CardContent>
                 <div className="flex items-baseline gap-2 mb-4">
                   <span className="text-3xl font-bold font-heading bg-gradient-to-br from-emerald-300 to-emerald-500 bg-clip-text text-transparent">
-                    {timeInvested.total >= 60
-                      ? `${Math.floor(timeInvested.total / 60)}h ${timeInvested.total % 60}m`
-                      : `${timeInvested.total}m`}
+                    {formatDuration(timeInvested.totalSeconds)}
                   </span>
                   <span className="text-[11px] text-muted-foreground">{t.prog_time_total}</span>
                 </div>
