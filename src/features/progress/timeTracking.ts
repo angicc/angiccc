@@ -26,18 +26,25 @@ export interface TimeSpent {
   byEra: Record<string, number>;
   /** seconds not attributable to an era (e.g. quizzes opened outside one) */
   other: number;
+  /** local calendar day `YYYY-MM-DD` → seconds studied that day */
+  byDay: Record<string, number>;
 }
 
-const EMPTY: TimeSpent = { byEra: {}, other: 0 };
+/** Local (not UTC) calendar day, so a 23:30 session counts as today. */
+export function dayKey(d: Date = new Date()): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
 
 export function getTimeSpent(userId: string): TimeSpent {
   try {
     const raw = localStorage.getItem(KEY(userId));
-    if (!raw) return { ...EMPTY, byEra: {} };
+    if (!raw) return { byEra: {}, other: 0, byDay: {} };
     const parsed = JSON.parse(raw) as Partial<TimeSpent>;
-    return { byEra: parsed.byEra ?? {}, other: parsed.other ?? 0 };
+    // byDay arrived after byEra/other shipped, so records written by an older
+    // build have no daily buckets. Default it rather than assuming its shape.
+    return { byEra: parsed.byEra ?? {}, other: parsed.other ?? 0, byDay: parsed.byDay ?? {} };
   } catch {
-    return { ...EMPTY, byEra: {} };
+    return { byEra: {}, other: 0, byDay: {} };
   }
 }
 
@@ -47,11 +54,65 @@ export function recordStudySeconds(userId: string, eraId: string | null, seconds
   const spent = getTimeSpent(userId);
   if (eraId) spent.byEra[eraId] = (spent.byEra[eraId] ?? 0) + seconds;
   else spent.other += seconds;
+  const key = dayKey();
+  spent.byDay[key] = (spent.byDay[key] ?? 0) + seconds;
+  // Two weeks is all the pacing model looks at; keeping more would grow the
+  // record without bound for a daily learner.
+  prune(spent.byDay, 30);
   try {
     localStorage.setItem(KEY(userId), JSON.stringify(spent));
   } catch {
     /* storage full or unavailable — the tally just stops growing */
   }
+}
+
+function prune(byDay: Record<string, number>, keepDays: number): void {
+  const keys = Object.keys(byDay).sort();
+  for (const k of keys.slice(0, Math.max(0, keys.length - keepDays))) delete byDay[k];
+}
+
+export interface StudyRhythm {
+  /** Days in the window on which any time at all was studied. */
+  activeDays: number;
+  /** Length of the window examined, in days. */
+  windowDays: number;
+  /** Median seconds on the days they DID study — 0 when they never have. */
+  medianActiveSeconds: number;
+  /** Seconds studied in the window. */
+  totalSeconds: number;
+}
+
+/**
+ * How the learner actually studies, over the last `windowDays` calendar days.
+ *
+ * The median of *active* days is deliberate: averaging across all 14 days would
+ * report a learner who does one focused 40-minute session a week as a
+ * 3-minute-a-day learner, and schedule them a week they'd never follow.
+ */
+export function studyRhythm(userId: string, windowDays = 14): StudyRhythm {
+  const { byDay } = getTimeSpent(userId);
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - (windowDays - 1));
+  const from = dayKey(cutoff);
+
+  const values = Object.entries(byDay)
+    .filter(([day, secs]) => day >= from && secs > 0)
+    .map(([, secs]) => secs)
+    .sort((a, b) => a - b);
+
+  const mid = Math.floor(values.length / 2);
+  const medianActiveSeconds = values.length === 0
+    ? 0
+    : values.length % 2 === 1
+      ? values[mid]
+      : Math.round((values[mid - 1] + values[mid]) / 2);
+
+  return {
+    activeDays: values.length,
+    windowDays,
+    medianActiveSeconds,
+    totalSeconds: values.reduce((a, b) => a + b, 0),
+  };
 }
 
 /** Total seconds studied across every era. */

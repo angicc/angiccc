@@ -7,13 +7,12 @@
 // list that rots.
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Route as RouteIcon, Sparkles, RefreshCw, TrendingUp, Target, BookOpen, HelpCircle, Layers, Wand2, Hourglass, Globe2, CheckCircle2, Circle, ChevronRight, Crown, Flame } from 'lucide-react';
+import { Route as RouteIcon, Sparkles, RefreshCw, TrendingUp, Target, BookOpen, HelpCircle, Layers, Wand2, Hourglass, Globe2, CheckCircle2, Circle, ChevronRight, Crown, Flame, Gauge, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { AppShell } from '@/components/layout/AppShell';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
 import { useAuth } from '@/features/auth/AuthContext';
@@ -25,7 +24,8 @@ import { ERAS } from '@/features/content/erasData';
 import { LESSONS } from '@/features/content/lessonsData';
 import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslations';
 import { computeMastery, nextLessonsForEra, type MasterySnapshot } from '@/features/learningPath/masteryModel';
-import { generateWeekPlan, buildPlanNotesPrompt, parsePlanNotes, stepRoute, type WeekPlan, type PlanStep, type StepKind } from '@/features/learningPath/planEngine';
+import { generateWeekPlan, buildPlanNotesPrompt, parsePlanNotes, planHealth, stepRoute, type WeekPlan, type PlanStep, type StepKind } from '@/features/learningPath/planEngine';
+import { computeLearnerSignals, type LearnerSignals, type FocusMode } from '@/features/learningPath/learnerSignals';
 import { loadWeekPlan, saveWeekPlan, stepCompletion, toggleManualStep, isManualKind } from '@/features/learningPath/planStore';
 
 const KIND_ICON: Record<StepKind, React.ComponentType<{ className?: string }>> = {
@@ -36,6 +36,14 @@ const KIND_ICON: Record<StepKind, React.ComponentType<{ className?: string }>> =
 const ERA_BAR: Record<string, string> = {
   prehistoric: 'bg-orange-400', ancient: 'bg-amber-400', byzantine: 'bg-violet-400', 'middle-ages': 'bg-blue-400', 'early-modern': 'bg-emerald-400', modern: 'bg-rose-400',
 };
+
+type Tr = ReturnType<typeof useLanguage>['t'];
+const MODE_LABEL = (t: Tr): Record<FocusMode, string> => ({
+  coverage: t.path_mode_coverage, retention: t.path_mode_retention, balanced: t.path_mode_balanced,
+});
+const MODE_WHY = (t: Tr): Record<FocusMode, string> => ({
+  coverage: t.path_mode_coverage_why, retention: t.path_mode_retention_why, balanced: t.path_mode_balanced_why,
+});
 
 export default function StudyPlanPage() {
   const { t, language } = useLanguage();
@@ -70,6 +78,22 @@ export default function StudyPlanPage() {
     [currentUser, plan, progress, refreshTick],
   );
 
+  // How the learner actually studies — measured cadence, session length, and
+  // whether the weakest era needs reading or recall. The plan is built from
+  // these, not from a fixed seven-day template.
+  const signals: LearnerSignals | null = useMemo(
+    () => (currentUser && mastery ? computeLearnerSignals(currentUser.id, mastery) : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentUser, mastery, refreshTick],
+  );
+
+  // A saved plan is a snapshot; the learner keeps moving. This is what lets the
+  // page say "your focus era changed" instead of serving stale homework.
+  const health = useMemo(
+    () => (plan && signals ? planHealth(plan, completion, signals.focusEraId) : null),
+    [plan, signals, completion],
+  );
+
   useEffect(() => { if (currentUser) setPlan(loadWeekPlan(currentUser.id)); }, [currentUser, refreshTick]);
 
   const refresh = useCallback(() => setRefreshTick(v => v + 1), []);
@@ -95,14 +119,14 @@ export default function StudyPlanPage() {
   }, [refresh]);
 
   const generate = useCallback(() => {
-    if (!currentUser || !mastery) return;
-    const fresh = generateWeekPlan(mastery, eraId =>
+    if (!currentUser || !mastery || !signals) return;
+    const fresh = generateWeekPlan(mastery, signals, eraId =>
       nextLessonsForEra(currentUser.id, eraId, canLesson).map(l => ({ id: l.id, eraId: l.eraId, estimatedMinutes: l.estimatedMinutes })),
     );
     saveWeekPlan(currentUser.id, fresh);
     setPlan(fresh);
     setError(null);
-  }, [currentUser, mastery, canLesson]);
+  }, [currentUser, mastery, signals, canLesson]);
 
   const enhance = useCallback(async () => {
     if (!currentUser || !mastery || !plan || enhancing) return;
@@ -110,7 +134,7 @@ export default function StudyPlanPage() {
     if (!allowed) return;
     setEnhancing(true); setError(null);
     try {
-      const prompt = buildPlanNotesPrompt(mastery, plan, language, tier === 'master');
+      const prompt = buildPlanNotesPrompt(mastery, plan, language, tier === 'master', signals ?? undefined);
       let raw = '';
       for await (const chunk of streamChatResponse([{ role: 'user', content: prompt }], undefined,
         'You are Clio, an expert history mentor. Answer only with the requested JSON.',
@@ -124,7 +148,7 @@ export default function StudyPlanPage() {
         setPlan(next);
       }
     } catch (err) { setError(err); } finally { setEnhancing(false); }
-  }, [currentUser, mastery, plan, enhancing, canAI, language, tier, trackAiMessage]);
+  }, [currentUser, mastery, plan, enhancing, canAI, language, tier, signals, trackAiMessage]);
 
   const doneCount = plan ? plan.steps.filter(s => completion[s.id]).length : 0;
 
@@ -168,7 +192,10 @@ export default function StudyPlanPage() {
               <div className="grid sm:grid-cols-2 gap-x-8 gap-y-3">
                 {mastery.eras.map(em => {
                   const era = ERAS.find(e => e.id === em.eraId)!;
-                  const isWeakest = em.eraId === mastery.weakest.eraId;
+                  // Mark the era the plan actually works on, not simply the
+                  // lowest number — those differ whenever an era the learner
+                  // has begun still needs finishing before a new one starts.
+                  const isWeakest = em.eraId === (signals?.focusEraId ?? mastery.weakest.eraId);
                   return (
                     <div key={em.eraId}>
                       <div className="flex justify-between items-center text-xs mb-1">
@@ -216,6 +243,69 @@ export default function StudyPlanPage() {
         </div>
 
         {error != null && <AiErrorCard error={error} onRetry={enhance} />}
+
+        {/* Why the week is shaped the way it is — measured, not templated. */}
+        {plan && signals && (
+          <Card className="border-border/70 bg-muted/20">
+            <CardContent className="p-4 space-y-2.5">
+              <div className="flex items-center gap-2 flex-wrap">
+                <Gauge className="w-4 h-4 text-primary" />
+                <h2 className="text-sm font-semibold">{t.path_rhythm_title}</h2>
+                <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-primary/40 text-primary">
+                  {MODE_LABEL(t)[plan.mode ?? signals.mode]}
+                </Badge>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {MODE_WHY(t)[plan.mode ?? signals.mode]}
+                {signals.returning && <> {t.path_returning}</>}
+              </p>
+              <div className="flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-muted-foreground pt-0.5">
+                <span>
+                  <strong className="text-foreground">{signals.activeDaysLast14}/14</strong> {t.path_rhythm_active}
+                </span>
+                <span>
+                  {t.path_rhythm_session}:{' '}
+                  <strong className="text-foreground">
+                    {signals.fresh ? t.path_rhythm_no_data : `${signals.medianSessionMinutes} ${t.path_min}`}
+                  </strong>
+                </span>
+                <span>
+                  {t.path_rhythm_scheduled}:{' '}
+                  <strong className="text-foreground">
+                    {plan.days ?? 7} {t.path_days_label} · {plan.budgetMinutes ?? 20} {t.path_min_per_day}
+                  </strong>
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* The plan has stopped matching the learner — say so, don't serve it silently. */}
+        {plan && health?.stale && (
+          <Card className="border-amber-400/40 bg-amber-400/5">
+            <CardContent className="p-4 flex items-start gap-3 flex-wrap">
+              <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-[12rem] space-y-1">
+                <p className="text-sm font-semibold text-amber-400">{t.path_stale_title}</p>
+                <ul className="text-xs text-muted-foreground space-y-0.5">
+                  {health.reasons.includes('complete') && <li>· {t.path_stale_complete}</li>}
+                  {health.reasons.includes('expired') && <li>· {t.path_stale_expired} ({health.ageDays} {t.path_stale_days_old})</li>}
+                  {health.reasons.includes('focus-moved') && (
+                    <li>
+                      · {t.path_stale_focus}{' '}
+                      <strong className="text-foreground">
+                        {getTranslatedEra(ERAS.find(e => e.id === health.currentFocusEraId)!, language).shortName}
+                      </strong>
+                    </li>
+                  )}
+                </ul>
+              </div>
+              <Button size="sm" onClick={generate} className="gap-1.5 shrink-0">
+                <RefreshCw className="w-3.5 h-3.5" />{t.path_regenerate}
+              </Button>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Clio's notes */}
         {plan?.aiNotes && (

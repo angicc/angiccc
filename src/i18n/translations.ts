@@ -346,6 +346,13 @@ export type TranslationKeys = {
   path_step_lesson: string; path_step_quiz: string; path_step_smart_quiz: string;
   path_step_flashcards: string; path_step_studio: string; path_step_crisis: string; path_step_map: string;
   path_min: string; path_mark_done: string;
+  path_rhythm_title: string; path_rhythm_active: string; path_rhythm_session: string;
+  path_rhythm_scheduled: string; path_rhythm_no_data: string;
+  path_days_label: string; path_min_per_day: string; path_returning: string;
+  path_mode_coverage: string; path_mode_retention: string; path_mode_balanced: string;
+  path_mode_coverage_why: string; path_mode_retention_why: string; path_mode_balanced_why: string;
+  path_stale_title: string; path_stale_complete: string; path_stale_expired: string;
+  path_stale_days_old: string; path_stale_focus: string;
   // ── Philosopher memory / Flashcards gate / Battle tactics ─────
   pmem_title: string; pmem_empty: string; pmem_debates: string; pmem_wins: string;
   pmem_stances: string; pmem_concessions: string; pmem_strong: string; pmem_style: string;
@@ -756,6 +763,19 @@ const EN: TranslationKeys = {
     path_step_lesson: 'Lesson', path_step_quiz: 'Era quiz', path_step_smart_quiz: 'Smart Quiz',
     path_step_flashcards: 'Flashcard review', path_step_studio: 'AI Studio session', path_step_crisis: 'Crisis simulation', path_step_map: 'Territory Map',
     path_min: 'min', path_mark_done: 'Mark done',
+    path_rhythm_title: 'Built from how you actually study',
+    path_rhythm_active: 'active days', path_rhythm_session: 'Typical session',
+    path_rhythm_scheduled: 'Scheduled', path_rhythm_no_data: 'no sessions yet',
+    path_days_label: 'study days', path_min_per_day: 'min/day',
+    path_returning: 'Welcome back — the week opens with review before new material.',
+    path_mode_coverage: 'Reading focus', path_mode_retention: 'Recall focus', path_mode_balanced: 'Balanced',
+    path_mode_coverage_why: 'Most of your focus era is still unread, so this week leans on new lessons.',
+    path_mode_retention_why: "You have read the material but it isn't sticking, so this week leans on recall practice rather than more reading.",
+    path_mode_balanced_why: 'Your reading and your recall are in step, so this week alternates between them.',
+    path_stale_title: 'This plan no longer matches you',
+    path_stale_complete: 'You finished every step — time for the next week.',
+    path_stale_expired: 'The plan has outlived the week it was scheduling',
+    path_stale_days_old: 'days old', path_stale_focus: 'Your focus has moved to',
     // Philosopher memory / Flashcards gate / Battle tactics
     pmem_title: "{name}'s memory of you", pmem_empty: 'No debates on record yet — argue with them and they will remember every stance you take.',
     pmem_debates: 'debates', pmem_wins: 'concessions won', pmem_stances: 'Positions you argued',
@@ -1149,6 +1169,19 @@ export const T: Translations = {
     path_step_lesson: 'Lección', path_step_quiz: 'Cuestionario de era', path_step_smart_quiz: 'Cuestionario inteligente',
     path_step_flashcards: 'Repaso de tarjetas', path_step_studio: 'Sesión de Estudio IA', path_step_crisis: 'Simulación de crisis', path_step_map: 'Mapa de territorios',
     path_min: 'min', path_mark_done: 'Marcar como hecho',
+    path_rhythm_title: 'Creado a partir de cómo estudias de verdad',
+    path_rhythm_active: 'días activos', path_rhythm_session: 'Sesión habitual',
+    path_rhythm_scheduled: 'Programado', path_rhythm_no_data: 'aún sin sesiones',
+    path_days_label: 'días de estudio', path_min_per_day: 'min/día',
+    path_returning: 'Bienvenido de nuevo: la semana empieza con repaso antes del material nuevo.',
+    path_mode_coverage: 'Enfoque en lectura', path_mode_retention: 'Enfoque en memoria', path_mode_balanced: 'Equilibrado',
+    path_mode_coverage_why: 'Gran parte de tu era prioritaria sigue sin leer, así que esta semana se apoya en lecciones nuevas.',
+    path_mode_retention_why: 'Has leído el material pero no se te queda, así que esta semana se apoya en la práctica de recuerdo en vez de más lectura.',
+    path_mode_balanced_why: 'Tu lectura y tu memoria van a la par, así que esta semana alterna entre ambas.',
+    path_stale_title: 'Este plan ya no encaja contigo',
+    path_stale_complete: 'Has terminado todos los pasos: toca la semana siguiente.',
+    path_stale_expired: 'El plan ha superado la semana que programaba',
+    path_stale_days_old: 'días de antigüedad', path_stale_focus: 'Tu enfoque ha pasado a',
     // Philosopher memory / Flashcards gate / Battle tactics
     pmem_title: 'La memoria de {name} sobre ti', pmem_empty: 'Aún no hay debates registrados — discute con ellos y recordarán cada postura que tomes.',
     pmem_debates: 'debates', pmem_wins: 'concesiones ganadas', pmem_stances: 'Posturas que defendiste',
@@ -1540,6 +1573,19 @@ export const T: Translations = {
     path_step_lesson: 'Урок', path_step_quiz: 'Викторина эпохи', path_step_smart_quiz: 'Умная викторина',
     path_step_flashcards: 'Повторение карточек', path_step_studio: 'Сессия в ИИ-студии', path_step_crisis: 'Кризисная симуляция', path_step_map: 'Карта территорий',
     path_min: 'мин', path_mark_done: 'Отметить выполненным',
+    path_rhythm_title: 'Составлено по тому, как вы занимаетесь на самом деле',
+    path_rhythm_active: 'активных дней', path_rhythm_session: 'Обычное занятие',
+    path_rhythm_scheduled: 'Запланировано', path_rhythm_no_data: 'занятий пока нет',
+    path_days_label: 'учебных дней', path_min_per_day: 'мин/день',
+    path_returning: 'С возвращением — неделя начинается с повторения, а не с нового материала.',
+    path_mode_coverage: 'Упор на чтение', path_mode_retention: 'Упор на запоминание', path_mode_balanced: 'Сбалансированно',
+    path_mode_coverage_why: 'Большая часть вашей приоритетной эпохи ещё не прочитана, поэтому неделя опирается на новые уроки.',
+    path_mode_retention_why: 'Материал прочитан, но не удерживается, поэтому неделя опирается на активное припоминание, а не на новое чтение.',
+    path_mode_balanced_why: 'Чтение и припоминание идут вровень, поэтому неделя чередует их.',
+    path_stale_title: 'Этот план больше вам не соответствует',
+    path_stale_complete: 'Все шаги выполнены — пора составить следующую неделю.',
+    path_stale_expired: 'План пережил ту неделю, которую планировал',
+    path_stale_days_old: 'дн. назад', path_stale_focus: 'Фокус сместился на',
     // Philosopher memory / Flashcards gate / Battle tactics
     pmem_title: 'Память {name} о вас', pmem_empty: 'Дебатов пока не было — поспорьте, и они запомнят каждую вашу позицию.',
     pmem_debates: 'дебатов', pmem_wins: 'выигранных уступок', pmem_stances: 'Позиции, которые вы отстаивали',
@@ -1931,6 +1977,19 @@ export const T: Translations = {
     path_step_lesson: 'Лекција', path_step_quiz: 'Квиз за епохата', path_step_smart_quiz: 'Паметен квиз',
     path_step_flashcards: 'Повторување картички', path_step_studio: 'Сесија во ВИ Студио', path_step_crisis: 'Кризна симулација', path_step_map: 'Мапа на територии',
     path_min: 'мин', path_mark_done: 'Означи завршено',
+    path_rhythm_title: 'Составено според тоа како навистина учиш',
+    path_rhythm_active: 'активни дена', path_rhythm_session: 'Вообичаена сесија',
+    path_rhythm_scheduled: 'Закажано', path_rhythm_no_data: 'сè уште нема сесии',
+    path_days_label: 'учебни дена', path_min_per_day: 'мин/ден',
+    path_returning: 'Добредојде назад — неделата почнува со повторување пред нов материјал.',
+    path_mode_coverage: 'Фокус на читање', path_mode_retention: 'Фокус на помнење', path_mode_balanced: 'Балансирано',
+    path_mode_coverage_why: 'Најголемиот дел од твојата приоритетна епоха сè уште не е прочитан, па неделата се потпира на нови лекции.',
+    path_mode_retention_why: 'Материјалот е прочитан, но не се задржува, па неделата се потпира на активно присетување наместо на уште читање.',
+    path_mode_balanced_why: 'Читањето и присетувањето ти одат рамо до рамо, па неделата ги менува наизменично.',
+    path_stale_title: 'Овој план веќе не ти одговара',
+    path_stale_complete: 'Ги заврши сите чекори — време е за следната недела.',
+    path_stale_expired: 'Планот ја надживеа неделата што ја закажуваше',
+    path_stale_days_old: 'дена стар', path_stale_focus: 'Фокусот се премести на',
     // Philosopher memory / Flashcards gate / Battle tactics
     pmem_title: 'Меморијата на {name} за тебе', pmem_empty: 'Сè уште нема дебати — расправај со нив и ќе го паметат секој твој став.',
     pmem_debates: 'дебати', pmem_wins: 'освоени отстапки', pmem_stances: 'Ставови што ги бранеше',

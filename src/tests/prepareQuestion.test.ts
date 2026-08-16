@@ -18,15 +18,21 @@ describe('prepareQuestion', () => {
     // scores ~64% without reading anything. Serving must break that up.
     const dist = [0, 0, 0, 0];
     let n = 0;
-    for (let pass = 0; pass < 20; pass++) {
+    for (let pass = 0; pass < 40; pass++) {
       for (const q of ALL) {
         dist[prepareQuestion(q, 'en').correctIndex]++;
         n++;
       }
     }
     const chiSquare = dist.reduce((sum, observed) => sum + (observed - n / 4) ** 2 / (n / 4), 0);
-    // 7.81 is the p<0.05 critical value at 3 degrees of freedom.
-    expect(chiSquare).toBeLessThan(7.81);
+    // 16.27 is the p<0.001 critical value at 3 degrees of freedom, not the
+    // p<0.05 one. A genuinely uniform shuffle exceeds the 5% value once every
+    // twenty runs *by definition*, which made this test fail on honest code;
+    // the job here is to catch real bias, not to re-run a significance test on
+    // every commit. The regression it guards against — the correct answer
+    // pinned to B and C — scored ~196 on this statistic, so the looser
+    // threshold loses no power and drops false failures to 1 in 1000.
+    expect(chiSquare).toBeLessThan(16.27);
   });
 
   it('localises the question, and never mixes languages within one question', () => {
