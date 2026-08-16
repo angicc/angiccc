@@ -16,6 +16,7 @@ import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { QUIZZES } from '@/features/quiz/quizData';
+import { prepareQuestion } from '@/features/quiz/prepareQuestion';
 import { ERAS } from '@/features/content/erasData';
 import { getTranslatedEra } from '@/i18n/contentTranslations';
 import { recordQuizAttempt } from '@/features/progress/progressStore';
@@ -154,7 +155,10 @@ export default function SmartQuizPage() {
   }
 
   function startSession() {
-    const q = selectAdaptiveQuestions(allQuestions, progress?.quizScores ?? {}, SESSION_SIZE, currentUser?.id);
+    const q = selectAdaptiveQuestions(allQuestions, progress?.quizScores ?? {}, SESSION_SIZE, currentUser?.id)
+      // Localise and shuffle once, here: downstream scoring compares against
+      // correctIndex, which prepareQuestion keeps pointing at the same answer.
+      .map(question => prepareQuestion(question, language));
     setSession(q);
     setQIdx(0);
     setSelected(null);
