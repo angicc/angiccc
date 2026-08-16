@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Telescope, Lock, Hourglass, ScrollText, Languages, Loader2, RefreshCw } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, Star, ChevronRight, MessageSquare, Bookmark, BookmarkCheck, Telescope, Lock, Hourglass, ScrollText, Languages, Loader2, RefreshCw } from 'lucide-react';
 import { getLessonTheme, type LessonTheme } from '@/lib/lessonTheme';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
@@ -81,8 +81,11 @@ function LessonBanner({
   }
 
   return (
+    // 16/9 rather than 21/9, and a taller cap: 48 of the 57 curated banners are
+    // between 1.2 and 1.9 wide, so a 21/9 frame clamped to 24rem produced an
+    // effective ~2.6 ratio and cropped most of the art away.
     <div
-      className="relative w-full aspect-[21/9] min-h-64 max-h-96 rounded-2xl overflow-hidden mb-8 border border-border/50"
+      className="relative w-full aspect-[16/9] min-h-72 max-h-[30rem] rounded-2xl overflow-hidden mb-8 border border-border/50"
       style={{ background: theme.bannerGradient }}
     >
       {/* Category-specific accent stripe — always 3px, consistent across all banners */}
@@ -110,7 +113,11 @@ function LessonBanner({
           loading="lazy"
           decoding="async"
           referrerPolicy="no-referrer"
-          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 z-[2] ${loaded ? (isGifBanner(src) ? 'opacity-80' : 'opacity-60') : 'opacity-0'} ${isGifBanner(src) ? 'scale-[1.07]' : ''}`}
+          // Framed slightly above centre: on a portrait-ish plate the subject
+          // (faces, a monument's crown) sits in the upper half, and dead-centre
+          // cropping cut it off. Opacity raised — the art was curated to be
+          // looked at, and 0.6 under the contrast mask left it barely visible.
+          className={`absolute inset-0 w-full h-full object-cover object-[center_38%] transition-opacity duration-700 z-[2] ${loaded ? (isGifBanner(src) ? 'opacity-90' : 'opacity-80') : 'opacity-0'} ${isGifBanner(src) ? 'scale-[1.03]' : ''}`}
           onLoad={() => setLoaded(true)}
           onError={handleError}
         />
@@ -120,7 +127,7 @@ function LessonBanner({
           whether its lower region is pure white marble or pitch-dark oil paint. */}
       <div
         className="absolute inset-0 z-[3]"
-        style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0) 20%, rgba(10,15,30,0.95) 100%)' }}
+        style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0) 34%, rgba(10,15,30,0.92) 100%)' }}
       />
 
       {/* Category watermark */}
