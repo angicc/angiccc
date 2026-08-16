@@ -439,6 +439,23 @@
       ],
       "fill_color": "#6366f1",
       "stroke_color": "#818cf8"
+    },
+    {
+      "topic_id": "renaissance-italy",
+      "entity_name": "Renaissance Italy",
+      "year": "1530",
+      "year_start": 1400,
+      "year_end": 1600,
+      "match": [
+        "Papal States",
+        "Venice",
+        "Florence",
+        "Genoa",
+        "Milan",
+        "Savoy"
+      ],
+      "fill_color": "#eab308",
+      "stroke_color": "#facc15"
     }
   ]
 }
