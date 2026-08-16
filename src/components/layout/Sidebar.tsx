@@ -16,6 +16,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { xpToNextLevel } from '@/features/progress/xpSystem';
 import { getVideoXp } from '@/features/videoReview/videoReviewStore';
 import { getChessRank } from '@/features/ranks/chessRanks';
+import { getTranslatedRank } from '@/i18n/rankTranslations';
 import { cn } from '@/lib/utils';
 import type { TranslationKeys } from '@/i18n/translations';
 
@@ -75,7 +76,7 @@ const NAV_GROUPS: NavGroup[] = [
 export function Sidebar({ className, onNavigate }: { className?: string; onNavigate?: () => void }) {
   const { progress, currentUser, startLogout } = useAuth();
   const { subscription } = useSubscription();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const tier = subscription?.tier ?? 'free';
   const tierLabel = { free: 'Free', beginner: 'Beginner Student', pro: 'Pro Student', master: 'Master Student' }[tier];
   const xpInfo = progress ? xpToNextLevel(progress.xp) : null;
@@ -84,6 +85,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
   const [avatarUrl] = useState<string>(() => (avatarKey ? localStorage.getItem(avatarKey) ?? '' : ''));
   const videoXp = currentUser ? getVideoXp(currentUser.id) : 0;
   const rank = getChessRank(videoXp);
+  const rankName = getTranslatedRank(rank.id, language)?.name ?? rank.name;
 
   return (
     <aside className={cn('flex flex-col w-60 shrink-0 bg-layer-0 h-screen sticky top-0', className)}>
@@ -109,7 +111,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
                   <span className="text-sm font-semibold text-foreground truncate">{currentUser.username}</span>
-                  <span className="text-sm leading-none shrink-0" title={rank.name}>{rank.icon}</span>
+                  <span className="text-sm leading-none shrink-0" title={rankName}>{rank.icon}</span>
                 </div>
                 <div className="mt-0.5 flex items-center gap-1">
                   <Crown className={cn('w-3 h-3 shrink-0', tier === 'master' ? 'text-amber-400' : tier === 'pro' ? 'text-primary' : 'text-muted-foreground')} />
@@ -120,8 +122,8 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
             {progress && (
               <div className="mt-2.5 flex items-center justify-between text-[10px] text-muted-foreground/90 tabular-nums">
                 <span className="flex items-center gap-1"><Flame className="w-3 h-3 text-primary" />{progress.streak}{t.sidebar_streak}</span>
-                <span>Lv.{progress.level}</span>
-                <span className="truncate max-w-[46%] text-right" title={rank.name}>{rank.name}</span>
+                <span>{t.level_short} {progress.level}</span>
+                <span className="truncate max-w-[46%] text-right" title={rankName}>{rankName}</span>
               </div>
             )}
           </Link>
@@ -171,7 +173,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
                 <Flame className="w-3.5 h-3.5 text-primary" />
                 {progress.streak}{t.sidebar_streak}
               </span>
-              <span className="text-muted-foreground">Lv.{progress.level}</span>
+              <span className="text-muted-foreground">{t.level_short} {progress.level}</span>
             </div>
             <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
               <div

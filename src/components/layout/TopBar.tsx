@@ -125,7 +125,7 @@ export function TopBar() {
 
         {/* ── Right: XP mini-pill · bell · language · theme · account ── */}
         {progress && xpInfo && (
-          <div className="hidden sm:flex items-center gap-2 pl-3 pr-3.5 py-1.5 rounded-full bg-layer-2" title={`Lv.${progress.level}`}>
+          <div className="hidden sm:flex items-center gap-2 pl-3 pr-3.5 py-1.5 rounded-full bg-layer-2" title={`${t.level_short} ${progress.level}`}>
             <Flame className="w-3.5 h-3.5 text-primary" />
             <div className="w-16 h-1.5 bg-white/5 rounded-full overflow-hidden">
               <div className="h-full bg-primary rounded-full transition-all duration-700" style={{ width: `${Math.min(xpInfo.percent, 100)}%` }} />

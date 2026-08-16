@@ -29,6 +29,8 @@ export interface UserProgress {
   recentActivity: ActivityEvent[]; aiMessageCount: number;
   videoXp?: number; debateWins?: number;
   analysisPasses?: number; analysisBestScore?: number;
+  /** Best streak ever reached — `streak` only holds the current run. */
+  longestStreak?: number;
 }
 export interface ActivityEvent {
   type: 'lesson_complete' | 'quiz_complete' | 'achievement_unlock' | 'ai_chat';

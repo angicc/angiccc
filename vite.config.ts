@@ -32,6 +32,7 @@ const IDENTICAL_TO_EN_OK: Record<string, ReadonlyArray<ContentLang> | 'all'> = {
 
   // Abbreviations that are written the same way.
   lbl_pts: ['es', 'fr'],          // "pts"
+  level_short: ['de'],            // "Lv." — German already uses the loanword (dash_level)
   sq_plan_min: ['es', 'fr'],      // "min"
   path_min: ['es', 'fr'],         // "min"
 
@@ -171,11 +172,19 @@ function translationCoveragePlugin(): Plugin {
         for (const m of text.matchAll(/[Ѐ-ӿ][A-Za-z][Ѐ-ӿ]/g)) {
           fused.push(`${file}: ${m[0]} (Latin '${m[0][1]}' inside a Cyrillic word)`);
         }
+        // The two passes above only look for LATIN intruders, so a stray
+        // character from any other script sails through — a CJK 长 sitting in
+        // the middle of a Russian word passed this guard and shipped. None of
+        // the six languages uses CJK, Hangul, Arabic, Hebrew, Devanagari or
+        // Greek, so their presence anywhere is a corruption, fused or not.
+        for (const m of text.matchAll(/[　-鿿가-힯֐-ۿऀ-ॿͰ-Ͽ]/g)) {
+          fused.push(`${file}: '${m[0]}' (U+${m[0].codePointAt(0)!.toString(16).toUpperCase().padStart(4, '0')} — script not used by any supported language)`);
+        }
       }
       const uniqueFused = [...new Set(fused)];
       if (uniqueFused.length > 0) {
         problems.push(
-          `[i18n] ${uniqueFused.length} Cyrillic word(s) with Latin letters fused in:\n` +
+          `[i18n] ${uniqueFused.length} word(s) with foreign characters fused in:\n` +
             uniqueFused.slice(0, 10).map(s => `          ${s}`).join('\n')
         );
       }

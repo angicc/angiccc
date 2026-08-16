@@ -104,6 +104,36 @@ export function checkAchievements(progress: UserProgress): Achievement[] {
   return ACHIEVEMENTS.filter(a => !progress.achievements.includes(a.id) && meetsCondition(a.condition, progress));
 }
 
+/**
+ * How far along a locked achievement is, for the ones that count towards a
+ * target. Returns null for all-or-nothing conditions (a perfect quiz is not
+ * "60% done"), so the caller can show those without a misleading bar.
+ */
+export function achievementProgress(c: AchievementCondition, p: UserProgress): { current: number; target: number } | null {
+  const perfectQuizzes = () => Object.values(p.quizScores).filter(s => s >= 100).length;
+  switch (c.type) {
+    case 'lessons_complete': return { current: p.completedLessons.length, target: c.count };
+    case 'all_lessons_complete': return { current: p.completedLessons.length, target: LESSONS.length };
+    case 'streak': return { current: p.streak, target: c.days };
+    case 'xp_total': return { current: p.xp, target: c.amount };
+    case 'ai_messages': return { current: p.aiMessageCount ?? 0, target: c.count };
+    case 'all_quizzes_perfect': return { current: perfectQuizzes(), target: ERAS.length };
+    case 'quizzes_perfect_count': return { current: perfectQuizzes(), target: c.count };
+    case 'era_lessons_complete':
+      return { current: p.completedLessons.filter(id => id.startsWith(eraPrefix(c.eraId))).length, target: c.count };
+    case 'debate_wins': return { current: p.debateWins ?? 0, target: c.count };
+    case 'analysis_passes': return { current: p.analysisPasses ?? 0, target: c.count };
+    case 'video_xp': return { current: p.videoXp ?? 0, target: c.amount };
+    case 'quizzes_taken': return { current: p.completedQuizzes.length, target: c.count };
+    case 'level_reached': return { current: p.level, target: c.level };
+    case 'all_eras_started':
+      return { current: ERAS.filter(era => p.completedLessons.some(id => id.startsWith(eraPrefix(era.id)))).length, target: ERAS.length };
+    case 'quiz_perfect':
+    case 'analysis_aplus':
+      return null; // all-or-nothing
+  }
+}
+
 function meetsCondition(c: AchievementCondition, p: UserProgress): boolean {
   switch (c.type) {
     case 'lessons_complete': return p.completedLessons.length >= c.count;

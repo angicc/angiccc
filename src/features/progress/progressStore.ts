@@ -76,6 +76,10 @@ function updateStreak(p: UserProgress) {
   if (last === today) return;
   if (last === yesterday) { p.streak += 1; if (p.streak >= 3) { p.xp += XP_REWARDS.STREAK_BONUS; p.level = calculateLevel(p.xp); } }
   else p.streak = 1;
+  // `streak` is the current run and resets to 1 on a missed day, so the best
+  // run ever has to be banked separately or it is lost the first time a
+  // learner takes a day off.
+  p.longestStreak = Math.max(p.longestStreak ?? 0, p.streak);
   p.lastActivityDate = new Date().toISOString();
 }
 

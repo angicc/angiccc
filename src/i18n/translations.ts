@@ -222,6 +222,53 @@ export type TranslationKeys = {
   prof_danger_zone: string;
   prof_reset_title: string; prof_reset_desc: string;
   prof_reset_confirm: string; prof_reset_confirm_desc: string; prof_reset_yes: string;
+  prof_toast_image_too_big: string;
+  prof_toast_avatar_set: string;
+  prof_toast_avatar_removed: string;
+  prof_toast_name_short: string;
+  prof_toast_name_saved: string;
+  prof_toast_email_invalid: string;
+  prof_toast_email_saved: string;
+  prof_toast_email_failed: string;
+  prof_toast_pwd_short: string;
+  prof_toast_pwd_mismatch: string;
+  prof_toast_pwd_saved: string;
+  prof_toast_pwd_failed: string;
+  prof_toast_2fa_code: string;
+  prof_toast_2fa_on: string;
+  prof_toast_2fa_off: string;
+  prof_toast_pref_saved: string;
+  prof_toast_reset: string;
+  prof_toast_pdf_soon: string;
+  prof_inspired_by: string;
+  prof_video_xp: string;
+  prof_next_rank_in: string;
+  prof_max_rank: string;
+  prof_renews: string;
+  prof_download_notes: string;
+  prof_demo_secret: string;
+  prof_rhythm_title: string;
+  prof_rhythm_days_studied: string;
+  prof_rhythm_empty: string;
+  prof_rhythm_less: string;
+  prof_rhythm_more: string;
+  prof_rhythm_this_week: string;
+  prof_records_title: string;
+  prof_rec_total_time: string;
+  prof_rec_longest_streak: string;
+  prof_rec_days: string;
+  prof_rec_best_quiz: string;
+  prof_rec_favourite_era: string;
+  prof_rec_perfect_quizzes: string;
+  prof_rec_best_day: string;
+  prof_milestones_title: string;
+  unit_day_one: string;
+  unit_day_few: string;
+  unit_day_many: string;
+  streak_start_today: string;
+  level_short: string;
+  level_label: string;
+  level_xp_to: string;
   // Flashcards extras
   flash_shuffle: string; flash_answer: string; flash_no_cards: string;
   // Profile reset button
@@ -632,6 +679,53 @@ const EN: TranslationKeys = {
     prof_reset_title: 'Reset All Progress', prof_reset_desc: 'Clears XP, lessons, and quiz scores permanently.',
     prof_reset_confirm: 'Reset all progress?', prof_reset_confirm_desc: 'This will permanently delete all your XP, completed lessons, quiz scores, and achievements. This action cannot be undone.',
     prof_reset_yes: 'Yes, reset everything',
+    prof_toast_image_too_big: 'Image must be under 2 MB.',
+    prof_toast_avatar_set: 'Profile picture updated!',
+    prof_toast_avatar_removed: 'Profile picture removed.',
+    prof_toast_name_short: 'Username must be at least 3 characters.',
+    prof_toast_name_saved: 'Username updated!',
+    prof_toast_email_invalid: 'Enter a valid email.',
+    prof_toast_email_saved: 'Email updated!',
+    prof_toast_email_failed: 'Failed to update email.',
+    prof_toast_pwd_short: 'New password must be at least 6 characters.',
+    prof_toast_pwd_mismatch: 'Passwords do not match.',
+    prof_toast_pwd_saved: 'Password updated!',
+    prof_toast_pwd_failed: 'Failed to update password.',
+    prof_toast_2fa_code: 'Enter a valid 6-digit code.',
+    prof_toast_2fa_on: 'Two-factor authentication enabled!',
+    prof_toast_2fa_off: '2FA disabled.',
+    prof_toast_pref_saved: 'Preference saved.',
+    prof_toast_reset: 'Progress reset.',
+    prof_toast_pdf_soon: 'PDF download coming soon!',
+    prof_inspired_by: 'Inspired by:',
+    prof_video_xp: 'Video XP',
+    prof_next_rank_in: 'Next rank in',
+    prof_max_rank: 'MAX RANK',
+    prof_renews: 'Renews',
+    prof_download_notes: 'Download Lesson Notes (PDF)',
+    prof_demo_secret: 'demo secret',
+    prof_rhythm_title: 'Study rhythm',
+    prof_rhythm_days_studied: 'days studied',
+    prof_rhythm_empty: 'Your study days will appear here once you start a lesson.',
+    prof_rhythm_less: 'Less',
+    prof_rhythm_more: 'More',
+    prof_rhythm_this_week: 'This week',
+    prof_records_title: 'Personal records',
+    prof_rec_total_time: 'Total time invested',
+    prof_rec_longest_streak: 'Longest streak',
+    prof_rec_days: 'days',
+    prof_rec_best_quiz: 'Best quiz score',
+    prof_rec_favourite_era: 'Most studied era',
+    prof_rec_perfect_quizzes: 'Perfect quizzes',
+    prof_rec_best_day: 'Best single day',
+    prof_milestones_title: 'Closest achievements',
+    unit_day_one: 'day',
+    unit_day_few: 'days',
+    unit_day_many: 'days',
+    streak_start_today: 'Start your streak today!',
+    level_short: 'Lv.',
+    level_label: 'Level',
+    level_xp_to: 'XP to Level',
     flash_shuffle: 'Shuffle', flash_answer: 'Answer', flash_no_cards: 'No cards available for this filter.',
     prof_reset_btn: 'Reset',
     // Profile Settings
@@ -1038,6 +1132,53 @@ export const T: Translations = {
     prof_reset_title: 'Restablecer Todo el Progreso', prof_reset_desc: 'Borra XP, lecciones y puntuaciones permanentemente.',
     prof_reset_confirm: '¿Restablecer todo el progreso?', prof_reset_confirm_desc: 'Esto eliminará permanentemente todo tu XP, lecciones completadas, puntuaciones y logros. Esta acción no se puede deshacer.',
     prof_reset_yes: 'Sí, restablecer todo',
+    prof_toast_image_too_big: 'La imagen debe pesar menos de 2 MB.',
+    prof_toast_avatar_set: '¡Foto de perfil actualizada!',
+    prof_toast_avatar_removed: 'Foto de perfil eliminada.',
+    prof_toast_name_short: 'El nombre de usuario debe tener al menos 3 caracteres.',
+    prof_toast_name_saved: '¡Nombre de usuario actualizado!',
+    prof_toast_email_invalid: 'Introduce un correo válido.',
+    prof_toast_email_saved: '¡Correo actualizado!',
+    prof_toast_email_failed: 'No se pudo actualizar el correo.',
+    prof_toast_pwd_short: 'La nueva contraseña debe tener al menos 6 caracteres.',
+    prof_toast_pwd_mismatch: 'Las contraseñas no coinciden.',
+    prof_toast_pwd_saved: '¡Contraseña actualizada!',
+    prof_toast_pwd_failed: 'No se pudo actualizar la contraseña.',
+    prof_toast_2fa_code: 'Introduce un código válido de 6 dígitos.',
+    prof_toast_2fa_on: '¡Autenticación en dos pasos activada!',
+    prof_toast_2fa_off: '2FA desactivada.',
+    prof_toast_pref_saved: 'Preferencia guardada.',
+    prof_toast_reset: 'Progreso restablecido.',
+    prof_toast_pdf_soon: '¡La descarga en PDF llegará pronto!',
+    prof_inspired_by: 'Inspirado en:',
+    prof_video_xp: 'XP de vídeo',
+    prof_next_rank_in: 'Siguiente rango en',
+    prof_max_rank: 'RANGO MÁXIMO',
+    prof_renews: 'Se renueva el',
+    prof_download_notes: 'Descargar apuntes de las lecciones (PDF)',
+    prof_demo_secret: 'secreto de demostración',
+    prof_rhythm_title: 'Ritmo de estudio',
+    prof_rhythm_days_studied: 'días estudiados',
+    prof_rhythm_empty: 'Tus días de estudio aparecerán aquí en cuanto empieces una lección.',
+    prof_rhythm_less: 'Menos',
+    prof_rhythm_more: 'Más',
+    prof_rhythm_this_week: 'Esta semana',
+    prof_records_title: 'Récords personales',
+    prof_rec_total_time: 'Tiempo total invertido',
+    prof_rec_longest_streak: 'Racha más larga',
+    prof_rec_days: 'días',
+    prof_rec_best_quiz: 'Mejor nota en un cuestionario',
+    prof_rec_favourite_era: 'Era más estudiada',
+    prof_rec_perfect_quizzes: 'Cuestionarios perfectos',
+    prof_rec_best_day: 'Mejor día',
+    prof_milestones_title: 'Logros más cercanos',
+    unit_day_one: 'día',
+    unit_day_few: 'días',
+    unit_day_many: 'días',
+    streak_start_today: '¡Empieza tu racha hoy!',
+    level_short: 'Nv.',
+    level_label: 'Nivel',
+    level_xp_to: 'XP para el nivel',
     flash_shuffle: 'Barajar', flash_answer: 'Respuesta', flash_no_cards: 'No hay tarjetas disponibles para este filtro.',
     prof_reset_btn: 'Restablecer',
     // Profile Settings
@@ -1442,6 +1583,53 @@ export const T: Translations = {
     prof_reset_title: 'Сбросить весь прогресс', prof_reset_desc: 'Удаляет XP, уроки и результаты навсегда.',
     prof_reset_confirm: 'Сбросить весь прогресс?', prof_reset_confirm_desc: 'Это безвозвратно удалит весь ваш XP, пройденные уроки, результаты и достижения.',
     prof_reset_yes: 'Да, сбросить всё',
+    prof_toast_image_too_big: 'Изображение должно быть меньше 2 МБ.',
+    prof_toast_avatar_set: 'Фото профиля обновлено!',
+    prof_toast_avatar_removed: 'Фото профиля удалено.',
+    prof_toast_name_short: 'Имя пользователя должно содержать не менее 3 символов.',
+    prof_toast_name_saved: 'Имя пользователя обновлено!',
+    prof_toast_email_invalid: 'Введите корректный адрес почты.',
+    prof_toast_email_saved: 'Почта обновлена!',
+    prof_toast_email_failed: 'Не удалось обновить почту.',
+    prof_toast_pwd_short: 'Новый пароль должен содержать не менее 6 символов.',
+    prof_toast_pwd_mismatch: 'Пароли не совпадают.',
+    prof_toast_pwd_saved: 'Пароль обновлён!',
+    prof_toast_pwd_failed: 'Не удалось обновить пароль.',
+    prof_toast_2fa_code: 'Введите корректный 6-значный код.',
+    prof_toast_2fa_on: 'Двухфакторная аутентификация включена!',
+    prof_toast_2fa_off: '2FA отключена.',
+    prof_toast_pref_saved: 'Настройка сохранена.',
+    prof_toast_reset: 'Прогресс сброшен.',
+    prof_toast_pdf_soon: 'Скачивание PDF скоро появится!',
+    prof_inspired_by: 'Вдохновлено:',
+    prof_video_xp: 'Видео-XP',
+    prof_next_rank_in: 'До следующего ранга',
+    prof_max_rank: 'МАКС. РАНГ',
+    prof_renews: 'Продление',
+    prof_download_notes: 'Скачать конспекты уроков (PDF)',
+    prof_demo_secret: 'демо-ключ',
+    prof_rhythm_title: 'Ритм занятий',
+    prof_rhythm_days_studied: 'дней занятий',
+    prof_rhythm_empty: 'Дни занятий появятся здесь, как только вы начнёте урок.',
+    prof_rhythm_less: 'Меньше',
+    prof_rhythm_more: 'Больше',
+    prof_rhythm_this_week: 'На этой неделе',
+    prof_records_title: 'Личные рекорды',
+    prof_rec_total_time: 'Всего времени вложено',
+    prof_rec_longest_streak: 'Самая длинная серия',
+    prof_rec_days: 'дн.',
+    prof_rec_best_quiz: 'Лучший результат викторины',
+    prof_rec_favourite_era: 'Больше всего изучено',
+    prof_rec_perfect_quizzes: 'Идеальных викторин',
+    prof_rec_best_day: 'Лучший день',
+    prof_milestones_title: 'Ближайшие достижения',
+    unit_day_one: 'день',
+    unit_day_few: 'дня',
+    unit_day_many: 'дней',
+    streak_start_today: 'Начните свою серию сегодня!',
+    level_short: 'Ур.',
+    level_label: 'Уровень',
+    level_xp_to: 'XP до уровня',
     flash_shuffle: 'Перемешать', flash_answer: 'Ответ', flash_no_cards: 'Карточки для этого фильтра не найдены.',
     prof_reset_btn: 'Сбросить',
     // Profile Settings
@@ -1846,6 +2034,53 @@ export const T: Translations = {
     prof_reset_title: 'Врати го Целиот Напредок', prof_reset_desc: 'Ги брише XP, лекциите и резултатите засекогаш.',
     prof_reset_confirm: 'Враќање на целиот напредок?', prof_reset_confirm_desc: 'Ова ќе го избрише засекогаш целиот твој XP, завршени лекции, резултати и достигнувања. Оваа акција не може да се поврати.',
     prof_reset_yes: 'Да, врати сè',
+    prof_toast_image_too_big: 'Сликата мора да биде помала од 2 МБ.',
+    prof_toast_avatar_set: 'Профилната слика е ажурирана!',
+    prof_toast_avatar_removed: 'Профилната слика е отстранета.',
+    prof_toast_name_short: 'Корисничкото име мора да има барем 3 знаци.',
+    prof_toast_name_saved: 'Корисничкото име е ажурирано!',
+    prof_toast_email_invalid: 'Внеси валидна е-пошта.',
+    prof_toast_email_saved: 'Е-поштата е ажурирана!',
+    prof_toast_email_failed: 'Неуспешно ажурирање на е-поштата.',
+    prof_toast_pwd_short: 'Новата лозинка мора да има барем 6 знаци.',
+    prof_toast_pwd_mismatch: 'Лозинките не се совпаѓаат.',
+    prof_toast_pwd_saved: 'Лозинката е ажурирана!',
+    prof_toast_pwd_failed: 'Неуспешно ажурирање на лозинката.',
+    prof_toast_2fa_code: 'Внеси валиден 6-цифрен код.',
+    prof_toast_2fa_on: 'Двофакторската автентикација е вклучена!',
+    prof_toast_2fa_off: '2FA е исклучена.',
+    prof_toast_pref_saved: 'Поставката е зачувана.',
+    prof_toast_reset: 'Напредокот е ресетиран.',
+    prof_toast_pdf_soon: 'Преземањето во PDF доаѓа наскоро!',
+    prof_inspired_by: 'Инспирирано од:',
+    prof_video_xp: 'Видео XP',
+    prof_next_rank_in: 'До следниот ранг',
+    prof_max_rank: 'МАКС. РАНГ',
+    prof_renews: 'Се обновува на',
+    prof_download_notes: 'Преземи белешки од лекциите (PDF)',
+    prof_demo_secret: 'демо клуч',
+    prof_rhythm_title: 'Ритам на учење',
+    prof_rhythm_days_studied: 'дена учење',
+    prof_rhythm_empty: 'Твоите денови на учење ќе се појават тука штом ќе почнеш лекција.',
+    prof_rhythm_less: 'Помалку',
+    prof_rhythm_more: 'Повеќе',
+    prof_rhythm_this_week: 'Оваа недела',
+    prof_records_title: 'Лични рекорди',
+    prof_rec_total_time: 'Вкупно вложено време',
+    prof_rec_longest_streak: 'Најдолга серија',
+    prof_rec_days: 'дена',
+    prof_rec_best_quiz: 'Најдобар резултат на квиз',
+    prof_rec_favourite_era: 'Најмногу изучувана епоха',
+    prof_rec_perfect_quizzes: 'Совршени квизови',
+    prof_rec_best_day: 'Најдобар ден',
+    prof_milestones_title: 'Најблиски достигнувања',
+    unit_day_one: 'ден',
+    unit_day_few: 'дена',
+    unit_day_many: 'дена',
+    streak_start_today: 'Започни ја својата серија денес!',
+    level_short: 'Ниво',
+    level_label: 'Ниво',
+    level_xp_to: 'XP до ниво',
     flash_shuffle: 'Измешај', flash_answer: 'Одговор', flash_no_cards: 'Нема картички за овој филтер.',
     prof_reset_btn: 'Врати',
     // Profile Settings

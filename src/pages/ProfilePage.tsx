@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Crown, Download, Bookmark, Shield, Bell, Mail, KeyRound, Smartphone, Eye, EyeOff, Clock, Star, Camera, Trash2 } from 'lucide-react';
+import { Crown, Download, Bookmark, Shield, Bell, Mail, KeyRound, Smartphone, Eye, EyeOff, Clock, Star, Camera, Trash2, CalendarDays, Trophy, Target } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,6 +27,10 @@ import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslation
 import { ERAS } from '@/features/content/erasData';
 import { getVideoXp } from '@/features/videoReview/videoReviewStore';
 import { getChessRank, getXpToNextRank } from '@/features/ranks/chessRanks';
+import { studyHeatmap, personalRecords, nextMilestones } from '@/features/progress/profileStats';
+import { formatDuration } from '@/features/progress/timeTracking';
+import { getTranslatedAchievement } from '@/i18n/achievementTranslations';
+import { getTranslatedRank } from '@/i18n/rankTranslations';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -34,6 +38,25 @@ const ERA_COLOR: Record<string, string> = {
   ancient: 'text-amber-400', 'middle-ages': 'text-blue-400',
   'early-modern': 'text-emerald-400', modern: 'text-rose-400',
 };
+
+/** Colour ramp for the study heatmap, index = HeatmapDay.level. */
+const HEAT = [
+  'bg-border/60',
+  'bg-primary/25',
+  'bg-primary/45',
+  'bg-primary/70',
+  'bg-primary',
+] as const;
+
+function RecordStat({ label, value, sub }: { label: string; value: string; sub?: string }) {
+  return (
+    <div>
+      <div className="text-base font-bold font-heading leading-tight">{value}</div>
+      <div className="text-[11px] text-muted-foreground leading-tight">{label}</div>
+      {sub && <div className="text-[10px] text-muted-foreground/70 leading-tight mt-0.5">{sub}</div>}
+    </div>
+  );
+}
 
 function FakeQRCode() {
   const pattern = [
@@ -85,13 +108,13 @@ export default function ProfilePage() {
   function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { toast.error('Image must be under 2 MB.'); return; }
+    if (file.size > 2 * 1024 * 1024) { toast.error(t.prof_toast_image_too_big); return; }
     const reader = new FileReader();
     reader.onload = ev => {
       const url = ev.target?.result as string;
       setAvatarUrl(url);
       localStorage.setItem(avatarKey, url);
-      toast.success('Profile picture updated!');
+      toast.success(t.prof_toast_avatar_set);
     };
     reader.readAsDataURL(file);
   }
@@ -99,7 +122,7 @@ export default function ProfilePage() {
   function removeAvatar() {
     setAvatarUrl('');
     localStorage.removeItem(avatarKey);
-    toast.success('Profile picture removed.');
+    toast.success(t.prof_toast_avatar_removed);
   }
 
   const [newName, setNewName] = useState(currentUser?.username ?? '');
@@ -139,53 +162,61 @@ export default function ProfilePage() {
   const videoXp = getVideoXp(currentUser.id);
   const chessRank = getChessRank(videoXp);
   const rankProgress = getXpToNextRank(videoXp);
+  // The rank's name, blurb and namesake all rendered in English regardless of
+  // the chosen language; fall back to the English source only when untranslated.
+  const rankText = getTranslatedRank(chessRank.id, language) ?? chessRank;
 
   const bookmarkedLessons = LESSONS.filter(l => getBookmarks(currentUser.id).includes(l.id));
 
+  const heatmap = studyHeatmap(currentUser.id, 12);
+  const records = personalRecords(currentUser.id, progress);
+  const milestones = nextMilestones(progress, 4);
+  const favouriteEra = records.favouriteEraId ? ERAS.find(e => e.id === records.favouriteEraId) : undefined;
+
   function saveName() {
-    if (!newName.trim() || newName.length < 3) { toast.error('Username must be at least 3 characters.'); return; }
-    updateUsername(newName.trim()); toast.success('Username updated!');
+    if (!newName.trim() || newName.length < 3) { toast.error(t.prof_toast_name_short); return; }
+    updateUsername(newName.trim()); toast.success(t.prof_toast_name_saved);
   }
 
   async function saveEmail() {
-    if (!newEmail.includes('@')) { toast.error('Enter a valid email.'); return; }
+    if (!newEmail.includes('@')) { toast.error(t.prof_toast_email_invalid); return; }
     setEmailLoading(true);
     const result = await updateEmail(newEmail, emailPassword);
     setEmailLoading(false);
-    if (result.success) { toast.success('Email updated!'); setNewEmail(''); setEmailPassword(''); }
-    else toast.error(result.error ?? 'Failed to update email.');
+    if (result.success) { toast.success(t.prof_toast_email_saved); setNewEmail(''); setEmailPassword(''); }
+    else toast.error(result.error ?? t.prof_toast_email_failed);
   }
 
   async function savePassword() {
-    if (newPwd.length < 6) { toast.error('New password must be at least 6 characters.'); return; }
-    if (newPwd !== confPwd) { toast.error('Passwords do not match.'); return; }
+    if (newPwd.length < 6) { toast.error(t.prof_toast_pwd_short); return; }
+    if (newPwd !== confPwd) { toast.error(t.prof_toast_pwd_mismatch); return; }
     setPwdLoading(true);
     const result = await updatePassword(curPwd, newPwd);
     setPwdLoading(false);
-    if (result.success) { toast.success('Password updated!'); setCurPwd(''); setNewPwd(''); setConfPwd(''); }
-    else toast.error(result.error ?? 'Failed to update password.');
+    if (result.success) { toast.success(t.prof_toast_pwd_saved); setCurPwd(''); setNewPwd(''); setConfPwd(''); }
+    else toast.error(result.error ?? t.prof_toast_pwd_failed);
   }
 
   function enable2FA() {
-    if (!/^\d{6}$/.test(twoFaCode)) { toast.error('Enter a valid 6-digit code.'); return; }
+    if (!/^\d{6}$/.test(twoFaCode)) { toast.error(t.prof_toast_2fa_code); return; }
     localStorage.setItem(twoFaKey, 'enabled');
     setTwoFaEnabled(true);
     setShow2FASetup(false);
     setTwoFaCode('');
-    toast.success('Two-factor authentication enabled!');
+    toast.success(t.prof_toast_2fa_on);
   }
 
   function disable2FA() {
     localStorage.removeItem(twoFaKey);
     setTwoFaEnabled(false);
-    toast.success('2FA disabled.');
+    toast.success(t.prof_toast_2fa_off);
   }
 
   function saveNotif(key: keyof typeof defaultNotif, val: boolean) {
     const updated = { ...notif, [key]: val };
     setNotif(updated);
     localStorage.setItem(notifKey, JSON.stringify(updated));
-    toast.success('Preference saved.');
+    toast.success(t.prof_toast_pref_saved);
   }
 
   return (
@@ -198,7 +229,7 @@ export default function ProfilePage() {
             <p className="text-sm text-muted-foreground">{t.prof_2fa_scan}</p>
             <div className="flex justify-center"><FakeQRCode /></div>
             <div className="p-3 rounded-lg bg-muted text-xs font-mono text-center break-all select-all text-muted-foreground">
-              JBSWY3DPEHPK3PXP (demo secret)
+              JBSWY3DPEHPK3PXP ({t.prof_demo_secret})
             </div>
             <div>
               <Label className="text-xs mb-1 block">{t.prof_2fa_enter_code}</Label>
@@ -249,7 +280,7 @@ export default function ProfilePage() {
                         {tier === 'pro' && <Badge variant="default" className="text-xs">Pro Learner</Badge>}
                       </div>
                       <p className="text-sm text-muted-foreground">{currentUser.email}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">Member since {new Date(currentUser.createdAt).toLocaleDateString()}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{t.prof_member_since} {new Date(currentUser.createdAt).toLocaleDateString()}</p>
                     </div>
                   </div>
                   <LevelProgress xp={progress.xp} />
@@ -265,14 +296,14 @@ export default function ProfilePage() {
             <Card className={`border ${chessRank.borderColor} ${chessRank.bgColor}`}>
               <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2">
                 <span className="text-lg">{chessRank.icon}</span>
-                {t.prof_historical_rank}: <span className={chessRank.color}>{chessRank.name}</span>
+                {t.prof_historical_rank}: <span className={chessRank.color}>{rankText.name}</span>
               </CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                <p className="text-xs text-muted-foreground">{chessRank.desc}</p>
-                <p className="text-xs text-muted-foreground">Inspired by: <span className="text-foreground font-medium">{chessRank.historicalFigure}</span></p>
+                <p className="text-xs text-muted-foreground">{rankText.desc}</p>
+                <p className="text-xs text-muted-foreground">{t.prof_inspired_by} <span className="text-foreground font-medium">{rankText.historicalFigure}</span></p>
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span>Video XP: <span className={`font-bold ${chessRank.color}`}>{videoXp.toLocaleString()}</span></span>
-                  {rankProgress ? <span>Next rank in <span className="font-medium text-foreground">{(rankProgress.needed - rankProgress.current).toLocaleString()} XP</span></span> : <span className={`font-bold ${chessRank.color}`}>MAX RANK</span>}
+                  <span>{t.prof_video_xp}: <span className={`font-bold ${chessRank.color}`}>{videoXp.toLocaleString()}</span></span>
+                  {rankProgress ? <span>{t.prof_next_rank_in} <span className="font-medium text-foreground">{(rankProgress.needed - rankProgress.current).toLocaleString()} XP</span></span> : <span className={`font-bold ${chessRank.color}`}>{t.prof_max_rank}</span>}
                 </div>
                 {rankProgress && (
                   <div className="h-1.5 bg-border rounded-full overflow-hidden">
@@ -282,16 +313,105 @@ export default function ProfilePage() {
               </CardContent>
             </Card>
 
+            {/* ── Study rhythm: 12 weeks of real, measured activity ── */}
+            <Card>
+              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2">
+                <CalendarDays className="w-4 h-4 text-primary" />{t.prof_rhythm_title}
+                <span className="ml-auto text-xs font-normal text-muted-foreground">
+                  {records.daysActive} {t.prof_rhythm_days_studied}
+                </span>
+              </CardTitle></CardHeader>
+              <CardContent className="space-y-2">
+                {records.totalSeconds === 0 ? (
+                  <p className="text-xs text-muted-foreground">{t.prof_rhythm_empty}</p>
+                ) : (
+                  <>
+                    <div className="overflow-x-auto pb-1">
+                      <div className="grid grid-flow-col grid-rows-7 gap-[3px] w-max">
+                        {heatmap.map(d => (
+                          <div
+                            key={d.date}
+                            title={`${d.date} — ${formatDuration(d.seconds)}`}
+                            className={`w-3 h-3 rounded-[3px] ${HEAT[d.level]}`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                      <span>{t.prof_rhythm_less}</span>
+                      {([0, 1, 2, 3, 4] as const).map(l => <div key={l} className={`w-3 h-3 rounded-[3px] ${HEAT[l]}`} />)}
+                      <span>{t.prof_rhythm_more}</span>
+                      <span className="ml-auto">
+                        {t.prof_rhythm_this_week}: <strong className="text-foreground">{formatDuration(records.weekSeconds)}</strong>
+                      </span>
+                    </div>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* ── Personal records ── */}
+            <Card>
+              <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2">
+                <Trophy className="w-4 h-4 text-amber-400" />{t.prof_records_title}
+              </CardTitle></CardHeader>
+              <CardContent className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-3">
+                <RecordStat label={t.prof_rec_total_time} value={formatDuration(records.totalSeconds)} />
+                <RecordStat label={t.prof_rec_longest_streak} value={`${records.longestStreak} ${t.prof_rec_days}`} />
+                <RecordStat
+                  label={t.prof_rec_best_quiz}
+                  value={records.bestQuizScore === null ? '—' : `${records.bestQuizScore}%`}
+                />
+                <RecordStat
+                  label={t.prof_rec_favourite_era}
+                  value={favouriteEra ? getTranslatedEra(favouriteEra, language).shortName : '—'}
+                  sub={records.favouriteEraSeconds > 0 ? formatDuration(records.favouriteEraSeconds) : undefined}
+                />
+                <RecordStat label={t.prof_rec_perfect_quizzes} value={String(records.perfectQuizzes)} />
+                <RecordStat
+                  label={t.prof_rec_best_day}
+                  value={records.bestDay ? formatDuration(records.bestDay.seconds) : '—'}
+                  sub={records.bestDay ? new Date(records.bestDay.date + 'T12:00:00').toLocaleDateString() : undefined}
+                />
+              </CardContent>
+            </Card>
+
+            {/* ── Closest achievements, so the list becomes a goal ── */}
+            {milestones.length > 0 && (
+              <Card>
+                <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2">
+                  <Target className="w-4 h-4 text-primary" />{t.prof_milestones_title}
+                </CardTitle></CardHeader>
+                <CardContent className="space-y-3">
+                  {milestones.map(m => (
+                    <div key={m.achievement.id}>
+                      <div className="flex justify-between items-baseline text-xs mb-1 gap-2">
+                        <span className="font-medium truncate">
+                          {getTranslatedAchievement(m.achievement.id, language)?.title ?? m.achievement.title}
+                        </span>
+                        <span className="text-muted-foreground shrink-0 tabular-nums">
+                          {m.current.toLocaleString()} / {m.target.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="h-1.5 rounded-full bg-border overflow-hidden">
+                        <div className="h-full rounded-full bg-primary transition-all duration-700" style={{ width: `${m.pct}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            )}
+
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center justify-between">{t.prof_plan} <Button size="sm" variant="outline" onClick={() => navigate('/pricing')}>{t.prof_change_plan}</Button></CardTitle></CardHeader>
               <CardContent className="flex items-center gap-3">
                 <Crown className={`w-5 h-5 ${tier === 'master' ? 'text-amber-400' : tier === 'pro' ? 'text-primary' : 'text-muted-foreground'}`} />
                 <span className="font-medium">{tierLabel[tier]}</span>
-                {subscription?.renewsAt && <span className="text-xs text-muted-foreground ml-auto">Renews {new Date(subscription.renewsAt).toLocaleDateString()}</span>}
+                {subscription?.renewsAt && <span className="text-xs text-muted-foreground ml-auto">{t.prof_renews} {new Date(subscription.renewsAt).toLocaleDateString()}</span>}
               </CardContent>
             </Card>
             {tier === 'master' && (
-              <Button variant="outline" className="gap-2 w-full" onClick={() => toast.info('PDF download coming soon!')}><Download className="w-4 h-4" />Download Lesson Notes (PDF)</Button>
+              <Button variant="outline" className="gap-2 w-full" onClick={() => toast.info(t.prof_toast_pdf_soon)}><Download className="w-4 h-4" />{t.prof_download_notes}</Button>
             )}
           </TabsContent>
 
@@ -461,7 +581,7 @@ export default function ProfilePage() {
                     <AlertDialogTrigger asChild><Button variant="destructive" size="sm">{t.prof_reset_btn}</Button></AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader><AlertDialogTitle>{t.prof_reset_confirm}</AlertDialogTitle><AlertDialogDescription>{t.prof_reset_confirm_desc}</AlertDialogDescription></AlertDialogHeader>
-                      <AlertDialogFooter><AlertDialogCancel>{t.btn_cancel}</AlertDialogCancel><AlertDialogAction className="bg-destructive text-destructive-foreground" onClick={() => { resetProgress(); toast.success('Progress reset.'); }}>{t.prof_reset_yes}</AlertDialogAction></AlertDialogFooter>
+                      <AlertDialogFooter><AlertDialogCancel>{t.btn_cancel}</AlertDialogCancel><AlertDialogAction className="bg-destructive text-destructive-foreground" onClick={() => { resetProgress(); toast.success(t.prof_toast_reset); }}>{t.prof_reset_yes}</AlertDialogAction></AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
                 </div>
