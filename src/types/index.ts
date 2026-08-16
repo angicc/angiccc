@@ -72,5 +72,9 @@ export type AchievementCondition =
   | { type: 'debate_wins'; count: number }
   | { type: 'analysis_passes'; count: number }
   | { type: 'analysis_aplus' }
-  | { type: 'all_lessons_complete' };
+  | { type: 'all_lessons_complete' }
+  // These read fields UserProgress already tracked but no achievement rewarded.
+  | { type: 'video_xp'; amount: number }
+  | { type: 'quizzes_taken'; count: number }
+  | { type: 'level_reached'; level: number };
 export interface Achievement { id: string; title: string; description: string; icon: string; xpBonus: number; condition: AchievementCondition; }

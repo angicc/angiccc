@@ -1,8 +1,7 @@
 import {
   BookOpen, GraduationCap, Award, Trophy, Flame, Zap, Star, MessageSquare, Map,
   BookMarked, Scroll, Library, Landmark, Globe, Crown, Medal, Shield, Gem, Sparkles,
-  Diamond, Brain, Footprints, Church, Compass, Swords, Feather, PenTool, Quote, Scale, BadgeCheck,
-} from 'lucide-react';
+  Diamond, Brain, Footprints, Church, Compass, Swords, Feather, PenTool, Quote, Scale, BadgeCheck, Moon, Sunrise, CalendarCheck, TrendingUp, Target, ClipboardCheck, MessagesSquare, Podcast, Clapperboard, Projector } from 'lucide-react';
 import type { Achievement } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -11,6 +10,7 @@ const ICONS: Record<string, React.ComponentType<{className?: string}>> = {
   BookOpen, GraduationCap, Award, Trophy, Flame, Zap, Star, MessageSquare, Map,
   BookMarked, Scroll, Library, Landmark, Globe, Crown, Medal, Shield, Gem, Sparkles,
   Diamond, Brain, Footprints, Church, Compass, Swords, Feather, PenTool, Quote, Scale, BadgeCheck,
+  Moon, Sunrise, CalendarCheck, TrendingUp, Target, ClipboardCheck, MessagesSquare, Podcast, Clapperboard, Projector,
 };
 export function AchievementCard({ achievement, unlocked, compact = false }: { achievement: Achievement; unlocked: boolean; compact?: boolean }) {
   const { language, t } = useLanguage();

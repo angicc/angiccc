@@ -73,6 +73,31 @@ export const ACHIEVEMENTS: Achievement[] = [
   { id: 'analysis-15',  title: 'Rhetorician',          description: 'Pass 15 Clio lesson analyses',                  icon: 'Quote',         xpBonus: 300, condition: { type: 'analysis_passes', count: 15 } },
   { id: 'analysis-40',  title: 'Master of Argument',   description: 'Pass 40 Clio lesson analyses',                  icon: 'Scale',         xpBonus: 600, condition: { type: 'analysis_passes', count: 40 } },
   { id: 'analysis-aplus', title: "Clio's Favorite",    description: 'Earn an A+ on a lesson analysis',               icon: 'BadgeCheck',    xpBonus: 250, condition: { type: 'analysis_aplus' } },
+
+  // ── Long-haul goals ────────────────────────────────────────────────────────
+  // The ladders above stopped early: lessons ended at 60 of 132, streaks at 30
+  // days, XP at 10,000. A committed learner ran out of things to earn well
+  // before running out of curriculum.
+  { id: 'lessons-80',   title: 'Chronicler',           description: 'Complete 80 lessons',                           icon: 'Library',       xpBonus: 800,  condition: { type: 'lessons_complete', count: 80 } },
+  { id: 'lessons-100',  title: 'Keeper of Ages',       description: 'Complete 100 lessons',                          icon: 'Landmark',      xpBonus: 1200, condition: { type: 'lessons_complete', count: 100 } },
+  { id: 'streak-60',    title: 'Two Moons',            description: 'Keep a 60-day streak',                          icon: 'Moon',          xpBonus: 600,  condition: { type: 'streak', days: 60 } },
+  { id: 'streak-100',   title: 'Century of Days',      description: 'Keep a 100-day streak',                         icon: 'Sunrise',       xpBonus: 1000, condition: { type: 'streak', days: 100 } },
+  { id: 'streak-365',   title: 'A Year in History',    description: 'Keep a 365-day streak',                         icon: 'CalendarCheck', xpBonus: 2500, condition: { type: 'streak', days: 365 } },
+  { id: 'xp-25000',     title: 'Archivist',            description: 'Earn 25,000 XP',                                icon: 'Gem',           xpBonus: 1000, condition: { type: 'xp_total', amount: 25000 } },
+  { id: 'xp-50000',     title: 'Living Library',       description: 'Earn 50,000 XP',                                icon: 'Sparkles',      xpBonus: 2000, condition: { type: 'xp_total', amount: 50000 } },
+  { id: 'level-25',     title: 'Ascendant',            description: 'Reach level 25',                                icon: 'TrendingUp',    xpBonus: 750,  condition: { type: 'level_reached', level: 25 } },
+
+  // ── Breadth rather than depth ──────────────────────────────────────────────
+  { id: 'quiz-perfect-1', title: 'Flawless',           description: 'Score 100% on any era quiz',                    icon: 'Target',        xpBonus: 150,  condition: { type: 'quizzes_perfect_count', count: 1 } },
+  { id: 'quiz-perfect-6', title: 'Unerring',           description: 'Score 100% on 6 era quizzes',                   icon: 'Medal',         xpBonus: 900,  condition: { type: 'quizzes_perfect_count', count: 6 } },
+  { id: 'quizzes-10',   title: 'Well Examined',        description: 'Complete 10 quizzes',                           icon: 'ClipboardCheck', xpBonus: 300, condition: { type: 'quizzes_taken', count: 10 } },
+  { id: 'ai-200',       title: 'Clio\'s Confidant',    description: 'Exchange 200 messages with Clio',               icon: 'MessagesSquare', xpBonus: 500, condition: { type: 'ai_messages', count: 200 } },
+  { id: 'debate-15',    title: 'Voice of the Forum',   description: 'Win 15 philosopher debates',                    icon: 'Podcast',       xpBonus: 900,  condition: { type: 'debate_wins', count: 15 } },
+
+  // ── Video Review ───────────────────────────────────────────────────────────
+  // videoXp was already being recorded and never rewarded.
+  { id: 'video-500',    title: 'Screening Room',       description: 'Earn 500 XP from Video Review',                 icon: 'Clapperboard',  xpBonus: 250,  condition: { type: 'video_xp', amount: 500 } },
+  { id: 'video-2000',   title: 'Documentarian',        description: 'Earn 2,000 XP from Video Review',               icon: 'Projector',     xpBonus: 700,  condition: { type: 'video_xp', amount: 2000 } },
 ];
 
 export function checkAchievements(progress: UserProgress): Achievement[] {
@@ -94,5 +119,8 @@ function meetsCondition(c: AchievementCondition, p: UserProgress): boolean {
     case 'analysis_passes': return (p.analysisPasses ?? 0) >= c.count;
     case 'analysis_aplus': return (p.analysisBestScore ?? 0) >= 97;
     case 'all_lessons_complete': return p.completedLessons.length >= LESSONS.length;
+    case 'video_xp': return (p.videoXp ?? 0) >= c.amount;
+    case 'quizzes_taken': return p.completedQuizzes.length >= c.count;
+    case 'level_reached': return p.level >= c.level;
   }
 }

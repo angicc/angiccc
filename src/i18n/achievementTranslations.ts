@@ -178,6 +178,81 @@ const ACHIEVEMENT_TRANS: Record<string, Partial<Record<ContentLang, { title: str
     ru: { title: 'Любимец Клио', description: 'Получи A+ за анализ урока' },
     mk: { title: 'Миленик на Клио', description: 'Освои A+ на анализа на лекција' },
   },
+  'lessons-80': {
+    es: { title: 'Cronista', description: 'Completa 80 lecciones' },
+    ru: { title: 'Летописец', description: 'Пройди 80 уроков' },
+    mk: { title: 'Хроничар', description: 'Заврши 80 лекции' },
+  },
+  'lessons-100': {
+    es: { title: 'Guardián de las Eras', description: 'Completa 100 lecciones' },
+    ru: { title: 'Хранитель Эпох', description: 'Пройди 100 уроков' },
+    mk: { title: 'Чувар на Епохите', description: 'Заврши 100 лекции' },
+  },
+  'streak-60': {
+    es: { title: 'Dos Lunas', description: 'Mantén una racha de 60 días' },
+    ru: { title: 'Две Луны', description: 'Держи серию в 60 дней' },
+    mk: { title: 'Две Месечини', description: 'Одржи серија од 60 дена' },
+  },
+  'streak-100': {
+    es: { title: 'Un Siglo de Días', description: 'Mantén una racha de 100 días' },
+    ru: { title: 'Сто Дней', description: 'Держи серию в 100 дней' },
+    mk: { title: 'Стотина Дена', description: 'Одржи серија од 100 дена' },
+  },
+  'streak-365': {
+    es: { title: 'Un Año en la Historia', description: 'Mantén una racha de 365 días' },
+    ru: { title: 'Год в Истории', description: 'Держи серию в 365 дней' },
+    mk: { title: 'Година во Историјата', description: 'Одржи серија од 365 дена' },
+  },
+  'xp-25000': {
+    es: { title: 'Archivero', description: 'Gana 25.000 XP' },
+    ru: { title: 'Архивариус', description: 'Заработай 25 000 XP' },
+    mk: { title: 'Архивар', description: 'Освои 25.000 XP' },
+  },
+  'xp-50000': {
+    es: { title: 'Biblioteca Viviente', description: 'Gana 50.000 XP' },
+    ru: { title: 'Живая Библиотека', description: 'Заработай 50 000 XP' },
+    mk: { title: 'Жива Библиотека', description: 'Освои 50.000 XP' },
+  },
+  'level-25': {
+    es: { title: 'Ascendente', description: 'Alcanza el nivel 25' },
+    ru: { title: 'Восходящий', description: 'Достигни 25-го уровня' },
+    mk: { title: 'Возвишен', description: 'Достигни ниво 25' },
+  },
+  'quiz-perfect-1': {
+    es: { title: 'Impecable', description: 'Consigue el 100 % en un cuestionario de era' },
+    ru: { title: 'Безупречно', description: 'Набери 100 % в викторине эпохи' },
+    mk: { title: 'Беспрекорно', description: 'Освои 100 % на квиз од епоха' },
+  },
+  'quiz-perfect-6': {
+    es: { title: 'Infalible', description: 'Consigue el 100 % en 6 cuestionarios de era' },
+    ru: { title: 'Непогрешимый', description: 'Набери 100 % в 6 викторинах эпох' },
+    mk: { title: 'Непогрешлив', description: 'Освои 100 % на 6 квизови од епохи' },
+  },
+  'quizzes-10': {
+    es: { title: 'Bien Examinado', description: 'Completa 10 cuestionarios' },
+    ru: { title: 'Испытанный', description: 'Пройди 10 викторин' },
+    mk: { title: 'Добро Испитан', description: 'Заврши 10 квизови' },
+  },
+  'ai-200': {
+    es: { title: 'Confidente de Clio', description: 'Intercambia 200 mensajes con Clio' },
+    ru: { title: 'Доверенный Клио', description: 'Обменяйся 200 сообщениями с Клио' },
+    mk: { title: 'Доверник на Клио', description: 'Размени 200 пораки со Клио' },
+  },
+  'debate-15': {
+    es: { title: 'Voz del Foro', description: 'Gana 15 debates filosóficos' },
+    ru: { title: 'Голос Форума', description: 'Победи в 15 философских дебатах' },
+    mk: { title: 'Глас на Форумот', description: 'Победи во 15 филозофски дебати' },
+  },
+  'video-500': {
+    es: { title: 'Sala de Proyección', description: 'Gana 500 XP en Reseña de Vídeo' },
+    ru: { title: 'Просмотровый Зал', description: 'Заработай 500 XP в Видеоразборе' },
+    mk: { title: 'Проекциска Сала', description: 'Освои 500 XP во Видео Преглед' },
+  },
+  'video-2000': {
+    es: { title: 'Documentalista', description: 'Gana 2.000 XP en Reseña de Vídeo' },
+    ru: { title: 'Документалист', description: 'Заработай 2 000 XP в Видеоразборе' },
+    mk: { title: 'Документарист', description: 'Освои 2.000 XP во Видео Преглед' },
+  },
 };
 
 
@@ -324,6 +399,66 @@ const ACHIEVEMENT_TRANS_DEFR: Record<string, Partial<Record<ContentLang, { title
   'analysis-aplus': {
     de: { title: 'Klios Liebling', description: 'Erhalte ein A+ für eine Lektionsanalyse' },
     fr: { title: 'Favori de Clio', description: 'Obtiens un A+ à une analyse de leçon' },
+  },
+  'lessons-80': {
+    de: { title: 'Chronist', description: 'Schließe 80 Lektionen ab' },
+    fr: { title: 'Chroniqueur', description: 'Termine 80 leçons' },
+  },
+  'lessons-100': {
+    de: { title: 'Hüter der Epochen', description: 'Schließe 100 Lektionen ab' },
+    fr: { title: 'Gardien des Époques', description: 'Termine 100 leçons' },
+  },
+  'streak-60': {
+    de: { title: 'Zwei Monde', description: 'Halte eine Serie von 60 Tagen' },
+    fr: { title: 'Deux Lunes', description: 'Maintiens une série de 60 jours' },
+  },
+  'streak-100': {
+    de: { title: 'Hundert Tage', description: 'Halte eine Serie von 100 Tagen' },
+    fr: { title: 'Cent Jours', description: 'Maintiens une série de 100 jours' },
+  },
+  'streak-365': {
+    de: { title: 'Ein Jahr Geschichte', description: 'Halte eine Serie von 365 Tagen' },
+    fr: { title: 'Une Année d’Histoire', description: 'Maintiens une série de 365 jours' },
+  },
+  'xp-25000': {
+    de: { title: 'Archivar', description: 'Verdiene 25.000 XP' },
+    fr: { title: 'Archiviste', description: 'Gagne 25 000 XP' },
+  },
+  'xp-50000': {
+    de: { title: 'Lebende Bibliothek', description: 'Verdiene 50.000 XP' },
+    fr: { title: 'Bibliothèque Vivante', description: 'Gagne 50 000 XP' },
+  },
+  'level-25': {
+    de: { title: 'Aufsteigend', description: 'Erreiche Stufe 25' },
+    fr: { title: 'Ascendant', description: 'Atteins le niveau 25' },
+  },
+  'quiz-perfect-1': {
+    de: { title: 'Makellos', description: 'Erreiche 100 % in einem Epochen-Quiz' },
+    fr: { title: 'Sans Faute', description: 'Obtiens 100 % à un quiz d’époque' },
+  },
+  'quiz-perfect-6': {
+    de: { title: 'Unfehlbar', description: 'Erreiche 100 % in 6 Epochen-Quiz' },
+    fr: { title: 'Infaillible', description: 'Obtiens 100 % à 6 quiz d’époque' },
+  },
+  'quizzes-10': {
+    de: { title: 'Gut Geprüft', description: 'Schließe 10 Quiz ab' },
+    fr: { title: 'Bien Éprouvé', description: 'Termine 10 quiz' },
+  },
+  'ai-200': {
+    de: { title: 'Clios Vertrauter', description: 'Tausche 200 Nachrichten mit Clio' },
+    fr: { title: 'Confident de Clio', description: 'Échange 200 messages avec Clio' },
+  },
+  'debate-15': {
+    de: { title: 'Stimme des Forums', description: 'Gewinne 15 Philosophen-Debatten' },
+    fr: { title: 'Voix du Forum', description: 'Remporte 15 débats philosophiques' },
+  },
+  'video-500': {
+    de: { title: 'Vorführraum', description: 'Verdiene 500 XP in der Video-Analyse' },
+    fr: { title: 'Salle de Projection', description: 'Gagne 500 XP en Analyse Vidéo' },
+  },
+  'video-2000': {
+    de: { title: 'Dokumentarist', description: 'Verdiene 2.000 XP in der Video-Analyse' },
+    fr: { title: 'Documentariste', description: 'Gagne 2 000 XP en Analyse Vidéo' },
   },
 };
 
