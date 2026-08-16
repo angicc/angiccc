@@ -131,7 +131,7 @@ export type TranslationKeys = {
   sq_title: string; sq_subtitle: string; sq_adaptive_desc: string;
   sq_questions_label: string; sq_xp_desc: string; sq_start: string;
   sq_weak_title: string; sq_algorithm: string; sq_no_weak: string;
-  sq_stats_title: string; sq_sessions: string; sq_avg_score: string;
+  sq_stats_title: string; sq_history_title: string; sq_history_open: string; sq_duration: string; sq_history_back: string; sq_sessions: string; sq_avg_score: string;
   sq_best_score: string; sq_total_xp: string; sq_era_breakdown: string;
   sq_no_sessions: string; sq_correct_label: string;
   sq_perf_era: string; sq_new: string; sq_back_intro: string;
@@ -504,7 +504,7 @@ const EN: TranslationKeys = {
     sq_xp_desc: '+15 XP per correct · up to +225 XP', sq_start: 'Start Smart Quiz',
     sq_weak_title: 'Detected Weak Areas', sq_algorithm: 'The algorithm will prioritise these areas this session.',
     sq_no_weak: 'No weak areas detected yet. Complete some era quizzes and the algorithm will target your weakest topics.',
-    sq_stats_title: 'Your Statistics', sq_sessions: 'Sessions', sq_avg_score: 'Avg Score',
+    sq_stats_title: 'Your Statistics', sq_history_title: 'Session History', sq_history_open: 'View every session', sq_duration: 'Duration', sq_history_back: 'Back to Smart Quiz', sq_sessions: 'Sessions', sq_avg_score: 'Avg Score',
     sq_best_score: 'Best Score', sq_total_xp: 'Total XP', sq_era_breakdown: 'Cumulative Era Performance',
     sq_no_sessions: 'No sessions yet — complete your first Smart Quiz!',
     sq_correct_label: 'correct', sq_perf_era: 'Performance by Era',
@@ -904,7 +904,7 @@ export const T: Translations = {
     sq_xp_desc: '+15 XP por respuesta correcta · hasta +225 XP', sq_start: 'Iniciar Quiz Inteligente',
     sq_weak_title: 'Áreas Débiles Detectadas', sq_algorithm: 'El algoritmo priorizará estas áreas en esta sesión.',
     sq_no_weak: 'Aún no se detectaron áreas débiles. ¡Completa algunos quizzes de era!',
-    sq_stats_title: 'Tus Estadísticas', sq_sessions: 'Sesiones', sq_avg_score: 'Puntuación Media',
+    sq_stats_title: 'Tus Estadísticas', sq_history_title: 'Historial de sesiones', sq_history_open: 'Ver todas las sesiones', sq_duration: 'Duración', sq_history_back: 'Volver al Quiz Inteligente', sq_sessions: 'Sesiones', sq_avg_score: 'Puntuación Media',
     sq_best_score: 'Mejor Puntuación', sq_total_xp: 'XP Total', sq_era_breakdown: 'Rendimiento Acumulado por Era',
     sq_no_sessions: 'Aún no hay sesiones — ¡completa tu primer Quiz Inteligente!',
     sq_correct_label: 'correcto', sq_perf_era: 'Rendimiento por Era',
@@ -1295,7 +1295,7 @@ export const T: Translations = {
     sq_xp_desc: '+15 XP за правильный ответ · до +225 XP', sq_start: 'Начать Умную Викторину',
     sq_weak_title: 'Обнаруженные Слабые Места', sq_algorithm: 'Алгоритм приоритизирует эти области в этой сессии.',
     sq_no_weak: 'Слабые места ещё не обнаружены. Пройдите викторины по эпохам!',
-    sq_stats_title: 'Ваша Статистика', sq_sessions: 'Сессий', sq_avg_score: 'Средний Балл',
+    sq_stats_title: 'Ваша Статистика', sq_history_title: 'История сессий', sq_history_open: 'Посмотреть все сессии', sq_duration: 'Длительность', sq_history_back: 'Назад к Умной Викторине', sq_sessions: 'Сессий', sq_avg_score: 'Средний Балл',
     sq_best_score: 'Лучший Балл', sq_total_xp: 'Всего XP', sq_era_breakdown: 'Накопленный результат по Эпохам',
     sq_no_sessions: 'Сессий пока нет — пройдите первую Умную Викторину!',
     sq_correct_label: 'верно', sq_perf_era: 'Результаты по Эпохам',
@@ -1686,7 +1686,7 @@ export const T: Translations = {
     sq_xp_desc: '+15 XP за точен одговор · до +225 XP', sq_start: 'Започни Паметен Квиз',
     sq_weak_title: 'Откриени Слаби Области', sq_algorithm: 'Алгоритмот ќе им даде приоритет на овие области во оваа сесија.',
     sq_no_weak: 'Сè уште нема открени слаби области. Заврши некои квизови за епохи!',
-    sq_stats_title: 'Твоја Статистика', sq_sessions: 'Сесии', sq_avg_score: 'Просечен Резултат',
+    sq_stats_title: 'Твоја Статистика', sq_history_title: 'Историја на сесии', sq_history_open: 'Види ги сите сесии', sq_duration: 'Времетраење', sq_history_back: 'Назад кон Паметниот Квиз', sq_sessions: 'Сесии', sq_avg_score: 'Просечен Резултат',
     sq_best_score: 'Најдобар Резултат', sq_total_xp: 'Вкупно XP', sq_era_breakdown: 'Вкупен Резултат по Епохи',
     sq_no_sessions: 'Сè уште нема сесии — заврши го твојот прв Паметен Квиз!',
     sq_correct_label: 'точно', sq_perf_era: 'Резултати по Епохи',

@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw, Brain, Target, Trophy, ChevronRight, MessageSquare, BarChart2, Star, BookOpen, Clock, TrendingUp, Crown } from 'lucide-react';
+import { History, ArrowLeft, Sparkles, CheckCircle2, XCircle, ArrowRight, RotateCcw, Brain, Target, Trophy, ChevronRight, MessageSquare, BarChart2, Star, BookOpen, Clock, TrendingUp, Crown } from 'lucide-react';
 import { streamChatResponse } from '@/services/aiGateway';
 import { recordMiss, eraGapFactor } from '@/features/progress/conceptGaps';
 import { recordQuizMissesToProfile } from '@/features/ai/learnerProfile';
@@ -91,7 +91,7 @@ function selectAdaptiveQuestions(
   return top;
 }
 
-type Phase = 'intro' | 'question' | 'explain' | 'done';
+type Phase = 'intro' | 'question' | 'explain' | 'done' | 'history';
 
 export default function SmartQuizPage() {
   const { progress, currentUser, refreshProgress } = useAuth();
@@ -117,6 +117,8 @@ export default function SmartQuizPage() {
   const [answers, setAnswers] = useState<boolean[]>([]);
   const [choices, setChoices] = useState<number[]>([]);
   const [xpEarned, setXpEarned] = useState(0);
+  // Wall-clock start of the active session, for the per-session history.
+  const startedAtRef = useRef<number>(0);
   const [plan, setPlan] = useState<StudyPlan | null>(null);
   const [clioRec, setClioRec] = useState(''); // plain-text fallback when the plan can't be parsed
   const [clioLoading, setClioLoading] = useState(false);
@@ -168,6 +170,7 @@ export default function SmartQuizPage() {
     setPlan(null);
     setClioRec('');
     setClioLoading(false);
+    startedAtRef.current = Date.now();
     setPhase('question');
   }
 
@@ -224,6 +227,7 @@ export default function SmartQuizPage() {
           total: SESSION_SIZE,
           xpEarned: xp,
           eraBreakdown: eraBreakdownForStats,
+          durationMs: startedAtRef.current ? Date.now() - startedAtRef.current : undefined,
         });
       }
       setPhase('done');
@@ -443,6 +447,85 @@ export default function SmartQuizPage() {
                           ))}
                         </div>
                       )}
+
+                      {/* The figures above are cumulative; this opens the
+                          per-session record behind them. */}
+                      <Button variant="outline" className="w-full gap-2" onClick={() => setPhase('history')}>
+                        <History className="w-4 h-4" />
+                        {t.sq_history_open}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                );
+              })()}
+            </motion.div>
+          )}
+
+          {/* ── SESSION HISTORY ── */}
+          {phase === 'history' && currentUser && (
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+              <Button variant="ghost" size="sm" className="gap-2" onClick={() => setPhase('intro')}>
+                <ArrowLeft className="w-4 h-4" /> {t.sq_history_back}
+              </Button>
+
+              {(() => {
+                // Newest first: the most recent attempt is what a learner looks
+                // for, and the list grows without bound over time.
+                const sessions = [...getSmartQuizStats(currentUser.id).sessions].reverse();
+                if (sessions.length === 0) {
+                  return (
+                    <Card><CardContent className="pt-5 pb-5">
+                      <p className="text-muted-foreground text-sm text-center py-4">{t.sq_no_sessions}</p>
+                    </CardContent></Card>
+                  );
+                }
+                return (
+                  <Card>
+                    <CardContent className="pt-5 pb-5 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <History className="w-4 h-4 text-violet-400" />
+                        <p className="font-semibold text-sm">{t.sq_history_title}</p>
+                        <span className="ml-auto text-xs text-muted-foreground">{sessions.length}</span>
+                      </div>
+
+                      {sessions.map((s, i) => {
+                        const pct = Math.round((s.score / s.total) * 100);
+                        const tone = pct >= 75 ? 'text-emerald-400' : pct >= 50 ? 'text-amber-400' : 'text-rose-400';
+                        const eras = Object.entries(s.eraBreakdown);
+                        return (
+                          <div key={`${s.date}-${i}`} className="p-3 rounded-xl border border-border bg-muted/20 space-y-2">
+                            <div className="flex items-center justify-between gap-3">
+                              <span className="text-xs text-muted-foreground">
+                                {new Date(s.date).toLocaleString(language === 'en' ? undefined : language)}
+                              </span>
+                              <span className={`font-heading font-bold text-sm ${tone}`}>
+                                {s.score}/{s.total} · {pct}%
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+                              <span className="text-primary">+{s.xpEarned} XP</span>
+                              {s.durationMs !== undefined && (
+                                <span>
+                                  {t.sq_duration}: {Math.floor(s.durationMs / 60000)}m {Math.round((s.durationMs % 60000) / 1000)}s
+                                </span>
+                              )}
+                            </div>
+                            {eras.length > 0 && (
+                              <div className="flex flex-wrap gap-1.5">
+                                {eras.map(([eraId, d]) => {
+                                  const e = ERAS.find(er => er.id === eraId);
+                                  const name = e ? getTranslatedEra(e, language).shortName : eraId;
+                                  return (
+                                    <span key={eraId} className="text-[10px] px-2 py-0.5 rounded-full border border-border bg-background/50">
+                                      {name} {d.correct}/{d.total}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </CardContent>
                   </Card>
                 );

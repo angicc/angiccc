@@ -4,6 +4,9 @@ export type SmartQuizSession = {
   total: number;     // always 15
   xpEarned: number;
   eraBreakdown: Record<string, { correct: number; total: number }>;
+  /** Wall-clock time from starting the session to answering the last question.
+   *  Optional: sessions recorded before this was tracked have no value. */
+  durationMs?: number;
 };
 
 export type SmartQuizStats = {
