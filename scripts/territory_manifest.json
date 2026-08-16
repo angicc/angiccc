@@ -350,6 +350,95 @@
       "exact": true,
       "fill_color": "#14b8a6",
       "stroke_color": "#2dd4bf"
+    },
+    {
+      "topic_id": "slavic-mission",
+      "entity_name": "Cyril & Methodius and the Slavic World",
+      "year": "900",
+      "year_start": 863,
+      "year_end": 1000,
+      "match": [
+        "Great Moravia",
+        "Bulgars",
+        "Byzantine Empire"
+      ],
+      "fill_color": "#a855f7",
+      "stroke_color": "#c084fc"
+    },
+    {
+      "topic_id": "viking-age",
+      "entity_name": "The Viking Age",
+      "year": "1000",
+      "year_start": 793,
+      "year_end": 1066,
+      "match": [
+        "Denmark-Norway",
+        "Sweden",
+        "Kyivan Rus"
+      ],
+      "fill_color": "#0ea5e9",
+      "stroke_color": "#38bdf8"
+    },
+    {
+      "topic_id": "tokugawa-japan",
+      "entity_name": "Tokugawa Japan",
+      "year": "1700",
+      "year_start": 1603,
+      "year_end": 1868,
+      "match": [
+        "Tokugawa Shogunate"
+      ],
+      "exact": true,
+      "fill_color": "#f43f5e",
+      "stroke_color": "#fb7185"
+    },
+    {
+      "topic_id": "ww1",
+      "entity_name": "World War I",
+      "year": "1914",
+      "year_start": 1914,
+      "year_end": 1918,
+      "match": [
+        "German Empire",
+        "Austro-Hungarian Empire",
+        "Ottoman Empire",
+        "France",
+        "Russian Empire",
+        "United Kingdom of Great Britain and Ireland",
+        "Serbia",
+        "Bulgaria"
+      ],
+      "fill_color": "#ef4444",
+      "stroke_color": "#f87171"
+    },
+    {
+      "topic_id": "ww2",
+      "entity_name": "World War II",
+      "year": "1938",
+      "year_start": 1939,
+      "year_end": 1945,
+      "match": [
+        "Germany",
+        "Italy",
+        "Empire of Japan",
+        "USSR",
+        "Hungary"
+      ],
+      "fill_color": "#dc2626",
+      "stroke_color": "#ef4444"
+    },
+    {
+      "topic_id": "cold-war",
+      "entity_name": "Cold War",
+      "year": "1960",
+      "year_start": 1947,
+      "year_end": 1991,
+      "match": [
+        "USSR",
+        "United States"
+      ],
+      "fill_color": "#6366f1",
+      "stroke_color": "#818cf8"
     }
   ]
 }
