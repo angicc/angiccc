@@ -273,7 +273,7 @@ export const MARKER_NAME_I18N: Record<string, MT> = {
   'Jorvik (York)': { es: 'Jorvik (York)', ru: 'Йорвик (Йорк)', mk: 'Јорвик (Јорк)', de: "Jorvik (York)", fr: "Jorvik (York)"  },
   'Dublin': { es: 'Dublín', ru: 'Дублин', mk: 'Даблин', de: "Dublin", fr: "Dublin"  },
   'Reykjavík (Iceland)': { es: 'Reikiavik (Islandia)', ru: 'Рейкьявик (Исландия)', mk: 'Рејкјавик (Исланд)', de: "Reykjavík (Island)", fr: "Reykjavík (Islande)"  },
-  'Brattahlíð (Greenland)': { es: 'Brattahlíð (Groenlandia)', ru: 'Браттахлид (Гренландия)', mk: 'Braтахлид (Гренланд)', de: "Brattahlíð (Grönland)", fr: "Brattahlíð (Groenland)"  },
+  'Brattahlíð (Greenland)': { es: 'Brattahlíð (Groenlandia)', ru: 'Браттахлид (Гренландия)', mk: 'Братахлид (Гренланд)', de: "Brattahlíð (Grönland)", fr: "Brattahlíð (Groenland)"  },
   "L'Anse aux Meadows": { es: "L'Anse aux Meadows", ru: 'Л\'Анс-о-Медоуз', mk: 'Л\'Анс о Медоуз', de: "L’Anse aux Meadows", fr: "L’Anse aux Meadows" },
   'Novgorod': { es: 'Nóvgorod', ru: 'Новгород', mk: 'Новгород', de: "Nowgorod", fr: "Novgorod"  },
   'Kiev': { es: 'Kiev', ru: 'Киев', mk: 'Киев', de: "Kiew", fr: "Kiev"  },

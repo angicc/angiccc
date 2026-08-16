@@ -68,7 +68,7 @@ export const QUIZ_TRANS_EXPANSION: Record<string, Partial<Record<ContentLang, QQ
   'aq28': {
     es: { question: 'La Biblioteca de Alejandría formaba parte de ¿qué institución académica mayor?', options: ['La Academia','El Liceo','El Museo (Mouseion)','La Estoa'], explanation: 'El Mouseion, institución de investigación dedicada a las Musas, albergaba la biblioteca y a sabios asalariados.' },
     ru: { question: 'Александрийская библиотека была частью какого более крупного учёного учреждения?', options: ['Академии','Ликея','Мусейона','Стои'], explanation: 'Мусейон — исследовательское учреждение, посвящённое Музам, — содержал библиотеку и учёных на жалованье.' },
-    mk: { question: 'Библиотеката во Александрија беше дел од која поголема научна институција?', options: ['Академијата','Ликejот','Мусеионот','Стоата'], explanation: 'Мусеионот, истражувачка институција посветена на Музите, ги содржеше библиотеката и платени научници.' },
+    mk: { question: 'Библиотеката во Александрија беше дел од која поголема научна институција?', options: ['Академијата','Ликејот','Мусеионот','Стоата'], explanation: 'Мусеионот, истражувачка институција посветена на Музите, ги содржеше библиотеката и платени научници.' },
   },
   'aq29': {
     es: { question: '¿Qué científico helenístico calculó la circunferencia de la Tierra usando sombras en Alejandría y Siena?', options: ['Arquímedes','Eratóstenes','Euclides','Hiparco'], explanation: 'La estimación geométrica de Eratóstenes (c.240 a.C.) se acercó asombrosamente al valor real.' },
@@ -228,7 +228,7 @@ export const QUIZ_TRANS_EXPANSION: Record<string, Partial<Record<ContentLang, QQ
   'mq25': {
     es: { question: 'Las victorias inglesas en Crécy y Agincourt se debieron en gran parte a ¿qué arma?', options: ['La ballesta','La pica','El arco largo','Los primeros mosquetes'], explanation: 'Los arqueros galeses e ingleses en masa disparaban mucho más rápido que las ballestas, triturando las cargas de caballería francesa.' },
     ru: { question: 'Английские победы при Креси и Азенкуре во многом обязаны какому оружию?', options: ['Арбалету','Пике','Длинному луку','Ранним мушкетам'], explanation: 'Массированные валлийские и английские лучники стреляли куда быстрее арбалетчиков, кроша атаки французской конницы.' },
-    mk: { question: 'Англиските победи кај Креси и Азенкур многу должеа на кое оружје?', options: ['Самострелот','Пиката','Долгиот лак','Раните мускети'], explanation: 'Масираните велшки и англиски стрелци пукаа многу побрзо од самострелите, мелejќи ги јуришите на француската коњаница.' },
+    mk: { question: 'Англиските победи кај Креси и Азенкур многу должеа на кое оружје?', options: ['Самострелот','Пиката','Долгиот лак','Раните мускети'], explanation: 'Масираните велшки и англиски стрелци пукаа многу побрзо од самострелите, мелејќи ги јуришите на француската коњаница.' },
   },
   'mq26': {
     es: { question: '¿Qué destino sufrió Juana de Arco en 1431?', options: ['Murió en batalla','Fue coronada regente','Fue quemada en la hoguera tras un juicio respaldado por Inglaterra','Se retiró a un convento'], explanation: 'Capturada y vendida a los ingleses, Juana fue condenada por herejía en Ruan; un nuevo juicio la exoneró en 1456.' },
@@ -433,7 +433,7 @@ export const QUIZ_TRANS_EXPANSION: Record<string, Partial<Record<ContentLang, QQ
   'eq31': {
     es: { question: '¿Qué batalla de 1600 abrió el camino de Tokugawa Ieyasu para gobernar Japón?', options: ['Nagashino','Okehazama','Sekigahara','Osaka'], explanation: 'La victoria en Sekigahara permitió a Ieyasu reclamar el shogunato en 1603 e iniciar 250 años de gobierno Tokugawa.' },
     ru: { question: 'Какая битва 1600 года открыла Токугаве Иэясу путь к власти над Японией?', options: ['Нагасино','Окэхадзама','Сэкигахара','Осака'], explanation: 'Победа при Сэкигахаре позволила Иэясу получить сёгунат в 1603 году и начать 250 лет правления Токугава.' },
-    mk: { question: 'Која битка во 1600 му го отвори патот на Токугава Иejасу да владее со Јапонија?', options: ['Нагашино','Окехазама','Секигахара','Осака'], explanation: 'Победата кај Секигахара му дозволи на Иejасу да го земе шогунатот во 1603 и да почне 250 години Токугава владеење.' },
+    mk: { question: 'Која битка во 1600 му го отвори патот на Токугава Иејасу да владее со Јапонија?', options: ['Нагашино','Окехазама','Секигахара','Осака'], explanation: 'Победата кај Секигахара му дозволи на Иејасу да го земе шогунатот во 1603 и да почне 250 години Токугава владеење.' },
   },
   'eq32': {
     es: { question: 'La política sakoku de Japón bajo el shogunato Tokugawa significaba...', options: ['Educación samurái obligatoria','Cierre casi total del país al contacto exterior','Expansión hacia Corea','Persecución del budismo'], explanation: 'Desde los años 1630, el comercio exterior se limitó sobre todo a holandeses y chinos en Nagasaki; los japoneses no podían salir.' },
@@ -1086,7 +1086,7 @@ export const QUIZ_TRANS_EXPANSION: Record<string, Partial<Record<ContentLang, QQ
   'preq26': {
     es: { question: 'El refinado instrumental de piedra neandertal, basado en una técnica de "núcleo preparado", se llama...', options: ['Olduvayense','Achelense','Musteriense','Auriñaciense'], explanation: 'La industria musteriense desprendía lascas de forma predeterminada a partir de núcleos cuidadosamente preparados.' },
     ru: { question: 'Изысканный неандертальский каменный набор, основанный на технике «подготовленного нуклеуса», называется...', options: ['Олдувайский','Ашёльский','Мустьерский','Ориньякский'], explanation: 'Мустьерская индустрия откалывала отщепы заранее заданной формы от тщательно подготовленных нуклеусов.' },
-    mk: { question: 'Рафинираниот неандерталски камен прибор, заснован на техника на „подготвено јадро“, се вика...', options: ['Олдувајски','Ашелски','Мустеријански','Оринjaшки'], explanation: 'Мустеријанската индустрија откршувала отсечоци со однапред определена форма од внимателно подготвени јадра.' },
+    mk: { question: 'Рафинираниот неандерталски камен прибор, заснован на техника на „подготвено јадро“, се вика...', options: ['Олдувајски','Ашелски','Мустеријански','Орињашки'], explanation: 'Мустеријанската индустрија откршувала отсечоци со однапред определена форма од внимателно подготвени јадра.' },
   },
   'preq27': {
     es: { question: '¿En qué cueva sobrevivió un neandertal durante años con un brazo atrofiado y una cuenca ocular aplastada, lo que implica que otros lo cuidaron?', options: ['Cueva de Shanidar','Lascaux','Cueva de Denisova','Chauvet'], explanation: 'El hombre de la cueva de Shanidar, en Irak, no podría haber cazado; su banda debió alimentarlo y cuidarlo — prueba de compasión.' },

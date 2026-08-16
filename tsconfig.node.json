@@ -8,6 +8,11 @@
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
+
+    /* vite.config.ts imports app data for its build-time i18n/asset guards,
+       and that data uses the '@' alias, so resolve it here too. */
+    "baseUrl": ".",
+    "paths": { "@/*": ["./src/*"] },
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,

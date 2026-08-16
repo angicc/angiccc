@@ -5,6 +5,8 @@ import { defineConfig, loadEnv, type Plugin } from 'vite';
 import { T, LANGUAGE_LABELS, type Language } from './src/i18n/translations';
 import { LESSON_LOCAL_BANNERS } from './src/features/content/lessonLocalBanners';
 import { TERRITORY_CARTOGRAPHY } from './src/features/content/territoryCartography';
+import { TIMELINE_EVENTS } from './src/features/content/timelineData';
+import { TIMELINE_TRANS } from './src/i18n/timelineTranslations';
 
 type ContentLang = Exclude<Language, 'en'>;
 
@@ -129,11 +131,54 @@ function translationCoveragePlugin(): Plugin {
         }
       }
 
+      // ── Content coverage, checked from the SOURCE DATA ────────────────────
+      // Checking "does every row in the translation table have all 5 languages"
+      // says nothing about rows that were never added. 46 timeline events had
+      // no entry at all and rendered English in every language while that check
+      // reported 100%. Always walk the data, never the table.
+      const contentLangs = langs.filter(l => l !== 'en') as ContentLang[];
+      const untranslatedEvents = TIMELINE_EVENTS.filter(e => {
+        const entry = TIMELINE_TRANS[e.id];
+        return !entry || contentLangs.some(l => !entry[l]);
+      });
+      if (untranslatedEvents.length > 0) {
+        problems.push(
+          `[i18n] ${untranslatedEvents.length}/${TIMELINE_EVENTS.length} timeline event(s) lack a full translation: ` +
+            `${untranslatedEvents.slice(0, 8).map(e => e.id).join(', ')}${untranslatedEvents.length > 8 ? '…' : ''}\n` +
+            `        These render English in every language. Add them to TIMELINE_TRANS.`
+        );
+      }
+
+      // ── Script purity ─────────────────────────────────────────────────────
+      // Latin transliteration fused into a Cyrillic word ("континуitet",
+      // "Токугава Иejасу") reads as gibberish and is invisible to any
+      // key-presence check.
+      const ALLOWED_LATIN = new Set(['Pax', 'Romana', 'Corpus', 'Juris', 'Civilis', 'Homo', 'sapiens', 'Historify', 'Clio', 'XP']);
+      const fused: string[] = [];
+      for (const file of fs.readdirSync(path.resolve(__dirname, 'src/i18n')).filter(f => f.endsWith('.ts'))) {
+        const text = fs
+          .readFileSync(path.resolve(__dirname, 'src/i18n', file), 'utf8')
+          .replace(/\\[nrt\\'"]/g, ' '); // escape sequences are not fused words
+        for (const m of text.matchAll(/[Ѐ-ӿ]*[A-Za-z]+[Ѐ-ӿ]+[A-Za-z]*|[Ѐ-ӿ]+[A-Za-z]+/g)) {
+          const latin = (m[0].match(/[A-Za-z]+/) ?? [''])[0];
+          if (latin.length < 2 || ALLOWED_LATIN.has(latin)) continue;
+          fused.push(`${file}: ${m[0]}`);
+        }
+      }
+      const uniqueFused = [...new Set(fused)];
+      if (uniqueFused.length > 0) {
+        problems.push(
+          `[i18n] ${uniqueFused.length} Cyrillic word(s) with Latin letters fused in:\n` +
+            uniqueFused.slice(0, 10).map(s => `          ${s}`).join('\n')
+        );
+      }
+
       if (problems.length > 0) {
         this.error(problems.join('\n'));
       }
       console.info(
-        `\x1b[32m✔\x1b[0m i18n: all ${langs.length} languages have 100% coverage (${enKeys.length} keys)`
+        `\x1b[32m✔\x1b[0m i18n: ${enKeys.length} UI keys × ${langs.length} languages, ` +
+          `${TIMELINE_EVENTS.length} timeline events fully translated, no fused-script words`
       );
     },
   };

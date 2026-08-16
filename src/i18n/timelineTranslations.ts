@@ -3,7 +3,7 @@ import type { Language } from './translations';
 type ContentLang = Exclude<Language, 'en'>;
 interface TimelineEventContent { title: string; description: string; }
 
-const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventContent>>> = {
+export const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventContent>>> = {
   't-cuneiform': {
     es: { title: 'Invención de la Escritura Cuneiforme', description: 'Los escribas sumerios en Uruk desarrollan el primer sistema de escritura del mundo, presionando marcas en forma de cuña en tablillas de arcilla para registrar inventarios de grano y comercio.' },
     ru: { title: 'Изобретение клинописи', description: 'Шумерские писцы в Уруке создают первую в мире систему письма, выдавливая клиновидные знаки на глиняных табличках для учёта зерна и торговли.' },
@@ -35,7 +35,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-democracy': {
     es: { title: 'Democracia Ateniense', description: 'Clístenes introduce la democracia en Atenas — el primer sistema democrático del mundo, donde los ciudadanos votan directamente sobre las leyes.' },
     ru: { title: 'Афинская демократия', description: 'Клисфен вводит демократию в Афинах — первую в мире демократическую систему управления, где граждане напрямую голосуют за законы.' },
-    mk: { title: 'Атинска Демократија', description: 'Клистен ја воведуваdemokratijata во Атина — прв демократски систем во светот, каде граѓаните директно гласаат за законите.' },
+    mk: { title: 'Атинска Демократија', description: 'Клистен ја воведува демократијата во Атина — прв демократски систем во светот, каде граѓаните директно гласаат за законите.' },
     de: { title: 'Die athenische Demokratie', description: 'Kleisthenes führt in Athen die Demokratie ein — das erste demokratische Regierungssystem der Welt, in dem die Bürger unmittelbar über die Gesetze abstimmen.' },
     fr: { title: 'La démocratie athénienne', description: 'Clisthène instaure la démocratie à Athènes — le premier système de gouvernement démocratique du monde, où les citoyens votent directement les lois.' }
   },
@@ -631,7 +631,7 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
   't-sekigahara': {
     es: { title: "Batalla de Sekigahara", description: "Tokugawa Ieyasu destruye a sus rivales en un solo día, poniendo fin a las guerras civiles Sengoku y abriendo 265 años de gobierno Tokugawa desde Edo." },
     ru: { title: "Битва при Сэкигахаре", description: "Токугава Иэясу за один день сокрушает соперников, завершая гражданские войны Сэнгоку и открывая 265 лет правления Токугава из Эдо." },
-    mk: { title: "Битката кај Секигахара", description: "Токугава Иejасу ги уништува своите ривали за еден ден, завршувајќи ги граѓанските војни Сенгоку и отворајќи 265 години Токугава владеење од Едо." },
+    mk: { title: "Битката кај Секигахара", description: "Токугава Иејасу ги уништува своите ривали за еден ден, завршувајќи ги граѓанските војни Сенгоку и отворајќи 265 години Токугава владеење од Едо." },
     de: { title: 'Die Schlacht von Sekigahara', description: 'Tokugawa Ieyasu vernichtet seine Rivalen an einem einzigen Tag, beendet die Sengoku-Bürgerkriege und eröffnet 265 Jahre Tokugawa-Herrschaft von Edo aus.' },
     fr: { title: 'La bataille de Sekigahara', description: 'Tokugawa Ieyasu anéantit ses rivaux en une seule journée, mettant fin aux guerres civiles de Sengoku et ouvrant 265 ans de gouvernement Tokugawa depuis Edo.' }
   },
@@ -804,6 +804,328 @@ const TIMELINE_TRANS: Record<string, Partial<Record<ContentLang, TimelineEventCo
     mk: { title: "Се крева Стоунхенџ", description: "Неолитски земјоделци на Рамнината Солсбери почнуваат да го градат и преградуваат Стоунхенџ, порамнувајќи колосални камења со сонцето на солстицијот — прагот на запишаната историја." },
     de: { title: "Stonehenge wird errichtet", description: "Neolithische Bauern in der Ebene von Salisbury beginnen, Stonehenge zu errichten und umzubauen und kolossale Steine auf die Sonnenwendsonne auszurichten — die Schwelle der aufgezeichneten Geschichte." },
     fr: { title: "Stonehenge est dressé", description: "Des agriculteurs néolithiques de la plaine de Salisbury commencent à bâtir et rebâtir Stonehenge, alignant des pierres colossales sur le soleil du solstice — le seuil de l'histoire consignée." },
+  },
+  't-byz-founding': {
+    es: { title: 'Dedicación de Constantinopla', description: 'Constantino consagra su Nueva Roma sobre el Bósforo — la ciudad que regirá el Imperio Romano de Oriente durante 1.123 años.' },
+    ru: { title: 'Освящение Константинополя', description: 'Константин освящает свой Новый Рим на Босфоре — город, которому суждено править Восточной Римской империей 1123 года.' },
+    mk: { title: 'Осветување на Константинопол', description: 'Константин го осветува својот Нов Рим на Босфорот — градот што ќе владее со Источната Римска империја 1.123 години.' },
+    de: { title: 'Die Weihe Konstantinopels', description: 'Konstantin weiht sein Neues Rom am Bosporus — die Stadt, die das Oströmische Reich 1.123 Jahre lang beherrschen wird.' },
+    fr: { title: 'La dédicace de Constantinople', description: 'Constantin consacre sa Nouvelle Rome sur le Bosphore — la ville qui régira l’Empire romain d’Orient pendant 1 123 ans.' }
+  },
+  't-byz-theodosian': {
+    es: { title: 'Las Murallas Teodosianas', description: 'Teodosio II ciñe Constantinopla con una triple muralla terrestre que rechazará a todos los sitiadores durante mil años.' },
+    ru: { title: 'Феодосиевы стены', description: 'Феодосий II опоясывает Константинополь тройной сухопутной стеной, которая тысячу лет будет отражать любую осаду.' },
+    mk: { title: 'Теодосиевите Ѕидини', description: 'Теодосиј II го опашува Константинопол со тројни копнени ѕидини што илјада години ќе го одбиваат секој опсадник.' },
+    de: { title: 'Die Theodosianischen Mauern', description: 'Theodosius II. umgürtet Konstantinopel mit einer dreifachen Landmauer, die tausend Jahre lang jeden Belagerer abwehren wird.' },
+    fr: { title: 'Les murailles de Théodose', description: 'Théodose II ceint Constantinople d’une triple muraille terrestre qui repoussera tous les assiégeants pendant mille ans.' }
+  },
+  't-byz-justinian': {
+    es: { title: 'El Código de Justiniano', description: 'Justiniano inicia el Corpus Juris Civilis — la codificación del derecho romano que aún sustenta los sistemas jurídicos de casi toda Europa.' },
+    ru: { title: 'Кодекс Юстиниана', description: 'Юстиниан начинает Corpus Juris Civilis — кодификацию римского права, которая до сих пор лежит в основе правовых систем большей части Европы.' },
+    mk: { title: 'Јустинијановиот Законик', description: 'Јустинијан го започнува Corpus Juris Civilis — кодификацијата на римското право што и денес лежи во основата на правните системи на поголемиот дел од Европа.' },
+    de: { title: 'Der Kodex Justinians', description: 'Justinian beginnt das Corpus Juris Civilis — die Kodifikation des römischen Rechts, die bis heute den Rechtssystemen fast ganz Europas zugrunde liegt.' },
+    fr: { title: 'Le Code de Justinien', description: 'Justinien entreprend le Corpus Juris Civilis — la codification du droit romain qui sous-tend encore les systèmes juridiques de presque toute l’Europe.' }
+  },
+  't-byz-hagia': {
+    es: { title: 'Se completa Santa Sofía', description: 'La Iglesia de la Santa Sabiduría de Justiniano, con su cúpula aparentemente suspendida del cielo, se convierte en la mayor iglesia del mundo — título que conserva 900 años.' },
+    ru: { title: 'Завершение Святой Софии', description: 'Церковь Святой Софии Юстиниана, чей купол словно подвешен с небес, становится крупнейшим храмом мира — и остаётся им 900 лет.' },
+    mk: { title: 'Завршена е Света Софија', description: 'Јустинијановата црква на Светата Мудрост, со купола како да виси од небото, станува најголемата црква во светот — титула што ја носи 900 години.' },
+    de: { title: 'Die Hagia Sophia wird vollendet', description: 'Justinians Kirche der Heiligen Weisheit, deren Kuppel wie vom Himmel herabzuhängen scheint, wird zur größten Kirche der Welt — ein Rang, den sie 900 Jahre behält.' },
+    fr: { title: 'Achèvement de Sainte-Sophie', description: 'L’église de la Sainte-Sagesse de Justinien, dont la coupole semble suspendue au ciel, devient la plus grande église du monde — un titre qu’elle gardera 900 ans.' }
+  },
+  't-byz-heraclius': {
+    es: { title: 'Heraclio derrota a Persia', description: 'Tras una generación de guerra apocalíptica, Heraclio aplasta a Persia y recupera la Vera Cruz — pero ambos imperios quedan exhaustos ante las conquistas árabes.' },
+    ru: { title: 'Ираклий побеждает Персию', description: 'После поколения апокалиптической войны Ираклий сокрушает Персию и возвращает Животворящий Крест — но обе империи истощены накануне арабских завоеваний.' },
+    mk: { title: 'Ираклиј ја поразува Персија', description: 'По цела генерација апокалиптична војна, Ираклиј ја крши Персија и го враќа Чесниот Крст — но и двете империи остануваат исцрпени пред арапските освојувања.' },
+    de: { title: 'Herakleios besiegt Persien', description: 'Nach einer Generation apokalyptischen Krieges zerschlägt Herakleios Persien und gewinnt das Wahre Kreuz zurück — doch beide Reiche stehen erschöpft vor den arabischen Eroberungen.' },
+    fr: { title: 'Héraclius défait la Perse', description: 'Après une génération de guerre apocalyptique, Héraclius écrase la Perse et récupère la Vraie Croix — mais les deux empires sortent épuisés, à la veille des conquêtes arabes.' }
+  },
+  't-byz-greekfire': {
+    es: { title: 'El fuego griego salva Constantinopla', description: 'Los brulotes bizantinos, armados con el fuego líquido secreto de Calínico, destruyen la flota árabe que asedia la capital — y de nuevo en 718.' },
+    ru: { title: 'Греческий огонь спасает Константинополь', description: 'Византийские огненосные корабли с тайным жидким огнём Каллиника уничтожают арабский флот, осаждающий столицу, — и повторяют это в 718 году.' },
+    mk: { title: 'Грчкиот оган го спасува Константинопол', description: 'Византиските огнени бродови, вооружени со тајниот течен оган на Калиник, ја уништуваат арапската флота што ја опседнува престолнината — и повторно во 718 година.' },
+    de: { title: 'Griechisches Feuer rettet Konstantinopel', description: 'Byzantinische Brandschiffe, bewaffnet mit dem geheimen Flüssigfeuer des Kallinikos, vernichten die arabische Flotte vor der Hauptstadt — und erneut im Jahr 718.' },
+    fr: { title: 'Le feu grégeois sauve Constantinople', description: 'Les brûlots byzantins, armés du feu liquide secret de Kallinikos, détruisent la flotte arabe qui assiège la capitale — et de nouveau en 718.' }
+  },
+  't-byz-iconoclasm': {
+    es: { title: 'Comienza la iconoclasia', description: 'León III arranca la imagen de Cristo de la puerta del palacio, abriendo un siglo de conflicto en torno a las imágenes sagradas.' },
+    ru: { title: 'Начало иконоборчества', description: 'Лев III срывает образ Христа с дворцовых ворот, открывая столетие борьбы вокруг святых икон.' },
+    mk: { title: 'Започнува иконоборството', description: 'Лав III го соборува ликот на Христос од дворската порта, отворајќи цел век судир околу светите икони.' },
+    de: { title: 'Der Bilderstreit beginnt', description: 'Leo III. lässt das Christusbild vom Palasttor reißen und eröffnet damit ein Jahrhundert des Streits um die heiligen Bilder.' },
+    fr: { title: 'Le début de l’iconoclasme', description: 'Léon III fait arracher l’image du Christ de la porte du palais, ouvrant un siècle de conflit autour des images saintes.' }
+  },
+  't-byz-triumph': {
+    es: { title: 'El Triunfo de la Ortodoxia', description: 'La emperatriz Teodora restaura definitivamente los iconos — algo que aún se celebra el primer domingo de la Gran Cuaresma en las iglesias ortodoxas del mundo entero.' },
+    ru: { title: 'Торжество Православия', description: 'Императрица Феодора окончательно восстанавливает почитание икон — событие, доныне празднуемое в первое воскресенье Великого поста во всём православном мире.' },
+    mk: { title: 'Триумфот на Православието', description: 'Царицата Теодора конечно ги враќа иконите — што и денес се слави првата недела од Големиот пост во православните цркви ширум светот.' },
+    de: { title: 'Der Triumph der Orthodoxie', description: 'Kaiserin Theodora stellt die Ikonen endgültig wieder her — bis heute am ersten Sonntag der Großen Fastenzeit in den orthodoxen Kirchen weltweit gefeiert.' },
+    fr: { title: 'Le Triomphe de l’Orthodoxie', description: 'L’impératrice Théodora rétablit définitivement les icônes — ce que l’on célèbre encore le premier dimanche du Grand Carême dans les églises orthodoxes du monde entier.' }
+  },
+  't-byz-cyril': {
+    es: { title: 'La misión de Cirilo y Metodio', description: 'Los hermanos de Tesalónica inventan el primer alfabeto eslavo y traducen las Escrituras al eslavo eclesiástico antiguo.' },
+    ru: { title: 'Миссия Кирилла и Мефодия', description: 'Братья из Фессалоник создают первую славянскую азбуку и переводят Писание на старославянский язык.' },
+    mk: { title: 'Мисијата на Кирил и Методиј', description: 'Браќата од Солун ја создаваат првата словенска азбука и го преведуваат Светото писмо на старословенски јазик.' },
+    de: { title: 'Die Mission von Kyrill und Method', description: 'Die Brüder aus Thessaloniki erfinden das erste slawische Alphabet und übersetzen die Schrift ins Altkirchenslawische.' },
+    fr: { title: 'La mission de Cyrille et Méthode', description: 'Les frères de Thessalonique inventent le premier alphabet slave et traduisent les Écritures en vieux-slave liturgique.' }
+  },
+  't-byz-ohrid': {
+    es: { title: 'La Escuela Literaria de Ohrid', description: 'La escuela de Clemente de Ohrid enseña a miles de alumnos y ayuda a dar forma al alfabeto cirílico — Macedonia se convierte en cuna de la alfabetización eslava.' },
+    ru: { title: 'Охридская книжная школа', description: 'Школа Климента Охридского обучает тысячи учеников и помогает сложиться кириллице — Македония становится колыбелью славянской грамотности.' },
+    mk: { title: 'Охридската Книжевна Школа', description: 'Школата на свети Климент Охридски учи илјадници и помага во обликувањето на кирилицата — Македонија станува лулка на словенската писменост.' },
+    de: { title: 'Die Literarische Schule von Ohrid', description: 'Die Schule des Klemens von Ohrid unterrichtet Tausende und prägt die kyrillische Schrift mit — Makedonien wird zur Wiege der slawischen Schriftkultur.' },
+    fr: { title: 'L’École littéraire d’Ohrid', description: 'L’école de Clément d’Ohrid instruit des milliers d’élèves et contribue à façonner l’alphabet cyrillique — la Macédoine devient un berceau de la littératie slave.' }
+  },
+  't-byz-athos': {
+    es: { title: 'La Gran Laura del Monte Athos', description: 'San Atanasio funda el primer gran monasterio de la Montaña Sagrada — una república monástica del mundo ortodoxo que perdura hasta hoy.' },
+    ru: { title: 'Великая Лавра на Афоне', description: 'Святой Афанасий основывает первый великий монастырь Святой Горы — монашескую республику православного мира, существующую поныне.' },
+    mk: { title: 'Големата Лавра на Света Гора', description: 'Свети Атанасиј го основа првиот голем манастир на Светата Гора — монашка република на православниот свет што опстојува до денес.' },
+    de: { title: 'Die Große Lavra auf dem Athos', description: 'Der heilige Athanasios gründet das erste große Kloster des Heiligen Berges — bis heute eine Mönchsrepublik der orthodoxen Welt.' },
+    fr: { title: 'La Grande Laure du mont Athos', description: 'Saint Athanase fonde le premier grand monastère de la Sainte Montagne — une république monastique du monde orthodoxe qui subsiste aujourd’hui encore.' }
+  },
+  't-byz-rus': {
+    es: { title: 'El bautismo de la Rus', description: 'El príncipe Vladimiro de Kiev se convierte al cristianismo ortodoxo; alfabeto, iconos y fe fluyen hacia el norte, al mundo eslavo.' },
+    ru: { title: 'Крещение Руси', description: 'Князь Владимир Киевский принимает православие; азбука, иконы и вера устремляются на север, в славянский мир.' },
+    mk: { title: 'Покрстувањето на Русите', description: 'Киевскиот кнез Владимир преминува во православното христијанство; азбуката, иконите и верата течат на север, во словенскиот свет.' },
+    de: { title: 'Die Taufe der Rus', description: 'Fürst Wladimir von Kiew nimmt das orthodoxe Christentum an; Alphabet, Ikonen und Glaube strömen nordwärts in die slawische Welt.' },
+    fr: { title: 'Le baptême de la Rus’', description: 'Le prince Vladimir de Kiev se convertit au christianisme orthodoxe ; alphabet, icônes et foi remontent vers le nord, dans le monde slave.' }
+  },
+  't-byz-schism': {
+    es: { title: 'El Gran Cisma', description: 'Las excomuniones mutuas en Santa Sofía dividen la cristiandad entre el Occidente católico y el Oriente ortodoxo — una fractura nunca sanada.' },
+    ru: { title: 'Великая схизма', description: 'Взаимные отлучения в Святой Софии раскалывают христианство на католический Запад и православный Восток — разрыв, так и не уврачёванный.' },
+    mk: { title: 'Големата Шизма', description: 'Меѓусебните екскомуникации во Света Софија го делат христијанството на католички Запад и православен Исток — расцеп што никогаш не е излекуван.' },
+    de: { title: 'Das Große Schisma', description: 'Gegenseitige Exkommunikationen in der Hagia Sophia spalten das Christentum in den katholischen Westen und den orthodoxen Osten — ein nie geheilter Riss.' },
+    fr: { title: 'Le Grand Schisme', description: 'Les excommunications mutuelles à Sainte-Sophie divisent la chrétienté entre l’Occident catholique et l’Orient orthodoxe — une fracture jamais refermée.' }
+  },
+  't-byz-manzikert': {
+    es: { title: 'El desastre de Manzikert', description: 'Los turcos selyúcidas capturan al emperador Romano IV; las guerras civiles que siguen hacen perder Anatolia, el corazón del imperio.' },
+    ru: { title: 'Катастрофа при Манцикерте', description: 'Турки-сельджуки пленяют императора Романа IV; последовавшие междоусобицы стоят империи Анатолии — её сердцевины.' },
+    mk: { title: 'Катастрофата кај Манцикерт', description: 'Селџучките Турци го заробуваат царот Роман IV; граѓанските војни што следат ја губат Анатолија, срцето на империјата.' },
+    de: { title: 'Die Katastrophe von Mantzikert', description: 'Die Seldschuken nehmen Kaiser Romanos IV. gefangen; die folgenden Bürgerkriege kosten das Reich Anatolien, sein Kernland.' },
+    fr: { title: 'Le désastre de Manzikert', description: 'Les Turcs seldjoukides capturent l’empereur Romain IV ; les guerres civiles qui suivent font perdre l’Anatolie, cœur de l’empire.' }
+  },
+  't-byz-1204': {
+    es: { title: 'La Cuarta Cruzada saquea Constantinopla', description: 'Los cruzados saquean durante tres días la mayor ciudad de la cristiandad — el imperio queda roto y el Cisma sellado con sangre.' },
+    ru: { title: 'Четвёртый крестовый поход разоряет Константинополь', description: 'Крестоносцы три дня грабят величайший город христианского мира — империя сломлена, а схизма скреплена кровью.' },
+    mk: { title: 'Четвртата крстоносна војна го ограбува Константинопол', description: 'Крстоносците три дена го пљачкаат најголемиот град на христијанството — империјата е скршена, а Шизмата запечатена со крв.' },
+    de: { title: 'Der Vierte Kreuzzug plündert Konstantinopel', description: 'Die Kreuzfahrer plündern die größte Stadt der Christenheit drei Tage lang — das Reich ist gebrochen, das Schisma mit Blut besiegelt.' },
+    fr: { title: 'La Quatrième Croisade met à sac Constantinople', description: 'Les croisés pillent trois jours durant la plus grande ville de la chrétienté — l’empire est brisé, le Schisme scellé dans le sang.' }
+  },
+  't-byz-1453': {
+    es: { title: 'La caída de Constantinopla', description: 'Los cañones de Mehmed II abren brecha en las viejas murallas; Constantino XI muere combatiendo y el Imperio Romano termina tras 1.123 años.' },
+    ru: { title: 'Падение Константинополя', description: 'Пушки Мехмеда II пробивают древние стены; Константин XI гибнет в бою, и Римская империя завершается спустя 1123 года.' },
+    mk: { title: 'Падот на Константинопол', description: 'Топовите на Мехмед II ги пробиваат древните ѕидини; Константин XI гине борејќи се, а Римската империја завршува по 1.123 години.' },
+    de: { title: 'Der Fall Konstantinopels', description: 'Mehmeds II. Kanonen brechen die alten Mauern; Konstantin XI. fällt im Kampf, und das Römische Reich endet nach 1.123 Jahren.' },
+    fr: { title: 'La chute de Constantinople', description: 'Les canons de Mehmed II percent les antiques murailles ; Constantin XI meurt les armes à la main, et l’Empire romain s’achève après 1 123 ans.' }
+  },
+  't-earth-formed': {
+    es: { title: 'Se forma la Tierra', description: 'El planeta se aglutina a partir del polvo del joven sistema solar — el comienzo de una historia de tiempo profundo que empequeñece toda la historia humana.' },
+    ru: { title: 'Формирование Земли', description: 'Планета собирается из пыли молодой Солнечной системы — начало истории глубокого времени, рядом с которой вся человеческая история ничтожно мала.' },
+    mk: { title: 'Се формира Земјата', description: 'Планетата се собира од правта на младиот Сончев систем — почетокот на приказната за длабокото време, пред која целата човечка историја е незначителна.' },
+    de: { title: 'Die Erde entsteht', description: 'Der Planet ballt sich aus dem Staub des jungen Sonnensystems zusammen — der Beginn einer Geschichte der Tiefenzeit, neben der alle Menschheitsgeschichte verschwindet.' },
+    fr: { title: 'La formation de la Terre', description: 'La planète s’agrège à partir de la poussière du jeune système solaire — le début d’une histoire du temps profond auprès de laquelle toute l’histoire humaine paraît minuscule.' }
+  },
+  't-dino-age': {
+    es: { title: 'Comienza la era de los dinosaurios', description: 'Tras la mayor extinción de la Tierra, los reptiles bípedos se alzan en el Triásico — abriendo los 165 millones de años de reinado de los dinosaurios.' },
+    ru: { title: 'Начало эры динозавров', description: 'После величайшего вымирания в истории Земли в триасе поднимаются прямоходящие рептилии — начинается 165-миллионолетнее царство динозавров.' },
+    mk: { title: 'Започнува ерата на диносаурусите', description: 'По најголемото истребување во историјата на Земјата, во тријасот се издигаат исправените влекачи — отворајќи ја 165 милиони години долгата власт на диносаурусите.' },
+    de: { title: 'Das Zeitalter der Dinosaurier beginnt', description: 'Nach dem größten Massensterben der Erdgeschichte erheben sich in der Trias aufrecht gehende Reptilien — und eröffnen die 165 Millionen Jahre währende Herrschaft der Dinosaurier.' },
+    fr: { title: 'Le début de l’ère des dinosaures', description: 'Au lendemain de la plus grande extinction terrestre, des reptiles bipèdes s’imposent au Trias — ouvrant les 165 millions d’années de règne des dinosaures.' }
+  },
+  't-dino-end': {
+    es: { title: 'El asteroide acaba con los dinosaurios', description: 'Un asteroide de diez kilómetros golpea el Yucatán, cerrando la era de los dinosaurios y abriendo la de los mamíferos — y en último término la nuestra.' },
+    ru: { title: 'Астероид завершает эру динозавров', description: 'Десятикилометровый астероид падает на Юкатан, обрывая век динозавров и открывая век млекопитающих — а в итоге и наш собственный.' },
+    mk: { title: 'Астероидот ја завршува ерата на диносаурусите', description: 'Астероид од десет километри удира во Јукатан, ставајќи крај на времето на диносаурусите и отворајќи го времето на цицачите — а конечно и нашето.' },
+    de: { title: 'Der Asteroid beendet die Dinosaurierzeit', description: 'Ein zehn Kilometer großer Asteroid schlägt auf Yucatán ein, beendet das Zeitalter der Dinosaurier und eröffnet das der Säugetiere — und schließlich unseres.' },
+    fr: { title: 'L’astéroïde met fin à l’ère des dinosaures', description: 'Un astéroïde de dix kilomètres frappe le Yucatán, refermant l’âge des dinosaures et ouvrant celui des mammifères — et finalement le nôtre.' }
+  },
+  't-first-australians': {
+    es: { title: 'Los primeros australianos', description: 'Navegantes cruzan mar abierto hasta el continente de Sahul y fundan las culturas humanas continuas más antiguas de la Tierra.' },
+    ru: { title: 'Первые австралийцы', description: 'Мореходы пересекают открытый океан и достигают континента Сахул, основывая древнейшие непрерывно существующие культуры на Земле.' },
+    mk: { title: 'Првите Австралијци', description: 'Морепловци го преминуваат отвореното море до континентот Сахул и ги основаат најстарите непрекинати човечки култури на Земјата.' },
+    de: { title: 'Die ersten Australier', description: 'Seefahrer überqueren offenes Meer und erreichen den Kontinent Sahul — sie begründen die ältesten ununterbrochen bestehenden Kulturen der Erde.' },
+    fr: { title: 'Les premiers Australiens', description: 'Des navigateurs franchissent la haute mer jusqu’au continent de Sahul et fondent les plus anciennes cultures humaines continues de la Terre.' }
+  },
+  't-green-sahara': {
+    es: { title: 'El Sahara verde', description: 'Durante el Período Húmedo Africano el Sahara es una pradera de lagos y manadas; sus pastores dejan galerías de arte rupestre donde hoy solo hay arena.' },
+    ru: { title: 'Зелёная Сахара', description: 'В африканский влажный период Сахара — саванна с озёрами и стадами; её скотоводы оставляют галереи наскальных росписей там, где ныне лишь песок.' },
+    mk: { title: 'Зелената Сахара', description: 'За време на Африканскиот влажен период Сахара е тревна рамнина со езера и стада; нејзините сточари оставаат галерии карпеста уметност таму каде што денес има само песок.' },
+    de: { title: 'Die Grüne Sahara', description: 'Während der Afrikanischen Feuchtperiode ist die Sahara eine Grassteppe voller Seen und Herden; ihre Viehhirten hinterlassen Galerien von Felskunst, wo heute nur Sand liegt.' },
+    fr: { title: 'Le Sahara vert', description: 'Durant la période humide africaine, le Sahara est une prairie de lacs et de troupeaux ; ses pasteurs laissent des galeries d’art rupestre là où il n’y a plus que du sable.' }
+  },
+  't-indus': {
+    es: { title: 'Las ciudades del valle del Indo', description: 'Mohenjo-daro y Harappa se alzan como ciudades de ladrillo planificadas, con alcantarillado y graneros — una gran civilización cuya escritura sigue sin descifrar.' },
+    ru: { title: 'Города долины Инда', description: 'Мохенджо-Даро и Хараппа встают как спланированные кирпичные города со стоками и зернохранилищами — великая цивилизация, письменность которой до сих пор не прочитана.' },
+    mk: { title: 'Градовите на долината на Инд', description: 'Мохенџо-даро и Харапа се издигаат како планирани градови од тула, со канализација и житници — голема цивилизација чие писмо сè уште не е прочитано.' },
+    de: { title: 'Die Städte des Industals', description: 'Mohenjo-Daro und Harappa entstehen als geplante Ziegelstädte mit Kanalisation und Speichern — eine große Zivilisation, deren Schrift bis heute ungelesen ist.' },
+    fr: { title: 'Les cités de la vallée de l’Indus', description: 'Mohenjo-daro et Harappa s’élèvent en cités de brique planifiées, dotées d’égouts et de greniers — une grande civilisation dont l’écriture reste indéchiffrée.' }
+  },
+  't-caral': {
+    es: { title: 'Caral, la primera ciudad de América', description: 'En el valle de Supe, en el Perú, Caral levanta pirámides monumentales y plazas hundidas — el centro urbano más antiguo que se conoce en América.' },
+    ru: { title: 'Караль — первый город Америки', description: 'В долине Супе в Перу Караль возводит монументальные пирамиды и углублённые площади — древнейший известный городской центр Америки.' },
+    mk: { title: 'Карал, првиот град на Америка', description: 'Во долината Супе во Перу, Карал подига монументални пирамиди и вкопани плоштади — најстариот познат градски центар во Америка.' },
+    de: { title: 'Caral, die erste Stadt Amerikas', description: 'Im Supe-Tal Perus errichtet Caral monumentale Pyramiden und versenkte Plätze — das älteste bekannte städtische Zentrum Amerikas.' },
+    fr: { title: 'Caral, la première cité des Amériques', description: 'Dans la vallée de Supe au Pérou, Caral élève des pyramides monumentales et des places en contrebas — le plus ancien centre urbain connu des Amériques.' }
+  },
+  't-olmec': {
+    es: { title: 'Los olmecas, cultura madre de América', description: 'En la costa del Golfo de México los olmecas tallan cabezas colosales de piedra y siembran las tradiciones que heredarán mayas y aztecas.' },
+    ru: { title: 'Ольмеки — материнская культура Америки', description: 'На побережье Мексиканского залива ольмеки высекают колоссальные каменные головы и закладывают традиции, которые унаследуют майя и ацтеки.' },
+    mk: { title: 'Олмеците, мајка-култура на Америка', description: 'На брегот на Мексиканскиот Залив Олмеците делкаат колосални камени глави и ги посејуваат традициите што ќе ги наследат Маите и Ацтеките.' },
+    de: { title: 'Die Olmeken, Mutterkultur Amerikas', description: 'An der Golfküste Mexikos meißeln die Olmeken kolossale Steinköpfe und legen die Traditionen an, die Maya und Azteken erben werden.' },
+    fr: { title: 'Les Olmèques, culture mère des Amériques', description: 'Sur la côte du Golfe du Mexique, les Olmèques sculptent des têtes colossales et sèment les traditions dont hériteront Mayas et Aztèques.' }
+  },
+  't-nok': {
+    es: { title: 'Los nok de África Occidental', description: 'La cultura nok de Nigeria esculpe llamativas figuras de terracota y trabaja el hierro — entre las tradiciones más tempranas de este tipo en el África subsahariana.' },
+    ru: { title: 'Культура Нок в Западной Африке', description: 'Культура Нок в Нигерии создаёт выразительные терракотовые фигуры и обрабатывает железо — одни из древнейших таких традиций в Африке южнее Сахары.' },
+    mk: { title: 'Културата Нок во Западна Африка', description: 'Културата Нок во Нигерија вајарски обликува впечатливи теракотни фигури и обработува железо — меѓу најраните такви традиции во потсахарска Африка.' },
+    de: { title: 'Die Nok-Kultur Westafrikas', description: 'Die Nok-Kultur Nigerias formt eindrucksvolle Terrakottafiguren und verarbeitet Eisen — mit die frühesten Traditionen dieser Art in Subsahara-Afrika.' },
+    fr: { title: 'Les Nok d’Afrique de l’Ouest', description: 'La culture Nok du Nigeria sculpte de saisissantes figures en terre cuite et travaille le fer — parmi les plus anciennes traditions de ce type en Afrique subsaharienne.' }
+  },
+  't-carthage': {
+    es: { title: 'La fundación de Cartago', description: 'Colonos fenicios fundan Cartago, que se convierte en una gran potencia marítima y comercial dominadora del Mediterráneo occidental.' },
+    ru: { title: 'Основание Карфагена', description: 'Финикийские поселенцы основывают Карфаген, который вырастает в великую морскую и торговую державу, властвующую в западном Средиземноморье.' },
+    mk: { title: 'Основањето на Картагина', description: 'Феникиски доселеници ја основаат Картагина, која прераснува во голема поморска и трговска сила што доминира со западниот Медитеран.' },
+    de: { title: 'Die Gründung Karthagos', description: 'Phönizische Siedler gründen Karthago, das zur großen See- und Handelsmacht des westlichen Mittelmeers heranwächst.' },
+    fr: { title: 'La fondation de Carthage', description: 'Des colons phéniciens fondent Carthage, qui devient une grande puissance maritime et commerciale dominant la Méditerranée occidentale.' }
+  },
+  't-kush-meroe': {
+    es: { title: 'El reino de Kush en Meroe', description: 'Al sur de Egipto, el reino nubio de Kush prospera en Meroe, levantando sus propias pirámides, su industria del hierro y su propia escritura.' },
+    ru: { title: 'Царство Куш в Мероэ', description: 'К югу от Египта нубийское царство Куш процветает в Мероэ, возводя собственные пирамиды, развивая железоделание и собственную письменность.' },
+    mk: { title: 'Кралството Куш во Мерое', description: 'Јужно од Египет, нубиското кралство Куш напредува во Мерое, градејќи сопствени пирамиди, железарска индустрија и сопствено писмо.' },
+    de: { title: 'Das Königreich Kusch in Meroe', description: 'Südlich Ägyptens blüht das nubische Königreich Kusch in Meroe, mit eigenen Pyramiden, eigener Eisenverhüttung und eigener Schrift.' },
+    fr: { title: 'Le royaume de Koush à Méroé', description: 'Au sud de l’Égypte, le royaume nubien de Koush prospère à Méroé, bâtissant ses propres pyramides, sa métallurgie du fer et sa propre écriture.' }
+  },
+  't-eratosthenes': {
+    es: { title: 'Eratóstenes mide la Tierra', description: 'El sabio griego calcula la circunferencia del planeta con notable precisión usando solo sombras, geometría y razonamiento.' },
+    ru: { title: 'Эратосфен измеряет Землю', description: 'Греческий учёный вычисляет окружность планеты с поразительной точностью, пользуясь одними лишь тенями, геометрией и рассуждением.' },
+    mk: { title: 'Ератостен ја измерува Земјата', description: 'Грчкиот научник го пресметува обемот на планетата со извонредна точност, служејќи се само со сенки, геометрија и расудување.' },
+    de: { title: 'Eratosthenes vermisst die Erde', description: 'Der griechische Gelehrte berechnet den Erdumfang mit bemerkenswerter Genauigkeit — allein mit Schatten, Geometrie und Verstand.' },
+    fr: { title: 'Ératosthène mesure la Terre', description: 'Le savant grec calcule la circonférence de la planète avec une précision remarquable, à l’aide des seules ombres, de la géométrie et du raisonnement.' }
+  },
+  't-qin-unify': {
+    es: { title: 'Qin Shi Huang unifica China', description: 'El primer emperador unifica los reinos combatientes, normaliza la escritura y las medidas, y es enterrado con el Ejército de Terracota.' },
+    ru: { title: 'Цинь Шихуанди объединяет Китай', description: 'Первый император объединяет Сражающиеся царства, унифицирует письмо и меры и погребается вместе с Терракотовой армией.' },
+    mk: { title: 'Ќин Ши Хуанг ја обединува Кина', description: 'Првиот император ги обединува завојуваните држави, го стандардизира писмото и мерките, и е погребан со Теракотната војска.' },
+    de: { title: 'Qin Shihuangdi einigt China', description: 'Der erste Kaiser einigt die Streitenden Reiche, vereinheitlicht Schrift und Maße und wird mit der Terrakotta-Armee bestattet.' },
+    fr: { title: 'Qin Shi Huang unifie la Chine', description: 'Le premier empereur unifie les Royaumes combattants, normalise l’écriture et les mesures, et se fait inhumer avec l’armée de terre cuite.' }
+  },
+  't-aksum': {
+    es: { title: 'El auge de Aksum', description: 'El imperio etíope de Aksum se convierte en gran potencia comercial que enlaza África con Arabia, la India y Roma, y acuña su propia moneda.' },
+    ru: { title: 'Возвышение Аксума', description: 'Эфиопская держава Аксум становится крупной торговой силой, связывающей Африку с Аравией, Индией и Римом, и чеканит собственную монету.' },
+    mk: { title: 'Подемот на Аксум', description: 'Етиопската империја Аксум станува голема трговска сила што ја поврзува Африка со Арабија, Индија и Рим, и кова сопствени монети.' },
+    de: { title: 'Der Aufstieg von Aksum', description: 'Das äthiopische Reich Aksum wird zur großen Handelsmacht, die Afrika mit Arabien, Indien und Rom verbindet, und prägt eigene Münzen.' },
+    fr: { title: 'L’essor d’Aksoum', description: 'L’empire éthiopien d’Aksoum devient une grande puissance commerciale reliant l’Afrique à l’Arabie, à l’Inde et à Rome, et frappe sa propre monnaie.' }
+  },
+  't-tang': {
+    es: { title: 'La edad de oro de la dinastía Tang', description: 'La China Tang se convierte en la potencia más cosmopolita del mundo; su capital, Chang’an, es un imán para el comercio, la poesía y el budismo.' },
+    ru: { title: 'Золотой век династии Тан', description: 'Танский Китай становится самой космополитичной державой мира, а его столица Чанъань — магнитом для торговли, поэзии и буддизма.' },
+    mk: { title: 'Златното доба на династијата Танг', description: 'Танг Кина станува најкосмополитската сила на светот, а нејзината престолнина Чанган — магнет за трговија, поезија и будизам.' },
+    de: { title: 'Das Goldene Zeitalter der Tang-Dynastie', description: 'Das Tang-China wird zur weltoffensten Macht der Erde; seine Hauptstadt Chang’an zieht Handel, Dichtung und Buddhismus an.' },
+    fr: { title: 'L’âge d’or de la dynastie Tang', description: 'La Chine des Tang devient la puissance la plus cosmopolite du monde ; sa capitale Chang’an attire le commerce, la poésie et le bouddhisme.' }
+  },
+  't-angkor': {
+    es: { title: 'Se construye Angkor Wat', description: 'El rey jemer Suryavarman II levanta Angkor Wat, el mayor monumento religioso del mundo, en el corazón de un gran imperio del Sudeste Asiático.' },
+    ru: { title: 'Строительство Ангкор-Вата', description: 'Кхмерский король Сурьяварман II возводит Ангкор-Ват, крупнейший религиозный памятник мира, в сердце великой юго-восточноазиатской империи.' },
+    mk: { title: 'Изграден е Ангкор Ват', description: 'Кмерскиот крал Сурјаварман II го подига Ангкор Ват, најголемиот верски споменик на светот, во срцето на голема југоисточноазиска империја.' },
+    de: { title: 'Angkor Wat wird erbaut', description: 'Der Khmer-König Suryavarman II. errichtet Angkor Wat, das größte religiöse Bauwerk der Erde, im Herzen eines großen südostasiatischen Reiches.' },
+    fr: { title: 'La construction d’Angkor Vat', description: 'Le roi khmer Suryavarman II élève Angkor Vat, le plus vaste monument religieux du monde, au cœur d’un grand empire d’Asie du Sud-Est.' }
+  },
+  't-great-zimbabwe': {
+    es: { title: 'Gran Zimbabue en su apogeo', description: 'Una ciudad de piedra de los shona florece gracias al comercio del oro del África austral; sus muros sin mortero son una maravilla de la ingeniería.' },
+    ru: { title: 'Великий Зимбабве на вершине', description: 'Каменный город шона расцветает на золотой торговле южной Африки; его стены, сложенные без раствора, — чудо инженерного искусства.' },
+    mk: { title: 'Големо Зимбабве на својот врв', description: 'Камен град на Шона цвета врз трговијата со злато на јужна Африка; неговите ѕидови без малтер се чудо на градителството.' },
+    de: { title: 'Groß-Simbabwe auf dem Höhepunkt', description: 'Eine Steinstadt der Shona blüht durch den Goldhandel des südlichen Afrika; ihre mörtellosen Mauern sind ein Wunderwerk der Baukunst.' },
+    fr: { title: 'Great Zimbabwe à son apogée', description: 'Une cité de pierre des Shona prospère grâce au commerce de l’or d’Afrique australe ; ses murs sans mortier sont une merveille d’ingénierie.' }
+  },
+  't-polynesia-nz': {
+    es: { title: 'Los polinesios llegan a Aotearoa', description: 'Las canoas de travesía culminan el poblamiento del Pacífico al alcanzar Nueva Zelanda — la última gran tierra habitable colonizada por el ser humano.' },
+    ru: { title: 'Полинезийцы достигают Аотеароа', description: 'Мореходные каноэ завершают заселение Тихого океана, достигнув Новой Зеландии — последней большой пригодной для жизни земли, освоенной людьми.' },
+    mk: { title: 'Полинезијците стигнуваат до Аотеароа', description: 'Морепловните кануа го завршуваат населувањето на Пацификот стигнувајќи до Нов Зеланд — последната голема населива земја што ја освоил човекот.' },
+    de: { title: 'Polynesier erreichen Aotearoa', description: 'Hochseetüchtige Kanus vollenden die Besiedlung des Pazifiks und erreichen Neuseeland — das letzte große bewohnbare Land, das Menschen besiedelten.' },
+    fr: { title: 'Les Polynésiens atteignent Aotearoa', description: 'Les pirogues de haute mer achèvent le peuplement du Pacifique en atteignant la Nouvelle-Zélande — la dernière grande terre habitable colonisée par l’homme.' }
+  },
+  't-mansa-musa': {
+    es: { title: 'La peregrinación de Mansa Musa', description: 'El riquísimo emperador de Malí viaja a La Meca y gasta tanto oro en El Cairo que su valor cae durante años.' },
+    ru: { title: 'Паломничество Мансы Мусы', description: 'Несметно богатый правитель Мали направляется в Мекку и тратит в Каире столько золота, что его цена падает на годы вперёд.' },
+    mk: { title: 'Аџилакот на Манса Муса', description: 'Неизмерно богатиот владетел на Мали патува во Мека и троши толку злато во Каиро што неговата вредност паѓа со години.' },
+    de: { title: 'Mansa Musas Pilgerfahrt', description: 'Der unermesslich reiche Herrscher von Mali zieht nach Mekka und gibt in Kairo so viel Gold aus, dass dessen Wert jahrelang fällt.' },
+    fr: { title: 'Le pèlerinage de Mansa Moussa', description: 'L’empereur du Mali, immensément riche, gagne La Mecque et dépense tant d’or au Caire que sa valeur chute pendant des années.' }
+  },
+  't-timbuktu': {
+    es: { title: 'Tombuctú, ciudad de los libros', description: 'Tombuctú se convierte en un célebre centro del saber islámico; sus universidades y bibliotecas guardan cientos de miles de manuscritos.' },
+    ru: { title: 'Тимбукту, город книг', description: 'Тимбукту становится прославленным центром исламской учёности; его медресе и библиотеки хранят сотни тысяч рукописей.' },
+    mk: { title: 'Тимбукту, град на книгите', description: 'Тимбукту станува прочуен центар на исламската ученост; неговите универзитети и библиотеки чуваат стотици илјади ракописи.' },
+    de: { title: 'Timbuktu, Stadt der Bücher', description: 'Timbuktu wird zu einem berühmten Zentrum islamischer Gelehrsamkeit; seine Hochschulen und Bibliotheken bewahren Hunderttausende Handschriften.' },
+    fr: { title: 'Tombouctou, cité des livres', description: 'Tombouctou devient un célèbre foyer du savoir islamique ; ses universités et bibliothèques conservent des centaines de milliers de manuscrits.' }
+  },
+  't-columbian-exchange': {
+    es: { title: 'El intercambio colombino', description: 'El viaje de Colón enlaza los hemisferios y desata un vasto intercambio de cultivos, animales y personas — y de enfermedades devastadoras.' },
+    ru: { title: 'Колумбов обмен', description: 'Плавание Колумба связывает полушария и запускает огромный обмен культурами, животными, людьми — и опустошительными болезнями.' },
+    mk: { title: 'Колумбовата размена', description: 'Патувањето на Колумбо ги поврзува хемисферите и отпочнува огромна размена на култури, животни и луѓе — и на разорни болести.' },
+    de: { title: 'Der Kolumbianische Austausch', description: 'Kolumbus’ Fahrt verbindet die Hemisphären und entfesselt einen gewaltigen Austausch von Nutzpflanzen, Tieren, Menschen — und verheerenden Krankheiten.' },
+    fr: { title: 'L’échange colombien', description: 'Le voyage de Colomb relie les hémisphères et déclenche un vaste échange de cultures, d’animaux, d’hommes — et de maladies dévastatrices.' }
+  },
+  't-songhai': {
+    es: { title: 'Askia el Grande de Songhai', description: 'Askia Muhammad reorganiza el Imperio songhai —el mayor de la historia de África Occidental— en torno al comercio, la ley y el saber.' },
+    ru: { title: 'Аския Великий из Сонгая', description: 'Аския Мухаммад перестраивает державу Сонгай — крупнейшую в истории Западной Африки — вокруг торговли, закона и учёности.' },
+    mk: { title: 'Аскија Велики од Сонгај', description: 'Аскија Мухамед ја преуредува Сонгајската империја — најголемата во историјата на Западна Африка — околу трговијата, правото и учењето.' },
+    de: { title: 'Askia der Große von Songhai', description: 'Askia Muhammad ordnet das Songhai-Reich — das größte der westafrikanischen Geschichte — um Handel, Recht und Gelehrsamkeit neu.' },
+    fr: { title: 'Askia le Grand du Songhaï', description: 'Askia Mohammed réorganise l’Empire songhaï — le plus vaste de l’histoire ouest-africaine — autour du commerce, du droit et du savoir.' }
+  },
+  't-tondibi': {
+    es: { title: 'La caída de Songhai en Tondibi', description: 'Un ejército marroquí armado con pólvora destroza a la hueste songhai, poniendo fin a la era de los grandes imperios del Sahel.' },
+    ru: { title: 'Падение Сонгая при Тондиби', description: 'Марокканское войско с огнестрельным оружием сокрушает армию Сонгая, завершая эпоху великих империй Сахеля.' },
+    mk: { title: 'Падот на Сонгај кај Тондиби', description: 'Мароканска војска вооружена со барут ја разбива сонгајската војска, ставајќи крај на времето на големите сахелски империи.' },
+    de: { title: 'Der Fall Songhais bei Tondibi', description: 'Ein mit Schießpulver bewaffnetes marokkanisches Heer zerschlägt das Aufgebot Songhais und beendet die Zeit der großen Sahel-Reiche.' },
+    fr: { title: 'La chute du Songhaï à Tondibi', description: 'Une armée marocaine armée de poudre à canon anéantit l’armée songhaï, mettant fin à l’ère des grands empires du Sahel.' }
+  },
+  't-vaccination': {
+    es: { title: 'Jenner inventa la vacunación', description: 'Edward Jenner demuestra que la viruela vacuna protege de la viruela, fundando la ciencia de la vacunación y la larga conquista de la enfermedad.' },
+    ru: { title: 'Дженнер изобретает вакцинацию', description: 'Эдвард Дженнер показывает, что коровья оспа защищает от натуральной, положив начало науке вакцинации и долгому покорению болезней.' },
+    mk: { title: 'Џенер ја измислува вакцинацијата', description: 'Едвард Џенер докажува дека кравјите сипаници штитат од голема сипаница, основајќи ја науката за вакцинација и долгото освојување на болеста.' },
+    de: { title: 'Jenner erfindet die Impfung', description: 'Edward Jenner zeigt, dass Kuhpocken vor den Pocken schützen, und begründet damit die Impfkunde und die lange Überwindung der Seuchen.' },
+    fr: { title: 'Jenner invente la vaccination', description: 'Edward Jenner démontre que la vaccine protège de la variole, fondant la science de la vaccination et la longue conquête de la maladie.' }
+  },
+  't-germ-theory': {
+    es: { title: 'La teoría microbiana de la enfermedad', description: 'Pasteur y Koch demuestran que los microbios causan enfermedades, revolucionando la medicina, la cirugía y la salud pública.' },
+    ru: { title: 'Микробная теория болезней', description: 'Пастер и Кох доказывают, что болезни вызывают микробы, совершая переворот в медицине, хирургии и общественном здравоохранении.' },
+    mk: { title: 'Микробната теорија за болестите', description: 'Пастер и Кох докажуваат дека микробите предизвикуваат болести, револуционизирајќи ги медицината, хирургијата и јавното здравје.' },
+    de: { title: 'Die Keimtheorie der Krankheit', description: 'Pasteur und Koch weisen nach, dass Mikroben Krankheiten verursachen, und revolutionieren Medizin, Chirurgie und öffentliche Gesundheit.' },
+    fr: { title: 'La théorie microbienne des maladies', description: 'Pasteur et Koch prouvent que les microbes causent les maladies, révolutionnant la médecine, la chirurgie et la santé publique.' }
+  },
+  't-sputnik': {
+    es: { title: 'El Sputnik abre la era espacial', description: 'La Unión Soviética lanza el primer satélite artificial, y por primera vez el alcance de la humanidad se extiende más allá de la atmósfera.' },
+    ru: { title: '«Спутник» открывает космическую эру', description: 'Советский Союз запускает первый искусственный спутник, и впервые досягаемость человечества выходит за пределы атмосферы.' },
+    mk: { title: 'Спутник ја отвора вселенската ера', description: 'Советскиот Сојуз го лансира првиот вештачки сателит, и за првпат дофатот на човештвото се протега надвор од атмосферата.' },
+    de: { title: 'Sputnik eröffnet das Weltraumzeitalter', description: 'Die Sowjetunion startet den ersten künstlichen Satelliten, und erstmals reicht der Arm der Menschheit über die Atmosphäre hinaus.' },
+    fr: { title: 'Spoutnik ouvre l’ère spatiale', description: 'L’Union soviétique lance le premier satellite artificiel : pour la première fois, la portée de l’humanité dépasse l’atmosphère.' }
+  },
+  't-gagarin': {
+    es: { title: 'El primer ser humano en el espacio', description: 'Yuri Gagarin da la vuelta a la Tierra y se convierte en la primera persona que viaja al espacio.' },
+    ru: { title: 'Первый человек в космосе', description: 'Юрий Гагарин совершает виток вокруг Земли и становится первым человеком, побывавшим в космосе.' },
+    mk: { title: 'Првиот човек во вселената', description: 'Јуриј Гагарин кружи околу Земјата и станува првиот човек што патувал во вселената.' },
+    de: { title: 'Der erste Mensch im All', description: 'Juri Gagarin umrundet die Erde und wird zum ersten Menschen, der in den Weltraum reist.' },
+    fr: { title: 'Le premier homme dans l’espace', description: 'Youri Gagarine effectue une orbite autour de la Terre et devient le premier être humain à voyager dans l’espace.' }
+  },
+  't-moon-landing': {
+    es: { title: 'El ser humano camina sobre la Luna', description: 'El Apolo 11 aluniza y Neil Armstrong pisa la superficie lunar ante la mayor audiencia de la historia — la cima de la era espacial.' },
+    ru: { title: 'Человек ступает на Луну', description: '«Аполлон-11» совершает посадку, и Нил Армстронг ступает на лунную поверхность перед самой большой аудиторией в истории — вершина космической эры.' },
+    mk: { title: 'Луѓето чекорат по Месечината', description: 'Аполо 11 слетува, а Нил Армстронг стапнува на месечевата површина пред најголемата публика во историјата — врвот на вселенската ера.' },
+    de: { title: 'Menschen betreten den Mond', description: 'Apollo 11 landet, und Neil Armstrong betritt vor dem größten Publikum der Geschichte die Mondoberfläche — der Gipfel des Weltraumzeitalters.' },
+    fr: { title: 'L’homme marche sur la Lune', description: 'Apollo 11 se pose et Neil Armstrong foule le sol lunaire devant la plus vaste audience de l’histoire — le sommet de l’ère spatiale.' }
+  },
+  't-smallpox-eradicated': {
+    es: { title: 'La viruela, erradicada', description: 'Una campaña mundial de vacunación elimina la viruela — la primera enfermedad deliberadamente erradicada de la naturaleza.' },
+    ru: { title: 'Оспа искоренена', description: 'Всемирная кампания вакцинации уничтожает натуральную оспу — первую болезнь, намеренно искоренённую в природе.' },
+    mk: { title: 'Сипаниците се искоренети', description: 'Глобална кампања за вакцинација ја збришува големата сипаница — првата болест намерно искоренета од природата.' },
+    de: { title: 'Die Pocken sind ausgerottet', description: 'Eine weltweite Impfkampagne tilgt die Pocken — die erste Krankheit, die absichtlich aus der freien Natur ausgerottet wurde.' },
+    fr: { title: 'La variole éradiquée', description: 'Une campagne mondiale de vaccination élimine la variole — la première maladie délibérément éradiquée à l’état naturel.' }
+  },
+  't-www': {
+    es: { title: 'La World Wide Web se hace pública', description: 'Tim Berners-Lee libera la Web al mundo y enciende la revolución digital que transforma cómo la humanidad se comunica y conoce.' },
+    ru: { title: 'Всемирная паутина становится общедоступной', description: 'Тим Бернерс-Ли открывает Веб всему миру, разжигая цифровую революцию, которая меняет то, как человечество общается и познаёт.' },
+    mk: { title: 'Светската мрежа станува јавна', description: 'Тим Бернерс-Ли ја пушта Вебот на светот, потпалувајќи ја дигиталната револуција што го менува начинот на кој човештвото комуницира и спознава.' },
+    de: { title: 'Das World Wide Web wird öffentlich', description: 'Tim Berners-Lee gibt das Web für alle frei und entfacht die digitale Revolution, die verändert, wie die Menschheit kommuniziert und erkennt.' },
+    fr: { title: 'Le World Wide Web devient public', description: 'Tim Berners-Lee ouvre le Web au monde, allumant la révolution numérique qui transforme la façon dont l’humanité communique et connaît.' }
   },
 };
 

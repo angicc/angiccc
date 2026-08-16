@@ -166,7 +166,7 @@ const TERRITORY_DESCS: Record<string, Partial<Record<ContentLang, string>>> = {
   'yugoslav-wars': {
     es: 'La disolución de Yugoslavia produjo el conflicto más sangriento en Europa desde la Segunda Guerra Mundial — limpieza étnica, asedio de Sarajevo, intervención de la OTAN y surgimiento de siete nuevas naciones.',
     ru: 'Распад Югославии породил самый кровопролитный конфликт в Европе со времён Второй мировой войны — этнические чистки, осада Сараево, вмешательство НАТО и появление семи новых государств.',
-    mk: 'Распадот на Југославија произвел најкрвавиот конфликт во Европа по Втората Светска војна — етничко чистење, опсадата на Сараево, интервенцијата на НАТО и pojавата на седум нови нации.',
+    mk: 'Распадот на Југославија произвел најкрвавиот конфликт во Европа по Втората Светска војна — етничко чистење, опсадата на Сараево, интервенцијата на НАТО и појавата на седум нови нации.',
     de: "Der Zerfall Jugoslawiens brachte den blutigsten Konflikt in Europa seit dem Zweiten Weltkrieg hervor — ethnische Säuberung, die Belagerung Sarajevos, die NATO-Intervention und die Entstehung von sieben neuen Nationen.",
     fr: "La dissolution de la Yougoslavie produisit le conflit le plus sanglant en Europe depuis la Seconde Guerre mondiale — nettoyage ethnique, siège de Sarajevo, intervention de l’OTAN et émergence de sept nouvelles nations.",
   },
