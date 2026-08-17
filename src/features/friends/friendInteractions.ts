@@ -31,20 +31,46 @@ export function saveThread(userId: string, friendId: string, thread: ChatMsg[]) 
   try { localStorage.setItem(convoKey(userId, friendId), JSON.stringify(thread.slice(-200))); } catch { /* best-effort */ }
 }
 
-/** A friendly canned reply, so the demo conversation feels alive offline. */
-const AUTO_REPLIES = [
-  'Good luck in your next duel! ⚔️',
-  'Did you finish the Viking Age lesson yet?',
-  'I just hit a 7-day streak 🔥',
-  'That Gaugamela crisis is brutal. How did you do?',
-  'Race you to the top of the leaderboard!',
-  'Rome or Greece — which era is your favourite?',
-  'Challenge me to a History 1v1 whenever you\'re ready.',
-];
+/**
+ * A friendly canned reply, so the demo conversation feels alive offline.
+ *
+ * The replies used to be hardcoded English, which meant a Macedonian learner's
+ * friend answered them in English. The caller now passes the localised pool.
+ */
+export function autoReplyFor(friendId: string, seed: number, replies: readonly string[]): string {
+  if (replies.length === 0) return '';
+  const idx = Math.abs(friendId.charCodeAt(0) + seed) % replies.length;
+  return replies[idx];
+}
 
-export function autoReplyFor(friendId: string, seed: number): string {
-  const idx = Math.abs((friendId.charCodeAt(0) + seed)) % AUTO_REPLIES.length;
-  return AUTO_REPLIES[idx];
+// ── Unread tracking ──────────────────────────────────────────────────────────
+// A thread the learner has never opened should say so. Without this the message
+// button looks identical whether a friend replied an hour ago or never.
+
+const READ_KEY = 'historify:friendChatRead:';
+
+export function markThreadRead(userId: string, friendId: string, at = new Date().toISOString()): void {
+  try { localStorage.setItem(`${READ_KEY}${userId}:${friendId}`, at); } catch { /* best-effort */ }
+}
+
+function lastReadAt(userId: string, friendId: string): number {
+  try {
+    const raw = localStorage.getItem(`${READ_KEY}${userId}:${friendId}`);
+    const t = raw ? Date.parse(raw) : NaN;
+    return Number.isFinite(t) ? t : 0;
+  } catch { return 0; }
+}
+
+/** How many messages from this friend arrived since the thread was last read. */
+export function unreadCount(userId: string, friendId: string): number {
+  const since = lastReadAt(userId, friendId);
+  return loadThread(userId, friendId).filter(m => m.from !== 'me' && Date.parse(m.ts) > since).length;
+}
+
+/** The most recent message in a thread, for the preview line. */
+export function lastMessage(userId: string, friendId: string): ChatMsg | null {
+  const thread = loadThread(userId, friendId);
+  return thread.length > 0 ? thread[thread.length - 1] : null;
 }
 
 // ── History 1v1 duel ─────────────────────────────────────────────────────────

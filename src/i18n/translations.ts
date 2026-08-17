@@ -104,6 +104,43 @@ export type TranslationKeys = {
   // ── Friends: messaging + History 1v1 duel ─────────────────────
   fr_message: string; fr_duel: string; fr_msg_title: string; fr_msg_placeholder: string;
   fr_msg_empty: string; fr_msg_send: string;
+  fr_find_users: string;
+  fr_no_results: string;
+  fr_toast_request_sent: string;
+  fr_toast_now_friend: string;
+  fr_toast_declined: string;
+  fr_toast_removed: string;
+  fr_request_pending: string;
+  fr_online: string;
+  fr_streak_word: string;
+  fr_unread: string;
+  fr_gift_failed: string;
+  fr_net_live: string;
+  fr_net_offline: string;
+  fr_tab_activity: string;
+  fr_activity_empty: string;
+  fr_act_added: string;
+  fr_act_duel_win: string;
+  fr_act_duel_loss: string;
+  fr_act_message: string;
+  fr_act_gift: string;
+  fr_act_lesson: string;
+  fr_act_quiz: string;
+  fr_act_streak: string;
+  fr_act_xp: string;
+  fr_act_simulated: string;
+  fr_act_sim_short: string;
+  fr_time_now: string;
+  unit_min_short: string;
+  unit_hour_short: string;
+  unit_day_short: string;
+  fr_reply_1: string;
+  fr_reply_2: string;
+  fr_reply_3: string;
+  fr_reply_4: string;
+  fr_reply_5: string;
+  fr_reply_6: string;
+  fr_reply_7: string;
   fr_duel_title: string; fr_duel_begin: string; fr_duel_youhit: string; fr_duel_foehit: string;
   fr_duel_clash: string; fr_duel_miss: string; fr_duel_victory: string; fr_duel_defeat: string;
   fr_duel_won_desc: string; fr_duel_lost_desc: string; fr_duel_done: string; fr_duel_record: string;
@@ -267,7 +304,6 @@ export type TranslationKeys = {
   unit_day_many: string;
   streak_start_today: string;
   level_short: string;
-  level_label: string;
   level_xp_to: string;
   // Flashcards extras
   flash_shuffle: string; flash_answer: string; flash_no_cards: string;
@@ -520,6 +556,43 @@ const EN: TranslationKeys = {
     fr_tab_sent: 'Sent', fr_add: 'Add Friend', fr_pending: 'Pending',
     fr_message: 'Message', fr_duel: 'History 1v1', fr_msg_title: 'Chat with {name}', fr_msg_placeholder: 'Write a message…',
     fr_msg_empty: 'Say hello — or challenge them to a History 1v1!', fr_msg_send: 'Send',
+    fr_find_users: 'Find users',
+    fr_no_results: 'No users found matching',
+    fr_toast_request_sent: 'Friend request sent',
+    fr_toast_now_friend: 'New friend added',
+    fr_toast_declined: 'Request declined',
+    fr_toast_removed: 'Friend removed',
+    fr_request_pending: 'Request pending',
+    fr_online: 'Online',
+    fr_streak_word: 'Streak',
+    fr_unread: 'Unread messages',
+    fr_gift_failed: 'Gift failed.',
+    fr_net_live: 'Live · server connected',
+    fr_net_offline: 'Offline mode · saved locally',
+    fr_tab_activity: 'Activity',
+    fr_activity_empty: 'Nothing has happened yet — add a friend to see their activity here.',
+    fr_act_added: 'became your friend',
+    fr_act_duel_win: 'you won a duel',
+    fr_act_duel_loss: 'you lost a duel',
+    fr_act_message: 'messages exchanged',
+    fr_act_gift: 'you sent a gift',
+    fr_act_lesson: 'completed a lesson',
+    fr_act_quiz: 'scored on a quiz',
+    fr_act_streak: 'is on a streak',
+    fr_act_xp: 'reached',
+    fr_act_simulated: 'Simulated activity — these friends have no server behind them',
+    fr_act_sim_short: 'sim',
+    fr_time_now: 'just now',
+    unit_min_short: 'm',
+    unit_hour_short: 'h',
+    unit_day_short: 'd',
+    fr_reply_1: 'Good luck in your next duel! ⚔️',
+    fr_reply_2: 'Did you finish the Viking Age lesson yet?',
+    fr_reply_3: 'I just hit a 7-day streak 🔥',
+    fr_reply_4: 'That Gaugamela crisis is brutal. How did you do?',
+    fr_reply_5: 'Race you to the top of the leaderboard!',
+    fr_reply_6: 'Rome or Greece — which era is your favourite?',
+    fr_reply_7: 'Challenge me to a History 1v1 whenever you\'re ready.',
     fr_duel_title: 'History 1v1', fr_duel_begin: 'Begin the duel', fr_duel_youhit: 'You strike true!', fr_duel_foehit: '{name} lands a blow!',
     fr_duel_clash: 'Blades clash — both wounded!', fr_duel_miss: 'Both swings go wide!', fr_duel_victory: 'Victory!', fr_duel_defeat: 'Defeated',
     fr_duel_won_desc: 'You bested {name} on {field}.', fr_duel_lost_desc: '{name} won this time. Rematch when you\'re ready.', fr_duel_done: 'Leave arena', fr_duel_record: 'Duel record',
@@ -724,7 +797,6 @@ const EN: TranslationKeys = {
     unit_day_many: 'days',
     streak_start_today: 'Start your streak today!',
     level_short: 'Lv.',
-    level_label: 'Level',
     level_xp_to: 'XP to Level',
     flash_shuffle: 'Shuffle', flash_answer: 'Answer', flash_no_cards: 'No cards available for this filter.',
     prof_reset_btn: 'Reset',
@@ -984,6 +1056,43 @@ export const T: Translations = {
     fr_tab_sent: 'Enviadas', fr_add: 'Agregar Amigo', fr_pending: 'Pendiente',
     fr_message: 'Mensaje', fr_duel: 'Duelo 1v1', fr_msg_title: 'Chat con {name}', fr_msg_placeholder: 'Escribe un mensaje…',
     fr_msg_empty: '¡Saluda — o rétalo a un Duelo de Historia 1v1!', fr_msg_send: 'Enviar',
+    fr_find_users: 'Buscar usuarios',
+    fr_no_results: 'No se encontraron usuarios que coincidan con',
+    fr_toast_request_sent: 'Solicitud de amistad enviada',
+    fr_toast_now_friend: 'Nuevo amigo añadido',
+    fr_toast_declined: 'Solicitud rechazada',
+    fr_toast_removed: 'Amigo eliminado',
+    fr_request_pending: 'Solicitud pendiente',
+    fr_online: 'En línea',
+    fr_streak_word: 'Racha',
+    fr_unread: 'Mensajes sin leer',
+    fr_gift_failed: 'No se pudo enviar el regalo.',
+    fr_net_live: 'En vivo · servidor conectado',
+    fr_net_offline: 'Modo sin conexión · guardado local',
+    fr_tab_activity: 'Actividad',
+    fr_activity_empty: 'Aún no ha pasado nada: añade un amigo para ver su actividad aquí.',
+    fr_act_added: 'ahora es tu amigo',
+    fr_act_duel_win: 'ganaste un duelo',
+    fr_act_duel_loss: 'perdiste un duelo',
+    fr_act_message: 'mensajes intercambiados',
+    fr_act_gift: 'enviaste un regalo',
+    fr_act_lesson: 'completó una lección',
+    fr_act_quiz: 'obtuvo en un cuestionario',
+    fr_act_streak: 'lleva una racha',
+    fr_act_xp: 'alcanzó',
+    fr_act_simulated: 'Actividad simulada: estos amigos no tienen un servidor detrás',
+    fr_act_sim_short: 'sim',
+    fr_time_now: 'ahora mismo',
+    unit_min_short: 'm',
+    unit_hour_short: 'h',
+    unit_day_short: 'd',
+    fr_reply_1: '¡Suerte en tu próximo duelo! ⚔️',
+    fr_reply_2: '¿Ya terminaste la lección de la Era Vikinga?',
+    fr_reply_3: '¡Acabo de llegar a 7 días de racha! 🔥',
+    fr_reply_4: 'La crisis de Gaugamela es brutal. ¿Cómo te fue?',
+    fr_reply_5: '¡Te reto a llegar antes a lo alto de la clasificación!',
+    fr_reply_6: 'Roma o Grecia, ¿cuál es tu era favorita?',
+    fr_reply_7: 'Rétame a un 1v1 de Historia cuando quieras.',
     fr_duel_title: 'Historia 1v1', fr_duel_begin: 'Comenzar el duelo', fr_duel_youhit: '¡Golpe certero!', fr_duel_foehit: '¡{name} te golpea!',
     fr_duel_clash: '¡Chocan las espadas — ambos heridos!', fr_duel_miss: '¡Ambos fallan!', fr_duel_victory: '¡Victoria!', fr_duel_defeat: 'Derrota',
     fr_duel_won_desc: 'Venciste a {name} en {field}.', fr_duel_lost_desc: '{name} ganó esta vez. Revancha cuando quieras.', fr_duel_done: 'Salir de la arena', fr_duel_record: 'Historial de duelos',
@@ -1177,7 +1286,6 @@ export const T: Translations = {
     unit_day_many: 'días',
     streak_start_today: '¡Empieza tu racha hoy!',
     level_short: 'Nv.',
-    level_label: 'Nivel',
     level_xp_to: 'XP para el nivel',
     flash_shuffle: 'Barajar', flash_answer: 'Respuesta', flash_no_cards: 'No hay tarjetas disponibles para este filtro.',
     prof_reset_btn: 'Restablecer',
@@ -1435,6 +1543,43 @@ export const T: Translations = {
     fr_tab_sent: 'Отправленные', fr_add: 'Добавить в Друзья', fr_pending: 'Ожидание',
     fr_message: 'Сообщение', fr_duel: 'Дуэль 1x1', fr_msg_title: 'Чат с {name}', fr_msg_placeholder: 'Напишите сообщение…',
     fr_msg_empty: 'Поздоровайтесь — или вызовите на Историческую дуэль 1x1!', fr_msg_send: 'Отправить',
+    fr_find_users: 'Найти пользователей',
+    fr_no_results: 'Не найдено пользователей по запросу',
+    fr_toast_request_sent: 'Заявка в друзья отправлена',
+    fr_toast_now_friend: 'Новый друг добавлен',
+    fr_toast_declined: 'Заявка отклонена',
+    fr_toast_removed: 'Друг удалён',
+    fr_request_pending: 'Заявка на рассмотрении',
+    fr_online: 'В сети',
+    fr_streak_word: 'Серия',
+    fr_unread: 'Непрочитанные сообщения',
+    fr_gift_failed: 'Не удалось отправить подарок.',
+    fr_net_live: 'Онлайн · сервер подключён',
+    fr_net_offline: 'Офлайн-режим · данные локально',
+    fr_tab_activity: 'Активность',
+    fr_activity_empty: 'Пока ничего не произошло — добавьте друга, чтобы видеть его активность здесь.',
+    fr_act_added: 'теперь ваш друг',
+    fr_act_duel_win: 'вы выиграли дуэль',
+    fr_act_duel_loss: 'вы проиграли дуэль',
+    fr_act_message: 'обмен сообщениями',
+    fr_act_gift: 'вы отправили подарок',
+    fr_act_lesson: 'прошёл урок',
+    fr_act_quiz: 'результат викторины',
+    fr_act_streak: 'держит серию',
+    fr_act_xp: 'достиг',
+    fr_act_simulated: 'Смоделированная активность — за этими друзьями нет сервера',
+    fr_act_sim_short: 'сим',
+    fr_time_now: 'только что',
+    unit_min_short: 'м',
+    unit_hour_short: 'ч',
+    unit_day_short: 'д',
+    fr_reply_1: 'Удачи в следующей дуэли! ⚔️',
+    fr_reply_2: 'Ты уже прошёл урок об эпохе викингов?',
+    fr_reply_3: 'Я только что набрал серию в 7 дней 🔥',
+    fr_reply_4: 'Кризис при Гавгамелах — жесть. Как справился?',
+    fr_reply_5: 'Кто первым доберётся до вершины рейтинга?',
+    fr_reply_6: 'Рим или Греция — какая эпоха твоя любимая?',
+    fr_reply_7: 'Вызывай меня на «Историю 1 на 1», когда будешь готов.',
     fr_duel_title: 'История 1x1', fr_duel_begin: 'Начать дуэль', fr_duel_youhit: 'Точный удар!', fr_duel_foehit: '{name} наносит удар!',
     fr_duel_clash: 'Клинки скрестились — оба ранены!', fr_duel_miss: 'Оба промахнулись!', fr_duel_victory: 'Победа!', fr_duel_defeat: 'Поражение',
     fr_duel_won_desc: 'Вы одолели {name} на поле {field}.', fr_duel_lost_desc: '{name} победил на этот раз. Реванш, когда будете готовы.', fr_duel_done: 'Покинуть арену', fr_duel_record: 'Счёт дуэлей',
@@ -1628,7 +1773,6 @@ export const T: Translations = {
     unit_day_many: 'дней',
     streak_start_today: 'Начните свою серию сегодня!',
     level_short: 'Ур.',
-    level_label: 'Уровень',
     level_xp_to: 'XP до уровня',
     flash_shuffle: 'Перемешать', flash_answer: 'Ответ', flash_no_cards: 'Карточки для этого фильтра не найдены.',
     prof_reset_btn: 'Сбросить',
@@ -1886,6 +2030,43 @@ export const T: Translations = {
     fr_tab_sent: 'Испратени', fr_add: 'Додај Пријател', fr_pending: 'На чекање',
     fr_message: 'Порака', fr_duel: 'Историја 1v1', fr_msg_title: 'Разговор со {name}', fr_msg_placeholder: 'Напиши порака…',
     fr_msg_empty: 'Поздрави се — или предизвикај го на Историски дуел 1v1!', fr_msg_send: 'Испрати',
+    fr_find_users: 'Најди корисници',
+    fr_no_results: 'Не се најдени корисници за',
+    fr_toast_request_sent: 'Поканата за пријателство е испратена',
+    fr_toast_now_friend: 'Додаден нов пријател',
+    fr_toast_declined: 'Поканата е одбиена',
+    fr_toast_removed: 'Пријателот е отстранет',
+    fr_request_pending: 'Поканата чека одговор',
+    fr_online: 'На линија',
+    fr_streak_word: 'Серија',
+    fr_unread: 'Непрочитани пораки',
+    fr_gift_failed: 'Подарокот не беше испратен.',
+    fr_net_live: 'Во живо · сервер поврзан',
+    fr_net_offline: 'Офлајн режим · зачувано локално',
+    fr_tab_activity: 'Активност',
+    fr_activity_empty: 'Сè уште нема ништо — додај пријател за да ја гледаш неговата активност тука.',
+    fr_act_added: 'сега ти е пријател',
+    fr_act_duel_win: 'доби дуел',
+    fr_act_duel_loss: 'загуби дуел',
+    fr_act_message: 'разменети пораки',
+    fr_act_gift: 'испрати подарок',
+    fr_act_lesson: 'заврши лекција',
+    fr_act_quiz: 'резултат на квиз',
+    fr_act_streak: 'држи серија',
+    fr_act_xp: 'достигна',
+    fr_act_simulated: 'Симулирана активност — зад овие пријатели нема сервер',
+    fr_act_sim_short: 'сим',
+    fr_time_now: 'штотуку',
+    unit_min_short: 'м',
+    unit_hour_short: 'ч',
+    unit_day_short: 'д',
+    fr_reply_1: 'Со среќа во следниот дуел! ⚔️',
+    fr_reply_2: 'Ја заврши ли лекцијата за викиншката ера?',
+    fr_reply_3: 'Штотуку стигнав до серија од 7 дена 🔥',
+    fr_reply_4: 'Кризата кај Гавгамела е брутална. Како ти отиде?',
+    fr_reply_5: 'Да видиме кој прв ќе стигне на врвот од ранг-листата!',
+    fr_reply_6: 'Рим или Грција — која епоха ти е омилена?',
+    fr_reply_7: 'Предизвикај ме на „Историја 1 на 1“ кога си спремен.',
     fr_duel_title: 'Историја 1v1', fr_duel_begin: 'Започни дуел', fr_duel_youhit: 'Точен удар!', fr_duel_foehit: '{name} нанесува удар!',
     fr_duel_clash: 'Сечилата се судираат — двајцата ранети!', fr_duel_miss: 'Двата замавa промашија!', fr_duel_victory: 'Победа!', fr_duel_defeat: 'Пораз',
     fr_duel_won_desc: 'Го надви {name} на {field}.', fr_duel_lost_desc: '{name} победи овој пат. Реванш кога си спремен.', fr_duel_done: 'Напушти ја арената', fr_duel_record: 'Дуел биланс',
@@ -2079,7 +2260,6 @@ export const T: Translations = {
     unit_day_many: 'дена',
     streak_start_today: 'Започни ја својата серија денес!',
     level_short: 'Ниво',
-    level_label: 'Ниво',
     level_xp_to: 'XP до ниво',
     flash_shuffle: 'Измешај', flash_answer: 'Одговор', flash_no_cards: 'Нема картички за овој филтер.',
     prof_reset_btn: 'Врати',

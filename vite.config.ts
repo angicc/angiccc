@@ -33,6 +33,11 @@ const IDENTICAL_TO_EN_OK: Record<string, ReadonlyArray<ContentLang> | 'all'> = {
   // Abbreviations that are written the same way.
   lbl_pts: ['es', 'fr'],          // "pts"
   level_short: ['de'],            // "Lv." — German already uses the loanword (dash_level)
+  unit_min_short: ['es', 'de', 'fr'],   // "m"
+  unit_hour_short: ['es', 'fr'],        // "h"
+  unit_day_short: ['es'],               // "d"
+  fr_act_sim_short: 'all',              // "sim" — same clipping everywhere
+  fr_online: ['de'],                    // "Online" — the ordinary German word
   sq_plan_min: ['es', 'fr'],      // "min"
   path_min: ['es', 'fr'],         // "min"
 

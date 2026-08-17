@@ -80,9 +80,11 @@ export interface DuelProps {
   language: string;
   t: Record<string, string>;
   onClose: () => void;
+  /** Fired once when the duel resolves, so callers can log it to the feed. */
+  onResult?: (won: boolean) => void;
 }
 
-export function DuelArena({ userId, playerName, opponent, language, t, onClose }: DuelProps) {
+export function DuelArena({ userId, playerName, opponent, language, t, onClose, onResult }: DuelProps) {
   const bf = useRef(pickBattlefield(`${userId}:${opponent.id}:${Date.now() >> 16}`)).current;
   const pal = ERA_PAL[bf.era];
   const skill = useRef(opponentSkill(opponent.xp)).current;
@@ -163,6 +165,7 @@ export function DuelArena({ userId, playerName, opponent, language, t, onClose }
     if (phase !== 'over' || finishedRef.current) return;
     finishedRef.current = true;
     recordDuel(userId, opponent.id, youWon);
+    onResult?.(youWon);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 

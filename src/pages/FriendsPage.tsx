@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { Users, Search, UserPlus, UserCheck, Clock, X, Check, MessageSquare, Swords, Send, Gift } from 'lucide-react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { Users, Search, UserPlus, UserCheck, Clock, X, Check, MessageSquare, Swords, Send, Gift, Activity, BookOpen, Flame, TrendingUp } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,24 +14,17 @@ import { sendGift, GIFTABLE_TIERS } from '@/features/subscription/gifts';
 import { PLANS } from '@/features/subscription/plans';
 import { DuelArena } from '@/features/friends/DuelArena';
 import {
-  loadThread, saveThread, autoReplyFor, loadDuelRecord,
+  loadThread, saveThread, autoReplyFor, loadDuelRecord, markThreadRead, unreadCount, lastMessage,
   type ChatMsg,
 } from '@/features/friends/friendInteractions';
+import {
+  recordFriendEvent, buildActivityFeed, relativeAge, type FriendEvent,
+} from '@/features/friends/friendActivity';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import {
   checkServerOnline, fetchOnlineFriendIds, apiAddFriend, apiSendMessage, socialApiConfigured,
 } from '@/services/social';
-
-// Connection-status chip labels (kept local, mirroring the deep-dive pattern).
-const NET_LABEL: Record<string, { live: string; offline: string }> = {
-  en: { live: 'Live · server connected', offline: 'Offline mode · saved locally' },
-  es: { live: 'En vivo · servidor conectado', offline: 'Modo sin conexión · guardado local' },
-  ru: { live: 'Онлайн · сервер подключён', offline: 'Офлайн-режим · данные локально' },
-  mk: { live: 'Во живо · сервер поврзан', offline: 'Офлајн режим · зачувано локално' },
-  de: { live: 'Live · Server verbunden', offline: 'Offline-Modus · lokal gespeichert' },
-  fr: { live: 'En direct · serveur connecté', offline: 'Mode hors ligne · sauvegarde locale' },
-};
 
 const MOCK_USERS = [
   { id: 'm1', username: 'HistoriaClio',    xp: 5840, videoXp: 2200, country: '🇩🇪', streak: 62 },
@@ -43,6 +36,38 @@ const MOCK_USERS = [
 
 type FriendEntry = { id: string; username: string; xp: number; videoXp: number; country: string; streak: number };
 type RequestEntry = { fromId: string; fromUsername: string; xp: number };
+/** A sent request remembers when it went out, so it can actually resolve. */
+type SentEntry = { id: string; at: string };
+
+/**
+ * How long a sent request stays pending before the recipient accepts.
+ *
+ * Requests used to sit in "Sent" forever: nothing ever accepted them, so
+ * adding a friend was a dead end and the rest of the social layer — messaging,
+ * duels, gifts — could never be reached at all. Friends here are local
+ * fixtures with no server behind them, so the acceptance is simulated, but
+ * staggered per person rather than all landing at once.
+ */
+const ACCEPT_BASE_MS = 6_000;
+const ACCEPT_JITTER_MS = 9_000;
+
+function acceptDelayFor(id: string): number {
+  let h = 0;
+  for (const ch of id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return ACCEPT_BASE_MS + (h % ACCEPT_JITTER_MS);
+}
+
+/** Sent requests were once a bare id list; keep those readable. */
+function normaliseSent(raw: unknown): SentEntry[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map(v => (typeof v === 'string'
+      ? { id: v, at: new Date(0).toISOString() }        // legacy: resolve at once
+      : v && typeof (v as SentEntry).id === 'string'
+        ? { id: (v as SentEntry).id, at: (v as SentEntry).at ?? new Date().toISOString() }
+        : null))
+    .filter((v): v is SentEntry => v !== null);
+}
 
 function getInitials(username: string) {
   return username.slice(0, 2).toUpperCase();
@@ -74,8 +99,11 @@ export default function FriendsPage() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [friends, setFriends]         = useState<FriendEntry[]>([]);
-  const [sentIds, setSentIds]         = useState<string[]>([]);
+  const [sent, setSent]               = useState<SentEntry[]>([]);
   const [received, setReceived]       = useState<RequestEntry[]>([]);
+  // Bumped whenever anything social changes, so the activity feed and the
+  // unread badges re-derive without a reload.
+  const [socialTick, setSocialTick]   = useState(0);
   // Messaging + duel state
   const [chatFriend, setChatFriend]   = useState<FriendEntry | null>(null);
   const [giftFriend, setGiftFriend] = useState<FriendEntry | null>(null);
@@ -89,9 +117,44 @@ export default function FriendsPage() {
   useEffect(() => {
     if (!userId) return;
     setFriends(loadJSON<FriendEntry[]>(storageKey('friends', userId), []));
-    setSentIds(loadJSON<string[]>(storageKey('sent', userId), []));
+    setSent(normaliseSent(loadJSON<unknown>(storageKey('sent', userId), [])));
     setReceived(loadJSON<RequestEntry[]>(storageKey('received', userId), []));
   }, [userId]);
+
+  // Resolve pending requests once they have been out long enough. This runs on
+  // a timer AND catches up on mount, so a request sent before a reload still
+  // lands rather than being stuck pending forever.
+  useEffect(() => {
+    if (!userId || sent.length === 0) return;
+    const resolve = () => {
+      const now = Date.now();
+      const ready = sent.filter(s => now - Date.parse(s.at) >= acceptDelayFor(s.id));
+      if (ready.length === 0) return;
+
+      const readyIds = new Set(ready.map(s => s.id));
+      const added = ready
+        .map(s => MOCK_USERS.find(u => u.id === s.id))
+        .filter((u): u is typeof MOCK_USERS[number] => Boolean(u))
+        .filter(u => !friends.some(f => f.id === u.id));
+
+      const nextSent = sent.filter(s => !readyIds.has(s.id));
+      setSent(nextSent);
+      saveJSON(storageKey('sent', userId), nextSent);
+
+      if (added.length === 0) return;
+      const nextFriends = [...friends, ...added.map(u => ({ ...u }))];
+      setFriends(nextFriends);
+      saveJSON(storageKey('friends', userId), nextFriends);
+      for (const u of added) {
+        recordFriendEvent(userId, { type: 'friend_added', friendId: u.id, friendName: u.username });
+      }
+      setSocialTick(v => v + 1);
+      toast.success(`${t.fr_toast_now_friend}: ${added.map(u => u.username).join(', ')}`);
+    };
+    resolve();
+    const timer = setInterval(resolve, 2_000);
+    return () => clearInterval(timer);
+  }, [userId, sent, friends, t.fr_toast_now_friend]);
 
   // Probe the backend and keep friend presence fresh while the page is open.
   useEffect(() => {
@@ -110,6 +173,26 @@ export default function FriendsPage() {
     return () => { cancelled = true; clearInterval(timer); };
   }, [userId]);
 
+  // The merged timeline: what the learner actually did, plus what their friends
+  // have been up to. Re-derived whenever anything social changes.
+  const activityFeed = useMemo(
+    () => (userId ? buildActivityFeed(userId, friends) : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [userId, friends, socialTick],
+  );
+
+  // Unread counts and last-message previews, so a friend row shows whether
+  // there is anything waiting rather than looking identical either way.
+  const threadInfo = useMemo(() => {
+    const out: Record<string, { unread: number; preview: string }> = {};
+    if (!userId) return out;
+    for (const f of friends) {
+      out[f.id] = { unread: unreadCount(userId, f.id), preview: lastMessage(userId, f.id)?.text ?? '' };
+    }
+    return out;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, friends, socialTick, chatFriend]);
+
   // Pool of searchable users: mock users minus current user and already-friends
   const friendIds = new Set(friends.map(f => f.id));
   const pool = MOCK_USERS.filter(u => u.id !== userId && !friendIds.has(u.id));
@@ -120,8 +203,8 @@ export default function FriendsPage() {
 
   function sendRequest(user: typeof MOCK_USERS[number]) {
     if (!userId) return;
-    const newSent = [...sentIds, user.id];
-    setSentIds(newSent);
+    const newSent = [...sent, { id: user.id, at: new Date().toISOString() }];
+    setSent(newSent);
     saveJSON(storageKey('sent', userId), newSent);
 
     // Simulate writing to the target user's received requests
@@ -132,7 +215,7 @@ export default function FriendsPage() {
     // Best-effort server write — persists across devices when the backend is up.
     if (socialApiConfigured()) void apiAddFriend(user.username);
 
-    toast.success(`Friend request sent to ${user.username}`);
+    toast.success(`${t.fr_toast_request_sent}: ${user.username}`);
   }
 
   function acceptRequest(req: RequestEntry) {
@@ -151,7 +234,9 @@ export default function FriendsPage() {
     setReceived(newReceived);
     saveJSON(storageKey('received', userId), newReceived);
 
-    toast.success(`${req.fromUsername} is now your friend!`);
+    recordFriendEvent(userId, { type: 'friend_added', friendId: newFriend.id, friendName: newFriend.username });
+    setSocialTick(v => v + 1);
+    toast.success(`${t.fr_toast_now_friend}: ${req.fromUsername}`);
   }
 
   function declineRequest(req: RequestEntry) {
@@ -159,7 +244,7 @@ export default function FriendsPage() {
     const newReceived = received.filter(r => r.fromId !== req.fromId);
     setReceived(newReceived);
     saveJSON(storageKey('received', userId), newReceived);
-    toast.success(`Request from ${req.fromUsername} declined`);
+    toast.success(`${t.fr_toast_declined}: ${req.fromUsername}`);
   }
 
   function removeFriend(friend: FriendEntry) {
@@ -167,7 +252,7 @@ export default function FriendsPage() {
     const newFriends = friends.filter(f => f.id !== friend.id);
     setFriends(newFriends);
     saveJSON(storageKey('friends', userId), newFriends);
-    toast.success(`Removed ${friend.username} from friends`);
+    toast.success(`${t.fr_toast_removed}: ${friend.username}`);
   }
 
   return (
@@ -190,7 +275,7 @@ export default function FriendsPage() {
                 : 'border-amber-400/30 bg-amber-400/5 text-amber-300/90'
             }`}>
               <span className={`h-1.5 w-1.5 rounded-full ${serverOnline ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400/70'}`} />
-              {(NET_LABEL[language] ?? NET_LABEL.en)[serverOnline ? 'live' : 'offline']}
+              {serverOnline ? t.fr_net_live : t.fr_net_offline}
             </span>
           )}
         </div>
@@ -199,7 +284,7 @@ export default function FriendsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
-              <Search className="w-4 h-4" /> Find Users
+              <Search className="w-4 h-4" /> {t.fr_find_users}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -216,7 +301,7 @@ export default function FriendsPage() {
             {searchResults.length > 0 && (
               <div className="space-y-2">
                 {searchResults.map(user => {
-                  const alreadySent = sentIds.includes(user.id);
+                  const alreadySent = sent.some(x => x.id === user.id);
                   const rank = getChessRank(user.videoXp);
                   return (
                     <div key={user.id} className="flex items-center gap-3 p-3 rounded-xl border border-border hover:bg-accent/30 transition-colors">
@@ -256,7 +341,7 @@ export default function FriendsPage() {
             )}
 
             {searchQuery.trim().length > 0 && searchResults.length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-2">No users found matching "{searchQuery}"</p>
+              <p className="text-sm text-muted-foreground text-center py-2">{t.fr_no_results} &ldquo;{searchQuery}&rdquo;</p>
             )}
           </CardContent>
         </Card>
@@ -276,10 +361,13 @@ export default function FriendsPage() {
                 <Badge variant="secondary" className="ml-1 text-xs px-1.5 py-0 bg-primary/20 text-primary">{received.length}</Badge>
               )}
             </TabsTrigger>
+            <TabsTrigger value="activity" className="flex-1 gap-1.5">
+              <Activity className="w-4 h-4" /> {t.fr_tab_activity}
+            </TabsTrigger>
             <TabsTrigger value="sent" className="flex-1 gap-1.5">
               <Clock className="w-4 h-4" /> {t.fr_tab_sent}
-              {sentIds.length > 0 && (
-                <Badge variant="secondary" className="ml-1 text-xs px-1.5 py-0">{sentIds.length}</Badge>
+              {sent.length > 0 && (
+                <Badge variant="secondary" className="ml-1 text-xs px-1.5 py-0">{sent.length}</Badge>
               )}
             </TabsTrigger>
           </TabsList>
@@ -307,7 +395,7 @@ export default function FriendsPage() {
                               </AvatarFallback>
                             </Avatar>
                             {isOnline && (
-                              <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-background" title="Online" />
+                              <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-background" title={t.fr_online} />
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -317,8 +405,13 @@ export default function FriendsPage() {
                             </div>
                             <div className="flex items-center gap-3 mt-0.5">
                               <span className="text-xs text-muted-foreground">{friend.xp.toLocaleString()} XP</span>
-                              <span className="text-xs text-muted-foreground">{friend.streak}d streak</span>
+                              <span className="text-xs text-muted-foreground">{t.fr_streak_word}: {friend.streak}</span>
                             </div>
+                            {threadInfo[friend.id]?.preview && (
+                              <p className="text-[11px] text-muted-foreground/80 truncate mt-0.5 italic">
+                                {threadInfo[friend.id].preview}
+                              </p>
+                            )}
                           </div>
                           <div className={`shrink-0 hidden sm:flex flex-col items-center px-2 py-1 rounded-lg border ${rank.borderColor} ${rank.bgColor}`}>
                             <span className="text-base leading-none">{rank.icon}</span>
@@ -336,11 +429,19 @@ export default function FriendsPage() {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="gap-1.5 shrink-0"
+                            className="gap-1.5 shrink-0 relative"
                             onClick={() => setChatFriend(friend)}
                           >
                             <MessageSquare className="w-3.5 h-3.5" />
                             <span className="hidden sm:inline">{t.fr_message}</span>
+                            {(threadInfo[friend.id]?.unread ?? 0) > 0 && (
+                              <span
+                                className="absolute -top-1.5 -right-1.5 min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center"
+                                title={t.fr_unread}
+                              >
+                                {threadInfo[friend.id].unread}
+                              </span>
+                            )}
                           </Button>
                           <Button
                             size="sm"
@@ -415,18 +516,38 @@ export default function FriendsPage() {
             </Card>
           </TabsContent>
 
+          {/* Activity feed */}
+          <TabsContent value="activity">
+            <Card>
+              <CardContent className="pt-4 pb-4">
+                {activityFeed.length === 0 ? (
+                  <div className="text-center py-8 space-y-2">
+                    <Activity className="w-10 h-10 text-muted-foreground/40 mx-auto" />
+                    <p className="text-sm text-muted-foreground">{t.fr_activity_empty}</p>
+                  </div>
+                ) : (
+                  <div className="space-y-1">
+                    {activityFeed.map(ev => (
+                      <ActivityRow key={ev.id} event={ev} t={t as unknown as Record<string, string>} />
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Sent requests */}
           <TabsContent value="sent">
             <Card>
               <CardContent className="pt-4 pb-4">
-                {sentIds.length === 0 ? (
+                {sent.length === 0 ? (
                   <div className="text-center py-8 space-y-2">
                     <Clock className="w-10 h-10 text-muted-foreground/40 mx-auto" />
                     <p className="text-sm text-muted-foreground">{t.fr_no_sent}</p>
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    {sentIds.map(sentId => {
+                    {sent.map(({ id: sentId }) => {
                       const user = MOCK_USERS.find(u => u.id === sentId);
                       if (!user) return null;
                       return (
@@ -440,7 +561,7 @@ export default function FriendsPage() {
                             <p className="text-sm font-semibold truncate">{user.username}</p>
                             <div className="flex items-center gap-1.5 mt-0.5">
                               <Clock className="w-3 h-3 text-muted-foreground" />
-                              <p className="text-xs text-muted-foreground">Request pending</p>
+                              <p className="text-xs text-muted-foreground">{t.fr_request_pending}</p>
                             </div>
                           </div>
                           <Badge variant="outline" className="text-xs text-muted-foreground shrink-0">{t.fr_pending}</Badge>
@@ -463,8 +584,12 @@ export default function FriendsPage() {
             userId={userId}
             friend={chatFriend}
             t={t as unknown as Record<string, string>}
-            onClose={() => setChatFriend(null)}
+            onClose={() => { setChatFriend(null); setSocialTick(v => v + 1); }}
             onChallenge={() => { const f = chatFriend; setChatFriend(null); setDuelFriend(f); }}
+            onMessage={() => {
+              recordFriendEvent(userId, { type: 'message', friendId: chatFriend.id, friendName: chatFriend.username });
+              setSocialTick(v => v + 1);
+            }}
           />
         )}
       </AnimatePresence>
@@ -503,8 +628,10 @@ export default function FriendsPage() {
                           ).then(res => {
                             if (res.ok) {
                               setGiftSentMsg(t.gift_sent.replace('{name}', giftFriend.username).replace('{plan}', plan.name));
+                              recordFriendEvent(userId, { type: 'gift', friendId: giftFriend.id, friendName: giftFriend.username });
+                              setSocialTick(v => v + 1);
                             } else {
-                              setGiftSentMsg(res.error ?? 'Gift failed.');
+                              setGiftSentMsg(res.error ?? t.fr_gift_failed);
                             }
                           });
                         }}
@@ -530,6 +657,13 @@ export default function FriendsPage() {
           language={language}
           t={t as unknown as Record<string, string>}
           onClose={() => setDuelFriend(null)}
+          onResult={won => {
+            recordFriendEvent(userId, {
+              type: won ? 'duel_win' : 'duel_loss',
+              friendId: duelFriend.id, friendName: duelFriend.username,
+            });
+            setSocialTick(v => v + 1);
+          }}
         />
       )}
     </AppShell>
@@ -537,17 +671,77 @@ export default function FriendsPage() {
 }
 
 // ── Sliding chat drawer with a canned-reply opponent ─────────────────────────
-function ChatDrawer({ userId, friend, t, onClose, onChallenge }: {
+/** Icon + colour per activity kind, so the feed is scannable at a glance. */
+const ACT_STYLE: Record<FriendEvent['type'], { icon: React.ComponentType<{ className?: string }>; tone: string }> = {
+  friend_added:    { icon: UserCheck,      tone: 'text-emerald-400' },
+  duel_win:        { icon: Swords,         tone: 'text-emerald-400' },
+  duel_loss:       { icon: Swords,         tone: 'text-rose-400' },
+  message:         { icon: MessageSquare,  tone: 'text-primary' },
+  gift:            { icon: Gift,           tone: 'text-amber-400' },
+  friend_lesson:   { icon: BookOpen,       tone: 'text-blue-400' },
+  friend_quiz:     { icon: Check,          tone: 'text-violet-400' },
+  friend_streak:   { icon: Flame,          tone: 'text-orange-400' },
+  friend_levelup:  { icon: TrendingUp,     tone: 'text-primary' },
+};
+
+const ACT_LABEL_KEY: Record<FriendEvent['type'], string> = {
+  friend_added: 'fr_act_added', duel_win: 'fr_act_duel_win', duel_loss: 'fr_act_duel_loss',
+  message: 'fr_act_message', gift: 'fr_act_gift', friend_lesson: 'fr_act_lesson',
+  friend_quiz: 'fr_act_quiz', friend_streak: 'fr_act_streak', friend_levelup: 'fr_act_xp',
+};
+
+function ActivityRow({ event, t }: { event: FriendEvent; t: Record<string, string> }) {
+  const style = ACT_STYLE[event.type];
+  const Icon = style.icon;
+  const age = relativeAge(event.at);
+  const ageLabel = age.unit === 'now'
+    ? t.fr_time_now
+    : `${age.value}${age.unit === 'm' ? t.unit_min_short : age.unit === 'h' ? t.unit_hour_short : t.unit_day_short}`;
+
+  // Only the numeric detail the event actually carries.
+  const detail =
+    event.type === 'friend_quiz' && event.meta?.score !== undefined ? `${event.meta.score}%`
+    : event.type === 'friend_streak' && event.meta?.streak !== undefined ? `${event.meta.streak}`
+    : event.type === 'friend_levelup' && event.meta?.xp !== undefined ? `${event.meta.xp.toLocaleString()} XP`
+    : event.type === 'friend_lesson' && (event.meta?.count ?? 0) > 1 ? `×${event.meta!.count}`
+    : '';
+
+  return (
+    <div className="flex items-center gap-3 py-2 px-1 border-b border-border/50 last:border-0">
+      <span className={`shrink-0 ${style.tone}`}><Icon className="w-4 h-4" /></span>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm leading-snug truncate">
+          <span className="font-semibold">{event.friendName}</span>
+          <span className="text-muted-foreground"> — {t[ACT_LABEL_KEY[event.type]]}</span>
+          {detail && <span className="text-foreground font-medium"> {detail}</span>}
+        </p>
+      </div>
+      {event.simulated && (
+        <span className="shrink-0 text-[9px] uppercase tracking-wider text-muted-foreground/60 border border-border rounded px-1 py-0.5" title={t.fr_act_simulated}>
+          {t.fr_act_sim_short}
+        </span>
+      )}
+      <span className="shrink-0 text-[11px] text-muted-foreground tabular-nums">{ageLabel}</span>
+    </div>
+  );
+}
+
+function ChatDrawer({ userId, friend, t, onClose, onChallenge, onMessage }: {
   userId: string;
   friend: FriendEntry;
   t: Record<string, string>;
   onClose: () => void;
   onChallenge: () => void;
+  onMessage: () => void;
 }) {
   const [thread, setThread] = useState<ChatMsg[]>(() => loadThread(userId, friend.id));
   const [draft, setDraft] = useState('');
   const bottomRef = useRef<HTMLDivElement>(null);
   const record = loadDuelRecord(userId, friend.id);
+
+  // Opening the thread is what marks it read; keep it current as replies land
+  // while the drawer is open, so closing it never leaves a phantom unread.
+  useEffect(() => { markThreadRead(userId, friend.id); }, [userId, friend.id, thread.length]);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [thread]);
 
@@ -561,9 +755,16 @@ function ChatDrawer({ userId, friend, t, onClose, onChallenge }: {
     // Best-effort durable copy on the server (socket relays it live when up).
     if (socialApiConfigured()) void apiSendMessage(friend.id, text);
     setDraft('');
+    onMessage();
     // The friend replies shortly with a canned line, so the thread feels live.
+    // The pool is localised — the replies used to be English in every language.
     setTimeout(() => {
-      const reply: ChatMsg = { id: crypto.randomUUID(), from: friend.id, text: autoReplyFor(friend.id, next.length), ts: new Date().toISOString() };
+      const replies = [t.fr_reply_1, t.fr_reply_2, t.fr_reply_3, t.fr_reply_4, t.fr_reply_5, t.fr_reply_6, t.fr_reply_7]
+        .filter(Boolean);
+      const reply: ChatMsg = {
+        id: crypto.randomUUID(), from: friend.id,
+        text: autoReplyFor(friend.id, next.length, replies), ts: new Date().toISOString(),
+      };
       setThread(prev => { const t2 = [...prev, reply]; saveThread(userId, friend.id, t2); return t2; });
     }, 900);
   }
