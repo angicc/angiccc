@@ -1,7 +1,16 @@
 import { describe, it, expect } from 'vitest';
 import { QUIZZES } from '@/features/quiz/quizData';
+import { getTranslatedQuestion } from '@/i18n/quizTranslations';
+import type { Language } from '@/i18n/translations';
 
 const ALL = QUIZZES.flatMap(q => q.questions);
+const LANGS: Language[] = ['en', 'es', 'ru', 'mk', 'de', 'fr'];
+
+function optionsFor(q: (typeof ALL)[number], lang: Language): string[] | null {
+  if (lang === 'en') return q.options;
+  const tr = getTranslatedQuestion(q.id, lang);
+  return tr?.options?.length === q.options.length ? tr.options : null;
+}
 
 /**
  * Guards against the two ways a multiple-choice question leaks its answer
@@ -11,33 +20,46 @@ const ALL = QUIZZES.flatMap(q => q.questions);
  * prepareQuestion.test.ts). Length bias cannot be — it is a property of the
  * authored text, so it has to be caught here.
  *
- * The bank currently carries real length-bias debt: the correct option is the
- * longest in 57.7% of questions against 25% by chance, averaging +7.8
- * characters. These thresholds sit above that debt so the suite stays green,
- * and exist to stop it getting WORSE. Tighten them as questions are rewritten.
+ * Checked in EVERY language, not just English. The bank is translated into
+ * five more, each authored separately; a guard that only reads the English
+ * options lets the other five drift with nothing watching, and the measured
+ * bias is in fact slightly worse in German and French than in English.
+ *
+ * The bank still carries real debt — the correct option is the longest in
+ * ~59% of questions against 25% by chance. These ceilings sit just above the
+ * current measurement so the suite stays green while stopping it getting
+ * WORSE. Run `node scripts/quiz_length_bias.mjs` for the live numbers, and
+ * tighten these as questions are rewritten.
  */
 const LONGEST_SHARE_CEILING = 0.60;
-const MEAN_ADVANTAGE_CEILING = 9;
+const MEAN_ADVANTAGE_CEILING = 7.8;
 
 describe('question quality', () => {
-  it('does not let the correct option be the longest more often than the ceiling', () => {
+  it.each(LANGS)('does not let the correct option be the longest too often (%s)', lang => {
     let longest = 0;
     let comparable = 0;
     for (const q of ALL) {
-      const lens = q.options.map(o => o.length);
+      const opts = optionsFor(q, lang);
+      if (!opts) continue;
+      const lens = opts.map(o => o.length);
       if (new Set(lens).size === 1) continue; // all equal — no signal
       comparable++;
       if (lens[q.correctIndex] === Math.max(...lens)) longest++;
     }
+    expect(comparable).toBeGreaterThan(0); // a language with no options read is a bug, not a pass
     expect(longest / comparable).toBeLessThan(LONGEST_SHARE_CEILING);
   });
 
-  it('keeps the correct option from being much longer than its distractors', () => {
-    const gaps = ALL.map(q => {
-      const lens = q.options.map(o => o.length);
+  it.each(LANGS)('keeps the correct option from being much longer than its distractors (%s)', lang => {
+    const gaps: number[] = [];
+    for (const q of ALL) {
+      const opts = optionsFor(q, lang);
+      if (!opts) continue;
+      const lens = opts.map(o => o.length);
       const others = lens.filter((_, i) => i !== q.correctIndex);
-      return lens[q.correctIndex] - others.reduce((a, b) => a + b, 0) / others.length;
-    });
+      gaps.push(lens[q.correctIndex] - others.reduce((a, b) => a + b, 0) / others.length);
+    }
+    expect(gaps.length).toBe(ALL.length); // every question must be readable in every language
     const mean = gaps.reduce((a, b) => a + b, 0) / gaps.length;
     expect(mean).toBeLessThan(MEAN_ADVANTAGE_CEILING);
   });
