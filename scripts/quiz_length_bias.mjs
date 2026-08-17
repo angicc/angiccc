@@ -18,7 +18,7 @@
 // never hand-transcribed, because a mistyped "from" silently patches nothing
 // or — worse — the wrong question. Replacement is by exact string match and
 // refuses to run when a match is missing or ambiguous.
-import { build } from 'esbuild';
+import { build, transform } from 'esbuild';
 import path from 'path';
 import fs from 'fs';
 
@@ -100,7 +100,7 @@ function needles(text) {
   ])];
 }
 
-function applyPatch(patchPath, questions, get) {
+async function applyPatch(patchPath, questions, get) {
   const patch = JSON.parse(fs.readFileSync(patchPath, 'utf8'));
   const files = Object.fromEntries(SOURCES.map(f => [f, fs.readFileSync(f, 'utf8')]));
   const before = { ...files };
@@ -148,13 +148,20 @@ function applyPatch(patchPath, questions, get) {
         if (total === 0) { problems.push(`${id}/${lang}[${i}]: not found — ${from[i].slice(0, 44)}`); continue; }
         if (total > 1) { problems.push(`${id}/${lang}[${i}]: ${total} matches, ambiguous — ${from[i].slice(0, 44)}`); continue; }
         const { f, needle } = found[0];
-        // Re-escape the replacement the same way the match was escaped.
-        const replacement = needle === from[i]
-          ? to[i]
-          : needle.includes("\\'")
-            ? to[i].replace(/\\/g, '\\\\').replace(/'/g, "\\'")
-            : to[i].replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-        files[f] = files[f].replace(needle, replacement);
+        // Escape the replacement for the quote character that actually
+        // delimits this literal — NOT for however the old text happened to be
+        // escaped. An apostrophe in the new text inside a single-quoted
+        // literal broke the file when the old text had none to go by.
+        const at = files[f].indexOf(needle);
+        const quote = files[f][at - 1];
+        if (quote !== "'" && quote !== '"' && quote !== '`') {
+          problems.push(`${id}/${lang}[${i}]: match is not a whole string literal`);
+          continue;
+        }
+        const replacement = to[i]
+          .replace(/\\/g, '\\\\')
+          .split(quote).join('\\' + quote);
+        files[f] = files[f].slice(0, at) + replacement + files[f].slice(at + needle.length);
         replaced++;
       }
     }
@@ -165,8 +172,21 @@ function applyPatch(patchPath, questions, get) {
     for (const p of problems.slice(0, 20)) console.error('   ' + p);
     process.exit(1);
   }
-  for (const f of SOURCES) if (files[f] !== before[f]) fs.writeFileSync(f, files[f]);
-  console.log(`✔ replaced ${replaced} option string(s)`);
+  // Parse every file we are about to write. An unescaped apostrophe in new
+  // text silently produced a syntax error that only surfaced on the next run;
+  // catching it here means a bad patch never reaches the working tree.
+  const changed = SOURCES.filter(f => files[f] !== before[f]);
+  for (const f of changed) {
+    try {
+      await transform(files[f], { loader: 'ts' });
+    } catch (err) {
+      console.error(`✖ patch would break ${f}; nothing written:`);
+      console.error('   ' + String(err.errors?.[0]?.text ?? err.message));
+      process.exit(1);
+    }
+  }
+  for (const f of changed) fs.writeFileSync(f, files[f]);
+  console.log(`✔ replaced ${replaced} option string(s) in ${changed.length} file(s)`);
 }
 
 // ── main ─────────────────────────────────────────────────────────────────────
@@ -176,7 +196,7 @@ const qt = await load('src/i18n/quizTranslations.ts');
 const ALL = qd.QUIZZES.flatMap(q => q.questions);
 const get = qt.getTranslatedQuestion;
 
-if (argv[0] === '--apply') { applyPatch(argv[1], ALL, get); process.exit(0); }
+if (argv[0] === '--apply') { await applyPatch(argv[1], ALL, get); process.exit(0); }
 
 if (argv[0] === '--dump') {
   const out = argv.slice(1).map(id => {

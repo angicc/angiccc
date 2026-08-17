@@ -26,13 +26,13 @@ function optionsFor(q: (typeof ALL)[number], lang: Language): string[] | null {
  * bias is in fact slightly worse in German and French than in English.
  *
  * The bank still carries real debt — the correct option is the longest in
- * ~59% of questions against 25% by chance. These ceilings sit just above the
- * current measurement so the suite stays green while stopping it getting
- * WORSE. Run `node scripts/quiz_length_bias.mjs` for the live numbers, and
- * tighten these as questions are rewritten.
+ * ~51-53% of questions against 25% by chance, down from ~59%. These ceilings
+ * sit just above the current measurement so the suite stays green while
+ * stopping it getting WORSE. Run `node scripts/quiz_length_bias.mjs` for the
+ * live numbers, and tighten these further as more questions are rewritten.
  */
-const LONGEST_SHARE_CEILING = 0.60;
-const MEAN_ADVANTAGE_CEILING = 7.8;
+const LONGEST_SHARE_CEILING = 0.54;
+const MEAN_ADVANTAGE_CEILING = 5.6;
 
 describe('question quality', () => {
   it.each(LANGS)('does not let the correct option be the longest too often (%s)', lang => {

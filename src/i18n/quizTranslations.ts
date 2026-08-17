@@ -596,17 +596,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'eq3': {
     es: {
       question: '¿A qué fenómeno se refiere el "Intercambio Colombino"?',
-      options: ['Colón intercambiando oro por especias', 'La transferencia de plantas, animales y enfermedades entre hemisferios después de 1492', 'Un acuerdo comercial entre España y Portugal', 'Colón intercambiando mapas con los indígenas'],
+      options: ['Colón intercambiando oro por especias', 'La transferencia de plantas, animales y enfermedades tras 1492', 'Un acuerdo comercial entre España y Portugal', 'Colón intercambiando mapas con los indígenas'],
       explanation: 'El Intercambio Colombino trajo caballos, ganado y enfermedades mortales a América; y devolvió papas, tomates y maíz a Europa, transformando ambos hemisferios.',
     },
     ru: {
       question: '«Колумбов обмен» — это какое явление?',
-      options: ['Колумб менял золото на пряности', 'Перенос растений, животных и болезней между полушариями после 1492 года', 'Торговое соглашение между Испанией и Португалией', 'Колумб обменивался картами с коренными народами'],
+      options: ['Колумб менял золото на пряности', 'Перенос растений, животных и болезней после 1492 года', 'Торговое соглашение между Испанией и Португалией', 'Колумб обменивался картами с коренными народами'],
       explanation: 'Колумбов обмен принёс лошадей, крупный рогатый скот и смертоносные болезни в Америку, а в Европу вернулся картофель, томаты и кукуруза — преобразив оба полушария.',
     },
     mk: {
       question: '„Колумбовата размена" се однесува на кој феномен?',
-      options: ['Колумб тргувал злато за зачини', 'Преносот на растенија, животни и болести меѓу хемисферите по 1492 г.', 'Трговски договор меѓу Шпанија и Португалија', 'Колумб разменувал мапи со домородните народи'],
+      options: ['Колумб тргувал злато за зачини', 'Преносот на растенија, животни и болести по 1492 г.', 'Трговски договор меѓу Шпанија и Португалија', 'Колумб разменувал мапи со домородните народи'],
       explanation: 'Колумбовата размена донела коњи, говеда и смртоносни болести во Америките; и вратила компири, домати и пченка во Европа — трансформирајќи ги двете хемисфери.',
     },
   },
