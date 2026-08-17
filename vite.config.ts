@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import react from '@vitejs/plugin-react';
@@ -121,17 +122,26 @@ function translationCoveragePlugin(): Plugin {
       // The baked lesson translations ship as per-language chunks generated from
       // lessonTranslationsGenerated.ts. Nothing imports that file at runtime, so
       // a regeneration without a re-split would silently serve stale text.
+      //
+      // Staleness is checked by CONTENT, never by mtime. Git does not preserve
+      // modification times, so on a fresh clone — which is every CI and every
+      // Netlify build — the chunks always looked older than their source and
+      // this guard failed the build outright. It cost a string of deploys that
+      // silently never shipped.
       const bakedSource = path.resolve(__dirname, 'src/i18n/lessonTranslationsGenerated.ts');
       const bakedDir = path.resolve(__dirname, 'src/i18n/generated');
       if (fs.existsSync(bakedSource) && fs.existsSync(bakedDir)) {
-        const sourceAt = fs.statSync(bakedSource).mtimeMs;
-        const stale = fs
-          .readdirSync(bakedDir)
-          .filter(f => f.endsWith('.ts'))
-          .filter(f => fs.statSync(path.join(bakedDir, f)).mtimeMs < sourceAt);
+        const sourceSha = crypto.createHash('sha256').update(fs.readFileSync(bakedSource)).digest('hex');
+        const chunks = fs.readdirSync(bakedDir).filter(f => f.endsWith('.ts'));
+        const stale = chunks.filter(f => {
+          const head = fs.readFileSync(path.join(bakedDir, f), 'utf8').slice(0, 2048);
+          const stamped = /source-sha256:\s*([0-9a-f]{64})/.exec(head)?.[1];
+          return stamped !== sourceSha;
+        });
         if (stale.length > 0) {
           problems.push(
-            `[i18n] ${stale.length} baked language chunk(s) are older than lessonTranslationsGenerated.ts: ${stale.join(', ')}\n` +
+            `[i18n] ${stale.length} baked language chunk(s) were built from a different ` +
+              `lessonTranslationsGenerated.ts: ${stale.join(', ')}\n` +
               `        Run \`npm run i18n:split\` to regenerate them.`
           );
         }

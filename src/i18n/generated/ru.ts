@@ -4,6 +4,8 @@
 //
 // Loaded on demand by src/i18n/bakedLessons.ts so a visitor downloads only the
 // language they are reading in.
+//
+// source-sha256: 5da318c09009ed81af75f1cbbb45e6193cc5d0889437527ac85a939a1c9f4fc1
 
 import type { GenLessonT } from '../lessonTranslationsGenerated';
 

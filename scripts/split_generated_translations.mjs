@@ -15,6 +15,7 @@
  *   npm run i18n:lessons && npm run i18n:split
  */
 
+import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -45,12 +46,20 @@ fs.unlinkSync(tmp);
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
+// Fingerprint of the data-of-record, stamped into every chunk so staleness can
+// be detected by CONTENT. The build guard used to compare file mtimes, which
+// git does not preserve — so on any fresh clone (every CI and Netlify build)
+// the chunks looked older than their source and the build failed outright.
+const SRC_SHA = crypto.createHash('sha256').update(fs.readFileSync(SRC)).digest('hex');
+
 const header = lang => `// ─── Baked lesson translations: ${lang} ──────────────────────────────────────
 // GENERATED — do not edit. Produced by scripts/split_generated_translations.mjs
 // from src/i18n/lessonTranslationsGenerated.ts, which remains the data-of-record.
 //
 // Loaded on demand by src/i18n/bakedLessons.ts so a visitor downloads only the
 // language they are reading in.
+//
+// source-sha256: ${SRC_SHA}
 
 import type { GenLessonT } from '../lessonTranslationsGenerated';
 
