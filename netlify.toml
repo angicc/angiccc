@@ -11,3 +11,26 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# ── Security headers ─────────────────────────────────────────────────────────
+# HSTS tells the browser to refuse plain HTTP for this host for a year, which
+# closes the downgrade window on every request after the first. `preload` is
+# only meaningful once the domain is submitted to the browser preload list;
+# leaving it here is what makes that submission possible later.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=(), usb=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+    X-DNS-Prefetch-Control = "off"
+
+# Hashed build assets are immutable; anything else must revalidate so a deploy
+# is picked up rather than served stale from cache.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

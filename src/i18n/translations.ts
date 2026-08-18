@@ -260,6 +260,7 @@ export type TranslationKeys = {
   prof_reset_title: string; prof_reset_desc: string;
   prof_reset_confirm: string; prof_reset_confirm_desc: string; prof_reset_yes: string;
   prof_toast_image_too_big: string;
+  prof_toast_image_bad_type: string;
   prof_toast_avatar_set: string;
   prof_toast_avatar_removed: string;
   prof_toast_name_short: string;
@@ -753,6 +754,7 @@ const EN: TranslationKeys = {
     prof_reset_confirm: 'Reset all progress?', prof_reset_confirm_desc: 'This will permanently delete all your XP, completed lessons, quiz scores, and achievements. This action cannot be undone.',
     prof_reset_yes: 'Yes, reset everything',
     prof_toast_image_too_big: 'Image must be under 2 MB.',
+    prof_toast_image_bad_type: 'Only PNG, JPEG, WEBP or GIF images are accepted.',
     prof_toast_avatar_set: 'Profile picture updated!',
     prof_toast_avatar_removed: 'Profile picture removed.',
     prof_toast_name_short: 'Username must be at least 3 characters.',
@@ -1242,6 +1244,7 @@ export const T: Translations = {
     prof_reset_confirm: '¿Restablecer todo el progreso?', prof_reset_confirm_desc: 'Esto eliminará permanentemente todo tu XP, lecciones completadas, puntuaciones y logros. Esta acción no se puede deshacer.',
     prof_reset_yes: 'Sí, restablecer todo',
     prof_toast_image_too_big: 'La imagen debe pesar menos de 2 MB.',
+    prof_toast_image_bad_type: 'Solo se aceptan imágenes PNG, JPEG, WEBP o GIF.',
     prof_toast_avatar_set: '¡Foto de perfil actualizada!',
     prof_toast_avatar_removed: 'Foto de perfil eliminada.',
     prof_toast_name_short: 'El nombre de usuario debe tener al menos 3 caracteres.',
@@ -1729,6 +1732,7 @@ export const T: Translations = {
     prof_reset_confirm: 'Сбросить весь прогресс?', prof_reset_confirm_desc: 'Это безвозвратно удалит весь ваш XP, пройденные уроки, результаты и достижения.',
     prof_reset_yes: 'Да, сбросить всё',
     prof_toast_image_too_big: 'Изображение должно быть меньше 2 МБ.',
+    prof_toast_image_bad_type: 'Принимаются только изображения PNG, JPEG, WEBP или GIF.',
     prof_toast_avatar_set: 'Фото профиля обновлено!',
     prof_toast_avatar_removed: 'Фото профиля удалено.',
     prof_toast_name_short: 'Имя пользователя должно содержать не менее 3 символов.',
@@ -2216,6 +2220,7 @@ export const T: Translations = {
     prof_reset_confirm: 'Враќање на целиот напредок?', prof_reset_confirm_desc: 'Ова ќе го избрише засекогаш целиот твој XP, завршени лекции, резултати и достигнувања. Оваа акција не може да се поврати.',
     prof_reset_yes: 'Да, врати сè',
     prof_toast_image_too_big: 'Сликата мора да биде помала од 2 МБ.',
+    prof_toast_image_bad_type: 'Се прифаќаат само PNG, JPEG, WEBP или GIF слики.',
     prof_toast_avatar_set: 'Профилната слика е ажурирана!',
     prof_toast_avatar_removed: 'Профилната слика е отстранета.',
     prof_toast_name_short: 'Корисничкото име мора да има барем 3 знаци.',

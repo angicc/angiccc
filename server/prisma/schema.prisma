@@ -29,9 +29,23 @@ model User {
   username     String
   passwordHash String
   tier         Tier     @default(FREE)
-  language     String   @default("en") // en | es | ru | mk
+  language     String   @default("en") // en | es | ru | mk | de | fr
   createdAt    DateTime @default(now())
   lastSeenAt   DateTime @default(now()) // presence heartbeat
+
+  // ── Session & credential security ──
+  // Bumped on password change and on "sign out everywhere". Issued tokens
+  // carry the value they were minted with, so raising it invalidates every
+  // existing session at once — a stolen token stops working the moment the
+  // owner changes their password.
+  tokenVersion     Int       @default(0)
+  // Throttles online guessing per ACCOUNT, which per-IP limits cannot do.
+  failedLoginCount Int       @default(0)
+  lockedUntil      DateTime?
+  passwordChangedAt DateTime?
+
+  passwordResets PasswordReset[]
+  securityEvents SecurityEvent[]
 
   // ── Billing (Stripe subscription + free trial) ──
   stripeCustomerId   String?   @unique
@@ -300,4 +314,38 @@ model CrisisRoomState {
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, crisisId])
+}
+
+// A password-reset link. The raw token is emailed and never stored — only its
+// SHA-256 — so a database leak cannot be replayed into account takeover.
+// Single-use (usedAt) and short-lived (expiresAt).
+model PasswordReset {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  requestIp String?
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// Append-only audit trail for authentication and account events. Deliberately
+// records the OUTCOME and the actor, never the credential.
+model SecurityEvent {
+  id        String   @id @default(cuid())
+  type      String   // login_success | login_failed | account_locked | password_changed | ...
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  email     String?  // for events with no resolvable account
+  ip        String?
+  userAgent String?
+  detail    String?
+  createdAt DateTime @default(now())
+
+  @@index([type, createdAt])
+  @@index([userId, createdAt])
 }

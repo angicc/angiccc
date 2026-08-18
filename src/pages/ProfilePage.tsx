@@ -31,6 +31,7 @@ import { studyHeatmap, personalRecords, nextMilestones } from '@/features/progre
 import { formatDuration } from '@/features/progress/timeTracking';
 import { getTranslatedAchievement } from '@/i18n/achievementTranslations';
 import { getTranslatedRank } from '@/i18n/rankTranslations';
+import { checkImageFile, ACCEPT_ATTRIBUTE } from '@/features/uploads/imageUpload';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -105,10 +106,18 @@ export default function ProfilePage() {
   const [avatarUrl, setAvatarUrl] = useState<string>(() => localStorage.getItem(avatarKey) ?? '');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { toast.error(t.prof_toast_image_too_big); return; }
+    // Checked by CONTENT, not by name or the browser-reported type — both are
+    // caller-controlled. The old check was file.size alone, so any file at all
+    // was accepted, stored, and rendered back through an <img src>.
+    const check = await checkImageFile(file);
+    if (!check.ok) {
+      toast.error(check.reason === 'too-large' ? t.prof_toast_image_too_big : t.prof_toast_image_bad_type);
+      e.target.value = '';
+      return;
+    }
     const reader = new FileReader();
     reader.onload = ev => {
       const url = ev.target?.result as string;
@@ -459,7 +468,7 @@ export default function ProfilePage() {
           {/* ── Settings ── */}
           <TabsContent value="settings" className="space-y-4 mt-4">
             {/* Hidden file input */}
-            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
+            <input ref={fileInputRef} type="file" {...{ accept: ACCEPT_ATTRIBUTE }} className="hidden" onChange={e => void handleAvatarUpload(e)} />
 
             {/* Profile Picture */}
             <Card>
