@@ -130,7 +130,7 @@ const CLIO_GIF = 'https://media.giphy.com/media/cLr9ItoqnmxEMfTaWA/giphy.gif';
 export default function AiTutorPage() {
   const { currentUser, refreshProgress } = useAuth();
   const { canAI, trackAiMessage } = useSubscription();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const SUGGESTIONS = [
     { icon: SUGGESTION_ICONS[0], text: t.sugg_1 },
     { icon: SUGGESTION_ICONS[1], text: t.sugg_2 },
@@ -424,7 +424,7 @@ export default function AiTutorPage() {
                             onClick={() => loadExample(d.id)}
                             className="text-[11px] px-3 py-1.5 rounded-full border border-border/70 text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all"
                           >
-                            {d.topic}
+                            {language === 'en' ? d.topic : (d.topicI18n?.[language as 'es'|'ru'|'mk'|'de'|'fr'] ?? d.topic)}
                           </button>
                         ))}
                       </div>

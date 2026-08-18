@@ -120,50 +120,102 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     titleI18n: { de: 'Mesopotamien & das Alte Ägypten', fr: 'Mésopotamie et Égypte antique', es: 'Mesopotamia y Antiguo Egipto', ru: 'Месопотамия и Древний Египет', mk: 'Месопотамија и антички Египет' },
     description: 'The Fertile Crescent — from Mesopotamia\'s Tigris-Euphrates to Egypt\'s Nile — hosted humanity\'s first cities, writing systems, and law codes.',
     polygons: [
+      // The reference plate ("Ancient Egypt and Mesopotamia, c. 1450 BC") shows
+      // FIVE separate polities, not one undifferentiated "Mesopotamia". Drawing
+      // a single Tigris–Euphrates crescent erased the entire political map of
+      // the period — Hatti, Mitanni, Assyria and Babylonia were rivals, not one
+      // region. Each border below follows real coordinates for the cities and
+      // rivers that defined it, using the plate for WHICH states existed and
+      // where their frontiers ran.
       {
-        // Faithful Tigris–Euphrates basin: a crescent hugging both rivers from
-        // the Taurus foothills (Carchemish/Cizre) down the Tigris (Mosul,
-        // Baghdad) and back up the Euphrates (Ur, Babylon, Deir ez-Zor). Traced
-        // from real river/city coordinates, not a rectangle over the desert.
-        label: 'Mesopotamia (Tigris-Euphrates)',
-        color: '#f59e0b',
+        // Hatti: the Anatolian plateau ringed by the Taurus, capital Hattusa
+        // (40.02N, 34.62E) — the plate's northern yellow bloc.
+        label: 'Hittite Empire',
+        color: '#eab308',
         fillOpacity: 0.25,
         coords: [
-          [37.15,38.30],[37.35,40.00],[37.30,41.60],[37.20,42.60],
-          [36.30,43.10],[35.00,44.40],[33.35,44.60],[32.00,46.10],
-          [31.00,47.35],[30.45,47.90],[30.00,48.45],[29.95,48.55],
-          [30.55,47.10],[31.55,45.55],[32.55,44.30],[34.05,42.00],
-          [35.35,40.10],[36.55,38.85],[37.15,38.30],
+          [41.20,32.00],[41.45,34.50],[41.05,36.60],[40.20,37.90],
+          [39.05,38.55],[38.20,37.60],[37.65,36.25],[37.80,34.05],
+          [38.40,32.20],[39.25,31.00],[40.30,31.15],[41.20,32.00],
         ],
       },
       {
-        // Faithful Nile: a thin valley ribbon from Aswan north, flaring into the
-        // Delta triangle (Alexandria–Damietta–Port Said). Egypt's real inhabited
-        // land follows the river, not a blob across the Western Desert.
+        // Mitanni: the Khabur triangle and upper Euphrates between Hatti and
+        // Assyria — the plate's orange wedge.
+        label: 'Mitanni State',
+        color: '#f97316',
+        fillOpacity: 0.25,
+        coords: [
+          [37.80,37.60],[38.00,39.50],[37.60,41.20],[36.80,42.00],
+          [36.00,41.60],[35.60,40.20],[35.80,38.60],[36.60,37.40],
+          [37.80,37.60],
+        ],
+      },
+      {
+        // Assyria: the upper Tigris around Nineveh (36.36N, 43.15E) and Assur
+        // (35.46N, 43.26E) — the plate's green strip.
+        label: 'Assyria',
+        color: '#22c55e',
+        fillOpacity: 0.25,
+        coords: [
+          [37.20,42.20],[37.00,43.60],[36.40,44.40],[35.40,44.05],
+          [34.80,43.40],[35.00,42.60],[35.80,42.00],[36.60,41.90],
+          [37.20,42.20],
+        ],
+      },
+      {
+        // Babylonia and Sumer: the alluvial south — Babylon (32.54N, 44.42E),
+        // Ur (30.96N, 46.10E), Susa (32.19N, 48.26E) — the plate's magenta bloc.
+        label: 'Babylonia & Sumer',
+        color: '#d946ef',
+        fillOpacity: 0.25,
+        coords: [
+          [34.00,43.40],[33.60,44.60],[33.00,45.60],[32.40,47.20],
+          [32.20,48.60],[31.40,48.40],[30.60,47.60],[30.30,46.60],
+          [30.60,45.40],[31.40,44.40],[32.40,43.60],[33.20,43.20],
+          [34.00,43.40],
+        ],
+      },
+      {
+        // Egypt: the Nile ribbon from Nubia to the Delta. A thin inhabited
+        // valley, never a blob across the Western Desert.
         label: 'Ancient Egypt (Nile Valley)',
         color: '#10b981',
         fillOpacity: 0.25,
         coords: [
-          [24.02,32.90],[25.70,32.35],[26.55,31.85],[27.20,30.95],
-          [28.30,30.70],[29.30,30.90],[30.05,30.95],[30.65,30.15],
-          [31.20,29.90],[31.55,30.45],[31.50,31.30],[31.40,31.85],
-          [31.25,32.30],[30.75,32.00],[30.10,31.55],[29.30,31.35],
-          [28.30,31.20],[27.20,31.55],[26.20,32.40],[25.70,33.00],
-          [24.02,33.25],[24.02,32.90],
+          [31.55,29.80],[30.60,30.45],[29.50,30.75],[28.00,30.40],
+          [26.50,31.35],[25.00,32.15],[23.00,32.20],[21.00,30.40],
+          [19.30,30.20],[19.30,31.20],[21.20,32.00],[23.20,33.20],
+          [25.20,33.40],[26.80,32.60],[28.20,31.60],[29.60,31.75],
+          [30.60,31.60],[31.40,32.20],[31.55,29.80],
+        ],
+      },
+      {
+        // Egypt's Asiatic province: the Levant corridor Thutmose III held after
+        // Megiddo (1457 BCE), running the coast to the Orontes. The plate shows
+        // it as Egyptian, and omitting it left Megiddo sitting outside Egypt.
+        label: 'Egyptian Levant (after Megiddo)',
+        color: '#14b8a6',
+        fillOpacity: 0.22,
+        coords: [
+          [31.20,32.40],[31.50,34.30],[32.60,34.90],[33.30,35.20],
+          [34.50,35.90],[35.60,36.20],[35.40,36.95],[34.20,36.60],
+          [33.00,36.00],[31.80,35.00],[30.80,34.40],[30.20,33.40],
+          [31.20,32.40],
         ],
       },
     ],
     routes: [
       {
         name: 'Euphrates Trade Corridor',
-        nameI18n: { es: 'Corredor Comercial del Éufrates', ru: 'Торговый коридор Евфрата', mk: 'Трговски коридор Еуфрат' },
+        nameI18n: { es: 'Corredor Comercial del Éufrates', ru: 'Торговый коридор Евфрата', mk: 'Трговски коридор Еуфрат', de: 'Euphrat-Handelskorridor', fr: 'Corridor commercial de l’Euphrate' },
         type: 'trade',
         color: '#f59e0b',
         points: [[37.0,38.2],[35.35,40.1],[34.0,42.0],[32.55,44.3],[31.0,46.2],[30.45,47.9]],
       },
       {
         name: 'Egypt–Levant Trade Route',
-        nameI18n: { es: 'Ruta Comercial Egipto-Levante', ru: 'Торговый путь Египет–Левант', mk: 'Трговски пат Египет–Левант' },
+        nameI18n: { es: 'Ruta Comercial Egipto-Levante', ru: 'Торговый путь Египет–Левант', mk: 'Трговски пат Египет–Левант', de: 'Handelsweg Ägypten–Levante', fr: 'Route commerciale Égypte–Levant' },
         type: 'trade',
         color: '#10b981',
         points: [[30,32],[31,34],[33,35],[34,36],[33,36]],
@@ -212,7 +264,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Silk & Grain Trade (Aegean)',
-        nameI18n: { es: 'Comercio del Egeo', ru: 'Торговля Эгейского моря', mk: 'Трговија на Егејот' },
+        nameI18n: { es: 'Comercio del Egeo', ru: 'Торговля Эгейского моря', mk: 'Трговија на Егејот', de: 'Seiden- und Getreidehandel (Ägäis)', fr: 'Commerce de la soie et du grain (Égée)' },
         type: 'trade',
         color: '#3b82f6',
         points: [[38,24],[39,26],[40,28],[41,29],[40,26],[38,24]],
@@ -251,14 +303,14 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: "Alexander's Conquest Route (334–323 BCE)",
-        nameI18n: { es: 'Ruta de conquista de Alejandro (334–323 a.C.)', ru: 'Путь завоеваний Александра (334–323 до н.э.)', mk: 'Патот на освојувањата на Александар (334–323 п.н.е.)' },
+        nameI18n: { es: 'Ruta de conquista de Alejandro (334–323 a.C.)', ru: 'Путь завоеваний Александра (334–323 до н.э.)', mk: 'Патот на освојувањата на Александар (334–323 п.н.е.)' , de: 'Alexanders Eroberungszug (334–323 v. Chr.)', fr: 'Route de conquête d’Alexandre (334–323 av. J.-C.)'},
         type: 'military',
         color: '#ef4444',
         points: [[40.76,22.52],[40.35,26.4],[40.02,27.28],[38.48,28.04],[36.9,30.7],[36.77,36.15],[33.27,35.2],[31.2,29.92],[29.98,31.13],[31.2,29.92],[36.36,43.15],[32.54,44.42],[32.19,48.26],[29.93,52.89],[36.3,59.6],[36.75,66.9],[39.65,66.97],[34.53,69.17],[32.94,73.73],[30.2,71.47],[25.4,68.3],[29.93,52.89],[32.54,44.42]],
       },
       {
         name: 'Hellenistic Trade Corridor',
-        nameI18n: { es: 'Corredor comercial helenístico', ru: 'Эллинистический торговый коридор', mk: 'Хеленистички трговски коридор' },
+        nameI18n: { es: 'Corredor comercial helenístico', ru: 'Эллинистический торговый коридор', mk: 'Хеленистички трговски коридор', de: 'Hellenistischer Handelskorridor', fr: 'Corridor commercial hellénistique' },
         type: 'trade',
         color: '#f59e0b',
         points: [[40.64,22.94],[40.15,26.41],[38.42,27.14],[36.2,36.16],[31.2,29.92]],
@@ -301,7 +353,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Royal Road (Susa to Sardis)',
-        nameI18n: { es: 'Camino Real (Susa–Sardis)', ru: 'Царская дорога (Сузы–Сарды)', mk: 'Кралски Пат (Суза–Сардис)' },
+        nameI18n: { es: 'Camino Real (Susa–Sardis)', ru: 'Царская дорога (Сузы–Сарды)', mk: 'Кралски Пат (Суза–Сардис)', de: 'Königsstraße (Susa nach Sardes)', fr: 'Route royale (de Suse à Sardes)' },
         type: 'military',
         color: '#8b5cf6',
         points: [[32.2,48.3],[34.8,48.5],[36.7,37.9],[38.2,32],[39,27],[38.5,27.2]],
@@ -345,14 +397,14 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Via Appia (Rome → Brindisi)',
-        nameI18n: { es: 'Vía Apia', ru: 'Аппиева дорога', mk: 'Апиев Пат' },
+        nameI18n: { es: 'Vía Apia', ru: 'Аппиева дорога', mk: 'Апиев Пат', de: 'Via Appia (Rom → Brindisi)', fr: 'Voie Appienne (Rome → Brindisi)' },
         type: 'military',
         color: '#ef4444',
         points: [[41.9,12.5],[40.6,15.8],[40.6,17.9],[40.6,18.0]],
       },
       {
         name: 'Mediterranean Sea Trade',
-        nameI18n: { es: 'Comercio Mediterráneo', ru: 'Средиземноморская торговля', mk: 'Средоземноморска трговија' },
+        nameI18n: { es: 'Comercio Mediterráneo', ru: 'Средиземноморская торговля', mk: 'Средоземноморска трговија', de: 'Mittelmeerhandel', fr: 'Commerce en Méditerranée' },
         type: 'trade',
         color: '#f59e0b',
         points: [[41.9,12.5],[37.9,-5],[36.8,-4],[36,6],[37.9,15],[31.2,30],[33.5,35],[36.2,36],[37,36],[41,29],[38,24],[37.9,23.7],[41.9,12.5]],
@@ -395,7 +447,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Silk Road (Western Han)',
-        nameI18n: { es: 'Ruta de la Seda', ru: 'Великий Шёлковый Путь', mk: 'Патот на Свилата' },
+        nameI18n: { es: 'Ruta de la Seda', ru: 'Великий Шёлковый Путь', mk: 'Патот на Свилата', de: 'Seidenstraße (Westliche Han)', fr: 'Route de la soie (Han occidentaux)' },
         type: 'trade',
         color: '#f59e0b',
         points: [[34.3,109],[39,98],[40.1,94.7],[40,86],[39.6,76],[39.5,65.9],[38,54],[33,44],[36.2,36.2]],
@@ -554,14 +606,14 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Hajj Route (Mecca)',
-        nameI18n: { es: 'Ruta del Hajj', ru: 'Паломнический путь (Мекка)', mk: 'Хаџ патека (Мека)' },
+        nameI18n: { es: 'Ruta del Hajj', ru: 'Паломнический путь (Мекка)', mk: 'Хаџ патека (Мека)', de: 'Hadsch-Route (Mekka)', fr: 'Route du hajj (La Mecque)' },
         type: 'religious',
         color: '#10b981',
         points: [[40,23],[37,36],[34,40],[30,38],[28,35],[24,40],[21.4,39.8]],
       },
       {
         name: 'Indian Ocean Spice Trade',
-        nameI18n: { es: 'Comercio de Especias del Océano Índico', ru: 'Торговля пряностями Индийского океана', mk: 'Трговија со зачини на Индискиот Океан' },
+        nameI18n: { es: 'Comercio de Especias del Océano Índico', ru: 'Торговля пряностями Индийского океана', mk: 'Трговија со зачини на Индискиот Океан', de: 'Gewürzhandel im Indischen Ozean', fr: 'Commerce des épices dans l’océan Indien' },
         type: 'trade',
         color: '#f59e0b',
         points: [[21.4,39.8],[15,50],[12,45],[8,77],[11,77],[8,77],[2,73]],
@@ -602,7 +654,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Pax Mongolica (Silk Road revival)',
-        nameI18n: { es: 'Pax Mongólica (resurgimiento de la Ruta de la Seda)', ru: 'Монгольский мир (возрождение Шёлкового пути)', mk: 'Монголски мир (обновување на Патот на Свилата)' },
+        nameI18n: { es: 'Pax Mongólica (resurgimiento de la Ruta de la Seda)', ru: 'Монгольский мир (возрождение Шёлкового пути)', mk: 'Монголски мир (обновување на Патот на Свилата)', de: 'Pax Mongolica (Wiederbelebung der Seidenstraße)', fr: 'Pax Mongolica (renaissance de la route de la soie)' },
         type: 'trade',
         color: '#a16207',
         points: [[34.3,109],[40,98],[40,86],[39.5,66],[38,54],[33,44],[41.01,28.98]],
@@ -647,7 +699,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'First Crusade Route',
-        nameI18n: { es: 'Ruta de la Primera Cruzada', ru: 'Маршрут Первого Крестового похода', mk: 'Рута на Првата Крстоносна Поход' },
+        nameI18n: { es: 'Ruta de la Primera Cruzada', ru: 'Маршрут Первого Крестового похода', mk: 'Рута на Првата Крстоносна Поход', de: 'Route des Ersten Kreuzzugs', fr: 'Route de la première croisade' },
         type: 'military',
         color: '#f59e0b',
         points: [[48.8,2.3],[43.0,12.5],[41.9,12.5],[41.0,28.9],[39.9,32.8],[37.1,36.8],[35.2,36.5],[32.5,35.5],[31.77,35.22]],
@@ -679,21 +731,21 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Western Raiding & Settlement Route',
-        nameI18n: { es: 'Ruta de saqueo y asentamiento occidental', ru: 'Западный путь набегов и поселений', mk: 'Западен пат на пустошење и населување' },
+        nameI18n: { es: 'Ruta de saqueo y asentamiento occidental', ru: 'Западный путь набегов и поселений', mk: 'Западен пат на пустошење и населување', de: 'Westliche Raub- und Siedlungsroute', fr: 'Route de raids et de peuplement vers l’ouest' },
         type: 'military',
         color: '#ef4444',
         points: [[60.4, 5.3], [59.9, -1.3], [57.5, -3.5], [55.9, -3.2], [53.3, -6.2], [51.5, -0.1], [49.2, -0.4], [48.4, -4.5], [43.4, -8.4]],
       },
       {
         name: 'Eastern River Trade Route (to Byzantium)',
-        nameI18n: { es: 'Ruta fluvial oriental (a Bizancio)', ru: 'Восточный речной торговый путь (в Византию)', mk: 'Источен речен трговски пат (до Византија)' },
+        nameI18n: { es: 'Ruta fluvial oriental (a Bizancio)', ru: 'Восточный речной торговый путь (в Византию)', mk: 'Источен речен трговски пат (до Византија)', de: 'Östlicher Flusshandelsweg (nach Byzanz)', fr: 'Route fluviale orientale (vers Byzance)' },
         type: 'trade',
         color: '#f59e0b',
         points: [[59.3, 18.1], [59.9, 30.3], [58.5, 31.3], [56.8, 35.9], [54.6, 39.7], [50.4, 30.5], [46.5, 30.7], [41.0, 28.9]],
       },
       {
         name: 'North Atlantic Exploration',
-        nameI18n: { es: 'Exploración del Atlántico Norte', ru: 'Исследование Северной Атлантики', mk: 'Истражување на Северниот Атлантик' },
+        nameI18n: { es: 'Exploración del Atlántico Norte', ru: 'Исследование Северной Атлантики', mk: 'Истражување на Северниот Атлантик', de: 'Nordatlantische Erkundung', fr: 'Exploration de l’Atlantique Nord' },
         type: 'trade',
         color: '#60a5fa',
         points: [[60.4, 5.3], [62.0, -6.8], [64.1, -21.9], [61.2, -45.4], [51.6, -55.5]],
@@ -762,21 +814,21 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Middle Passage (Africa → Americas)',
-        nameI18n: { es: 'El Paso del Medio (África → América)', ru: 'Средний путь (Африка → Америка)', mk: 'Средниот премин (Африка → Америка)' },
+        nameI18n: { es: 'El Paso del Medio (África → América)', ru: 'Средний путь (Африка → Америка)', mk: 'Средниот премин (Африка → Америка)', de: 'Mittelpassage (Afrika → Amerika)', fr: 'Passage du milieu (Afrique → Amériques)' },
         type: 'military',
         color: '#ef4444',
         points: [[5.5, 0.5], [4.0, -12.0], [8.0, -28.0], [13.0, -45.0], [13.2, -59.6]],
       },
       {
         name: 'Sugar & Cotton Route (Americas → Europe)',
-        nameI18n: { es: 'Ruta del azúcar y algodón (América → Europa)', ru: 'Путь сахара и хлопка (Америка → Европа)', mk: 'Пат на шеќер и памук (Америка → Европа)' },
+        nameI18n: { es: 'Ruta del azúcar y algodón (América → Europa)', ru: 'Путь сахара и хлопка (Америка → Европа)', mk: 'Пат на шеќер и памук (Америка → Европа)', de: 'Zucker- und Baumwollroute (Amerika → Europa)', fr: 'Route du sucre et du coton (Amériques → Europe)' },
         type: 'trade',
         color: '#f59e0b',
         points: [[13.2, -59.6], [25.0, -60.0], [35.0, -40.0], [42.0, -20.0], [50.9, -1.4]],
       },
       {
         name: 'Manufactured Goods Route (Europe → Africa)',
-        nameI18n: { es: 'Ruta de manufacturas (Europa → África)', ru: 'Путь промышленных товаров (Европа → Африка)', mk: 'Пат на индустриски стоки (Европа → Африка)' },
+        nameI18n: { es: 'Ruta de manufacturas (Europa → África)', ru: 'Путь промышленных товаров (Европа → Африка)', mk: 'Пат на индустриски стоки (Европа → Африка)', de: 'Fertigwarenroute (Europa → Afrika)', fr: 'Route des produits manufacturés (Europe → Afrique)' },
         type: 'trade',
         color: '#a78bfa',
         points: [[51.5, -0.1], [42.0, -9.5], [28.0, -15.0], [14.0, -17.0], [5.5, 0.5]],
@@ -817,7 +869,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Ottoman Military Road (Vienna)',
-        nameI18n: { es: 'Camino Militar Otomano (Viena)', ru: 'Османский военный путь (Вена)', mk: 'Отомански воен пат (Виена)' },
+        nameI18n: { es: 'Camino Militar Otomano (Viena)', ru: 'Османский военный путь (Вена)', mk: 'Отомански воен пат (Виена)', de: 'Osmanische Heerstraße (Wien)', fr: 'Route militaire ottomane (Vienne)' },
         type: 'military',
         color: '#ef4444',
         points: [[41.01,28.98],[42,26],[44,18],[46,16],[48.2,16.4]],
@@ -886,21 +938,21 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Columbus 1st Voyage (1492)',
-        nameI18n: { es: 'Primer Viaje de Colón (1492)', ru: 'Первое плавание Колумба (1492)', mk: 'Прво патување на Колумбо (1492)' },
+        nameI18n: { es: 'Primer Viaje de Colón (1492)', ru: 'Первое плавание Колумба (1492)', mk: 'Прво патување на Колумбо (1492)', de: 'Kolumbus’ erste Fahrt (1492)', fr: 'Premier voyage de Colomb (1492)' },
         type: 'military',
         color: '#3b82f6',
         points: [[38,-9],[30,-17],[22,-30],[18,-66]],
       },
       {
         name: "Da Gama's Route to India (1498)",
-        nameI18n: { es: 'Ruta de Da Gama a India (1498)', ru: 'Маршрут Да Гамы в Индию (1498)', mk: 'Рутата на Да Гама кон Индија (1498)' },
+        nameI18n: { es: 'Ruta de Da Gama a India (1498)', ru: 'Маршрут Да Гамы в Индию (1498)', mk: 'Рутата на Да Гама кон Индија (1498)' , de: 'Da Gamas Weg nach Indien (1498)', fr: 'Route de Vasco de Gama vers l’Inde (1498)'},
         type: 'military',
         color: '#ef4444',
         points: [[38.7,-9.1],[-34.4,18.5],[-26,15],[11.3,43.1],[11.2,51],[11.3,43.5],[10,77]],
       },
       {
         name: "Magellan's Circumnavigation (1519–22)",
-        nameI18n: { es: 'Circunnavegación de Magallanes (1519–22)', ru: 'Кругосветное плавание Магеллана (1519–22)', mk: 'Кружно патување на Магелан (1519–22)' },
+        nameI18n: { es: 'Circunnavegación de Magallanes (1519–22)', ru: 'Кругосветное плавание Магеллана (1519–22)', mk: 'Кружно патување на Магелан (1519–22)' , de: 'Magellans Weltumsegelung (1519–22)', fr: 'Circumnavigation de Magellan (1519–22)'},
         type: 'trade',
         color: '#8b5cf6',
         points: [[38,-9],[0,-35],[-40,-65],[-35,-60],[-10,-80],[10,-85],[10,-103],[0,-140],[-20,160],[-30,115],[0,42],[10,44],[38,-9]],
@@ -980,7 +1032,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Washington\'s Campaigns',
-        nameI18n: { es: 'Campañas de Washington', ru: 'Кампании Вашингтона', mk: 'Кампањите на Вашингтон' },
+        nameI18n: { es: 'Campañas de Washington', ru: 'Кампании Вашингтона', mk: 'Кампањите на Вашингтон', de: 'Washingtons Feldzüge', fr: 'Campagnes de Washington' },
         type: 'military',
         color: '#3b82f6',
         points: [[42.3,-71.1],[40.2,-74.2],[39.9,-75.1],[40.1,-74.5],[40.0,-74.9],[40.2,-75.2],[40.3,-75.1],[37.5,-77.5]],
@@ -1024,7 +1076,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: "Napoleon's Russian Campaign (1812)",
-        nameI18n: { es: 'Campaña Rusa de Napoleón (1812)', ru: 'Русский поход Наполеона (1812)', mk: 'Руската кампања на Наполеон (1812)' },
+        nameI18n: { es: 'Campaña Rusa de Napoleón (1812)', ru: 'Русский поход Наполеона (1812)', mk: 'Руската кампања на Наполеон (1812)' , de: 'Napoleons Russlandfeldzug (1812)', fr: 'Campagne de Russie de Napoléon (1812)'},
         type: 'military',
         color: '#ef4444',
         points: [[52,20],[53,24],[54,28],[54,32],[54,36],[55,37.6],[55.75,37.6],[54,36],[52,32],[51,28],[52,24],[52,20]],
@@ -1069,7 +1121,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'British Railway Network',
-        nameI18n: { es: 'Red Ferroviaria Británica', ru: 'Британская железнодорожная сеть', mk: 'Британска железничка мрежа' },
+        nameI18n: { es: 'Red Ferroviaria Británica', ru: 'Британская железнодорожная сеть', mk: 'Британска железничка мрежа', de: 'Britisches Eisenbahnnetz', fr: 'Réseau ferroviaire britannique' },
         type: 'trade',
         color: '#f59e0b',
         points: [[51.5,-0.12],[52.0,-2.18],[53.4,-2.2],[53.8,-1.54],[53.4,-3.0],[54.6,-1.1],[55.8,-3.2],[56.1,-3.9]],
@@ -1115,14 +1167,14 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Western Front (1914–18)',
-        nameI18n: { es: 'Frente Occidental (1914–18)', ru: 'Западный фронт (1914–18)', mk: 'Западен фронт (1914–18)' },
+        nameI18n: { es: 'Frente Occidental (1914–18)', ru: 'Западный фронт (1914–18)', mk: 'Западен фронт (1914–18)', de: 'Westfront (1914–18)', fr: 'Front de l’Ouest (1914–18)' },
         type: 'military',
         color: '#ef4444',
         points: [[51,3],[50.5,4],[50.5,6],[50.3,7],[49.8,7],[49.3,7],[48.8,7],[47.7,7.3]],
       },
       {
         name: 'Eastern Front (1914–18)',
-        nameI18n: { es: 'Frente Oriental (1914–18)', ru: 'Восточный фронт (1914–18)', mk: 'Источен фронт (1914–18)' },
+        nameI18n: { es: 'Frente Oriental (1914–18)', ru: 'Восточный фронт (1914–18)', mk: 'Источен фронт (1914–18)', de: 'Ostfront (1914–18)', fr: 'Front de l’Est (1914–18)' },
         type: 'military',
         color: '#8b5cf6',
         points: [[57,24],[55,26],[52,24],[50,24],[48,24],[47,22],[45,28],[43,28]],
@@ -1161,14 +1213,14 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'D-Day Allied Advance',
-        nameI18n: { es: 'Avance Aliado en el Día D', ru: 'Союзное наступление в День Д', mk: 'Сојузничкото напредување на D-Day' },
+        nameI18n: { es: 'Avance Aliado en el Día D', ru: 'Союзное наступление в День Д', mk: 'Сојузничкото напредување на D-Day', de: 'Alliierter Vormarsch nach dem D-Day', fr: 'Avancée alliée après le Jour J' },
         type: 'military',
         color: '#3b82f6',
         points: [[51,0],[49.4,-0.5],[49,1],[49,3],[50,4],[51,3],[52,6],[52,10],[53,13],[52,14],[50,18]],
       },
       {
         name: 'Operation Barbarossa',
-        nameI18n: { es: 'Operación Barbarroja', ru: 'Операция «Барбаросса»', mk: 'Операција Барбароса' },
+        nameI18n: { es: 'Operación Barbarroja', ru: 'Операция «Барбаросса»', mk: 'Операција Барбароса', de: 'Unternehmen Barbarossa', fr: 'Opération Barbarossa' },
         type: 'military',
         color: '#ef4444',
         points: [[54,22],[54,28],[54,32],[55,37],[56,34],[52,34],[50,34],[48,36],[47,38]],
@@ -1220,7 +1272,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
     routes: [
       {
         name: 'Berlin Airlift Route (1948–49)',
-        nameI18n: { es: 'Ruta del Puente Aéreo de Berlín (1948–49)', ru: 'Маршрут Берлинского воздушного моста (1948–49)', mk: 'Берлинскиот воздушен мост (1948–49)' },
+        nameI18n: { es: 'Ruta del Puente Aéreo de Berlín (1948–49)', ru: 'Маршрут Берлинского воздушного моста (1948–49)', mk: 'Берлинскиот воздушен мост (1948–49)', de: 'Route der Berliner Luftbrücke (1948–49)', fr: 'Route du pont aérien de Berlin (1948–49)' },
         type: 'military',
         color: '#3b82f6',
         points: [[53.5,9.9],[52.37,13.1]],
@@ -1479,7 +1531,7 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
       },
     ],
     routes: [
-      { name: 'Jade & obsidian exchange', nameI18n: { es: 'Intercambio de jade y obsidiana', ru: 'Обмен нефрита и обсидиана', mk: 'Размена на жад и опсидијан' }, type: 'trade', color: '#84cc16', points: [[18.10,-94.03],[17.75,-94.73],[17.55,-96.72],[16.75,-98.60]] },
+      { name: 'Jade & obsidian exchange', nameI18n: { es: 'Intercambio de jade y obsidiana', ru: 'Обмен нефрита и обсидиана', mk: 'Размена на жад и опсидијан', de: 'Jade- und Obsidianhandel', fr: 'Échange de jade et d’obsidienne' }, type: 'trade', color: '#84cc16', points: [[18.10,-94.03],[17.75,-94.73],[17.55,-96.72],[16.75,-98.60]] },
     ],
     markers: [
       { name: 'San Lorenzo', type: 'capital', lat: 17.75, lng: -94.73, note: 'Earliest great Olmec center — colossal heads carved by ~1200 BCE', year: -1200 },
@@ -1530,8 +1582,8 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
       },
     ],
     routes: [
-      { name: 'Royal road: Angkor to Phimai', nameI18n: { es: 'Calzada real: Angkor a Phimai', ru: 'Царская дорога: Ангкор — Пхимай', mk: 'Кралски пат: Ангкор до Пимаи' }, type: 'military', color: '#2dd4bf', points: [[13.44,103.86],[14.35,102.98],[15.22,102.49]] },
-      { name: 'Royal road: Angkor to Vijaya (Champa)', nameI18n: { es: 'Calzada real: Angkor a Vijaya', ru: 'Царская дорога: Ангкор — Виджая', mk: 'Кралски пат: Ангкор до Виџаја' }, type: 'military', color: '#5eead4', points: [[13.44,103.86],[13.90,105.60],[13.95,107.40],[13.90,109.10]] },
+      { name: 'Royal road: Angkor to Phimai', nameI18n: { es: 'Calzada real: Angkor a Phimai', ru: 'Царская дорога: Ангкор — Пхимай', mk: 'Кралски пат: Ангкор до Пимаи', de: 'Königsstraße: Angkor nach Phimai', fr: 'Route royale : Angkor à Phimai' }, type: 'military', color: '#2dd4bf', points: [[13.44,103.86],[14.35,102.98],[15.22,102.49]] },
+      { name: 'Royal road: Angkor to Vijaya (Champa)', nameI18n: { es: 'Calzada real: Angkor a Vijaya', ru: 'Царская дорога: Ангкор — Виджая', mk: 'Кралски пат: Ангкор до Виџаја', de: 'Königsstraße: Angkor nach Vijaya (Champa)', fr: 'Route royale : Angkor à Vijaya (Champā)' }, type: 'military', color: '#5eead4', points: [[13.44,103.86],[13.90,105.60],[13.95,107.40],[13.90,109.10]] },
     ],
     markers: [
       { name: 'Angkor', type: 'capital', lat: 13.44, lng: 103.86, note: 'Angkor Thom and the Bayon — capital of Jayavarman VII', year: 1181 },
@@ -1584,8 +1636,8 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
       },
     ],
     routes: [
-      { name: 'Trans-Saharan gold & salt road', nameI18n: { es: 'Ruta transahariana del oro y la sal', ru: 'Транссахарский путь золота и соли', mk: 'Транссахарски пат на злато и сол' }, type: 'trade', color: '#eab308', points: [[13.91,-4.55],[16.77,-3.01],[20.0,-4.0],[23.6,-5.0]] },
-      { name: 'The Niger River artery', nameI18n: { es: 'La arteria del río Níger', ru: 'Артерия реки Нигер', mk: 'Артеријата на реката Нигер' }, type: 'trade', color: '#38bdf8', points: [[13.91,-4.55],[15.35,-4.28],[16.77,-3.01],[16.27,-0.04],[15.40,0.80]] },
+      { name: 'Trans-Saharan gold & salt road', nameI18n: { es: 'Ruta transahariana del oro y la sal', ru: 'Транссахарский путь золота и соли', mk: 'Транссахарски пат на злато и сол', de: 'Transsaharische Gold- und Salzstraße', fr: 'Route transsaharienne de l’or et du sel' }, type: 'trade', color: '#eab308', points: [[13.91,-4.55],[16.77,-3.01],[20.0,-4.0],[23.6,-5.0]] },
+      { name: 'The Niger River artery', nameI18n: { es: 'La arteria del río Níger', ru: 'Артерия реки Нигер', mk: 'Артеријата на реката Нигер', de: 'Die Lebensader des Niger', fr: 'L’artère du fleuve Niger' }, type: 'trade', color: '#38bdf8', points: [[13.91,-4.55],[15.35,-4.28],[16.77,-3.01],[16.27,-0.04],[15.40,0.80]] },
     ],
     markers: [
       { name: 'Gao', type: 'capital', lat: 16.27, lng: -0.04, note: 'Capital on the Niger — seat of Sonni Ali and Askia the Great', year: 1464 },
@@ -1627,9 +1679,9 @@ export const TERRITORY_TOPICS: TerritoryTopic[] = [
       },
     ],
     routes: [
-      { name: 'Voyage north to Hawaii', nameI18n: { es: 'Viaje al norte a Hawái', ru: 'Путь на север к Гавайям', mk: 'Пат на север кон Хаваи' }, type: 'trade', color: '#22d3ee', points: [[-13.76,-172.10],[-9.78,-139.06],[5.0,-152.0],[19.60,-155.50]] },
-      { name: 'Voyage east to Rapa Nui', nameI18n: { es: 'Viaje al este a Rapa Nui', ru: 'Путь на восток к Рапа-Нуи', mk: 'Пат на исток кон Рапа Нуи' }, type: 'trade', color: '#a78bfa', points: [[-17.65,-149.43],[-23.0,-129.0],[-27.11,-109.35]] },
-      { name: 'Voyage south to Aotearoa', nameI18n: { es: 'Viaje al sur a Aotearoa', ru: 'Путь на юг к Аотеароа', mk: 'Пат на југ кон Аотеароа' }, type: 'trade', color: '#34d399', points: [[-17.65,-149.43],[-21.23,-159.78],[-29.0,-175.0],[-37.80,-185.00]] },
+      { name: 'Voyage north to Hawaii', nameI18n: { es: 'Viaje al norte a Hawái', ru: 'Путь на север к Гавайям', mk: 'Пат на север кон Хаваи', de: 'Fahrt nach Norden nach Hawaii', fr: 'Voyage vers le nord jusqu’à Hawaï' }, type: 'trade', color: '#22d3ee', points: [[-13.76,-172.10],[-9.78,-139.06],[5.0,-152.0],[19.60,-155.50]] },
+      { name: 'Voyage east to Rapa Nui', nameI18n: { es: 'Viaje al este a Rapa Nui', ru: 'Путь на восток к Рапа-Нуи', mk: 'Пат на исток кон Рапа Нуи', de: 'Fahrt nach Osten nach Rapa Nui', fr: 'Voyage vers l’est jusqu’à Rapa Nui' }, type: 'trade', color: '#a78bfa', points: [[-17.65,-149.43],[-23.0,-129.0],[-27.11,-109.35]] },
+      { name: 'Voyage south to Aotearoa', nameI18n: { es: 'Viaje al sur a Aotearoa', ru: 'Путь на юг к Аотеароа', mk: 'Пат на југ кон Аотеароа', de: 'Fahrt nach Süden nach Aotearoa', fr: 'Voyage vers le sud jusqu’à Aotearoa' }, type: 'trade', color: '#34d399', points: [[-17.65,-149.43],[-21.23,-159.78],[-29.0,-175.0],[-37.80,-185.00]] },
     ],
     markers: [
       { name: 'Samoa', type: 'landmark', lat: -13.76, lng: -172.10, note: 'Ancient homeland of the Polynesians', year: 1000 },

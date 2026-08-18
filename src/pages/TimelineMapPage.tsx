@@ -11,7 +11,6 @@ import { TERRITORY_TOPICS, type TerritoryTopic, type TerritoryRoute, type Marker
 import { loadRealPolygons, type RealPolygon } from '@/features/content/territoryGeojson';
 import type { Language } from '@/i18n/translations';
 import { getTranslatedTerritoryDesc } from '@/i18n/territoryDescTranslations';
-import { getTerritoryCartography, getTerritoryPlates } from '@/features/content/territoryCartography';
 import { getQuestionsForTopic, getTranslatedTerritoryQuestion, type TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
 import { generateTopicQuestions, questionsForTopicSafe } from '@/features/map/territoryQuizFallback';
 import { buildCampaignData, type CampaignData } from '@/features/map/campaignData';
@@ -103,39 +102,14 @@ const CART_STYLES: CartographicStyle[] = [
 ];
 
 type MapMode = 'explore' | 'story' | 'quiz' | 'campaign';
-type LayerKey = 'territory' | 'cartography' | 'capitals' | 'cities' | 'battles' | 'ports' | 'resources' | 'routes';
+type LayerKey = 'territory' | 'capitals' | 'cities' | 'battles' | 'ports' | 'resources' | 'routes';
 
-/**
- * Geographic extent to drape a topic's historical cartography over.
- *
- * The plates are scans with no georeferencing of their own, so there are no
- * real-world bounds baked into them. The topic's own geometry is the best
- * available anchor: the polygons it already draws cover the same ground the
- * plate depicts, so the image lines up with the territory rather than floating
- * at an arbitrary place on the globe. Padded slightly, since a historical map
- * always shows some surrounding context beyond the border itself.
- */
-function cartographyBounds(topic: TerritoryTopic): L.LatLngBounds | null {
-  const pts: [number, number][] = [];
-  topic.polygons?.forEach(p => pts.push(...p.coords));
-  if (pts.length < 3) topic.markers.forEach(m => pts.push([m.lat, m.lng]));
-  if (pts.length < 2) return null;
-
-  const lats = pts.map(p => p[0]);
-  const lngs = pts.map(p => p[1]);
-  const padLat = Math.max((Math.max(...lats) - Math.min(...lats)) * 0.12, 1.5);
-  const padLng = Math.max((Math.max(...lngs) - Math.min(...lngs)) * 0.12, 1.5);
-  return L.latLngBounds(
-    [Math.min(...lats) - padLat, Math.min(...lngs) - padLng],
-    [Math.max(...lats) + padLat, Math.max(...lngs) + padLng]
-  );
-}
 type AnnMode = 'off' | 'pin' | 'draw';
 
 // Multi-category data filter matrix — each strategic category governs a group
 // of concrete layer toggles.
 const FILTER_MATRIX: { labelKey: 'tmap_cat_assets' | 'tmap_cat_diplomatic' | 'tmap_cat_resources' | 'tmap_cat_enemy'; keys: LayerKey[] }[] = [
-  { labelKey: 'tmap_cat_assets',     keys: ['territory', 'cartography', 'capitals', 'cities', 'ports'] },
+  { labelKey: 'tmap_cat_assets',     keys: ['territory', 'capitals', 'cities', 'ports'] },
   { labelKey: 'tmap_cat_diplomatic', keys: ['routes'] },
   { labelKey: 'tmap_cat_resources',  keys: ['resources'] },
   { labelKey: 'tmap_cat_enemy',      keys: ['battles'] },
@@ -456,11 +430,10 @@ export default function TimelineMapPage() {
   const [panelOpen, setPanelOpen]     = useState(false);
   const [styleId, setStyleId]         = useState('dark');
   // Which plate is shown for topics that carry more than one (Al-Andalus).
-  const [plateIndex, setPlateIndex] = useState(0);
   const [showLayerPanel, setShowLayerPanel] = useState(false);
   const [showStylePanel, setShowStylePanel] = useState(false);
   const [layers, setLayers]           = useState<Record<LayerKey, boolean>>({
-    territory: true, cartography: true, capitals: true, cities: true, battles: true, ports: true, resources: true, routes: true,
+    territory: true, capitals: true, cities: true, battles: true, ports: true, resources: true, routes: true,
   });
 
   // ── Fog of war: regions stay strategically opaque until scouted ────────────
@@ -531,9 +504,6 @@ export default function TimelineMapPage() {
     if (!selected) return;
     const [s, e] = selected.yearRange;
     if (scrubYear < s || scrubYear > e) setScrubYear(Math.round((s + e) / 2));
-    // A new topic starts on its first plate rather than inheriting the last
-    // topic's phase.
-    setPlateIndex(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
@@ -808,24 +778,6 @@ export default function TimelineMapPage() {
     const isExplored = explored.has(selected.id) || !hasScoutableLand;
     const currentZoom = map.getZoom();
     zoomOpacityRef.current = getFillOpacityForZoom(currentZoom);
-
-    // ── Historical cartography, draped on the map itself ──────────────────
-    // Added before the polygons so the vector borders and markers stay legible
-    // on top of the plate rather than being buried under it.
-    // Not gated behind fog of war: the plate is the reference material the
-    // topic is about, and hiding it until the region is scouted meant it was
-    // almost never seen.
-    const plate = getTerritoryCartography(selected.id, plateIndex);
-    if (layers.cartography && plate) {
-      const bounds = cartographyBounds(selected);
-      if (bounds) {
-        L.imageOverlay(plate, bounds, {
-          opacity: 0.75,
-          interactive: false,
-          className: 'historify-cartography',
-        }).addTo(lg);
-      }
-    }
 
     // Collected here, rendered once after the loop — never per sub-polygon.
     const labelCandidates = new Map<string, { lat: number; lng: number; area: number; color: string }>();
@@ -1145,7 +1097,7 @@ export default function TimelineMapPage() {
         .addTo(lg);
       (marker as unknown as { _tmapType: string })._tmapType = m.type;
     });
-  }, [selected, layers, styleId, language, explored, markExplored, t, geomVersion, plateIndex]);
+  }, [selected, layers, styleId, language, explored, markExplored, t, geomVersion]);
 
   useEffect(() => {
     renderLayers();
@@ -1471,25 +1423,6 @@ export default function TimelineMapPage() {
               )}
             </div>
 
-            {/* Plate switcher — only for topics whose folder supplied more than
-                one map, e.g. Al-Andalus at its height vs the Reconquista. */}
-            {selected && mode === 'explore' && layers.cartography && getTerritoryPlates(selected.id).length > 1 && (
-              <div className="flex items-center gap-1 bg-black/80 backdrop-blur-md rounded-full border border-white/15 shadow-lg p-1">
-                {getTerritoryPlates(selected.id).map((plate, i) => (
-                  <button
-                    key={plate.src}
-                    onClick={() => setPlateIndex(i)}
-                    className={cn(
-                      'text-[10px] font-semibold px-2.5 py-1 rounded-full transition-all',
-                      i === plateIndex ? 'bg-white/90 text-black' : 'text-white/70 hover:text-white'
-                    )}
-                  >
-                    {plate.label ?? `${i + 1}`}
-                  </button>
-                ))}
-              </div>
-            )}
-
             {/* Layer toggle button */}
             {selected && mode === 'explore' && (
               <div className="relative">
@@ -1508,7 +1441,7 @@ export default function TimelineMapPage() {
                     <p className="text-[9px] font-bold uppercase tracking-widest text-white/40">{t.tmap_layers}</p>
                     {FILTER_MATRIX.map(cat => {
                       const colors: Record<LayerKey, string> = {
-                        territory: '#6366f1', cartography: '#d6bd8a', capitals: '#fbbf24', cities: '#60a5fa',
+                        territory: '#6366f1', capitals: '#fbbf24', cities: '#60a5fa',
                         battles: '#ef4444', ports: '#34d399', resources: '#a78bfa', routes: '#f59e0b',
                       };
                       const CatIcon = cat.labelKey === 'tmap_cat_assets' ? Shield

@@ -14,6 +14,12 @@ export interface SampleDialogue {
   id: string;
   /** Short label shown on the empty-state chip. */
   topic: string;
+  /**
+   * The chip label in every other language. Without this the AI Tutor's empty
+   * state showed German copy above three English chips — the whole surface was
+   * translated except the one part a learner actually clicks.
+   */
+  topicI18n: { es: string; ru: string; mk: string; de: string; fr: string };
   era: 'ancient' | 'middle-ages' | 'early-modern' | 'modern';
   turns: SampleTurn[];
 }
@@ -22,6 +28,7 @@ export const CLIO_SAMPLE_DIALOGUES: SampleDialogue[] = [
   {
     id: 'sample-bronze-collapse',
     topic: 'The Bronze Age Collapse',
+    topicI18n: { es: 'El colapso de la Edad del Bronce', ru: 'Крах бронзового века', mk: 'Колапсот на бронзеното доба', de: 'Der Zusammenbruch der Bronzezeit', fr: 'L’effondrement de l’âge du bronze' },
     era: 'ancient',
     turns: [
       {
@@ -47,6 +54,7 @@ export const CLIO_SAMPLE_DIALOGUES: SampleDialogue[] = [
   {
     id: 'sample-printing-press',
     topic: 'Printing, Luther, and Revolutions of Information',
+    topicI18n: { es: 'La imprenta, Lutero y las revoluciones de la información', ru: 'Книгопечатание, Лютер и информационные революции', mk: 'Печатењето, Лутер и информациските револуции', de: 'Buchdruck, Luther und die Informationsrevolutionen', fr: 'L’imprimerie, Luther et les révolutions de l’information' },
     era: 'early-modern',
     turns: [
       {
@@ -72,6 +80,7 @@ export const CLIO_SAMPLE_DIALOGUES: SampleDialogue[] = [
   {
     id: 'sample-cold-war',
     topic: 'The Cuban Missile Crisis and Nuclear Brinkmanship',
+    topicI18n: { es: 'La crisis de los misiles de Cuba y el riesgo nuclear calculado', ru: 'Карибский кризис и ядерная игра на грани', mk: 'Кубанската ракетна криза и нуклеарниот ризик', de: 'Die Kubakrise und die nukleare Brinkmanship', fr: 'La crise des missiles de Cuba et la stratégie du bord du gouffre' },
     era: 'modern',
     turns: [
       {

@@ -54,52 +54,68 @@ const TOPICS = [
   'How did the Islamic Golden Age preserve and advance knowledge?',
 ];
 
-const TOPICS_I18N: Record<string, { es: string; ru: string; mk: string }> = {
+const TOPICS_I18N: Record<string, { es: string; ru: string; mk: string; de: string; fr: string }> = {
   'What caused the fall of the Western Roman Empire?': {
     es: '¿Qué causó la caída del Imperio Romano Occidental?',
     ru: 'Что вызвало падение Западной Римской Империи?',
     mk: 'Што го предизвика падот на Западното Римско Царство?',
+    de: 'Was führte zum Untergang des Weströmischen Reiches?',
+    fr: 'Qu’est-ce qui a causé la chute de l’Empire romain d’Occident ?',
   },
   'How did the Black Death reshape medieval European society?': {
     es: '¿Cómo la Peste Negra reconfiguró la sociedad medieval europea?',
     ru: 'Как Чёрная Смерть изменила средневековое европейское общество?',
     mk: 'Како Црната Чума го преобликува средновековното европско општество?',
+    de: 'Wie veränderte der Schwarze Tod die mittelalterliche Gesellschaft Europas?',
+    fr: 'Comment la peste noire a-t-elle transformé la société médiévale européenne ?',
   },
   'Why was the Renaissance a turning point in human history?': {
     es: '¿Por qué el Renacimiento fue un punto de inflexión en la historia humana?',
     ru: 'Почему Ренессанс стал поворотным моментом в истории человечества?',
     mk: 'Зошто Ренесансата беше пресвртница во историјата на човештвото?',
+    de: 'Warum war die Renaissance ein Wendepunkt der Menschheitsgeschichte?',
+    fr: 'Pourquoi la Renaissance fut-elle un tournant de l’histoire humaine ?',
   },
   'What were the main causes of World War I?': {
     es: '¿Cuáles fueron las principales causas de la Primera Guerra Mundial?',
     ru: 'Каковы были главные причины Первой мировой войны?',
     mk: 'Кои беа главните причини за Првата Светска Војна?',
+    de: 'Was waren die Hauptursachen des Ersten Weltkriegs?',
+    fr: 'Quelles furent les principales causes de la Première Guerre mondiale ?',
   },
   'How did the Industrial Revolution change everyday life?': {
     es: '¿Cómo la Revolución Industrial cambió la vida cotidiana?',
     ru: 'Как Промышленная революция изменила повседневную жизнь?',
     mk: 'Како Индустриската Револуција ја промени секојдневниот живот?',
+    de: 'Wie veränderte die Industrielle Revolution den Alltag?',
+    fr: 'Comment la révolution industrielle a-t-elle changé la vie quotidienne ?',
   },
   'Was Napoleon Bonaparte a hero or a tyrant?': {
     es: '¿Fue Napoleón Bonaparte un héroe o un tirano?',
     ru: 'Был ли Наполеон Бонапарт героем или тираном?',
     mk: 'Дали Наполеон Бонапарта беше херој или тиранин?',
+    de: 'War Napoleon Bonaparte ein Held oder ein Tyrann?',
+    fr: 'Napoléon Bonaparte : héros ou tyran ?',
   },
   'What impact did Alexander the Great have on the ancient world?': {
     es: '¿Qué impacto tuvo Alejandro Magno en el mundo antiguo?',
     ru: 'Какое влияние оказал Александр Великий на древний мир?',
     mk: 'Какво влијание имаше Александар Велики на античкиот свет?',
+    de: 'Welchen Einfluss hatte Alexander der Große auf die Antike?',
+    fr: 'Quel fut l’impact d’Alexandre le Grand sur le monde antique ?',
   },
   'How did the Islamic Golden Age preserve and advance knowledge?': {
     es: '¿Cómo la Edad de Oro Islámica preservó y avanzó el conocimiento?',
     ru: 'Как Исламский Золотой Век сохранял и развивал знания?',
     mk: 'Како Исламскиот Златен Век го зачувуваше и унапредуваше знаењето?',
+    de: 'Wie bewahrte und mehrte das Goldene Zeitalter des Islam das Wissen?',
+    fr: 'Comment l’âge d’or islamique a-t-il préservé et fait progresser le savoir ?',
   },
 };
 
 function getTranslatedTopic(topic: string, lang: string): string {
   if (lang === 'en') return topic;
-  return TOPICS_I18N[topic]?.[lang as 'es' | 'ru' | 'mk'] ?? topic;
+  return TOPICS_I18N[topic]?.[lang as 'es' | 'ru' | 'mk' | 'de' | 'fr'] ?? topic;
 }
 
 const LANG_NAMES: Record<string, string> = {
