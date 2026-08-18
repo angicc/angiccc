@@ -56,6 +56,21 @@ const GRADE_STYLE: Record<LetterGrade, { text: string; ring: string; bg: string 
   D: { text: 'text-rose-400',    ring: 'border-rose-400/60',    bg: 'bg-rose-400/10' },
 };
 
+/**
+ * Which turn a rendered node belongs to.
+ *
+ * The node header counted its position in the rendered list while the sidebar
+ * counted decisions submitted, so the same "Turn" label showed two different
+ * numbers at once — 1/6 beside the node and 2/6 in the sidebar. The engine
+ * echoes the step it resolved on each node, so that is the authority; the
+ * render index is only a fallback for a node where the model omitted it (the
+ * schema defaults that field to 0).
+ */
+function turnOf(node: { activeStepIndex?: number }, renderIndex: number): number {
+  const step = node.activeStepIndex && node.activeStepIndex > 0 ? node.activeStepIndex : renderIndex + 1;
+  return Math.min(step, 6);
+}
+
 export default function ChronosCrisisPage() {
   const { t, language } = useLanguage();
   const { currentUser, refreshProgress } = useAuth();
@@ -360,7 +375,7 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
                       <div className="flex items-center gap-2 mb-1.5">
                         {isConclusion
                           ? <Flag className={cn('w-3.5 h-3.5', es.text)} />
-                          : <span className={cn('text-[10px] font-bold uppercase tracking-widest', es.text)}>{t.crisis_turn} {Math.min(i + 1, 6)}/6</span>}
+                          : <span className={cn('text-[10px] font-bold uppercase tracking-widest', es.text)}>{t.crisis_turn} {turnOf(node, i)}/6</span>}
                         {isConclusion && <span className={cn('text-[10px] font-bold uppercase tracking-widest', es.text)}>{t.crisis_verdict}</span>}
                       </div>
                       {decision?.revealedConsequence && (
@@ -550,7 +565,7 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.crisis_turn}</span>
               <span className={cn('font-heading font-bold text-sm tabular-nums', es.text)}>
-                {run.concluded ? '—' : `${Math.min(run.activeStepIndex, 6)}/6`}
+                {run.concluded ? '—' : `${Math.min(run.activeStepIndex + 1, 6)}/6`}
               </span>
             </div>
             {([

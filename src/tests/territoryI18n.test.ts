@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { TERRITORY_TOPICS } from '@/features/content/timelineTerritoryData';
+import { POLY_LABEL_I18N } from '@/i18n/territoryMarkerTranslations';
 import type { Language } from '@/i18n/translations';
 
 const CONTENT_LANGS: Exclude<Language, 'en'>[] = ['es', 'ru', 'mk', 'de', 'fr'];
@@ -71,5 +72,22 @@ describe('Territory Map content translations', () => {
       }
     }
     expect(broken).toEqual([]);
+  });
+
+  it('has a translation entry for every polygon label the map draws', () => {
+    // Checked by ENTRY PRESENCE, not by "differs from English". Plenty of
+    // labels are proper nouns that are legitimately identical — Afghanistan is
+    // Afghanistan in German and French — so a value-comparison check reports
+    // those as missing and hides the ones that really are.
+    const labels = new Set(
+      TERRITORY_TOPICS.flatMap(t => (t.polygons ?? []).map(p => p.label).filter(Boolean) as string[]),
+    );
+    const gaps = [...labels].flatMap(label => {
+      const entry = POLY_LABEL_I18N[label];
+      if (!entry) return [`${label} → no entry at all`];
+      const missing = CONTENT_LANGS.filter(l => !entry[l]?.trim());
+      return missing.length > 0 ? [`${label} → ${missing.join(', ')}`] : [];
+    });
+    expect(gaps).toEqual([]);
   });
 });
