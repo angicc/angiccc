@@ -124,17 +124,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'aq7': {
     es: {
       question: '¿Entre qué dos civilizaciones facilitó principalmente el comercio la Ruta de la Seda?',
-      options: ['Egipto y Grecia', 'Roma e India', 'China y Roma/Mediterráneo', 'Persia y Egipto'],
+      options: ['Egipto y las ciudades griegas', 'Roma y la costa de la India', 'China y el Mediterráneo', 'Persia y el Nilo egipcio'],
       explanation: 'La Ruta de la Seda conectaba la China Han con el mundo mediterráneo, transportando seda, especias e ideas en ambas direcciones.',
     },
     ru: {
       question: 'Торговлю между какими двумя цивилизациями прежде всего обеспечивал Шёлковый путь?',
-      options: ['Египтом и Грецией', 'Римом и Индией', 'Китаем и Римом/Средиземноморьем', 'Персией и Египтом'],
+      options: ['Египтом и греческими полисами', 'Римом и побережьем Индии', 'Китаем и Средиземноморьем', 'Персией и египетским Нилом'],
       explanation: 'Шёлковый путь связывал ханьский Китай со Средиземноморским миром, перевозя шёлк, пряности и идеи в обоих направлениях.',
     },
     mk: {
       question: 'Патот на свилата пред сè ја олеснувал трговијата меѓу кои две цивилизации?',
-      options: ['Египет и Грција', 'Рим и Индија', 'Кина и Рим/Медитеранот', 'Персија и Египет'],
+      options: ['Египет и грчките градови-држави', 'Рим и индиското крајбрежје', 'Кина и Медитеранот', 'Персија и египетскиот Нил'],
       explanation: 'Патот на свилата ги поврзувал ханската Кина со медитеранскиот свет, пренесувајќи свила, зачини и идеи во двете насоки.',
     },
   },
@@ -214,17 +214,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'aq12': {
     es: {
       question: 'El Edicto de Milán romano (313 d.C.), emitido por el Emperador Constantino, fue significativo porque…',
-      options: ['Estableció el cristianismo como religión estatal', 'Legalizó el cristianismo en todo el Imperio Romano', 'Expulsó a todos los ciudadanos no cristianos', 'Creó el cargo de Papa'],
+      options: ['Estableció el cristianismo como religión estatal', 'Legalizó el cristianismo en todo el Imperio', 'Expulsó a todos los ciudadanos no cristianos de Roma', 'Creó el cargo de Papa en Roma'],
       explanation: 'El Edicto de Milán declaró tolerancia religiosa para todas las confesiones, legalizando específicamente el cristianismo. No fue hasta el 380 d.C., bajo Teodosio, cuando el cristianismo se convirtió en religión estatal.',
     },
     ru: {
       question: 'Миланский эдикт (313 г. н.э.), изданный императором Константином, был значим тем, что…',
-      options: ['Установил христианство государственной религией', 'Легализовал христианство во всей Римской империи', 'Выслал всех нехристианских граждан', 'Учредил должность Папы'],
+      options: ['Установил христианство государственной религией', 'Легализовал христианство во всей империи', 'Выслал всех нехристианских граждан из Рима', 'Учредил должность Папы в Риме'],
       explanation: 'Миланский эдикт провозгласил религиозную терпимость ко всем вероисповеданиям, специально легализовав христианство. Лишь в 380 году н.э. при Феодосии христианство стало государственной религией.',
     },
     mk: {
       question: 'Миланскиот едикт (313 г.н.е.), издаден од императорот Константин, бил значаен затоа што…',
-      options: ['Го воспоставил христијанството за државна религија', 'Го легализирал христијанството во целата Римска империја', 'Ги протерал сите нехристијански граѓани', 'Ја создал функцијата на Папата'],
+      options: ['Го воспоставил христијанството за државна религија', 'Го легализирал христијанството во целата империја', 'Ги протерал сите нехристијански граѓани од Рим', 'Ја создал функцијата на Папата во Рим'],
       explanation: 'Миланскиот едикт прогласил верска толеранција за сите вери, специфично легализирајќи го христијанството. Дури во 380 г.н.е. под Теодосиј христијанството станало државна религија.',
     },
   },
@@ -324,17 +324,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'mq3': {
     es: {
       question: '¿En torno a qué relación organizó principalmente la sociedad el sistema feudal?',
-      options: ['El comercio y los negocios', 'La propiedad de la tierra y el servicio militar', 'La autoridad de la Iglesia y los monjes', 'El parentesco tribal'],
+      options: ['El comercio y los negocios en las ciudades', 'La propiedad de la tierra y el servicio militar', 'La autoridad de la Iglesia y los votos monásticos', 'El parentesco tribal y la venganza de sangre'],
       explanation: 'El feudalismo se basaba en que los señores concedían tierras (feudos) a los vasallos a cambio de servicio militar y lealtad.',
     },
     ru: {
       question: 'Вокруг каких отношений в первую очередь организовывала общество феодальная система?',
-      options: ['Торговля и коммерция', 'Землевладение и военная служба', 'Власть церкви и монахи', 'Племенное родство'],
+      options: ['Торговля и коммерция в городах', 'Землевладение и военная служба', 'Власть церкви и монашеские обеты', 'Племенное родство и кровная месть'],
       explanation: 'Феодализм строился на том, что сеньоры жаловали землю (феоды) вассалам в обмен на военную службу и верность.',
     },
     mk: {
       question: 'Феудалниот систем го организирал општеството пред сè врз основа на кој однос?',
-      options: ['Трговија и комерција', 'Сопственост на земјиште и воена служба', 'Авторитет на Црквата и монасите', 'Племенско сродство'],
+      options: ['Трговија и комерција во градовите', 'Сопственост на земјиште и воена служба', 'Авторитет на Црквата и монашките завети', 'Племенско сродство и крвна одмазда'],
       explanation: 'Феудализмот се засновал на тоа дека лордовите им доделувале земјиште (феуди) на вазалите во замена за воена служба и лојалност.',
     },
   },
@@ -596,17 +596,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'eq3': {
     es: {
       question: '¿A qué fenómeno se refiere el "Intercambio Colombino"?',
-      options: ['Colón intercambiando oro por especias', 'La transferencia de plantas, animales y enfermedades tras 1492', 'Un acuerdo comercial entre España y Portugal', 'Colón intercambiando mapas con los indígenas'],
+      options: ['Colón intercambiando oro por especias en las Indias', 'El intercambio de plantas, animales y enfermedades', 'Un acuerdo comercial entre España y Portugal', 'Colón intercambiando mapas con los indígenas'],
       explanation: 'El Intercambio Colombino trajo caballos, ganado y enfermedades mortales a América; y devolvió papas, tomates y maíz a Europa, transformando ambos hemisferios.',
     },
     ru: {
       question: '«Колумбов обмен» — это какое явление?',
-      options: ['Колумб менял золото на пряности', 'Перенос растений, животных и болезней после 1492 года', 'Торговое соглашение между Испанией и Португалией', 'Колумб обменивался картами с коренными народами'],
+      options: ['Колумб менял золото на пряности в Индиях', 'Перенос растений, животных и болезней', 'Торговое соглашение между Испанией и Португалией', 'Колумб обменивался картами с коренными народами'],
       explanation: 'Колумбов обмен принёс лошадей, крупный рогатый скот и смертоносные болезни в Америку, а в Европу вернулся картофель, томаты и кукуруза — преобразив оба полушария.',
     },
     mk: {
       question: '„Колумбовата размена" се однесува на кој феномен?',
-      options: ['Колумб тргувал злато за зачини', 'Преносот на растенија, животни и болести по 1492 г.', 'Трговски договор меѓу Шпанија и Португалија', 'Колумб разменувал мапи со домородните народи'],
+      options: ['Колумб тргувал злато за зачини во Индиите', 'Преносот на растенија, животни и болести', 'Трговски договор меѓу Шпанија и Португалија', 'Колумб разменувал мапи со домородните народи'],
       explanation: 'Колумбовата размена донела коњи, говеда и смртоносни болести во Америките; и вратила компири, домати и пченка во Европа — трансформирајќи ги двете хемисфери.',
     },
   },
@@ -740,17 +740,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'eq11': {
     es: {
       question: 'La "Defenestración de Praga" (1618) — el incidente que desencadenó la Guerra de los Treinta Años — implicó que nobles protestantes hicieran ¿qué?',
-      options: ['Quemar iglesias católicas en Praga', 'Arrojar funcionarios reales católicos por la ventana de un castillo', 'Asesinar al Sacro Emperador Romano', 'Bloquear las rutas comerciales de Praga'],
+      options: ['Quemar iglesias católicas por toda la ciudad de Praga', 'Arrojar funcionarios reales por una ventana', 'Asesinar al Sacro Emperador Romano en Viena', 'Bloquear las rutas comerciales de Praga hacia el Danubio'],
       explanation: 'Los nobles bohemios protestantes arrojaron a dos gobernadores reales católicos y a su secretario por una ventana del Castillo de Praga — un acto deliberado de desafío. Los tres sobrevivieron a la caída de 17 metros (los católicos afirmaron que ángeles los amortiguaron).',
     },
     ru: {
       question: '«Пражская дефенестрация» (1618) — инцидент, спровоцировавший Тридцатилетнюю войну, — заключалась в том, что протестантские дворяне сделали что?',
-      options: ['Сожгли католические церкви в Праге', 'Выбросили католических королевских чиновников из окна замка', 'Убили Священного римского императора', 'Заблокировали торговые пути Праги'],
+      options: ['Сожгли католические церкви по всей Праге', 'Выбросили чиновников из окна замка', 'Убили Священного римского императора в Вене', 'Заблокировали торговые пути Праги к Дунаю'],
       explanation: 'Протестантские богемские дворяне выбросили из окна Пражского замка двух католических королевских губернаторов и их секретаря — намеренный акт неповиновения. Все трое выжили после падения с 17-метровой высоты (католики утверждали, что их смягчили ангелы).',
     },
     mk: {
       question: '„Дефенестрацијата на Прага" (1618) — инцидентот кој ја предизвикал Триесетгодишната војна — вклучувал протестантски благородници кои направиле што?',
-      options: ['Запалиле католички цркви во Прага', 'Фрлиле католички кралски службеници низ прозорец на замок', 'Убиле го Светиот Римски Цар', 'Ги блокирале трговските рути на Прага'],
+      options: ['Запалиле католички цркви низ целиот град Прага', 'Фрлиле службеници низ прозорец на замокот', 'Убиле го Светиот Римски Цар во Виена', 'Ги блокирале трговските рути на Прага кон Дунав'],
       explanation: 'Протестантски бохемски благородници фрлиле двајца католички кралски гувернери и нивниот секретар низ прозорец на Прашкиот Замок — намерен акт на непослушност. Тројцата преживеале пад од 17 метри (Католиците тврделе дека ангели ги омекнале).',
     },
   },
@@ -850,17 +850,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'mod2': {
     es: {
       question: '¿Cuál fue el detonante inmediato de la Primera Guerra Mundial en 1914?',
-      options: ['Alemania invadiendo Bélgica', 'El hundimiento del Lusitania', 'El asesinato del Archiduque Francisco Fernando', 'Rusia movilizando su ejército'],
+      options: ['Alemania invadiendo Bélgica sin aviso', 'El hundimiento del Lusitania por un submarino', 'El asesinato del Archiduque Francisco Fernando', 'Rusia movilizando su ejército en toda la frontera'],
       explanation: 'El asesinato del Archiduque Francisco Fernando de Austria-Hungría en Sarajevo por el nacionalista serbio Gavrilo Princip desencadenó el sistema de alianzas que arrastró a Europa a la guerra.',
     },
     ru: {
       question: 'Каким был непосредственный повод для начала Первой мировой войны в 1914 году?',
-      options: ['Германия вторглась в Бельгию', 'Потопление «Лузитании»', 'Убийство эрцгерцога Франца Фердинанда', 'Мобилизация русской армии'],
+      options: ['Германия вторглась в Бельгию без предупреждения', 'Потопление «Лузитании» немецкой подлодкой', 'Убийство эрцгерцога Франца Фердинанда', 'Мобилизация русской армии на границе'],
       explanation: 'Убийство австро-венгерского эрцгерцога Франца Фердинанда в Сараево сербским националистом Гаврилой Принципом запустило систему союзов, втянувшую Европу в войну.',
     },
     mk: {
       question: 'Кој беше непосредниот повод за Првата Светска војна во 1914 г.?',
-      options: ['Германија ја нападнала Белгија', 'Потонувањето на Лузитанија', 'Атентатот на надвојводата Франц Фердинанд', 'Русија ја мобилизирала армијата'],
+      options: ['Германија ја нападнала Белгија без предупредување', 'Потонувањето на Лузитанија од германска подморница', 'Атентатот на надвојводата Франц Фердинанд', 'Русија ја мобилизирала армијата на границата'],
       explanation: 'Атентатот врз австроунгарскиот надвојвода Франц Фердинанд во Сараево од страна на српскиот националист Гаврило Принцип го активирал сојузничкиот систем кој ја вовлекол Европа во војна.',
     },
   },
@@ -1066,17 +1066,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'mod14': {
     es: {
       question: 'La "teoría del dominó" estadounidense — usada para justificar la intervención en Vietnam — argumentaba que…',
-      options: ['Los países comunistas eventualmente colapsarían como fichas de dominó', 'Si un país caía bajo el comunismo, los países vecinos seguirían', 'El desarrollo económico prevenía la expansión del comunismo', 'Las alianzas militares eran como una fila de fichas de dominó cayendo'],
+      options: ['Los países comunistas colapsarían como fichas de dominó', 'Si un país caía, los vecinos le seguirían', 'El desarrollo económico prevenía la expansión del comunismo', 'Las alianzas militares eran como fichas de dominó cayendo'],
       explanation: 'La teoría del dominó, popularizada por el presidente Eisenhower en 1954, sostenía que si un país caía bajo el comunismo (como Vietnam), los países vecinos caerían en secuencia. Este pensamiento impulsó el involucramiento estadounidense en el Sudeste Asiático.',
     },
     ru: {
       question: 'Американская «теория домино» — использовавшаяся для обоснования вмешательства во Вьетнаме — утверждала, что…',
-      options: ['Коммунистические страны в конечном счёте рухнут, как домино', 'Если одна страна падёт под власть коммунизма, соседние последуют за ней', 'Экономическое развитие предотвращает распространение коммунизма', 'Военные союзы подобны ряду падающих костяшек домино'],
+      options: ['Коммунистические страны рухнут, как костяшки домино', 'Если падёт одна страна, за ней последуют соседние', 'Экономическое развитие предотвращает распространение коммунизма', 'Военные союзы подобны ряду падающих костяшек домино'],
       explanation: 'Теория домино, популяризированная президентом Эйзенхауэром в 1954 году, гласила: если одна страна падёт под власть коммунизма (как Вьетнам), соседние страны последуют одна за другой. Эта концепция определяла участие США в Юго-Восточной Азии.',
     },
     mk: {
       question: 'Американската „теорија на доминото" — употребена за оправдување на интервенцијата во Виетнам — тврдела дека…',
-      options: ['Комунистичките земји на крајот ќе пропаднат како доминото', 'Ако една земја паднела под комунизам, соседните ќе следеле', 'Економскиот развој го спречувал ширењето на комунизмот', 'Воените сојузи биле како низа паѓачки доминатури'],
+      options: ['Комунистичките земји ќе пропаднат како доминото', 'Ако паднела една земја, соседните ќе следеле', 'Економскиот развој го спречувал ширењето на комунизмот', 'Воените сојузи биле како низа паѓачки плочки домино'],
       explanation: 'Теоријата на доминото, популаризирана од претседателот Ајзенхауер во 1954 г., тврдела дека ако една земја падне под комунизам (како Виетнам), соседните земји ќе паднат во секвенца. Ова размислување го поттикнало американското вклучување во Југоисточна Азија.',
     },
   },

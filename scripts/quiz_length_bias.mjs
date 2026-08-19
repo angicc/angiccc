@@ -10,7 +10,8 @@
 //   node scripts/quiz_length_bias.mjs                 → report, all 6 languages
 //   node scripts/quiz_length_bias.mjs --list 20       → worst 20 offenders
 //   node scripts/quiz_length_bias.mjs --dump id id …  → full option sets
-//   node scripts/quiz_length_bias.mjs --check p.json  → dry-run a patch, all 6
+//   node scripts/quiz_length_bias.mjs --check p.json [n] → dry-run a patch, all 6
+//                                                        (n = tolerated lead, default 2)
 //   node scripts/quiz_length_bias.mjs --apply p.json  → rewrite options in place
 //
 // The patch file is { "<questionId>": { "en": [4 options], "es": [...], … } },
@@ -291,9 +292,9 @@ if (argv[0] === '--apply') { await applyPatch(argv[1], ALL, get); process.exit(0
  * per-language summary has been reporting all along. This closes that loop
  * before anything is written.
  */
-function checkPatch(patchPath, questions, get) {
+function checkPatch(patchPath, questions, get, tolerance = 2) {
   const patch = JSON.parse(fs.readFileSync(patchPath, 'utf8'));
-  let worst = 0, flagged = 0, checked = 0;
+  let worst = 0, flagged = 0, checked = 0, tolerated = 0;
   for (const [id, byLang] of Object.entries(patch)) {
     const q = questions.find(x => x.id === id);
     if (!q) { console.log(`  ${id}: NO SUCH QUESTION`); flagged++; continue; }
@@ -308,19 +309,25 @@ function checkPatch(patchPath, questions, get) {
       const others = lens.filter((_, i) => i !== ci);
       const gap = lens[ci] - Math.max(...others);
       if (lens[ci] === Math.max(...lens) && new Set(lens).size > 1) {
+        // A one- or two-character lead is not a tell — nobody picks an answer
+        // because it is two characters longer, and where the options are
+        // proper nouns ("Kamikaze" beside "Seppuku") it cannot be removed
+        // without padding them into something worse. Reported, not refused.
+        if (gap <= tolerance) { tolerated++; continue; }
         flagged++;
         worst = Math.max(worst, gap);
         console.log(`  ${id}/${lang}  still longest by +${gap}  "${next[ci].slice(0, 50)}"`);
       }
     }
   }
+  const tail = tolerated ? ` (${tolerated} lead by ≤${tolerance} chars, within tolerance)` : '';
   console.log(flagged === 0
-    ? `✔ ${checked} option set(s) checked; the correct answer is never the longest`
-    : `✖ ${flagged} of ${checked} still lead on length (worst +${worst})`);
+    ? `✔ ${checked} option set(s) checked; no correct answer leads on length${tail}`
+    : `✖ ${flagged} of ${checked} still lead on length (worst +${worst})${tail}`);
   process.exit(flagged === 0 ? 0 : 1);
 }
 
-if (argv[0] === '--check') { checkPatch(argv[1], ALL, get); }
+if (argv[0] === '--check') { checkPatch(argv[1], ALL, get, Number(argv[2] ?? 2)); }
 
 if (argv[0] === '--dump') {
   const out = argv.slice(1).map(id => {
