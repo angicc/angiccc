@@ -1,6 +1,7 @@
 import type { Lesson } from '@/types';
 import { LESSONS_EXPANSION } from './lessonsExpansion';
 import { LESSONS_EXPANSION_2 } from './lessonsExpansion2';
+import { chronologicalRank } from './lessonChronology';
 
 const CORE_LESSONS: Lesson[] = [
   { id: 'ancient-01', eraId: 'ancient', order: 1, title: 'The First Civilizations', subtitle: 'Mesopotamia and Egypt', estimatedMinutes: 14, xpReward: 100, imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Ancient_ziggurat_at_Ali_Air_Base_Iraq_2005.jpg/1280px-Ancient_ziggurat_at_Ali_Air_Base_Iraq_2005.jpg',
@@ -596,23 +597,18 @@ const CORE_LESSONS: Lesson[] = [
 // sorted by era then order so new lessons slot into place automatically.
 export const LESSONS: Lesson[] = [...CORE_LESSONS, ...LESSONS_EXPANSION, ...LESSONS_EXPANSION_2];
 
-// ── Prehistoric chronology fix ──────────────────────────────────────────────
-// Deep time comes first: the Age of Dinosaurs and the Ice Ages open the era
-// (before human origins), instead of dangling at the end where their tranche
-// happened to append them. Order values are remapped in place; ids never
-// change, so completed-lesson records and analysis passes are unaffected.
-const PREHISTORIC_ORDER: string[] = [
-  'prehistoric-21', // The Age of Dinosaurs — before humanity
-  'prehistoric-22', // The Ice Ages — the world that shaped us
-  'prehistoric-01', 'prehistoric-02', 'prehistoric-03', 'prehistoric-04',
-  'prehistoric-05', 'prehistoric-06', 'prehistoric-07', 'prehistoric-08',
-  'prehistoric-09', 'prehistoric-10', 'prehistoric-11', 'prehistoric-12',
-  'prehistoric-13', 'prehistoric-14', 'prehistoric-15', 'prehistoric-16',
-  'prehistoric-17', 'prehistoric-18', 'prehistoric-19', 'prehistoric-20',
-];
-for (const lesson of LESSONS) {
-  const pos = PREHISTORIC_ORDER.indexOf(lesson.id);
-  if (pos !== -1) lesson.order = pos + 1;
+// ── Chronological ordering, every era ────────────────────────────────────────
+// Lessons arrive in the order they were authored, which is not the order the
+// history happened: the Scramble for Africa sat after Globalization, the Age
+// of Revolutions after Gandhi, and the Fall of Constantinople before the
+// empire's own recovery. Each era is now sorted by the year its lessons'
+// subjects BEGIN (see lessonChronology.ts) and renumbered from 1.
+//
+// Order values are remapped in place and ids never change, so completed-lesson
+// records, bookmarks and analysis passes are unaffected by a resequencing.
+for (const eraId of new Set(LESSONS.map(l => l.eraId))) {
+  const inEra = chronologicalRank(LESSONS.filter(l => l.eraId === eraId));
+  inEra.forEach((lesson, i) => { lesson.order = i + 1; });
 }
 
 export function getLessonById(id: string) { return LESSONS.find(l => l.id === id); }

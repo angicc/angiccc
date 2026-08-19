@@ -5,11 +5,40 @@
 // Loaded on demand by src/i18n/bakedLessons.ts so a visitor downloads only the
 // language they are reading in.
 //
-// source-sha256: 5da318c09009ed81af75f1cbbb45e6193cc5d0889437527ac85a939a1c9f4fc1
+// source-sha256: a441affb122689e442582a640785711025758c19d8bda31de0eb72c781406862
 
 import type { GenLessonT } from '../lessonTranslationsGenerated';
 
 const BAKED: Record<string, GenLessonT> = {
+ "modern-23": {
+  "t": "Les Guerres mondiales, partie II",
+  "s": "La Seconde Guerre mondiale, 1939-1945",
+  "k": [
+   "L’Allemagne envahit la Pologne le 1er septembre 1939, et la Grande-Bretagne et la France déclarèrent la guerre deux jours plus tard",
+   "Elle fit entre 70 et 85 millions de morts — en majorité des civils",
+   "La Shoah assassina six millions de Juifs, aux côtés de millions de Roms, de Polonais, de prisonniers soviétiques, de personnes handicapées et d’autres",
+   "Ce fut la première et jusqu’ici la seule guerre où des armes nucléaires furent employées",
+   "Elle mit fin à la domination de l’Europe et laissa les États-Unis et l’Union soviétique comme les deux puissances mondiales"
+  ],
+  "h": [
+   "Une paix qui ne pouvait tenir",
+   "La Blitzkrieg et la chute de l’Europe",
+   "Un monde en guerre",
+   "La Shoah",
+   "Le tournant",
+   "La victoire et la bombe",
+   "Le monde laissé par la guerre"
+  ],
+  "b": [
+   "Le règlement qui mit fin à la Première Guerre mondiale portait en lui les germes de la seconde. L’Allemagne fut amputée de territoires, chargée de réparations et tenue pour responsable de toute la catastrophe, et le ressentiment qui suivit devint le carburant d’une politique du grief. La Grande Dépression transforma le ressentiment en désespoir. Adolf Hitler arriva au pouvoir en 1933 en promettant de déchirer ce règlement, et durant les années trente il fit exactement cela — réarmement, remilitarisation de la Rhénanie, annexion de l’Autriche, démembrement de la Tchécoslovaquie — pendant que la Grande-Bretagne et la France, se souvenant du carnage de la guerre précédente, choisissaient l’apaisement plutôt que l’affrontement. Quand Hitler signa en août 1939 un pacte avec Staline partageant l’Europe orientale, la dernière retenue tomba.",
+   "L’Allemagne envahit la Pologne le 1er septembre 1939. Ce qui suivit ne fut pas la guerre de tranchées statique de 1914, mais son contraire : des colonnes blindées rapides appuyées par l’aviation et la radio, frappant loin derrière le front. La Pologne tomba en cinq semaines. Au printemps 1940, la même méthode emporta le Danemark, la Norvège, les Pays-Bas, la Belgique et — en six semaines stupéfiantes — la France, un pays qui avait tenu quatre ans la fois précédente. La Grande-Bretagne, seule et attendant l’invasion, survécut à l’été 1940 parce que la Royal Air Force refusa à la Luftwaffe la maîtrise du ciel au-dessus de la Manche.",
+   "Deux décisions de 1941 transformèrent une guerre européenne en guerre mondiale. En juin, Hitler envahit l’Union soviétique dans la plus vaste opération terrestre de l’histoire, ouvrant un front qui allait absorber l’essentiel des forces allemandes jusqu’à la fin. En décembre, le Japon attaqua la flotte américaine à Pearl Harbor, entraînant les États-Unis dans un conflit qui faisait déjà rage en Chine, en Asie du Sud-Est et dans le Pacifique. Dès lors, on se battit sur tous les continents habités et sur tous les océans.",
+   "La Seconde Guerre mondiale fut aussi le théâtre d’un crime sans précédent. Le régime nazi entreprit d’assassiner tous les Juifs d’Europe et en tua environ six millions — d’abord par fusillades de masse derrière le front de l’Est, puis dans des camps d’extermination bâtis pour cela. Des millions d’autres furent assassinés avec eux : Roms et Sintis, prisonniers de guerre soviétiques, civils polonais, personnes handicapées, prisonniers politiques et hommes homosexuels. Ce ne fut pas un sous-produit des combats. Ce fut organisé par un État moderne au moyen de chemins de fer, de registres et d’une méthode industrielle — et c’est pourquoi cette guerre ne peut se raconter comme une simple histoire de stratégie.",
+   "La guerre bascula durant l’hiver 1942-43, et elle bascula en plusieurs endroits à la fois. À Stalingrad, une armée allemande fut encerclée et détruite. À El-Alamein, l’avance de l’Axe en Afrique du Nord fut brisée. À Midway, les porte-avions américains coulèrent quatre porte-avions japonais en une seule journée. Derrière les fronts, le facteur décisif fut la production : les États-Unis et l’Union soviétique dépassèrent l’Axe si complètement qu’en 1944 l’issue était une question de temps et de coût, non de doute.",
+   "Les Alliés débarquèrent en Normandie en juin 1944 et refermèrent l’étau sur l’Allemagne par l’ouest et par l’est ; Berlin tomba devant l’Armée rouge en mai 1945 et Hitler se suicida dans un bunker en dessous. La guerre du Pacifique se termina autrement. En août 1945, les États-Unis larguèrent des bombes atomiques sur Hiroshima et Nagasaki, tuant bien plus de cent mille personnes, en majorité des civils, et le Japon capitula quelques jours plus tard. Cette décision demeure l’une des plus discutées de l’histoire contemporaine — et elle ouvrit une ère où existaient les armes capables de clore le débat définitivement.",
+   "Entre 70 et 85 millions de personnes étaient mortes, en majorité des civils, et le centre de la puissance mondiale avait quitté le continent européen pour de bon. Des ruines sortirent les Nations unies, la Déclaration universelle des droits de l’homme, les procès de Nuremberg et l’idée même de crime contre l’humanité. Il en sortit aussi une fracture : l’alliance qui avait gagné la guerre se scinda presque aussitôt en deux blocs de la guerre froide, et les empires qui l’avaient menée n’avaient plus la force de conserver leurs colonies."
+  ]
+ },
  "prehistoric-10": {
   "t": "Le peuplement des Amériques",
   "s": "La dernière grande migration",

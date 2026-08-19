@@ -5,11 +5,40 @@
 // Loaded on demand by src/i18n/bakedLessons.ts so a visitor downloads only the
 // language they are reading in.
 //
-// source-sha256: 5da318c09009ed81af75f1cbbb45e6193cc5d0889437527ac85a939a1c9f4fc1
+// source-sha256: a441affb122689e442582a640785711025758c19d8bda31de0eb72c781406862
 
 import type { GenLessonT } from '../lessonTranslationsGenerated';
 
 const BAKED: Record<string, GenLessonT> = {
+ "modern-23": {
+  "t": "Las Guerras Mundiales, Parte II",
+  "s": "La Segunda Guerra Mundial, 1939-1945",
+  "k": [
+   "Alemania invadió Polonia el 1 de septiembre de 1939, y Gran Bretaña y Francia declararon la guerra dos días después",
+   "Mató a entre 70 y 85 millones de personas, en su mayoría civiles",
+   "El Holocausto asesinó a seis millones de judíos, junto a millones de romaníes, polacos, prisioneros soviéticos, personas discapacitadas y otros",
+   "Fue la primera y hasta ahora única guerra en la que se usaron armas nucleares",
+   "Puso fin al dominio de Europa y dejó a Estados Unidos y la Unión Soviética como las dos potencias mundiales"
+  ],
+  "h": [
+   "Una paz que no pudo sostenerse",
+   "La Blitzkrieg y la caída de Europa",
+   "Un mundo en guerra",
+   "El Holocausto",
+   "El giro de la marea",
+   "La victoria y la bomba",
+   "El mundo que dejó la guerra"
+  ],
+  "b": [
+   "El acuerdo que puso fin a la Primera Guerra Mundial llevaba dentro las semillas de la segunda. Alemania fue despojada de territorio, cargada con reparaciones y culpada de toda la catástrofe, y el resentimiento que siguió se convirtió en el combustible de una política del agravio. La Gran Depresión transformó el resentimiento en desesperación. Adolf Hitler llegó al poder en 1933 prometiendo romper el acuerdo, y durante los años treinta hizo exactamente eso: rearmar, remilitarizar Renania, absorber Austria, desmembrar Checoslovaquia, mientras Gran Bretaña y Francia, recordando la matanza de la guerra anterior, eligieron el apaciguamiento antes que la confrontación. Cuando Hitler firmó un pacto con Stalin en agosto de 1939 repartiéndose Europa oriental, cayó la última contención.",
+   "Alemania invadió Polonia el 1 de septiembre de 1939. Lo que siguió no fue la guerra estática de trincheras de 1914, sino su contrario: columnas blindadas rápidas apoyadas por aviación y radio, golpeando en profundidad tras el frente. Polonia cayó en cinco semanas. En la primavera de 1940 el mismo método se llevó Dinamarca, Noruega, los Países Bajos, Bélgica y, en seis semanas asombrosas, Francia, un país que la vez anterior había resistido cuatro años. Gran Bretaña, sola y esperando la invasión, sobrevivió al verano de 1940 porque la Royal Air Force negó a la Luftwaffe el control del aire sobre el Canal.",
+   "Dos decisiones de 1941 convirtieron una guerra europea en una guerra global. En junio, Hitler invadió la Unión Soviética en la mayor operación terrestre de la historia, abriendo un frente que consumiría el grueso de la fuerza alemana durante el resto de la guerra. En diciembre, Japón atacó la flota estadounidense en Pearl Harbor, arrastrando a Estados Unidos a un conflicto que ya ardía en China, el sudeste asiático y el Pacífico. Desde ese momento se combatió en todos los continentes habitados y en todos los océanos.",
+   "La Segunda Guerra Mundial fue también el escenario de un crimen sin precedente. El régimen nazi se propuso asesinar a todos los judíos de Europa, y mató a unos seis millones: primero mediante fusilamientos masivos tras el frente oriental, después en campos de exterminio construidos para ese fin. Millones más fueron asesinados junto a ellos: romaníes y sinti, prisioneros de guerra soviéticos, civiles polacos, personas discapacitadas, presos políticos y hombres homosexuales. No fue un subproducto de los combates. Lo organizó un Estado moderno usando ferrocarriles, registros censales y método industrial, y por eso la guerra no puede contarse como una historia de estrategia solamente.",
+   "La guerra giró en el invierno de 1942-43, y giró en varios lugares a la vez. En Stalingrado, un ejército alemán fue cercado y destruido. En El Alamein se quebró el avance del Eje en el norte de África. En Midway, los portaaviones estadounidenses hundieron cuatro portaaviones japoneses en un solo día. Detrás de los frentes, el factor decisivo fue la producción: Estados Unidos y la Unión Soviética superaron de tal modo la fabricación del Eje que hacia 1944 el desenlace era una cuestión de tiempo y de coste, no de duda.",
+   "Los Aliados desembarcaron en Normandía en junio de 1944 y cercaron Alemania desde el oeste y el este; Berlín cayó ante el Ejército Rojo en mayo de 1945 y Hitler se suicidó en un búnker bajo la ciudad. La guerra del Pacífico terminó de otro modo. En agosto de 1945 Estados Unidos lanzó bombas atómicas sobre Hiroshima y Nagasaki, matando a bastante más de cien mil personas, en su mayoría civiles, y Japón se rindió días después. La decisión sigue siendo una de las más discutidas de la historia moderna, y abrió una era en la que existían las armas para acabar con la discusión de forma definitiva.",
+   "Entre 70 y 85 millones de personas habían muerto, la mayoría civiles, y el centro del poder mundial se había desplazado fuera del continente europeo para siempre. De las ruinas salieron las Naciones Unidas, la Declaración Universal de Derechos Humanos, los juicios de Núremberg y la idea misma de crimen contra la humanidad. También salió una fractura: la alianza que ganó la guerra se dividió casi de inmediato en los dos bloques de la Guerra Fría, y los imperios que la habían combatido ya no tenían fuerza para retener sus colonias."
+  ]
+ },
  "prehistoric-10": {
   "t": "La población de las Américas",
   "s": "La última gran migración",

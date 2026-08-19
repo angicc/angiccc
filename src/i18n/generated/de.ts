@@ -5,11 +5,40 @@
 // Loaded on demand by src/i18n/bakedLessons.ts so a visitor downloads only the
 // language they are reading in.
 //
-// source-sha256: 5da318c09009ed81af75f1cbbb45e6193cc5d0889437527ac85a939a1c9f4fc1
+// source-sha256: a441affb122689e442582a640785711025758c19d8bda31de0eb72c781406862
 
 import type { GenLessonT } from '../lessonTranslationsGenerated';
 
 const BAKED: Record<string, GenLessonT> = {
+ "modern-23": {
+  "t": "Die Weltkriege, Teil II",
+  "s": "Der Zweite Weltkrieg, 1939-1945",
+  "k": [
+   "Deutschland überfiel Polen am 1. September 1939; Großbritannien und Frankreich erklärten zwei Tage später den Krieg",
+   "Er kostete schätzungsweise 70 bis 85 Millionen Menschen das Leben — die meisten davon Zivilisten",
+   "Der Holocaust ermordete sechs Millionen Juden, dazu Millionen Roma, Polen, sowjetische Kriegsgefangene, Menschen mit Behinderung und andere",
+   "Es war der erste und bislang einzige Krieg, in dem Atomwaffen eingesetzt wurden",
+   "Er beendete Europas Vorherrschaft und ließ die USA und die Sowjetunion als die beiden Weltmächte zurück"
+  ],
+  "h": [
+   "Ein Frieden, der nicht halten konnte",
+   "Blitzkrieg und der Fall Europas",
+   "Eine Welt im Krieg",
+   "Der Holocaust",
+   "Die Wende",
+   "Sieg und Bombe",
+   "Die Welt, die der Krieg hinterließ"
+  ],
+  "b": [
+   "Die Regelung, die den Ersten Weltkrieg beendete, trug den Keim des zweiten in sich. Deutschland wurde Gebiet genommen, Reparationen auferlegt und die Schuld an der ganzen Katastrophe zugewiesen; der daraus erwachsende Groll wurde zum Treibstoff einer Politik der Kränkung. Die Weltwirtschaftskrise machte aus Groll Verzweiflung. Adolf Hitler kam 1933 mit dem Versprechen an die Macht, die Regelung zu zerreißen, und in den dreißiger Jahren tat er genau das — Aufrüstung, Remilitarisierung des Rheinlands, Anschluss Österreichs, Zerschlagung der Tschechoslowakei —, während Großbritannien und Frankreich, das Gemetzel des letzten Krieges vor Augen, das Appeasement der Konfrontation vorzogen. Als Hitler im August 1939 mit Stalin einen Pakt zur Aufteilung Osteuropas schloss, fiel die letzte Hemmung.",
+   "Deutschland überfiel Polen am 1. September 1939. Was folgte, war nicht der starre Grabenkrieg von 1914, sondern dessen Gegenteil: schnelle Panzerverbände, gestützt auf Flugzeuge und Funk, die tief hinter der Front zustießen. Polen fiel in fünf Wochen. Im Frühjahr 1940 nahm dieselbe Methode Dänemark, Norwegen, die Niederlande, Belgien und — in sechs erstaunlichen Wochen — Frankreich, ein Land, das beim letzten Mal vier Jahre standgehalten hatte. Großbritannien, allein und eine Invasion erwartend, überstand den Sommer 1940, weil die Royal Air Force der Luftwaffe die Luftherrschaft über dem Kanal verweigerte.",
+   "Zwei Entscheidungen des Jahres 1941 machten aus einem europäischen einen weltweiten Krieg. Im Juni überfiel Hitler die Sowjetunion in der größten Landoperation der Geschichte und eröffnete eine Front, die für den Rest des Krieges den Großteil der deutschen Kräfte verschlingen sollte. Im Dezember griff Japan die amerikanische Flotte in Pearl Harbor an und zog die Vereinigten Staaten in einen Konflikt, der in China, Südostasien und im Pazifik längst tobte. Von da an wurde auf jedem bewohnten Kontinent und in jedem Ozean gekämpft.",
+   "Der Zweite Weltkrieg war auch der Schauplatz eines beispiellosen Verbrechens. Das NS-Regime setzte sich zum Ziel, jeden Juden Europas zu ermorden, und tötete etwa sechs Millionen — zuerst durch Massenerschießungen hinter der Ostfront, dann in eigens gebauten Vernichtungslagern. Millionen weitere wurden mit ihnen ermordet: Roma und Sinti, sowjetische Kriegsgefangene, polnische Zivilisten, Menschen mit Behinderung, politische Gefangene und homosexuelle Männer. Das war kein Nebenprodukt der Kämpfe. Es wurde von einem modernen Staat organisiert, mit Eisenbahnen, Melderegistern und industrieller Methode — und deshalb lässt sich dieser Krieg nicht als bloße Strategiegeschichte erzählen.",
+   "Der Krieg wendete sich im Winter 1942/43, und er wendete sich an mehreren Orten zugleich. Bei Stalingrad wurde eine deutsche Armee eingeschlossen und vernichtet. Bei El Alamein brach der Vormarsch der Achse in Nordafrika. Bei Midway versenkten amerikanische Träger an einem einzigen Tag vier japanische Träger. Hinter den Fronten war die Produktion entscheidend: die Vereinigten Staaten und die Sowjetunion überflügelten die Achse so vollständig, dass der Ausgang 1944 eine Frage von Zeit und Preis war, nicht mehr von Zweifel.",
+   "Die Alliierten landeten im Juni 1944 in der Normandie und schlossen Deutschland von West und Ost ein; Berlin fiel im Mai 1945 an die Rote Armee, und Hitler nahm sich in einem Bunker darunter das Leben. Der Pazifikkrieg endete anders. Im August 1945 warfen die Vereinigten Staaten Atombomben auf Hiroshima und Nagasaki, töteten weit über hunderttausend Menschen, überwiegend Zivilisten, und Japan kapitulierte wenige Tage später. Die Entscheidung gehört zu den umstrittensten der neueren Geschichte — und sie eröffnete ein Zeitalter, in dem die Waffen existierten, um den Streit endgültig zu beenden.",
+   "Zwischen 70 und 85 Millionen Menschen waren tot, die Mehrheit Zivilisten, und der Schwerpunkt der Weltmacht hatte den europäischen Kontinent endgültig verlassen. Aus den Trümmern entstanden die Vereinten Nationen, die Allgemeine Erklärung der Menschenrechte, die Nürnberger Prozesse und überhaupt der Begriff des Verbrechens gegen die Menschlichkeit. Und es entstand ein Bruch: das Bündnis, das den Krieg gewonnen hatte, zerfiel fast sofort in die beiden Blöcke des Kalten Krieges, und die Imperien, die ihn geführt hatten, besaßen nicht mehr die Kraft, ihre Kolonien zu halten."
+  ]
+ },
  "prehistoric-10": {
   "t": "Die Besiedlung Amerikas",
   "s": "Die letzte große Wanderung",

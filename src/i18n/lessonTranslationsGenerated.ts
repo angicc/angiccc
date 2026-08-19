@@ -23,6 +23,153 @@ export type GenContentLang = 'es' | 'ru' | 'mk' | 'de' | 'fr';
 
 /** lessonId → language → baked translation. */
 export const GENERATED_LESSON_T: Record<string, Partial<Record<GenContentLang, GenLessonT>>> = {
+  'modern-23': {
+      "es": {
+          "t": "Las Guerras Mundiales, Parte II",
+          "s": "La Segunda Guerra Mundial, 1939-1945",
+          "k": [
+              "Alemania invadió Polonia el 1 de septiembre de 1939, y Gran Bretaña y Francia declararon la guerra dos días después",
+              "Mató a entre 70 y 85 millones de personas, en su mayoría civiles",
+              "El Holocausto asesinó a seis millones de judíos, junto a millones de romaníes, polacos, prisioneros soviéticos, personas discapacitadas y otros",
+              "Fue la primera y hasta ahora única guerra en la que se usaron armas nucleares",
+              "Puso fin al dominio de Europa y dejó a Estados Unidos y la Unión Soviética como las dos potencias mundiales"
+          ],
+          "h": [
+              "Una paz que no pudo sostenerse",
+              "La Blitzkrieg y la caída de Europa",
+              "Un mundo en guerra",
+              "El Holocausto",
+              "El giro de la marea",
+              "La victoria y la bomba",
+              "El mundo que dejó la guerra"
+          ],
+          "b": [
+              "El acuerdo que puso fin a la Primera Guerra Mundial llevaba dentro las semillas de la segunda. Alemania fue despojada de territorio, cargada con reparaciones y culpada de toda la catástrofe, y el resentimiento que siguió se convirtió en el combustible de una política del agravio. La Gran Depresión transformó el resentimiento en desesperación. Adolf Hitler llegó al poder en 1933 prometiendo romper el acuerdo, y durante los años treinta hizo exactamente eso: rearmar, remilitarizar Renania, absorber Austria, desmembrar Checoslovaquia, mientras Gran Bretaña y Francia, recordando la matanza de la guerra anterior, eligieron el apaciguamiento antes que la confrontación. Cuando Hitler firmó un pacto con Stalin en agosto de 1939 repartiéndose Europa oriental, cayó la última contención.",
+              "Alemania invadió Polonia el 1 de septiembre de 1939. Lo que siguió no fue la guerra estática de trincheras de 1914, sino su contrario: columnas blindadas rápidas apoyadas por aviación y radio, golpeando en profundidad tras el frente. Polonia cayó en cinco semanas. En la primavera de 1940 el mismo método se llevó Dinamarca, Noruega, los Países Bajos, Bélgica y, en seis semanas asombrosas, Francia, un país que la vez anterior había resistido cuatro años. Gran Bretaña, sola y esperando la invasión, sobrevivió al verano de 1940 porque la Royal Air Force negó a la Luftwaffe el control del aire sobre el Canal.",
+              "Dos decisiones de 1941 convirtieron una guerra europea en una guerra global. En junio, Hitler invadió la Unión Soviética en la mayor operación terrestre de la historia, abriendo un frente que consumiría el grueso de la fuerza alemana durante el resto de la guerra. En diciembre, Japón atacó la flota estadounidense en Pearl Harbor, arrastrando a Estados Unidos a un conflicto que ya ardía en China, el sudeste asiático y el Pacífico. Desde ese momento se combatió en todos los continentes habitados y en todos los océanos.",
+              "La Segunda Guerra Mundial fue también el escenario de un crimen sin precedente. El régimen nazi se propuso asesinar a todos los judíos de Europa, y mató a unos seis millones: primero mediante fusilamientos masivos tras el frente oriental, después en campos de exterminio construidos para ese fin. Millones más fueron asesinados junto a ellos: romaníes y sinti, prisioneros de guerra soviéticos, civiles polacos, personas discapacitadas, presos políticos y hombres homosexuales. No fue un subproducto de los combates. Lo organizó un Estado moderno usando ferrocarriles, registros censales y método industrial, y por eso la guerra no puede contarse como una historia de estrategia solamente.",
+              "La guerra giró en el invierno de 1942-43, y giró en varios lugares a la vez. En Stalingrado, un ejército alemán fue cercado y destruido. En El Alamein se quebró el avance del Eje en el norte de África. En Midway, los portaaviones estadounidenses hundieron cuatro portaaviones japoneses en un solo día. Detrás de los frentes, el factor decisivo fue la producción: Estados Unidos y la Unión Soviética superaron de tal modo la fabricación del Eje que hacia 1944 el desenlace era una cuestión de tiempo y de coste, no de duda.",
+              "Los Aliados desembarcaron en Normandía en junio de 1944 y cercaron Alemania desde el oeste y el este; Berlín cayó ante el Ejército Rojo en mayo de 1945 y Hitler se suicidó en un búnker bajo la ciudad. La guerra del Pacífico terminó de otro modo. En agosto de 1945 Estados Unidos lanzó bombas atómicas sobre Hiroshima y Nagasaki, matando a bastante más de cien mil personas, en su mayoría civiles, y Japón se rindió días después. La decisión sigue siendo una de las más discutidas de la historia moderna, y abrió una era en la que existían las armas para acabar con la discusión de forma definitiva.",
+              "Entre 70 y 85 millones de personas habían muerto, la mayoría civiles, y el centro del poder mundial se había desplazado fuera del continente europeo para siempre. De las ruinas salieron las Naciones Unidas, la Declaración Universal de Derechos Humanos, los juicios de Núremberg y la idea misma de crimen contra la humanidad. También salió una fractura: la alianza que ganó la guerra se dividió casi de inmediato en los dos bloques de la Guerra Fría, y los imperios que la habían combatido ya no tenían fuerza para retener sus colonias."
+          ]
+      },
+      "ru": {
+          "t": "Мировые войны, часть II",
+          "s": "Вторая мировая война, 1939-1945",
+          "k": [
+              "Германия вторглась в Польшу 1 сентября 1939 года, и через два дня Британия и Франция объявили войну",
+              "Она унесла, по оценкам, от 70 до 85 миллионов жизней — большинство из них гражданские",
+              "Холокост уничтожил шесть миллионов евреев, а вместе с ними миллионы ромов, поляков, советских военнопленных, людей с инвалидностью и других",
+              "Это была первая и пока единственная война, в которой применялось ядерное оружие",
+              "Она положила конец господству Европы и оставила США и Советский Союз двумя мировыми державами"
+          ],
+          "h": [
+              "Мир, который не мог удержаться",
+              "Блицкриг и падение Европы",
+              "Мир в состоянии войны",
+              "Холокост",
+              "Перелом",
+              "Победа и бомба",
+              "Мир, оставшийся после войны"
+          ],
+          "b": [
+              "Соглашение, завершившее Первую мировую войну, несло в себе семена второй. Германию лишили территорий, обременили репарациями и возложили на неё вину за всю катастрофу; возникшее негодование стало топливом политики обиды. Великая депрессия превратила негодование в отчаяние. Адольф Гитлер пришёл к власти в 1933 году, обещая разорвать это соглашение, и в течение тридцатых годов сделал именно это — перевооружение, ремилитаризация Рейнской области, аншлюс Австрии, расчленение Чехословакии, — пока Британия и Франция, помня бойню прошлой войны, предпочитали умиротворение противостоянию. Когда в августе 1939 года Гитлер подписал со Сталиным пакт о разделе Восточной Европы, последнее сдерживающее звено рухнуло.",
+              "Германия вторглась в Польшу 1 сентября 1939 года. Последовавшее не было позиционной окопной войной 1914 года — оно было её противоположностью: быстрые танковые колонны при поддержке авиации и радиосвязи, наносящие удары глубоко за линией фронта. Польша пала за пять недель. Весной 1940 года тот же метод забрал Данию, Норвегию, Нидерланды, Бельгию и — за шесть поразительных недель — Францию, страну, которая в прошлый раз держалась четыре года. Британия, оставшись одна и ожидая вторжения, пережила лето 1940 года потому, что Королевские ВВС не отдали люфтваффе господство в воздухе над Ла-Маншем.",
+              "Два решения 1941 года превратили европейскую войну в мировую. В июне Гитлер вторгся в Советский Союз — крупнейшая сухопутная операция в истории, открывшая фронт, который до конца войны поглощал основную часть германских сил. В декабре Япония атаковала американский флот в Пёрл-Харборе, втянув США в конфликт, уже полыхавший в Китае, Юго-Восточной Азии и на Тихом океане. С этого момента война шла на всех обитаемых континентах и во всех океанах.",
+              "Вторая мировая война стала и сценой беспрецедентного преступления. Нацистский режим поставил целью убить всех евреев Европы и уничтожил около шести миллионов — сначала массовыми расстрелами за восточным фронтом, затем в специально построенных лагерях смерти. Вместе с ними были убиты миллионы других: ромы и синти, советские военнопленные, польские мирные жители, люди с инвалидностью, политические заключённые и геи. Это не было побочным следствием боёв. Это организовало современное государство, используя железные дороги, переписные списки и промышленный метод, — и потому эту войну нельзя рассказывать как одну лишь историю стратегии.",
+              "Война переломилась зимой 1942-43 годов, причём сразу в нескольких местах. Под Сталинградом немецкая армия была окружена и уничтожена. При Эль-Аламейне было сломлено наступление стран Оси в Северной Африке. У Мидуэя американские авианосцы потопили четыре японских авианосца за один день. За линией фронта решающим фактором стало производство: США и Советский Союз настолько превзошли Ось в выпуске техники, что к 1944 году исход был вопросом времени и цены, а не сомнения.",
+              "Союзники высадились в Нормандии в июне 1944 года и сомкнули кольцо вокруг Германии с запада и востока; в мае 1945 года Берлин пал под ударами Красной армии, а Гитлер покончил с собой в бункере под городом. Тихоокеанская война закончилась иначе. В августе 1945 года США сбросили атомные бомбы на Хиросиму и Нагасаки, убив значительно более ста тысяч человек, большинство из них гражданских, и через несколько дней Япония капитулировала. Это решение остаётся одним из самых спорных в новейшей истории — и оно открыло эпоху, в которой существовало оружие, способное прекратить спор окончательно.",
+              "Погибло от 70 до 85 миллионов человек, большинство из них гражданские, и центр мировой силы навсегда сместился за пределы европейского континента. Из руин выросли Организация Объединённых Наций, Всеобщая декларация прав человека, Нюрнбергский процесс и сама идея преступления против человечности. Вместе с ними возник и разлом: союз, выигравший войну, почти сразу раскололся на два блока холодной войны, а империи, которые её вели, уже не имели сил удерживать свои колонии."
+          ]
+      },
+      "mk": {
+          "t": "Светските војни, дел II",
+          "s": "Втората светска војна, 1939-1945",
+          "k": [
+              "Германија ја нападна Полска на 1 септември 1939 година, а Британија и Франција објавија војна два дена подоцна",
+              "Однесе, според проценките, помеѓу 70 и 85 милиони животи — најголемиот дел цивили",
+              "Холокаустот уби шест милиони Евреи, заедно со милиони Роми, Полјаци, советски воени заробеници, лица со попреченост и други",
+              "Тоа беше првата и досега единствена војна во која беше употребено нуклеарно оружје",
+              "Го заврши доминирањето на Европа и ги остави САД и Советскиот Сојуз како двете светски сили"
+          ],
+          "h": [
+              "Мир што не можеше да опстане",
+              "Блицкриг и падот на Европа",
+              "Свет во војна",
+              "Холокаустот",
+              "Пресвртот",
+              "Победата и бомбата",
+              "Светот што војната го остави"
+          ],
+          "b": [
+              "Договорот што ја заврши Првата светска војна ги носеше во себе семињата на втората. Германија беше лишена од територија, оптоварена со репарации и обвинета за целата катастрофа, а незадоволството што следеше стана гориво на политиката на навреда. Големата депресија го претвори незадоволството во очај. Адолф Хитлер дојде на власт во 1933 година ветувајќи дека ќе го раскине договорот, и низ триесеттите го направи токму тоа — преоружување, ремилитаризација на Рајнската област, припојување на Австрија, распарчување на Чехословачка — додека Британија и Франција, сеќавајќи се на колежот од претходната војна, избраа смирување наместо соочување. Кога Хитлер во август 1939 потпиша пакт со Сталин со кој ја поделија источна Европа, падна и последната пречка.",
+              "Германија ја нападна Полска на 1 септември 1939 година. Тоа што следеше не беше статичната ровска војна од 1914, туку нејзината спротивност: брзи оклопни колони поддржани од авијација и радио, што удираа длабоко зад фронтот. Полска падна за пет недели. Во пролетта 1940 истиот метод ги зеде Данска, Норвешка, Холандија, Белгија и — за шест зачудувачки недели — Франција, земја што претходниот пат издржа четири години. Британија, сама и очекувајќи инвазија, го преживеа летото 1940 затоа што Кралските воздухопловни сили не ѝ дозволија на Луфтвафе контрола на воздухот над Ла Манш.",
+              "Две одлуки во 1941 година претворија една европска војна во светска. Во јуни Хитлер го нападна Советскиот Сојуз во најголемата копнена операција во историјата, отворајќи фронт што ќе го голта најголемиот дел од германската сила до крајот на војната. Во декември Јапонија ја нападна американската флота во Перл Харбор, внесувајќи ги САД во конфликт што веќе беснееше низ Кина, југоисточна Азија и Пацификот. Од тој момент војната се водеше на секој населен континент и во секој океан.",
+              "Втората светска војна беше и сцена на злосторство без преседан. Нацистичкиот режим си постави цел да ги убие сите Евреи во Европа и уби околу шест милиони — прво со масовни стрелања зад источниот фронт, потоа во логори за истребување градени токму за тоа. Заедно со нив беа убиени уште милиони: Роми и Синти, советски воени заробеници, полски цивили, лица со попреченост, политички затвореници и геј мажи. Тоа не беше нуспојава на борбите. Го организираше модерна држава со железници, пописни евиденции и индустриски метод, и затоа војната не може да се раскажува само како приказна за стратегија.",
+              "Војната се преврте во зимата 1942-43, и тоа на неколку места истовремено. Кај Сталинград една германска армија беше опколена и уништена. Кај Ел Аламејн беше скршен продорот на Оската во северна Африка. Кај Мидвеј американските носачи потопија четири јапонски носачи во еден ден. Зад фронтовите пресудниот фактор беше производството: САД и Советскиот Сојуз ја надминаа Оската толку целосно што до 1944 исходот беше прашање на време и цена, а не на сомнеж.",
+              "Сојузниците се истоварија во Нормандија во јуни 1944 и се стегнаа околу Германија од запад и исток; Берлин падна пред Црвената армија во мај 1945, а Хитлер се самоуби во бункер под градот. Пацифичката војна заврши поинаку. Во август 1945 САД фрлија атомски бомби врз Хирошима и Нагасаки, убивајќи далеку над сто илјади луѓе, најголемиот дел цивили, и Јапонија капитулираше по неколку дена. Одлуката останува меѓу најоспоруваните во модерната историја — и отвори доба во кое постоеше оружје способно да го заврши спорот засекогаш.",
+              "Загинаа помеѓу 70 и 85 милиони луѓе, најголемиот дел цивили, а центарот на светската моќ засекогаш се измести надвор од европскиот континент. Од урнатините излегоа Обединетите нации, Универзалната декларација за човекови права, Нирнбершките судења и самата идеја за злосторство против човештвото. Излезе и еден расцеп: сојузот што ја доби војната се раздели речиси веднаш на двата блока на Студената војна, а империите што ја водеа веќе немаа сила да ги задржат своите колонии."
+          ]
+      },
+      "de": {
+          "t": "Die Weltkriege, Teil II",
+          "s": "Der Zweite Weltkrieg, 1939-1945",
+          "k": [
+              "Deutschland überfiel Polen am 1. September 1939; Großbritannien und Frankreich erklärten zwei Tage später den Krieg",
+              "Er kostete schätzungsweise 70 bis 85 Millionen Menschen das Leben — die meisten davon Zivilisten",
+              "Der Holocaust ermordete sechs Millionen Juden, dazu Millionen Roma, Polen, sowjetische Kriegsgefangene, Menschen mit Behinderung und andere",
+              "Es war der erste und bislang einzige Krieg, in dem Atomwaffen eingesetzt wurden",
+              "Er beendete Europas Vorherrschaft und ließ die USA und die Sowjetunion als die beiden Weltmächte zurück"
+          ],
+          "h": [
+              "Ein Frieden, der nicht halten konnte",
+              "Blitzkrieg und der Fall Europas",
+              "Eine Welt im Krieg",
+              "Der Holocaust",
+              "Die Wende",
+              "Sieg und Bombe",
+              "Die Welt, die der Krieg hinterließ"
+          ],
+          "b": [
+              "Die Regelung, die den Ersten Weltkrieg beendete, trug den Keim des zweiten in sich. Deutschland wurde Gebiet genommen, Reparationen auferlegt und die Schuld an der ganzen Katastrophe zugewiesen; der daraus erwachsende Groll wurde zum Treibstoff einer Politik der Kränkung. Die Weltwirtschaftskrise machte aus Groll Verzweiflung. Adolf Hitler kam 1933 mit dem Versprechen an die Macht, die Regelung zu zerreißen, und in den dreißiger Jahren tat er genau das — Aufrüstung, Remilitarisierung des Rheinlands, Anschluss Österreichs, Zerschlagung der Tschechoslowakei —, während Großbritannien und Frankreich, das Gemetzel des letzten Krieges vor Augen, das Appeasement der Konfrontation vorzogen. Als Hitler im August 1939 mit Stalin einen Pakt zur Aufteilung Osteuropas schloss, fiel die letzte Hemmung.",
+              "Deutschland überfiel Polen am 1. September 1939. Was folgte, war nicht der starre Grabenkrieg von 1914, sondern dessen Gegenteil: schnelle Panzerverbände, gestützt auf Flugzeuge und Funk, die tief hinter der Front zustießen. Polen fiel in fünf Wochen. Im Frühjahr 1940 nahm dieselbe Methode Dänemark, Norwegen, die Niederlande, Belgien und — in sechs erstaunlichen Wochen — Frankreich, ein Land, das beim letzten Mal vier Jahre standgehalten hatte. Großbritannien, allein und eine Invasion erwartend, überstand den Sommer 1940, weil die Royal Air Force der Luftwaffe die Luftherrschaft über dem Kanal verweigerte.",
+              "Zwei Entscheidungen des Jahres 1941 machten aus einem europäischen einen weltweiten Krieg. Im Juni überfiel Hitler die Sowjetunion in der größten Landoperation der Geschichte und eröffnete eine Front, die für den Rest des Krieges den Großteil der deutschen Kräfte verschlingen sollte. Im Dezember griff Japan die amerikanische Flotte in Pearl Harbor an und zog die Vereinigten Staaten in einen Konflikt, der in China, Südostasien und im Pazifik längst tobte. Von da an wurde auf jedem bewohnten Kontinent und in jedem Ozean gekämpft.",
+              "Der Zweite Weltkrieg war auch der Schauplatz eines beispiellosen Verbrechens. Das NS-Regime setzte sich zum Ziel, jeden Juden Europas zu ermorden, und tötete etwa sechs Millionen — zuerst durch Massenerschießungen hinter der Ostfront, dann in eigens gebauten Vernichtungslagern. Millionen weitere wurden mit ihnen ermordet: Roma und Sinti, sowjetische Kriegsgefangene, polnische Zivilisten, Menschen mit Behinderung, politische Gefangene und homosexuelle Männer. Das war kein Nebenprodukt der Kämpfe. Es wurde von einem modernen Staat organisiert, mit Eisenbahnen, Melderegistern und industrieller Methode — und deshalb lässt sich dieser Krieg nicht als bloße Strategiegeschichte erzählen.",
+              "Der Krieg wendete sich im Winter 1942/43, und er wendete sich an mehreren Orten zugleich. Bei Stalingrad wurde eine deutsche Armee eingeschlossen und vernichtet. Bei El Alamein brach der Vormarsch der Achse in Nordafrika. Bei Midway versenkten amerikanische Träger an einem einzigen Tag vier japanische Träger. Hinter den Fronten war die Produktion entscheidend: die Vereinigten Staaten und die Sowjetunion überflügelten die Achse so vollständig, dass der Ausgang 1944 eine Frage von Zeit und Preis war, nicht mehr von Zweifel.",
+              "Die Alliierten landeten im Juni 1944 in der Normandie und schlossen Deutschland von West und Ost ein; Berlin fiel im Mai 1945 an die Rote Armee, und Hitler nahm sich in einem Bunker darunter das Leben. Der Pazifikkrieg endete anders. Im August 1945 warfen die Vereinigten Staaten Atombomben auf Hiroshima und Nagasaki, töteten weit über hunderttausend Menschen, überwiegend Zivilisten, und Japan kapitulierte wenige Tage später. Die Entscheidung gehört zu den umstrittensten der neueren Geschichte — und sie eröffnete ein Zeitalter, in dem die Waffen existierten, um den Streit endgültig zu beenden.",
+              "Zwischen 70 und 85 Millionen Menschen waren tot, die Mehrheit Zivilisten, und der Schwerpunkt der Weltmacht hatte den europäischen Kontinent endgültig verlassen. Aus den Trümmern entstanden die Vereinten Nationen, die Allgemeine Erklärung der Menschenrechte, die Nürnberger Prozesse und überhaupt der Begriff des Verbrechens gegen die Menschlichkeit. Und es entstand ein Bruch: das Bündnis, das den Krieg gewonnen hatte, zerfiel fast sofort in die beiden Blöcke des Kalten Krieges, und die Imperien, die ihn geführt hatten, besaßen nicht mehr die Kraft, ihre Kolonien zu halten."
+          ]
+      },
+      "fr": {
+          "t": "Les Guerres mondiales, partie II",
+          "s": "La Seconde Guerre mondiale, 1939-1945",
+          "k": [
+              "L’Allemagne envahit la Pologne le 1er septembre 1939, et la Grande-Bretagne et la France déclarèrent la guerre deux jours plus tard",
+              "Elle fit entre 70 et 85 millions de morts — en majorité des civils",
+              "La Shoah assassina six millions de Juifs, aux côtés de millions de Roms, de Polonais, de prisonniers soviétiques, de personnes handicapées et d’autres",
+              "Ce fut la première et jusqu’ici la seule guerre où des armes nucléaires furent employées",
+              "Elle mit fin à la domination de l’Europe et laissa les États-Unis et l’Union soviétique comme les deux puissances mondiales"
+          ],
+          "h": [
+              "Une paix qui ne pouvait tenir",
+              "La Blitzkrieg et la chute de l’Europe",
+              "Un monde en guerre",
+              "La Shoah",
+              "Le tournant",
+              "La victoire et la bombe",
+              "Le monde laissé par la guerre"
+          ],
+          "b": [
+              "Le règlement qui mit fin à la Première Guerre mondiale portait en lui les germes de la seconde. L’Allemagne fut amputée de territoires, chargée de réparations et tenue pour responsable de toute la catastrophe, et le ressentiment qui suivit devint le carburant d’une politique du grief. La Grande Dépression transforma le ressentiment en désespoir. Adolf Hitler arriva au pouvoir en 1933 en promettant de déchirer ce règlement, et durant les années trente il fit exactement cela — réarmement, remilitarisation de la Rhénanie, annexion de l’Autriche, démembrement de la Tchécoslovaquie — pendant que la Grande-Bretagne et la France, se souvenant du carnage de la guerre précédente, choisissaient l’apaisement plutôt que l’affrontement. Quand Hitler signa en août 1939 un pacte avec Staline partageant l’Europe orientale, la dernière retenue tomba.",
+              "L’Allemagne envahit la Pologne le 1er septembre 1939. Ce qui suivit ne fut pas la guerre de tranchées statique de 1914, mais son contraire : des colonnes blindées rapides appuyées par l’aviation et la radio, frappant loin derrière le front. La Pologne tomba en cinq semaines. Au printemps 1940, la même méthode emporta le Danemark, la Norvège, les Pays-Bas, la Belgique et — en six semaines stupéfiantes — la France, un pays qui avait tenu quatre ans la fois précédente. La Grande-Bretagne, seule et attendant l’invasion, survécut à l’été 1940 parce que la Royal Air Force refusa à la Luftwaffe la maîtrise du ciel au-dessus de la Manche.",
+              "Deux décisions de 1941 transformèrent une guerre européenne en guerre mondiale. En juin, Hitler envahit l’Union soviétique dans la plus vaste opération terrestre de l’histoire, ouvrant un front qui allait absorber l’essentiel des forces allemandes jusqu’à la fin. En décembre, le Japon attaqua la flotte américaine à Pearl Harbor, entraînant les États-Unis dans un conflit qui faisait déjà rage en Chine, en Asie du Sud-Est et dans le Pacifique. Dès lors, on se battit sur tous les continents habités et sur tous les océans.",
+              "La Seconde Guerre mondiale fut aussi le théâtre d’un crime sans précédent. Le régime nazi entreprit d’assassiner tous les Juifs d’Europe et en tua environ six millions — d’abord par fusillades de masse derrière le front de l’Est, puis dans des camps d’extermination bâtis pour cela. Des millions d’autres furent assassinés avec eux : Roms et Sintis, prisonniers de guerre soviétiques, civils polonais, personnes handicapées, prisonniers politiques et hommes homosexuels. Ce ne fut pas un sous-produit des combats. Ce fut organisé par un État moderne au moyen de chemins de fer, de registres et d’une méthode industrielle — et c’est pourquoi cette guerre ne peut se raconter comme une simple histoire de stratégie.",
+              "La guerre bascula durant l’hiver 1942-43, et elle bascula en plusieurs endroits à la fois. À Stalingrad, une armée allemande fut encerclée et détruite. À El-Alamein, l’avance de l’Axe en Afrique du Nord fut brisée. À Midway, les porte-avions américains coulèrent quatre porte-avions japonais en une seule journée. Derrière les fronts, le facteur décisif fut la production : les États-Unis et l’Union soviétique dépassèrent l’Axe si complètement qu’en 1944 l’issue était une question de temps et de coût, non de doute.",
+              "Les Alliés débarquèrent en Normandie en juin 1944 et refermèrent l’étau sur l’Allemagne par l’ouest et par l’est ; Berlin tomba devant l’Armée rouge en mai 1945 et Hitler se suicida dans un bunker en dessous. La guerre du Pacifique se termina autrement. En août 1945, les États-Unis larguèrent des bombes atomiques sur Hiroshima et Nagasaki, tuant bien plus de cent mille personnes, en majorité des civils, et le Japon capitula quelques jours plus tard. Cette décision demeure l’une des plus discutées de l’histoire contemporaine — et elle ouvrit une ère où existaient les armes capables de clore le débat définitivement.",
+              "Entre 70 et 85 millions de personnes étaient mortes, en majorité des civils, et le centre de la puissance mondiale avait quitté le continent européen pour de bon. Des ruines sortirent les Nations unies, la Déclaration universelle des droits de l’homme, les procès de Nuremberg et l’idée même de crime contre l’humanité. Il en sortit aussi une fracture : l’alliance qui avait gagné la guerre se scinda presque aussitôt en deux blocs de la guerre froide, et les empires qui l’avaient menée n’avaient plus la force de conserver leurs colonies."
+          ]
+      }
+  },
   'prehistoric-10': {
     fr: {
       t: 'Le peuplement des Amériques',

@@ -115,7 +115,10 @@ export function simulateFriendActivity(friend: ActivityFriend, days = 7): Friend
     const kind = seed % 4;
     // Spread entries through the day rather than stacking them all at midnight.
     date.setHours(8 + (bits(8) % 12), bits(16) % 60, 0, 0);
-    const at = date.toISOString();
+    // …but never past the present moment. For TODAY the chosen hour can still
+    // be ahead of the clock — at 00:39 every hour in the 8–19 band is — which
+    // would show a friend's activity as having happened later today.
+    const at = new Date(Math.min(date.getTime(), Date.now())).toISOString();
     const eraId = ERAS_POOL[bits(5) % ERAS_POOL.length];
     const base = { friendId: friend.id, friendName: friend.username, at, simulated: true as const };
 
