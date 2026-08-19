@@ -8,7 +8,8 @@
 // the source and fixed by rewriting.
 //
 //   node scripts/quiz_length_bias.mjs                 → report, all 6 languages
-//   node scripts/quiz_length_bias.mjs --list 20       → worst 20 offenders
+//   node scripts/quiz_length_bias.mjs --list 20 [lang] → worst 20 offenders
+//                                                       (all 6 languages by default)
 //   node scripts/quiz_length_bias.mjs --dump id id …  → full option sets
 //   node scripts/quiz_length_bias.mjs --check p.json [n] → dry-run a patch, all 6
 //                                                        (n = tolerated lead, default 2)
@@ -76,18 +77,39 @@ function measure(questions, lang, getTranslated) {
   };
 }
 
-function offenders(questions, minGap = 6) {
+/**
+ * Questions where the correct option both leads on length and leads clearly.
+ *
+ * `lang` matters and used to be missing: this read q.options directly, which
+ * is the ENGLISH text, so the offender list only ever described English. A
+ * batch that fixed every listed offender left the other five languages
+ * untouched — and the summary above kept reporting them at the old rate with
+ * nothing to say which questions were responsible.
+ *
+ * The gap is measured against the LONGEST distractor, not the mean: a learner
+ * comparing options picks out the longest one, and an answer that beats the
+ * average while sitting second is not a tell.
+ */
+function offenders(questions, lang = 'en', get = null, minGap = 6) {
   const rows = [];
   for (const q of questions) {
-    const lens = q.options.map(o => o.length);
+    const opts = lang === 'en' ? q.options : optionsFor(q, lang, get);
+    if (!opts) continue;
+    const lens = opts.map(o => o.length);
     const ci = q.correctIndex;
     const others = lens.filter((_, i) => i !== ci);
-    const target = Math.round(others.reduce((a, b) => a + b, 0) / others.length);
-    const gap = lens[ci] - target;
+    const gap = lens[ci] - Math.max(...others);
     if (lens[ci] !== Math.max(...lens) || gap < minGap) continue;
-    rows.push({ id: q.id, gap, target, correct: q.options[ci] });
+    rows.push({ id: q.id, lang, gap, target: Math.max(...others), correct: opts[ci] });
   }
   return rows.sort((a, b) => b.gap - a.gap);
+}
+
+/** Every offender in every language, worst first. */
+function allOffenders(questions, get, minGap = 6) {
+  return ['en', ...LANGS]
+    .flatMap(l => offenders(questions, l, get, minGap))
+    .sort((a, b) => b.gap - a.gap);
 }
 
 /**
@@ -145,6 +167,29 @@ function languageWindows(text, windows, lang) {
   return out;
 }
 
+/**
+ * Narrow further to the `options: [ … ]` array itself.
+ *
+ * An option's text often appears again in the same record's explanation —
+ * "Дванаесетте таблици" is both option 0 of aq45 and a word in its
+ * explanation — so a record-scoped search finds it twice and refuses. Only
+ * the array is a legitimate replacement target anyway: rewriting an option
+ * must never silently edit the prose that explains it.
+ */
+function optionsWindows(text, windows) {
+  const out = [];
+  for (const [start, end] of windows) {
+    const block = text.slice(start, end);
+    const re = /options\s*:\s*\[/g;
+    for (let m; (m = re.exec(block)); ) {
+      const from = start + m.index + m[0].length;
+      const close = text.indexOf(']', from);
+      if (close !== -1 && close < end) out.push([from, close]);
+    }
+  }
+  return out;
+}
+
 function questionWindows(text, id) {
   const windows = [];
   for (const quoted of [`'${id}'`, `"${id}"`, `\`${id}\``]) {
@@ -167,15 +212,29 @@ function questionWindows(text, id) {
   return windows;
 }
 
-/** Occurrences of `needle` inside any of `windows`, as absolute offsets. */
+/**
+ * Occurrences of `needle` inside any of `windows`, as absolute offsets.
+ *
+ * A hit only counts when the needle is a WHOLE string literal — quote
+ * immediately before, the same quote immediately after. Substring matching
+ * alone was wrong in a way that only showed up mid-patch: replacing eq2's
+ * "Флорида" with "Флорида и её побережье Мексиканского залива" put the
+ * letters of "Мексика" into the same options array, so the next replacement
+ * in the same batch found its own target twice and refused. The boundary
+ * check is also the right rule on its own terms: rewriting an option must
+ * replace an option, never part of a longer word.
+ */
 function matchesInWindows(text, windows, needle) {
+  const QUOTES = new Set(["'", '"', '`']);
   const hits = new Set();
   for (const [start, end] of windows) {
     let from = start;
     for (;;) {
       const at = text.indexOf(needle, from);
       if (at === -1 || at >= end) break;
-      hits.add(at);
+      const before = text[at - 1];
+      const after = text[at + needle.length];
+      if (QUOTES.has(before) && after === before) hits.add(at);
       from = at + needle.length;
     }
   }
@@ -221,7 +280,10 @@ async function applyPatch(patchPath, questions, get) {
         if (from[i] === to[i]) continue;
         const found = [];
         for (const f of (lang === 'en' ? DATA_SOURCES : TRANSLATION_SOURCES)) {
-          const windows = languageWindows(files[f], questionWindows(files[f], id), lang);
+          const windows = optionsWindows(
+            files[f],
+            languageWindows(files[f], questionWindows(files[f], id), lang),
+          );
           if (windows.length === 0) continue;
           for (const needle of needles(from[i])) {
             for (const at of matchesInWindows(files[f], windows, needle)) {
@@ -342,10 +404,15 @@ if (argv[0] === '--dump') {
 }
 
 if (argv[0] === '--list') {
-  const rows = offenders(ALL);
+  // Default to ALL languages: listing only English is what let five of the
+  // six drift while the offender count read zero.
+  const lang = argv[2];
+  const rows = lang ? offenders(ALL, lang, get) : allOffenders(ALL, get);
   const n = Number(argv[1] ?? 20);
-  console.log(`${rows.length} offender(s); worst ${Math.min(n, rows.length)}:`);
-  for (const r of rows.slice(0, n)) console.log(`  ${r.id.padEnd(8)} +${String(r.gap).padStart(3)}  target ${String(r.target).padStart(3)}  ${r.correct.slice(0, 60)}`);
+  console.log(`${rows.length} offender(s)${lang ? ` in ${lang}` : ' across 6 languages'}; worst ${Math.min(n, rows.length)}:`);
+  for (const r of rows.slice(0, n)) {
+    console.log(`  ${r.id.padEnd(8)} ${r.lang}  +${String(r.gap).padStart(3)}  beat ${String(r.target).padStart(3)}  ${r.correct.slice(0, 56)}`);
+  }
   process.exit(0);
 }
 
@@ -353,6 +420,15 @@ console.log(`${ALL.length} questions · correct option longest, and its mean cha
 console.log('(25% is chance for a 4-option question)');
 for (const lang of ['en', ...LANGS]) {
   const m = measure(ALL, lang, get);
-  console.log(`  ${lang.padEnd(3)} n=${String(m.n).padStart(3)}  longest ${m.longestPct.toFixed(1).padStart(5)}%   mean +${m.mean.toFixed(2)}`);
+  // Signed, because the mean can now legitimately be negative — "+-0.04" was
+  // the old format's way of saying the correct option is on average SHORTER.
+  const mean = `${m.mean >= 0 ? '+' : ''}${m.mean.toFixed(2)}`;
+  console.log(`  ${lang.padEnd(3)} n=${String(m.n).padStart(3)}  longest ${m.longestPct.toFixed(1).padStart(5)}%   mean ${mean}`);
 }
-console.log(`offenders (longest AND >= +6 chars): ${offenders(ALL).length}`);
+const all = allOffenders(ALL, get);
+console.log(`offenders (longest, and >= +6 chars clear of the next): ${all.length} across 6 languages`);
+if (all.length) {
+  const byLang = {};
+  for (const r of all) byLang[r.lang] = (byLang[r.lang] ?? 0) + 1;
+  console.log('  ' + Object.entries(byLang).map(([l, n]) => `${l}=${n}`).join('  '));
+}

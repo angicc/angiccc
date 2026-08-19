@@ -6,6 +6,11 @@ import type { Language } from '@/i18n/translations';
 const ALL = QUIZZES.flatMap(q => q.questions);
 const LANGS: Language[] = ['en', 'es', 'ru', 'mk', 'de', 'fr'];
 
+function stemFor(q: (typeof ALL)[number], lang: Language): string {
+  if (lang === 'en') return q.question;
+  return getTranslatedQuestion(q.id, lang)?.question ?? q.question;
+}
+
 function optionsFor(q: (typeof ALL)[number], lang: Language): string[] | null {
   if (lang === 'en') return q.options;
   const tr = getTranslatedQuestion(q.id, lang);
@@ -25,14 +30,18 @@ function optionsFor(q: (typeof ALL)[number], lang: Language): string[] | null {
  * options lets the other five drift with nothing watching, and the measured
  * bias is in fact slightly worse in German and French than in English.
  *
- * The bank still carries real debt — the correct option is the longest in
- * ~51-53% of questions against 25% by chance, down from ~59%. These ceilings
- * sit just above the current measurement so the suite stays green while
- * stopping it getting WORSE. Run `node scripts/quiz_length_bias.mjs` for the
- * live numbers, and tighten these further as more questions are rewritten.
+ * The debt is now paid. Across 300 questions the correct option is the longest
+ * in 22-27% of them depending on language, against 25% by chance, and its mean
+ * character advantage is within a character of zero — down from ~59% and +4.5
+ * when this guard was first written. Not one question is left where the
+ * correct option both leads and leads by six characters or more.
+ *
+ * These ceilings sit a little above the current measurement so ordinary
+ * authoring has room, and low enough that a return to answering by shape fails
+ * the suite. Run `node scripts/quiz_length_bias.mjs` for the live numbers.
  */
-const LONGEST_SHARE_CEILING = 0.54;
-const MEAN_ADVANTAGE_CEILING = 5.6;
+const LONGEST_SHARE_CEILING = 0.32;
+const MEAN_ADVANTAGE_CEILING = 1.5;
 
 describe('question quality', () => {
   it.each(LANGS)('does not let the correct option be the longest too often (%s)', lang => {
@@ -77,5 +86,58 @@ describe('question quality', () => {
   it('has a correctIndex inside the options range', () => {
     const broken = ALL.filter(q => q.correctIndex < 0 || q.correctIndex >= q.options.length);
     expect(broken.map(q => q.id)).toEqual([]);
+  });
+
+  /**
+   * No question anywhere leads on length by a margin a learner could use.
+   *
+   * The share and mean tests above are aggregate: a handful of egregious
+   * questions can hide inside a healthy average. This is the per-question
+   * floor, and it is the measure the rewriting worked to — zero questions,
+   * in any language, where the correct option is both the longest AND at
+   * least six characters clear of the next.
+   */
+  it.each(LANGS)('has no question whose answer leads on length by 6+ characters (%s)', lang => {
+    const offenders: string[] = [];
+    for (const q of ALL) {
+      const opts = optionsFor(q, lang);
+      if (!opts) continue;
+      const lens = opts.map(o => o.length);
+      const correct = lens[q.correctIndex];
+      const others = lens.filter((_, i) => i !== q.correctIndex);
+      if (correct === Math.max(...lens) && correct - Math.max(...others) >= 6) offenders.push(q.id);
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  // Structural integrity across every language, not just English. The option
+  // arrays are edited in bulk by scripts/quiz_length_bias.mjs --apply; a patch
+  // that dropped, emptied or duplicated an option in one of the five
+  // translations would otherwise be invisible until a learner met it.
+  it.each(LANGS)('has four distinct, non-empty translated options (%s)', lang => {
+    const broken: string[] = [];
+    for (const q of ALL) {
+      const opts = optionsFor(q, lang);
+      if (!opts) continue;
+      if (opts.length !== q.options.length) broken.push(`${q.id}: ${opts.length} options`);
+      else if (opts.some(o => !o.trim())) broken.push(`${q.id}: empty option`);
+      else if (new Set(opts.map(o => o.trim().toLowerCase())).size !== opts.length) broken.push(`${q.id}: duplicate options`);
+    }
+    expect(broken).toEqual([]);
+  });
+
+  it.each(LANGS)('never quotes the answer verbatim in the question stem (%s)', lang => {
+    const leaks: string[] = [];
+    for (const q of ALL) {
+      const opts = optionsFor(q, lang);
+      if (!opts) continue;
+      const answer = opts[q.correctIndex];
+      // Short answers legitimately recur ("Rome" in a question about Rome);
+      // a long one appearing whole in the stem is the answer being handed over.
+      if (answer.length > 12 && stemFor(q, lang).toLowerCase().includes(answer.toLowerCase())) {
+        leaks.push(q.id);
+      }
+    }
+    expect(leaks).toEqual([]);
   });
 });

@@ -106,17 +106,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'aq6': {
     es: {
       question: '¿Qué rey persa emitió el "Cilindro de Ciro", considerado una temprana declaración de derechos humanos?',
-      options: ['Darío I', 'Jerjes', 'Ciro el Grande', 'Artajerjes'],
+      options: ['Darío I, el organizador', 'Jerjes, invasor de Grecia', 'Ciro el Grande', 'Artajerjes, el de larga mano'],
       explanation: 'Ciro el Grande liberó a los exiliados judíos de Babilonia y permitió a los pueblos conquistados practicar sus propias religiones.',
     },
     ru: {
       question: 'Какой персидский царь издал «Цилиндр Кира», считающийся ранней декларацией прав человека?',
-      options: ['Дарий I', 'Ксеркс', 'Кир Великий', 'Артаксеркс'],
+      options: ['Дарий I, устроитель державы', 'Ксеркс, вторгшийся в Грецию', 'Кир Великий', 'Артаксеркс Долгорукий'],
       explanation: 'Кир Великий освободил еврейских изгнанников из Вавилона и позволил завоёванным народам исповедовать собственные религии.',
     },
     mk: {
       question: 'Кој персиски крал го издал „Цилиндарот на Кир", сметан за рана декларација за човекови права?',
-      options: ['Дариј I', 'Ксеркс', 'Кир Велики', 'Артаксеркс'],
+      options: ['Дариј I, организаторот', 'Ксеркс, освојувачот на Грција', 'Кир Велики', 'Артаксеркс Долгораки'],
       explanation: 'Кир Велики ги ослободил еврејските прогонети од Вавилон и им дозволил на освоените народи да ги практикуваат своите религии.',
     },
   },
@@ -360,17 +360,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'mq5': {
     es: {
       question: 'Saladino, quien recuperó Jerusalén en 1187, era sultán de qué región?',
-      options: ['Persia', 'Turquía', 'Egipto y Siria', 'Bagdad'],
+      options: ['Persia y la meseta iraní', 'Turquía y la costa de Anatolia', 'Egipto y Siria', 'Bagdad y Mesopotamia'],
       explanation: 'Saladino fue el fundador kurdo de la dinastía ayubí y gobernante de Egipto y Siria. Su caballerosidad fue respetada incluso por los cruzados.',
     },
     ru: {
       question: 'Салах ад-Дин, отвоевавший Иерусалим в 1187 году, был султаном какого региона?',
-      options: ['Персии', 'Турции', 'Египта и Сирии', 'Багдада'],
+      options: ['Персии и Иранского нагорья', 'Турции и анатолийского побережья', 'Египта и Сирии', 'Багдада и Месопотамии'],
       explanation: 'Салах ад-Дин — курдский основатель династии Айюбидов и правитель Египта и Сирии. Его рыцарство уважали даже крестоносцы.',
     },
     mk: {
       question: 'Саладин, кој ја вратил Ерусалим во 1187 година, бил султан на кој регион?',
-      options: ['Персија', 'Турција', 'Египет и Сирија', 'Багдад'],
+      options: ['Персија и Иранската висорамнина', 'Турција и анадолскиот брег', 'Египет и Сирија', 'Багдад и Месопотамија'],
       explanation: 'Саладин бил курдскиот основач на Ајубидската династија и владетел на Египет и Сирија. Неговото витештво го почитувале дури и Крстоносците.',
     },
   },
@@ -378,17 +378,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'mq6': {
     es: {
       question: '¿Qué fracción de la población europea se estima que mató la Peste Negra entre 1347 y 1353?',
-      options: ['Un décimo', 'Un cuarto', 'Un tercio a la mitad', 'Dos tercios'],
+      options: ['Un décimo de la población', 'Un cuarto de la población', 'Un tercio a la mitad', 'Dos tercios de la población'],
       explanation: 'Se estima entre el 30 y el 60 % de la población europea. Algunas ciudades como Florencia perdieron más de la mitad de sus habitantes.',
     },
     ru: {
       question: 'Какую долю населения Европы унесла Чёрная смерть в период с 1347 по 1353 год?',
-      options: ['Одну десятую', 'Одну четверть', 'От одной трети до половины', 'Две трети'],
+      options: ['Одну десятую населения', 'Примерно одну четверть населения', 'От одной трети до половины', 'Две трети населения'],
       explanation: 'По оценкам, погибло от 30 до 60 % населения Европы. Некоторые города, например Флоренция, потеряли более половины жителей.',
     },
     mk: {
       question: 'Колкав дел од европската популација се проценува дека ја усмртила Црната Чума меѓу 1347 и 1353 година?',
-      options: ['Една десетина', 'Една четвртина', 'Една третина до половина', 'Две третини'],
+      options: ['Една десетина од населението', 'Една четвртина од населението', 'Една третина до половина', 'Две третини од населението'],
       explanation: 'Проценките се движат меѓу 30–60 % од европската популација. Некои градови, како Фиренца, изгубиле повеќе од половина од своите жители.',
     },
   },
@@ -468,17 +468,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'mq11': {
     es: {
       question: 'El Gran Cisma de 1054 dividió permanentemente el cristianismo en cuáles dos grandes ramas?',
-      options: ['Católica y Anglicana', 'Católica y Protestante', 'Católica Romana y Ortodoxa Oriental', 'Copta y Católica Romana'],
+      options: ['Iglesias Católica y Anglicana', 'Iglesias Católica y Protestante luterana', 'Católica Romana y Ortodoxa Oriental', 'Iglesias Copta y Católica Romana'],
       explanation: 'El Gran Cisma dividió la Iglesia cristiana en la Iglesia Católica Romana (liderada por el Papa en Roma) y la Iglesia Ortodoxa Oriental (liderada por el Patriarca de Constantinopla), división que persiste hoy.',
     },
     ru: {
       question: 'Великий раскол 1054 года навсегда разделил христианство на какие две крупные ветви?',
-      options: ['Католическую и Англиканскую', 'Католическую и Протестантскую', 'Римско-католическую и Восточно-православную', 'Коптскую и Римско-католическую'],
+      options: ['Католическую и Англиканскую церкви', 'Католическую и Протестантскую лютеранскую церкви', 'Римско-католическую и Восточно-православную', 'Коптскую и Римско-католическую церкви'],
       explanation: 'Великий раскол разделил христианскую церковь на Римско-католическую (под руководством Папы в Риме) и Восточно-православную (под руководством Патриарха Константинополя) — разделение, сохраняющееся по сей день.',
     },
     mk: {
       question: 'Големата Шизма од 1054 година трајно го поделила христијанството на кои две главни гранки?',
-      options: ['Католичка и Англиканска', 'Католичка и Протестантска', 'Римокатоличка и Источноправославна', 'Коптска и Римокатоличка'],
+      options: ['Католичка и Англиканска црква', 'Католичка и Протестантска лутеранска црква', 'Римокатоличка и Источноправославна', 'Коптска и Римокатоличка црква'],
       explanation: 'Големата Шизма ја поделила христијанската Црква на Римокатоличката (предводена од Папата во Рим) и Источноправославната (предводена од Патријархот на Константинопол) — поделба која постои до денес.',
     },
   },
@@ -486,17 +486,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'mq12': {
     es: {
       question: 'La "Summa Theologica" de Tomás de Aquino fue un intento fundamental de reconciliar cuáles dos tradiciones intelectuales?',
-      options: ['Teología cristiana y filosofía platónica', 'Teología cristiana y filosofía aristotélica', 'Filosofía islámica y teología cristiana', 'Derecho romano antiguo y ética cristiana'],
+      options: ['Teología cristiana y filosofía platónica', 'Teología cristiana y filosofía aristotélica', 'Filosofía islámica y teología mística cristiana', 'Derecho romano antiguo y ética cristiana'],
       explanation: 'Aquino sintetizó la lógica y filosofía aristotélica con la doctrina cristiana, argumentando que la fe y la razón eran complementarias, no contradictorias — un texto fundamental del escolasticismo.',
     },
     ru: {
       question: '«Сумма теологии» Фомы Аквинского была новаторской попыткой примирить какие две интеллектуальные традиции?',
-      options: ['Христианское богословие и платоновскую философию', 'Христианское богословие и аристотелевскую философию', 'Исламскую философию и христианское богословие', 'Древнеримское право и христианскую этику'],
+      options: ['Христианское богословие и платоновскую философию', 'Христианское богословие и аристотелевскую философию', 'Исламскую философию и христианское мистическое богословие', 'Древнеримское право и христианскую этику'],
       explanation: 'Аквинский синтезировал аристотелевскую логику и философию с христианским учением, доказывая, что вера и разум дополняют, а не противоречат друг другу — основополагающий текст схоластики.',
     },
     mk: {
       question: '„Сума Теолошка" на Тома Аквински беше пресврт во обид да се помират кои две интелектуални традиции?',
-      options: ['Христијанска теологија и платонска филозофија', 'Христијанска теологија и аристотеловска филозофија', 'Исламска филозофија и христијанска теологија', 'Античко римско право и христијанска етика'],
+      options: ['Христијанска теологија и платонска филозофија', 'Христијанска теологија и аристотеловска филозофија', 'Исламска филозофија и христијанска мистична теологија', 'Античко римско право и христијанска етика'],
       explanation: 'Аквински ги синтетизирал аристотеловата логика и филозофија со христијанската доктрина, тврдејќи дека верата и разумот се дополнувачки, а не спротивставени — основополагачки текст на схоластицизмот.',
     },
   },
@@ -560,17 +560,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'eq1': {
     es: {
       question: 'La invención de la imprenta de tipos móviles de Johannes Gutenberg (c.1440) habilitó directamente ¿cuál evento?',
-      options: ['Las Cruzadas', 'La Reforma Protestante', 'La Peste Negra', 'Las invasiones mongolas'],
+      options: ['Las Cruzadas a Tierra Santa', 'La Reforma Protestante', 'La Peste Negra por Europa', 'Las invasiones mongolas de la Rus'],
       explanation: 'La imprenta permitió difundir las ideas de Lutero por toda Alemania en cuestión de semanas; sin ella, la Reforma podría haber sido sofocada como otros movimientos reformistas anteriores.',
     },
     ru: {
       question: 'Изобретение печатного станка с подвижным шрифтом Иоганном Гутенбергом (ок. 1440 г.) напрямую способствовало какому событию?',
-      options: ['Крестовым походам', 'Протестантской реформации', 'Чёрной смерти', 'Монгольским нашествиям'],
+      options: ['Крестовым походам в Святую землю', 'Протестантской реформации', 'Чёрной смерти по всей Европе', 'Монгольским нашествиям на Русь'],
       explanation: 'Печатный станок позволил идеям Лютера распространиться по всей Германии за считаные недели; без него Реформация могла быть подавлена, как другие реформистские движения до неё.',
     },
     mk: {
       question: 'Пронајдокот на подвижниот печатен станок на Јоханес Гутенберг (околу 1440 г.) директно овозможил кој настан?',
-      options: ['Крстоносните походи', 'Протестантската реформација', 'Црната Чума', 'Монголските инвазии'],
+      options: ['Крстоносните походи во Светата земја', 'Протестантската реформација', 'Црната Чума низ цела Европа', 'Монголските инвазии на Русија'],
       explanation: 'Печатниот станок овозможил идеите на Лутер да се прошират низ цела Германија за неколку недели; без него, Реформацијата можела да биде задушена, исто како и претходните реформски движења.',
     },
   },
@@ -578,17 +578,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'eq2': {
     es: {
       question: '¿En qué región fue el primer desembarco de Colón en 1492?',
-      options: ['Brasil', 'Florida', 'El Caribe', 'México'],
+      options: ['Brasil, en la costa atlántica', 'Florida y su costa del Golfo', 'El Caribe', 'México y sus altiplanos'],
       explanation: 'Colón desembarcó en las Bahamas en el Caribe, creyendo que había llegado a Asia. Nunca se dio cuenta de que había encontrado un continente antes desconocido para los europeos.',
     },
     ru: {
       question: 'В каком регионе состоялась первая высадка Колумба в 1492 году?',
-      options: ['Бразилия', 'Флорида', 'Карибские острова', 'Мексика'],
+      options: ['Бразилия, на атлантическом берегу', 'Флорида и её побережье Мексиканского залива', 'Карибские острова', 'Мексика и её нагорья'],
       explanation: 'Колумб высадился на Багамских островах в Карибском море, полагая, что достиг Азии. Он так и не осознал, что открыл континент, прежде неизвестный европейцам.',
     },
     mk: {
       question: 'Во кој регион беше првото слетување на Колумб во 1492 година?',
-      options: ['Бразил', 'Флорида', 'Карипски Острови', 'Мексико'],
+      options: ['Бразил, на атлантскиот брег', 'Флорида и нејзиниот залив', 'Карипски Острови', 'Мексико и неговите висорамнини'],
       explanation: 'Колумб слетал на Бахамите во Карибите, верувајќи дека стигнал до Азија. Тој никогаш не сфатил дека открил континент дотогаш непознат за Европјаните.',
     },
   },
@@ -632,17 +632,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'eq5': {
     es: {
       question: 'La Paz de Westfalia (1648) estableció cuál principio clave del orden internacional moderno?',
-      options: ['El libre comercio entre naciones', 'La supremacía del Papa', 'La soberanía nacional y la no interferencia', 'Los derechos de las minorías religiosas'],
+      options: ['El libre comercio entre todas las naciones', 'La supremacía del Papa sobre los príncipes', 'La soberanía nacional y la no interferencia', 'Los derechos de las minorías religiosas en todas partes'],
       explanation: 'Westfalia estableció que los gobernantes podían determinar la religión de sus territorios y que potencias externas no debían interferir — la base del sistema moderno de Estados-nación.',
     },
     ru: {
       question: 'Вестфальский мир (1648) утвердил какой ключевой принцип современного международного порядка?',
-      options: ['Свободная торговля между нациями', 'Верховенство Папы', 'Национальный суверенитет и невмешательство', 'Права религиозных меньшинств'],
+      options: ['Свободная торговля между всеми европейскими нациями', 'Верховенство Папы над государями', 'Национальный суверенитет и невмешательство', 'Права религиозных меньшинств повсюду'],
       explanation: 'Вестфальский мир установил, что правители могут определять религию своих территорий и что внешние силы не должны вмешиваться — основа современной системы национальных государств.',
     },
     mk: {
       question: 'Вестфалскиот мир (1648) воспоставил кој клучен принцип на современиот меѓународен поредок?',
-      options: ['Слободна трговија меѓу нациите', 'Надмоќ на Папата', 'Национален суверенитет и ненамешување', 'Права на верски малцинства'],
+      options: ['Слободна трговија меѓу сите европски нации', 'Надмоќ на Папата над владетелите', 'Национален суверенитет и ненамешување', 'Права на верските малцинства насекаде'],
       explanation: 'Вестфалија воспоставила дека владетелите можат да ја одредуваат религијата на своите територии и дека надворешните сили не треба да се мешаат — основата на современиот систем на национални држави.',
     },
   },
@@ -686,17 +686,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'eq8': {
     es: {
       question: 'La Guerra de los Treinta Años (1618–1648) comenzó como un conflicto por ¿qué causa?',
-      options: ['Territorio colonial', 'Rutas comerciales', 'La religión en el Sacro Imperio Romano', 'La sucesión al trono francés'],
+      options: ['Territorio colonial en las Américas nuevas', 'Rutas comerciales en el mar Báltico', 'La religión en el Sacro Imperio Romano', 'La sucesión al trono francés'],
       explanation: 'Comenzó como una guerra religiosa entre católicos y protestantes en Bohemia (la actual República Checa), antes de convertirse en un conflicto general europeo de poder.',
     },
     ru: {
       question: 'Тридцатилетняя война (1618–1648) началась как конфликт из-за чего?',
-      options: ['Колониальные территории', 'Торговые пути', 'Религия в Священной Римской империи', 'Престолонаследие во Франции'],
+      options: ['Колониальные территории в обеих Америках', 'Торговые пути на Балтийском море', 'Религия в Священной Римской империи', 'Престолонаследие во Франции'],
       explanation: 'Она началась как религиозная война между католиками и протестантами в Богемии (нынешней Чехии), прежде чем превратиться в общеевропейский конфликт за власть.',
     },
     mk: {
       question: 'Триесетгодишната војна (1618–1648) почнала како конфликт околу што?',
-      options: ['Колонијална територија', 'Трговски рути', 'Религијата во Светото Римско Царство', 'Наследство на францускиот трон'],
+      options: ['Колонијална територија во двете Америки', 'Трговски рути во Балтичкото Море', 'Религијата во Светото Римско Царство', 'Наследство на францускиот трон'],
       explanation: 'Почнала како верска војна меѓу Католиците и Протестантите во Бохемија (денешна Чешка Република) пред да стане општ европски конфликт за власт.',
     },
   },
@@ -704,17 +704,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'eq9': {
     es: {
       question: '¿Qué pensador ilustrado escribió "El Contrato Social" (1762) argumentando que la legitimidad del gobierno proviene del pueblo?',
-      options: ['Voltaire', 'Montesquieu', 'John Locke', 'Jean-Jacques Rousseau'],
+      options: ['François-Marie Arouet, llamado Voltaire', 'Charles-Louis de Secondat, Montesquieu', 'John Locke, el médico inglés', 'Jean-Jacques Rousseau'],
       explanation: 'El Contrato Social de Rousseau argumentó que el gobierno legítimo deriva del consentimiento popular — una influencia directa tanto en la Revolución Americana como en la Francesa.',
     },
     ru: {
       question: 'Какой мыслитель Просвещения написал «Общественный договор» (1762), утверждая, что легитимность правительства исходит от народа?',
-      options: ['Вольтер', 'Монтескьё', 'Джон Локк', 'Жан-Жак Руссо'],
+      options: ['Франсуа-Мари Аруэ, он же Вольтер', 'Шарль-Луи де Секонда, Монтескьё', 'Джон Локк, английский врач', 'Жан-Жак Руссо'],
       explanation: '«Общественный договор» Руссо утверждал, что законная власть строится на народном согласии — прямое влияние на Американскую и Французскую революции.',
     },
     mk: {
       question: 'Кој просветителски мислител го напишал „Општествениот Договор" (1762) тврдејќи дека легитимноста на власта произлегува од народот?',
-      options: ['Волтер', 'Монтескје', 'Џон Лок', 'Жан-Жак Русо'],
+      options: ['Франсоа-Мари Аруе, наречен Волтер', 'Шарл-Луј де Секонда, Монтескје', 'Џон Лок, англискиот лекар', 'Жан-Жак Русо'],
       explanation: 'Општествениот Договор на Русо тврдел дека легитимната власт произлегува од народниот консензус — директно влијание и врз Американската и врз Француската револуција.',
     },
   },
@@ -758,17 +758,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'eq12': {
     es: {
       question: 'La Compañía Holandesa de las Indias Orientales (VOC), fundada en 1602, fue históricamente significativa como ¿qué tipo de innovación financiera?',
-      options: ['Primer banco central', 'Primera compañía de acciones por suscripción pública', 'Primera corporación de propiedad estatal', 'Primera compañía internacional de seguros'],
+      options: ['Primer banco central de Europa', 'Primera compañía cotizada en bolsa', 'Primera corporación de propiedad estatal', 'Primera compañía internacional de seguros'],
       explanation: 'La VOC fue la primera compañía de acciones por suscripción pública del mundo, emitiendo acciones en la Bolsa de Ámsterdam. Esta innovación financiera permitió a los inversores compartir riesgos y ganancias, financiando el comercio de larga distancia.',
     },
     ru: {
       question: 'Нидерландская Ост-Индская компания (VOC), основанная в 1602 году, вошла в историю как какой вид финансовой инновации?',
-      options: ['Первый центральный банк', 'Первая публично торгуемая акционерная компания', 'Первая государственная корпорация', 'Первая международная страховая компания'],
+      options: ['Первый центральный банк Европы', 'Первая публично торгуемая компания', 'Первая государственная корпорация', 'Первая международная страховая компания'],
       explanation: 'VOC была первой в мире публично торгуемой акционерной компанией, выпускавшей акции на Амстердамской фондовой бирже. Эта финансовая инновация позволила инвесторам разделять риски и прибыль, финансируя дальнюю торговлю.',
     },
     mk: {
       question: 'Холандската Источноиндиска Компанија (VOC), основана во 1602 г., историски беше значајна како каков вид финансиска иновација?',
-      options: ['Прва централна банка', 'Прва јавно тргувана акционерска компанија', 'Прва државна корпорација', 'Прва меѓународна осигурителна компанија'],
+      options: ['Прва централна банка во Европа', 'Прва јавно тргувана компанија', 'Прва државна корпорација', 'Прва меѓународна осигурителна компанија'],
       explanation: 'VOC беше прва јавно тргувана акционерска компанија во светот, издавајќи акции на Амстердамската Берза. Оваа финансиска иновација им овозможи на инвеститорите да ги делат ризиците и профитите, финансирајќи ја трговијата на долги растојанија.',
     },
   },
@@ -794,17 +794,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'eq14': {
     es: {
       question: 'Los "Dos Tratados sobre el Gobierno Civil" de John Locke (1689) influyeron directamente en ¿qué documento fundacional americano?',
-      options: ['Los Federalist Papers', 'La Constitución de los EE.UU.', 'La Declaración de Independencia', 'La Carta de Derechos'],
+      options: ['Los Federalist Papers sobre la unión', 'La Constitución de los Estados Unidos', 'La Declaración de Independencia', 'La Carta de Derechos y sus enmiendas'],
       explanation: 'La Declaración de Jefferson toma casi textualmente el concepto lockeano de derechos naturales a la "vida, la libertad y la propiedad" (Jefferson sustituyó "propiedad" por "búsqueda de la felicidad") y el derecho a derrocar gobiernos tiránicos.',
     },
     ru: {
       question: '«Два трактата о правлении» Джона Локка (1689) непосредственно повлияли на какой основополагающий американский документ?',
-      options: ['Статьи федералиста', 'Конституция США', 'Декларация независимости', 'Билль о правах'],
+      options: ['Статьи федералиста о союзе', 'Конституция Соединённых Штатов', 'Декларация независимости', 'Билль о правах и поправки к нему'],
       explanation: 'Декларация Джефферсона почти дословно заимствует локковскую концепцию естественных прав на «жизнь, свободу и собственность» (Джефферсон заменил «собственность» на «стремление к счастью») и право свергать тираническое правительство.',
     },
     mk: {
       question: '„Два трактата за власта" на Џон Лок (1689) директно влијаеле на кој основачки американски документ?',
-      options: ['Федералистите', 'Уставот на САД', 'Декларацијата за независност', 'Повелбата за права'],
+      options: ['Федералистичките списи за унијата', 'Уставот на Соединетите Држави', 'Декларацијата за независност', 'Повелбата за права и нејзините амандмани'],
       explanation: 'Декларацијата на Џеферсон речиси дословно го прима Локовиот концепт на природни права за „живот, слобода и сопственост" (Џеферсон ја заменил „сопственоста" со „потрагата по среќа") и правото да се собори тирански режим.',
     },
   },
@@ -812,17 +812,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'eq15': {
     es: {
       question: 'Se dice que la "Revolución Científica" comenzó con la teoría heliocéntrica de Copérnico (1543) y culminó con ¿qué publicación?',
-      options: ['El Diálogo de Galileo (1632)', 'Los Principia Mathematica de Newton (1687)', 'El Origen de las Especies de Darwin (1859)', 'La Astronomia Nova de Kepler (1609)'],
+      options: ['El Diálogo sobre los dos sistemas de Galileo (1632)', 'Los Principia Mathematica de Newton (1687)', 'El Origen de las Especies de Darwin (1859)', 'La Astronomia Nova de Kepler (1609)'],
       explanation: 'Convencionalmente, los historiadores fechan la Revolución Científica desde el modelo heliocéntrico de Copérnico (1543) hasta los Principia de Newton (1687), que sintetizaron un siglo de descubrimientos en un marco matemático unificado para comprender la naturaleza.',
     },
     ru: {
       question: 'Принято считать, что «Научная революция» началась с гелиоцентрической теории Коперника (1543) и завершилась какой публикацией?',
-      options: ['«Диалог» Галилея (1632)', '«Математические начала» Ньютона (1687)', '«Происхождение видов» Дарвина (1859)', '«Astronomia Nova» Кеплера (1609)'],
+      options: ['«Диалог о двух системах мира» Галилея (1632)', '«Математические начала» Ньютона (1687)', '«Происхождение видов» Дарвина (1859)', '«Astronomia Nova» Кеплера (1609)'],
       explanation: 'Историки традиционно датируют Научную революцию от гелиоцентрической модели Коперника (1543) до «Начал» Ньютона (1687), синтезировавших вековые открытия в единую математическую систему познания природы.',
     },
     mk: {
       question: 'Се вели дека „Научната револуција" почнала со хелиоцентричната теорија на Коперник (1543) и кулминирала со која публикација?',
-      options: ['Дијалогот на Галилеј (1632)', 'Principia Mathematica на Њутн (1687)', 'Потеклото на видовите на Дарвин (1859)', 'Astronomia Nova на Кеплер (1609)'],
+      options: ['Дијалогот за двата система на светот на Галилеј (1632)', 'Principia Mathematica на Њутн (1687)', 'Потеклото на видовите на Дарвин (1859)', 'Astronomia Nova на Кеплер (1609)'],
       explanation: 'Историчарите конвенционално ја датираат Научната револуција од хелиоцентричниот модел на Коперник (1543) до Principia на Њутн (1687), кои синтетизирале еден век откритија во обединета математичка рамка за разбирање на природата.',
     },
   },
@@ -904,17 +904,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'mod5': {
     es: {
       question: 'La Guerra Fría fue principalmente un conflicto ideológico entre ¿cuáles dos sistemas?',
-      options: ['Democracia y fascismo', 'Capitalismo/democracia y comunismo', 'Cristianismo e islam', 'Colonialismo y nacionalismo'],
+      options: ['Democracia y fascismo en Europa', 'Capitalismo/democracia y comunismo', 'Cristianismo e islam en el mundo', 'Colonialismo y nacionalismo en Asia'],
       explanation: 'La Guerra Fría enfrentó al Occidente capitalista democrático (liderado por los EE.UU.) contra el Este comunista (liderado por la URSS).',
     },
     ru: {
       question: 'Холодная война была прежде всего идеологическим конфликтом между какими двумя системами?',
-      options: ['Демократия и фашизм', 'Капитализм/демократия и коммунизм', 'Христианство и ислам', 'Колониализм и национализм'],
+      options: ['Демократия и фашизм в Европе', 'Капитализм/демократия и коммунизм', 'Христианство и ислам в мире', 'Колониализм и национализм в Азии и Африке'],
       explanation: 'Холодная война противопоставила капиталистический демократический Запад (под руководством США) коммунистическому Востоку (под руководством СССР).',
     },
     mk: {
       question: 'Студената војна беше пред сè идеолошки конфликт меѓу кои два системи?',
-      options: ['Демократија и фашизам', 'Капитализам/демократија и комунизам', 'Христијанство и ислам', 'Колонијализам и национализам'],
+      options: ['Демократија и фашизам во Европа', 'Капитализам/демократија и комунизам', 'Христијанство и ислам во светот', 'Колонијализам и национализам во Азија'],
       explanation: 'Студената војна го спротивставила капиталистичкиот демократски Запад (предводен од САД) наспроти комунистичкиот Исток (предводен од СССР).',
     },
   },
@@ -922,17 +922,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'mod6': {
     es: {
       question: 'La Crisis de los Misiles de Cuba de 1962 — ¿cuál fue la justificación soviética para colocar misiles en Cuba?',
-      options: ['Proteger a Cuba de una invasión estadounidense tras la Bahía de Cochinos', 'Los EE.UU. tenían misiles apuntando a la URSS desde Turquía', 'Cuba solicitó protección nuclear soviética', 'La URSS quería una base naval en el Caribe'],
+      options: ['Proteger a Cuba de otra invasión estadounidense', 'Los EE.UU. tenían misiles apuntando a la URSS desde Turquía', 'Cuba solicitó protección nuclear soviética', 'La URSS quería una base naval en el Caribe'],
       explanation: 'Aunque los misiles Júpiter estadounidenses en Turquía también fueron un factor en las negociaciones, la justificación declarada de los soviéticos fue proteger a Cuba tras el fracasado intento de invasión respaldado por la CIA en la Bahía de Cochinos en 1961.',
     },
     ru: {
       question: 'Карибский кризис 1962 года — каким было советское обоснование размещения ракет на Кубе?',
-      options: ['Защита Кубы от вторжения США после Плая-Хирон', 'У США были ракеты, нацеленные на СССР из Турции', 'Куба попросила советской ядерной защиты', 'СССР хотел военно-морскую базу в Карибском море'],
+      options: ['Защита Кубы от нового вторжения США', 'У США были ракеты, нацеленные на СССР из Турции', 'Куба попросила советской ядерной защиты', 'СССР хотел военно-морскую базу в Карибском море'],
       explanation: 'Хотя американские ракеты «Юпитер» в Турции также играли роль в переговорах, официальным советским обоснованием была защита Кубы после провалившейся поддержанной ЦРУ высадки в заливе Свиней в 1961 году.',
     },
     mk: {
       question: 'Кубанската Ракетна Криза од 1962 г. — која беше советската оправданост за поставување ракети во Куба?',
-      options: ['Да ја заштитат Куба од американска инвазија по Заливот на Прасиња', 'САД имале ракети насочени кон СССР од Турција', 'Куба побарала советска нуклеарна заштита', 'СССР сакал поморска база во Карибите'],
+      options: ['Да ја заштитат Куба од нова инвазија', 'САД имале ракети насочени кон СССР од Турција', 'Куба побарала советска нуклеарна заштита', 'СССР сакал поморска база во Карибите'],
       explanation: 'Иако американските ракети „Јупитер" во Турција исто така биле фактор во преговорите, официјалното советско оправдување беше заштита на Куба по неуспешниот обид за инвазија поддржан од ЦИА во Заливот на Прасиња во 1961 г.',
     },
   },
