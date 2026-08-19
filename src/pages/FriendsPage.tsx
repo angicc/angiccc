@@ -17,79 +17,25 @@ import {
   loadThread, saveThread, autoReplyFor, loadDuelRecord, markThreadRead, unreadCount, lastMessage,
   type ChatMsg,
 } from '@/features/friends/friendInteractions';
-import {
-  recordFriendEvent, buildActivityFeed, relativeAge, type FriendEvent,
-} from '@/features/friends/friendActivity';
+import { recordFriendEvent, relativeAge, type FriendEvent } from '@/features/friends/friendActivity';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import {
-  checkServerOnline, fetchOnlineFriendIds, apiAddFriend, apiSendMessage, socialApiConfigured,
-} from '@/services/social';
-
-const MOCK_USERS = [
-  { id: 'm1', username: 'HistoriaClio',    xp: 5840, videoXp: 2200, country: '🇩🇪', streak: 62 },
-  { id: 'm2', username: 'ChronoMaster',   xp: 5210, videoXp: 1800, country: '🇫🇷', streak: 44 },
-  { id: 'm3', username: 'TimeTraveler99', xp: 4780, videoXp: 1400, country: '🇬🇧', streak: 38 },
-  { id: 'm4', username: 'AncientScholar', xp: 4120, videoXp: 900,  country: '🇮🇹', streak: 27 },
-  { id: 'm5', username: 'MedievalMind',   xp: 3650, videoXp: 600,  country: '🇪🇸', streak: 19 },
-];
-
-type FriendEntry = { id: string; username: string; xp: number; videoXp: number; country: string; streak: number };
-type RequestEntry = { fromId: string; fromUsername: string; xp: number };
-/** A sent request remembers when it went out, so it can actually resolve. */
-type SentEntry = { id: string; at: string };
+  useSocialGraph, type SocialFriend, type SocialCandidate, type PendingRequest,
+} from '@/features/friends/useSocialGraph';
 
 /**
- * How long a sent request stays pending before the recipient accepts.
+ * The friends UI no longer owns the social graph.
  *
- * Requests used to sit in "Sent" forever: nothing ever accepted them, so
- * adding a friend was a dead end and the rest of the social layer — messaging,
- * duels, gifts — could never be reached at all. Friends here are local
- * fixtures with no server behind them, so the acceptance is simulated, but
- * staggered per person rather than all landing at once.
+ * Fixtures, localStorage keys and the simulated request acceptance all moved
+ * into useSocialGraph, which serves the same shape from the server when one is
+ * configured and the learner is signed in. This page renders whatever it is
+ * handed and says which of the two it is looking at.
  */
-const ACCEPT_BASE_MS = 6_000;
-const ACCEPT_JITTER_MS = 9_000;
-
-function acceptDelayFor(id: string): number {
-  let h = 0;
-  for (const ch of id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  return ACCEPT_BASE_MS + (h % ACCEPT_JITTER_MS);
-}
-
-/** Sent requests were once a bare id list; keep those readable. */
-function normaliseSent(raw: unknown): SentEntry[] {
-  if (!Array.isArray(raw)) return [];
-  return raw
-    .map(v => (typeof v === 'string'
-      ? { id: v, at: new Date(0).toISOString() }        // legacy: resolve at once
-      : v && typeof (v as SentEntry).id === 'string'
-        ? { id: (v as SentEntry).id, at: (v as SentEntry).at ?? new Date().toISOString() }
-        : null))
-    .filter((v): v is SentEntry => v !== null);
-}
+type FriendEntry = SocialFriend;
 
 function getInitials(username: string) {
   return username.slice(0, 2).toUpperCase();
-}
-
-function storageKey(type: 'friends' | 'sent' | 'received', userId: string): string {
-  if (type === 'friends') return `historify:friends:${userId}`;
-  if (type === 'sent')    return `historify:friendRequests:sent:${userId}`;
-  return `historify:friendRequests:received:${userId}`;
-}
-
-function loadJSON<T>(key: string, fallback: T): T {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function saveJSON<T>(key: string, data: T) {
-  localStorage.setItem(key, JSON.stringify(data));
 }
 
 export default function FriendsPage() {
@@ -98,160 +44,81 @@ export default function FriendsPage() {
   const userId = currentUser?.id ?? '';
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [friends, setFriends]         = useState<FriendEntry[]>([]);
-  const [sent, setSent]               = useState<SentEntry[]>([]);
-  const [received, setReceived]       = useState<RequestEntry[]>([]);
-  // Bumped whenever anything social changes, so the activity feed and the
-  // unread badges re-derive without a reload.
-  const [socialTick, setSocialTick]   = useState(0);
+  const [searchResults, setSearchResults] = useState<SocialCandidate[]>([]);
+  const graph = useSocialGraph(userId, currentUser?.username ?? '');
+  const { friends, incoming: received, outgoing: sent, activity: activityFeed } = graph;
+
   // Messaging + duel state
   const [chatFriend, setChatFriend]   = useState<FriendEntry | null>(null);
-  const [giftFriend, setGiftFriend] = useState<FriendEntry | null>(null);
+  const [giftFriend, setGiftFriend]   = useState<FriendEntry | null>(null);
   const [giftSentMsg, setGiftSentMsg] = useState('');
   const [duelFriend, setDuelFriend]   = useState<FriendEntry | null>(null);
-  // Online layer: null = probing, then live server status + presence set.
-  const [serverOnline, setServerOnline] = useState<boolean | null>(null);
-  const [onlineIds, setOnlineIds]       = useState<Set<string>>(new Set());
 
-  // Load from localStorage on mount
+  const isOnlineMode = graph.mode === 'online';
+
+  // Search runs against the server when signed in, so it is debounced rather
+  // than filtered on every keystroke.
   useEffect(() => {
-    if (!userId) return;
-    setFriends(loadJSON<FriendEntry[]>(storageKey('friends', userId), []));
-    setSent(normaliseSent(loadJSON<unknown>(storageKey('sent', userId), [])));
-    setReceived(loadJSON<RequestEntry[]>(storageKey('received', userId), []));
-  }, [userId]);
-
-  // Resolve pending requests once they have been out long enough. This runs on
-  // a timer AND catches up on mount, so a request sent before a reload still
-  // lands rather than being stuck pending forever.
-  useEffect(() => {
-    if (!userId || sent.length === 0) return;
-    const resolve = () => {
-      const now = Date.now();
-      const ready = sent.filter(s => now - Date.parse(s.at) >= acceptDelayFor(s.id));
-      if (ready.length === 0) return;
-
-      const readyIds = new Set(ready.map(s => s.id));
-      const added = ready
-        .map(s => MOCK_USERS.find(u => u.id === s.id))
-        .filter((u): u is typeof MOCK_USERS[number] => Boolean(u))
-        .filter(u => !friends.some(f => f.id === u.id));
-
-      const nextSent = sent.filter(s => !readyIds.has(s.id));
-      setSent(nextSent);
-      saveJSON(storageKey('sent', userId), nextSent);
-
-      if (added.length === 0) return;
-      const nextFriends = [...friends, ...added.map(u => ({ ...u }))];
-      setFriends(nextFriends);
-      saveJSON(storageKey('friends', userId), nextFriends);
-      for (const u of added) {
-        recordFriendEvent(userId, { type: 'friend_added', friendId: u.id, friendName: u.username });
-      }
-      setSocialTick(v => v + 1);
-      toast.success(`${t.fr_toast_now_friend}: ${added.map(u => u.username).join(', ')}`);
-    };
-    resolve();
-    const timer = setInterval(resolve, 2_000);
-    return () => clearInterval(timer);
-  }, [userId, sent, friends, t.fr_toast_now_friend]);
-
-  // Probe the backend and keep friend presence fresh while the page is open.
-  useEffect(() => {
+    const q = searchQuery.trim();
+    if (q.length === 0) { setSearchResults([]); return; }
     let cancelled = false;
-    const tick = async () => {
-      const ok = await checkServerOnline();
-      if (cancelled) return;
-      setServerOnline(ok);
-      if (ok) {
-        const ids = await fetchOnlineFriendIds();
-        if (!cancelled && ids) setOnlineIds(new Set(ids));
-      }
-    };
-    void tick();
-    const timer = setInterval(tick, 30_000);
-    return () => { cancelled = true; clearInterval(timer); };
-  }, [userId]);
-
-  // The merged timeline: what the learner actually did, plus what their friends
-  // have been up to. Re-derived whenever anything social changes.
-  const activityFeed = useMemo(
-    () => (userId ? buildActivityFeed(userId, friends) : []),
+    const timer = setTimeout(() => {
+      void graph.search(q).then(results => { if (!cancelled) setSearchResults(results); });
+    }, isOnlineMode ? 300 : 0);
+    return () => { cancelled = true; clearTimeout(timer); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [userId, friends, socialTick],
-  );
+  }, [searchQuery, isOnlineMode, graph.friends.length]);
 
-  // Unread counts and last-message previews, so a friend row shows whether
-  // there is anything waiting rather than looking identical either way.
+  // Unread counts and last-message previews. Online these come with the friends
+  // payload; offline they are read from the local thread store.
   const threadInfo = useMemo(() => {
     const out: Record<string, { unread: number; preview: string }> = {};
     if (!userId) return out;
     for (const f of friends) {
-      out[f.id] = { unread: unreadCount(userId, f.id), preview: lastMessage(userId, f.id)?.text ?? '' };
+      out[f.id] = isOnlineMode
+        ? { unread: f.unread, preview: f.preview }
+        : { unread: unreadCount(userId, f.id), preview: lastMessage(userId, f.id)?.text ?? '' };
     }
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, friends, socialTick, chatFriend]);
+  }, [userId, friends, isOnlineMode, chatFriend]);
 
-  // Pool of searchable users: mock users minus current user and already-friends
-  const friendIds = new Set(friends.map(f => f.id));
-  const pool = MOCK_USERS.filter(u => u.id !== userId && !friendIds.has(u.id));
+  const onlineIds = useMemo(
+    () => new Set(friends.filter(f => f.online).map(f => f.id)),
+    [friends],
+  );
 
-  const searchResults = searchQuery.trim().length > 0
-    ? pool.filter(u => u.username.toLowerCase().includes(searchQuery.toLowerCase()))
-    : [];
-
-  function sendRequest(user: typeof MOCK_USERS[number]) {
+  async function sendRequest(user: SocialCandidate) {
     if (!userId) return;
-    const newSent = [...sent, { id: user.id, at: new Date().toISOString() }];
-    setSent(newSent);
-    saveJSON(storageKey('sent', userId), newSent);
-
-    // Simulate writing to the target user's received requests
-    const targetReceived = loadJSON<RequestEntry[]>(storageKey('received', user.id), []);
-    targetReceived.push({ fromId: userId, fromUsername: currentUser?.username ?? 'You', xp: 0 });
-    saveJSON(storageKey('received', user.id), targetReceived);
-
-    // Best-effort server write — persists across devices when the backend is up.
-    if (socialApiConfigured()) void apiAddFriend(user.username);
-
-    toast.success(`${t.fr_toast_request_sent}: ${user.username}`);
+    const result = await graph.add(user);
+    if (!result.ok) { toast.error(result.message ?? t.fr_toast_request_failed); return; }
+    toast.success(result.message === 'mutual'
+      ? `${t.fr_toast_now_friend}: ${user.username}`
+      : `${t.fr_toast_request_sent}: ${user.username}`);
+    setSearchResults(prev => prev.filter(u => u.id !== user.id));
   }
 
-  function acceptRequest(req: RequestEntry) {
-    if (!userId) return;
-    // Find the user in MOCK_USERS (or build a minimal entry)
-    const mockUser = MOCK_USERS.find(u => u.id === req.fromId);
-    const newFriend: FriendEntry = mockUser
-      ? { ...mockUser }
-      : { id: req.fromId, username: req.fromUsername, xp: req.xp, videoXp: 0, country: '', streak: 0 };
-
-    const newFriends = [...friends, newFriend];
-    setFriends(newFriends);
-    saveJSON(storageKey('friends', userId), newFriends);
-
-    const newReceived = received.filter(r => r.fromId !== req.fromId);
-    setReceived(newReceived);
-    saveJSON(storageKey('received', userId), newReceived);
-
-    recordFriendEvent(userId, { type: 'friend_added', friendId: newFriend.id, friendName: newFriend.username });
-    setSocialTick(v => v + 1);
-    toast.success(`${t.fr_toast_now_friend}: ${req.fromUsername}`);
+  async function acceptRequest(req: PendingRequest) {
+    const result = await graph.accept(req);
+    if (!result.ok) { toast.error(result.message ?? t.fr_toast_request_failed); return; }
+    toast.success(`${t.fr_toast_now_friend}: ${req.username}`);
   }
 
-  function declineRequest(req: RequestEntry) {
-    if (!userId) return;
-    const newReceived = received.filter(r => r.fromId !== req.fromId);
-    setReceived(newReceived);
-    saveJSON(storageKey('received', userId), newReceived);
-    toast.success(`${t.fr_toast_declined}: ${req.fromUsername}`);
+  async function declineRequest(req: PendingRequest) {
+    const result = await graph.decline(req);
+    if (!result.ok) { toast.error(result.message ?? t.fr_toast_request_failed); return; }
+    toast.success(`${t.fr_toast_declined}: ${req.username}`);
   }
 
-  function removeFriend(friend: FriendEntry) {
-    if (!userId) return;
-    const newFriends = friends.filter(f => f.id !== friend.id);
-    setFriends(newFriends);
-    saveJSON(storageKey('friends', userId), newFriends);
+  async function cancelRequest(req: PendingRequest) {
+    const result = await graph.cancel(req);
+    if (!result.ok) { toast.error(result.message ?? t.fr_toast_request_failed); return; }
+    toast.success(`${t.fr_toast_declined}: ${req.username}`);
+  }
+
+  async function removeFriend(friend: FriendEntry) {
+    const result = await graph.remove(friend);
+    if (!result.ok) { toast.error(result.message ?? t.fr_toast_request_failed); return; }
     toast.success(`${t.fr_toast_removed}: ${friend.username}`);
   }
 
@@ -267,15 +134,25 @@ export default function FriendsPage() {
             <h1 className="font-heading text-2xl sm:text-3xl font-bold">{t.fr_title}</h1>
             <p className="text-muted-foreground text-sm mt-0.5">{t.fr_subtitle}</p>
           </div>
-          {/* Live connection status — real /healthz probe, refreshed every 30s */}
-          {serverOnline !== null && (
+          {/* Which social world this page is showing. Three states, not two:
+              "a server exists but you are not signed in" is neither online nor
+              offline, and showing it as offline would hide the one thing the
+              learner can act on. */}
+          {graph.ready && (
             <span className={`ml-auto inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium ${
-              serverOnline
+              graph.mode === 'online'
                 ? 'border-emerald-400/40 bg-emerald-400/10 text-emerald-300'
-                : 'border-amber-400/30 bg-amber-400/5 text-amber-300/90'
+                : graph.mode === 'unauthenticated'
+                  ? 'border-sky-400/40 bg-sky-400/10 text-sky-300'
+                  : 'border-amber-400/30 bg-amber-400/5 text-amber-300/90'
             }`}>
-              <span className={`h-1.5 w-1.5 rounded-full ${serverOnline ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400/70'}`} />
-              {serverOnline ? t.fr_net_live : t.fr_net_offline}
+              <span className={`h-1.5 w-1.5 rounded-full ${
+                graph.mode === 'online' ? 'bg-emerald-400 animate-pulse'
+                  : graph.mode === 'unauthenticated' ? 'bg-sky-400' : 'bg-amber-400/70'
+              }`} />
+              {graph.mode === 'online' ? t.fr_net_live
+                : graph.mode === 'unauthenticated' ? t.fr_net_signin
+                : t.fr_net_local}
             </span>
           )}
         </div>
@@ -480,15 +357,15 @@ export default function FriendsPage() {
                 ) : (
                   <div className="space-y-2">
                     {received.map(req => (
-                      <div key={req.fromId} className="flex items-center gap-3 p-3 rounded-xl border border-border">
+                      <div key={req.userId} className="flex items-center gap-3 p-3 rounded-xl border border-border">
                         <Avatar className="h-10 w-10 shrink-0">
                           <AvatarFallback className="bg-primary/20 text-primary text-sm font-semibold">
-                            {getInitials(req.fromUsername)}
+                            {getInitials(req.username)}
                           </AvatarFallback>
                         </Avatar>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold truncate">{req.fromUsername}</p>
-                          <p className="text-xs text-muted-foreground">Wants to be your friend</p>
+                          <p className="text-sm font-semibold truncate">{req.username}</p>
+                          <p className="text-xs text-muted-foreground">{t.fr_wants_to_be_friend}</p>
                         </div>
                         <div className="flex gap-2 shrink-0">
                           <Button
@@ -547,27 +424,28 @@ export default function FriendsPage() {
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    {sent.map(({ id: sentId }) => {
-                      const user = MOCK_USERS.find(u => u.id === sentId);
-                      if (!user) return null;
-                      return (
-                        <div key={sentId} className="flex items-center gap-3 p-3 rounded-xl border border-border">
-                          <Avatar className="h-10 w-10 shrink-0">
-                            <AvatarFallback className="bg-primary/20 text-primary text-sm font-semibold">
-                              {getInitials(user.username)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold truncate">{user.username}</p>
-                            <div className="flex items-center gap-1.5 mt-0.5">
-                              <Clock className="w-3 h-3 text-muted-foreground" />
-                              <p className="text-xs text-muted-foreground">{t.fr_request_pending}</p>
-                            </div>
+                    {sent.map(req => (
+                      <div key={req.userId} className="flex items-center gap-3 p-3 rounded-xl border border-border">
+                        <Avatar className="h-10 w-10 shrink-0">
+                          <AvatarFallback className="bg-primary/20 text-primary text-sm font-semibold">
+                            {getInitials(req.username)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold truncate">{req.username}</p>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <Clock className="w-3 h-3 text-muted-foreground" />
+                            <p className="text-xs text-muted-foreground">{t.fr_request_pending}</p>
                           </div>
-                          <Badge variant="outline" className="text-xs text-muted-foreground shrink-0">{t.fr_pending}</Badge>
                         </div>
-                      );
-                    })}
+                        <div className="flex items-center gap-2 shrink-0">
+                          <Badge variant="outline" className="text-xs text-muted-foreground">{t.fr_pending}</Badge>
+                          <Button size="sm" variant="ghost" className="gap-1.5" onClick={() => void cancelRequest(req)}>
+                            <X className="w-3.5 h-3.5" /> {t.fr_cancel_request}
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </CardContent>
@@ -584,11 +462,12 @@ export default function FriendsPage() {
             userId={userId}
             friend={chatFriend}
             t={t as unknown as Record<string, string>}
-            onClose={() => { setChatFriend(null); setSocialTick(v => v + 1); }}
+            onClose={() => { setChatFriend(null); graph.refresh(); }}
             onChallenge={() => { const f = chatFriend; setChatFriend(null); setDuelFriend(f); }}
+            onSend={text => graph.message(chatFriend.id, text)}
             onMessage={() => {
               recordFriendEvent(userId, { type: 'message', friendId: chatFriend.id, friendName: chatFriend.username });
-              setSocialTick(v => v + 1);
+              graph.refresh();
             }}
           />
         )}
@@ -629,7 +508,7 @@ export default function FriendsPage() {
                             if (res.ok) {
                               setGiftSentMsg(t.gift_sent.replace('{name}', giftFriend.username).replace('{plan}', plan.name));
                               recordFriendEvent(userId, { type: 'gift', friendId: giftFriend.id, friendName: giftFriend.username });
-                              setSocialTick(v => v + 1);
+                              graph.refresh();
                             } else {
                               setGiftSentMsg(res.error ?? t.fr_gift_failed);
                             }
@@ -662,7 +541,7 @@ export default function FriendsPage() {
               type: won ? 'duel_win' : 'duel_loss',
               friendId: duelFriend.id, friendName: duelFriend.username,
             });
-            setSocialTick(v => v + 1);
+            graph.refresh();
           }}
         />
       )}
@@ -726,13 +605,15 @@ function ActivityRow({ event, t }: { event: FriendEvent; t: Record<string, strin
   );
 }
 
-function ChatDrawer({ userId, friend, t, onClose, onChallenge, onMessage }: {
+function ChatDrawer({ userId, friend, t, onClose, onChallenge, onMessage, onSend }: {
   userId: string;
   friend: FriendEntry;
   t: Record<string, string>;
   onClose: () => void;
   onChallenge: () => void;
   onMessage: () => void;
+  /** Persist the message wherever this session's messages live. */
+  onSend: (text: string) => Promise<unknown>;
 }) {
   const [thread, setThread] = useState<ChatMsg[]>(() => loadThread(userId, friend.id));
   const [draft, setDraft] = useState('');
@@ -752,8 +633,10 @@ function ChatDrawer({ userId, friend, t, onClose, onChallenge, onMessage }: {
     const next = [...thread, mine];
     setThread(next);
     saveThread(userId, friend.id, next);
-    // Best-effort durable copy on the server (socket relays it live when up).
-    if (socialApiConfigured()) void apiSendMessage(friend.id, text);
+    // Durable copy on the server when this session is online; the socket
+    // relays it to the recipient live. Offline this is a no-op and the local
+    // thread store above is the whole story.
+    void onSend(text);
     setDraft('');
     onMessage();
     // The friend replies shortly with a canned line, so the thread feels live.

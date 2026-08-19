@@ -24,6 +24,7 @@ import { rateLimit } from './middleware/rateLimit';
 import { issueCsrfCookie, requireCsrf } from './middleware/csrf';
 import { logSecurityEvent } from './security/events';
 import { presence } from './presence';
+import { registerRealtime } from './realtime';
 
 const prisma = new PrismaClient();
 
@@ -153,6 +154,23 @@ app.use('/api/auth/password', rateLimit({ windowMs: 15 * 60_000, max: 10, scope:
 app.use(issueCsrfCookie);
 app.use('/api/', requireCsrf(req => logSecurityEvent(req, 'csrf_rejected')));
 
+// GET /api/csrf — hand the SPA its token in a readable body.
+//
+// The double-submit scheme needs the client to echo the cookie value in a
+// header, and the usual way is to read it back out of document.cookie. That
+// only works same-origin: the SPA is served from Netlify and the cookie
+// belongs to the API's domain, so document.cookie there simply does not
+// contain it. Without this endpoint, every cookie-authenticated POST from the
+// deployed app is rejected 403 by our own CSRF guard.
+//
+// Handing it back over CORS does not weaken the scheme. An attacker's page can
+// still make the browser SEND the cookie, but it cannot READ this response —
+// the CORS allowlist means the fetch fails for any origin we did not name — so
+// it still cannot produce the matching header.
+app.get('/api/csrf', (req, res) => {
+  res.json({ token: (req.cookies?.csrf as string | undefined) ?? null });
+});
+
 // ── Routes ───────────────────────────────────────────────────────────────────
 app.get('/healthz', (_req, res) => res.json({ ok: true }));
 // register / login / logout / password-reset are public by necessity — they
@@ -214,10 +232,24 @@ const io = new SocketIOServer(httpServer, {
   maxHttpBufferSize: 256 * 1024,
 });
 
+/** The session JWT out of a raw Cookie header, if it carries one. */
+function sessionCookie(header: string | undefined): string | undefined {
+  if (!header) return undefined;
+  for (const part of header.split(';')) {
+    const [name, ...rest] = part.trim().split('=');
+    if (name === 'session') return decodeURIComponent(rest.join('='));
+  }
+  return undefined;
+}
+
 io.use((socket, next) => {
-  // Same JWT, delivered via the socket handshake.
+  // Same JWT as the REST layer, by whichever route the client can supply it.
+  // The cookie comes last to read but matters most: it lets a browser client
+  // open the socket with `withCredentials` and never hold the token in JS,
+  // where any XSS could read it out of localStorage.
   const token = (socket.handshake.auth?.token as string | undefined)
-    ?? socket.handshake.headers.authorization?.replace(/^Bearer\s+/i, '');
+    ?? socket.handshake.headers.authorization?.replace(/^Bearer\s+/i, '')
+    ?? sessionCookie(socket.handshake.headers.cookie);
   if (!token) return next(new Error('unauthorized'));
   try {
     const payload = jwt.verify(token, JWT_SECRET) as { sub: string; ver?: number };
@@ -235,6 +267,10 @@ io.use((socket, next) => {
     next(new Error('unauthorized'));
   }
 });
+
+// Let the REST routes push live events (friend requests, accepts, new DMs)
+// into a user's room without importing this module back.
+registerRealtime(io);
 
 /** Cap anything relayed between clients — the server never trusts frame size. */
 const MAX_RELAY_CHARS = 16 * 1024;

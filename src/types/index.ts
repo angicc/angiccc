@@ -19,8 +19,15 @@ export interface UserSubscription {
 }
 export interface User {
   id: string; username: string; email: string;
-  /** btoa(password) – localStorage only, not for production */
+  /**
+   * Local-account password digest. Empty string for a server-backed account:
+   * those authenticate against /api/auth, where bcrypt runs, and the browser
+   * never sees or stores anything derived from the password.
+   */
   passwordHash: string; avatarInitials: string; createdAt: string;
+  /** True when this identity came from the server rather than localStorage. */
+  serverAccount?: boolean;
+  tier?: 'FREE' | 'BEGINNER' | 'PRO' | 'MASTER';
 }
 export interface UserProgress {
   userId: string; xp: number; level: number; streak: number;

@@ -15,7 +15,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 export default function RegisterPage() {
   const navigate = useNavigate();
   const { register } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -35,9 +35,18 @@ export default function RegisterPage() {
   async function onSubmit(v: V) {
     setLoading(true);
     try {
-      const r = await register(v.username, v.email, v.password);
-      if (r.success) { toast.success('Account created! Welcome to Historify.'); navigate('/dashboard'); }
-      else form.setError('root', { message: r.error });
+      // Pass the UI language so a server account is created in the language
+      // the person is actually reading.
+      const r = await register(v.username, v.email, v.password, language);
+      if (r.success) {
+        toast.success('Account created! Welcome to Historify.');
+        // Set when the server could not be reached and the account was made
+        // locally instead — the learner needs to know it is device-only.
+        if (r.notice) toast.warning(r.notice);
+        navigate('/dashboard');
+      } else {
+        form.setError('root', { message: r.error });
+      }
     } catch {
       form.setError('root', { message: t.reg_failed });
     } finally {

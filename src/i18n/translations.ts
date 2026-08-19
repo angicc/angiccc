@@ -107,6 +107,11 @@ export type TranslationKeys = {
   fr_find_users: string;
   fr_no_results: string;
   fr_toast_request_sent: string;
+  fr_toast_request_failed: string;
+  fr_wants_to_be_friend: string;
+  fr_cancel_request: string;
+  fr_net_signin: string;
+  fr_net_local: string;
   fr_toast_now_friend: string;
   fr_toast_declined: string;
   fr_toast_removed: string;
@@ -560,6 +565,11 @@ const EN: TranslationKeys = {
     fr_find_users: 'Find users',
     fr_no_results: 'No users found matching',
     fr_toast_request_sent: 'Friend request sent',
+    fr_toast_request_failed: 'That didn\'t work — please try again.',
+    fr_wants_to_be_friend: 'Wants to be your friend',
+    fr_cancel_request: 'Cancel',
+    fr_net_signin: 'Sign in to connect with other learners',
+    fr_net_local: 'Demo friends — not connected to a server',
     fr_toast_now_friend: 'New friend added',
     fr_toast_declined: 'Request declined',
     fr_toast_removed: 'Friend removed',
@@ -1061,6 +1071,11 @@ export const T: Translations = {
     fr_find_users: 'Buscar usuarios',
     fr_no_results: 'No se encontraron usuarios que coincidan con',
     fr_toast_request_sent: 'Solicitud de amistad enviada',
+    fr_toast_request_failed: 'No funcionó: inténtalo de nuevo.',
+    fr_wants_to_be_friend: 'Quiere ser tu amigo',
+    fr_cancel_request: 'Cancelar',
+    fr_net_signin: 'Inicia sesión para conectar con otros estudiantes',
+    fr_net_local: 'Amigos de demostración: sin conexión al servidor',
     fr_toast_now_friend: 'Nuevo amigo añadido',
     fr_toast_declined: 'Solicitud rechazada',
     fr_toast_removed: 'Amigo eliminado',
@@ -1549,6 +1564,11 @@ export const T: Translations = {
     fr_find_users: 'Найти пользователей',
     fr_no_results: 'Не найдено пользователей по запросу',
     fr_toast_request_sent: 'Заявка в друзья отправлена',
+    fr_toast_request_failed: 'Не получилось — попробуйте ещё раз.',
+    fr_wants_to_be_friend: 'Хочет добавить вас в друзья',
+    fr_cancel_request: 'Отменить',
+    fr_net_signin: 'Войдите, чтобы общаться с другими учениками',
+    fr_net_local: 'Демонстрационные друзья — без подключения к серверу',
     fr_toast_now_friend: 'Новый друг добавлен',
     fr_toast_declined: 'Заявка отклонена',
     fr_toast_removed: 'Друг удалён',
@@ -2037,6 +2057,11 @@ export const T: Translations = {
     fr_find_users: 'Најди корисници',
     fr_no_results: 'Не се најдени корисници за',
     fr_toast_request_sent: 'Поканата за пријателство е испратена',
+    fr_toast_request_failed: 'Не успеа — обидете се повторно.',
+    fr_wants_to_be_friend: 'Сака да ви биде пријател',
+    fr_cancel_request: 'Откажи',
+    fr_net_signin: 'Најавете се за да се поврзете со други ученици',
+    fr_net_local: 'Демо пријатели — без врска со сервер',
     fr_toast_now_friend: 'Додаден нов пријател',
     fr_toast_declined: 'Поканата е одбиена',
     fr_toast_removed: 'Пријателот е отстранет',

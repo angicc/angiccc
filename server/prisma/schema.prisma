@@ -66,6 +66,8 @@ model User {
   philosopherMemory PhilosopherMemoryRecord?
   friendsA          Friendship[]             @relation("friendA")
   friendsB          Friendship[]             @relation("friendB")
+  requestsSent      FriendRequest[]          @relation("reqFrom")
+  requestsReceived  FriendRequest[]          @relation("reqTo")
   sentMessages      DirectMessage[]          @relation("msgFrom")
   recvMessages      DirectMessage[]          @relation("msgTo")
   imperiumCampaigns ImperiumCampaign[]
@@ -75,6 +77,37 @@ model User {
 
   // Gift reward: percent off the gifter's next renewal (consumed at billing).
   nextRenewalDiscountPct Int @default(0)
+
+  // Friend search matches on username, so it needs to be indexed. Not unique:
+  // display names are not identity here (email is), and forcing uniqueness on
+  // a column that already has duplicates would fail the migration outright.
+  // The search result carries the id, so two "alex"es stay distinguishable.
+  @@index([username])
+}
+
+// A friend request awaiting an answer.
+//
+// Friendship used to be created unilaterally: POST /friends made you someone's
+// friend whether or not they agreed, which is not an "add friend" button, it is
+// a "conscript" button. Requests give the other side a say, and give the sender
+// a pending state to look at.
+//
+// DIRECTED, unlike Friendship: who asked whom matters until it is answered.
+// The unique pair is (from, to), so A→B and B→A can both exist — that crossing
+// is what "you both asked" looks like, and it resolves to an instant accept.
+model FriendRequest {
+  id          String    @id @default(cuid())
+  fromId      String
+  toId        String
+  status      String    @default("pending") // pending | accepted | declined
+  createdAt   DateTime  @default(now())
+  respondedAt DateTime?
+  from        User      @relation("reqFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to          User      @relation("reqTo", fields: [toId], references: [id], onDelete: Cascade)
+
+  @@unique([fromId, toId])
+  @@index([toId, status])
+  @@index([fromId, status])
 }
 
 // Accepted friendship (undirected pair, stored once with a < b ordering).
