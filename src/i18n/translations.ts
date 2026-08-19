@@ -333,7 +333,7 @@ export type TranslationKeys = {
   tmap_subtitle: string;
   tmap_select_topic: string;
   tmap_layers: string; tmap_style: string; tmap_explore: string; tmap_story: string; tmap_quiz: string;
-  tmap_layer_territory: string; tmap_layer_cartography: string; tmap_layer_capitals: string; tmap_layer_cities: string;
+  tmap_layer_territory: string; tmap_layer_capitals: string; tmap_layer_cities: string;
   tmap_layer_battles: string; tmap_layer_ports: string; tmap_layer_resources: string; tmap_layer_routes: string;
   tmap_style_dark: string; tmap_style_parchment: string; tmap_style_military: string;
   tmap_style_terrain: string; tmap_style_clean: string; tmap_style_satellite: string;
@@ -823,7 +823,7 @@ const EN: TranslationKeys = {
     tmap_subtitle: 'Explore real geographic territories for each historical period',
     tmap_select_topic: 'Select a topic to view its territory',
     tmap_layers: 'Layers', tmap_style: 'Map Style', tmap_explore: 'Explore', tmap_story: 'Story', tmap_quiz: 'Quiz',
-    tmap_layer_territory: 'Territory', tmap_layer_cartography: 'Historical map', tmap_layer_capitals: 'Capitals', tmap_layer_cities: 'Cities',
+    tmap_layer_territory: 'Territory', tmap_layer_capitals: 'Capitals', tmap_layer_cities: 'Cities',
     tmap_layer_battles: 'Battles', tmap_layer_ports: 'Ports', tmap_layer_resources: 'Resources', tmap_layer_routes: 'Routes',
     tmap_style_dark: 'Classic Dark', tmap_style_parchment: 'Parchment', tmap_style_military: 'Military',
     tmap_style_terrain: 'Terrain', tmap_style_clean: 'Clean Light', tmap_style_satellite: 'Satellite',
@@ -1313,7 +1313,7 @@ export const T: Translations = {
     tmap_subtitle: 'Explora territorios geográficos reales de cada período histórico',
     tmap_select_topic: 'Selecciona un tema para ver su territorio',
     tmap_layers: 'Capas', tmap_style: 'Estilo de mapa', tmap_explore: 'Explorar', tmap_story: 'Historia', tmap_quiz: 'Quiz',
-    tmap_layer_territory: 'Territorio', tmap_layer_cartography: 'Mapa histórico', tmap_layer_capitals: 'Capitales', tmap_layer_cities: 'Ciudades',
+    tmap_layer_territory: 'Territorio', tmap_layer_capitals: 'Capitales', tmap_layer_cities: 'Ciudades',
     tmap_layer_battles: 'Batallas', tmap_layer_ports: 'Puertos', tmap_layer_resources: 'Recursos', tmap_layer_routes: 'Rutas',
     tmap_style_dark: 'Oscuro clásico', tmap_style_parchment: 'Pergamino', tmap_style_military: 'Militar',
     tmap_style_terrain: 'Terreno', tmap_style_clean: 'Limpio', tmap_style_satellite: 'Satélite',
@@ -1801,7 +1801,7 @@ export const T: Translations = {
     tmap_subtitle: 'Исследуйте реальные географические территории каждого исторического периода',
     tmap_select_topic: 'Выберите тему, чтобы увидеть её территорию',
     tmap_layers: 'Слои', tmap_style: 'Стиль карты', tmap_explore: 'Исследовать', tmap_story: 'История', tmap_quiz: 'Викторина',
-    tmap_layer_territory: 'Территория', tmap_layer_cartography: 'Историческая карта', tmap_layer_capitals: 'Столицы', tmap_layer_cities: 'Города',
+    tmap_layer_territory: 'Территория', tmap_layer_capitals: 'Столицы', tmap_layer_cities: 'Города',
     tmap_layer_battles: 'Сражения', tmap_layer_ports: 'Порты', tmap_layer_resources: 'Ресурсы', tmap_layer_routes: 'Маршруты',
     tmap_style_dark: 'Тёмная классика', tmap_style_parchment: 'Пергамент', tmap_style_military: 'Военный',
     tmap_style_terrain: 'Рельеф', tmap_style_clean: 'Светлый', tmap_style_satellite: 'Спутник',
@@ -2289,7 +2289,7 @@ export const T: Translations = {
     tmap_subtitle: 'Истражи реални географски територии за секој историски период',
     tmap_select_topic: 'Избери тема за да ја видиш нејзината територија',
     tmap_layers: 'Слоеви', tmap_style: 'Стил на карта', tmap_explore: 'Истражи', tmap_story: 'Приказна', tmap_quiz: 'Квиз',
-    tmap_layer_territory: 'Територија', tmap_layer_cartography: 'Историска карта', tmap_layer_capitals: 'Главни градови', tmap_layer_cities: 'Градови',
+    tmap_layer_territory: 'Територија', tmap_layer_capitals: 'Главни градови', tmap_layer_cities: 'Градови',
     tmap_layer_battles: 'Битки', tmap_layer_ports: 'Пристаништа', tmap_layer_resources: 'Ресурси', tmap_layer_routes: 'Рути',
     tmap_style_dark: 'Класична темна', tmap_style_parchment: 'Пергамент', tmap_style_military: 'Воена',
     tmap_style_terrain: 'Рељеф', tmap_style_clean: 'Чиста светла', tmap_style_satellite: 'Сателит',

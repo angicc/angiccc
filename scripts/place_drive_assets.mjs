@@ -2,16 +2,16 @@
 /**
  * Place the curated Drive art into the repo at the paths the app expects.
  *
- * The two Drive folders ("Eras and Lessons Banner GIFs" and "Timeline Territory
- * Map Cartographies") name their files by human title — "The Baptism of the
- * Rus.jpg" — while the app looks them up by lesson id / topic id under
- * public/assets/. drive-assets.manifest.json holds that resolved mapping, so
- * this script just copies each file to its destination.
+ * The Drive folders ("Eras and Lessons Banner GIFs", "...part 2") name their
+ * files by human title — "The Baptism of the Rus.jpg" — while the app looks
+ * them up by lesson id under public/assets/. drive-assets.manifest.json holds
+ * that resolved mapping, so this script just copies each file to its
+ * destination.
  *
  * Usage:
- *   1. In Drive, download both folders (right-click → Download) and unzip them.
+ *   1. In Drive, download the folders (right-click → Download) and unzip them.
  *   2. node scripts/place_drive_assets.mjs --src ~/Downloads/drive-art
- *      (--src may contain both folders; it is searched recursively)
+ *      (--src may contain several folders; it is searched recursively)
  *
  *   --dry-run   report what would be copied without writing anything
  *   --force     overwrite destinations that already exist

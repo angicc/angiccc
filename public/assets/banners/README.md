@@ -1,4 +1,4 @@
-# Lesson banner GIFs
+# Lesson banner art
 
 Drop an image at any path below and it becomes that lesson's banner
 automatically — highest priority, ahead of the app's built-in animated
@@ -6,10 +6,11 @@ banners. No code change is needed; the mapping already lives in
 `src/features/content/lessonLocalBanners.ts` (keyed by lesson id, so a
 banner is identical in every UI language).
 
-Animated `.gif` is preferred, but `.webp`, `.jpg` and `.png` all work. The
-paths below show the extension each lesson's mapping currently points at —
-if you swap an asset for a different format, update the matching entry in
-`lessonLocalBanners.ts` so the path still resolves.
+Animated `.gif` is preferred, but `.webp`, `.jpg`, `.jpeg`, `.png` and
+`.avif` all work. **The extension is part of the mapped path**, so a `.jpg`
+asset filed under a `.gif` mapping does not resolve and the lesson quietly
+falls back — swap an asset for a different format and you must update the
+matching entry in `lessonLocalBanners.ts` too.
 
 If a file here is missing or fails to load, the lesson keeps its existing
 built-in animated banner (and, as a final safety net, `default-history.gif`).
@@ -18,8 +19,28 @@ Recommended size: 840×360 (or any 21:9-ish ratio); the banner renders with
 
 `default-history.gif` — generic dark fallback (replace with real art if you like).
 
+## Getting the art in
 
-## prehistoric/  (prehistoric)
+The art lives in Drive, not in git. Two ways to land it:
+
+```sh
+# what the app expects but the repo does not have, grouped by Drive folder
+node scripts/fetch_drive_assets.mjs --missing
+
+# pull one folder straight into place (needs a Drive OAuth token with
+# drive.readonly — see the header of the script; revoke it when done)
+node scripts/fetch_drive_assets.mjs --token "$GOOGLE_OAUTH_TOKEN" --source banners-part-2
+```
+
+Or download the Drive folder as a ZIP by hand, unzip it, and run
+`node scripts/place_drive_assets.mjs --src <unzipped-dir>`, which renames
+each file to the path its lesson expects.
+
+Every file id, byte size and destination is recorded in
+`scripts/drive-assets.manifest.json`.
+
+
+## prehistoric/
 
 - `prehistoric/origin-of-man.gif` — Human Origins (prehistoric-01)
 - `prehistoric/mastery-of-fire.gif` — The Mastery of Fire (prehistoric-02)
@@ -37,14 +58,14 @@ Recommended size: 840×360 (or any 21:9-ish ratio); the banner renders with
 - `prehistoric/beasts-of-burden.gif` — Beasts of Burden (prehistoric-14)
 - `prehistoric/green-sahara.gif` — The Green Sahara (prehistoric-15)
 - `prehistoric/before-writing.gif` — Before Writing, the Word (prehistoric-16)
-- `prehistoric/otzi-ice-man.gif` — The Iceman's Secrets (prehistoric-17)
+- `prehistoric/otzi-ice-man.webp` — The Iceman's Secrets (prehistoric-17)  _(Drive: part 2)_
 - `prehistoric/hidden-half.jpg` — The Hidden Half (prehistoric-18)
 - `prehistoric/first-eastern-settlements.jpg` — The First Villages of the East (prehistoric-19)
 - `prehistoric/edge-of-history.jpg` — On the Edge of History (prehistoric-20)
 - `prehistoric/dinosaur-era.gif` — The Age of Dinosaurs (prehistoric-21)
 - `prehistoric/ice-age-survival.gif` — The Ice Ages (prehistoric-22)
 
-## ancient/  (ancient)
+## ancient/
 
 - `ancient/first-civilizations.gif` — The First Civilizations (ancient-01)
 - `ancient/classical-greece.gif` — Classical Greece (ancient-02)
@@ -69,7 +90,7 @@ Recommended size: 840×360 (or any 21:9-ish ratio); the banner renders with
 - `ancient/africa-before-rome.jpg` — Africa Before Rome (ancient-21)
 - `ancient/olmecs-mesoamerica.gif` — The Olmec and Early Mesoamerica (ancient-22)
 
-## byzantine/  (byzantine)
+## byzantine/
 
 - `byzantine/new-rome-constantinople.gif` — New Rome: The Founding of Constantinople (byzantine-01)
 - `byzantine/justinian-theodora.jpg` — Justinian and Theodora (byzantine-02)
@@ -94,57 +115,57 @@ Recommended size: 840×360 (or any 21:9-ish ratio); the banner renders with
 - `byzantine/macedonian-renaissance.webp` — The Macedonian Renaissance (byzantine-21)
 - `byzantine/heirs-of-constantinople.jpg` — Heirs of Constantinople (byzantine-22)
 
-## middle-ages/  (medieval)
+## middle-ages/
 
-- `middle-ages/fall-of-rome.gif` — The Fall of Rome and Early Middle Ages (medieval-01)
+- `middle-ages/fall-of-rome.jpg` — The Fall of Rome and Early Middle Ages (medieval-01)  _(Drive: part 2)_
 - `middle-ages/crusades-islamic-golden-age.gif` — The Crusades and the Islamic Golden Age (medieval-02)
 - `middle-ages/black-plague.gif` — The Black Death and Late Medieval Crisis (medieval-03)
-- `middle-ages/medieval-economy-guilds.gif` — Medieval Economy: Trade Guilds and the Rise of Towns (medieval-04)
+- `middle-ages/medieval-economy-guilds.jpg` — Medieval Economy: Trade Guilds and the Rise of Towns (medieval-04)  _(Drive: part 2)_
 - `middle-ages/mongol-empire.gif` — The Mongol Empire (medieval-05)
 - `middle-ages/feudal-japan-samurai.gif` — Medieval Japan: Samurai, Shoguns and Bushidō (medieval-06)
 - `middle-ages/viking-era.gif` — The Viking Age (medieval-07)
 - `middle-ages/al-andalus-reconquista.gif` — Al-Andalus and the Reconquista (medieval-08)
-- `middle-ages/hundred-years-war.gif` — The Hundred Years' War (medieval-09)
-- `middle-ages/charlemagne.gif` — Charlemagne (medieval-10)
-- `middle-ages/feudal-manor.gif` — The World of the Manor (medieval-11)
-- `middle-ages/age-of-faith.gif` — The Age of Faith (medieval-12)
-- `middle-ages/cathedrals-universities.gif` — Cathedrals and Universities (medieval-13)
-- `middle-ages/medieval-poets.gif` — The Poets of the Middle Ages (medieval-14)
-- `middle-ages/gold-of-mali.gif` — The Gold of Mali (medieval-15)
-- `middle-ages/after-golden-age.gif` — After the Golden Age (medieval-16)
-- `middle-ages/sultans-and-temples.gif` — Sultans and Temples (medieval-17)
-- `middle-ages/rise-of-moscow.gif` — Rus and the Rise of Moscow (medieval-18)
-- `middle-ages/song-dynasty.gif` — The Middle Kingdom's Golden Age (medieval-19)
-- `middle-ages/women-of-middle-ages.gif` — The Women of the Middle Ages (medieval-20)
-- `middle-ages/great-zimbabwe.gif` — Great Zimbabwe and the Swahili Coast (medieval-21)
-- `middle-ages/khmer-empire-angkor.gif` — The Khmer Empire and Angkor (medieval-22)
+- `middle-ages/hundred-years-war.jpg` — The Hundred Years' War (medieval-09)  _(Drive: part 2)_
+- `middle-ages/charlemagne.jpg` — Charlemagne (medieval-10)  _(Drive: part 2)_
+- `middle-ages/feudal-manor.jpg` — The World of the Manor (medieval-11)  _(Drive: part 2)_
+- `middle-ages/age-of-faith.webp` — The Age of Faith (medieval-12)  _(Drive: part 2)_
+- `middle-ages/cathedrals-universities.gif` — Cathedrals and Universities (medieval-13)  _(Drive: part 2)_
+- `middle-ages/medieval-poets.jpeg` — The Poets of the Middle Ages (medieval-14)  _(Drive: part 2)_
+- `middle-ages/gold-of-mali.gif` — The Gold of Mali (medieval-15)  _(Drive: part 2)_
+- `middle-ages/after-golden-age.avif` — After the Golden Age (medieval-16)  _(Drive: part 2)_
+- `middle-ages/sultans-and-temples.gif` — Sultans and Temples (medieval-17)  _(Drive: part 2)_
+- `middle-ages/rise-of-moscow.jpg` — Rus and the Rise of Moscow (medieval-18)  _(Drive: part 2)_
+- `middle-ages/song-dynasty.gif` — The Middle Kingdom's Golden Age (medieval-19)  _(Drive: part 2)_
+- `middle-ages/women-of-middle-ages.gif` — The Women of the Middle Ages (medieval-20)  _(Drive: part 2)_
+- `middle-ages/great-zimbabwe.jpg` — Great Zimbabwe and the Swahili Coast (medieval-21)  _(Drive: part 2)_
+- `middle-ages/khmer-empire-angkor.gif` — The Khmer Empire and Angkor (medieval-22)  _(Drive: part 2)_
 
-## early-modern/  (earlymod)
+## early-modern/
 
 - `early-modern/renaissance-discovery.gif` — The Renaissance and Age of Exploration (earlymod-01)
-- `early-modern/protestant-reformation.gif` — The Protestant Reformation (earlymod-02)
+- `early-modern/protestant-reformation.jpg` — The Protestant Reformation (earlymod-02)  _(Drive: part 2)_
 - `early-modern/scientific-revolution.gif` — Scientific Revolution and Enlightenment (earlymod-03)
 - `early-modern/louis-xiv-versailles.gif` — The Age of Absolutism: Louis XIV and Versailles (earlymod-04)
 - `early-modern/transatlantic-slave-trade.gif` — The Transatlantic Slave Trade (earlymod-05)
 - `early-modern/suleiman-the-magnificent.gif` — The Ottoman Empire: Suleiman the Magnificent (earlymod-06)
 - `early-modern/age-of-revolutions.gif` — The Age of Revolution (earlymod-07)
-- `early-modern/mughal-empire.gif` — The Mughal Empire (earlymod-08)
+- `early-modern/mughal-empire.png` — The Mughal Empire (earlymod-08)  _(Drive: part 2)_
 - `early-modern/tokugawa-japan.gif` — Tokugawa Japan: The Closed Country (earlymod-09)
-- `early-modern/two-worlds-met.gif` — Two Worlds Collide (earlymod-10)
-- `early-modern/age-of-merchants.gif` — The Golden Age of Merchants (earlymod-11)
-- `early-modern/printing-press-unbound.gif` — The Word Unbound (earlymod-12)
-- `early-modern/wars-of-religion.gif` — The Wars of Religion (earlymod-13)
-- `early-modern/treasure-fleets.gif` — The Treasure Fleets (earlymod-14)
-- `early-modern/safavid-persia.gif` — The Shah's Persia (earlymod-15)
-- `early-modern/king-and-parliament.gif` — The King and Parliament (earlymod-16)
-- `early-modern/age-of-splendor.gif` — The Age of Splendor (earlymod-17)
-- `early-modern/little-ice-age.gif` — Fear and the Frozen Years (earlymod-18)
-- `early-modern/peter-the-great.gif` — Peter the Great (earlymod-19)
-- `early-modern/radical-enlightenment.gif` — The Radical Enlightenment (earlymod-20)
-- `early-modern/songhai-empire.gif` — The Songhai Empire (earlymod-21)
-- `early-modern/voyagers-pacific.gif` — Voyagers of the Pacific (earlymod-22)
+- `early-modern/two-worlds-met.jpg` — Two Worlds Collide (earlymod-10)  _(Drive: part 2)_
+- `early-modern/age-of-merchants.jpg` — The Golden Age of Merchants (earlymod-11)  _(Drive: part 2)_
+- `early-modern/printing-press-unbound.webp` — The Word Unbound (earlymod-12)  _(Drive: part 2)_
+- `early-modern/wars-of-religion.jpg` — The Wars of Religion (earlymod-13)  _(Drive: part 2)_
+- `early-modern/treasure-fleets.jpg` — The Treasure Fleets (earlymod-14)  _(Drive: part 2)_
+- `early-modern/safavid-persia.png` — The Shah's Persia (earlymod-15)  _(Drive: part 2)_
+- `early-modern/king-and-parliament.jpg` — The King and Parliament (earlymod-16)  _(Drive: part 2)_
+- `early-modern/age-of-splendor.gif` — The Age of Splendor (earlymod-17)  _(Drive: part 2)_
+- `early-modern/little-ice-age.gif` — Fear and the Frozen Years (earlymod-18)  _(Drive: part 2)_
+- `early-modern/peter-the-great.webp` — Peter the Great (earlymod-19)  _(Drive: part 2)_
+- `early-modern/radical-enlightenment.png` — The Radical Enlightenment (earlymod-20)  _(Drive: part 2)_
+- `early-modern/songhai-empire.webp` — The Songhai Empire (earlymod-21)  _(Drive: part 2)_
+- `early-modern/voyagers-pacific.jpg` — Voyagers of the Pacific (earlymod-22)  _(Drive: part 2)_
 
-## modern/  (modern)
+## modern/
 
 - `modern/industrial-revolution.gif` — The Industrial Revolution (modern-01)
 - `modern/world-wars.gif` — The World Wars (modern-02)
@@ -153,18 +174,19 @@ Recommended size: 840×360 (or any 21:9-ish ratio); the banner renders with
 - `modern/scramble-for-africa.gif` — The Age of Imperialism and the Scramble for Africa (modern-05)
 - `modern/yugoslav-wars.gif` — The Yugoslav Wars (modern-06)
 - `modern/macedonian-struggle.gif` — The Macedonian Struggle (modern-07)
-- `modern/russian-revolution.gif` — The Russian Revolution and the Soviet Century (modern-08)
-- `modern/gandhi-independence.gif` — Gandhi and Indian Independence (modern-09)
-- `modern/modern-revolutions.gif` — The Age of Revolutions (modern-10)
-- `modern/birth-of-nations.gif` — The Birth of Nations (modern-11)
-- `modern/modern-literature.gif` — The Novel and the Modern Soul (modern-12)
-- `modern/broken-chains.gif` — The Chains Broken (modern-13)
-- `modern/rising-sun-japan.gif` — The Rising Sun (modern-14)
-- `modern/collapse-and-disaster.gif` — Collapse and Catastrophe (modern-15)
-- `modern/age-of-genocide.gif` — The Age of Genocide (modern-16)
-- `modern/china-reborn.gif` — China Reborn (modern-17)
-- `modern/rights-revolutions.gif` — The Rights Revolutions (modern-18)
-- `modern/modern-middle-east.gif` — The Cauldron of the Modern Middle East (modern-19)
-- `modern/connected-world.gif` — The Connected World (modern-20)
-- `modern/space-age.gif` — The Space Age (modern-21)
-- `modern/conquering-diseases.gif` — The Conquest of Disease (modern-22)
+- `modern/russian-revolution.gif` — The Russian Revolution and the Soviet Century (modern-08)  _(Drive: part 2)_
+- `modern/gandhi-independence.gif` — Gandhi and Indian Independence (modern-09)  _(Drive: part 2)_
+- `modern/modern-revolutions.gif` — The Age of Revolutions (modern-10)  _(Drive: part 2)_
+- `modern/birth-of-nations.jpg` — The Birth of Nations (modern-11)  _(Drive: part 2)_
+- `modern/modern-literature.gif` — The Novel and the Modern Soul (modern-12)  _(Drive: part 2)_
+- `modern/broken-chains.gif` — The Chains Broken (modern-13)  _(Drive: part 2)_
+- `modern/rising-sun-japan.webp` — The Rising Sun (modern-14)  _(Drive: part 2)_
+- `modern/collapse-and-disaster.gif` — Collapse and Catastrophe (modern-15)  _(Drive: part 2)_
+- `modern/age-of-genocide.gif` — The Age of Genocide (modern-16)  _(Drive: part 2)_
+- `modern/china-reborn.gif` — China Reborn (modern-17)  _(Drive: part 2)_
+- `modern/rights-revolutions.gif` — The Rights Revolutions (modern-18)  _(Drive: part 2)_
+- `modern/modern-middle-east.gif` — The Cauldron of the Modern Middle East (modern-19)  _(Drive: part 2)_
+- `modern/connected-world.gif` — The Connected World (modern-20)  _(Drive: part 2)_
+- `modern/space-age.gif` — The Space Age (modern-21)  _(Drive: part 2)_
+- `modern/conquering-diseases.gif` — The Conquest of Disease (modern-22)  _(Drive: part 2)_
+- `modern/world-wars-part-2.gif` — The World Wars, Part II (modern-23)  _(Drive: part 2)_

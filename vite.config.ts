@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import { T, LANGUAGE_LABELS, type Language } from './src/i18n/translations';
 import { LESSON_LOCAL_BANNERS } from './src/features/content/lessonLocalBanners';
-import { TERRITORY_CARTOGRAPHY } from './src/features/content/territoryCartography';
 import { TIMELINE_EVENTS } from './src/features/content/timelineData';
 import { TIMELINE_TRANS } from './src/i18n/timelineTranslations';
 
@@ -216,29 +215,24 @@ function translationCoveragePlugin(): Plugin {
 }
 
 /**
- * Curated art (lesson banners, territory cartography) is referenced by path and
- * rendered with an onError fallback, so a wrong path degrades silently — that is
- * how `middle_ages/` and `early_modern/` went 44 banners unnoticed.
+ * Lesson banners are referenced by path and rendered with an onError fallback,
+ * so a wrong path degrades silently — that is how `middle_ages/` and
+ * `early_modern/` went 44 banners unnoticed.
  *
- * A missing FILE is expected: assets are dropped in separately, and the fallback
- * covers it, so that is only reported. A missing DIRECTORY is not — it means the
- * path itself is wrong, since every era/asset folder is committed. That fails.
+ * A missing FILE is expected: art is dropped in separately from Drive, and the
+ * fallback chain covers it, so that is only reported. A missing DIRECTORY is
+ * not — it means the path itself is wrong, since every era folder is committed.
+ * That fails the build.
+ *
+ * The extension is part of the mapped path, so `.jpg` art mapped as `.gif` is a
+ * missing file here, not a match. That is deliberate: it is the only signal
+ * that would otherwise never surface.
  */
 function assetPathPlugin(): Plugin {
   return {
     name: 'asset-path-check',
     buildStart() {
-      const mapped = [
-        ...Object.entries(LESSON_LOCAL_BANNERS).map(([k, p]) => ({ k, p, kind: 'banner' })),
-        // A topic may carry several time-phased plates; every one must resolve.
-        ...Object.entries(TERRITORY_CARTOGRAPHY).flatMap(([k, plates]) =>
-          plates.map((plate, i) => ({
-            k: plates.length > 1 ? `${k}[${i}]` : k,
-            p: plate.src,
-            kind: 'cartography',
-          }))
-        ),
-      ];
+      const mapped = Object.entries(LESSON_LOCAL_BANNERS).map(([k, p]) => ({ k, p, kind: 'banner' }));
 
       const badDirs: string[] = [];
       let absent = 0;

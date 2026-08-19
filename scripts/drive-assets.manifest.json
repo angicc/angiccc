@@ -1,19 +1,27 @@
 {
-  "note": "Drive asset placement manifest. See scripts/place_drive_assets.mjs.",
+  "note": "Drive asset placement manifest. Fetch with scripts/fetch_drive_assets.mjs (needs a Drive token), or unzip a manual folder download and run scripts/place_drive_assets.mjs. `node scripts/fetch_drive_assets.mjs --missing` reports which banners the app expects but the repo does not have.",
   "sources": {
-    "banners": {
-      "folder": "Eras and Lessons Banner GIFs",
-      "folderId": "1HtP8s_df6LalidRKr8lyv2mFXB1tq8x4"
-    },
     "cartography": {
       "folder": "Timeline Territory Map Cartographies",
-      "folderId": "1eYW5cxYqIky0E9uO5pB3zgQJWy0ND2bS"
+      "folderId": "1eYW5cxYqIky0E9uO5pB3zgQJWy0ND2bS",
+      "files": 22,
+      "retired": "The territory map no longer pastes raster plates over the Leaflet layers — the polygons carry the geography instead. Kept as a record of what the folder holds; nothing in the app reads these."
+    },
+    "banners-part-2": {
+      "folder": "Eras and Lessons Banner GIFs part 2",
+      "folderId": "1cAzdaFpwb6DSax1BFsNuxKibUu1xXykA",
+      "files": 48
+    },
+    "banners-part-1": {
+      "folder": "Eras and Lessons Banner GIFs",
+      "folderId": "1HtP8s_df6LalidRKr8lyv2mFXB1tq8x4",
+      "files": 56
     }
   },
   "excluded": [
     {
       "driveName": "The Iceman's Secrets.htm",
-      "reason": "Imperva/Incapsula bot-block page saved as HTML (212 bytes), not an image. Re-export prehistoric-17 from source."
+      "reason": "Imperva/Incapsula bot-block page saved as HTML (212 bytes), not an image. Re-export prehistoric-17 from source. Superseded by 'The Iceman's Secrets - actual image.webp' in part 2."
     }
   ],
   "assets": [
@@ -23,7 +31,8 @@
       "driveName": "Neanderthals.gif",
       "lesson": "prehistoric-03",
       "dest": "public/assets/banners/prehistoric/neanderthals.gif",
-      "bytes": 274245
+      "bytes": 274245,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -31,7 +40,8 @@
       "driveName": "Cyril and Methodius.png",
       "lesson": "byzantine-05",
       "dest": "public/assets/banners/byzantine/cyril-methodius.png",
-      "bytes": 86303
+      "bytes": 86303,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -39,7 +49,8 @@
       "driveName": "The Macedonian Renaisscance.webp",
       "lesson": "byzantine-21",
       "dest": "public/assets/banners/byzantine/macedonian-renaissance.webp",
-      "bytes": 180096
+      "bytes": 180096,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -47,7 +58,8 @@
       "driveName": "The Human Journey.gif",
       "lesson": "prehistoric-04",
       "dest": "public/assets/banners/prehistoric/great-human-migration.gif",
-      "bytes": 3274251
+      "bytes": 3274251,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -55,7 +67,8 @@
       "driveName": "Ice Age.gif",
       "lesson": "prehistoric-22",
       "dest": "public/assets/banners/prehistoric/ice-age-survival.gif",
-      "bytes": 172004
+      "bytes": 172004,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -63,7 +76,8 @@
       "driveName": "The Olmec and early Mesoamerica.jpg",
       "lesson": "ancient-22",
       "dest": "public/assets/banners/ancient/olmecs-mesoamerica.gif",
-      "bytes": 6723670
+      "bytes": 6723670,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -71,7 +85,8 @@
       "driveName": "The Immortal Empire.webp",
       "lesson": "byzantine-20",
       "dest": "public/assets/banners/byzantine/empire-that-never-dies.webp",
-      "bytes": 95498
+      "bytes": 95498,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -79,7 +94,8 @@
       "driveName": "The Measure of the World.gif",
       "lesson": "ancient-19",
       "dest": "public/assets/banners/ancient/measure-of-the-world.gif",
-      "bytes": 1890768
+      "bytes": 1890768,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -87,7 +103,8 @@
       "driveName": "Windows into Heaven.jpg",
       "lesson": "byzantine-17",
       "dest": "public/assets/banners/byzantine/windows-to-heaven.jpg",
-      "bytes": 80587
+      "bytes": 80587,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -95,7 +112,8 @@
       "driveName": "The People of the Book.gif",
       "lesson": "ancient-12",
       "dest": "public/assets/banners/ancient/people-of-the-book.gif",
-      "bytes": 1641248
+      "bytes": 1641248,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -103,7 +121,8 @@
       "driveName": "The Last Great Recovery.jpg",
       "lesson": "byzantine-16",
       "dest": "public/assets/banners/byzantine/last-byzantine-recovery.jpg",
-      "bytes": 109959
+      "bytes": 109959,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -111,7 +130,8 @@
       "driveName": "The Crescent and The Cross.webp",
       "lesson": "byzantine-18",
       "dest": "public/assets/banners/byzantine/crescent-and-cross.webp",
-      "bytes": 125846
+      "bytes": 125846,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -119,7 +139,8 @@
       "driveName": "Heirs of Constantinople.jpg",
       "lesson": "byzantine-22",
       "dest": "public/assets/banners/byzantine/heirs-of-constantinople.jpg",
-      "bytes": 33100
+      "bytes": 33100,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -127,7 +148,8 @@
       "driveName": "Empire in Exile.gif",
       "lesson": "byzantine-19",
       "dest": "public/assets/banners/byzantine/empire-in-exile.gif",
-      "bytes": 704970
+      "bytes": 704970,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -135,7 +157,8 @@
       "driveName": "The Empresses of Byzantium.jpg",
       "lesson": "byzantine-15",
       "dest": "public/assets/banners/byzantine/empresses-of-byzantium.jpg",
-      "bytes": 164932
+      "bytes": 164932,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -143,7 +166,8 @@
       "driveName": "The Kingdoms of Kush and Aksum.gif",
       "lesson": "ancient-14",
       "dest": "public/assets/banners/ancient/kush-and-aksum.gif",
-      "bytes": 1989378
+      "bytes": 1989378,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -151,7 +175,8 @@
       "driveName": "The Justice of Rome.png",
       "lesson": "byzantine-10",
       "dest": "public/assets/banners/byzantine/roman-law-justice.png",
-      "bytes": 201134
+      "bytes": 201134,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -159,7 +184,8 @@
       "driveName": "Scholars of The Second Rome.webp",
       "lesson": "byzantine-11",
       "dest": "public/assets/banners/byzantine/scholars-second-rome.webp",
-      "bytes": 279604
+      "bytes": 279604,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -167,7 +193,8 @@
       "driveName": "The Golden Bezant.gif",
       "lesson": "byzantine-12",
       "dest": "public/assets/banners/byzantine/golden-bezant.gif",
-      "bytes": 69076
+      "bytes": 69076,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -175,7 +202,8 @@
       "driveName": "Life in the Queen of Cities.gif",
       "lesson": "byzantine-13",
       "dest": "public/assets/banners/byzantine/life-in-constantinople.gif",
-      "bytes": 1029145
+      "bytes": 1029145,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -183,7 +211,8 @@
       "driveName": "Golden Age and Betrayal.gif",
       "lesson": "byzantine-07",
       "dest": "public/assets/banners/byzantine/byzantine-golden-age.gif",
-      "bytes": 167123
+      "bytes": 167123,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -191,7 +220,8 @@
       "driveName": "The Baptism of the Rus.jpg",
       "lesson": "byzantine-14",
       "dest": "public/assets/banners/byzantine/baptism-of-rus.jpg",
-      "bytes": 514126
+      "bytes": 514126,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -199,7 +229,8 @@
       "driveName": "The Great Schism of 1054.jpg",
       "lesson": "byzantine-06",
       "dest": "public/assets/banners/byzantine/great-schism-1054.jpg",
-      "bytes": 125911
+      "bytes": 125911,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -207,7 +238,8 @@
       "driveName": "1453 - The Fall of Constantinople.jpg",
       "lesson": "byzantine-09",
       "dest": "public/assets/banners/byzantine/fall-of-constantinople.jpg",
-      "bytes": 347654
+      "bytes": 347654,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -215,7 +247,8 @@
       "driveName": "Mount Athos and The Orthodox Soul.gif",
       "lesson": "byzantine-08",
       "dest": "public/assets/banners/byzantine/mount-athos.gif",
-      "bytes": 20269
+      "bytes": 20269,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -223,7 +256,8 @@
       "driveName": "The Empire Besieged.webp",
       "lesson": "byzantine-03",
       "dest": "public/assets/banners/byzantine/empire-under-siege.webp",
-      "bytes": 63408
+      "bytes": 63408,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -231,7 +265,8 @@
       "driveName": "The Green Sahara.gif",
       "lesson": "prehistoric-15",
       "dest": "public/assets/banners/prehistoric/green-sahara.gif",
-      "bytes": 3836996
+      "bytes": 3836996,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -239,7 +274,8 @@
       "driveName": "New Rome and the founding of Constantinople.gif",
       "lesson": "byzantine-01",
       "dest": "public/assets/banners/byzantine/new-rome-constantinople.gif",
-      "bytes": 651736
+      "bytes": 651736,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -247,7 +283,8 @@
       "driveName": "The Silk Roads.gif",
       "lesson": "ancient-20",
       "dest": "public/assets/banners/ancient/silk-roads.gif",
-      "bytes": 535481
+      "bytes": 535481,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -255,7 +292,8 @@
       "driveName": "Iconoclasm - The War over Holy Images.gif",
       "lesson": "byzantine-04",
       "dest": "public/assets/banners/byzantine/iconoclasm.gif",
-      "bytes": 78371
+      "bytes": 78371,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -263,7 +301,8 @@
       "driveName": "Empires of the Andes.gif",
       "lesson": "ancient-16",
       "dest": "public/assets/banners/ancient/andean-empires.gif",
-      "bytes": 1218447
+      "bytes": 1218447,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -271,7 +310,8 @@
       "driveName": "Justinian and Theodora.jpg",
       "lesson": "byzantine-02",
       "dest": "public/assets/banners/byzantine/justinian-theodora.jpg",
-      "bytes": 90137
+      "bytes": 90137,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -279,7 +319,8 @@
       "driveName": "The Song of Troy.gif",
       "lesson": "ancient-13",
       "dest": "public/assets/banners/ancient/song-of-troy.gif",
-      "bytes": 997283
+      "bytes": 997283,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -287,7 +328,8 @@
       "driveName": "The Glory of Rome in Verse.jpeg",
       "lesson": "ancient-17",
       "dest": "public/assets/banners/ancient/glory-of-rome.jpg",
-      "bytes": 369952
+      "bytes": 369952,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -295,7 +337,8 @@
       "driveName": "The Stone Age Toolkit.gif",
       "lesson": "prehistoric-05",
       "dest": "public/assets/banners/prehistoric/stone-age-tools.gif",
-      "bytes": 5089036
+      "bytes": 5089036,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -303,7 +346,8 @@
       "driveName": "The First Villages and Monuments.gif",
       "lesson": "prehistoric-09",
       "dest": "public/assets/banners/prehistoric/first-villages-monuments.gif",
-      "bytes": 28652521
+      "bytes": 28652521,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -311,7 +355,8 @@
       "driveName": "The Celts.webp",
       "lesson": "ancient-18",
       "dest": "public/assets/banners/ancient/the-celts.webp",
-      "bytes": 21998
+      "bytes": 21998,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -319,7 +364,8 @@
       "driveName": "Africa before Rome.jpg",
       "lesson": "ancient-21",
       "dest": "public/assets/banners/ancient/africa-before-rome.jpg",
-      "bytes": 111854
+      "bytes": 111854,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -327,7 +373,8 @@
       "driveName": "The First Americans Build.gif",
       "lesson": "ancient-15",
       "dest": "public/assets/banners/ancient/first-builders-americas.gif",
-      "bytes": 229258
+      "bytes": 229258,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -335,7 +382,8 @@
       "driveName": "Ancient India.gif",
       "lesson": "ancient-10",
       "dest": "public/assets/banners/ancient/ancient-india.gif",
-      "bytes": 4071037
+      "bytes": 4071037,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -343,7 +391,8 @@
       "driveName": "The Hidden Half.jpg",
       "lesson": "prehistoric-18",
       "dest": "public/assets/banners/prehistoric/hidden-half.jpg",
-      "bytes": 360056
+      "bytes": 360056,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -351,7 +400,8 @@
       "driveName": "Metal from Stone.gif",
       "lesson": "prehistoric-12",
       "dest": "public/assets/banners/prehistoric/metal-from-stone.gif",
-      "bytes": 1169354
+      "bytes": 1169354,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -359,7 +409,8 @@
       "driveName": "Ancient Egypt - Gods, Pharaohs and the Afterlife.webp",
       "lesson": "ancient-05",
       "dest": "public/assets/banners/ancient/ancient-egypt.webp",
-      "bytes": 376568
+      "bytes": 376568,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -367,7 +418,8 @@
       "driveName": "The First Villages of The East.jpg",
       "lesson": "prehistoric-19",
       "dest": "public/assets/banners/prehistoric/first-eastern-settlements.jpg",
-      "bytes": 110028
+      "bytes": 110028,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -375,7 +427,8 @@
       "driveName": "Ancient China.gif",
       "lesson": "ancient-11",
       "dest": "public/assets/banners/ancient/ancient-china.gif",
-      "bytes": 42956
+      "bytes": 42956,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -383,7 +436,8 @@
       "driveName": "On The Edge of History.jpg",
       "lesson": "prehistoric-20",
       "dest": "public/assets/banners/prehistoric/edge-of-history.jpg",
-      "bytes": 60077
+      "bytes": 60077,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -391,7 +445,8 @@
       "driveName": "The Mastery of Fire.gif",
       "lesson": "prehistoric-02",
       "dest": "public/assets/banners/prehistoric/mastery-of-fire.gif",
-      "bytes": 1189670
+      "bytes": 1189670,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -399,7 +454,8 @@
       "driveName": "The Peopling of The Americas.png",
       "lesson": "prehistoric-10",
       "dest": "public/assets/banners/prehistoric/settling-of-americas.png",
-      "bytes": 449403
+      "bytes": 449403,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -407,7 +463,8 @@
       "driveName": "Temples before Cities.gif",
       "lesson": "prehistoric-13",
       "dest": "public/assets/banners/prehistoric/temples-before-cities.gif",
-      "bytes": 889199
+      "bytes": 889199,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -415,7 +472,8 @@
       "driveName": "The First Australians.gif",
       "lesson": "prehistoric-11",
       "dest": "public/assets/banners/prehistoric/first-australians.gif",
-      "bytes": 677359
+      "bytes": 677359,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -423,7 +481,8 @@
       "driveName": "Before writing, The Word.gif",
       "lesson": "prehistoric-16",
       "dest": "public/assets/banners/prehistoric/before-writing.gif",
-      "bytes": 275375
+      "bytes": 275375,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -431,7 +490,8 @@
       "driveName": "Beasts of Burden.gif",
       "lesson": "prehistoric-14",
       "dest": "public/assets/banners/prehistoric/beasts-of-burden.gif",
-      "bytes": 599166
+      "bytes": 599166,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -439,7 +499,8 @@
       "driveName": "Neolithic Revolution.gif",
       "lesson": "prehistoric-08",
       "dest": "public/assets/banners/prehistoric/neolithic-revolution.gif",
-      "bytes": 562192
+      "bytes": 562192,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -447,7 +508,8 @@
       "driveName": "The Ice Age World.gif",
       "lesson": "prehistoric-07",
       "dest": "public/assets/banners/prehistoric/ice-age-world.gif",
-      "bytes": 461792
+      "bytes": 461792,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -455,7 +517,8 @@
       "driveName": "Cave Art and The Symbolic Mind.gif",
       "lesson": "prehistoric-06",
       "dest": "public/assets/banners/prehistoric/cave-art.gif",
-      "bytes": 1169028
+      "bytes": 1169028,
+      "source": "banners-part-1"
     },
     {
       "kind": "banner",
@@ -463,7 +526,8 @@
       "driveName": "Human Origins.gif",
       "lesson": "prehistoric-01",
       "dest": "public/assets/banners/prehistoric/origin-of-man.gif",
-      "bytes": 1499194
+      "bytes": 1499194,
+      "source": "banners-part-1"
     },
     {
       "kind": "cartography",
@@ -471,7 +535,8 @@
       "driveName": "Out of Africa - The Human Journey.png",
       "topic": "human-origins",
       "dest": "public/assets/cartography/human-origins.png",
-      "bytes": 648793
+      "bytes": 648793,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -479,7 +544,8 @@
       "driveName": "Mesopotamia and Ancient Egypt.png",
       "topic": "mesopotamia",
       "dest": "public/assets/cartography/mesopotamia.png",
-      "bytes": 265515
+      "bytes": 265515,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -487,7 +553,8 @@
       "driveName": "Classical Greece.webp",
       "topic": "classical-greece",
       "dest": "public/assets/cartography/classical-greece.webp",
-      "bytes": 572118
+      "bytes": 572118,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -495,7 +562,8 @@
       "driveName": "The Hellenistic World.webp",
       "topic": "hellenistic-world",
       "dest": "public/assets/cartography/hellenistic-world.webp",
-      "bytes": 97470
+      "bytes": 97470,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -503,7 +571,8 @@
       "driveName": "The Olmec.jpg",
       "topic": "olmec-mesoamerica",
       "dest": "public/assets/cartography/olmec-mesoamerica.jpg",
-      "bytes": 626046
+      "bytes": 626046,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -511,7 +580,8 @@
       "driveName": "The Islamic Caliphates.jpg",
       "topic": "islamic-caliphates",
       "dest": "public/assets/cartography/islamic-caliphates.jpg",
-      "bytes": 43055
+      "bytes": 43055,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -519,7 +589,8 @@
       "driveName": "Mongol Empire.webp",
       "topic": "mongol-empire",
       "dest": "public/assets/cartography/mongol-empire.webp",
-      "bytes": 36436
+      "bytes": 36436,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -527,7 +598,8 @@
       "driveName": "The Crusades and The Holy Land.webp",
       "topic": "crusader-states",
       "dest": "public/assets/cartography/crusader-states.webp",
-      "bytes": 35870
+      "bytes": 35870,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -535,7 +607,8 @@
       "driveName": "Al Andalus.webp",
       "topic": "al-andalus",
       "dest": "public/assets/cartography/al-andalus.webp",
-      "bytes": 381634
+      "bytes": 381634,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -543,7 +616,8 @@
       "driveName": "Reconquista.jpg",
       "topic": "al-andalus-reconquista",
       "dest": "public/assets/cartography/al-andalus-reconquista.jpg",
-      "bytes": 109490
+      "bytes": 109490,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -551,7 +625,8 @@
       "driveName": "Khmer Empire.webp",
       "topic": "khmer-empire",
       "dest": "public/assets/cartography/khmer-empire.webp",
-      "bytes": 33888
+      "bytes": 33888,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -559,7 +634,8 @@
       "driveName": "Hundred Years War.png",
       "topic": "hundred-years-war",
       "dest": "public/assets/cartography/hundred-years-war.png",
-      "bytes": 214750
+      "bytes": 214750,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -567,7 +643,8 @@
       "driveName": "Ottoman Empire at its peak.jpg",
       "topic": "ottoman-empire",
       "dest": "public/assets/cartography/ottoman-empire.jpg",
-      "bytes": 39372
+      "bytes": 39372,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -575,7 +652,8 @@
       "driveName": "Rennaiscance Italy.jpg",
       "topic": "renaissance-italy",
       "dest": "public/assets/cartography/renaissance-italy.jpg",
-      "bytes": 144611
+      "bytes": 144611,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -583,7 +661,8 @@
       "driveName": "Protestant Reformation.webp",
       "topic": "protestant-reformation",
       "dest": "public/assets/cartography/protestant-reformation.webp",
-      "bytes": 183034
+      "bytes": 183034,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -591,7 +670,8 @@
       "driveName": "Mughal Empire.jpg",
       "topic": "mughal-empire",
       "dest": "public/assets/cartography/mughal-empire.jpg",
-      "bytes": 1251725
+      "bytes": 1251725,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -599,7 +679,8 @@
       "driveName": "Songhai Empire.jpg",
       "topic": "songhai-empire",
       "dest": "public/assets/cartography/songhai-empire.jpg",
-      "bytes": 29675
+      "bytes": 29675,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -607,7 +688,8 @@
       "driveName": "Voyagers of The Pacific.png",
       "topic": "polynesian-expansion",
       "dest": "public/assets/cartography/polynesian-expansion.png",
-      "bytes": 174762
+      "bytes": 174762,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -615,7 +697,8 @@
       "driveName": "French Revolution and Napoleon.jpg",
       "topic": "french-revolution-napoleon",
       "dest": "public/assets/cartography/french-revolution-napoleon.jpg",
-      "bytes": 22023
+      "bytes": 22023,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -623,7 +706,8 @@
       "driveName": "Industrial Revolution.jpg",
       "topic": "industrial-revolution",
       "dest": "public/assets/cartography/industrial-revolution.jpg",
-      "bytes": 257702
+      "bytes": 257702,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -631,7 +715,8 @@
       "driveName": "World War 2.jpg",
       "topic": "ww2",
       "dest": "public/assets/cartography/ww2.jpg",
-      "bytes": 64020
+      "bytes": 64020,
+      "source": "cartography"
     },
     {
       "kind": "cartography",
@@ -639,7 +724,440 @@
       "driveName": "Macedonian Struggle.jpg",
       "topic": "macedonian-struggle",
       "dest": "public/assets/cartography/macedonian-struggle.jpg",
-      "bytes": 24003
+      "bytes": 24003,
+      "source": "cartography"
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1Vay_yPiECd_vTb_ul-przpnzW8BYS3TB",
+      "driveName": "The Iceman's Secrets - actual image.webp",
+      "lesson": "prehistoric-17",
+      "dest": "public/assets/banners/prehistoric/otzi-ice-man.webp",
+      "bytes": 25620
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1QeVZgP67PujaJW_F-ZYRcOlo88dhfwKk",
+      "driveName": "The Fall of Rome and The Early Middle Ages.jpg",
+      "lesson": "medieval-01",
+      "dest": "public/assets/banners/middle-ages/fall-of-rome.jpg",
+      "bytes": 212224
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1xql6pAaxRNO2HVM7umHrawujfEWBuGY7",
+      "driveName": "Medieval Economy - Trade Guilds and the Rise of Towns.jpg",
+      "lesson": "medieval-04",
+      "dest": "public/assets/banners/middle-ages/medieval-economy-guilds.jpg",
+      "bytes": 676033
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1-jBL4_i-2Hipo4QRHhN_MDa3-qK3BtJb",
+      "driveName": "Hundred Years War.jpg",
+      "lesson": "medieval-09",
+      "dest": "public/assets/banners/middle-ages/hundred-years-war.jpg",
+      "bytes": 28560
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1a_Nse_ZdyKC_ItQdSIMyMAqKDlORbLXe",
+      "driveName": "Charlemagne.jpg",
+      "lesson": "medieval-10",
+      "dest": "public/assets/banners/middle-ages/charlemagne.jpg",
+      "bytes": 29820
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1d96bhOmz0WqCFJIay_tBR3ZSDksmzkLg",
+      "driveName": "The World of the Manor.jpg",
+      "lesson": "medieval-11",
+      "dest": "public/assets/banners/middle-ages/feudal-manor.jpg",
+      "bytes": 53286
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1Zp0U1vZYhzqlsRPp_9Fn3DiH7spSGbJb",
+      "driveName": "The Age of Faith.webp",
+      "lesson": "medieval-12",
+      "dest": "public/assets/banners/middle-ages/age-of-faith.webp",
+      "bytes": 259446
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1ORIFMe1ABxCjLWVMq4cXJxAVLLUc1jzE",
+      "driveName": "Cathedrals and Universities.gif",
+      "lesson": "medieval-13",
+      "dest": "public/assets/banners/middle-ages/cathedrals-universities.gif",
+      "bytes": 1747529
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1Pw5KGW1bkMxlAAyea87tKm1RHA2tybFh",
+      "driveName": "Poets of the Middle Ages.jpeg",
+      "lesson": "medieval-14",
+      "dest": "public/assets/banners/middle-ages/medieval-poets.jpeg",
+      "bytes": 107959
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1vgmITkpLOvOpW1C0jYHUVMN01p5NCt61",
+      "driveName": "The Gold of Mali.gif",
+      "lesson": "medieval-15",
+      "dest": "public/assets/banners/middle-ages/gold-of-mali.gif",
+      "bytes": 242551
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1pAAisfXr10BGFUE9-4QhkZQ5Kdb-1nEs",
+      "driveName": "After the Golden Age.avif",
+      "lesson": "medieval-16",
+      "dest": "public/assets/banners/middle-ages/after-golden-age.avif",
+      "bytes": 61177
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "112hi0Y4Wcf3XwLUU4_-XfvIjDtMb5ANc",
+      "driveName": "Sultans and Temples.gif",
+      "lesson": "medieval-17",
+      "dest": "public/assets/banners/middle-ages/sultans-and-temples.gif",
+      "bytes": 7359919
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "112xh3q0mJEVZGJ8HSdNO0-8VYmpCGCk4",
+      "driveName": "Rus and The Rise of Moscow.jpg",
+      "lesson": "medieval-18",
+      "dest": "public/assets/banners/middle-ages/rise-of-moscow.jpg",
+      "bytes": 189935
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "19DRcKvCdAMux8303Lc6XDwX7NQMn5yrx",
+      "driveName": "The Middle Kingdom's Golden Age.gif",
+      "lesson": "medieval-19",
+      "dest": "public/assets/banners/middle-ages/song-dynasty.gif",
+      "bytes": 1909264
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1E_GBOQfJVVW0I3qBIwPS0yOzaao-HLI1",
+      "driveName": "The Women of the Middle Ages.gif",
+      "lesson": "medieval-20",
+      "dest": "public/assets/banners/middle-ages/women-of-middle-ages.gif",
+      "bytes": 304316
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1lcoDtzz43KGhXfvLSVvWcE0TDhH0i3aU",
+      "driveName": "Great Zimbabwe and the Swahili Coast.jpg",
+      "lesson": "medieval-21",
+      "dest": "public/assets/banners/middle-ages/great-zimbabwe.jpg",
+      "bytes": 232825
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1MAgBd95eMVhFEoRAALC6iA0LtnhIZHGi",
+      "driveName": "Khmer Empire and the Angkor.gif",
+      "lesson": "medieval-22",
+      "dest": "public/assets/banners/middle-ages/khmer-empire-angkor.gif",
+      "bytes": 51117
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1o8bRnUQa2-EjUVsog_g6CHz-rWX-fTjV",
+      "driveName": "Protestant Reformation.jpg",
+      "lesson": "earlymod-02",
+      "dest": "public/assets/banners/early-modern/protestant-reformation.jpg",
+      "bytes": 95063
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "11uTN5I_TEqapDxXo4PRCYi13etWuk6HX",
+      "driveName": "Mughal Empire.png",
+      "lesson": "earlymod-08",
+      "dest": "public/assets/banners/early-modern/mughal-empire.png",
+      "bytes": 79969
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1atJ_e1vkXNk7D-KdHkMsX7JEf_Ir5cAE",
+      "driveName": "Two Worlds Collide.jpg",
+      "lesson": "earlymod-10",
+      "dest": "public/assets/banners/early-modern/two-worlds-met.jpg",
+      "bytes": 44189
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "11USlERqMisoO2iongpAF5NyHm1n9wzd2",
+      "driveName": "The Golden Age of Merchants.jpg",
+      "lesson": "earlymod-11",
+      "dest": "public/assets/banners/early-modern/age-of-merchants.jpg",
+      "bytes": 335123
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1ma1W_naVR2DND5F_TwByVDThH58lpcbZ",
+      "driveName": "The Word Unbound.webp",
+      "lesson": "earlymod-12",
+      "dest": "public/assets/banners/early-modern/printing-press-unbound.webp",
+      "bytes": 306888
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1Z8X9Gok-alq5RIzDxVx9_V_p0YE-GHbf",
+      "driveName": "The Wars of Religion.jpg",
+      "lesson": "earlymod-13",
+      "dest": "public/assets/banners/early-modern/wars-of-religion.jpg",
+      "bytes": 996584
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "17wcp3hvbRCv3gspm-3agkxMulSGrWYor",
+      "driveName": "The Treasure Fleets.jpg",
+      "lesson": "earlymod-14",
+      "dest": "public/assets/banners/early-modern/treasure-fleets.jpg",
+      "bytes": 224870
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1lnv56Rufl_x4XZfD2j8k3uCCRgvCTfzw",
+      "driveName": "The Shah's Persia.png",
+      "lesson": "earlymod-15",
+      "dest": "public/assets/banners/early-modern/safavid-persia.png",
+      "bytes": 101447
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1Rfoh4JUH0tCxvGpwsbp1dxaxaQKQva0b",
+      "driveName": "The King and Parliament.jpg",
+      "lesson": "earlymod-16",
+      "dest": "public/assets/banners/early-modern/king-and-parliament.jpg",
+      "bytes": 337221
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1iiZeFs2Z52nWKGErQ5T9fbuHwAjHBvcw",
+      "driveName": "The Age of Splendor.gif",
+      "lesson": "earlymod-17",
+      "dest": "public/assets/banners/early-modern/age-of-splendor.gif",
+      "bytes": 1017206
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "13Vvu0axgpiqv1TL5ciTzNZqpsz3leQOJ",
+      "driveName": "Fear and the Frozen Years.gif",
+      "lesson": "earlymod-18",
+      "dest": "public/assets/banners/early-modern/little-ice-age.gif",
+      "bytes": 1065603
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1CDTSx6KxZC5EMVarQmEWxXTKYs_5kga6",
+      "driveName": "Peter the Great.webp",
+      "lesson": "earlymod-19",
+      "dest": "public/assets/banners/early-modern/peter-the-great.webp",
+      "bytes": 142862
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1UP1pn5ZL0AjeJ_TftNhc4Ln7WdhlnA_Z",
+      "driveName": "The Radical Enlightement.png",
+      "lesson": "earlymod-20",
+      "dest": "public/assets/banners/early-modern/radical-enlightenment.png",
+      "bytes": 2893052
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1w8VstDgHxC4pbVFJb5JK-P2izrZaUtgg",
+      "driveName": "Songhai Empire.webp",
+      "lesson": "earlymod-21",
+      "dest": "public/assets/banners/early-modern/songhai-empire.webp",
+      "bytes": 110390
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1BJ7O0C2c1VzXfQ9bOJfYapjb9T0JLAET",
+      "driveName": "Voyagers of the Pacific.jpg",
+      "lesson": "earlymod-22",
+      "dest": "public/assets/banners/early-modern/voyagers-pacific.jpg",
+      "bytes": 73529
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1S6Wt8YEuXQQwrHCueC0zOnJ8GaEcu9nk",
+      "driveName": "The Russian Revolution and The Soviet.gif",
+      "lesson": "modern-08",
+      "dest": "public/assets/banners/modern/russian-revolution.gif",
+      "bytes": 2719562
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1myUS7UfoGrhjo2s0YIXC4NppL_xJsm94",
+      "driveName": "Gandhi and Indian Independence.gif",
+      "lesson": "modern-09",
+      "dest": "public/assets/banners/modern/gandhi-independence.gif",
+      "bytes": 2511944
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1G6JEiqXWQVXUzw5XjqiIiY4l5g_anoQ8",
+      "driveName": "The Age of Revolutions.gif",
+      "lesson": "modern-10",
+      "dest": "public/assets/banners/modern/modern-revolutions.gif",
+      "bytes": 1081414
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1BfqZgGRNBp_tt_qXlf_p3ghuyN7hMbHQ",
+      "driveName": "The Birth of Nations.jpg",
+      "lesson": "modern-11",
+      "dest": "public/assets/banners/modern/birth-of-nations.jpg",
+      "bytes": 224822
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "10fBgxDPR1vRg6HkNJ7VOFj94KmvYekSy",
+      "driveName": "The Novel and The Modern Soul.gif",
+      "lesson": "modern-12",
+      "dest": "public/assets/banners/modern/modern-literature.gif",
+      "bytes": 173440
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1kTtFHc6ZLxPbx1rIXi4sutletR23XG68",
+      "driveName": "The Chains Broken.gif",
+      "lesson": "modern-13",
+      "dest": "public/assets/banners/modern/broken-chains.gif",
+      "bytes": 235190
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1z09ci5tu1vCKdscLUrs7NubRArTUFpgV",
+      "driveName": "The Rising Sun.webp",
+      "lesson": "modern-14",
+      "dest": "public/assets/banners/modern/rising-sun-japan.webp",
+      "bytes": 199856
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1WpRgOXr7Ycr8M4QA8uMcOzXcowcSVCYi",
+      "driveName": "Collapse and Catastrophe.gif",
+      "lesson": "modern-15",
+      "dest": "public/assets/banners/modern/collapse-and-disaster.gif",
+      "bytes": 1971654
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1xTal1x02dfy3Ldz6FHV7VAIGz2CAplGZ",
+      "driveName": "The Age of Genocide.gif",
+      "lesson": "modern-16",
+      "dest": "public/assets/banners/modern/age-of-genocide.gif",
+      "bytes": 631878
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1D247v-sRZpNPkamSz7rUGELXDHwAr_7U",
+      "driveName": "China Reborn.gif",
+      "lesson": "modern-17",
+      "dest": "public/assets/banners/modern/china-reborn.gif",
+      "bytes": 436439
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "18xXczygTKVziV7kvKjH4MptiNB7yr5T6",
+      "driveName": "The Rights Revolutions.gif",
+      "lesson": "modern-18",
+      "dest": "public/assets/banners/modern/rights-revolutions.gif",
+      "bytes": 8238791
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1pnfnVSzH73Y461JQQp6Spsbnv47ehuCX",
+      "driveName": "The Cauldron of the Modern Middle East.gif",
+      "lesson": "modern-19",
+      "dest": "public/assets/banners/modern/modern-middle-east.gif",
+      "bytes": 681555
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1kJPftN50twU0zfzf_1equrA0q9nejsH1",
+      "driveName": "The Connected World.gif",
+      "lesson": "modern-20",
+      "dest": "public/assets/banners/modern/connected-world.gif",
+      "bytes": 4016438
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1QHqLSfbLP9RRGloKuiUFmXbpCm3bs0Hh",
+      "driveName": "The Space Age.gif",
+      "lesson": "modern-21",
+      "dest": "public/assets/banners/modern/space-age.gif",
+      "bytes": 1355715
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1x5s5GJNzNXEaGC4ScJCVS8uXzqlJye9N",
+      "driveName": "The Conquest of Disease.gif",
+      "lesson": "modern-22",
+      "dest": "public/assets/banners/modern/conquering-diseases.gif",
+      "bytes": 20129639
+    },
+    {
+      "kind": "banner",
+      "source": "banners-part-2",
+      "fileId": "1fJyPzaF6llc3nNUrMM-Ngv1NmlxMQI8g",
+      "driveName": "World Wars Part 2.gif",
+      "lesson": "modern-23",
+      "dest": "public/assets/banners/modern/world-wars-part-2.gif",
+      "bytes": 3120905
     }
   ]
 }
