@@ -55,7 +55,7 @@ function clientCalls(): { path: string; method: string; body: Set<string> | null
 function routeSchemaFor(routePath: string, method: string): string | null {
   // socialRouter.post('/requests', ...rateLimit..., async (req…) => { …parse(schemaName)… }
   const re = new RegExp(
-    `socialRouter\\.${method.toLowerCase()}\\(\\s*'${routePath.replace(/[/\-]/g, m => '\\' + m)}'([\\s\\S]*?)\\n\\)?;?\\n(?:\\/\\/|const|socialRouter|$)`,
+    `socialRouter\\.${method.toLowerCase()}\\(\\s*'${routePath.replace(/[/-]/g, m => '\\' + m)}'([\\s\\S]*?)\\n\\)?;?\\n(?:\\/\\/|const|socialRouter|$)`,
   );
   const block = re.exec(serverSrc)?.[1];
   if (!block) return null;

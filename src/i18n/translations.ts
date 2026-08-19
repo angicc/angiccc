@@ -420,6 +420,16 @@ export type TranslationKeys = {
   studio_focus_label: string; studio_focus_placeholder: string;
   studio_questions_label: string; studio_cards_label: string;
   studio_generation_failed: string; studio_generating: string; studio_generate: string;
+  studio_checking: string;
+  studio_quality_clean: string;
+  studio_quality_title: string;
+  studio_quality_short: string;
+  studio_quality_hint: string;
+  studio_issue_ungrounded: string;
+  studio_issue_invented: string;
+  studio_issue_duplicate: string;
+  studio_issue_length_bias: string;
+  studio_issue_script: string;
   studio_my_sets: string; studio_no_sets: string; studio_delete_set: string;
   studio_flashcards: string; studio_questions: string; studio_best: string;
   studio_practice: string; studio_review_cards: string;
@@ -923,6 +933,16 @@ const EN: TranslationKeys = {
     studio_questions_label: 'Quiz questions', studio_cards_label: 'Flashcards',
     studio_generation_failed: 'The AI response could not be validated. Try again — a fresh run usually fixes it.',
     studio_generating: 'Engineering your study kit…', studio_generate: 'Generate study kit',
+    studio_checking: 'Checking and topping up…',
+    studio_quality_clean: 'Every generated item was grounded in your source and passed the quality checks.',
+    studio_quality_title: 'Quality pass: {n} item(s) removed',
+    studio_quality_short: 'Still short by {q} question(s) and {c} flashcard(s) — your source may not support more.',
+    studio_quality_hint: 'Removed items were not saved. Uncheck anything else you do not want before saving.',
+    studio_issue_ungrounded: 'not supported by your source text',
+    studio_issue_invented: 'cited a date or figure that is not in your source',
+    studio_issue_duplicate: 'repeated an earlier item',
+    studio_issue_length_bias: '{pct}% of questions give the answer away by being the longest option',
+    studio_issue_script: 'some text came back in the wrong alphabet',
     studio_my_sets: 'My study sets', studio_no_sets: 'No study sets yet — generate your first kit above.',
     studio_delete_set: 'Delete set', studio_flashcards: 'flashcards', studio_questions: 'questions', studio_best: 'best',
     studio_practice: 'Practice', studio_review_cards: 'Cards',
@@ -1418,6 +1438,16 @@ export const T: Translations = {
     studio_questions_label: 'Preguntas de cuestionario', studio_cards_label: 'Tarjetas',
     studio_generation_failed: 'La respuesta de la IA no pudo validarse. Inténtalo de nuevo: una nueva ejecución suele arreglarlo.',
     studio_generating: 'Creando tu kit de estudio…', studio_generate: 'Generar kit de estudio',
+    studio_checking: 'Comprobando y completando…',
+    studio_quality_clean: 'Todo lo generado se basa en tu texto y superó los controles de calidad.',
+    studio_quality_title: 'Control de calidad: {n} elemento(s) eliminados',
+    studio_quality_short: 'Aún faltan {q} pregunta(s) y {c} tarjeta(s): puede que tu texto no dé para más.',
+    studio_quality_hint: 'Lo eliminado no se guardó. Desmarca lo demás que no quieras antes de guardar.',
+    studio_issue_ungrounded: 'sin respaldo en tu texto fuente',
+    studio_issue_invented: 'citaba una fecha o cifra que no está en tu fuente',
+    studio_issue_duplicate: 'repetía un elemento anterior',
+    studio_issue_length_bias: 'el {pct}% de las preguntas delatan la respuesta por ser la opción más larga',
+    studio_issue_script: 'parte del texto volvió en un alfabeto incorrecto',
     studio_my_sets: 'Mis sets de estudio', studio_no_sets: 'Aún no hay sets de estudio: genera tu primer kit arriba.',
     studio_delete_set: 'Eliminar set', studio_flashcards: 'tarjetas', studio_questions: 'preguntas', studio_best: 'récord',
     studio_practice: 'Practicar', studio_review_cards: 'Tarjetas',
@@ -1911,6 +1941,16 @@ export const T: Translations = {
     studio_questions_label: 'Вопросы викторины', studio_cards_label: 'Карточки',
     studio_generation_failed: 'Ответ ИИ не прошёл проверку. Попробуйте ещё раз — повторный запуск обычно помогает.',
     studio_generating: 'Собираем ваш учебный набор…', studio_generate: 'Создать учебный набор',
+    studio_checking: 'Проверка и дополнение…',
+    studio_quality_clean: 'Всё созданное опирается на ваш текст и прошло проверку качества.',
+    studio_quality_title: 'Проверка качества: удалено элементов — {n}',
+    studio_quality_short: 'Не хватает ещё {q} вопрос(ов) и {c} карточек — возможно, источник не даёт больше.',
+    studio_quality_hint: 'Удалённое не сохранено. Снимите отметки с остального перед сохранением.',
+    studio_issue_ungrounded: 'не подтверждено вашим исходным текстом',
+    studio_issue_invented: 'указана дата или число, которых нет в источнике',
+    studio_issue_duplicate: 'повторяет предыдущий элемент',
+    studio_issue_length_bias: '{pct}% вопросов выдают ответ тем, что он самый длинный вариант',
+    studio_issue_script: 'часть текста вернулась не тем алфавитом',
     studio_my_sets: 'Мои учебные наборы', studio_no_sets: 'Наборов пока нет — создайте первый выше.',
     studio_delete_set: 'Удалить набор', studio_flashcards: 'карточек', studio_questions: 'вопросов', studio_best: 'рекорд',
     studio_practice: 'Практика', studio_review_cards: 'Карточки',
@@ -2404,6 +2444,16 @@ export const T: Translations = {
     studio_questions_label: 'Прашања за квиз', studio_cards_label: 'Картички',
     studio_generation_failed: 'Одговорот на ВИ не помина проверка. Обиди се повторно — нов обид обично помага.',
     studio_generating: 'Го составуваме твојот комплет за учење…', studio_generate: 'Создај комплет за учење',
+    studio_checking: 'Проверка и дополнување…',
+    studio_quality_clean: 'Сè создадено се потпира на вашиот текст и ги помина проверките за квалитет.',
+    studio_quality_title: 'Проверка на квалитет: отстранети {n} ставки',
+    studio_quality_short: 'Сè уште недостигаат {q} прашања и {c} картички — можеби изворот не дава повеќе.',
+    studio_quality_hint: 'Отстранетото не е зачувано. Отштиклирајте го останатото што не го сакате пред да зачувате.',
+    studio_issue_ungrounded: 'без поткрепа во вашиот изворен текст',
+    studio_issue_invented: 'наведува датум или бројка што ја нема во изворот',
+    studio_issue_duplicate: 'повторува претходна ставка',
+    studio_issue_length_bias: '{pct}% од прашањата го откриваат одговорот затоа што е најдолгата опција',
+    studio_issue_script: 'дел од текстот се врати со погрешно писмо',
     studio_my_sets: 'Мои комплети за учење', studio_no_sets: 'Сè уште нема комплети — создај го првиот погоре.',
     studio_delete_set: 'Избриши комплет', studio_flashcards: 'картички', studio_questions: 'прашања', studio_best: 'рекорд',
     studio_practice: 'Вежбај', studio_review_cards: 'Картички',

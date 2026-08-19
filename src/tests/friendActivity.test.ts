@@ -64,9 +64,20 @@ describe('friend activity log', () => {
 
 describe('simulated friend activity', () => {
   it('is deterministic — the same friend yields the same feed twice', () => {
+    // `now` is pinned: the feed places today's entries inside the part of the
+    // day that has elapsed, so it is a function of the clock as well as the
+    // seed. Passing the same instant is what makes "same input, same output"
+    // a claim about the code rather than about how fast the test ran.
+    const at = Date.parse('2026-08-19T14:37:00Z');
+    const a = simulateFriendActivity(friend(), 7, at);
+    const b = simulateFriendActivity(friend(), 7, at);
+    expect(a.map(e => e.id)).toEqual(b.map(e => e.id));
+    expect(a.map(e => e.at)).toEqual(b.map(e => e.at));
+  });
+
+  it('is stable across a millisecond, without pinning the clock', () => {
     const a = simulateFriendActivity(friend());
     const b = simulateFriendActivity(friend());
-    expect(a.map(e => e.id)).toEqual(b.map(e => e.id));
     expect(a.map(e => e.at)).toEqual(b.map(e => e.at));
   });
 
@@ -82,7 +93,27 @@ describe('simulated friend activity', () => {
 
   it('never dates an entry in the future', () => {
     const now = Date.now();
-    expect(simulateFriendActivity(friend()).every(e => Date.parse(e.at) <= now)).toBe(true);
+    expect(simulateFriendActivity(friend(), 7, now).every(e => Date.parse(e.at) <= now)).toBe(true);
+  });
+
+  it('never dates an entry in the future in the small hours', () => {
+    // The case the old clamp existed for: just after midnight, every hour in
+    // the 8–19 band the generator used to draw from is still ahead.
+    const justAfterMidnight = Date.parse('2026-08-19T00:39:00Z');
+    const feed = simulateFriendActivity(friend(), 7, justAfterMidnight);
+    expect(feed.length).toBeGreaterThan(0);
+    expect(feed.every(e => Date.parse(e.at) <= justAfterMidnight)).toBe(true);
+  });
+
+  it('does not collapse today\u2019s entries onto one instant', () => {
+    const noon = Date.parse('2026-08-19T12:00:00Z');
+    const today = [
+      ...simulateFriendActivity(friend({ id: 'a', streak: 60 }), 1, noon),
+      ...simulateFriendActivity(friend({ id: 'b', streak: 60 }), 1, noon),
+      ...simulateFriendActivity(friend({ id: 'c', streak: 60 }), 1, noon),
+    ];
+    expect(today.length).toBeGreaterThan(1);
+    expect(new Set(today.map(e => e.at)).size).toBeGreaterThan(1);
   });
 
   it('gives a busier friend more activity than a dormant one', () => {

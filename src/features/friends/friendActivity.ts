@@ -92,13 +92,21 @@ export interface ActivityFriend { id: string; username: string; xp: number; stre
  * Tuesday. Busier friends (higher XP, longer streaks) generate more entries,
  * which keeps the feed proportional to the leaderboard rather than uniform.
  */
-export function simulateFriendActivity(friend: ActivityFriend, days = 7): FriendEvent[] {
+export function simulateFriendActivity(friend: ActivityFriend, days = 7, now = Date.now()): FriendEvent[] {
   const out: FriendEvent[] = [];
   // A friend on a long streak studies most days; a casual one rarely.
   const activeChance = Math.min(0.85, 0.25 + friend.streak / 60);
 
+  // Minutes of today that have actually happened. Today's entries are drawn
+  // from this window rather than from the 8–19 band, so one can never be
+  // stamped later than the moment it is read — at 00:39 every hour in that
+  // band is still ahead of the clock.
+  const startOfToday = new Date(now);
+  startOfToday.setHours(0, 0, 0, 0);
+  const elapsedMinutes = Math.max(1, Math.floor((now - startOfToday.getTime()) / 60_000));
+
   for (let d = 0; d < days; d++) {
-    const date = new Date();
+    const date = new Date(now);
     date.setDate(date.getDate() - d);
     const dayStamp = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     const seed = hash(`${friend.id}:${dayStamp}`);
@@ -113,12 +121,22 @@ export function simulateFriendActivity(friend: ActivityFriend, days = 7): Friend
     const bits = (n: number) => (seed >>> n);
 
     const kind = seed % 4;
-    // Spread entries through the day rather than stacking them all at midnight.
-    date.setHours(8 + (bits(8) % 12), bits(16) % 60, 0, 0);
-    // …but never past the present moment. For TODAY the chosen hour can still
-    // be ahead of the clock — at 00:39 every hour in the 8–19 band is — which
-    // would show a friend's activity as having happened later today.
-    const at = new Date(Math.min(date.getTime(), Date.now())).toISOString();
+    if (d === 0) {
+      // Somewhere in the part of today that has already happened.
+      //
+      // The earlier version clamped a future timestamp down to Date.now(),
+      // which was worse than the bug it fixed: every one of today's entries
+      // collapsed onto the same instant, and the function stopped being a
+      // function — two calls a millisecond apart returned different data. It
+      // is quantised to the minute here so the result is stable for anyone
+      // reading it, and `now` is a parameter so callers can pin it outright.
+      const offset = bits(8) % elapsedMinutes;
+      date.setHours(0, offset, 0, 0);
+    } else {
+      // Spread entries through the day rather than stacking them at midnight.
+      date.setHours(8 + (bits(8) % 12), bits(16) % 60, 0, 0);
+    }
+    const at = date.toISOString();
     const eraId = ERAS_POOL[bits(5) % ERAS_POOL.length];
     const base = { friendId: friend.id, friendName: friend.username, at, simulated: true as const };
 
@@ -146,10 +164,13 @@ export function simulateFriendActivity(friend: ActivityFriend, days = 7): Friend
  * first. Events for people no longer on the friends list are dropped, so
  * removing a friend also removes their noise.
  */
-export function buildActivityFeed(userId: string, friends: ActivityFriend[], limit = 40): FriendEvent[] {
+export function buildActivityFeed(
+  userId: string, friends: ActivityFriend[], limit = 40, now = Date.now(),
+): FriendEvent[] {
   const known = new Set(friends.map(f => f.id));
   const real = loadActivity(userId).filter(e => known.has(e.friendId) || e.type === 'friend_added');
-  const simulated = friends.flatMap(f => simulateFriendActivity(f));
+  // One `now` for every friend, so the whole feed is a snapshot of one instant.
+  const simulated = friends.flatMap(f => simulateFriendActivity(f, 7, now));
   return [...real, ...simulated]
     .sort((a, b) => Date.parse(b.at) - Date.parse(a.at))
     .slice(0, limit);

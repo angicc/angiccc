@@ -38,7 +38,7 @@ export interface StudioRequest {
 export const SOURCE_MIN_CHARS = 200;
 export const SOURCE_MAX_CHARS = 12000;
 
-const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian', de: 'German', fr: 'French' };
+export const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian', de: 'German', fr: 'French' };
 
 export function buildStudioPrompt(req: StudioRequest, language: string): string {
   const langName = LANG_NAMES[language] ?? 'English';
@@ -62,6 +62,10 @@ Produce:
 QUALITY RULES:
 - The correct option must never be quotable verbatim from the question stem.
 - Wrong options must be historically plausible, same category as the answer (a date vs dates, a person vs persons).
+- ALL FOUR OPTIONS MUST BE A SIMILAR LENGTH. A correct answer that is visibly longer or more detailed than the distractors can be picked out without reading the question. If the right answer needs a qualifier, give the wrong ones one too.
+- Spread the correct answers across all four positions — not mostly A and B.
+- Do not write two questions that test the same fact.
+- Never introduce a date, name or figure that is not in the SOURCE TEXT. If the source does not give a year, do not invent one.
 - No "all of the above" / "none of the above".
 
 FINAL LANGUAGE CHECK before you answer: every string value in your JSON must be in ${langName} — if any flashcard, question, option, or explanation is not in ${langName}, rewrite it in ${langName} first. Respond ONLY with JSON, no fences:
@@ -128,4 +132,36 @@ export function parseGeneratedKit(raw: string): GeneratedKit | null {
   const summary = str(p.summary);
   if (cards.length === 0 && questions.length === 0 && facts.length === 0) return null;
   return { title, summary, facts, cards, questions };
+}
+
+
+/**
+ * Parse a repair response: flashcards and questions only, no title or summary.
+ *
+ * The repair pass tops up a kit that already has its framing, so anything else
+ * the model sends back is ignored rather than allowed to overwrite a title the
+ * learner may have already seen. Validation is the same as the first pass — a
+ * second call earns no leniency.
+ */
+export function parseRepairBatch(raw: string): { cards: StudioFlashcard[]; questions: StudioQuestion[] } | null {
+  let p: Record<string, unknown>;
+  try { p = safeJsonParse<Record<string, unknown>>(raw); } catch { return null; }
+  if (!p || typeof p !== 'object') return null;
+
+  const cards: StudioFlashcard[] = Array.isArray(p.flashcards)
+    ? p.flashcards
+        .map(c0 => {
+          const c = c0 as Record<string, unknown>;
+          return { front: str(c?.front), back: str(c?.back) };
+        })
+        .filter(c => c.front && c.back)
+        .slice(0, 24)
+    : [];
+
+  const questions: StudioQuestion[] = Array.isArray(p.questions)
+    ? p.questions.map(validQuestion).filter((q): q is StudioQuestion => q !== null).slice(0, 12)
+    : [];
+
+  if (cards.length === 0 && questions.length === 0) return null;
+  return { cards, questions };
 }

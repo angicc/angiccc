@@ -5,7 +5,7 @@
 // their personal library — practicable forever via the built-in flashcard
 // reviewer and quiz runner, with per-set best scores and XP rewards.
 import { useCallback, useMemo, useState } from 'react';
-import { Wand2, FileText, Layers, HelpCircle, Sparkles, Trash2, Play, RotateCcw, CheckCircle2, XCircle, ChevronRight, BookOpen, Trophy, ArrowLeft, Star } from 'lucide-react';
+import { Wand2, FileText, Layers, HelpCircle, Sparkles, Trash2, Play, RotateCcw, CheckCircle2, XCircle, ChevronRight, BookOpen, Trophy, ArrowLeft, Star, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -23,16 +23,20 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { streamChatResponse } from '@/services/aiGateway';
 import { addBonusXp } from '@/features/progress/progressStore';
 import {
-  buildStudioPrompt, parseGeneratedKit, SOURCE_MIN_CHARS, SOURCE_MAX_CHARS,
-  type GeneratedKit, type StudioQuestion,
+  buildStudioPrompt, parseGeneratedKit, parseRepairBatch, LANG_NAMES,
+  SOURCE_MIN_CHARS, SOURCE_MAX_CHARS,
+  type GeneratedKit, type StudioQuestion, type StudioRequest,
 } from '@/features/studio/studioEngine';
+import {
+  assessKit, buildRepairPrompt, mergeRepair, type KitReport,
+} from '@/features/studio/studioQuality';
 import {
   listStudySets, saveStudySet, deleteStudySet, recordPracticeRun, type StudySet,
 } from '@/features/studio/studySetStore';
 
 type Phase =
   | { kind: 'create' }
-  | { kind: 'review'; kit: GeneratedKit; source: string }
+  | { kind: 'review'; kit: GeneratedKit; source: string; report: KitReport }
   | { kind: 'practice'; set: StudySet }
   | { kind: 'cards'; set: StudySet };
 
@@ -63,7 +67,7 @@ export default function StudioPage() {
         <PlanGate plan="pro" description={t.studio_gate_desc}>
           {phase.kind === 'create' && (
             <CreateView
-              onGenerated={(kit, source) => setPhase({ kind: 'review', kit, source })}
+              onGenerated={(kit, source, report) => setPhase({ kind: 'review', kit, source, report })}
               sets={sets}
               onPractice={set => setPhase({ kind: 'practice', set })}
               onCards={set => setPhase({ kind: 'cards', set })}
@@ -77,6 +81,7 @@ export default function StudioPage() {
             <ReviewView
               kit={phase.kit}
               source={phase.source}
+              report={phase.report}
               onSave={(kit, name) => {
                 if (currentUser) { saveStudySet(currentUser.id, kit, name, phase.source); refreshSets(); }
                 setPhase({ kind: 'create' });
@@ -109,7 +114,7 @@ export default function StudioPage() {
 // ─── Create: paste source, tune counts, generate ──────────────────────────────
 
 function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, trackAiMessage, language }: {
-  onGenerated: (kit: GeneratedKit, source: string) => void;
+  onGenerated: (kit: GeneratedKit, source: string, report: KitReport) => void;
   sets: StudySet[];
   onPractice: (s: StudySet) => void;
   onCards: (s: StudySet) => void;
@@ -126,36 +131,78 @@ function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, t
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [failed, setFailed] = useState(false);
+  // Which pass is running, so the button can say "checking" rather than
+  // appearing to hang for a second time with the same label.
+  const [stage, setStage] = useState<'drafting' | 'checking'>('drafting');
 
   const tooShort = source.trim().length > 0 && source.trim().length < SOURCE_MIN_CHARS;
 
+  const SYSTEM = 'You are a meticulous educational content engineer. Follow the user instructions exactly and answer only with the requested JSON.';
+
+  /** One streamed completion, collected. */
+  const ask = useCallback(async (prompt: string, maxTokens: number): Promise<string> => {
+    let raw = '';
+    // A full kit (summary + up to 20 flashcards + up to 10 questions with
+    // explanations) is large, especially in Cyrillic; the gateway's default
+    // 1024 truncates the JSON mid-array and the whole kit fails to parse.
+    for await (const chunk of streamChatResponse(
+      [{ role: 'user', content: prompt }], undefined, SYSTEM, maxTokens,
+    )) {
+      raw += chunk;
+    }
+    return raw;
+  }, []);
+
+  /**
+   * Generate, measure, and top up what is missing.
+   *
+   * The old flow was one call and a shape check: whatever failed validation was
+   * dropped without a word, so asking for 10 questions and receiving 6 looked
+   * identical to a source that only supported 6. Now the kit is assessed —
+   * grounding against the source, duplicates, answer positions, length bias —
+   * and a SECOND call is spent only on the shortfall, told what was rejected
+   * and what is already covered. The learner sees the verdict either way.
+   */
   const generate = useCallback(async () => {
     if (loading || source.trim().length < SOURCE_MIN_CHARS) return;
     const { allowed } = canAI();
     if (!allowed) return;
-    setLoading(true); setError(null); setFailed(false);
+    setLoading(true); setError(null); setFailed(false); setStage('drafting');
     try {
-      const prompt = buildStudioPrompt(
-        { sourceText: source.trim(), questionCount, cardCount, focus: focus.trim() || undefined },
-        language,
-      );
-      let raw = '';
-      for await (const chunk of streamChatResponse([{ role: 'user', content: prompt }], undefined,
-        'You are a meticulous educational content engineer. Follow the user instructions exactly and answer only with the requested JSON.',
-        4096, // a full kit (summary + up to 10 flashcards + up to 10 quiz questions
-              // with explanations) is large, especially in Cyrillic; the default
-              // 1024 truncates the JSON mid-array and the kit fails to parse.
-      )) {
-        raw += chunk;
-      }
+      const req: StudioRequest = {
+        sourceText: source.trim(), questionCount, cardCount,
+        focus: focus.trim() || undefined,
+      };
+      const raw = await ask(buildStudioPrompt(req, language), 4096);
       trackAiMessage();
-      const kit = parseGeneratedKit(raw);
-      if (!kit) { setFailed(true); return; }
-      onGenerated(kit, source.trim());
+
+      const parsed = parseGeneratedKit(raw);
+      if (!parsed) { setFailed(true); return; }
+
+      let { kit, report } = assessKit(parsed, req, language);
+
+      // Exactly one repair pass. A second would cost another call for
+      // diminishing returns, and an unbounded loop could burn a learner's
+      // whole daily AI allowance on one study set.
+      if (report.needsRepair && (report.shortfall.questions > 0 || report.shortfall.cards > 0)) {
+        setStage('checking');
+        const { allowed: stillAllowed } = canAI();
+        if (stillAllowed) {
+          const repairRaw = await ask(
+            buildRepairPrompt(kit, report, req, language, LANG_NAMES[language] ?? 'English'),
+            3072,
+          );
+          trackAiMessage();
+          const extra = parseRepairBatch(repairRaw);
+          if (extra) ({ kit, report } = mergeRepair(kit, extra, req, language));
+        }
+      }
+
+      onGenerated(kit, source.trim(), report);
     } catch (err) {
       setError(err);
-    } finally { setLoading(false); }
-  }, [loading, source, questionCount, cardCount, focus, language, canAI, trackAiMessage, onGenerated]);
+    } finally { setLoading(false); setStage('drafting'); }
+  }, [loading, source, questionCount, cardCount, focus, language, canAI, trackAiMessage, onGenerated, ask]);
 
   return (
     <div className="space-y-6">
@@ -190,7 +237,7 @@ function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, t
 
           <Button className="w-full gap-2" onClick={generate} disabled={loading || source.trim().length < SOURCE_MIN_CHARS}>
             {loading
-              ? <><Sparkles className="w-4 h-4 animate-pulse" />{t.studio_generating}</>
+              ? <><Sparkles className="w-4 h-4 animate-pulse" />{stage === 'checking' ? t.studio_checking : t.studio_generating}</>
               : <><Wand2 className="w-4 h-4" />{t.studio_generate}</>}
           </Button>
         </CardContent>
@@ -269,8 +316,8 @@ function CountPicker({ label, icon: Icon, value, options, onChange, disabled }: 
 
 // ─── Review: curate the generated kit, then save ──────────────────────────────
 
-function ReviewView({ kit, source, onSave, onDiscard }: {
-  kit: GeneratedKit; source: string;
+function ReviewView({ kit, source, report, onSave, onDiscard }: {
+  kit: GeneratedKit; source: string; report: KitReport;
   onSave: (kit: GeneratedKit, name: string) => void;
   onDiscard: () => void;
 }) {
@@ -296,6 +343,8 @@ function ReviewView({ kit, source, onSave, onDiscard }: {
         </div>
         <Badge variant="outline" className="text-primary border-primary/40">{keptCount} {t.studio_kept}</Badge>
       </div>
+
+      <QualityReport report={report} />
 
       {kit.summary && (
         <Card className="border-border bg-primary/5">
@@ -534,6 +583,70 @@ function CardReviewer({ set, onExit }: { set: StudySet; onExit: () => void }) {
           {idx + 1 >= set.cards.length ? t.studio_done : t.studio_next_card}<ChevronRight className="w-4 h-4" />
         </Button>
       </div>
+    </div>
+  );
+}
+
+
+// ─── What the generator actually produced ────────────────────────────────────
+// The Studio used to hand over whatever survived validation with no account of
+// what it threw away, so a short kit looked like a thin source and a kit full
+// of length-biased questions looked fine. This says what happened, in the
+// learner's language, and stays quiet when there is nothing to say.
+function QualityReport({ report }: { report: KitReport }) {
+  const { t } = useLanguage();
+  const droppedTotal = report.dropped.questions + report.dropped.cards + report.dropped.facts;
+  const biasedShare = Math.round(report.lengthBiasRate * 100);
+
+  // Group by kind: five identical "not supported by your source" lines is
+  // noise, "5 items were not supported by your source" is information.
+  const counts = new Map<string, number>();
+  for (const issue of report.issues) {
+    if (issue.kind === 'short_count') continue;   // the shortfall line covers it
+    counts.set(issue.kind, (counts.get(issue.kind) ?? 0) + 1);
+  }
+
+  const label: Record<string, string> = {
+    ungrounded: t.studio_issue_ungrounded,
+    invented_number: t.studio_issue_invented,
+    duplicate: t.studio_issue_duplicate,
+    length_bias: t.studio_issue_length_bias.replace('{pct}', String(biasedShare)),
+    wrong_script: t.studio_issue_script,
+  };
+
+  if (droppedTotal === 0 && counts.size === 0) {
+    return (
+      <div className="flex items-center gap-2 rounded-lg border border-emerald-400/30 bg-emerald-400/5 px-3 py-2">
+        <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+        <p className="text-xs text-emerald-300/90">{t.studio_quality_clean}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-lg border border-amber-400/25 bg-amber-400/5 px-3 py-2.5 space-y-1.5">
+      <p className="text-xs font-semibold text-amber-300/90">
+        {t.studio_quality_title.replace('{n}', String(droppedTotal))}
+      </p>
+      <ul className="space-y-1">
+        {[...counts].map(([kind, n]) => (
+          <li key={kind} className="flex items-start gap-2 text-[11px] text-muted-foreground">
+            <span className="text-amber-400/70 mt-0.5">•</span>
+            <span>{kind === 'length_bias' ? label[kind] : `${n}× ${label[kind] ?? kind}`}</span>
+          </li>
+        ))}
+        {(report.shortfall.questions > 0 || report.shortfall.cards > 0) && (
+          <li className="flex items-start gap-2 text-[11px] text-muted-foreground">
+            <span className="text-amber-400/70 mt-0.5">•</span>
+            <span>
+              {t.studio_quality_short
+                .replace('{q}', String(report.shortfall.questions))
+                .replace('{c}', String(report.shortfall.cards))}
+            </span>
+          </li>
+        )}
+      </ul>
+      <p className="text-[11px] text-muted-foreground/70">{t.studio_quality_hint}</p>
     </div>
   );
 }
