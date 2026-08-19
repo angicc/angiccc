@@ -1,5 +1,5 @@
 {
-  "_comment": "Maps each Territory Map topic to a verified entity in the aourednik/historical-basemaps dataset. 'year' is the world_{year}.geojson snapshot; 'match' are NAME substrings (accent-insensitive); 'exact' requires an exact NAME match. Topics not listed here (migration routes, oceanic voyages, pre-Columbian, and multi-state composites without a clean single entity) intentionally keep their curated in-app geometry.",
+  "_comment": "Maps each Territory Map topic to a verified entity in the aourednik/historical-basemaps dataset. 'year' is the world_{year}.geojson snapshot; 'match' are NAME substrings (accent-insensitive); 'exact' requires an exact NAME match. Topics not listed here (migration routes, oceanic voyages, pre-Columbian, and multi-state composites without a clean single entity) intentionally keep their curated in-app geometry. | An entry may carry `entities` (one feature, name and colour per polity — what makes the map read as an atlas plate) instead of `match` (all polities unioned into one unnamed mass).",
   "source_repo": "aourednik/historical-basemaps",
   "source_base": "https://raw.githubusercontent.com/aourednik/historical-basemaps/master/geojson",
   "simplify_tolerance": 0.04,
@@ -18,7 +18,45 @@
         "Elam"
       ],
       "fill_color": "#facc15",
-      "stroke_color": "#fde047"
+      "stroke_color": "#fde047",
+      "entities": [
+        {
+          "entity_name": "Ancient Egypt",
+          "match": [
+            "Egypt"
+          ],
+          "fill_color": "#facc15",
+          "stroke_color": "#fde047",
+          "tolerance": 0.03
+        },
+        {
+          "entity_name": "Assyria",
+          "match": [
+            "Assyria"
+          ],
+          "fill_color": "#22c55e",
+          "stroke_color": "#4ade80",
+          "tolerance": 0.03
+        },
+        {
+          "entity_name": "Babylonia",
+          "match": [
+            "Babylonia"
+          ],
+          "fill_color": "#e879f9",
+          "stroke_color": "#f0abfc",
+          "tolerance": 0.03
+        },
+        {
+          "entity_name": "Elam",
+          "match": [
+            "Elam"
+          ],
+          "fill_color": "#fb923c",
+          "stroke_color": "#fdba74",
+          "tolerance": 0.03
+        }
+      ]
     },
     {
       "topic_id": "classical-greece",
@@ -112,7 +150,33 @@
         "Kingdom of Antigonus"
       ],
       "fill_color": "#8b5cf6",
-      "stroke_color": "#a78bfa"
+      "stroke_color": "#a78bfa",
+      "entities": [
+        {
+          "entity_name": "Ptolemaic Egypt",
+          "match": [
+            "Ptolemaic Kingdom"
+          ],
+          "fill_color": "#facc15",
+          "stroke_color": "#fde047"
+        },
+        {
+          "entity_name": "Seleucid Empire",
+          "match": [
+            "Seleucid Kingdom"
+          ],
+          "fill_color": "#8b5cf6",
+          "stroke_color": "#a78bfa"
+        },
+        {
+          "entity_name": "Antigonid Macedon",
+          "match": [
+            "Kingdom of Antigonus"
+          ],
+          "fill_color": "#3b82f6",
+          "stroke_color": "#60a5fa"
+        }
+      ]
     },
     {
       "topic_id": "byzantine-empire",
@@ -168,7 +232,8 @@
         "Cordoba"
       ],
       "fill_color": "#10b981",
-      "stroke_color": "#34d399"
+      "stroke_color": "#34d399",
+      "tolerance": 0.02
     },
     {
       "topic_id": "khmer-empire",
@@ -181,7 +246,27 @@
         "Khmer Empire"
       ],
       "fill_color": "#14b8a6",
-      "stroke_color": "#2dd4bf"
+      "stroke_color": "#2dd4bf",
+      "entities": [
+        {
+          "entity_name": "Khmer Empire",
+          "match": [
+            "Khmer Empire"
+          ],
+          "fill_color": "#f59e0b",
+          "stroke_color": "#fbbf24",
+          "tolerance": 0.02
+        },
+        {
+          "entity_name": "Champa",
+          "match": [
+            "Champa City States"
+          ],
+          "fill_color": "#f43f5e",
+          "stroke_color": "#fb7185",
+          "tolerance": 0.02
+        }
+      ]
     },
     {
       "topic_id": "medieval-japan",
@@ -221,7 +306,45 @@
         "Songhai"
       ],
       "fill_color": "#eab308",
-      "stroke_color": "#facc15"
+      "stroke_color": "#facc15",
+      "entities": [
+        {
+          "entity_name": "Songhai Empire",
+          "match": [
+            "Songhai"
+          ],
+          "fill_color": "#22c55e",
+          "stroke_color": "#4ade80",
+          "tolerance": 0.02
+        },
+        {
+          "entity_name": "Mali",
+          "match": [
+            "Mali"
+          ],
+          "fill_color": "#facc15",
+          "stroke_color": "#fde047",
+          "tolerance": 0.02
+        },
+        {
+          "entity_name": "Hausa city-states",
+          "match": [
+            "Hausa States"
+          ],
+          "fill_color": "#38bdf8",
+          "stroke_color": "#7dd3fc",
+          "tolerance": 0.02
+        },
+        {
+          "entity_name": "Kanem-Bornu",
+          "match": [
+            "Bornu-Kanem"
+          ],
+          "fill_color": "#a855f7",
+          "stroke_color": "#c084fc",
+          "tolerance": 0.02
+        }
+      ]
     },
     {
       "topic_id": "hundred-years-war",
@@ -236,7 +359,25 @@
       ],
       "exact": true,
       "fill_color": "#3b82f6",
-      "stroke_color": "#60a5fa"
+      "stroke_color": "#60a5fa",
+      "entities": [
+        {
+          "entity_name": "Kingdom of France",
+          "match": [
+            "France"
+          ],
+          "fill_color": "#3b82f6",
+          "stroke_color": "#60a5fa"
+        },
+        {
+          "entity_name": "English Crown lands",
+          "match": [
+            "English territory"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171"
+        }
+      ]
     },
     {
       "topic_id": "mughal-empire",
@@ -349,7 +490,8 @@
       ],
       "exact": true,
       "fill_color": "#14b8a6",
-      "stroke_color": "#2dd4bf"
+      "stroke_color": "#2dd4bf",
+      "tolerance": 0.008
     },
     {
       "topic_id": "slavic-mission",
@@ -363,7 +505,48 @@
         "Byzantine Empire"
       ],
       "fill_color": "#a855f7",
-      "stroke_color": "#c084fc"
+      "stroke_color": "#c084fc",
+      "entities": [
+        {
+          "entity_name": "Great Moravia",
+          "match": [
+            "Great Moravia"
+          ],
+          "fill_color": "#38bdf8",
+          "stroke_color": "#7dd3fc",
+          "tolerance": 0.02
+        },
+        {
+          "entity_name": "Byzantine Empire",
+          "match": [
+            "Byzantine Empire"
+          ],
+          "fill_color": "#7c3aed",
+          "stroke_color": "#a78bfa",
+          "tolerance": 0.02
+        },
+        {
+          "entity_name": "Bulgaria",
+          "match": [
+            "Bulgars"
+          ],
+          "fill_color": "#16a34a",
+          "stroke_color": "#4ade80",
+          "tolerance": 0.02,
+          "exclude": [
+            "Volga Bulgars"
+          ]
+        },
+        {
+          "entity_name": "Kyivan Rus",
+          "match": [
+            "Kyivan Rus"
+          ],
+          "fill_color": "#f59e0b",
+          "stroke_color": "#fbbf24",
+          "tolerance": 0.02
+        }
+      ]
     },
     {
       "topic_id": "viking-age",

@@ -35,3 +35,6 @@ dist-ssr
 .claude/
 public/angiccc-latest.zip
 scripts/.cache/
+
+# Historical-basemaps year files pulled by scripts/gen* / fetch_territory_polygons.py
+.cache/

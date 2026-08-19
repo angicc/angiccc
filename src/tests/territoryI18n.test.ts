@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import fs from 'fs';
+import path from 'path';
 import { TERRITORY_TOPICS } from '@/features/content/timelineTerritoryData';
 import { POLY_LABEL_I18N } from '@/i18n/territoryMarkerTranslations';
 import type { Language } from '@/i18n/translations';
@@ -72,6 +74,43 @@ describe('Territory Map content translations', () => {
       }
     }
     expect(broken).toEqual([]);
+  });
+
+  /**
+   * The names in public/data/map-territories/*.json — the layer that actually
+   * renders.
+   *
+   * The map prefers this generated GeoJSON over the TypeScript polygons
+   * (TimelineMapPage: `realGeomRef.current[selected.id] ?? selected.polygons`),
+   * so for the 32 topics that have a file, the TS labels below are never drawn
+   * at all. Checking only those left 25 rendered names — "World War I",
+   * "Roman Empire (c. 200 CE)" — with no translation and nothing to say so.
+   */
+  function runtimeEntityNames(): string[] {
+    const dir = path.resolve(__dirname, '../../public/data/map-territories');
+    if (!fs.existsSync(dir)) return [];
+    const names = new Set<string>();
+    for (const file of fs.readdirSync(dir)) {
+      if (!file.endsWith('.json') || file === '_index.json') continue;
+      const fc = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+      for (const feature of fc.features ?? []) {
+        const name = feature?.properties?.entity_name;
+        if (typeof name === 'string' && name.trim()) names.add(name);
+      }
+    }
+    return [...names];
+  }
+
+  it('has a translation entry for every name the generated geometry draws', () => {
+    const names = runtimeEntityNames();
+    expect(names.length).toBeGreaterThan(20);   // an empty read is a bug, not a pass
+    const gaps = names.flatMap(name => {
+      const entry = POLY_LABEL_I18N[name];
+      if (!entry) return [`${name} → no entry at all`];
+      const missing = CONTENT_LANGS.filter(l => !entry[l]?.trim());
+      return missing.length > 0 ? [`${name} → ${missing.join(', ')}`] : [];
+    });
+    expect(gaps).toEqual([]);
   });
 
   it('has a translation entry for every polygon label the map draws', () => {

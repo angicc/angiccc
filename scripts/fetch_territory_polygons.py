@@ -98,15 +98,26 @@ def fetch_year(base: str, year: str) -> dict:
     return r.json()
 
 
-def select_features(fc: dict, matches: list[str], exact: bool) -> list[dict]:
-    """Features whose NAME (or SUBJECTO) matches any manifest term."""
+def select_features(fc: dict, matches: list[str], exact: bool, exclude: list[str] | None = None) -> list[dict]:
+    """
+    Features whose NAME (or SUBJECTO) matches any manifest term.
+
+    `exclude` exists because substring matching quietly annexes the wrong
+    country: "Bulgars" also matches "Volga Bulgars", a different people 2,000 km
+    away on the middle Volga, so the Cyril-and-Methodius map drew Danube
+    Bulgaria and a second Bulgaria in Russia as one realm. An excluded term
+    wins over a match.
+    """
     keys = [norm(m) for m in matches]
+    bans = [norm(x) for x in (exclude or [])]
     out = []
     for f in fc.get("features", []):
         props = f.get("properties", {})
         name = props.get("NAME") or props.get("name") or ""
         subj = props.get("SUBJECTO") or ""
         nn, ns = norm(name), norm(subj)
+        if any(b in nn or (ns and b in ns) for b in bans):
+            continue
         hit = False
         for k in keys:
             if exact:
@@ -192,38 +203,91 @@ def simplify_geometry(features: list[dict], tol: float):
 
 
 # ── main ──────────────────────────────────────────────────────────────────────
-def build_topic(entry: dict, base: str, tol: float) -> dict | None:
+def _feature(entry: dict, spec: dict, geom: dict) -> dict:
+    """One GeoJSON feature, carrying its own name and colour."""
     tid = entry["topic_id"]
-    print(f"→ {tid}  (world_{entry['year']} · {entry['match']})")
-    fc = fetch_year(base, entry["year"])
-    feats = select_features(fc, entry["match"], entry.get("exact", False))
-    if not feats:
-        print(f"    ✗ no matching entity — topic keeps its curated geometry")
-        return None
-    names = sorted({(f["properties"].get("NAME") or "?") for f in feats})
-    geom, vtx = simplify_geometry(feats, tol)
-    if geom is None:
-        print("    ✗ empty geometry after union/simplify")
-        return None
-    print(f"    ✓ matched {names} → {vtx} vertices")
-    feature = {
+    return {
         "type": "Feature",
         "properties": {
             "lesson_id": entry.get("lesson_id"),
             "topic_id": tid,
-            "entity_name": entry["entity_name"],
+            "entity_name": spec["entity_name"],
             "year_start": entry["year_start"],
             "year_end": entry["year_end"],
             "source": "aourednik/historical-basemaps",
             "source_snapshot": f"world_{entry['year']}",
-            "fill_color": entry.get("fill_color", "#f59e0b"),
-            "stroke_color": entry.get("stroke_color", entry.get("fill_color", "#f59e0b")),
+            "fill_color": spec.get("fill_color", entry.get("fill_color", "#f59e0b")),
+            "stroke_color": spec.get(
+                "stroke_color",
+                spec.get("fill_color", entry.get("stroke_color", entry.get("fill_color", "#f59e0b"))),
+            ),
             "stroke_width": entry.get("stroke_width", 2),
             "opacity": entry.get("opacity", 0.4),
         },
         "geometry": geom,
     }
-    return {"type": "FeatureCollection", "features": [feature]}
+
+
+def build_topic(entry: dict, base: str, tol: float) -> dict | None:
+    """
+    One topic's FeatureCollection.
+
+    TWO SHAPES OF MANIFEST ENTRY, and the difference is what the map looks like:
+
+      match:    [names]          every matched polity is UNIONED into a single
+                                 feature with one name and one colour. That is
+                                 how "Mesopotamia & Ancient Egypt" became one
+                                 undifferentiated yellow mass covering Egypt,
+                                 Assyria, Babylonia and Elam at once — the
+                                 generic-blob look, and the reason the map read
+                                 as decoration rather than history.
+
+      entities: [{...}]          each polity becomes its OWN feature with its
+                                 own name and colour. The web loader already
+                                 maps one feature to one labelled, individually
+                                 coloured territory (see toRealPolygons), so
+                                 this is what makes the map read like an atlas
+                                 plate: Egypt gold beside Assyria green, each
+                                 named where it sits.
+
+    Legacy `match` entries still work unchanged.
+    """
+    tid = entry["topic_id"]
+    fc = fetch_year(base, entry["year"])
+
+    specs = entry.get("entities")
+    if not specs:
+        specs = [{
+            "entity_name": entry["entity_name"],
+            "match": entry["match"],
+            "fill_color": entry.get("fill_color"),
+            "stroke_color": entry.get("stroke_color"),
+            "exact": entry.get("exact", False),
+        }]
+    print(f"→ {tid}  (world_{entry['year']} · {len(specs)} entit{'y' if len(specs) == 1 else 'ies'})")
+
+    features = []
+    for spec in specs:
+        feats = select_features(
+            fc, spec["match"],
+            spec.get("exact", entry.get("exact", False)),
+            spec.get("exclude", entry.get("exclude")),
+        )
+        if not feats:
+            print(f"    ✗ {spec['entity_name']}: no match for {spec['match']}")
+            continue
+        names = sorted({(f["properties"].get("NAME") or "?") for f in feats})
+        geom, vtx = simplify_geometry(feats, spec.get("tolerance", tol))
+        if geom is None:
+            print(f"    ✗ {spec['entity_name']}: empty geometry after union/simplify")
+            continue
+        print(f"    ✓ {spec['entity_name']:<38} {names} → {vtx} vertices")
+        features.append(_feature(entry, spec, geom))
+
+    if not features:
+        print("    ✗ nothing matched — topic keeps its curated geometry")
+        return None
+    return {"type": "FeatureCollection", "features": features}
 
 
 def main() -> int:
@@ -248,7 +312,11 @@ def main() -> int:
     generated = []
     for entry in topics:
         try:
-            fc = build_topic(entry, base, tol)
+            # A topic may ask for finer detail than the global default: 0.04°
+            # is fine for a continental empire and flattens the Olmec heartland
+            # into a pentagon. --tolerance still overrides everything.
+            entry_tol = tol if args.tolerance is not None else entry.get("tolerance", tol)
+            fc = build_topic(entry, base, entry_tol)
         except Exception as e:  # network / parse failure on one topic must not abort the run
             print(f"    ✗ {entry['topic_id']} failed: {e}")
             continue
