@@ -504,17 +504,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
   'mq13': {
     es: {
       question: '¿Qué desarrollo tecnológico medieval cambió radicalmente la guerra de castillos al hacer las gruesas paredes de piedra mucho menos defendibles?',
-      options: ['El arco largo', 'La ballesta', 'La artillería y los cañones de pólvora', 'El fuego griego'],
+      options: ['El arco largo de los arqueros ingleses en Crécy', 'La ballesta usada por mercenarios', 'La artillería y los cañones de pólvora', 'El fuego griego lanzado con sifones'],
       explanation: 'Los cañones podían abrir brechas en muros de piedra que habían resistido ejércitos durante siglos. Para el siglo XV, la artillería de pólvora hizo obsoletas las fortificaciones medievales tradicionales.',
     },
     ru: {
       question: 'Какое средневековое техническое достижение коренным образом изменило осадную войну, сделав толстые каменные стены значительно менее надёжной защитой?',
-      options: ['Длинный лук', 'Арбалет', 'Пороховая артиллерия и пушки', 'Греческий огонь'],
+      options: ['Длинный лук английских лучников', 'Арбалет в руках наёмников', 'Пороховая артиллерия и пушки', 'Греческий огонь из сифонов'],
       explanation: 'Пушки могли пробивать каменные стены, которые веками противостояли армиям. К XV веку пороховая артиллерия сделала традиционные средневековые укрепления устаревшими.',
     },
     mk: {
       question: 'Кој средновековен технолошки развој фундаментално ја сменил опсадата на тврдини правејќи ги дебелите камени ѕидови многу помалку бранливи?',
-      options: ['Долгиот лак', 'Самострелот', 'Барутната артилерија и топовите', 'Грчкиот оган'],
+      options: ['Долгиот лак на англиските стрелци', 'Самострелот во рацете на платеници', 'Барутната артилерија и топовите', 'Грчкиот оган фрлан со сифони'],
       explanation: 'Топовите можеле да пробиваат камени ѕидови кои со векови се спротивставувале на армии. До 15 век, барутната артилерија ги направила традиционалните средновековни утврдувања застарени.',
     },
   },

@@ -10,6 +10,7 @@
 //   node scripts/quiz_length_bias.mjs                 → report, all 6 languages
 //   node scripts/quiz_length_bias.mjs --list 20       → worst 20 offenders
 //   node scripts/quiz_length_bias.mjs --dump id id …  → full option sets
+//   node scripts/quiz_length_bias.mjs --check p.json  → dry-run a patch, all 6
 //   node scripts/quiz_length_bias.mjs --apply p.json  → rewrite options in place
 //
 // The patch file is { "<questionId>": { "en": [4 options], "es": [...], … } },
@@ -100,6 +101,86 @@ function needles(text) {
   ])];
 }
 
+/**
+ * The regions of a file that belong to one question.
+ *
+ * Replacement used to search whole files, which works only while every option
+ * is a distinctive phrase. It is not: distractors are routinely single words —
+ * "Egypt", "India", "Morocco" — and those appear dozens of times across the
+ * bank, so the patcher refused them all as ambiguous. Correct, but it meant
+ * exactly the questions most in need of rewriting could not be rewritten.
+ *
+ * Scoping to the block that follows the question's own id makes a bare word
+ * unambiguous again, and keeps the safety: a match outside any block, or in
+ * two blocks at once, is still refused rather than guessed at.
+ */
+const DATA_SOURCES = SOURCES.filter(f => f.startsWith('src/features/quiz/'));
+const TRANSLATION_SOURCES = SOURCES.filter(f => f.startsWith('src/i18n/'));
+
+/**
+ * Narrow a question's windows to one language's sub-block.
+ *
+ * Needed because a word is often its own translation: English "India" and
+ * Spanish "India" are the same six characters, and both live inside mq36's
+ * record, so a question-scoped search still returned two matches and refused
+ * the patch. English lives in the quiz data files and every other language in
+ * a `<lang>: { … }` entry of a translation table, so the two never collide
+ * once the search is told which one it is looking at.
+ */
+function languageWindows(text, windows, lang) {
+  if (lang === 'en') return windows;
+  const out = [];
+  for (const [start, end] of windows) {
+    const block = text.slice(start, end);
+    const re = new RegExp(`\\b${lang}:\\s*\\{`, 'g');
+    for (let m; (m = re.exec(block)); ) {
+      const from = start + m.index;
+      // A language entry ends at the next one, or at the end of the record.
+      const rest = text.slice(from + m[0].length, end);
+      const next = rest.search(/\n\s*[a-z]{2}:\s*\{/);
+      out.push([from, from + m[0].length + (next === -1 ? rest.length : next)]);
+    }
+  }
+  return out;
+}
+
+function questionWindows(text, id) {
+  const windows = [];
+  for (const quoted of [`'${id}'`, `"${id}"`, `\`${id}\``]) {
+    let from = 0;
+    for (;;) {
+      const at = text.indexOf(quoted, from);
+      if (at === -1) break;
+      // A question's record ends where the next question begins. The two files
+      // shapes differ and BOTH have to be recognised: the quiz data uses
+      // `id: 'mq36'` inside an object, the translation tables use `'mq36': {`
+      // as the key. Matching only the first ran the window on past the end of
+      // the entry and swallowed its neighbours, which is how a bare "India"
+      // came back as two matches instead of one.
+      const rest = text.slice(at + quoted.length, at + quoted.length + 4000);
+      const nextId = rest.search(/\bid:\s*['"\`]|\n\s*['"\`][A-Za-z]+\d+['"\`]\s*:\s*\{/);
+      windows.push([at, at + quoted.length + (nextId === -1 ? rest.length : nextId)]);
+      from = at + quoted.length;
+    }
+  }
+  return windows;
+}
+
+/** Occurrences of `needle` inside any of `windows`, as absolute offsets. */
+function matchesInWindows(text, windows, needle) {
+  const hits = new Set();
+  for (const [start, end] of windows) {
+    let from = start;
+    for (;;) {
+      const at = text.indexOf(needle, from);
+      if (at === -1 || at >= end) break;
+      hits.add(at);
+      from = at + needle.length;
+    }
+  }
+  return [...hits];
+}
+
 async function applyPatch(patchPath, questions, get) {
   const patch = JSON.parse(fs.readFileSync(patchPath, 'utf8'));
   const files = Object.fromEntries(SOURCES.map(f => [f, fs.readFileSync(f, 'utf8')]));
@@ -138,21 +219,23 @@ async function applyPatch(patchPath, questions, get) {
         const to = next;
         if (from[i] === to[i]) continue;
         const found = [];
-        for (const needle of needles(from[i])) {
-          for (const f of SOURCES) {
-            const count = files[f].split(needle).length - 1;
-            if (count > 0) found.push({ f, needle, count });
+        for (const f of (lang === 'en' ? DATA_SOURCES : TRANSLATION_SOURCES)) {
+          const windows = languageWindows(files[f], questionWindows(files[f], id), lang);
+          if (windows.length === 0) continue;
+          for (const needle of needles(from[i])) {
+            for (const at of matchesInWindows(files[f], windows, needle)) {
+              found.push({ f, needle, at });
+            }
           }
         }
-        const total = found.reduce((n, h) => n + h.count, 0);
-        if (total === 0) { problems.push(`${id}/${lang}[${i}]: not found — ${from[i].slice(0, 44)}`); continue; }
-        if (total > 1) { problems.push(`${id}/${lang}[${i}]: ${total} matches, ambiguous — ${from[i].slice(0, 44)}`); continue; }
+        if (found.length === 0) { problems.push(`${id}/${lang}[${i}]: not found in ${id}'s block — ${from[i].slice(0, 44)}`); continue; }
+        if (found.length > 1) { problems.push(`${id}/${lang}[${i}]: ${found.length} matches, ambiguous — ${from[i].slice(0, 44)}`); continue; }
         const { f, needle } = found[0];
         // Escape the replacement for the quote character that actually
         // delimits this literal — NOT for however the old text happened to be
         // escaped. An apostrophe in the new text inside a single-quoted
         // literal broke the file when the old text had none to go by.
-        const at = files[f].indexOf(needle);
+        const { at } = found[0];
         const quote = files[f][at - 1];
         if (quote !== "'" && quote !== '"' && quote !== '`') {
           problems.push(`${id}/${lang}[${i}]: match is not a whole string literal`);
@@ -197,6 +280,47 @@ const ALL = qd.QUIZZES.flatMap(q => q.questions);
 const get = qt.getTranslatedQuestion;
 
 if (argv[0] === '--apply') { await applyPatch(argv[1], ALL, get); process.exit(0); }
+
+/**
+ * Dry-run a patch: for every question and language it touches, report whether
+ * the correct option would still be the longest, and by how much.
+ *
+ * Rewriting six languages by counting characters in your head does not work.
+ * --list only ranks English (it reads q.options directly), so a patch that
+ * fixes English can leave the other five untouched at ~51% — which is what the
+ * per-language summary has been reporting all along. This closes that loop
+ * before anything is written.
+ */
+function checkPatch(patchPath, questions, get) {
+  const patch = JSON.parse(fs.readFileSync(patchPath, 'utf8'));
+  let worst = 0, flagged = 0, checked = 0;
+  for (const [id, byLang] of Object.entries(patch)) {
+    const q = questions.find(x => x.id === id);
+    if (!q) { console.log(`  ${id}: NO SUCH QUESTION`); flagged++; continue; }
+    for (const [lang, to] of Object.entries(byLang)) {
+      const from = optionsFor(q, lang, get);
+      if (!from) { console.log(`  ${id}/${lang}: no options`); flagged++; continue; }
+      const next = Array.isArray(to) ? to : from.map((o, i) => to[i] ?? o);
+      if (next.length !== from.length) { console.log(`  ${id}/${lang}: wrong option count`); flagged++; continue; }
+      checked++;
+      const lens = next.map(o => o.length);
+      const ci = q.correctIndex;
+      const others = lens.filter((_, i) => i !== ci);
+      const gap = lens[ci] - Math.max(...others);
+      if (lens[ci] === Math.max(...lens) && new Set(lens).size > 1) {
+        flagged++;
+        worst = Math.max(worst, gap);
+        console.log(`  ${id}/${lang}  still longest by +${gap}  "${next[ci].slice(0, 50)}"`);
+      }
+    }
+  }
+  console.log(flagged === 0
+    ? `✔ ${checked} option set(s) checked; the correct answer is never the longest`
+    : `✖ ${flagged} of ${checked} still lead on length (worst +${worst})`);
+  process.exit(flagged === 0 ? 0 : 1);
+}
+
+if (argv[0] === '--check') { checkPatch(argv[1], ALL, get); }
 
 if (argv[0] === '--dump') {
   const out = argv.slice(1).map(id => {
