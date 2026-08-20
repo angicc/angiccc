@@ -72,7 +72,19 @@ function readCachedSession(): User | null {
   } catch { return null; }
 }
 
-export type AuthResult = { success: boolean; error?: string; notice?: string };
+/**
+ * `noticeKey` rather than a sentence: this module has no access to the
+ * translation table, and the offline-fallback warnings it produces were being
+ * toasted verbatim, in English, to readers of all six languages. `error` still
+ * carries a string because the interesting ones are relayed from the server.
+ */
+export type AuthNoticeKey = 'auth_offline_signin' | 'auth_offline_register';
+/** Locally-determined failures, named so the UI need not match English prose. */
+export type AuthErrorKey =
+  | 'auth_no_account' | 'login_failed' | 'auth_email_taken' | 'auth_username_taken'
+  | 'auth_not_logged_in' | 'auth_email_change_online' | 'auth_email_in_use'
+  | 'auth_current_password_wrong' | 'auth_server_unreachable';
+export type AuthResult = { success: boolean; error?: string; errorKey?: AuthErrorKey; noticeKey?: AuthNoticeKey };
 
 interface AuthCtx {
   currentUser: User | null;
@@ -169,11 +181,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const users = getUsers();
     const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-    if (!user) return { success: false, error: 'No account found with that email.' };
+    if (!user) return { success: false, errorKey: 'auth_no_account' };
     const sha = await hashPassword(password);
     const legacy = btoa(password);
     if (user.passwordHash !== sha && user.passwordHash !== legacy) {
-      return { success: false, error: 'Incorrect password.' };
+      return { success: false, errorKey: 'login_failed' };
     }
     if (user.passwordHash === legacy) {
       saveUsers(users.map(u => (u.id === user.id ? { ...u, passwordHash: sha } : u)));
@@ -181,7 +193,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     adopt(user, false);
     return {
       success: true,
-      notice: serverAuthConfigured() ? 'Signed in offline — the server could not be reached.' : undefined,
+      noticeKey: serverAuthConfigured() ? 'auth_offline_signin' : undefined,
     };
   }, [adopt]);
 
@@ -200,10 +212,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const users = getUsers();
     if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-      return { success: false, error: 'Email already registered.' };
+      return { success: false, errorKey: 'auth_email_taken' };
     }
     if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-      return { success: false, error: 'Username already taken.' };
+      return { success: false, errorKey: 'auth_username_taken' };
     }
     const newUser: User = {
       id: crypto.randomUUID(), username, email,
@@ -216,7 +228,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     adopt(newUser, false);
     return {
       success: true,
-      notice: serverAuthConfigured() ? 'Account created offline — the server could not be reached.' : undefined,
+      noticeKey: serverAuthConfigured() ? 'auth_offline_register' : undefined,
     };
   }, [adopt]);
 
@@ -252,21 +264,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [currentUser]);
 
   const updateEmail = useCallback(async (email: string, currentPassword: string): Promise<AuthResult> => {
-    if (!currentUser) return { success: false, error: 'Not logged in.' };
+    if (!currentUser) return { success: false, errorKey: 'auth_not_logged_in' };
     if (currentUser.serverAccount) {
       // No server route changes an address yet, and faking it locally would
       // leave the client showing an address the server does not have.
-      return { success: false, error: 'Changing your email is not available yet for online accounts.' };
+      return { success: false, errorKey: 'auth_email_change_online' };
     }
     const users = getUsers();
     if (users.some(u => u.email.toLowerCase() === email.toLowerCase() && u.id !== currentUser.id)) {
-      return { success: false, error: 'Email is already in use.' };
+      return { success: false, errorKey: 'auth_email_in_use' };
     }
     const user = users.find(u => u.id === currentUser.id)!;
     const sha = await hashPassword(currentPassword);
     const legacy = btoa(currentPassword);
     if (user.passwordHash !== sha && user.passwordHash !== legacy) {
-      return { success: false, error: 'Current password is incorrect.' };
+      return { success: false, errorKey: 'auth_current_password_wrong' };
     }
     const updated = users.map(u => (u.id === currentUser.id ? { ...u, email } : u));
     saveUsers(updated);
@@ -275,11 +287,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [currentUser]);
 
   const updatePassword = useCallback(async (currentPwd: string, newPwd: string): Promise<AuthResult> => {
-    if (!currentUser) return { success: false, error: 'Not logged in.' };
+    if (!currentUser) return { success: false, errorKey: 'auth_not_logged_in' };
     if (currentUser.serverAccount) {
       const result = await serverChangePassword(currentPwd, newPwd);
       if (result.ok) return { success: true };
-      if ('unavailable' in result) return { success: false, error: 'Could not reach the server. Try again shortly.' };
+      if ('unavailable' in result) return { success: false, errorKey: 'auth_server_unreachable' };
       return { success: false, error: result.error };
     }
     const users = getUsers();
@@ -287,7 +299,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const sha = await hashPassword(currentPwd);
     const legacy = btoa(currentPwd);
     if (user.passwordHash !== sha && user.passwordHash !== legacy) {
-      return { success: false, error: 'Current password is incorrect.' };
+      return { success: false, errorKey: 'auth_current_password_wrong' };
     }
     const newHash = await hashPassword(newPwd);
     saveUsers(users.map(u => (u.id === currentUser.id ? { ...u, passwordHash: newHash } : u)));

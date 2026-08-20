@@ -171,7 +171,7 @@ export default function ReportPage() {
                 <input
                   value={subject}
                   onChange={e => setSubject(e.target.value)}
-                  placeholder="e.g. Quiz score not saving correctly"
+                  placeholder={t.report_subject_placeholder}
                   maxLength={120}
                   className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm outline-none focus:border-primary/60 transition-colors placeholder:text-muted-foreground/50"
                 />

@@ -28,11 +28,11 @@ export default function PricingPage() {
 
   async function handleSelect(id: SubscriptionTier) {
     if (!currentUser) { navigate('/register'); return; }
-    if (tier === id) { toast.info('You are already on this plan.'); return; }
+    if (tier === id) { toast.info(t.toast_already_on_plan); return; }
     const plan = PLANS.find(p => p.id === id)!;
     if (id === 'free') {
       upgrade('free');
-      toast.success('Downgraded to Free plan.');
+      toast.success(t.toast_downgraded_free);
       navigate('/dashboard');
       return;
     }
@@ -44,7 +44,7 @@ export default function PricingPage() {
         const url = await startCheckout(id as 'beginner' | 'pro' | 'master');
         if (url) { window.location.assign(url); return; }
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : 'Could not start checkout — please try again.');
+        toast.error(err instanceof Error ? err.message : t.toast_checkout_failed);
         return;
       }
     }

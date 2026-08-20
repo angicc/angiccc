@@ -107,6 +107,20 @@ export type TranslationKeys = {
   // card still read "Upgrade to Pro Student".
   upgrade_premium_title: string; upgrade_premium_desc: string; upgrade_btn: string;
   upgrade_to_beginner: string; upgrade_to_pro: string; upgrade_to_master: string;
+  // ── Toasts, notices and a11y labels ───────────────────────────
+  // Another set that bypassed the guard by never being in this table: sign-in
+  // and sign-up toasts, the offline-fallback warnings, the pricing toasts, and
+  // two strings a screen reader or an empty field would read out in English.
+  toast_welcome_back: string; toast_account_created: string;
+  auth_offline_signin: string; auth_offline_register: string;
+  toast_already_on_plan: string; toast_downgraded_free: string; toast_checkout_failed: string;
+  prof_verify_identity: string; tutor_remove_image: string;
+  // Locally-determined auth failures. They were English literals returned from
+  // AuthContext and rendered as-is, so a failed sign-up or password change
+  // spoke English in a Macedonian app.
+  auth_email_taken: string; auth_username_taken: string; auth_not_logged_in: string;
+  auth_email_change_online: string; auth_email_in_use: string;
+  auth_current_password_wrong: string; auth_server_unreachable: string;
   // ── Leaderboard ────────────────────────────────────────────────
   lb_title: string; lb_subtitle: string; lb_your_rank: string;
   lb_full_rankings: string; lb_you: string; lb_chess_rank: string;
@@ -218,6 +232,7 @@ export type TranslationKeys = {
   guide_free_pro: string; guide_qs_desc: string;
   // ── Report ─────────────────────────────────────────────────────
   report_title: string; report_subtitle: string; report_placeholder: string;
+  report_subject_placeholder: string;
   report_submit: string; report_thanks: string; report_type: string;
   // ── Pricing ────────────────────────────────────────────────────
   pricing_title: string; pricing_subtitle: string; pricing_current: string;
@@ -585,6 +600,22 @@ const EN: TranslationKeys = {
     upgrade_to_beginner: 'Upgrade to Beginner Student',
     upgrade_to_pro: 'Upgrade to Pro Student',
     upgrade_to_master: 'Upgrade to Master Student',
+    toast_welcome_back: 'Welcome back!',
+    toast_account_created: 'Account created! Welcome to Historify.',
+    auth_offline_signin: 'Signed in offline — the server could not be reached.',
+    auth_offline_register: 'Account created offline — the server could not be reached.',
+    toast_already_on_plan: 'You are already on this plan.',
+    toast_downgraded_free: 'Downgraded to the Free plan.',
+    toast_checkout_failed: 'Could not start checkout — please try again.',
+    prof_verify_identity: 'Verify identity',
+    tutor_remove_image: 'Remove image',
+    auth_email_taken: 'That email is already registered.',
+    auth_username_taken: 'That username is already taken.',
+    auth_not_logged_in: 'You are not signed in.',
+    auth_email_change_online: 'Changing your email is not available yet for online accounts.',
+    auth_email_in_use: 'That email is already in use.',
+    auth_current_password_wrong: 'Your current password is incorrect.',
+    auth_server_unreachable: 'Could not reach the server. Try again shortly.',
     // Leaderboard
     lb_title: 'Leaderboard', lb_subtitle: 'Top learners ranked by total XP earned.',
     lb_your_rank: 'Your Rank', lb_full_rankings: 'Full Rankings', lb_you: '(You)',
@@ -719,6 +750,7 @@ const EN: TranslationKeys = {
     // Report
     report_title: 'Report a Problem', report_subtitle: 'Help us improve Historify',
     report_placeholder: 'Describe the problem you encountered…',
+    report_subject_placeholder: 'e.g. Quiz score not saving correctly',
     report_submit: 'Send Report', report_thanks: 'Thank you! Your report has been received.',
     report_type: 'Problem Type',
     // Pricing
@@ -1113,6 +1145,22 @@ export const T: Translations = {
     upgrade_to_beginner: 'Pasar a Beginner Student',
     upgrade_to_pro: 'Pasar a Pro Student',
     upgrade_to_master: 'Pasar a Master Student',
+    toast_welcome_back: '¡Bienvenido de nuevo!',
+    toast_account_created: '¡Cuenta creada! Te damos la bienvenida a Historify.',
+    auth_offline_signin: 'Sesión iniciada sin conexión: no se pudo contactar con el servidor.',
+    auth_offline_register: 'Cuenta creada sin conexión: no se pudo contactar con el servidor.',
+    toast_already_on_plan: 'Ya tienes este plan.',
+    toast_downgraded_free: 'Has cambiado al plan Gratis.',
+    toast_checkout_failed: 'No se pudo iniciar el pago; inténtalo de nuevo.',
+    prof_verify_identity: 'Verifica tu identidad',
+    tutor_remove_image: 'Quitar la imagen',
+    auth_email_taken: 'Ese correo ya está registrado.',
+    auth_username_taken: 'Ese nombre de usuario ya está en uso.',
+    auth_not_logged_in: 'No has iniciado sesión.',
+    auth_email_change_online: 'Cambiar el correo aún no está disponible para las cuentas en línea.',
+    auth_email_in_use: 'Ese correo ya está en uso.',
+    auth_current_password_wrong: 'Tu contraseña actual no es correcta.',
+    auth_server_unreachable: 'No se pudo contactar con el servidor. Inténtalo en unos momentos.',
     lb_title: 'Clasificación', lb_subtitle: 'Los mejores estudiantes clasificados por XP total.',
     lb_your_rank: 'Tu Posición', lb_full_rankings: 'Clasificación Completa', lb_you: '(Tú)',
     lb_chess_rank: 'Rango de Ajedrez', lb_level: 'Nivel', lb_streak: 'Racha',
@@ -1236,6 +1284,7 @@ export const T: Translations = {
     guide_free_pro: 'Planes Gratuito y Pro', guide_qs_desc: '¿Eres nuevo? Comienza completando una lección en la sección Eras y Lecciones, luego haz el quiz de era para ganar XP. Una vez que conozcas la app, actualiza a Pro para desbloquear todas las 132 lecciones y el Tutor IA.',
     report_title: 'Reportar un Problema', report_subtitle: 'Ayúdanos a mejorar Historify',
     report_placeholder: 'Describe el problema que encontraste…',
+    report_subject_placeholder: 'p. ej. la puntuación del cuestionario no se guarda',
     report_submit: 'Enviar Reporte', report_thanks: '¡Gracias! Tu reporte ha sido recibido.',
     report_type: 'Tipo de Problema',
     pricing_title: 'Elige tu Plan de Aprendizaje', pricing_subtitle: 'Desde exploración casual hasta estudio avanzado — un plan para cada estudiante.',
@@ -1626,6 +1675,22 @@ export const T: Translations = {
     upgrade_to_beginner: 'Перейти на Beginner Student',
     upgrade_to_pro: 'Перейти на Pro Student',
     upgrade_to_master: 'Перейти на Master Student',
+    toast_welcome_back: 'С возвращением!',
+    toast_account_created: 'Аккаунт создан! Добро пожаловать в Historify.',
+    auth_offline_signin: 'Вход выполнен офлайн — сервер недоступен.',
+    auth_offline_register: 'Аккаунт создан офлайн — сервер недоступен.',
+    toast_already_on_plan: 'У вас уже подключён этот план.',
+    toast_downgraded_free: 'Выполнен переход на бесплатный план.',
+    toast_checkout_failed: 'Не удалось перейти к оплате — попробуйте ещё раз.',
+    prof_verify_identity: 'Подтвердите личность',
+    tutor_remove_image: 'Убрать изображение',
+    auth_email_taken: 'Этот адрес уже зарегистрирован.',
+    auth_username_taken: 'Это имя пользователя уже занято.',
+    auth_not_logged_in: 'Вы не вошли в аккаунт.',
+    auth_email_change_online: 'Смена адреса пока недоступна для онлайн-аккаунтов.',
+    auth_email_in_use: 'Этот адрес уже используется.',
+    auth_current_password_wrong: 'Текущий пароль указан неверно.',
+    auth_server_unreachable: 'Не удалось связаться с сервером. Попробуйте чуть позже.',
     lb_title: 'Рейтинг', lb_subtitle: 'Лучшие ученики, отсортированные по общему XP.',
     lb_your_rank: 'Ваш Рейтинг', lb_full_rankings: 'Полный Рейтинг', lb_you: '(Вы)',
     lb_chess_rank: 'Шахматный Ранг', lb_level: 'Уровень', lb_streak: 'Серия',
@@ -1749,6 +1814,7 @@ export const T: Translations = {
     guide_free_pro: 'Бесплатный и Pro', guide_qs_desc: 'Впервые здесь? Начните с урока в разделе «Эпохи и Уроки», затем пройдите викторину по эпохе, чтобы получить XP. Освоившись с приложением, обновитесь до Pro для доступа ко всем 132 урокам и Наставнику.',
     report_title: 'Сообщить об ошибке', report_subtitle: 'Помогите нам улучшить Historify',
     report_placeholder: 'Опишите проблему, с которой вы столкнулись…',
+    report_subject_placeholder: 'напр. не сохраняется результат викторины',
     report_submit: 'Отправить', report_thanks: 'Спасибо! Ваш отчёт получен.',
     report_type: 'Тип проблемы',
     pricing_title: 'Выберите свой учебный план', pricing_subtitle: 'От лёгкого изучения до мастерства — план для каждого.',
@@ -2139,6 +2205,22 @@ export const T: Translations = {
     upgrade_to_beginner: 'Надгради на Beginner Student',
     upgrade_to_pro: 'Надгради на Pro Student',
     upgrade_to_master: 'Надгради на Master Student',
+    toast_welcome_back: 'Добре дојде назад!',
+    toast_account_created: 'Сметката е создадена! Добредојде во Historify.',
+    auth_offline_signin: 'Најавен си офлајн — серверот беше недостапен.',
+    auth_offline_register: 'Сметката е создадена офлајн — серверот беше недостапен.',
+    toast_already_on_plan: 'Веќе го користиш овој план.',
+    toast_downgraded_free: 'Префрлен си на бесплатниот план.',
+    toast_checkout_failed: 'Плаќањето не можеше да започне — обиди се повторно.',
+    prof_verify_identity: 'Потврди го идентитетот',
+    tutor_remove_image: 'Отстрани ја сликата',
+    auth_email_taken: 'Оваа е-пошта е веќе регистрирана.',
+    auth_username_taken: 'Ова корисничко име е веќе зафатено.',
+    auth_not_logged_in: 'Не си најавен.',
+    auth_email_change_online: 'Менувањето на е-поштата сè уште не е достапно за онлајн сметки.',
+    auth_email_in_use: 'Оваа е-пошта е веќе во употреба.',
+    auth_current_password_wrong: 'Тековната лозинка не е точна.',
+    auth_server_unreachable: 'Серверот е недостапен. Обиди се повторно за кратко.',
     lb_title: 'Рангирање', lb_subtitle: 'Најдобри ученици рангирани по вкупно XP.',
     lb_your_rank: 'Твоето Рангирање', lb_full_rankings: 'Целосна Листа', lb_you: '(Ти)',
     lb_chess_rank: 'Шаховски Ранг', lb_level: 'Ниво', lb_streak: 'Серија',
@@ -2262,6 +2344,7 @@ export const T: Translations = {
     guide_free_pro: 'Бесплатен и Pro план', guide_qs_desc: 'Нов/а си? Почни со завршување на лекција во делот Епохи и Лекции, потоа направи квиз за да освоиш XP. Откако ќе се запознаеш со апликацијата, надгради на Pro за да ги отклучиш сите 132 лекции и ВИ Туторот.',
     report_title: 'Пријави Проблем', report_subtitle: 'Помогни ни да го подобриме Historify',
     report_placeholder: 'Опиши го проблемот со кој се сретна…',
+    report_subject_placeholder: 'на пр. резултатот од квизот не се зачувува',
     report_submit: 'Испрати Пријава', report_thanks: 'Благодариме! Твојата пријава е примена.',
     report_type: 'Вид на проблем',
     pricing_title: 'Избери го твојот план за учење', pricing_subtitle: 'Од лесно истражување до напредно учење — план за секој ученик.',

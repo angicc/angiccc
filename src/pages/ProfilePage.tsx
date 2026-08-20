@@ -193,7 +193,7 @@ export default function ProfilePage() {
     const result = await updateEmail(newEmail, emailPassword);
     setEmailLoading(false);
     if (result.success) { toast.success(t.prof_toast_email_saved); setNewEmail(''); setEmailPassword(''); }
-    else toast.error(result.error ?? t.prof_toast_email_failed);
+    else toast.error(result.errorKey ? t[result.errorKey] : result.error ?? t.prof_toast_email_failed);
   }
 
   async function savePassword() {
@@ -203,7 +203,7 @@ export default function ProfilePage() {
     const result = await updatePassword(curPwd, newPwd);
     setPwdLoading(false);
     if (result.success) { toast.success(t.prof_toast_pwd_saved); setCurPwd(''); setNewPwd(''); setConfPwd(''); }
-    else toast.error(result.error ?? t.prof_toast_pwd_failed);
+    else toast.error(result.errorKey ? t[result.errorKey] : result.error ?? t.prof_toast_pwd_failed);
   }
 
   function enable2FA() {
@@ -508,7 +508,7 @@ export default function ProfilePage() {
                 <div className="text-xs text-muted-foreground">{t.prof_current_email} <span className="text-foreground">{currentUser.email}</span></div>
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div><Label className="text-xs mb-1 block">{t.prof_new_email}</Label><Input value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="new@email.com" type="email" /></div>
-                  <div><Label className="text-xs mb-1 block">{t.prof_cur_password}</Label><Input value={emailPassword} onChange={e => setEmailPassword(e.target.value)} placeholder="Verify identity" type="password" /></div>
+                  <div><Label className="text-xs mb-1 block">{t.prof_cur_password}</Label><Input value={emailPassword} onChange={e => setEmailPassword(e.target.value)} placeholder={t.prof_verify_identity} type="password" /></div>
                 </div>
                 <Button size="sm" onClick={saveEmail} disabled={emailLoading || !newEmail || !emailPassword}>
                   {emailLoading ? t.prof_updating : t.prof_update_email}

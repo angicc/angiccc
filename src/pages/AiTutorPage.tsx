@@ -498,7 +498,7 @@ export default function AiTutorPage() {
                 <button
                   onClick={() => setImage(null)}
                   className="absolute -top-1.5 -right-1.5 rounded-full bg-black/80 text-white p-0.5 hover:bg-black"
-                  aria-label="Remove image"
+                  aria-label={t.tutor_remove_image}
                 >
                   <X className="w-3 h-3" />
                 </button>

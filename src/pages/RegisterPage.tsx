@@ -39,13 +39,13 @@ export default function RegisterPage() {
       // the person is actually reading.
       const r = await register(v.username, v.email, v.password, language);
       if (r.success) {
-        toast.success('Account created! Welcome to Historify.');
+        toast.success(t.toast_account_created);
         // Set when the server could not be reached and the account was made
         // locally instead — the learner needs to know it is device-only.
-        if (r.notice) toast.warning(r.notice);
+        if (r.noticeKey) toast.warning(t[r.noticeKey]);
         navigate('/dashboard');
       } else {
-        form.setError('root', { message: r.error });
+        form.setError('root', { message: r.errorKey ? t[r.errorKey] : r.error ?? t.reg_failed });
       }
     } catch {
       form.setError('root', { message: t.reg_failed });
