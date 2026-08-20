@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { UserSubscription, SubscriptionTier } from '@/types';
 import { loadSubscription, upgradeSubscription, recordAiMessageSub, canAccessLesson, canUseAI, canDownload, canAdvancedStats, canFilterTimeline, canSeeExplanations } from './subscriptionStore';
+import type { AiAllowance } from './subscriptionStore';
 import { useAuth } from '@/features/auth/AuthContext';
 
 export type CampaignEraId = 'prehistoric' | 'ancient' | 'byzantine' | 'medieval' | 'early-modern' | 'modern';
 
 interface SubCtx {
   subscription: UserSubscription | null; upgrade(t: SubscriptionTier): void; trackAiMessage(): void;
-  canLesson(order: number): boolean; canAI(): { allowed: boolean; reason?: string };
+  canLesson(order: number): boolean; canAI(): AiAllowance;
   canDownload(): boolean; canAdvancedStats(): boolean; canTimeline(): boolean; canExplanations(): boolean;
   canTerritoryMap(): boolean;
   /** Eras whose Conquest Campaign is playable on the current plan. */

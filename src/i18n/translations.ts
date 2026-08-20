@@ -93,6 +93,20 @@ export type TranslationKeys = {
   tutor_history: string; tutor_thread_first: string; tutor_thread_untitled: string;
   tutor_new_chat: string; tutor_upgrade_msg: string;
   tutor_clear_title: string; tutor_clear_confirm: string;
+  // ── AI message allowance ──────────────────────────────────────
+  // These used to be English sentences hardcoded in subscriptionStore.ts and
+  // rendered straight into the UI, so every non-English user who ran out of AI
+  // messages was told so in English. {n} is the limit just spent, {m} the next
+  // plan's allowance.
+  ai_limit_free: string; ai_limit_beginner: string;
+  ai_limit_pro: string; ai_limit_master: string;
+  // ── Upgrade prompt ────────────────────────────────────────────
+  // UpgradePrompt renders on 21 screens. Its title, its fallback description
+  // and — on every single one of them — its call-to-action button were English
+  // string literals in the component, so the button under a fully translated
+  // card still read "Upgrade to Pro Student".
+  upgrade_premium_title: string; upgrade_premium_desc: string; upgrade_btn: string;
+  upgrade_to_beginner: string; upgrade_to_pro: string; upgrade_to_master: string;
   // ── Leaderboard ────────────────────────────────────────────────
   lb_title: string; lb_subtitle: string; lb_your_rank: string;
   lb_full_rankings: string; lb_you: string; lb_chess_rank: string;
@@ -561,6 +575,16 @@ const EN: TranslationKeys = {
     tutor_attach_image: 'Attach an image', tutor_image_ready: 'Image ready — send it to Clio',
     tutor_clear_title: 'Clear this conversation', tutor_clear_confirm: 'Clear this conversation? The messages will be permanently deleted from this thread.',
     tutor_upgrade_msg: 'Upgrade to use the AI Tutor',
+    ai_limit_free: 'You have used your {n} free messages for today. Come back tomorrow, or upgrade to Beginner Student for {m} messages a day.',
+    ai_limit_beginner: 'You have used your {n} messages for today. Come back tomorrow, or upgrade to Pro Student for {m} messages a month.',
+    ai_limit_pro: 'You have used all {n} AI messages this month. Upgrade to Master Student for {m} messages a month.',
+    ai_limit_master: 'You have used all {n} AI messages this month. Your allowance resets at the start of next month.',
+    upgrade_premium_title: 'Premium Feature',
+    upgrade_premium_desc: 'Upgrade your plan to access this feature.',
+    upgrade_btn: 'Upgrade',
+    upgrade_to_beginner: 'Upgrade to Beginner Student',
+    upgrade_to_pro: 'Upgrade to Pro Student',
+    upgrade_to_master: 'Upgrade to Master Student',
     // Leaderboard
     lb_title: 'Leaderboard', lb_subtitle: 'Top learners ranked by total XP earned.',
     lb_your_rank: 'Your Rank', lb_full_rankings: 'Full Rankings', lb_you: '(You)',
@@ -1079,6 +1103,16 @@ export const T: Translations = {
     tutor_attach_image: 'Adjuntar una imagen', tutor_image_ready: 'Imagen lista — envíala a Clio',
     tutor_clear_title: 'Borrar esta conversación', tutor_clear_confirm: '¿Borrar esta conversación? Los mensajes se eliminarán permanentemente de este hilo.',
     tutor_upgrade_msg: 'Actualiza para usar el Tutor IA',
+    ai_limit_free: 'Has usado tus {n} mensajes gratuitos de hoy. Vuelve mañana o pásate a Beginner Student para tener {m} mensajes al día.',
+    ai_limit_beginner: 'Has usado tus {n} mensajes de hoy. Vuelve mañana o pásate a Pro Student para tener {m} mensajes al mes.',
+    ai_limit_pro: 'Has usado los {n} mensajes de IA de este mes. Pásate a Master Student para tener {m} mensajes al mes.',
+    ai_limit_master: 'Has usado los {n} mensajes de IA de este mes. Tu cuota se renueva al comenzar el mes que viene.',
+    upgrade_premium_title: 'Función premium',
+    upgrade_premium_desc: 'Mejora tu plan para acceder a esta función.',
+    upgrade_btn: 'Mejorar plan',
+    upgrade_to_beginner: 'Pasar a Beginner Student',
+    upgrade_to_pro: 'Pasar a Pro Student',
+    upgrade_to_master: 'Pasar a Master Student',
     lb_title: 'Clasificación', lb_subtitle: 'Los mejores estudiantes clasificados por XP total.',
     lb_your_rank: 'Tu Posición', lb_full_rankings: 'Clasificación Completa', lb_you: '(Tú)',
     lb_chess_rank: 'Rango de Ajedrez', lb_level: 'Nivel', lb_streak: 'Racha',
@@ -1582,6 +1616,16 @@ export const T: Translations = {
     tutor_attach_image: 'Прикрепить изображение', tutor_image_ready: 'Изображение готово — отправьте его Клио',
     tutor_clear_title: 'Очистить этот разговор', tutor_clear_confirm: 'Очистить этот разговор? Сообщения будут безвозвратно удалены из этой ветки.',
     tutor_upgrade_msg: 'Обновите план, чтобы использовать ИИ-Наставника',
+    ai_limit_free: 'Вы израсходовали свои {n} бесплатных сообщения на сегодня. Возвращайтесь завтра или перейдите на план Beginner Student — {m} сообщений в день.',
+    ai_limit_beginner: 'Вы израсходовали свои {n} сообщений на сегодня. Возвращайтесь завтра или перейдите на план Pro Student — {m} сообщений в месяц.',
+    ai_limit_pro: 'Вы израсходовали все {n} сообщений ИИ в этом месяце. Перейдите на план Master Student — {m} сообщений в месяц.',
+    ai_limit_master: 'Вы израсходовали все {n} сообщений ИИ в этом месяце. Лимит обновится в начале следующего месяца.',
+    upgrade_premium_title: 'Премиум-функция',
+    upgrade_premium_desc: 'Обновите план, чтобы получить доступ к этой функции.',
+    upgrade_btn: 'Обновить план',
+    upgrade_to_beginner: 'Перейти на Beginner Student',
+    upgrade_to_pro: 'Перейти на Pro Student',
+    upgrade_to_master: 'Перейти на Master Student',
     lb_title: 'Рейтинг', lb_subtitle: 'Лучшие ученики, отсортированные по общему XP.',
     lb_your_rank: 'Ваш Рейтинг', lb_full_rankings: 'Полный Рейтинг', lb_you: '(Вы)',
     lb_chess_rank: 'Шахматный Ранг', lb_level: 'Уровень', lb_streak: 'Серия',
@@ -2085,6 +2129,16 @@ export const T: Translations = {
     tutor_attach_image: 'Прикачи слика', tutor_image_ready: 'Сликата е подготвена — испрати ѝ ја на Клио',
     tutor_clear_title: 'Исчисти го овој разговор', tutor_clear_confirm: 'Да се исчисти овој разговор? Пораките трајно ќе се избришат од оваа нишка.',
     tutor_upgrade_msg: 'Надгради го планот за да го користиш ВИ Туторот',
+    ai_limit_free: 'Ги искористи своите {n} бесплатни пораки за денес. Врати се утре или надгради на Beginner Student за {m} пораки дневно.',
+    ai_limit_beginner: 'Ги искористи своите {n} пораки за денес. Врати се утре или надгради на Pro Student за {m} пораки месечно.',
+    ai_limit_pro: 'Ги искористи сите {n} ВИ пораки за овој месец. Надгради на Master Student за {m} пораки месечно.',
+    ai_limit_master: 'Ги искористи сите {n} ВИ пораки за овој месец. Квотата се обновува на почетокот на следниот месец.',
+    upgrade_premium_title: 'Премиум функција',
+    upgrade_premium_desc: 'Надгради го планот за да ја користиш оваа функција.',
+    upgrade_btn: 'Надгради',
+    upgrade_to_beginner: 'Надгради на Beginner Student',
+    upgrade_to_pro: 'Надгради на Pro Student',
+    upgrade_to_master: 'Надгради на Master Student',
     lb_title: 'Рангирање', lb_subtitle: 'Најдобри ученици рангирани по вкупно XP.',
     lb_your_rank: 'Твоето Рангирање', lb_full_rankings: 'Целосна Листа', lb_you: '(Ти)',
     lb_chess_rank: 'Шаховски Ранг', lb_level: 'Ниво', lb_streak: 'Серија',

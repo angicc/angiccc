@@ -20,6 +20,7 @@ import { usePersistentChat, listThreads, createThread, titleThread, deleteThread
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
 import { CLIO_SAMPLE_DIALOGUES } from '@/features/ai/clioSampleDialogues';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { aiAllowanceMessage } from '@/features/subscription/aiAllowanceMessage';
 import type { ChatMessage } from '@/types';
 
 const SUGGESTION_ICONS = [Landmark, Globe, BookOpen, Scroll, Sparkles, Sword];
@@ -273,7 +274,9 @@ export default function AiTutorPage() {
     })));
   }, [loading, setMessages]);
 
-  const { allowed, reason } = canAI();
+  const allowance = canAI();
+  const { allowed, nextTier } = allowance;
+  const reason = aiAllowanceMessage(allowance, t);
 
   return (
     <AppShell>
@@ -354,7 +357,11 @@ export default function AiTutorPage() {
           </div>
         </motion.div>
 
-        {!allowed && <UpgradePrompt description={reason} requiredPlan={reason?.includes('Master') ? 'master' : 'pro'} />}
+        {/* The plan to offer comes from the allowance itself. It used to be
+            sniffed out of the message with reason.includes('Master'), which
+            only ever matched the English text — in the five other languages
+            the prompt silently fell back to offering Pro. */}
+        {!allowed && <UpgradePrompt description={reason} requiredPlan={nextTier === 'master' ? 'master' : 'pro'} />}
 
         {/* Persistent memory — what Clio has learned about this student */}
         {currentUser && <div className="mb-3"><ClioMemoryPanel userId={currentUser.id} /></div>}

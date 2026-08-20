@@ -27,7 +27,7 @@ export interface StudyPlan {
 
 export interface MissedQuestion { question: string; eraName: string; chosen: string; correct: string }
 
-const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian', de: 'German', fr: 'French' };
+import { LANG_NAMES } from '@/services/aiLanguage';
 
 export function buildStudyPlanPrompt(args: {
   score: number;

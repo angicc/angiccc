@@ -37,17 +37,45 @@ function resetIfNeeded(s: UserSubscription): boolean {
 
 export const canAccessLesson = (tier: SubscriptionTier, order: number) =>
   tier === 'free' || tier === 'beginner' ? order <= 1 : true;
-export const canUseAI = (tier: SubscriptionTier, used: number, usedToday = 0): { allowed: boolean; reason?: string } => {
+/**
+ * Whether this plan may spend another AI message, and — when it may not — the
+ * translation key that says why.
+ *
+ * It returns a key rather than a sentence on purpose. These reasons used to be
+ * English string literals that went straight into the UI, so a German, French,
+ * Russian or Macedonian student who ran out of messages hit an English
+ * paragraph in an otherwise translated app. Because the text never lived in the
+ * `T` table, the build-time i18n guard could not see it either.
+ *
+ * `limit` is the allowance just exhausted; `nextLimit` the next plan's, absent
+ * on Master since there is nothing above it.
+ */
+export interface AiAllowance {
+  allowed: boolean;
+  reasonKey?: 'ai_limit_free' | 'ai_limit_beginner' | 'ai_limit_pro' | 'ai_limit_master';
+  limit?: number;
+  nextLimit?: number;
+  /** Which plan the message points at, so the UI can size the upgrade CTA. */
+  nextTier?: SubscriptionTier;
+}
+
+export const AI_LIMITS = { free: 5, beginner: 10, pro: 50, master: 100 } as const;
+
+export const canUseAI = (tier: SubscriptionTier, used: number, usedToday = 0): AiAllowance => {
   if (tier === 'free') {
-    if (usedToday >= 5) return { allowed: false, reason: 'You have used your 5 free daily messages. Come back tomorrow or upgrade to Beginner for 10 messages/day.' };
+    if (usedToday >= AI_LIMITS.free)
+      return { allowed: false, reasonKey: 'ai_limit_free', limit: AI_LIMITS.free, nextLimit: AI_LIMITS.beginner, nextTier: 'beginner' };
     return { allowed: true };
   }
   if (tier === 'beginner') {
-    if (usedToday >= 10) return { allowed: false, reason: 'You have used your 10 daily messages. Come back tomorrow or upgrade to Pro Student for 50 messages/month.' };
+    if (usedToday >= AI_LIMITS.beginner)
+      return { allowed: false, reasonKey: 'ai_limit_beginner', limit: AI_LIMITS.beginner, nextLimit: AI_LIMITS.pro, nextTier: 'pro' };
     return { allowed: true };
   }
-  if (tier === 'pro' && used >= 50) return { allowed: false, reason: 'You have used all 50 AI messages this month. Upgrade to Master for 100 messages/month.' };
-  if (tier === 'master' && used >= 100) return { allowed: false, reason: 'You have used all 100 AI messages this month. Your limit resets next month.' };
+  if (tier === 'pro' && used >= AI_LIMITS.pro)
+    return { allowed: false, reasonKey: 'ai_limit_pro', limit: AI_LIMITS.pro, nextLimit: AI_LIMITS.master, nextTier: 'master' };
+  if (tier === 'master' && used >= AI_LIMITS.master)
+    return { allowed: false, reasonKey: 'ai_limit_master', limit: AI_LIMITS.master };
   return { allowed: true };
 };
 export const canDownload = (tier: SubscriptionTier) => tier === 'master';

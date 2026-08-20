@@ -260,7 +260,7 @@ export function planHealth(
 
 // ─── AI decoration ────────────────────────────────────────────────────────────
 
-const LANG_NAMES: Record<string, string> = { en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian', de: 'German', fr: 'French' };
+import { LANG_NAMES } from '@/services/aiLanguage';
 const KIND_LABEL: Record<StepKind, string> = {
   lesson: 'lesson', 'era-quiz': 'era quiz', 'smart-quiz': 'adaptive quiz',
   flashcards: 'flashcard review', studio: 'content studio', crisis: 'crisis simulation', 'timeline-map': 'territory map exploration',

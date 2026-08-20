@@ -15,8 +15,10 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { AppShell } from '@/components/layout/AppShell';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
+import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
+import { aiAllowanceMessage } from '@/features/subscription/aiAllowanceMessage';
 import { usePlanTier } from '@/features/subscription/planGate';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { streamChatResponse } from '@/services/aiGateway';
@@ -55,6 +57,8 @@ export default function StudyPlanPage() {
   const [plan, setPlan] = useState<WeekPlan | null>(() => (currentUser ? loadWeekPlan(currentUser.id) : null));
   const [enhancing, setEnhancing] = useState(false);
   const [error, setError] = useState<unknown>(null);
+  // A spent AI allowance is a limit, not an error — its own state, its own UI.
+  const [quota, setQuota] = useState<string | null>(null);
   // Bumped by the Refresh button and on window focus: mastery + step completion
   // read quiz scores and analysis passes straight from localStorage, which the
   // AuthContext `progress` object doesn't always track — without this tick,
@@ -130,8 +134,15 @@ export default function StudyPlanPage() {
 
   const enhance = useCallback(async () => {
     if (!currentUser || !mastery || !plan || enhancing) return;
-    const { allowed } = canAI();
-    if (!allowed) return;
+    const allowance = canAI();
+    if (!allowance.allowed) {
+      // Say why, in the reader's language, instead of failing silently — and
+      // not via AiErrorCard, which drops a plain string and would present a
+      // spent allowance as a crash.
+      setQuota(aiAllowanceMessage(allowance, t) ?? null);
+      return;
+    }
+    setQuota(null);
     setEnhancing(true); setError(null);
     try {
       const prompt = buildPlanNotesPrompt(mastery, plan, language, tier === 'master', signals ?? undefined);
@@ -148,7 +159,7 @@ export default function StudyPlanPage() {
         setPlan(next);
       }
     } catch (err) { setError(err); } finally { setEnhancing(false); }
-  }, [currentUser, mastery, plan, enhancing, canAI, language, tier, signals, trackAiMessage]);
+  }, [currentUser, mastery, plan, enhancing, canAI, language, tier, signals, trackAiMessage, t]);
 
   const doneCount = plan ? plan.steps.filter(s => completion[s.id]).length : 0;
 
@@ -242,6 +253,7 @@ export default function StudyPlanPage() {
           )}
         </div>
 
+        {quota && <UpgradePrompt compact description={quota} />}
         {error != null && <AiErrorCard error={error} onRetry={enhance} />}
 
         {/* Why the week is shaped the way it is — measured, not templated. */}

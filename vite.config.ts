@@ -38,6 +38,8 @@ const IDENTICAL_TO_EN_OK: Record<string, ReadonlyArray<ContentLang> | 'all'> = {
   unit_day_short: ['es'],               // "d"
   fr_act_sim_short: 'all',              // "sim" — same clipping everywhere
   fr_online: ['de'],                    // "Online" — the ordinary German word
+  upgrade_btn: ['de'],                  // "Upgrade" — the ordinary German loanword,
+                                        // as already used in tutor_upgrade_msg
   sq_plan_min: ['es', 'fr'],      // "min"
   path_min: ['es', 'fr'],         // "min"
 

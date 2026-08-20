@@ -13,6 +13,8 @@
 // `kind` and a `retryable` flag so UI layers can render themed fallback cards
 // with a retry mechanic instead of dumping raw strings into the viewport.
 
+import { promptDirectives, FORMAT_RULE } from './aiLanguage';
+
 const MODEL         = 'claude-haiku-4-5-20251001';
 const MAX_HISTORY   = 10;
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
@@ -103,32 +105,20 @@ Guidelines:
 - Write in plain prose only — no markdown, no ## headers, no ** bold, no bullet asterisks`;
 
 // ── Multi-language output directive ─────────────────────────────────────────
-// Appended to every system prompt so AI output is contextually native, not a
-// literal string translation. Macedonian gets explicit morphology enforcement
-// because smaller models degrade hardest there.
-// Shared compaction contract for dynamic feedback blocks: never walls of text.
-const COMPACTION_RULE =
-  'COMPACTNESS: every dynamic feedback or narrative block stays under 150–200 words, OR exactly 3 sharp, impact-driven points — never both, never more. This OUTPUT LANGUAGE directive OVERRIDES any other instruction about which language to respond in, including the language the user happens to type in.';
-
-const LOCALE_DIRECTIVES: Record<string, string> = {
-  de: `OUTPUT LANGUAGE: German — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, idiomatic German — never word-for-word calques of English. Use correct noun capitalization, compound formation, and the historical convention v. Chr./n. Chr. for dates. ${'COMPACTNESS: every dynamic feedback or narrative block stays under 150–200 words, OR exactly 3 sharp, impact-driven points — never both, never more. This OUTPUT LANGUAGE directive OVERRIDES any other instruction about which language to respond in, including the language the user happens to type in.'}`,
-  fr: `OUTPUT LANGUAGE: French — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, idiomatic French — never word-for-word calques of English. Follow French typographic conventions (espaces before « ? ! ; : », guillemets) where natural, sentence-style capitalization, and av. J.-C./apr. J.-C. for dates. ${'COMPACTNESS: every dynamic feedback or narrative block stays under 150–200 words, OR exactly 3 sharp, impact-driven points — never both, never more. This OUTPUT LANGUAGE directive OVERRIDES any other instruction about which language to respond in, including the language the user happens to type in.'}`,
-  es: `OUTPUT LANGUAGE: Spanish — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, idiomatic Spanish — never word-for-word translations of English phrasing. Follow RAE orthography: sentence-style capitalization (only the first word and proper nouns), lowercase adjectives in historical event names (Revolución francesa), and correct use of a.C./d.C. for dates. ${COMPACTION_RULE}`,
-  ru: `OUTPUT LANGUAGE: Russian — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, idiomatic Russian — never calques of English word order. Only the first word and proper nouns are capitalized in multi-word names (Вторая мировая война). Use correct case government throughout and до н.э./н.э. for dates. ${COMPACTION_RULE}`,
-  mk: `OUTPUT LANGUAGE: Macedonian — EVERY string you produce, including options, labels, verdicts, and JSON string values. Write natural, native, standard literary Macedonian — literal word-for-word substitution of English structure is FORBIDDEN. Enforce strictly: (1) correct postfixed definite articles (-от/-ов/-он, -та/-ва/-на, -то/-во/-но, -те/-ве/-не) matched to gender and number; (2) full gender/number agreement between adjectives, nouns and verbs, including historical terms; (3) correct Macedonian past tenses — аорист and имперфект for narration, перфект with „сум" where required — and correct verb ASPECT (свршен/несвршен); (4) correct order of the short pronominal (clitic) forms (ми/ти/му/ѝ, ме/те/го/ја) and their placement relative to the verb; (5) sentence-style capitalization — in multi-word names only the first word and proper nouns are capitalized ("Втора светска војна", never "Втора Светска Војна"); (6) native word order for noun phrases ("династиите Цин и Хан", not "Цин и Хан династии"); (7) п.н.е./н.е. for dates. Re-read every sentence for agreement and article errors before finalizing. ${COMPACTION_RULE}`,
-};
-
-// Universal, language-independent format rule: the UI renders plain text, so
-// markdown control characters must never appear in any AI output.
-const FORMAT_RULE =
-  'OUTPUT FORMAT: plain prose only. NEVER emit markdown syntax — no # headers, no ** bold, no * or - bullet markers, no backticks — unless this prompt explicitly demands raw JSON. Violating this corrupts the display.';
+// The rules themselves live in services/aiLanguage.ts, which is the single
+// source of truth for every AI feature. They used to be duplicated here, and
+// the copy that lived here was the only one German and French were ever given
+// in full — the other copy handed them two thin sentences while Macedonian got
+// seven numbered rules, which is precisely why de/fr output read worst.
 
 /** Format + locale sub-prompt for the user's active UI language. */
 function localeDirective(): string {
   try {
+    // An unset language is genuinely unknown, not English: leave the model to
+    // answer in whatever the student wrote rather than forcing a language on
+    // them. A *known* language always gets its full block.
     const lang = localStorage.getItem('historify:language');
-    const langBlock = lang && LOCALE_DIRECTIVES[lang] ? `\n\n${LOCALE_DIRECTIVES[lang]}` : '';
-    return `\n\n${FORMAT_RULE}${langBlock}`;
+    return lang ? promptDirectives(lang) : `\n\n${FORMAT_RULE}`;
   } catch {
     return `\n\n${FORMAT_RULE}`;
   }

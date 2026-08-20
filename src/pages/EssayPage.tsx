@@ -11,6 +11,8 @@ import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { streamChatResponse } from '@/services/aiGateway';
+import { LANG_NAMES } from '@/services/aiLanguage';
+import { aiAllowanceMessage } from '@/features/subscription/aiAllowanceMessage';
 import { safeJsonParse } from '@/lib/safeJsonParse';
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -118,10 +120,11 @@ function getTranslatedTopic(topic: string, lang: string): string {
   return TOPICS_I18N[topic]?.[lang as 'es' | 'ru' | 'mk' | 'de' | 'fr'] ?? topic;
 }
 
-const LANG_NAMES: Record<string, string> = {
-  en: 'English', es: 'Spanish', ru: 'Russian', mk: 'Macedonian',
-};
-
+// Imported, not redeclared. The local copy here listed only en/es/ru/mk, so a
+// German or French student's essay was graded under an explicit "write ALL text
+// fields in English" instruction — which then collided with the German/French
+// OUTPUT LANGUAGE block the gateway appends. One prompt, two contradictory
+// language orders, and feedback that came back in the wrong language.
 function makeEssaySystem(lang: string): string {
   const langName = LANG_NAMES[lang] ?? 'English';
   return `You are Clio, an expert history professor grading student essays.
@@ -207,9 +210,10 @@ export default function EssayPage() {
 
   const wordCount = essay.trim() ? essay.trim().split(/\s+/).length : 0;
   const activeTopic = topic === 'custom' ? customTopic : topic;
-  const canSubmit = activeTopic.trim().length > 5 && wordCount >= 80 && wordCount <= 600 && !grading;
-
-  const { allowed } = canAI();
+  const allowance = canAI();
+  const { allowed } = allowance;
+  const quotaMessage = aiAllowanceMessage(allowance, t);
+  const canSubmit = activeTopic.trim().length > 5 && wordCount >= 80 && wordCount <= 600 && !grading && allowed;
 
   if (tier !== 'master') {
     return (
@@ -236,6 +240,10 @@ export default function EssayPage() {
 
   async function handleGrade() {
     if (!canSubmit) return;
+    // Every other AI screen gates on this before spending a call. This one read
+    // the quota and then ignored it, so essay grading was the one door in the
+    // app that let a user past their AI message allowance.
+    if (!allowed) return;
     setGrading(true);
     setResult(null);
     setRawBuffer('');
@@ -427,7 +435,11 @@ export default function EssayPage() {
             </Button>
             {!canSubmit && !grading && (
               <p className="text-center text-xs text-muted-foreground">
-                {!activeTopic ? t.essay_select_topic :
+                {/* The quota check comes first: with the allowance spent, the
+                    topic and word-count hints are irrelevant, and without this
+                    branch the button sat disabled with no explanation at all. */}
+                {quotaMessage ? quotaMessage :
+                 !activeTopic ? t.essay_select_topic :
                  wordCount < 80 ? t.essay_write_more.replace('{n}', String(80 - wordCount)) :
                  wordCount > 600 ? t.essay_too_long : ''}
               </p>

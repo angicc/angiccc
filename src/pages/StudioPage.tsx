@@ -15,10 +15,13 @@ import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { AppShell } from '@/components/layout/AppShell';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
+import { UpgradePrompt } from '@/components/shared/UpgradePrompt';
 import { Flip3D } from '@/components/shared/Flip3D';
 import { PlanGate } from '@/features/subscription/planGate';
 import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
+import { aiAllowanceMessage } from '@/features/subscription/aiAllowanceMessage';
+import type { AiAllowance } from '@/features/subscription/subscriptionStore';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { streamChatResponse } from '@/services/aiGateway';
 import { addBonusXp } from '@/features/progress/progressStore';
@@ -119,7 +122,7 @@ function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, t
   onPractice: (s: StudySet) => void;
   onCards: (s: StudySet) => void;
   onDelete: (id: string) => void;
-  canAI: () => { allowed: boolean; reason?: string };
+  canAI: () => AiAllowance;
   trackAiMessage: () => void;
   language: string;
 }) {
@@ -131,6 +134,8 @@ function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, t
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [failed, setFailed] = useState(false);
+  // A spent AI allowance is a limit, not an error — its own state, its own UI.
+  const [quota, setQuota] = useState<string | null>(null);
   // Which pass is running, so the button can say "checking" rather than
   // appearing to hang for a second time with the same label.
   const [stage, setStage] = useState<'drafting' | 'checking'>('drafting');
@@ -165,8 +170,17 @@ function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, t
    */
   const generate = useCallback(async () => {
     if (loading || source.trim().length < SOURCE_MIN_CHARS) return;
-    const { allowed } = canAI();
-    if (!allowed) return;
+    const allowance = canAI();
+    if (!allowance.allowed) {
+      // Previously a bare `return`: the Generate button simply did nothing and
+      // the learner had no way to tell a spent allowance from a broken app.
+      // Not routed through AiErrorCard — that card discards a plain string and
+      // renders a generic red failure, which would misreport a spent allowance
+      // as a crash.
+      setQuota(aiAllowanceMessage(allowance, t) ?? null);
+      return;
+    }
+    setQuota(null);
     setLoading(true); setError(null); setFailed(false); setStage('drafting');
     try {
       const req: StudioRequest = {
@@ -202,7 +216,7 @@ function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, t
     } catch (err) {
       setError(err);
     } finally { setLoading(false); setStage('drafting'); }
-  }, [loading, source, questionCount, cardCount, focus, language, canAI, trackAiMessage, onGenerated, ask]);
+  }, [loading, source, questionCount, cardCount, focus, language, canAI, trackAiMessage, onGenerated, ask, t]);
 
   return (
     <div className="space-y-6">
@@ -233,6 +247,7 @@ function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, t
           </div>
 
           {failed && <p className="text-xs text-rose-400">{t.studio_generation_failed}</p>}
+          {quota && <UpgradePrompt compact description={quota} />}
           {error != null && <AiErrorCard error={error} onRetry={generate} />}
 
           <Button className="w-full gap-2" onClick={generate} disabled={loading || source.trim().length < SOURCE_MIN_CHARS}>
