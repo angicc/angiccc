@@ -21,15 +21,52 @@ Recommended size: 840×360 (or any 21:9-ish ratio); the banner renders with
 
 ## Getting the art in
 
-The art lives in Drive, not in git. Two ways to land it:
+Art that has been landed is committed. The rest still lives only in Drive.
+See what is outstanding at any time:
 
 ```sh
-# what the app expects but the repo does not have, grouped by Drive folder
-node scripts/fetch_drive_assets.mjs --missing
+npm run banners:missing
+```
 
-# pull one folder straight into place (needs a Drive OAuth token with
-# drive.readonly — see the header of the script; revoke it when done)
-node scripts/fetch_drive_assets.mjs --token "$GOOGLE_OAUTH_TOKEN" --source banners-part-2
+### The build fetches it for you (recommended)
+
+`npm run build` runs `scripts/prefetch_drive_banners.mjs` first (npm's
+`prebuild` hook). Given a credential in the environment it pulls every
+mapped banner the repo does not already carry, straight into `public/`,
+before Vite copies that into `dist/`. Without a credential it prints the
+missing list and does nothing else — **it can never fail a deploy**, because
+a missing banner is already a handled case (the lesson falls back to its
+built-in animated banner).
+
+To turn it on for Netlify: **Site configuration → Environment variables →
+Add a variable**, key `GOOGLE_API_KEY`, value a Google Cloud API key with
+the **Google Drive API** enabled. Nothing else changes — no build command
+edit, no plugin. The next deploy ships the full set.
+
+An API key only reads files shared **Anyone with the link → Viewer**. As of
+this writing:
+
+| Drive folder | Sharing | API key works |
+| --- | --- | --- |
+| `Eras and Lessons Banner GIFs part 2` (48 files) | Anyone with the link → Viewer | yes |
+| `Eras and Lessons Banner GIFs` (56 files) | owner only | no — but all 56 are already committed |
+
+So a plain `GOOGLE_API_KEY` is enough to land everything that is currently
+missing. If part 1 ever needs re-fetching, either open its link sharing to
+match part 2, or use a token (below).
+
+Set `SKIP_BANNER_FETCH=1` to disable the step for a build.
+
+### Doing it by hand
+
+```sh
+# one folder, straight into place
+npm run banners:fetch -- --source banners-part-2 --api-key "$GOOGLE_API_KEY"
+
+# a private folder needs an OAuth access token with drive.readonly scope.
+# It expires in ~1 hour, which makes it fine here and useless as a build
+# variable. Revoke it when the drop is done.
+npm run banners:fetch -- --token "$GOOGLE_OAUTH_TOKEN"
 ```
 
 Or download the Drive folder as a ZIP by hand, unzip it, and run
@@ -38,6 +75,10 @@ each file to the path its lesson expects.
 
 Every file id, byte size and destination is recorded in
 `scripts/drive-assets.manifest.json`.
+
+Neither credential is read from or written to the repo, and neither is ever
+placed on a command line by the build step — it passes the environment
+through, so nothing lands in a process listing or a build log.
 
 
 ## prehistoric/

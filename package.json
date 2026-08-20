@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/prefetch_drive_banners.mjs",
     "build": "tsc -b && vite build",
+    "banners:fetch": "node scripts/fetch_drive_assets.mjs",
+    "banners:missing": "node scripts/fetch_drive_assets.mjs --missing",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
