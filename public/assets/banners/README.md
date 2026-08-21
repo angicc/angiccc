@@ -43,6 +43,36 @@ Add a variable**, key `GOOGLE_API_KEY`, value a Google Cloud API key with
 the **Google Drive API** enabled. Nothing else changes — no build command
 edit, no plugin. The next deploy ships the full set.
 
+**Scope it to every deploy context**, not just Production. A value set only
+on Production is invisible to a branch deploy, and the step will report no
+credential at all.
+
+`DRIVE_API_KEY`, `DRIVEAPI_KEY` and `GOOGLE_DRIVE_API_KEY` are accepted as
+aliases. The spelling is the easiest thing to get wrong and the cost used to
+be silence.
+
+### Checking whether it worked
+
+Every build writes `banner-status.json` into the site, so open
+**`https://<your-site>/banner-status.json`** — no build log needed:
+
+```jsonc
+{
+  "ran": true,                       // false = no credential was found
+  "credentialVariable": "GOOGLE_API_KEY",  // the NAME only, never the value
+  "fetchedThisBuild": 47,
+  "present": 104, "total": 104,
+  "failures": [ { "file": "...", "reason": "HTTP 403 ..." } ]
+}
+```
+
+`ran: false` means no credential reached the build — check the name and the
+deploy-context scope. `ran: true` with `HTTP 403` failures means the key was
+found but rejected: enable the Drive API on it, and confirm the folder is
+shared "Anyone with the link → Viewer". `HTTP 400 API key not valid` means
+the value itself is wrong. The file is redacted before it is written, so no
+credential can appear in it.
+
 An API key only reads files shared **Anyone with the link → Viewer**. As of
 this writing:
 

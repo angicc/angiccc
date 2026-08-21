@@ -38,3 +38,6 @@ scripts/.cache/
 
 # Historical-basemaps year files pulled by scripts/gen* / fetch_territory_polygons.py
 .cache/
+
+# Written by the prebuild banner fetch on every build; never committed.
+public/banner-status.json
