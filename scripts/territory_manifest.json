@@ -203,7 +203,27 @@
         "Idrisid Caliphate"
       ],
       "fill_color": "#10b981",
-      "stroke_color": "#34d399"
+      "stroke_color": "#34d399",
+      "entities": [
+        {
+          "entity_name": "Abbasid Caliphate",
+          "match": [
+            "Abbasid Caliphate"
+          ],
+          "fill_color": "#16a34a",
+          "stroke_color": "#4ade80",
+          "exact": true
+        },
+        {
+          "entity_name": "Idrisid Caliphate",
+          "match": [
+            "Idrisid Caliphate"
+          ],
+          "fill_color": "#0d9488",
+          "stroke_color": "#2dd4bf",
+          "exact": true
+        }
+      ]
     },
     {
       "topic_id": "mongol-empire",
@@ -219,7 +239,45 @@
         "Chagatai Khanate"
       ],
       "fill_color": "#f97316",
-      "stroke_color": "#fb923c"
+      "stroke_color": "#fb923c",
+      "entities": [
+        {
+          "entity_name": "Great Khanate (Yuan)",
+          "match": [
+            "Great Khanate"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171",
+          "exact": true
+        },
+        {
+          "entity_name": "Ilkhanate",
+          "match": [
+            "Ilkhanate"
+          ],
+          "fill_color": "#f59e0b",
+          "stroke_color": "#fbbf24",
+          "exact": true
+        },
+        {
+          "entity_name": "Golden Horde",
+          "match": [
+            "Khanate of the Golden Horde"
+          ],
+          "fill_color": "#facc15",
+          "stroke_color": "#fde047",
+          "exact": true
+        },
+        {
+          "entity_name": "Chagatai Khanate",
+          "match": [
+            "Chagatai Khanate"
+          ],
+          "fill_color": "#ea580c",
+          "stroke_color": "#fb923c",
+          "exact": true
+        }
+      ]
     },
     {
       "topic_id": "al-andalus",
@@ -476,7 +534,63 @@
         "Kosovo"
       ],
       "fill_color": "#a855f7",
-      "stroke_color": "#c084fc"
+      "stroke_color": "#c084fc",
+      "entities": [
+        {
+          "entity_name": "Serbia",
+          "match": [
+            "Serbia"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171",
+          "exact": true
+        },
+        {
+          "entity_name": "Croatia",
+          "match": [
+            "Croatia"
+          ],
+          "fill_color": "#2563eb",
+          "stroke_color": "#60a5fa",
+          "exact": true
+        },
+        {
+          "entity_name": "Bosnia and Herzegovina",
+          "match": [
+            "Bosnia and Herzegovina"
+          ],
+          "fill_color": "#16a34a",
+          "stroke_color": "#4ade80",
+          "exact": true
+        },
+        {
+          "entity_name": "Slovenia",
+          "match": [
+            "Slovenia"
+          ],
+          "fill_color": "#facc15",
+          "stroke_color": "#fde047",
+          "exact": true
+        },
+        {
+          "entity_name": "Montenegro",
+          "match": [
+            "Montenegro"
+          ],
+          "fill_color": "#a855f7",
+          "stroke_color": "#c084fc",
+          "exact": true
+        },
+        {
+          "entity_name": "North Macedonia",
+          "match": [
+            "Macedonia"
+          ],
+          "fill_color": "#f59e0b",
+          "stroke_color": "#fbbf24",
+          "exact": true
+        }
+      ]
     },
     {
       "topic_id": "olmec-mesoamerica",
@@ -560,7 +674,36 @@
         "Kyivan Rus"
       ],
       "fill_color": "#0ea5e9",
-      "stroke_color": "#38bdf8"
+      "stroke_color": "#38bdf8",
+      "entities": [
+        {
+          "entity_name": "Denmark-Norway",
+          "match": [
+            "Denmark-Norway"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171",
+          "exact": true
+        },
+        {
+          "entity_name": "Sweden",
+          "match": [
+            "Sweden"
+          ],
+          "fill_color": "#2563eb",
+          "stroke_color": "#60a5fa",
+          "exact": true
+        },
+        {
+          "entity_name": "Kyivan Rus",
+          "match": [
+            "Kyivan Rus"
+          ],
+          "fill_color": "#f59e0b",
+          "stroke_color": "#fbbf24",
+          "exact": true
+        }
+      ]
     },
     {
       "topic_id": "tokugawa-japan",
@@ -592,7 +735,81 @@
         "Bulgaria"
       ],
       "fill_color": "#ef4444",
-      "stroke_color": "#f87171"
+      "stroke_color": "#f87171",
+      "entities": [
+        {
+          "entity_name": "German Empire",
+          "match": [
+            "German Empire"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171",
+          "exact": true
+        },
+        {
+          "entity_name": "Austria-Hungary",
+          "match": [
+            "Austro-Hungarian Empire"
+          ],
+          "fill_color": "#ea580c",
+          "stroke_color": "#fb923c",
+          "exact": true
+        },
+        {
+          "entity_name": "Ottoman Empire",
+          "match": [
+            "Ottoman Empire"
+          ],
+          "fill_color": "#b91c1c",
+          "stroke_color": "#ef4444",
+          "exact": true
+        },
+        {
+          "entity_name": "Bulgaria",
+          "match": [
+            "Bulgaria"
+          ],
+          "fill_color": "#c2410c",
+          "stroke_color": "#f97316",
+          "exact": true
+        },
+        {
+          "entity_name": "France",
+          "match": [
+            "France"
+          ],
+          "fill_color": "#2563eb",
+          "stroke_color": "#60a5fa",
+          "exact": true
+        },
+        {
+          "entity_name": "Russian Empire",
+          "match": [
+            "Russian Empire"
+          ],
+          "fill_color": "#0ea5e9",
+          "stroke_color": "#38bdf8",
+          "exact": true
+        },
+        {
+          "entity_name": "British Empire",
+          "match": [
+            "United Kingdom of Great Britain and Ireland"
+          ],
+          "fill_color": "#7c3aed",
+          "stroke_color": "#a78bfa",
+          "exact": true
+        },
+        {
+          "entity_name": "Serbia",
+          "match": [
+            "Serbia"
+          ],
+          "fill_color": "#059669",
+          "stroke_color": "#34d399",
+          "exact": true
+        }
+      ]
     },
     {
       "topic_id": "ww2",
@@ -608,7 +825,81 @@
         "Hungary"
       ],
       "fill_color": "#dc2626",
-      "stroke_color": "#ef4444"
+      "stroke_color": "#ef4444",
+      "entities": [
+        {
+          "entity_name": "Germany",
+          "match": [
+            "Germany"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171",
+          "exact": true
+        },
+        {
+          "entity_name": "Italy",
+          "match": [
+            "Italy"
+          ],
+          "fill_color": "#ea580c",
+          "stroke_color": "#fb923c",
+          "exact": true
+        },
+        {
+          "entity_name": "Empire of Japan",
+          "match": [
+            "Empire of Japan"
+          ],
+          "fill_color": "#b91c1c",
+          "stroke_color": "#ef4444",
+          "exact": true
+        },
+        {
+          "entity_name": "Hungary",
+          "match": [
+            "Hungary"
+          ],
+          "fill_color": "#c2410c",
+          "stroke_color": "#f97316",
+          "exact": true
+        },
+        {
+          "entity_name": "United Kingdom",
+          "match": [
+            "United Kingdom"
+          ],
+          "fill_color": "#2563eb",
+          "stroke_color": "#60a5fa",
+          "exact": true
+        },
+        {
+          "entity_name": "France",
+          "match": [
+            "France"
+          ],
+          "fill_color": "#0ea5e9",
+          "stroke_color": "#38bdf8",
+          "exact": true
+        },
+        {
+          "entity_name": "Poland",
+          "match": [
+            "Poland"
+          ],
+          "fill_color": "#059669",
+          "stroke_color": "#34d399",
+          "exact": true
+        },
+        {
+          "entity_name": "Soviet Union",
+          "match": [
+            "USSR"
+          ],
+          "fill_color": "#7c3aed",
+          "stroke_color": "#a78bfa",
+          "exact": true
+        }
+      ]
     },
     {
       "topic_id": "cold-war",
@@ -621,7 +912,36 @@
         "United States"
       ],
       "fill_color": "#6366f1",
-      "stroke_color": "#818cf8"
+      "stroke_color": "#818cf8",
+      "entities": [
+        {
+          "entity_name": "Soviet Union",
+          "match": [
+            "USSR"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171",
+          "exact": true
+        },
+        {
+          "entity_name": "People's Republic of China",
+          "match": [
+            "China"
+          ],
+          "fill_color": "#ea580c",
+          "stroke_color": "#fb923c",
+          "exact": true
+        },
+        {
+          "entity_name": "United States",
+          "match": [
+            "United States"
+          ],
+          "fill_color": "#2563eb",
+          "stroke_color": "#60a5fa",
+          "exact": true
+        }
+      ]
     },
     {
       "topic_id": "renaissance-italy",
@@ -638,7 +958,81 @@
         "Savoy"
       ],
       "fill_color": "#eab308",
-      "stroke_color": "#facc15"
+      "stroke_color": "#facc15",
+      "entities": [
+        {
+          "entity_name": "Papal States",
+          "match": [
+            "Papal States"
+          ],
+          "fill_color": "#7e22ce",
+          "stroke_color": "#c084fc",
+          "exact": true
+        },
+        {
+          "entity_name": "Republic of Venice",
+          "match": [
+            "Venice"
+          ],
+          "fill_color": "#e11d48",
+          "stroke_color": "#fb7185",
+          "exact": true
+        },
+        {
+          "entity_name": "Florence",
+          "match": [
+            "Florence"
+          ],
+          "fill_color": "#0891b2",
+          "stroke_color": "#22d3ee",
+          "exact": true
+        },
+        {
+          "entity_name": "Republic of Genoa",
+          "match": [
+            "Genoa"
+          ],
+          "fill_color": "#65a30d",
+          "stroke_color": "#a3e635",
+          "exact": true
+        },
+        {
+          "entity_name": "Duchy of Milan",
+          "match": [
+            "Milan"
+          ],
+          "fill_color": "#f59e0b",
+          "stroke_color": "#fbbf24",
+          "exact": true
+        },
+        {
+          "entity_name": "Duchy of Savoy",
+          "match": [
+            "Savoy"
+          ],
+          "fill_color": "#0d9488",
+          "stroke_color": "#2dd4bf",
+          "exact": true
+        },
+        {
+          "entity_name": "Kingdom of Naples",
+          "match": [
+            "Naples"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171",
+          "exact": true
+        },
+        {
+          "entity_name": "Kingdom of Sicily",
+          "match": [
+            "Sicily"
+          ],
+          "fill_color": "#ea580c",
+          "stroke_color": "#fb923c",
+          "exact": true
+        }
+      ]
     }
   ]
 }
