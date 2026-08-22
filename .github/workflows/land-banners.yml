@@ -1,0 +1,113 @@
+# Fetch the Drive banner art once and COMMIT it, so it stops being fetched.
+#
+# The build-time prefetch re-downloads the art on every deploy and needs the
+# credential to keep working forever. Committing the files ends that: the art
+# becomes part of the repo, the prebuild step finds everything already on disk
+# and does nothing, and the deploy no longer depends on Drive at all.
+#
+# Run it from the Actions tab → "Land banner art in the repo" → Run workflow.
+# It needs a repository secret named GOOGLE_API_KEY (Settings → Secrets and
+# variables → Actions → New repository secret) holding a Google Cloud API key
+# with the Google Drive API enabled. The secret is never printed: the fetch
+# script reads it from the environment rather than from a command line.
+#
+# This is a one-off. Once the files are committed there is nothing left to
+# fetch, and a second run will report "0 fetched" and commit nothing.
+name: Land banner art in the repo
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Which Drive folder to pull (blank = every folder that is not retired)'
+        required: false
+        default: 'banners-part-2'
+      force:
+        description: 'Re-download files that are already committed'
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+  land:
+    runs-on: ubuntu-latest
+    permissions:
+      # The whole point of this job is to push the art back to the branch.
+      contents: write
+
+    steps:
+      - name: Check out the working branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Refuse to run without a credential
+        # Fail loudly HERE rather than letting the fetch quietly land nothing.
+        # The prebuild step is deliberately silent about a missing key because
+        # it must never break a deploy; this job has the opposite contract.
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: |
+          if [ -z "$GOOGLE_API_KEY" ]; then
+            echo "::error::No GOOGLE_API_KEY repository secret is set."
+            echo "Add it under Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          echo "Credential present (value not shown)."
+
+      - name: What is missing before we start
+        run: node scripts/fetch_drive_assets.mjs --missing
+
+      - name: Fetch the art from Drive
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          # Read through the environment, never interpolated into the script
+          # body: a `${{ }}` expansion inside `run:` is substituted before the
+          # shell ever sees it, so anything shell-special in the input would be
+          # executed rather than passed as an argument.
+          INPUT_SOURCE: ${{ inputs.source }}
+          INPUT_FORCE: ${{ inputs.force }}
+        run: |
+          ARGS=""
+          if [ -n "$INPUT_SOURCE" ]; then ARGS="$ARGS --source $INPUT_SOURCE"; fi
+          if [ "$INPUT_FORCE" = "true" ]; then ARGS="$ARGS --force"; fi
+          # The fetcher exits non-zero if ANY file failed. That must not throw
+          # away the ones that succeeded, so the result is recorded and judged
+          # after the commit instead of aborting here.
+          node scripts/fetch_drive_assets.mjs $ARGS && echo "FETCH_OK=1" >> "$GITHUB_ENV" || echo "FETCH_OK=0" >> "$GITHUB_ENV"
+
+      - name: What is missing now
+        run: node scripts/fetch_drive_assets.mjs --missing
+
+      - name: Commit whatever landed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Only the art. banner-status.json is generated and gitignored; no
+          # other path is touched by this job and none should be swept in.
+          git add -A public/assets/banners
+          if git diff --cached --quiet; then
+            echo "Nothing new landed — nothing to commit."
+            exit 0
+          fi
+          COUNT=$(git diff --cached --name-only | wc -l)
+          git commit -m "Land ${COUNT} banner image(s) from Drive
+
+          Fetched by the land-banners workflow so the art lives in the repo
+          rather than being re-downloaded on every deploy."
+          git push origin HEAD:${{ github.ref_name }}
+          echo "Committed and pushed ${COUNT} file(s)."
+
+      - name: Report any files that could not be fetched
+        if: always()
+        run: |
+          if [ "${FETCH_OK}" != "1" ]; then
+            echo "::warning::Some files could not be fetched — see the fetch step above."
+            echo "A 403 means the key cannot read them: enable the Google Drive API on the key"
+            echo "and confirm the Drive folder is shared 'Anyone with the link → Viewer'."
+            echo "A 400 means the key value itself is wrong."
+          fi

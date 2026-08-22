@@ -28,7 +28,23 @@ See what is outstanding at any time:
 npm run banners:missing
 ```
 
-### The build fetches it for you (recommended)
+### Commit it once (recommended)
+
+Art in the repo needs no credential, no network and no re-fetching. Two ways:
+
+**By hand, no key needed.** On GitHub, open `public/assets/banners/<era>/`,
+**Add file → Upload files**, drag the images in, commit. The only rule is that
+each file's name must match the path its lesson expects — check
+`npm run banners:missing` for the exact list, and note the extension is part of
+the path (a `.jpg` filed under a `.gif` mapping will not resolve).
+
+**By workflow, from Drive.** Actions tab → **Land banner art in the repo** →
+Run workflow. It fetches from Drive on GitHub's runner and commits the result
+to the branch. Needs a repository secret `GOOGLE_API_KEY` (Settings → Secrets
+and variables → Actions) holding a Drive-API-enabled key. It is a one-off:
+once the art is committed there is nothing left to fetch.
+
+### The build fetches it for you (fallback)
 
 `npm run build` runs `scripts/prefetch_drive_banners.mjs` first (npm's
 `prebuild` hook). Given a credential in the environment it pulls every
