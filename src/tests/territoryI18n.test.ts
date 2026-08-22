@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 import { TERRITORY_TOPICS } from '@/features/content/timelineTerritoryData';
-import { POLY_LABEL_I18N } from '@/i18n/territoryMarkerTranslations';
+import {
+  POLY_LABEL_I18N, MARKER_NAME_I18N, MARKER_NOTE_I18N, MARKER_NOTE_TEXT_I18N, MARKER_TYPE_I18N,
+} from '@/i18n/territoryMarkerTranslations';
 import type { Language } from '@/i18n/translations';
 
 const CONTENT_LANGS: Exclude<Language, 'en'>[] = ['es', 'ru', 'mk', 'de', 'fr'];
@@ -128,5 +130,38 @@ describe('Territory Map content translations', () => {
       return missing.length > 0 ? [`${label} → ${missing.join(', ')}`] : [];
     });
     expect(gaps).toEqual([]);
+  });
+
+  /**
+   * Every pin the map plants, in every language.
+   *
+   * Marker names and notes are NOT read from the topic data — they go through
+   * the lookup tables, which fall back to the English string when a key is
+   * absent. That fallback is silent, so 78 place names and 68 pin notes
+   * rendered in English on an otherwise Macedonian map, in almost every era:
+   * Thessalonica and Preslav on the Cyril-and-Methodius map, Angkor Wat on the
+   * Khmer one, Pergamon on the Hellenistic one. Nothing failed; it just read
+   * as half-finished.
+   */
+  it('translates every marker name, note and type the map plants', () => {
+    const complete = (table: Record<string, Partial<Record<string, string>>>, key: string) =>
+      Boolean(table[key]) && CONTENT_LANGS.every(l => (table[key][l] ?? '').trim().length > 0);
+
+    const gaps: string[] = [];
+    for (const topic of TERRITORY_TOPICS) {
+      for (const m of topic.markers ?? []) {
+        if (!complete(MARKER_NAME_I18N, m.name)) gaps.push(`${topic.id}: marker name "${m.name}"`);
+        if (!complete(MARKER_TYPE_I18N, m.type)) gaps.push(`${topic.id}: marker type "${m.type}"`);
+        // A note may be keyed by the marker it belongs to, or by its own text
+        // when the same sentence is shared between pins.
+        if (m.note && !complete(MARKER_NOTE_I18N, m.name) && !complete(MARKER_NOTE_TEXT_I18N, m.note)) {
+          gaps.push(`${topic.id}: note for "${m.name}"`);
+        }
+      }
+      for (const r of topic.routes ?? []) {
+        if (!complete(MARKER_TYPE_I18N, r.type)) gaps.push(`${topic.id}: route type "${r.type}"`);
+      }
+    }
+    expect(gaps, `${gaps.length} map label(s) would render in English`).toEqual([]);
   });
 });

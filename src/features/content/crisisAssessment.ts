@@ -7,6 +7,7 @@
 // actually happened. One strict-JSON AI call; everything is validated and
 // clamped before rendering, and XP is banked once per concluded run.
 import { safeJsonParse } from '@/lib/safeJsonParse';
+import { stripWeldedScripts } from '@/services/sanitizeAiText';
 import { languageDirective } from '@/services/aiLanguage';
 import type { Language } from '@/i18n/translations';
 import {
@@ -118,6 +119,10 @@ const strList = (v: unknown, max: number): string[] => {
  *  from the overall score so a partial-but-real assessment still renders; we bail
  *  out only when the output carries no usable signal whatsoever. */
 export function parseAssessment(raw: string): Omit<CrisisAssessment, 'xpAwarded'> | null {
+  // Repair stray CJK characters welded into Cyrillic or Latin words before
+  // anything downstream reads them. The deep model is the real fix; this is the
+  // net under it, applied at the funnel so no call site can forget.
+  raw = stripWeldedScripts(raw);
   let parsed: Record<string, unknown>;
   try { parsed = safeJsonParse<Record<string, unknown>>(raw); } catch { return null; }
   if (!parsed || typeof parsed !== 'object') return null;

@@ -7,6 +7,7 @@
 // a malformed node can never corrupt the resource vector.
 
 import { z } from 'zod';
+import { stripWeldedScripts } from '@/services/sanitizeAiText';
 import { safeJsonParse } from '@/lib/safeJsonParse';
 import type { CrisisScenario } from '@/features/content/crisisScenarios';
 import {
@@ -88,6 +89,10 @@ export type CrisisNodePayload = z.infer<typeof crisisNodeSchema>;
 
 /** Repair + parse + validate one engine turn. Null = unrecoverable. */
 export function parseCrisisNode(raw: string, crisisId: string): CrisisNodePayload | null {
+  // Repair stray CJK characters welded into Cyrillic or Latin words before
+  // anything downstream reads them. The deep model is the real fix; this is the
+  // net under it, applied at the funnel so no call site can forget.
+  raw = stripWeldedScripts(raw);
   try {
     const candidate = safeJsonParse<unknown>(raw);
     const node = crisisNodeSchema.parse(candidate);

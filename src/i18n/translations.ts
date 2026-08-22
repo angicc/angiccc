@@ -218,6 +218,9 @@ export type TranslationKeys = {
   vr_review_label: string; vr_submit: string; vr_grading: string;
   vr_video_xp: string; vr_next_in: string; vr_master_only: string;
   vr_available: string; vr_write_analysis: string;
+  // The instruction under the review box. It was JSX prose inside the page, so
+  // it stayed English on every non-English screen.
+  vr_review_hint: string;
   // ── Profile ────────────────────────────────────────────────────
   prof_title: string; prof_overview: string; prof_achievements: string;
   prof_settings: string; prof_chess_rank: string; prof_upload_photo: string;
@@ -733,6 +736,7 @@ const EN: TranslationKeys = {
     vr_video_xp: 'Video XP Earned', vr_next_in: 'Next video in',
     vr_master_only: 'Exclusive to Master Student plan', vr_available: 'New video available!',
     vr_write_analysis: 'Write your analysis identifying the main motive or argument…',
+    vr_review_hint: "Identify the video's main motive or argument. Use specific historical details from the video. Minimum 80 words. Clio will grade every sentence.",
     // Profile
     prof_title: 'Profile', prof_overview: 'Overview', prof_achievements: 'Achievements',
     prof_settings: 'Settings', prof_chess_rank: 'Chess Rank',
@@ -1270,6 +1274,7 @@ export const T: Translations = {
     vr_video_xp: 'XP de Vídeo Ganado', vr_next_in: 'Próximo vídeo en',
     vr_master_only: 'Exclusivo del plan Master Student', vr_available: '¡Nuevo vídeo disponible!',
     vr_write_analysis: 'Escribe tu análisis identificando el motivo o argumento principal…',
+    vr_review_hint: 'Identifica el motivo o argumento principal del vídeo. Usa detalles históricos concretos del vídeo. Mínimo 80 palabras. Clio calificará cada frase.',
     prof_title: 'Perfil', prof_overview: 'Resumen', prof_achievements: 'Logros',
     prof_settings: 'Configuración', prof_chess_rank: 'Rango de Ajedrez',
     prof_upload_photo: 'Subir Foto', prof_remove_photo: 'Eliminar Foto',
@@ -1800,6 +1805,7 @@ export const T: Translations = {
     vr_video_xp: 'Видео XP Получено', vr_next_in: 'Следующее видео через',
     vr_master_only: 'Только для плана Master Student', vr_available: 'Новое видео доступно!',
     vr_write_analysis: 'Напишите анализ, определив основной мотив или аргумент…',
+    vr_review_hint: 'Определите основной мотив или аргумент видео. Используйте конкретные исторические детали из ролика. Минимум 80 слов. Клио оценит каждое предложение.',
     prof_title: 'Профиль', prof_overview: 'Обзор', prof_achievements: 'Достижения',
     prof_settings: 'Настройки', prof_chess_rank: 'Шахматный Ранг',
     prof_upload_photo: 'Загрузить Фото', prof_remove_photo: 'Удалить Фото',
@@ -2330,6 +2336,7 @@ export const T: Translations = {
     vr_video_xp: 'Освоено Видео XP', vr_next_in: 'Следното видео за',
     vr_master_only: 'Исклучиво за планот Master Student', vr_available: 'Ново видео достапно!',
     vr_write_analysis: 'Напиши анализа со препознавање на главниот мотив или аргумент…',
+    vr_review_hint: 'Препознај го главниот мотив или аргумент на видеото. Користи конкретни историски детали од видеото. Најмалку 80 зборови. Клио ќе ја оцени секоја реченица.',
     prof_title: 'Профил', prof_overview: 'Преглед', prof_achievements: 'Достигнувања',
     prof_settings: 'Поставки', prof_chess_rank: 'Шаховски Ранг',
     prof_upload_photo: 'Прикачи Фотографија', prof_remove_photo: 'Отстрани Фотографија',

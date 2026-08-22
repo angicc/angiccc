@@ -6,6 +6,7 @@
 // point at a hallucinated lesson or a broken route, even if the AI response is
 // garbage: parsing failures simply leave the plan undecorated.
 import { safeJsonParse } from '@/lib/safeJsonParse';
+import { stripWeldedScripts } from '@/services/sanitizeAiText';
 import { LESSONS } from '@/features/content/lessonsData';
 import { ERAS } from '@/features/content/erasData';
 import type { EraId } from '@/types';
@@ -320,6 +321,10 @@ FINAL LANGUAGE CHECK: every JSON string value must be in ${langName} — rewrite
 }
 
 export function parsePlanNotes(raw: string): AiPlanNotes | null {
+  // Repair stray CJK characters welded into Cyrillic or Latin words before
+  // anything downstream reads them. The deep model is the real fix; this is the
+  // net under it, applied at the funnel so no call site can forget.
+  raw = stripWeldedScripts(raw);
   let p: Record<string, unknown>;
   try { p = safeJsonParse<Record<string, unknown>>(raw); } catch { return null; }
   const weekTheme = typeof p.weekTheme === 'string' ? p.weekTheme.trim() : '';

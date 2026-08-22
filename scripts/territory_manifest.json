@@ -1033,6 +1033,178 @@
           "exact": true
         }
       ]
+    },
+    {
+      "topic_id": "macedonian-struggle",
+      "entity_name": "The Macedonian Struggle",
+      "year": "1900",
+      "year_start": 1878,
+      "year_end": 1913,
+      "match": [
+        "Ottoman Empire"
+      ],
+      "fill_color": "#f59e0b",
+      "stroke_color": "#fbbf24",
+      "entities": [
+        {
+          "entity_name": "Ottoman Empire",
+          "match": [
+            "Ottoman Empire"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171",
+          "exact": true
+        },
+        {
+          "entity_name": "Bulgaria",
+          "match": [
+            "Bulgaria"
+          ],
+          "fill_color": "#16a34a",
+          "stroke_color": "#4ade80",
+          "exact": true
+        },
+        {
+          "entity_name": "Serbia",
+          "match": [
+            "Serbia"
+          ],
+          "fill_color": "#2563eb",
+          "stroke_color": "#60a5fa",
+          "exact": true
+        },
+        {
+          "entity_name": "Greece",
+          "match": [
+            "Greece"
+          ],
+          "fill_color": "#0891b2",
+          "stroke_color": "#22d3ee",
+          "exact": true
+        },
+        {
+          "entity_name": "Montenegro",
+          "match": [
+            "Montenegro"
+          ],
+          "fill_color": "#a855f7",
+          "stroke_color": "#c084fc",
+          "exact": true
+        },
+        {
+          "entity_name": "Romania",
+          "match": [
+            "Romania"
+          ],
+          "fill_color": "#f59e0b",
+          "stroke_color": "#fbbf24",
+          "exact": true
+        }
+      ]
+    },
+    {
+      "topic_id": "protestant-reformation",
+      "entity_name": "Europe of the Reformation",
+      "year": "1600",
+      "year_start": 1517,
+      "year_end": 1648,
+      "match": [
+        "Holy Roman Empire"
+      ],
+      "fill_color": "#8b5cf6",
+      "stroke_color": "#a78bfa",
+      "entities": [
+        {
+          "entity_name": "Holy Roman Empire",
+          "match": [
+            "Holy Roman Empire"
+          ],
+          "fill_color": "#8b5cf6",
+          "stroke_color": "#a78bfa",
+          "exact": true
+        },
+        {
+          "entity_name": "Sweden",
+          "match": [
+            "Sweden"
+          ],
+          "fill_color": "#0ea5e9",
+          "stroke_color": "#38bdf8",
+          "exact": true
+        },
+        {
+          "entity_name": "Denmark-Norway",
+          "match": [
+            "Denmark-Norway"
+          ],
+          "fill_color": "#0891b2",
+          "stroke_color": "#22d3ee",
+          "exact": true
+        },
+        {
+          "entity_name": "England and Ireland",
+          "match": [
+            "England and Ireland"
+          ],
+          "fill_color": "#2563eb",
+          "stroke_color": "#60a5fa",
+          "exact": true
+        },
+        {
+          "entity_name": "Scotland",
+          "match": [
+            "Scotland"
+          ],
+          "fill_color": "#0d9488",
+          "stroke_color": "#2dd4bf",
+          "exact": true
+        },
+        {
+          "entity_name": "Spain",
+          "match": [
+            "Spain"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171",
+          "exact": true
+        },
+        {
+          "entity_name": "France",
+          "match": [
+            "France"
+          ],
+          "fill_color": "#e11d48",
+          "stroke_color": "#fb7185",
+          "exact": true
+        },
+        {
+          "entity_name": "Papal States",
+          "match": [
+            "Papal States"
+          ],
+          "fill_color": "#facc15",
+          "stroke_color": "#fde047",
+          "exact": true
+        },
+        {
+          "entity_name": "Poland-Lithuania",
+          "match": [
+            "Poland-Llituania"
+          ],
+          "fill_color": "#65a30d",
+          "stroke_color": "#a3e635",
+          "exact": true
+        },
+        {
+          "entity_name": "Habsburg Netherlands",
+          "match": [
+            "Habsburg Netherlands"
+          ],
+          "fill_color": "#ea580c",
+          "stroke_color": "#fb923c",
+          "exact": true
+        }
+      ]
     }
   ]
 }

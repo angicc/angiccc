@@ -323,7 +323,7 @@ ${review}`;
                     {t.vr_review_label}
                   </CardTitle>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Identify the video's <strong>main motive or argument</strong>. Use specific historical details from the video. Minimum 80 words. Clio will grade every sentence.
+                    {t.vr_review_hint}
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-3">

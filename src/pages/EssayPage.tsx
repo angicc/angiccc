@@ -389,7 +389,11 @@ export default function EssayPage() {
               <CardContent className="space-y-3">
                 {activeTopic && topic !== 'custom' && (
                   <div className="p-3 rounded-xl bg-primary/5 border border-primary/20 text-sm font-medium text-primary">
-                    {activeTopic}
+                    {/* The picker above lists these topics translated; this
+                        confirmation line rendered the raw English source, so the
+                        chosen topic switched to English the moment you picked it.
+                        A custom topic passes through unchanged. */}
+                    {getTranslatedTopic(activeTopic, language)}
                   </div>
                 )}
                 <textarea

@@ -128,13 +128,41 @@ Guidelines:
 // in full — the other copy handed them two thin sentences while Macedonian got
 // seven numbered rules, which is precisely why de/fr output read worst.
 
+/** The interface language, or null when it has never been chosen. */
+function activeLanguage(): string | null {
+  try {
+    return localStorage.getItem('historify:language');
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Which model to use when the caller does not insist.
+ *
+ * Any language other than English gets the deep model. This is not a
+ * preference — the fast model does not hold a non-English language across a
+ * long generated answer. In Macedonian it produced agreement and article
+ * errors severe enough to read as comic, and it emitted stray CJK characters
+ * mid-word ("во絀细", "четири絀") in verdicts and study plans. English output
+ * from the same model is fine, so English keeps the faster, cheaper path.
+ *
+ * The cost is latency and price on non-English answers. That trade is
+ * deliberate: a fast answer in broken grammar is worth less than a slower one
+ * a student can actually read.
+ */
+function defaultModel(): string {
+  const lang = activeLanguage();
+  return lang && lang !== 'en' ? MODEL_DEEP : MODEL_FAST;
+}
+
 /** Format + locale sub-prompt for the user's active UI language. */
 function localeDirective(): string {
   try {
     // An unset language is genuinely unknown, not English: leave the model to
     // answer in whatever the student wrote rather than forcing a language on
     // them. A *known* language always gets its full block.
-    const lang = localStorage.getItem('historify:language');
+    const lang = activeLanguage();
     return lang ? promptDirectives(lang) : `\n\n${FORMAT_RULE}`;
   } catch {
     return `\n\n${FORMAT_RULE}`;
@@ -178,7 +206,7 @@ export async function* streamChatResponse(
   const withContext     = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;
   const system          = withContext + localeDirective();
   const trimmedMessages = messages.slice(-MAX_HISTORY);
-  const model           = modelOverride ?? MODEL_FAST;
+  const model           = modelOverride ?? defaultModel();
 
   let res: Response;
   try {

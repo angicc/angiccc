@@ -6,6 +6,7 @@
 // score forecast, and (Master only) a misconception analysis of the error
 // pattern. Every field is validated before rendering.
 import { safeJsonParse } from '@/lib/safeJsonParse';
+import { stripWeldedScripts } from '@/services/sanitizeAiText';
 import { LESSONS } from '@/features/content/lessonsData';
 
 export interface StudyPlanStep {
@@ -83,6 +84,10 @@ const validLessonId = (id: unknown): string | undefined =>
   typeof id === 'string' && LESSONS.some(l => l.id === id) ? id : undefined;
 
 export function parseStudyPlan(raw: string): StudyPlan | null {
+  // Repair stray CJK characters welded into Cyrillic or Latin words before
+  // anything downstream reads them. The deep model is the real fix; this is the
+  // net under it, applied at the funnel so no call site can forget.
+  raw = stripWeldedScripts(raw);
   let p: Record<string, unknown>;
   try { p = safeJsonParse<Record<string, unknown>>(raw); } catch { return null; }
   const headline = str(p.headline);
