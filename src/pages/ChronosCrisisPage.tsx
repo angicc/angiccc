@@ -12,7 +12,7 @@ import { useAuth } from '@/features/auth/AuthContext';
 import { useSubscription } from '@/features/subscription/SubscriptionContext';
 import { PlanGate } from '@/features/subscription/planGate';
 import { recordAiMessage } from '@/features/progress/progressStore';
-import { streamChatResponse } from '@/services/aiGateway';
+import { streamChatResponse, AI_MODEL_DEEP } from '@/services/aiGateway';
 import { usePersistentChat } from '@/services/chatStore';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
@@ -173,7 +173,7 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
   const retryRef = useRef<{ history: { role: 'user' | 'assistant'; content: string }[] } | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const es = ERA_STYLE[scenario.era];
-  const systemPrompt = buildCrisisEnginePrompt(scenario);
+  const systemPrompt = buildCrisisEnginePrompt(scenario, language);
 
   // ── Strategic Assessment: tribunal-grade verdict over the whole run ────────
   const [assessment, setAssessment] = useState<CrisisAssessment | null>(() => loadAssessment(scenario.id, userId));
@@ -194,6 +194,9 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
         3072, // large enough for the full 5-metric JSON + lists in verbose languages
               // (Cyrillic/Macedonian runs long); the default 1024 truncated it,
               // cutting off Strengths and dropping Improvements entirely.
+        AI_MODEL_DEEP, // the verdict is several hundred words of generated prose
+                       // in the reader's language, and the fast model produced
+                       // English here regardless of the directive.
       )) acc += chunk;
       onAiMessage();
       const parsed = parseAssessment(acc);
@@ -249,7 +252,9 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
     setError(null);
     try {
       let acc = '';
-      for await (const chunk of streamChatResponse(history, undefined, systemPrompt)) acc += chunk;
+      // Deep model: six turns of narration and options ARE the feature, and a
+      // grammar slip here is not a slip the player can ask to be redone.
+      for await (const chunk of streamChatResponse(history, undefined, systemPrompt, 1024, AI_MODEL_DEEP)) acc += chunk;
       setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, content: acc, isStreaming: false } : m));
       retryRef.current = null;
 

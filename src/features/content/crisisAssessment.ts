@@ -8,6 +8,10 @@
 // clamped before rendering, and XP is banked once per concluded run.
 import { safeJsonParse } from '@/lib/safeJsonParse';
 import { languageDirective } from '@/services/aiLanguage';
+import type { Language } from '@/i18n/translations';
+import {
+  getCrisisTitle, getCrisisRole, getCrisisObjectives, getCrisisYearLabel,
+} from '@/features/content/crisisScenarios';
 import type { CrisisScenario } from './crisisScenarios';
 import type { CrisisRunState } from './crisisEngine';
 
@@ -44,10 +48,14 @@ export function buildAssessmentPrompt(scenario: CrisisScenario, run: CrisisRunSt
     .map(d => `Turn ${d.step}: [${d.optionId}] ${d.text}${d.revealedConsequence ? ` → consequence: ${d.revealedConsequence}` : ''}`)
     .join('\n');
   const r = run.resources;
+  const lang = language as Language;
+  // The scenario as the player read it, not the English original. The decision
+  // log is already in their language; mixing an English scenario into it was
+  // half the reason the verdict came back in English.
   return `You are the Chronos Tribunal — a panel of master historians and strategists delivering a formal post-crisis assessment of a commander's full run.
 
-SCENARIO: ${scenario.title} (${scenario.yearLabel}) — the player commanded as ${scenario.role}.
-OBJECTIVES: ${scenario.objectives.join('; ')}
+SCENARIO: ${getCrisisTitle(scenario, lang)} (${getCrisisYearLabel(scenario, lang)}) — the player commanded as ${getCrisisRole(scenario, lang)}.
+OBJECTIVES: ${getCrisisObjectives(scenario, lang).join('; ')}
 DECISION LOG:
 ${log || '(no decisions were made)'}
 FINAL RESOURCE VECTOR: diplomatic capital ${r.diplomaticCapital}%, domestic stability ${r.domesticStability}%, military readiness ${r.militaryReadiness}%, treasury ${r.treasury}%.
@@ -62,9 +70,6 @@ Grade the run strictly and fairly across five command dimensions (0–100 each):
 Also produce: an overallScore (0–100, a weighted judgement, not an average), a letter grade ("S" only for near-flawless legendary runs, then "A"–"D"), a short evocative commanderTitle for this play style, a counterfactual paragraph (3–4 sentences) contrasting the player's timeline with what the real historical actors did and what followed, and a single-sentence epitaph for the run.
 
 You MUST return at least 2 "strengths" AND at least 2 "improvements" — neither list may ever be empty. If the run was flawless, frame the improvements as ways to push from great to legendary; if it was a disaster, still credit at least two genuine strengths. Both lists are required, always.
-
-IMPORTANT — LANGUAGE:
-${languageDirective(language)}
 
 Respond ONLY with this exact JSON shape (no markdown fences, no extra text):
 {
@@ -82,7 +87,14 @@ Respond ONLY with this exact JSON shape (no markdown fences, no extra text):
   "improvements": ["...", "..."],
   "counterfactual": "...",
   "epitaph": "..."
-}`;
+}
+
+IMPORTANT — LANGUAGE OF EVERY STRING VALUE ABOVE:
+The JSON keys stay exactly as written in English. Every human-readable VALUE —
+each feedback line, commanderTitle, every entry of strengths and improvements,
+counterfactual and epitaph — must be written in the language below. The English
+in this prompt is instruction, not a sample of the language to answer in.
+${languageDirective(language)}`;
 }
 
 const clamp = (n: unknown): number =>

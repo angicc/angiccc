@@ -9,6 +9,10 @@
 import { z } from 'zod';
 import { safeJsonParse } from '@/lib/safeJsonParse';
 import type { CrisisScenario } from '@/features/content/crisisScenarios';
+import {
+  getCrisisTitle, getCrisisRole, getCrisisBriefing, getCrisisObjectives, getCrisisYearLabel,
+} from '@/features/content/crisisScenarios';
+import type { Language } from '@/i18n/translations';
 
 // ── Resource vector ──────────────────────────────────────────────────────────
 
@@ -160,13 +164,27 @@ export function conclusionMessage(gate: HardGate, state: CrisisRunState): string
 
 // ── Engine system prompt (Section 5 Parts B & D) ─────────────────────────────
 
-export function buildCrisisEnginePrompt(s: CrisisScenario): string {
+/**
+ * The game-master prompt, seeded with the scenario AS THE PLAYER READS IT.
+ *
+ * It used to seed the English fields regardless of the interface language. The
+ * model then had an English situation, English objectives and an English JSON
+ * schema in front of it, against a single line asking for Macedonian — and it
+ * wrote English. Feeding it the same localised text the player is looking at
+ * removes the contradiction instead of arguing with it.
+ */
+export function buildCrisisEnginePrompt(s: CrisisScenario, language: Language = 'en'): string {
+  const title = getCrisisTitle(s, language);
+  const role = getCrisisRole(s, language);
+  const briefing = getCrisisBriefing(s, language);
+  const objectives = getCrisisObjectives(s, language);
+  const yearLabel = getCrisisYearLabel(s, language);
   return `You are the Chronos Engine, the deterministic game master of Historify's Chronos Crisis Room.
 
-SCENARIO: ${s.title} (${s.yearLabel})
-THE PLAYER IS: ${s.role}
-SITUATION: ${s.briefing}
-PLAYER OBJECTIVES: ${s.objectives.join('; ')}
+SCENARIO: ${title} (${yearLabel})
+THE PLAYER IS: ${role}
+SITUATION: ${briefing}
+PLAYER OBJECTIVES: ${objectives.join('; ')}
 
 OUTPUT PROTOCOL — ABSOLUTE:
 Respond with ONE JSON object and NOTHING else — no prose, no markdown fences, no preamble. Exact shape:
@@ -187,7 +205,7 @@ ENGINE RULES:
 1. NON-LINEAR: never follow a fixed script. Every player decision mutates the state; identical scenarios must diverge with different choices.
 2. IMPACTS: resourceImpacts reflect the player's LAST decision (all zeros on the very first node). Range -25..+25 per metric per turn. The client, not you, holds the authoritative totals — the STATE line in each player message is ground truth; reason from it.
 3. HARD GATES: when you receive HARD GATE TRIGGERED, output a final node: branchingOptions must be [], historicalContext narrates the Crisis Conclusion Encounter (military coup, economic collapse, revolution, or dynamic victory — matching the metric and direction) plus a verdict versus real history. Same when step 6 completes without a gate: deliver THE VERDICT node with empty branchingOptions.
-4. CONTEXTUAL ANCHOR: only technology, knowledge, institutions, and people that existed in ${s.yearLabel} may appear in options or consequences. No anachronisms under any circumstance.
+4. CONTEXTUAL ANCHOR: only technology, knowledge, institutions, and people that existed in ${yearLabel} may appear in options or consequences. No anachronisms under any circumstance.
 5. TEMPORAL INTEGRITY: once the player diverges from real history, every later node must live inside that counterfactual reality. Never snap back to the textbook timeline; consequences compound.
 6. FREE-FORM DECISIONS: if the player types their own plan instead of choosing A/B/C, treat it seriously, judge its period-realism, and resolve it with the same JSON shape.
 7. COMPACTNESS: historicalContext ≤ 60 words; actionText ≤ 20 words; hiddenConsequences values ≤ 25 words. Short, tactical, mobile-readable.

@@ -15,7 +15,24 @@
 
 import { promptDirectives, FORMAT_RULE } from './aiLanguage';
 
-const MODEL         = 'claude-haiku-4-5-20251001';
+/**
+ * Models, by what the call actually needs.
+ *
+ * FAST is the default and is right for chat: it answers quickly and the
+ * student is reading it as it streams.
+ *
+ * DEEP exists because the fast model does not hold a language well enough for
+ * long-form generated prose. Given an English scenario, an English JSON schema
+ * and one instruction to write Macedonian, it writes English — or writes
+ * Macedonian with agreement and article errors bad enough to read as comic.
+ * That is tolerable in a chat reply the student can re-ask; it is not
+ * tolerable in the Crisis Room, where the generated text IS the product and a
+ * six-turn run produces thousands of words nobody can correct.
+ */
+const MODEL_FAST    = 'claude-haiku-4-5-20251001';
+const MODEL_DEEP    = 'claude-sonnet-5';
+/** Chosen when prose quality in a non-English language is the point of the call. */
+export const AI_MODEL_DEEP = MODEL_DEEP;
 const MAX_HISTORY   = 10;
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
 const PROXY_URL     = '/api/chat';
@@ -142,7 +159,9 @@ export async function* streamChatResponse(
   messages: { role: 'user' | 'assistant'; content: string | AiContentBlock[] }[],
   lessonContext?: string,
   systemOverride?: string,
-  maxTokens = 1024
+  maxTokens = 1024,
+  /** Override the model for calls where prose quality outweighs latency. */
+  modelOverride?: string,
 ): AsyncGenerator<string> {
   const key  = clientKey();
   const mode: GatewayMode = key ? 'direct' : 'proxy';
@@ -159,13 +178,14 @@ export async function* streamChatResponse(
   const withContext     = lessonContext ? `${baseSystem}\n\nThe student is currently studying: ${lessonContext}` : baseSystem;
   const system          = withContext + localeDirective();
   const trimmedMessages = messages.slice(-MAX_HISTORY);
+  const model           = modelOverride ?? MODEL_FAST;
 
   let res: Response;
   try {
     res = await fetch(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ model: MODEL, max_tokens: maxTokens, system, messages: trimmedMessages, stream: true }),
+      body: JSON.stringify({ model, max_tokens: maxTokens, system, messages: trimmedMessages, stream: true }),
     });
   } catch {
     // fetch itself threw → offline / DNS / CORS. Always retryable.
