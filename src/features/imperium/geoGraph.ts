@@ -229,7 +229,65 @@ export function buildGeoGraph(opts: GraphOptions = {}): GeoGraph {
       if (!nearest || d < nearest.d) nearest = { j, d };
       if (j > i && d <= adjacencyKm) connectFrontier(ids[i], ids[j]);
     }
-    if (nearest && nearest.d > adjacencyKm && i < nearest.j) connectFrontier(ids[i], ids[nearest.j]);
+    // The `i < nearest.j` guard this once carried meant a territory whose
+    // nearest neighbour sat at a LOWER index got no outward link at all.
+    // connectFrontier is idempotent enough that connecting twice is harmless;
+    // leaving a territory stranded is not.
+    if (nearest && nearest.d > adjacencyKm) connectFrontier(ids[i], ids[nearest.j]);
+  }
+
+  // 3. Stitch the components together.
+  //
+  // Steps 1–2 connect neighbours, which is not the same as connecting the map.
+  // The Crusades theatre came out as two islands — France, the Empire, Anjou,
+  // Hungary, Poland and the Almohads in one; Byzantium, Cyprus, Georgia and
+  // the Fatimids in the other — with no edge between them. Three of the four
+  // rival provinces were unreachable, so the campaign named for crossing the
+  // Mediterranean could not cross it, and the player could never attack.
+  //
+  // Whether any given theatre happens to be connected is an accident of its
+  // province geometry against a fixed 260 km threshold. Rather than tune that
+  // number until this one map works, join whatever components remain by their
+  // closest pair. Crossing open water yields a sea edge, which the existing
+  // pathfinder already gates behind `canSail` — so the crusader host sails,
+  // as it historically did, rather than teleporting.
+  stitchComponents();
+
+  function stitchComponents(): void {
+    const parent = new Map<string, string>(ids.map(id => [id, id]));
+    const find = (x: string): string => {
+      let r = x;
+      while (parent.get(r) !== r) r = parent.get(r)!;
+      while (parent.get(x) !== r) { const nx = parent.get(x)!; parent.set(x, r); x = nx; }
+      return r;
+    };
+    const union = (a: string, b: string) => { const ra = find(a), rb = find(b); if (ra !== rb) parent.set(ra, rb); };
+
+    for (const [, edges] of adj) {
+      for (const e of edges) {
+        const ta = nodes.get(e.a)?.territoryId, tb = nodes.get(e.b)?.territoryId;
+        if (ta && tb && ta !== tb) union(ta, tb);
+      }
+    }
+
+    // Repeatedly bridge the two closest territories that are still in
+    // different components. Bounded by the number of territories, so this
+    // terminates even if the geometry is degenerate.
+    for (let guard = 0; guard < ids.length; guard++) {
+      const roots = new Set(ids.map(find));
+      if (roots.size <= 1) return;
+      let best: { a: string; b: string; d: number } | null = null;
+      for (let i = 0; i < ids.length; i++) {
+        for (let j = i + 1; j < ids.length; j++) {
+          if (find(ids[i]) === find(ids[j])) continue;
+          const d = minRingDistance(ringsByTerritory.get(ids[i])!, ringsByTerritory.get(ids[j])!);
+          if (!best || d < best.d) best = { a: ids[i], b: ids[j], d };
+        }
+      }
+      if (!best) return;
+      connectFrontier(best.a, best.b);
+      union(best.a, best.b);
+    }
   }
 
   function connectFrontier(ta: string, tb: string) {

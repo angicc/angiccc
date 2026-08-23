@@ -18,6 +18,7 @@ import {
 } from './combatMatrix';
 import { sweepForCrises, crisisResolved, type CrisisEvent, type CrisisEffects } from './crisisGenerator';
 import { provincesFor, theatreSpec, THEATRE_SPECS, type TheatreId } from './imperiumProvinces';
+import { rivalOrderMap, aggressionFor } from './rivalStrategy';
 
 export type Era = 'ancient' | 'medieval' | 'early-modern' | 'modern';
 export type { TheatreId };
@@ -161,31 +162,29 @@ export function createCampaign(theatre: TheatreId, seed = Date.now() & 0xffff): 
 }
 
 // ── Enemy strategic AI ────────────────────────────────────────────────────────
-// Doctrine: defend the capital if threatened; otherwise push the weakest
-// adjacent player territory; prefers keeping its own supply web intact.
+// The doctrine lives in rivalStrategy.ts, which scores every (army, target)
+// pair on odds, distance, isolation and capital value, withdraws broken armies
+// and concentrates force. This is the adapter onto the snapshot shape.
 
 function rivalOrders(state: CampaignState, graph: GeoGraph, rng: () => number): Record<string, string> {
   const snap = state.current;
-  const orders: Record<string, string> = {};
-  const playerHeld = Object.entries(snap.ownership.owners).filter(([, f]) => f === 'player').map(([t]) => t);
-  if (playerHeld.length === 0) return orders;
+  const owners = snap.ownership.owners as Record<string, FactionId>;
+  const provinces = Object.keys(owners);
+  const rivalCount = provinces.filter(t => owners[t] === 'rival').length;
 
-  for (const army of snap.armies.filter(a => a.faction === 'rival' && a.strength > 25)) {
-    if (army.march) continue; // already moving
-    // Defend home capital when the player closes in.
-    const rivalCap = snap.capitals.rival;
-    const capThreatened = rivalCap && snap.armies.some(a =>
-      a.faction === 'player' && a.march?.targetTerritoryId === rivalCap);
-    if (capThreatened && rivalCap && army.territoryId !== rivalCap) {
-      orders[army.id] = rivalCap;
-      continue;
-    }
-    // Otherwise: strike a random player frontier territory (weighted to capital late-game).
-    const capital = snap.capitals.player;
-    const target = capital && rng() < 0.35 ? capital : playerHeld[Math.floor(rng() * playerHeld.length)];
-    orders[army.id] = target;
-  }
-  return orders;
+  return rivalOrderMap({
+    owners,
+    armies: snap.armies.map(a => ({
+      id: a.id, faction: a.faction, territoryId: a.territoryId,
+      strength: a.strength, morale: a.morale, supplied: a.supplied,
+      march: a.march ? { targetTerritoryId: a.march.targetTerritoryId } : null,
+    })),
+    playerCapital: snap.capitals.player,
+    rivalCapital: snap.capitals.rival,
+    graph,
+    aggression: aggressionFor(snap.turn, rivalCount, provinces.length),
+    rng,
+  });
 }
 
 // ── The turn pipeline ─────────────────────────────────────────────────────────

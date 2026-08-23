@@ -172,9 +172,32 @@ function translationCoveragePlugin(): Plugin {
       // key-presence check.
       const ALLOWED_LATIN = new Set(['Pax', 'Romana', 'Corpus', 'Juris', 'Civilis', 'Homo', 'sapiens', 'Historify', 'Clio', 'XP']);
       const fused: string[] = [];
-      for (const file of fs.readdirSync(path.resolve(__dirname, 'src/i18n')).filter(f => f.endsWith('.ts'))) {
+      // Scanned across ALL of src, not just src/i18n. Translated prose lives in
+      // feature modules too — a stray Han character sat inside the Russian
+      // Salamis briefing in features/content/crisisScenarios.ts and shipped,
+      // because the guard only ever looked at the i18n directory.
+      // sanitizeAiText.ts and its test carry these characters ON PURPOSE (the
+      // ranges they strip, and fixtures of the corruption), so they are exempt.
+      const SCRIPT_GUARD_EXEMPT = new Set([
+        'src/services/sanitizeAiText.ts',
+        'src/services/aiGateway.ts',
+        'src/tests/sanitizeAiText.test.ts',
+      ]);
+      const scanFiles: string[] = [];
+      (function walk(dir: string) {
+        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+          const full = path.join(dir, entry.name);
+          if (entry.isDirectory()) { walk(full); continue; }
+          if (!/\.tsx?$/.test(entry.name)) continue;
+          const rel = path.relative(__dirname, full).split(path.sep).join('/');
+          if (!SCRIPT_GUARD_EXEMPT.has(rel)) scanFiles.push(full);
+        }
+      })(path.resolve(__dirname, 'src'));
+
+      for (const full of scanFiles) {
+        const file = path.relative(path.resolve(__dirname, 'src'), full).split(path.sep).join('/');
         const text = fs
-          .readFileSync(path.resolve(__dirname, 'src/i18n', file), 'utf8')
+          .readFileSync(full, 'utf8')
           .replace(/\\[nrt\\'"]/g, ' '); // escape sequences are not fused words
         for (const m of text.matchAll(/[Ѐ-ӿ]*[A-Za-z]+[Ѐ-ӿ]+[A-Za-z]*|[Ѐ-ӿ]+[A-Za-z]+/g)) {
           const latin = (m[0].match(/[A-Za-z]+/) ?? [''])[0];
