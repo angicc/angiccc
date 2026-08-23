@@ -27,7 +27,7 @@
           ],
           "fill_color": "#facc15",
           "stroke_color": "#fde047",
-          "tolerance": 0.03
+          "tolerance": 0.004
         },
         {
           "entity_name": "Assyria",
@@ -36,7 +36,7 @@
           ],
           "fill_color": "#22c55e",
           "stroke_color": "#4ade80",
-          "tolerance": 0.03
+          "tolerance": 0.004
         },
         {
           "entity_name": "Babylonia",
@@ -45,7 +45,7 @@
           ],
           "fill_color": "#e879f9",
           "stroke_color": "#f0abfc",
-          "tolerance": 0.03
+          "tolerance": 0.004
         },
         {
           "entity_name": "Elam",
@@ -54,7 +54,7 @@
           ],
           "fill_color": "#fb923c",
           "stroke_color": "#fdba74",
-          "tolerance": 0.03
+          "tolerance": 0.004
         }
       ]
     },
@@ -158,7 +158,9 @@
             "Ptolemaic Kingdom"
           ],
           "fill_color": "#facc15",
-          "stroke_color": "#fde047"
+          "stroke_color": "#fde047",
+          "exact": true,
+          "tolerance": 0.006
         },
         {
           "entity_name": "Seleucid Empire",
@@ -166,7 +168,9 @@
             "Seleucid Kingdom"
           ],
           "fill_color": "#8b5cf6",
-          "stroke_color": "#a78bfa"
+          "stroke_color": "#a78bfa",
+          "exact": true,
+          "tolerance": 0.006
         },
         {
           "entity_name": "Antigonid Macedon",
@@ -174,7 +178,59 @@
             "Kingdom of Antigonus"
           ],
           "fill_color": "#3b82f6",
-          "stroke_color": "#60a5fa"
+          "stroke_color": "#60a5fa",
+          "exact": true,
+          "tolerance": 0.006
+        },
+        {
+          "entity_name": "Kingdom of Lysimachus",
+          "match": [
+            "Kingdom of Lysimachus"
+          ],
+          "fill_color": "#0891b2",
+          "stroke_color": "#22d3ee",
+          "exact": true,
+          "tolerance": 0.006
+        },
+        {
+          "entity_name": "Kingdom of Kassander",
+          "match": [
+            "Kingdom of Kassander"
+          ],
+          "fill_color": "#0d9488",
+          "stroke_color": "#2dd4bf",
+          "exact": true,
+          "tolerance": 0.006
+        },
+        {
+          "entity_name": "Greek city-states",
+          "match": [
+            "Greek city-states"
+          ],
+          "fill_color": "#e11d48",
+          "stroke_color": "#fb7185",
+          "exact": true,
+          "tolerance": 0.006
+        },
+        {
+          "entity_name": "Roman Republic",
+          "match": [
+            "Roman Republic"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171",
+          "exact": true,
+          "tolerance": 0.006
+        },
+        {
+          "entity_name": "Mauryan Empire",
+          "match": [
+            "Mauryan Empire"
+          ],
+          "fill_color": "#f59e0b",
+          "stroke_color": "#fbbf24",
+          "exact": true,
+          "tolerance": 0.006
         }
       ]
     },
@@ -351,7 +407,72 @@
         "Ottoman Empire"
       ],
       "fill_color": "#16a34a",
-      "stroke_color": "#4ade80"
+      "stroke_color": "#4ade80",
+      "entities": [
+        {
+          "entity_name": "Ottoman Empire",
+          "match": [
+            "Ottoman Empire"
+          ],
+          "fill_color": "#dc2626",
+          "stroke_color": "#f87171",
+          "exact": true
+        },
+        {
+          "entity_name": "Safavid Persia",
+          "match": [
+            "Safavid Empire"
+          ],
+          "fill_color": "#16a34a",
+          "stroke_color": "#4ade80",
+          "exact": true
+        },
+        {
+          "entity_name": "Holy Roman Empire",
+          "match": [
+            "Holy Roman Empire"
+          ],
+          "fill_color": "#8b5cf6",
+          "stroke_color": "#a78bfa",
+          "exact": true
+        },
+        {
+          "entity_name": "Republic of Venice",
+          "match": [
+            "Venice"
+          ],
+          "fill_color": "#e11d48",
+          "stroke_color": "#fb7185",
+          "exact": true
+        },
+        {
+          "entity_name": "Poland-Lithuania",
+          "match": [
+            "Poland-Llituania"
+          ],
+          "fill_color": "#65a30d",
+          "stroke_color": "#a3e635",
+          "exact": true
+        },
+        {
+          "entity_name": "Tsardom of Muscovy",
+          "match": [
+            "Tsardom of Muscovy"
+          ],
+          "fill_color": "#0ea5e9",
+          "stroke_color": "#38bdf8",
+          "exact": true
+        },
+        {
+          "entity_name": "Spain",
+          "match": [
+            "Spain"
+          ],
+          "fill_color": "#facc15",
+          "stroke_color": "#fde047",
+          "exact": true
+        }
+      ]
     },
     {
       "topic_id": "songhai-empire",
@@ -605,7 +726,39 @@
       "exact": true,
       "fill_color": "#14b8a6",
       "stroke_color": "#2dd4bf",
-      "tolerance": 0.008
+      "tolerance": 0.008,
+      "entities": [
+        {
+          "entity_name": "Olmec heartland",
+          "match": [
+            "Olmec"
+          ],
+          "fill_color": "#16a34a",
+          "stroke_color": "#4ade80",
+          "exact": true,
+          "tolerance": 0.008
+        },
+        {
+          "entity_name": "Maize farmers",
+          "match": [
+            "Maize farmers"
+          ],
+          "fill_color": "#f59e0b",
+          "stroke_color": "#fbbf24",
+          "exact": true,
+          "tolerance": 0.05
+        },
+        {
+          "entity_name": "Desert hunter-gatherers",
+          "match": [
+            "Desert hunter-gatherers"
+          ],
+          "fill_color": "#a16207",
+          "stroke_color": "#d97706",
+          "exact": true,
+          "tolerance": 0.05
+        }
+      ]
     },
     {
       "topic_id": "slavic-mission",

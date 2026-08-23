@@ -249,6 +249,8 @@ export type TranslationKeys = {
   debate_title: string; debate_subtitle: string; debate_today: string;
   debate_xp_reward: string; debate_placeholder: string; debate_new_round: string;
   debate_pro_only: string; debate_won_title: string; debate_won_desc: string;
+  // The victory toast was an English template literal inside the page.
+  debate_defeated: string;
   debate_already_won: string; debate_next_in: string; debate_starters: string;
   debate_start_arg: string;
   debate_continue_btn: string;
@@ -775,6 +777,7 @@ const EN: TranslationKeys = {
     debate_placeholder: 'Present your philosophical argument…',
     debate_new_round: 'New Round', debate_pro_only: 'Philosopher Debate is available on Pro Learner and above.',
     debate_won_title: 'You won the debate!', debate_won_desc: 'has conceded to your argument.',
+    debate_defeated: 'You defeated {name}!',
     debate_already_won: 'You already defeated today\'s philosopher!',
     debate_next_in: 'New philosopher in', debate_starters: 'Opening Arguments',
     debate_start_arg: 'Challenge this position',
@@ -1309,6 +1312,7 @@ export const T: Translations = {
     debate_placeholder: 'Presenta tu argumento filosófico…',
     debate_new_round: 'Nueva Ronda', debate_pro_only: 'El Debate con Filósofo está disponible en Pro Learner y superior.',
     debate_won_title: '¡Ganaste el debate!', debate_won_desc: 'ha cedido ante tu argumento.',
+    debate_defeated: '¡Has vencido a {name}!',
     debate_already_won: '¡Ya derrotaste al filósofo de hoy!',
     debate_next_in: 'Nuevo filósofo en', debate_starters: 'Argumentos Iniciales',
     debate_start_arg: 'Desafiar esta posición',
@@ -1840,6 +1844,7 @@ export const T: Translations = {
     debate_placeholder: 'Представьте свой философский аргумент…',
     debate_new_round: 'Новый Раунд', debate_pro_only: 'Дискуссия с философом доступна в планах Pro и Master.',
     debate_won_title: 'Вы выиграли дискуссию!', debate_won_desc: 'признал вашу правоту.',
+    debate_defeated: 'Вы победили {name}!',
     debate_already_won: 'Вы уже победили сегодняшнего философа!',
     debate_next_in: 'Новый философ через', debate_starters: 'Вступительные Аргументы',
     debate_start_arg: 'Оспорить эту позицию',
@@ -2371,6 +2376,7 @@ export const T: Translations = {
     debate_placeholder: 'Претстави го твојот филозофски аргумент…',
     debate_new_round: 'Нова Рунда', debate_pro_only: 'Дебатата со Филозоф е достапна на Pro Learner и повисоко.',
     debate_won_title: 'Го победи дебатата!', debate_won_desc: 'го признал твојот аргумент.',
+    debate_defeated: 'Го победи {name}!',
     debate_already_won: 'Веќе го победи денешниот филозоф!',
     debate_next_in: 'Нов филозоф за', debate_starters: 'Воведни Аргументи',
     debate_start_arg: 'Оспори ја оваа позиција',

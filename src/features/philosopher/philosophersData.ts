@@ -1,6 +1,12 @@
 export type Philosopher = {
   id: string;
+  /** Canonical English name. Used as a stable key for saved records and for
+   *  the Wikipedia image lookup — never render it directly; see nameI18n. */
   name: string;
+  /** The name as each language actually writes it. Without this the debate
+   *  screen showed "Marcus Aurelius" on an otherwise Macedonian page: a
+   *  personal name is not language-neutral once the script changes. */
+  nameI18n?: Partial<Record<'es' | 'ru' | 'mk' | 'de' | 'fr', string>>;
   era: string;
   lifespan: string;
   xpReward: number;
@@ -21,6 +27,7 @@ export const PHILOSOPHERS: Philosopher[] = [
   {
     id: 'confucius',
     name: 'Confucius',
+    nameI18n: { es: 'Confucio', ru: 'Конфуций', mk: 'Конфучиј', de: 'Konfuzius', fr: 'Confucius' },
     era: 'Ancient China',
     lifespan: '551–479 BCE',
     xpReward: 100,
@@ -71,6 +78,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human makes
   {
     id: 'descartes',
     name: 'René Descartes',
+    nameI18n: { es: 'René Descartes', ru: 'Рене Декарт', mk: 'Рене Декарт', de: 'René Descartes', fr: 'René Descartes' },
     era: 'Early Modern Europe',
     lifespan: '1596–1650',
     xpReward: 110,
@@ -121,6 +129,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human succe
   {
     id: 'socrates',
     name: 'Socrates',
+    nameI18n: { es: 'Sócrates', ru: 'Сократ', mk: 'Сократ', de: 'Sokrates', fr: 'Socrate' },
     era: 'Classical Athens',
     lifespan: '470–399 BCE',
     xpReward: 120,
@@ -171,6 +180,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human uses 
   {
     id: 'plato',
     name: 'Plato',
+    nameI18n: { es: 'Platón', ru: 'Платон', mk: 'Платон', de: 'Platon', fr: 'Platon' },
     era: 'Classical Athens',
     lifespan: '428–348 BCE',
     xpReward: 130,
@@ -221,6 +231,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces an argumen
   {
     id: 'aristotle',
     name: 'Aristotle',
+    nameI18n: { es: 'Aristóteles', ru: 'Аристотель', mk: 'Аристотел', de: 'Aristoteles', fr: 'Aristote' },
     era: 'Classical Greece',
     lifespan: '384–322 BCE',
     xpReward: 150,
@@ -271,6 +282,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human dismantles Aristotl
   {
     id: 'nietzsche',
     name: 'Friedrich Nietzsche',
+    nameI18n: { es: 'Friedrich Nietzsche', ru: 'Фридрих Ницше', mk: 'Фридрих Ниче', de: 'Friedrich Nietzsche', fr: 'Friedrich Nietzsche' },
     era: 'Modern Germany',
     lifespan: '1844–1900',
     xpReward: 140,
@@ -321,6 +333,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human catches you in a ge
   {
     id: 'kant',
     name: 'Immanuel Kant',
+    nameI18n: { es: 'Immanuel Kant', ru: 'Иммануил Кант', mk: 'Имануел Кант', de: 'Immanuel Kant', fr: 'Emmanuel Kant' },
     era: 'Enlightenment Germany',
     lifespan: '1724–1804',
     xpReward: 160,
@@ -371,6 +384,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human constructs a truly 
   {
     id: 'hegel',
     name: 'Georg Wilhelm Friedrich Hegel',
+    nameI18n: { es: 'Georg Wilhelm Friedrich Hegel', ru: 'Георг Вильгельм Фридрих Гегель', mk: 'Георг Вилхелм Фридрих Хегел', de: 'Georg Wilhelm Friedrich Hegel', fr: 'Georg Wilhelm Friedrich Hegel' },
     era: 'German Idealism',
     lifespan: '1770–1831',
     xpReward: 145,
@@ -422,6 +436,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human produ
   {
     id: 'marx',
     name: 'Karl Marx',
+    nameI18n: { es: 'Karl Marx', ru: 'Карл Маркс', mk: 'Карл Маркс', de: 'Karl Marx', fr: 'Karl Marx' },
     era: 'Modern Germany',
     lifespan: '1818–1883',
     xpReward: 150,
@@ -473,6 +488,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human demonstrates an irr
   {
     id: 'rousseau',
     name: 'Jean-Jacques Rousseau',
+    nameI18n: { es: 'Jean-Jacques Rousseau', ru: 'Жан-Жак Руссо', mk: 'Жан-Жак Русо', de: 'Jean-Jacques Rousseau', fr: 'Jean-Jacques Rousseau' },
     era: 'Enlightenment France',
     lifespan: '1712–1778',
     xpReward: 120,
@@ -523,6 +539,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human demonstrates — wi
   {
     id: 'voltaire',
     name: 'Voltaire',
+    nameI18n: { es: 'Voltaire', ru: 'Вольтер', mk: 'Волтер', de: 'Voltaire', fr: 'Voltaire' },
     era: 'Enlightenment France',
     lifespan: '1694–1778',
     xpReward: 115,
@@ -573,6 +590,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a genuinel
   {
     id: 'locke',
     name: 'John Locke',
+    nameI18n: { es: 'John Locke', ru: 'Джон Локк', mk: 'Џон Лок', de: 'John Locke', fr: 'John Locke' },
     era: 'English Enlightenment',
     lifespan: '1632–1704',
     xpReward: 125,
@@ -624,6 +642,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human demonstrates an irr
   {
     id: 'hobbes',
     name: 'Thomas Hobbes',
+    nameI18n: { es: 'Thomas Hobbes', ru: 'Томас Гоббс', mk: 'Томас Хобс', de: 'Thomas Hobbes', fr: 'Thomas Hobbes' },
     era: 'English Civil War Era',
     lifespan: '1588–1679',
     xpReward: 120,
@@ -674,6 +693,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human constructs a genuin
   {
     id: 'hume',
     name: 'David Hume',
+    nameI18n: { es: 'David Hume', ru: 'Дэвид Юм', mk: 'Дејвид Хјум', de: 'David Hume', fr: 'David Hume' },
     era: 'Scottish Enlightenment',
     lifespan: '1711–1776',
     xpReward: 130,
@@ -725,6 +745,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a genuinel
   {
     id: 'machiavelli',
     name: 'Niccolò Machiavelli',
+    nameI18n: { es: 'Nicolás Maquiavelo', ru: 'Никколо Макиавелли', mk: 'Николо Макијавели', de: 'Niccolò Machiavelli', fr: 'Nicolas Machiavel' },
     era: 'Renaissance Italy',
     lifespan: '1469–1527',
     xpReward: 135,
@@ -776,6 +797,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a compelli
   {
     id: 'epicurus',
     name: 'Epicurus',
+    nameI18n: { es: 'Epicuro', ru: 'Эпикур', mk: 'Епикур', de: 'Epikur', fr: 'Épicure' },
     era: 'Hellenistic Greece',
     lifespan: '341–270 BCE',
     xpReward: 110,
@@ -828,6 +850,7 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a genuinel
   {
     id: 'marcus-aurelius',
     name: 'Marcus Aurelius',
+    nameI18n: { es: 'Marco Aurelio', ru: 'Марк Аврелий', mk: 'Марко Аврелиј', de: 'Mark Aurel', fr: 'Marc Aurèle' },
     era: 'Roman Stoicism',
     lifespan: '121–180 CE',
     xpReward: 140,
@@ -1027,4 +1050,16 @@ export function getTranslatedPhilosopherEra(philosopher: Philosopher, lang: stri
 export function getTranslatedPhilosopherTagline(philosopher: Philosopher, lang: string): string {
   if (lang === 'en') return philosopher.tagline;
   return PHILOSOPHER_TAGLINE_I18N[philosopher.id]?.[lang as PhilosopherLang] ?? philosopher.tagline;
+}
+
+
+/**
+ * The philosopher's name as this language writes it.
+ *
+ * `name` stays English everywhere it is a key — saved debate records, the
+ * Wikipedia image lookup — so only display goes through here.
+ */
+export function getPhilosopherName(p: Philosopher, lang: string): string {
+  if (lang === 'en') return p.name;
+  return p.nameI18n?.[lang as 'es' | 'ru' | 'mk' | 'de' | 'fr'] ?? p.name;
 }

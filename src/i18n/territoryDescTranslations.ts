@@ -241,6 +241,43 @@ const TERRITORY_DESCS: Record<string, Partial<Record<ContentLang, string>>> = {
     de: "Homo sapiens entstand vor ~300.000 Jahren in Afrika und breitete sich ab ~60.000 Jahren in nahezu jeden Winkel der Erde aus — erreichte Australien über See und die Amerikas über die Landbrücke Beringia.",
     fr: "Homo sapiens apparut en Afrique il y a ~300 000 ans et, à partir d'il y a ~60 000 ans, se répandit dans presque chaque recoin de la Terre — atteignant l'Australie par la mer et les Amériques par le pont terrestre de Béringie.",
   },
+  // Added with the GIS geometry import: these five topics rendered their
+  // English description in every language, in the panel beside the map.
+  "slavic-mission": {
+    es: "De Tesalónica a Moravia y de vuelta a Ohrid y Preslav: la misión que dio a los eslavos un alfabeto, una lengua escrita y el cristianismo ortodoxo, llegando a Kiev con el bautismo de la Rus en 988.",
+    ru: "От Фессалоник в Моравию и обратно в Охрид и Преслав: миссия, давшая славянам азбуку, письменный язык и православие — и дошедшая до Киева с крещением Руси в 988 году.",
+    mk: "Од Солун до Моравија и назад до Охрид и Преслав: мисијата што им даде на Словените азбука, писмен јазик и православно христијанство — стигнувајќи до Киев со покрстувањето на Русите во 988 година.",
+    de: "Von Thessaloniki nach Mähren und zurück nach Ohrid und Preslaw: die Mission, die den Slawen ein Alphabet, eine Schriftsprache und das orthodoxe Christentum gab — und mit der Taufe der Rus 988 bis Kiew reichte.",
+    fr: "De Thessalonique à la Moravie, puis à Ohrid et Preslav : la mission qui donna aux Slaves un alphabet, une langue écrite et le christianisme orthodoxe — atteignant Kiev avec le baptême de la Rus’ en 988.",
+  },
+  "olmec-mesoamerica": {
+    es: "El corazón olmeca en la costa del Golfo de México (Veracruz y Tabasco), donde la primera civilización mesoamericana levantó cabezas colosales de piedra y sembró las tradiciones que heredarían mayas y aztecas — y la esfera más amplia que su jade, su obsidiana y su arte alcanzaron por la Mesoamérica temprana.",
+    ru: "Ольмекское ядро на побережье Мексиканского залива (Веракрус и Табаско), где первая мезоамериканская цивилизация воздвигла колоссальные каменные головы и заложила традиции, унаследованные майя и ацтеками, — и та широкая сфера, куда доходили её нефрит, обсидиан и искусство.",
+    mk: "Олмечкото јадро на брегот на Мексиканскиот Залив (Веракруз и Табаско), каде првата мезоамериканска цивилизација подигна колосални камени глави и ги посади традициите што ќе ги наследат Маите и Ацтеките — и пошироката сфера до која стигнаа нејзиниот жадеит, опсидијан и уметност.",
+    de: "Das olmekische Kernland an der Golfküste Mexikos (Veracruz und Tabasco), wo die erste mesoamerikanische Zivilisation kolossale Steinköpfe errichtete und die Traditionen säte, die Maya und Azteken erben sollten — und der weitere Raum, den ihre Jade, ihr Obsidian und ihre Kunst erreichten.",
+    fr: "Le cœur olmèque sur la côte du golfe du Mexique (Veracruz et Tabasco), où la première civilisation mésoaméricaine dressa des têtes colossales de pierre et sema les traditions dont hériteraient Mayas et Aztèques — et la sphère plus vaste qu’atteignirent son jade, son obsidienne et son art.",
+  },
+  "khmer-empire": {
+    es: "El Imperio jemer cerca de su máxima extensión bajo Jayavarman VII (h. 1200), adentrándose en los actuales Laos, Tailandia y la península malaya — gobernado desde Angkor, la mayor ciudad del mundo preindustrial, y cosido por una red de calzadas reales.",
+    ru: "Кхмерская империя близ наибольшего своего размаха при Джаявармане VII (ок. 1200), простиравшаяся в нынешние Лаос, Таиланд и на Малаккский полуостров — управляемая из Ангкора, крупнейшего города доиндустриального мира, и связанная сетью царских дорог.",
+    mk: "Кмерската империја близу до својот најголем опфат под Џајаварман VII (ок. 1200), протегајќи се во денешните Лаос, Тајланд и Малајскиот Полуостров — управувана од Ангкор, најголемиот град на прединдустрискиот свет, и поврзана со мрежа од кралски патишта.",
+    de: "Das Khmer-Reich nahe seiner größten Ausdehnung unter Jayavarman VII. (um 1200), hineinreichend ins heutige Laos, Thailand und auf die Malaiische Halbinsel — regiert von Angkor, der größten Stadt der vorindustriellen Welt, und verknüpft durch ein Netz königlicher Straßen.",
+    fr: "L’Empire khmer proche de sa plus grande extension sous Jayavarman VII (v. 1200), s’étendant jusqu’aux actuels Laos, Thaïlande et péninsule malaise — gouverné depuis Angkor, la plus grande ville du monde préindustriel, et relié par un réseau de routes royales.",
+  },
+  "songhai-empire": {
+    es: "El mayor imperio de la historia de África occidental en su apogeo (h. 1500), extendido por el Sahel desde el Atlántico hasta el Níger central y dueño del comercio transahariano de oro y sal desde Gao, Tombuctú y Yenné — su arteria vital, el gran recodo del río Níger.",
+    ru: "Крупнейшая империя в истории Западной Африки на пике (ок. 1500), охватившая Сахель от Атлантики до среднего Нигера и державшая транссахарскую торговлю золотом и солью из Гао, Тимбукту и Дженне, — её жизненной артерией была великая излучина Нигера.",
+    mk: "Најголемата империја во историјата на Западна Африка на својот врв (ок. 1500), протегајќи се низ Сахел од Атлантикот до централен Нигер и држејќи ја транссахарската трговија со злато и сол од Гао, Тимбукту и Џене — нејзина животна жила беше големиот свиок на реката Нигер.",
+    de: "Das größte Reich der westafrikanischen Geschichte auf seinem Höhepunkt (um 1500), vom Atlantik bis zum mittleren Niger über den Sahel gespannt und Herr des transsaharischen Gold- und Salzhandels von Gao, Timbuktu und Djenné aus — seine Lebensader war der große Bogen des Niger.",
+    fr: "Le plus vaste empire de l’histoire ouest-africaine à son apogée (v. 1500), couvrant le Sahel de l’Atlantique au Niger central et maîtrisant le commerce transsaharien de l’or et du sel depuis Gao, Tombouctou et Djenné — sa ligne de vie : la grande boucle du fleuve Niger.",
+  },
+  "polynesian-expansion": {
+    es: "El poblamiento polinesio del vasto Pacífico: la última gran colonización humana de la Tierra. Guiándose solo por las estrellas, el oleaje y las aves, los navegantes alcanzaron cada vértice del Triángulo Polinesio: Hawái, Rapa Nui y Aotearoa.",
+    ru: "Полинезийское заселение необъятной Пацифики — последняя великая колонизация Земли человеком. Ориентируясь лишь по звёздам, волнам и птицам, мореходы достигли каждого угла Полинезийского треугольника: Гавайев, Рапануи и Аотеароа.",
+    mk: "Полинезиското населување на огромниот Пацифик — последната голема човечка колонизација на Земјата. Водени само од ѕвездите, брановите и птиците, морепловците стигнаа до секој агол на Полинезискиот триаголник: Хаваи, Рапа Нуи и Аотеароа.",
+    de: "Die polynesische Besiedlung des weiten Pazifiks — die letzte große Kolonisierung der Erde durch den Menschen. Nur nach Sternen, Dünung und Vögeln steuernd, erreichten die Seefahrer jeden Winkel des Polynesischen Dreiecks: Hawaii, Rapa Nui und Aotearoa.",
+    fr: "Le peuplement polynésien du vaste Pacifique — la dernière grande colonisation humaine de la Terre. Guidés par les seules étoiles, houles et oiseaux, les navigateurs atteignirent chaque sommet du triangle polynésien : Hawaï, Rapa Nui et Aotearoa.",
+  },
 };
 
 export function getTranslatedTerritoryDesc(topicId: string, lang: Language): string | null {

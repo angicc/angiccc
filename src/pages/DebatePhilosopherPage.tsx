@@ -15,7 +15,7 @@ import { streamChatResponse } from '@/services/aiGateway';
 import { stripMarkdown } from '@/lib/utils';
 import { usePersistentChat } from '@/services/chatStore';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
-import { getTodaysPhilosopher, getTimeUntilNextPhilosopher, hasWonTodaysDebate, recordDebateWin, getTranslatedPhilosopherEra, getTranslatedPhilosopherTagline } from '@/features/philosopher/philosophersData';
+import { getTodaysPhilosopher, getTimeUntilNextPhilosopher, hasWonTodaysDebate, recordDebateWin, getTranslatedPhilosopherEra, getTranslatedPhilosopherTagline, getPhilosopherName } from '@/features/philosopher/philosophersData';
 import { buildPhilosopherSystem, noteDebateExchange, recordDebateEngagement, recordDebateVictory } from '@/features/philosopher/philosopherMemory';
 import { PhilosopherMemoryPanel } from '@/components/shared/PhilosopherMemoryPanel';
 import type { Philosopher } from '@/features/philosopher/philosophersData';
@@ -263,7 +263,7 @@ export default function DebatePhilosopherPage() {
         refreshProgress();
         setWon(true);
         setXpAwarded(xp);
-        toast.success(`🏆 You defeated ${philosopher.name}! +${xp} XP`);
+        toast.success(`🏆 ${t.debate_defeated.replace('{name}', getPhilosopherName(philosopher, language))} +${xp} XP`);
       }
     } catch (err) {
       retryRef.current = { history };
@@ -338,7 +338,7 @@ export default function DebatePhilosopherPage() {
         {/* What this philosopher remembers of past debates with this student */}
         {currentUser && (
           <div className="mb-3">
-            <PhilosopherMemoryPanel userId={currentUser.id} philosopherId={philosopher.id} philosopherName={philosopher.name} />
+            <PhilosopherMemoryPanel userId={currentUser.id} philosopherId={philosopher.id} philosopherName={getPhilosopherName(philosopher, language)} />
           </div>
         )}
 
@@ -365,7 +365,7 @@ export default function DebatePhilosopherPage() {
                           <div className="flex items-center justify-between mb-2">
                             <div>
                               <p className="text-xs text-violet-400 font-medium">{t.debate_today}</p>
-                              <h2 className="font-heading text-xl font-bold">{philosopher.name}</h2>
+                              <h2 className="font-heading text-xl font-bold">{getPhilosopherName(philosopher, language)}</h2>
                               <p className="text-xs text-muted-foreground">{getTranslatedPhilosopherEra(philosopher, language)} · {philosopher.lifespan}</p>
                             </div>
                             <div className="text-right">
@@ -439,7 +439,7 @@ export default function DebatePhilosopherPage() {
                         <Trophy className="w-16 h-16 text-amber-400 mx-auto" />
                       </motion.div>
                       <h2 className="font-heading text-2xl font-bold text-amber-400">{t.debate_won_title}</h2>
-                      <p className="text-muted-foreground text-sm leading-relaxed">{philosopher.name} {t.debate_won_desc}</p>
+                      <p className="text-muted-foreground text-sm leading-relaxed">{getPhilosopherName(philosopher, language)} {t.debate_won_desc}</p>
                       <div className="flex items-center justify-center gap-2 text-2xl font-bold text-primary">
                         <Star className="w-6 h-6" />+{xpAwarded} XP
                       </div>

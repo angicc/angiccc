@@ -177,6 +177,17 @@ export const POLY_LABEL_I18N: Record<string, MT> = {
   'Spain': { es: 'España', ru: 'Испания', mk: 'Шпанија', de: 'Spanien', fr: 'Espagne' },
   'Poland-Lithuania': { es: 'Polonia-Lituania', ru: 'Речь Посполитая', mk: 'Полско-Литванија', de: 'Polen-Litauen', fr: 'Pologne-Lituanie' },
   'Habsburg Netherlands': { es: 'Países Bajos de los Habsburgo', ru: 'Габсбургские Нидерланды', mk: 'Хабсбуршка Холандија', de: 'Habsburgische Niederlande', fr: 'Pays-Bas des Habsbourg' },
+  // Realms drawn by the rebuilt Ottoman, Hellenistic and Olmec maps.
+  'Kingdom of Lysimachus': { es: 'Reino de Lisímaco', ru: 'Царство Лисимаха', mk: 'Кралство на Лизимах', de: 'Reich des Lysimachos', fr: 'Royaume de Lysimaque' },
+  'Kingdom of Kassander': { es: 'Reino de Casandro', ru: 'Царство Кассандра', mk: 'Кралство на Касандар', de: 'Reich des Kassandros', fr: 'Royaume de Cassandre' },
+  'Greek city-states': { es: 'Ciudades-estado griegas', ru: 'Греческие полисы', mk: 'Грчки градови-држави', de: 'Griechische Stadtstaaten', fr: 'Cités-États grecques' },
+  'Roman Republic': { es: 'República romana', ru: 'Римская республика', mk: 'Римска Република', de: 'Römische Republik', fr: 'République romaine' },
+  'Mauryan Empire': { es: 'Imperio maurya', ru: 'Империя Маурьев', mk: 'Мауријанска Империја', de: 'Maurya-Reich', fr: 'Empire maurya' },
+  'Olmec heartland': { es: 'Corazón olmeca', ru: 'Ольмекское ядро', mk: 'Олмечко јадро', de: 'Olmekisches Kernland', fr: 'Cœur olmèque' },
+  'Maize farmers': { es: 'Agricultores del maíz', ru: 'Земледельцы кукурузы', mk: 'Одгледувачи на пченка', de: 'Maisbauern', fr: 'Cultivateurs de maïs' },
+  'Desert hunter-gatherers': { es: 'Cazadores-recolectores del desierto', ru: 'Охотники-собиратели пустыни', mk: 'Пустински ловци-собирачи', de: 'Wüstenjäger und -sammler', fr: 'Chasseurs-cueilleurs du désert' },
+  'Tsardom of Muscovy': { es: 'Zarato de Moscovia', ru: 'Русское царство', mk: 'Московско Царство', de: 'Zarentum Russland', fr: 'Tsarat de Russie' },
+  'Safavid Persia': { es: 'Persia safávida', ru: 'Сефевидская Персия', mk: 'Сефевидска Персија', de: 'Safawidisches Persien', fr: 'Perse safavide' },
 };
 
 export function getTranslatedPolyLabel(label: string, lang: Language): string {
