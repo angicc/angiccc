@@ -165,3 +165,28 @@ describe('Territory Map content translations', () => {
     expect(gaps, `${gaps.length} map label(s) would render in English`).toEqual([]);
   });
 });
+
+/**
+ * A duplicate key in these tables is a TypeScript error (TS1117), so it fails
+ * `tsc -b` — but vitest does not run tsc, so a green test suite said nothing
+ * about it and a broken build reached a push. The second entry also silently
+ * wins at runtime, which is how a correct translation gets shadowed by a worse
+ * one. Cheap to check here, where it is caught in seconds.
+ */
+describe('territory translation tables', () => {
+  it('declares every key exactly once', () => {
+    const src = fs.readFileSync(
+      path.resolve(__dirname, '../i18n/territoryMarkerTranslations.ts'), 'utf8');
+    const dupes: string[] = [];
+    for (const table of src.matchAll(/export const (\w+): Record<string, MT> = \{/g)) {
+      const start = table.index! + table[0].length;
+      const body = src.slice(start, src.indexOf('\n};', start));
+      const seen = new Set<string>();
+      for (const k of body.matchAll(/^\s*'((?:[^'\\]|\\.)*)':/gm)) {
+        if (seen.has(k[1])) dupes.push(`${table[1]}: '${k[1]}'`);
+        seen.add(k[1]);
+      }
+    }
+    expect(dupes, 'duplicate key — the later entry silently wins').toEqual([]);
+  });
+});
