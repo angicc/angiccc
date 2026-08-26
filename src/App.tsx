@@ -21,6 +21,7 @@ import RegisterPage from '@/pages/RegisterPage';
 // lesson/quiz translations, map geometry, Leaflet — and a visitor needs only the
 // route they actually open, not all 24 at once.
 const PricingPage = lazy(() => import('@/pages/PricingPage'));
+const EraPreviewPage = lazy(() => import('@/pages/EraPreviewPage'));
 const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
 const ErasPage = lazy(() => import('@/pages/ErasPage'));
 const LessonPage = lazy(() => import('@/pages/LessonPage'));
@@ -58,6 +59,15 @@ function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/pricing" element={<PricingPage />} />
+      {/* Public era pages. Deliberately outside ProtectedRoute: /eras needs an
+          account, so a visitor could not see the curriculum they were being
+          asked to sign up for. */}
+      <Route path="/prehistoric-world" element={<EraPreviewPage />} />
+      <Route path="/ancient-world" element={<EraPreviewPage />} />
+      <Route path="/byzantine-empire" element={<EraPreviewPage />} />
+      <Route path="/middle-ages" element={<EraPreviewPage />} />
+      <Route path="/early-modern-world" element={<EraPreviewPage />} />
+      <Route path="/modern-era" element={<EraPreviewPage />} />
       <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
       <Route path="/eras" element={<ProtectedRoute><ErasPage /></ProtectedRoute>} />
       <Route path="/eras/:eraId/lessons/:lessonId" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />

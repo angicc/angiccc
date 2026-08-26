@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { stripMarkdown } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import { ERA_SLUGS } from '@/features/content/eraSlugs';
+import { HorizontalRail } from '@/components/shared/HorizontalRail';
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from 'framer-motion';
 import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Globe2, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, X, Send, Loader2, Sparkles, Film, Shield, Scale, Hourglass, Target, Swords, Map as MapIcon, Users, Check } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -803,46 +805,45 @@ export default function LandingPage() {
           <h2 className="font-heading text-3xl font-bold mb-3">{L.erasTitle}</h2>
           <p className="text-muted-foreground">{L.erasSubtitle}</p>
         </motion.div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5">
-          {ERA_VISUALS.map((era, i) => (
-            <motion.div
-              key={era.eraId}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="h-full"
-            >
-              <TiltCard className="h-full">
-                <motion.div
-                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                  className={`h-full flex flex-col rounded-xl border bg-gradient-to-br overflow-hidden ${era.bg} ${era.border} group cursor-default`}
-                >
-                  <div className="relative h-32 overflow-hidden shrink-0">
-                    <img
-                      src={era.photo.startsWith('http') ? era.photo : `https://images.unsplash.com/${era.photo}?auto=format&fit=crop&w=400&q=65`}
-                      alt={L.eraNames[i]}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <div className="absolute bottom-2 left-3">
-                      <div className={`font-heading font-bold text-sm ${era.color}`}>{L.eraNames[i]}</div>
-                      <div className="text-xs text-white/60">{L.eraRanges[i]}</div>
-                    </div>
+        {/* A timeline, not six cards listing all 132 lesson titles. The old
+            section printed the entire curriculum inline, which nobody reads;
+            each era now shows its name, span and lesson count, and links to
+            its own page for the detail. */}
+        <div className="relative">
+          {/* The spine. Hidden on mobile, where the eras stack vertically. */}
+          <div className="hidden lg:block absolute left-0 right-0 top-[46px] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+          <div className="grid grid-cols-2 lg:grid-cols-6 gap-x-4 gap-y-10">
+            {ERA_VISUALS.map((era, i) => (
+              <motion.div
+                key={era.eraId}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.07 }}
+                className="relative flex flex-col items-center text-center group"
+              >
+                <Link to={`/${ERA_SLUGS[era.eraId]}`} className="flex flex-col items-center">
+                  <div className="text-[11px] font-semibold tracking-wider text-muted-foreground mb-3 tabular-nums">
+                    {L.eraRanges[i]}
                   </div>
-                  <div className="p-4 space-y-1.5 flex-1">
-                    {LESSONS.filter(ls => ls.eraId === era.eraId).map(ls => (
-                      <div key={ls.id} className="flex items-start gap-1.5 text-xs text-muted-foreground group-hover:text-foreground/70 transition-colors">
-                        <span className={`mt-1.5 w-1 h-1 rounded-full shrink-0 ${era.color} bg-current opacity-70`} />
-                        {getTranslatedLesson(ls, language).title}
-                      </div>
-                    ))}
+                  {/* The node on the spine. */}
+                  <div className={`relative z-10 w-5 h-5 rounded-full border-2 ${era.border} bg-background flex items-center justify-center transition-transform duration-200 group-hover:scale-125`}>
+                    <span className={`w-2 h-2 rounded-full ${era.color} bg-current`} />
                   </div>
-                </motion.div>
-              </TiltCard>
-            </motion.div>
-          ))}
+                  <div className={`font-heading font-bold text-sm mt-4 ${era.color} group-hover:underline underline-offset-4`}>
+                    {L.eraNames[i]}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {LESSONS.filter(ls => ls.eraId === era.eraId).length} {L.eraLessonsWord}
+                  </div>
+                  <span className="mt-2 text-[11px] text-primary/70 opacity-0 group-hover:opacity-100 transition-opacity inline-flex items-center gap-1">
+                    {L.eraExplore}<ArrowRight className="w-3 h-3" />
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -913,16 +914,18 @@ export default function LandingPage() {
           <h2 className="font-heading text-3xl font-bold mb-3">{L.featuresTitle}</h2>
           <p className="text-muted-foreground max-w-xl mx-auto">{L.featuresSubtitle}</p>
         </motion.div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* 21 cards in a 3-column grid was seven rows of tiles below the fold.
+            Paged sideways instead: one row tall, all 21 still reachable. */}
+        <HorizontalRail prevLabel={L.railPrev} nextLabel={L.railNext}>
           {FEATURE_VISUALS.map(({ icon: Icon, color, bg, border }, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.055 }}
+              transition={{ delay: Math.min(i, 5) * 0.055 }}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className={`p-5 rounded-xl border ${border} bg-card hover:border-primary/40 transition-all group`}
+              className={`snap-start shrink-0 w-[260px] sm:w-[290px] p-5 rounded-xl border ${border} bg-card hover:border-primary/40 transition-all group`}
             >
               <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200`}>
                 <Icon className={`w-5 h-5 ${color}`} />
@@ -931,7 +934,7 @@ export default function LandingPage() {
               <p className="text-muted-foreground text-xs leading-relaxed">{L.features[i]?.d}</p>
             </motion.div>
           ))}
-        </div>
+        </HorizontalRail>
       </section>
 
       {/* ── Real user reviews ── */}
@@ -943,30 +946,86 @@ export default function LandingPage() {
           <h2 className="font-heading text-3xl font-bold mb-4">{L.pricingTitle}</h2>
           <p className="text-muted-foreground mb-3">{L.pricingTrialA}<span className="text-primary font-semibold">{L.pricingTrialHl}</span>{L.pricingTrialB}</p>
           <p className="mb-8"><span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-emerald-400/40 bg-emerald-400/10 text-emerald-400 text-xs font-medium">{t.pricing_guarantee}</span></p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {/* Redesigned from the reviewer's reference: a raised "recommended"
+              card, an explicit price line, then Overview and Highlights, with
+              anything the tier does NOT include struck through. The old cards
+              showed a price and one sentence, so the difference between tiers
+              was invisible without leaving the page. */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 items-start text-left">
             {[
-              { plan: 'Free',             price: '$0',        trial: false, icon: BookOpen, highlight: false },
-              { plan: 'Beginner Student', price: '$4.99/mo',  trial: true,  icon: Star,     highlight: false },
-              { plan: 'Pro Student',      price: '$9.99/mo',  trial: true,  icon: Zap,      highlight: true  },
-              { plan: 'Master Student',   price: '$17.99/mo', trial: true,  icon: Crown,    highlight: false },
-            ].map(({ plan, price, trial, icon: Icon, highlight }, i) => (
-              <motion.div
-                key={plan}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className={`p-5 rounded-xl border flex flex-col items-center gap-2 transition-all ${highlight ? 'border-primary/50 bg-primary/5 shadow-lg shadow-primary/10' : 'border-border bg-card'}`}
-              >
-                <Icon className={`w-6 h-6 ${highlight ? 'text-primary' : i === 2 ? 'text-amber-400' : 'text-muted-foreground'}`} />
-                <div className="font-heading font-semibold">{plan}</div>
-                <div className={`text-2xl font-bold ${highlight ? 'text-primary' : 'text-foreground'}`}>{price}</div>
-                {trial && <div className="text-[11px] font-semibold text-emerald-400">{L.pricingTrialNote}</div>}
-                <div className="text-xs text-muted-foreground text-center">{L.pricingPlanDescs[i]}</div>
-                {highlight && <Badge className="text-xs mt-1">{L.pricingMostPopular}</Badge>}
-              </motion.div>
-            ))}
+              { plan: 'Free',             price: '$0',     per: false, icon: BookOpen, highlight: false },
+              { plan: 'Beginner Student', price: '$4.99',  per: true,  icon: Star,     highlight: false },
+              { plan: 'Pro Student',      price: '$9.99',  per: true,  icon: Zap,      highlight: true  },
+              { plan: 'Master Student',   price: '$17.99', per: true,  icon: Crown,    highlight: false },
+            ].map(({ plan, price, per, icon: Icon, highlight }, i) => {
+              const card = L.pricingCards[i];
+              return (
+                <motion.div
+                  key={plan}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className={`relative rounded-2xl border p-5 flex flex-col h-full transition-all ${
+                    highlight
+                      ? 'border-primary/60 bg-primary/5 shadow-xl shadow-primary/10 lg:-translate-y-3 lg:pb-7'
+                      : 'border-border bg-card hover:border-primary/30'
+                  }`}
+                >
+                  {highlight && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground shadow">
+                      {L.pricingMostPopular}
+                    </span>
+                  )}
+
+                  <Icon className={`w-6 h-6 mb-3 ${highlight ? 'text-primary' : 'text-muted-foreground'}`} />
+                  <div className="font-heading font-semibold text-[15px]">{plan}</div>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed min-h-[32px]">{L.pricingPlanDescs[i]}</p>
+
+                  <div className="mt-4 flex items-baseline gap-1">
+                    <span className={`text-3xl font-bold font-heading ${highlight ? 'text-primary' : 'text-foreground'}`}>{price}</span>
+                    {/* pricing_month already carries its own slash ("/month", "/мес"), so
+                        adding one here rendered "/ /month". */}
+                    {per && <span className="text-xs text-muted-foreground">{t.pricing_month}</span>}
+                  </div>
+                  {per && <div className="text-[11px] font-semibold text-emerald-400 mt-1">{L.pricingTrialNote}</div>}
+
+                  <Link to="/register" className="block mt-4">
+                    <Button size="sm" variant={highlight ? 'default' : 'outline'} className="w-full">
+                      {L.pricingStart}
+                    </Button>
+                  </Link>
+
+                  <div className="mt-5 space-y-3 text-xs">
+                    <div>
+                      <div className="font-semibold text-foreground/80 mb-1.5">{L.pricingOverviewLabel}</div>
+                      <ul className="space-y-1">
+                        {card.ov.map(line => (
+                          <li key={line} className="flex gap-1.5 text-muted-foreground">
+                            <Check className="w-3.5 h-3.5 shrink-0 mt-px text-emerald-400" />{line}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-foreground/80 mb-1.5">{L.pricingHighlightsLabel}</div>
+                      <ul className="space-y-1">
+                        {card.hl.map(line => (
+                          <li key={line} className="flex gap-1.5 text-muted-foreground">
+                            <Check className="w-3.5 h-3.5 shrink-0 mt-px text-emerald-400" />{line}
+                          </li>
+                        ))}
+                        {card.out.map(line => (
+                          <li key={line} className="flex gap-1.5 text-muted-foreground/45 line-through decoration-muted-foreground/40">
+                            <X className="w-3.5 h-3.5 shrink-0 mt-px no-underline" />{line}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
           <Link to="/pricing"><Button variant="outline" size="lg">{L.pricingSeeFull}</Button></Link>
         </motion.div>
