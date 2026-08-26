@@ -2,14 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Historify - Learn History</title>
-    <meta name="description" content="Historify — the AI-powered history learning app. Master world history across four eras with lessons, quizzes, and an AI tutor." />
+
+    <!-- Was still Vite's default /vite.svg. SVG covers every modern browser at
+         any size; the PNG is the iOS home-screen fallback, which ignores SVG. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0b1120" />
+
+    <title>Historify · Learn World History with an AI Tutor</title>
+    <meta name="description" content="Learn world history across six eras with lessons, adaptive quizzes, an interactive territory map, and Clio, your personal AI tutor. Available in six languages." />
     <meta name="author" content="Historify" />
     <meta name="copyright" content="© 2026 Historify. All rights reserved." />
-    <meta property="og:title" content="Historify - Learn History" />
-    <meta property="og:description" content="AI-powered history learning app — lessons, quizzes, and Clio your personal AI tutor." />
+
+    <!-- Canonical: the app is a SPA, so every route resolves to this document.
+         Without it, search engines treat ?ref= and /#/ variants as duplicates
+         and split the ranking between them. -->
+    <link rel="canonical" href="https://historify2026.netlify.app/" />
+
+    <!-- Open Graph: what a link to the app looks like when pasted into Slack,
+         Discord, WhatsApp or a Twitter post. Without og:image the unfurl is a
+         bare grey box, which is what most people see first. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Historify" />
+    <meta property="og:url" content="https://historify2026.netlify.app/" />
+    <meta property="og:title" content="Historify · Learn World History with an AI Tutor" />
+    <meta property="og:description" content="Six eras, 130+ lessons, adaptive quizzes, an interactive territory map, and a personal AI tutor. In six languages." />
+    <meta property="og:image" content="https://historify2026.netlify.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Historify — millions of years of history" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Historify · Learn World History with an AI Tutor" />
+    <meta name="twitter:description" content="Six eras, 130+ lessons, adaptive quizzes, an interactive territory map, and a personal AI tutor." />
+    <meta name="twitter:image" content="https://historify2026.netlify.app/og-image.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
   </head>
   <body>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Historify">
+  <!-- The hourglass from the app's own mark: history as time measured. Drawn as
+       vector so it stays crisp at 16px in a tab and at 180px on an iOS home
+       screen, and needs no raster variants. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0b1120"/>
+  <g stroke="url(#g)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M20 14h24"/>
+    <path d="M20 50h24"/>
+    <path d="M23 14c0 9 9 13 9 18s-9 9-9 18"/>
+    <path d="M41 14c0 9-9 13-9 18s9 9 9 18"/>
+  </g>
+  <!-- Sand already fallen: the lower bulb carries the weight. -->
+  <path d="M26 46c2-5 4-7 6-7s4 2 6 7z" fill="url(#g)" opacity="0.95"/>
+  <circle cx="32" cy="30" r="2.1" fill="#fde68a"/>
+</svg>

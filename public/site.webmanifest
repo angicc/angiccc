@@ -1,0 +1,13 @@
+{
+  "name": "Historify",
+  "short_name": "Historify",
+  "description": "Learn world history across six eras with lessons, adaptive quizzes, an interactive territory map, and a personal AI tutor.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1120",
+  "theme_color": "#0b1120",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
