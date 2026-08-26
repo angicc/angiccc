@@ -187,6 +187,7 @@ export const POLY_LABEL_I18N: Record<string, MT> = {
   'Maize farmers': { es: 'Agricultores del maíz', ru: 'Земледельцы кукурузы', mk: 'Одгледувачи на пченка', de: 'Maisbauern', fr: 'Cultivateurs de maïs' },
   'Desert hunter-gatherers': { es: 'Cazadores-recolectores del desierto', ru: 'Охотники-собиратели пустыни', mk: 'Пустински ловци-собирачи', de: 'Wüstenjäger und -sammler', fr: 'Chasseurs-cueilleurs du désert' },
   'Tsardom of Muscovy': { es: 'Zarato de Moscovia', ru: 'Русское царство', mk: 'Московско Царство', de: 'Zarentum Russland', fr: 'Tsarat de Russie' },
+  'Macedonia': { es: 'Macedonia', ru: 'Македония', mk: 'Македонија', de: 'Makedonien', fr: 'Macédoine' },
 };
 
 export function getTranslatedPolyLabel(label: string, lang: Language): string {

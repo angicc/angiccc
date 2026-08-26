@@ -260,16 +260,42 @@ function renderTerritoryLabels(
   language: Language,
 ) {
   const ordered = [...candidates.entries()].sort((a, b) => b[1].area - a[1].area);
-  const placed: { x: number; y: number }[] = [];
-  const MIN_PX_X = 96;
-  const MIN_PX_Y = 26;
+  const placed: { x: number; y: number; halfW: number }[] = [];
+  const MIN_PX_Y = 22;
+  // Roughly the rendered width of one character at 11px with 0.22em tracking.
+  const PX_PER_CHAR = 8.6;
+  // Where a colliding label may be nudged to, in order of preference: dead
+  // centre first, then progressively further off it.
+  const NUDGES: [number, number][] = [[0, 0], [0, -18], [0, 18], [-34, 0], [34, 0], [0, -34], [0, 34], [-52, -20], [52, 20]];
+
   for (const [rawLabel, cand] of ordered) {
     let pt: L.Point;
     try { pt = map.latLngToContainerPoint([cand.lat, cand.lng]); } catch { continue; }
-    if (placed.some(p => Math.abs(p.x - pt.x) < MIN_PX_X && Math.abs(p.y - pt.y) < MIN_PX_Y)) continue;
-    placed.push({ x: pt.x, y: pt.y });
     const labelText = getTranslatedPolyLabel(rawLabel, language).toUpperCase();
-    L.marker([cand.lat, cand.lng], {
+    const halfW = (labelText.length * PX_PER_CHAR) / 2;
+
+    // A label that collided used to be DROPPED. On a crowded map that silently
+    // erased countries: the Yugoslav Wars showed Serbia, Montenegro and
+    // Macedonia but not Bosnia, Croatia or Slovenia, because their centroids
+    // fell inside a fixed 96x26px box around a label already placed. Every
+    // republic was on the map and correctly coloured — three of them just had
+    // no name. Nudge instead, and only give up if every offset is taken.
+    let spot: { x: number; y: number } | null = null;
+    for (const [dx, dy] of NUDGES) {
+      const x = pt.x + dx, y = pt.y + dy;
+      const clash = placed.some(pl =>
+        Math.abs(pl.x - x) < (pl.halfW + halfW) && Math.abs(pl.y - y) < MIN_PX_Y);
+      if (!clash) { spot = { x, y }; break; }
+    }
+    // Last resort: draw it at its own centroid anyway. An overlapping name is
+    // recoverable by panning; a missing one looks like missing data.
+    if (!spot) spot = { x: pt.x, y: pt.y };
+    placed.push({ ...spot, halfW });
+
+    let anchor: L.LatLng;
+    try { anchor = map.containerPointToLatLng([spot.x, spot.y]); } catch { continue; }
+
+    L.marker(anchor, {
       interactive: false,
       keyboard: false,
       icon: L.divIcon({

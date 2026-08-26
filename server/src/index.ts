@@ -3,6 +3,7 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
 import { createServer } from 'node:http';
 import helmet from 'helmet';
+import { assertBootConfig } from './security/bootChecks';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
@@ -42,10 +43,34 @@ const {
   NODE_ENV = 'development',
 } = process.env;
 
-if (!JWT_SECRET) throw new Error('JWT_SECRET is required — set it in the environment.');
+// Presence is not strength: the old check accepted "secret". A guessable
+// signing key lets anyone mint a session for any account, with any tier, and
+// nothing in the logs would ever show it. Checked once, loudly, at boot.
+assertBootConfig({
+  jwtSecret: JWT_SECRET,
+  csrfSecret: process.env.CSRF_SECRET,
+  corsOrigin: CORS_ORIGIN,
+  nodeEnv: NODE_ENV,
+  databaseUrl: process.env.DATABASE_URL,
+});
+
+// Behind a proxy the app still sees plain HTTP, so Secure cookies would be
+// issued on a connection that never had TLS. Redirect instead of trusting the
+// deployment to have done it.
+
 
 const app = express();
 app.set('trust proxy', 1); // behind a reverse proxy / load balancer
+
+if (NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    // x-forwarded-proto is trustworthy here because trust proxy is set and the
+    // only ingress is the platform's load balancer.
+    if (req.secure || req.headers['x-forwarded-proto'] === 'https') return next();
+    // A redirect, not a rejection: a user who typed http:// should still land.
+    res.redirect(308, `https://${req.headers.host}${req.originalUrl}`);
+  });
+}
 
 // ── Security & parsing middleware ────────────────────────────────────────────
 // HSTS is stated explicitly rather than left to the default: a year, covering

@@ -267,7 +267,12 @@ export default function ProgressPage() {
               <CardContent>
                 {analysisStats && (analysisStats.attempts > 0 || analysisStats.passes > 0) ? (
                   <div className="flex items-center gap-4">
-                    <div className="relative w-[92px] h-[92px] shrink-0">
+                    {/* 92px was not enough room for the label INSIDE the ring:
+                        "ПРОСЕЧЕН РЕЗУЛТАТ" and "PUNTUACIÓN MEDIA" ran past the
+                        stroke and over the artwork. Bigger ring, and the text
+                        is boxed inside the stroke so it wraps rather than
+                        spills — in every language, not just the short ones. */}
+                    <div className="relative w-[118px] h-[118px] shrink-0">
                       <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
                         <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" className="text-secondary" strokeWidth="9" />
                         <motion.circle
@@ -284,9 +289,13 @@ export default function ProgressPage() {
                           </linearGradient>
                         </defs>
                       </svg>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-xl font-bold font-heading text-violet-200 leading-none">{analysisStats.avg}%</span>
-                        <span className="text-[9px] uppercase tracking-wide text-muted-foreground mt-0.5">{t.prog_analysis_avg}</span>
+                      {/* inset-[17%] keeps the text inside the 9-unit stroke at
+                          r=42, so a long label wraps within the disc. */}
+                      <div className="absolute inset-[17%] flex flex-col items-center justify-center text-center">
+                        <span className="text-2xl font-bold font-heading text-violet-200 leading-none">{analysisStats.avg}%</span>
+                        <span className="text-[8px] leading-[1.15] uppercase tracking-tight text-muted-foreground mt-1 hyphens-auto break-words">
+                          {t.prog_analysis_avg}
+                        </span>
                       </div>
                     </div>
                     <div className="flex-1 space-y-2.5">
