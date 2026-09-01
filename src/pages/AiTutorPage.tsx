@@ -18,7 +18,7 @@ import { buildMemoryAwareSystem, noteExchangeAndMaybeExtract } from '@/features/
 import { ClioMemoryPanel } from '@/components/shared/ClioMemoryPanel';
 import { usePersistentChat, listThreads, createThread, titleThread, deleteThread, threadModule, type ChatThread } from '@/services/chatStore';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
-import { CLIO_SAMPLE_DIALOGUES } from '@/features/ai/clioSampleDialogues';
+import { CLIO_SAMPLE_DIALOGUES, sampleTurns, sampleTopic } from '@/features/ai/clioSampleDialogues';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { aiAllowanceMessage } from '@/features/subscription/aiAllowanceMessage';
 import type { ChatMessage } from '@/types';
@@ -266,13 +266,15 @@ export default function AiTutorPage() {
   const loadExample = useCallback((dialogueId: string) => {
     const dialogue = CLIO_SAMPLE_DIALOGUES.find(d => d.id === dialogueId);
     if (!dialogue || loading) return;
-    setMessages(dialogue.turns.map(turn => ({
+    setMessages(sampleTurns(dialogue, language).map(turn => ({
       id: crypto.randomUUID(),
       role: turn.role,
       content: turn.content,
       timestamp: new Date().toISOString(),
     })));
-  }, [loading, setMessages]);
+    // `language` belongs here: switching language and reloading an example must
+    // give the new language, not whichever one the callback closed over.
+  }, [loading, setMessages, language]);
 
   const allowance = canAI();
   const { allowed, nextTier } = allowance;
@@ -431,7 +433,7 @@ export default function AiTutorPage() {
                             onClick={() => loadExample(d.id)}
                             className="text-[11px] px-3 py-1.5 rounded-full border border-border/70 text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all"
                           >
-                            {language === 'en' ? d.topic : (d.topicI18n?.[language as 'es'|'ru'|'mk'|'de'|'fr'] ?? d.topic)}
+                            {sampleTopic(d, language)}
                           </button>
                         ))}
                       </div>

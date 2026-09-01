@@ -3,7 +3,10 @@
 // loadable examples in the tutor's empty state. Each dialogue models the
 // Socratic pattern Clio is prompted to follow: precise facts, cross-era
 // connections, and a closing question that hands the thread back to the
-// student. Content is curated seed data (English), not AI-generated at runtime.
+// student. Content is curated seed data, not AI-generated at runtime; the
+// English text lives here and its translations in ./clioSampleDialogues.i18n.
+
+import { SAMPLE_TURNS_I18N, type SampleLang } from './clioSampleDialogues.i18n';
 
 export interface SampleTurn {
   role: 'user' | 'assistant';
@@ -22,6 +25,24 @@ export interface SampleDialogue {
   topicI18n: { es: string; ru: string; mk: string; de: string; fr: string };
   era: 'ancient' | 'middle-ages' | 'early-modern' | 'modern';
   turns: SampleTurn[];
+}
+
+/**
+ * The dialogue as the learner should read it.
+ *
+ * `topicI18n` translated the chip but not what loading it put on screen, so
+ * every language above English opened an English transcript. Falls back to the
+ * English turns rather than rendering nothing if a translation is missing.
+ */
+export function sampleTurns(dialogue: SampleDialogue, language: string): SampleTurn[] {
+  const translated = SAMPLE_TURNS_I18N[dialogue.id]?.[language as SampleLang];
+  if (!translated) return dialogue.turns;
+  return dialogue.turns.map((turn, i) => ({ ...turn, content: translated[i] ?? turn.content }));
+}
+
+/** The chip label, in the reader's language. */
+export function sampleTopic(dialogue: SampleDialogue, language: string): string {
+  return dialogue.topicI18n?.[language as SampleLang] ?? dialogue.topic;
 }
 
 export const CLIO_SAMPLE_DIALOGUES: SampleDialogue[] = [
