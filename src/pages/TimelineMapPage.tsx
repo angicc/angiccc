@@ -59,22 +59,47 @@ interface CartographicStyle {
   attribution: string;
   filter: string;
   subdomains?: string;
+  /**
+   * Deepest zoom the provider actually serves. Leaflet upscales the last real
+   * tile beyond this instead of requesting one that does not exist, which is
+   * the difference between a slightly soft map and a blank grey one.
+   */
+  maxNativeZoom?: number;
+  /** Used if the provider starts erroring — see `createBaseLayer`. */
+  fallbackUrl?: string;
 }
 
+const ESRI_ATTR = '&copy; <a href="https://www.esri.com/">Esri</a>';
+
+/**
+ * Every basemap here must render without an API key.
+ *
+ * The dark, military and clean styles used to come from `basemaps.cartocdn.com`,
+ * which now stamps "API KEY REQUIRED" across every tile — on all 30-odd
+ * timelines at once, since they share this list. Esri's public ArcGIS services
+ * need no key and were already carrying the satellite style, so they are the
+ * one provider in here with a working track record in this app.
+ *
+ * Esri's Canvas basemaps carry no place labels. On a historical map that is a
+ * gain rather than a loss: modern borders and city names are noise over a map
+ * of Justinian's reconquest, and the timeline draws its own period labels.
+ */
 const CART_STYLES: CartographicStyle[] = [
   {
     id: 'dark',
     nameKey: 'tmap_style_dark',
-    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+    attribution: ESRI_ATTR,
     filter: '',
+    maxNativeZoom: 16,
   },
   {
     id: 'military',
     nameKey: 'tmap_style_military',
-    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+    attribution: ESRI_ATTR,
     filter: 'hue-rotate(100deg) saturate(1.3) brightness(0.75)',
+    maxNativeZoom: 16,
   },
   {
     id: 'terrain',
@@ -83,23 +108,57 @@ const CART_STYLES: CartographicStyle[] = [
     attribution: '&copy; <a href="https://opentopomap.org/">OpenTopoMap</a>',
     filter: '',
     subdomains: 'abc',
+    maxNativeZoom: 17,
   },
   {
     id: 'clean',
     nameKey: 'tmap_style_clean',
-    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+    attribution: ESRI_ATTR,
     filter: '',
+    maxNativeZoom: 16,
   },
   {
     id: 'satellite',
     nameKey: 'tmap_style_satellite',
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    attribution: '&copy; <a href="https://www.esri.com/">Esri</a>',
+    attribution: ESRI_ATTR,
     filter: '',
-    subdomains: undefined,
+    maxNativeZoom: 18,
   },
 ];
+
+/** Reached only if a provider goes down: pale, keyless, and universally up. */
+const LAST_RESORT_TILES = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+/**
+ * Build the basemap layer for a style.
+ *
+ * Shared by the mount effect and the style-swap effect. Keeping one builder
+ * matters: the mount path used to drop `subdomains`, so any style that needed
+ * `{s}` would have been requested against a literal "{s}." hostname there.
+ *
+ * The error counter is the cheap insurance a public beta wants. A provider that
+ * changes its terms — exactly what CARTO just did — otherwise turns every
+ * timeline black at once, with nothing in the UI to say why.
+ */
+function createBaseLayer(style: CartographicStyle): L.TileLayer {
+  const opts: L.TileLayerOptions = { attribution: style.attribution, maxZoom: 18 };
+  if (style.subdomains) opts.subdomains = style.subdomains;
+  if (style.maxNativeZoom) opts.maxNativeZoom = style.maxNativeZoom;
+
+  const tile = L.tileLayer(style.url, opts);
+  let errors = 0;
+  let swapped = false;
+  tile.on('tileerror', () => {
+    // A handful of misses is normal at the edges of a pan; a provider that is
+    // gone misses everything. Only a sustained run trips the swap.
+    if (swapped || ++errors < 12) return;
+    swapped = true;
+    tile.setUrl(style.fallbackUrl ?? LAST_RESORT_TILES);
+  });
+  return tile;
+}
 
 type MapMode = 'explore' | 'story' | 'quiz' | 'campaign';
 type LayerKey = 'territory' | 'capitals' | 'cities' | 'battles' | 'ports' | 'resources' | 'routes';
@@ -616,7 +675,7 @@ export default function TimelineMapPage() {
     if (!mapAllowed || !containerRef.current || mapRef.current) return;
     const map = L.map(containerRef.current, { center: [30, 20], zoom: 2, zoomControl: true, scrollWheelZoom: true });
     const style = CART_STYLES.find(s => s.id === 'dark')!;
-    const tile = L.tileLayer(style.url, { attribution: style.attribution, maxZoom: 18 });
+    const tile = createBaseLayer(style);
     tile.addTo(map);
     tileRef.current = tile;
     layerGroupRef.current = L.layerGroup().addTo(map);
@@ -695,9 +754,7 @@ export default function TimelineMapPage() {
     if (!map) return;
     const style = CART_STYLES.find(s => s.id === styleId)!;
     if (tileRef.current) { map.removeLayer(tileRef.current); }
-    const opts: L.TileLayerOptions = { attribution: style.attribution, maxZoom: 18 };
-    if (style.subdomains) opts.subdomains = style.subdomains;
-    const tile = L.tileLayer(style.url, opts);
+    const tile = createBaseLayer(style);
     tile.addTo(map);
     tileRef.current = tile;
   }, [styleId]);

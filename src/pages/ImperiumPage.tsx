@@ -436,7 +436,12 @@ export default function ImperiumPage() {
   useEffect(() => {
     if (!campaign || !mapDivRef.current || mapRef.current) return;
     const map = L.map(mapDivRef.current, { zoomControl: true, attributionControl: false, worldCopyJump: true });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 10, minZoom: 2 }).addTo(map);
+    // Esri's keyless Dark Gray Canvas. CARTO's tiles now arrive stamped
+    // "API KEY REQUIRED", which on a campaign map reads as a broken game.
+    L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      { maxZoom: 10, minZoom: 2 },
+    ).addTo(map);
     territoryLayerRef.current = L.layerGroup().addTo(map);
     overlayLayerRef.current = L.layerGroup().addTo(map);
     mapRef.current = map;
