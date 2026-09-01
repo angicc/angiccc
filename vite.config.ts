@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv, type Plugin } from 'vite';
 import { T, LANGUAGE_LABELS, type Language } from './src/i18n/translations';
 import { LESSON_LOCAL_BANNERS } from './src/features/content/lessonLocalBanners';
+import { ERA_BACKDROP_PATHS } from './src/features/content/eraBackdrops';
 import { TIMELINE_EVENTS } from './src/features/content/timelineData';
 import { TIMELINE_TRANS } from './src/i18n/timelineTranslations';
 
@@ -257,7 +258,10 @@ function assetPathPlugin(): Plugin {
   return {
     name: 'asset-path-check',
     buildStart() {
-      const mapped = Object.entries(LESSON_LOCAL_BANNERS).map(([k, p]) => ({ k, p, kind: 'banner' }));
+      const mapped = [
+        ...Object.entries(LESSON_LOCAL_BANNERS).map(([k, p]) => ({ k, p, kind: 'banner' })),
+        ...Object.entries(ERA_BACKDROP_PATHS).map(([k, p]) => ({ k, p, kind: 'era backdrop' })),
+      ];
 
       const badDirs: string[] = [];
       let absent = 0;

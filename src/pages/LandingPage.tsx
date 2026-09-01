@@ -3,7 +3,7 @@ import { stripMarkdown } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { ERA_SLUGS } from '@/features/content/eraSlugs';
 import { HorizontalRail } from '@/components/shared/HorizontalRail';
-import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useInView, useMotionValue, useTransform, useReducedMotion } from 'framer-motion';
 import { BookOpen, Brain, ScrollText, HelpCircle, ArrowRight, Crown, Zap, Layers, Globe, Globe2, Flame, Star, ChevronDown, Quote, PenLine, BarChart2, CheckCircle2, XCircle, X, Send, Loader2, Sparkles, Film, Shield, Scale, Hourglass, Target, Swords, Map as MapIcon, Users, Check } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -22,6 +22,7 @@ import { Logo } from '@/components/shared/Logo';
 import { CelestialAtlas } from '@/components/shared/CelestialAtlas';
 import { streamChatResponse, LANDING_SYSTEM_PROMPT } from '@/services/aiGateway';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
+import { ERA_BACKDROPS } from '@/features/content/eraBackdrops';
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
@@ -35,6 +36,53 @@ const ERA_VISUALS = [
   { eraId: 'early-modern', color: 'text-emerald-400', bg: 'from-emerald-900/30 to-emerald-950/60', border: 'border-emerald-500/30', photo: 'photo-1516483638261-f4dbaf036963' },
   { eraId: 'modern',       color: 'text-rose-400',    bg: 'from-rose-900/30 to-rose-950/60',       border: 'border-rose-500/30',    photo: 'photo-1477959858617-67f85cf4f1df' },
 ];
+
+/**
+ * The artwork behind one era on the timeline.
+ *
+ * Three things it has to get right, all of them about not making the page
+ * worse than it was without artwork:
+ *
+ *  - It falls forward through the candidates and then disappears, so an era
+ *    with no artwork yet looks exactly like the plain timeline did rather than
+ *    showing a broken frame. Eras can be filled in one at a time.
+ *  - It sits behind the text at low opacity under a scrim. The era name has to
+ *    stay readable over a cave painting and over a paratroop drop alike.
+ *  - Nothing renders at all for a visitor who has asked for reduced motion.
+ *    Most of these are animated GIFs, and a GIF cannot be paused with CSS, so
+ *    honouring that preference means not loading it.
+ */
+function EraBackdrop({ eraId }: { eraId: string }) {
+  const backdrop = ERA_BACKDROPS[eraId];
+  // 0 = the local file, 1 = the remote fallback, 2 = give up and render nothing.
+  const [attempt, setAttempt] = useState(0);
+  const reducedMotion = useReducedMotion();
+  const candidates = [backdrop?.local, backdrop?.remote].filter(Boolean) as string[];
+  const src = candidates[attempt];
+  if (!src || reducedMotion) return null;
+  return (
+    <div aria-hidden className="pointer-events-none absolute -inset-x-1 -inset-y-3 overflow-hidden">
+      <img
+        key={src}
+        src={src}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        onError={() => setAttempt(n => n + 1)}
+        // The elliptical mask dissolves all four edges. Without it each era
+        // reads as a hard-edged card sitting on the timeline instead of as
+        // atmosphere behind it, and the six rectangles fight the spine.
+        style={{
+          maskImage: 'radial-gradient(ellipse at center, #000 35%, transparent 72%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at center, #000 35%, transparent 72%)',
+        }}
+        className="h-full w-full object-cover opacity-[0.22] saturate-[0.4] transition-all duration-500 group-hover:opacity-50 group-hover:saturate-100"
+      />
+      {/* Keeps the era name legible over whatever the artwork happens to be. */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/40 to-background" />
+    </div>
+  );
+}
 
 // Live counts derived from the content catalogs — every curriculum tranche
 // propagates here automatically instead of via hand-edited numbers.
@@ -823,7 +871,8 @@ export default function LandingPage() {
                 transition={{ duration: 0.4, delay: i * 0.07 }}
                 className="relative flex flex-col items-center text-center group"
               >
-                <Link to={`/${ERA_SLUGS[era.eraId]}`} className="flex flex-col items-center">
+                <EraBackdrop eraId={era.eraId} />
+                <Link to={`/${ERA_SLUGS[era.eraId]}`} className="relative flex flex-col items-center">
                   <div className="text-[11px] font-semibold tracking-wider text-muted-foreground mb-3 tabular-nums">
                     {L.eraRanges[i]}
                   </div>
