@@ -5,11 +5,40 @@
 // Loaded on demand by src/i18n/bakedLessons.ts so a visitor downloads only the
 // language they are reading in.
 //
-// source-sha256: a441affb122689e442582a640785711025758c19d8bda31de0eb72c781406862
+// source-sha256: 55e32c46f5af1b2753f64eafdbc9911146b69b9bc929c5914b503e2d8a1f52e3
 
 import type { GenLessonT } from '../lessonTranslationsGenerated';
 
 const BAKED: Record<string, GenLessonT> = {
+ "modern-24": {
+  "t": "La Segunda Guerra Mundial, Parte II",
+  "s": "El Frente Oriental, el Pacífico y la guerra detrás de las líneas",
+  "k": [
+   "El Frente Oriental supuso alrededor de tres cuartas partes de las pérdidas militares alemanas; la Unión Soviética perdió unos 27 millones de personas",
+   "La guerra en Asia empezó en 1937, dos años antes que la europea, cuando Japón invadió China: los muertos chinos se estiman entre 15 y 20 millones",
+   "Los bombardeos estratégicos mataron a varios cientos de miles de civiles en Alemania y Japón y siguen siendo una de las decisiones más discutidas de la guerra",
+   "Casi todos los países ocupados produjeron a la vez resistencia y colaboración, y la línea entre ambas rara vez fue limpia",
+   "Las conferencias de Teherán, Yalta y Potsdam trazaron las fronteras y las esferas de influencia que se convirtieron en la Guerra Fría"
+  ],
+  "h": [
+   "La guerra detrás de los titulares",
+   "El Frente Oriental",
+   "La guerra que empezó en 1937",
+   "Ocupación, colaboración y resistencia",
+   "La guerra de las fábricas",
+   "Bombardear las ciudades",
+   "La paz que se convirtió en Guerra Fría"
+  ],
+  "b": [
+   "La versión breve de la Segunda Guerra Mundial va de Polonia a la Blitzkrieg, de Pearl Harbor al Día D y a la bomba, y casi todos esos pasos ocurren en Europa occidental o en el Pacífico. Esa versión no es falsa, pero está muy desproporcionada. La inmensa mayoría de los combates, y de las muertes, sucedió en otro lugar: en una línea de frente que recorría casi tres mil kilómetros desde el Ártico hasta el mar Negro, y en una guerra en China que ya llevaba dos años cuando Alemania invadió Polonia. Esta lección trata de lo que el resumen comprime: dónde se decidió realmente la guerra, cómo se pagó y qué le hizo a la gente que nunca empuñó un fusil.",
+   "El 22 de junio de 1941 Alemania invadió la Unión Soviética con unos tres millones de hombres a lo largo de un frente que iba del Báltico al mar Negro. Nunca antes se había intentado algo de esa escala, y nada desde entonces se le ha acercado. Leningrado estuvo cercada 872 días y unos 800.000 de sus civiles murieron de hambre. En Stalingrado un ejército alemán entero fue rodeado y destruido. En Kursk, en julio de 1943, los dos bandos metieron varios miles de tanques en una sola batalla, y el ejército alemán no volvió a montar una gran ofensiva en el este. En el verano de 1944, la Operación Bagration destruyó al Grupo de Ejércitos Centro de forma tan completa que el avance soviético no se detuvo hasta las afueras de Varsovia. Alrededor de tres cuartas partes de todas las pérdidas militares alemanas de la guerra se sufrieron aquí. La Unión Soviética perdió unos 27 millones de personas, la mayoría civiles: una cifra tan grande que es más fácil enunciarla que comprenderla.",
+   "Para China la Segunda Guerra Mundial empezó en julio de 1937, y cuando Europa entró en ella el ejército japonés ya había tomado Shanghái y Nankín, donde masacró a entre 100.000 y 300.000 personas a lo largo de varias semanas. China siguió combatiendo ocho años, casi siempre sola, perdiendo entre 15 y 20 millones de personas y reteniendo a más de un millón de soldados japoneses que, en consecuencia, no estuvieron disponibles en ningún otro sitio. La guerra del Pacífico que recuerdan los estadounidenses (Guadalcanal, Tarawa, Iwo Jima, Okinawa) se libró en islas que la mayoría no sabría situar en un mapa, y su lógica era una aritmética brutal: tomar los aeródromos, acercar los bombarderos, repetir. Mientras tanto las fuerzas japonesas llegaron a las fronteras de la India, y una hambruna en Bengala en 1943, muy agravada por la política de guerra, mató a unos tres millones de personas que jamás vieron a un soldado japonés.",
+   "En 1942 Alemania gobernaba casi toda Europa, y cada país ocupado tuvo que decidir cómo vivir bajo ella. Algunos colaboraron abiertamente: Vidkun Quisling dio su nombre a la idea misma, y la Francia de Vichy tenía su propia policía, sus propias leyes y deportó a sus propios ciudadanos judíos. Otros resistieron, y lo pagaron. Los partisanos de Yugoslavia inmovilizaron divisiones alemanas enteras en una guerra de montaña que era además una guerra civil. El Alzamiento de Varsovia de agosto de 1944 aguantó 63 días y costó unas 200.000 vidas polacas mientras el Ejército Rojo esperaba en la otra orilla del Vístula. Lo que hace difícil esta historia es que las categorías se difuminan: un mismo pueblo podía esconder una célula de la resistencia y denunciar a sus vecinos, y tras la liberación el ajuste de cuentas fue a menudo tan político como moral.",
+   "Los Aliados no vencieron al Eje combatiendo mejor tanto como produciendo más. La industria estadounidense fabricó unos 300.000 aviones y 100.000 tanques, y bastantes barcos como para reponer las pérdidas más rápido de lo que los submarinos podían causarlas, y envió buena parte de todo ello a Gran Bretaña y a la Unión Soviética mediante el Préstamo y Arriendo, incluidos los camiones que dieron al Ejército Rojo la movilidad para llegar a Berlín. Los soviéticos hicieron algo aún más extraño: en los meses siguientes a la invasión desmontaron bastante más de mil fábricas y las trasladaron en tren al este de los Urales, y muchas volvían a producir un año después. Alemania, en cambio, dependió de unos 12 millones de trabajadores forzados y esclavos, un sistema que extraía trabajo mediante el terror y era, por eso mismo, derrochador. Las mujeres entraron en la industria pesada en todos los países beligerantes, y esa es una de las razones por las que el mundo de posguerra no pudo devolverse sin más a como estaba.",
+   "El poder aéreo pasó en esta guerra, por etapas, del campo de batalla a la población, y lo hizo en todos los bandos. Primero fueron Guernica y la destrucción de Róterdam; el Blitz mató a unos 40.000 civiles británicos; después la RAF y la USAAF convirtieron el bombardeo de zona en una industria. Hamburgo ardió en una tormenta de fuego en julio de 1943 que mató a unas 37.000 personas en unas pocas noches. Dresde, en febrero de 1945, mató quizá a 25.000 y se discute desde entonces, en buena medida porque para entonces la guerra estaba claramente ganada. La incursión aérea más mortífera de la historia no fue nuclear: en la noche del 9 de marzo de 1945, las bombas incendiarias lanzadas sobre Tokio mataron a unas 100.000 personas y calcinaron dieciséis millas cuadradas de la ciudad. Si algo de esto acortó la guerra sigue en disputa entre los historiadores; que apuntaba a la población civil, no.",
+   "La forma del mundo de posguerra se decidió mientras todavía se combatía, en tres conferencias. En Teherán, en noviembre de 1943, los Aliados acordaron abrir un segundo frente en Francia y, de hecho, que la Unión Soviética sería la potencia que liberase Europa oriental. En Yalta, en febrero de 1945, desplazaron Polonia entera hacia el oeste, quedándose la Unión Soviética con su mitad oriental y compensándola con tierra alemana, y acordaron las zonas de ocupación de Alemania. En Potsdam, en julio, con Roosevelt muerto y la bomba atómica recién probada, el ambiente ya se había enfriado. La alianza aguantó lo justo para terminar la guerra y luego se disolvió: en dos años Europa tenía trazada una línea que duraría hasta 1989. La Segunda Guerra Mundial terminó, dicho de otro modo, organizando la siguiente, algo que conviene tener presente cuando se cuenta como una victoria limpia."
+  ]
+ },
  "modern-23": {
   "t": "Las Guerras Mundiales, Parte II",
   "s": "La Segunda Guerra Mundial, 1939-1945",

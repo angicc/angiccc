@@ -21,6 +21,7 @@ import { getTranslatedEra, getTranslatedLesson } from '@/i18n/contentTranslation
 import { useLanguage } from '@/contexts/LanguageContext';
 import { LANDING_I18N } from '@/i18n/landingTranslations';
 import { ERA_SLUGS } from '@/features/content/eraSlugs';
+import { useEraBackdrop } from '@/components/shared/useEraBackdrop';
 
 const ERA_ACCENT: Record<string, { text: string; ring: string; glow: string }> = {
   prehistoric:    { text: 'text-orange-400',  ring: 'border-orange-500/30',  glow: 'from-orange-900/40' },
@@ -64,13 +65,31 @@ export default function EraPreviewPage() {
   if (!era) return <Navigate to="/" replace />;
 
   const accent = ERA_ACCENT[era.id] ?? ERA_ACCENT.ancient;
+  const backdrop = useEraBackdrop(era.id);
   const tEra = getTranslatedEra(era, language);
   const totalMinutes = lessons.reduce((sum, l) => sum + (l.estimatedMinutes ?? 0), 0);
 
   return (
     <div className="min-h-screen bg-background">
       <div className={`relative overflow-hidden border-b ${accent.ring}`}>
-        <div className={`absolute inset-0 bg-gradient-to-b ${accent.glow} to-transparent opacity-70`} />
+        {/* The era's own artwork, behind everything. Dim and desaturated: this
+            is a page of text on top of it, and a legible heading matters more
+            than a vivid GIF. The gradients below carry the accent colour and
+            fade the image out at the bottom edge so it does not stop dead
+            against the lesson list. */}
+        {backdrop.src && (
+          <img
+            key={backdrop.src}
+            src={backdrop.src}
+            alt=""
+            aria-hidden
+            decoding="async"
+            onError={backdrop.onError}
+            className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.45] saturate-[0.8]"
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
+        <div className={`absolute inset-0 bg-gradient-to-b ${accent.glow} to-transparent opacity-45`} />
         <div className="relative max-w-5xl mx-auto px-4 py-14">
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8">
             <ArrowLeft className="w-4 h-4" />

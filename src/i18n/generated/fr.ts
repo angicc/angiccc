@@ -5,11 +5,40 @@
 // Loaded on demand by src/i18n/bakedLessons.ts so a visitor downloads only the
 // language they are reading in.
 //
-// source-sha256: a441affb122689e442582a640785711025758c19d8bda31de0eb72c781406862
+// source-sha256: 55e32c46f5af1b2753f64eafdbc9911146b69b9bc929c5914b503e2d8a1f52e3
 
 import type { GenLessonT } from '../lessonTranslationsGenerated';
 
 const BAKED: Record<string, GenLessonT> = {
+ "modern-24": {
+  "t": "La Seconde Guerre mondiale, partie II",
+  "s": "Le front de l’Est, le Pacifique et la guerre derrière les lignes",
+  "k": [
+   "Le front de l’Est représente environ trois quarts des pertes militaires allemandes ; l’Union soviétique a perdu quelque 27 millions de personnes",
+   "La guerre en Asie a commencé en 1937, deux ans avant celle d’Europe, quand le Japon a envahi la Chine — les morts chinois sont estimés entre 15 et 20 millions",
+   "Les bombardements stratégiques ont tué plusieurs centaines de milliers de civils en Allemagne et au Japon et restent parmi les décisions les plus discutées de la guerre",
+   "Presque chaque pays occupé a produit en même temps de la résistance et de la collaboration, et la frontière entre les deux fut rarement nette",
+   "Les conférences de Téhéran, Yalta et Potsdam ont tracé les frontières et les zones d’influence qui sont devenues la guerre froide"
+  ],
+  "h": [
+   "La guerre derrière les gros titres",
+   "Le front de l’Est",
+   "La guerre qui a commencé en 1937",
+   "Occupation, collaboration et résistance",
+   "La guerre des usines",
+   "Bombarder les villes",
+   "La paix devenue guerre froide"
+  ],
+  "b": [
+   "La version courte de la Seconde Guerre mondiale va de la Pologne au Blitzkrieg, de Pearl Harbor au Débarquement et à la bombe, et presque chacune de ses étapes se déroule en Europe occidentale ou dans le Pacifique. Cette version n’est pas fausse, mais elle est gravement disproportionnée. L’immense majorité des combats, et des morts, a eu lieu ailleurs : sur une ligne de front longue de près de trois mille kilomètres, de l’Arctique à la mer Noire, et dans une guerre en Chine qui durait déjà depuis deux ans quand l’Allemagne envahit la Pologne. Cette leçon porte sur ce que le résumé comprime : où la guerre s’est réellement décidée, comment elle a été payée, et ce qu’elle a fait aux gens qui n’ont jamais tenu un fusil.",
+   "Le 22 juin 1941, l’Allemagne envahit l’Union soviétique avec environ trois millions d’hommes sur un front allant de la Baltique à la mer Noire. Rien de cette ampleur n’avait été tenté auparavant, et rien depuis ne s’en est approché. Leningrad fut encerclée 872 jours et quelque 800 000 de ses civils moururent de faim. À Stalingrad, une armée allemande entière fut encerclée et détruite. À Koursk, en juillet 1943, les deux camps engagèrent plusieurs milliers de chars dans une seule bataille, et l’armée allemande ne mena plus jamais de grande offensive à l’est. À l’été 1944, l’opération Bagration détruisit le groupe d’armées Centre si complètement que l’avance soviétique ne s’arrêta qu’aux abords de Varsovie. Environ trois quarts de toutes les pertes militaires allemandes de la guerre furent subies ici. L’Union soviétique perdit près de 27 millions de personnes, en majorité des civils — un chiffre si grand qu’il est plus facile à énoncer qu’à saisir.",
+   "Pour la Chine, la Seconde Guerre mondiale a commencé en juillet 1937, et quand l’Europe y entra, l’armée japonaise avait déjà pris Shanghai et Nankin, où elle massacra entre 100 000 et 300 000 personnes en quelques semaines. La Chine combattit huit ans, le plus souvent seule, perdant entre 15 et 20 millions de personnes et immobilisant plus d’un million de soldats japonais qui, de ce fait, ne furent disponibles nulle part ailleurs. La guerre du Pacifique dont se souviennent les Américains — Guadalcanal, Tarawa, Iwo Jima, Okinawa — se livra sur des îles que la plupart des gens ne situeraient pas sur une carte, et sa logique tenait d’une arithmétique brutale : prendre les terrains d’aviation, rapprocher les bombardiers, recommencer. Pendant ce temps, les forces japonaises atteignirent les frontières de l’Inde, et une famine au Bengale en 1943, très aggravée par la politique de guerre, tua environ trois millions de personnes qui ne virent jamais un soldat japonais.",
+   "En 1942, l’Allemagne gouvernait la plus grande partie de l’Europe, et chaque pays occupé dut trouver comment vivre sous elle. Certains collaborèrent ouvertement : Vidkun Quisling donna son nom à l’idée même, et la France de Vichy avait sa propre police, ses propres lois, et déporta ses propres citoyens juifs. D’autres résistèrent, et le payèrent. Les partisans de Yougoslavie immobilisèrent des divisions allemandes entières dans une guerre de montagne qui était aussi une guerre civile. L’insurrection de Varsovie d’août 1944 tint 63 jours et coûta près de 200 000 vies polonaises pendant que l’Armée rouge attendait sur l’autre rive de la Vistule. Ce qui rend cette histoire difficile, c’est que les catégories se brouillent : un même village pouvait cacher une cellule de résistance et dénoncer ses voisins, et après la libération le règlement de comptes fut souvent aussi politique que moral.",
+   "Les Alliés n’ont pas tant surpassé l’Axe au combat qu’à la production. L’industrie américaine construisit environ 300 000 avions et 100 000 chars, et assez de navires pour remplacer les pertes plus vite que les sous-marins ne pouvaient les infliger, et en expédia une part considérable vers la Grande-Bretagne et l’Union soviétique au titre du prêt-bail — dont les camions qui donnèrent à l’Armée rouge la mobilité d’atteindre Berlin. Les Soviétiques firent quelque chose de plus étrange encore : dans les mois qui suivirent l’invasion, ils démontèrent bien plus d’un millier d’usines et les déplacèrent par rail à l’est de l’Oural, et beaucoup produisaient de nouveau en moins d’un an. L’Allemagne, elle, s’appuya sur quelque 12 millions de travailleurs forcés et d’esclaves, un système qui extorquait le travail par la terreur et gaspillait d’autant. Les femmes entrèrent dans l’industrie lourde dans tous les pays belligérants, et c’est une des raisons pour lesquelles le monde d’après-guerre ne put pas simplement être remis en l’état.",
+   "L’arme aérienne, dans cette guerre, se déplaça par étapes du champ de bataille vers la population, et de tous les côtés. Il y eut d’abord Guernica et la destruction de Rotterdam ; le Blitz tua environ 40 000 civils britanniques ; puis la RAF et l’USAAF firent du bombardement de zone une industrie. Hambourg brûla dans une tempête de feu en juillet 1943 qui tua près de 37 000 personnes en quelques nuits. Dresde, en février 1945, tua peut-être 25 000 personnes et se discute depuis, en grande partie parce que la guerre était alors manifestement gagnée. Le raid aérien le plus meurtrier de l’histoire ne fut pas nucléaire : dans la nuit du 9 mars 1945, les bombes incendiaires larguées sur Tokyo tuèrent environ 100 000 personnes et brûlèrent seize milles carrés de la ville. Savoir si tout cela a raccourci la guerre reste disputé entre historiens ; que cela visait des civils, non.",
+   "La forme du monde d’après-guerre fut réglée alors que l’on se battait encore, en trois conférences. À Téhéran, en novembre 1943, les Alliés convinrent d’ouvrir un second front en France et, de fait, que l’Union soviétique serait la puissance libératrice de l’Europe de l’Est. À Yalta, en février 1945, ils déplacèrent la Pologne tout entière vers l’ouest, prenant sa moitié orientale pour l’Union soviétique et la compensant par des terres allemandes, et s’accordèrent sur des zones d’occupation en Allemagne. À Potsdam, en juillet, Roosevelt mort et la bombe atomique tout juste essayée, l’ambiance s’était déjà refroidie. L’alliance tint juste assez pour finir la guerre, puis se dissolut : en deux ans, une ligne traversait l’Europe, et elle allait durer jusqu’en 1989. La Seconde Guerre mondiale s’est achevée, autrement dit, en organisant la suivante — ce qu’il vaut la peine de garder en tête quand on la raconte comme une victoire nette."
+  ]
+ },
  "modern-23": {
   "t": "Les Guerres mondiales, partie II",
   "s": "La Seconde Guerre mondiale, 1939-1945",

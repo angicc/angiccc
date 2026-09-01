@@ -164,6 +164,7 @@ export const LESSON_LOCAL_BANNERS: Record<string, string> = {
   'modern-21': '/assets/banners/modern/space-age.gif',
   'modern-22': '/assets/banners/modern/conquering-diseases.gif',
   'modern-23': '/assets/banners/modern/world-wars-part-2.gif',
+  'modern-24': '/assets/banners/modern/second-world-war-part-2.gif',
 };
 
 /** The curated local banner path for a lesson, if one is mapped. */

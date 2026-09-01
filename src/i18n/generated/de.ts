@@ -5,11 +5,40 @@
 // Loaded on demand by src/i18n/bakedLessons.ts so a visitor downloads only the
 // language they are reading in.
 //
-// source-sha256: a441affb122689e442582a640785711025758c19d8bda31de0eb72c781406862
+// source-sha256: 55e32c46f5af1b2753f64eafdbc9911146b69b9bc929c5914b503e2d8a1f52e3
 
 import type { GenLessonT } from '../lessonTranslationsGenerated';
 
 const BAKED: Record<string, GenLessonT> = {
+ "modern-24": {
+  "t": "Der Zweite Weltkrieg, Teil II",
+  "s": "Die Ostfront, der Pazifik und der Krieg hinter den Linien",
+  "k": [
+   "Auf die Ostfront entfielen rund drei Viertel der deutschen militärischen Verluste; die Sowjetunion verlor etwa 27 Millionen Menschen",
+   "Der Krieg in Asien begann 1937, zwei Jahre vor dem europäischen, als Japan China überfiel — Chinas Tote werden auf 15 bis 20 Millionen geschätzt",
+   "Der strategische Bombenkrieg tötete mehrere Hunderttausend Zivilisten in Deutschland und Japan und bleibt eine der umstrittensten Entscheidungen des Krieges",
+   "Fast jedes besetzte Land brachte Widerstand und Kollaboration zugleich hervor, und die Grenze dazwischen war selten sauber",
+   "Die Konferenzen von Teheran, Jalta und Potsdam zogen die Grenzen und Einflusszonen, aus denen der Kalte Krieg wurde"
+  ],
+  "h": [
+   "Der Krieg hinter den Schlagzeilen",
+   "Die Ostfront",
+   "Der Krieg, der 1937 begann",
+   "Besatzung, Kollaboration und Widerstand",
+   "Der Krieg der Fabriken",
+   "Die Bombardierung der Städte",
+   "Der Frieden, aus dem der Kalte Krieg wurde"
+  ],
+  "b": [
+   "Die Kurzfassung des Zweiten Weltkriegs führt von Polen über den Blitzkrieg und Pearl Harbor zum D-Day und zur Bombe, und fast jeder ihrer Schritte spielt in Westeuropa oder im Pazifik. Diese Fassung ist nicht falsch, aber sie ist schwer aus dem Gleichgewicht. Die überwältigende Mehrheit der Kämpfe und des Sterbens fand anderswo statt: an einer Frontlinie von fast dreitausend Kilometern von der Arktis bis zum Schwarzen Meer, und in einem Krieg in China, der schon zwei Jahre lief, als Deutschland Polen überfiel. In dieser Lektion geht es um das, was die Zusammenfassung zusammenpresst — wo der Krieg tatsächlich entschieden wurde, wie er bezahlt wurde und was er mit den Menschen machte, die nie ein Gewehr in der Hand hielten.",
+   "Am 22. Juni 1941 überfiel Deutschland die Sowjetunion mit rund drei Millionen Mann entlang einer Front von der Ostsee bis zum Schwarzen Meer. Nichts in dieser Größenordnung war zuvor versucht worden, und nichts seither ist dem nahegekommen. Leningrad war 872 Tage eingeschlossen, und etwa 800.000 seiner Zivilisten verhungerten. Bei Stalingrad wurde eine ganze deutsche Armee eingekesselt und vernichtet. Bei Kursk brachten beide Seiten im Juli 1943 mehrere tausend Panzer in eine einzige Schlacht, und die deutsche Armee führte im Osten nie wieder eine große Offensive. Im Sommer 1944 zerschlug die Operation Bagration die Heeresgruppe Mitte so vollständig, dass der sowjetische Vormarsch erst vor den Toren Warschaus zum Stehen kam. Etwa drei Viertel aller deutschen militärischen Verluste des Krieges wurden hier erlitten. Die Sowjetunion verlor rund 27 Millionen Menschen, mehrheitlich Zivilisten — eine Zahl, die sich leichter aussprechen als begreifen lässt.",
+   "Für China begann der Zweite Weltkrieg im Juli 1937, und als Europa hinzukam, hatte die japanische Armee Schanghai und Nanjing bereits genommen, wo sie über mehrere Wochen zwischen 100.000 und 300.000 Menschen ermordete. China kämpfte acht Jahre weiter, überwiegend allein, verlor schätzungsweise 15 bis 20 Millionen Menschen und band über eine Million japanischer Soldaten, die deshalb nirgendwo sonst zur Verfügung standen. Der pazifische Krieg, an den sich die Amerikaner erinnern — Guadalcanal, Tarawa, Iwojima, Okinawa —, wurde über Inseln geführt, die die meisten auf keiner Karte fänden, und seine Logik war brutale Arithmetik: die Flugplätze nehmen, die Bomber näher heranbringen, wiederholen. Unterdessen erreichten japanische Truppen die Grenzen Indiens, und eine Hungersnot in Bengalen tötete 1943, durch die Kriegspolitik erheblich verschärft, etwa drei Millionen Menschen, die nie einen japanischen Soldaten sahen.",
+   "Bis 1942 beherrschte Deutschland den größten Teil Europas, und jedes besetzte Land musste herausfinden, wie es darunter leben konnte. Manche kollaborierten offen: Vidkun Quisling gab der Sache seinen Namen, und Vichy-Frankreich hatte eine eigene Polizei, eigene Gesetze und deportierte seine eigenen jüdischen Bürger. Andere leisteten Widerstand und bezahlten dafür. Jugoslawiens Partisanen banden ganze deutsche Divisionen in einem Gebirgskrieg, der zugleich ein Bürgerkrieg war. Der Warschauer Aufstand vom August 1944 hielt 63 Tage und kostete rund 200.000 polnische Leben, während die Rote Armee am anderen Weichselufer wartete. Schwierig wird diese Geschichte dadurch, dass die Kategorien verschwimmen: dasselbe Dorf konnte eine Widerstandszelle verstecken und seine Nachbarn denunzieren, und nach der Befreiung war die Abrechnung oft ebenso politisch wie moralisch.",
+   "Die Alliierten haben die Achsenmächte weniger überkämpft als überproduziert. Die amerikanische Industrie baute rund 300.000 Flugzeuge und 100.000 Panzer und genug Schiffsraum, um Verluste schneller zu ersetzen, als U-Boote sie zufügen konnten, und lieferte einen erheblichen Teil davon über Leih- und Pachtgesetz nach Großbritannien und in die Sowjetunion — darunter die Lastwagen, die der Roten Armee die Beweglichkeit gaben, Berlin zu erreichen. Die Sowjets taten etwas noch Merkwürdigeres: In den Monaten nach dem Überfall demontierten sie weit über tausend Fabriken, verlegten sie per Bahn hinter den Ural, und viele produzierten binnen eines Jahres wieder. Deutschland stützte sich demgegenüber auf etwa 12 Millionen Zwangs- und Sklavenarbeiter, ein System, das Arbeit durch Terror erpresste und entsprechend verschwenderisch war. Frauen traten in jedem kriegführenden Land in die Schwerindustrie ein, und das ist einer der Gründe, weshalb die Nachkriegswelt sich nicht einfach zurückstellen ließ.",
+   "Die Luftwaffe aller Seiten verlagerte sich in diesem Krieg schrittweise vom Schlachtfeld auf die Bevölkerung. Zuerst kamen Guernica und die Zerstörung Rotterdams; der Blitz tötete etwa 40.000 britische Zivilisten; dann machten RAF und USAAF aus dem Flächenbombardement eine Industrie. Hamburg brannte im Juli 1943 in einem Feuersturm, der in wenigen Nächten rund 37.000 Menschen tötete. Dresden tötete im Februar 1945 vielleicht 25.000 und wird seither bestritten, vor allem weil der Krieg da erkennbar gewonnen war. Der tödlichste Luftangriff der Geschichte war kein nuklearer: In der Nacht des 9. März 1945 töteten Brandbomben über Tokio etwa 100.000 Menschen und brannten sechzehn Quadratmeilen der Stadt nieder. Ob irgendetwas davon den Krieg verkürzte, ist unter Historikern weiter strittig; dass es auf Zivilisten zielte, nicht.",
+   "Die Gestalt der Nachkriegswelt wurde festgelegt, während noch gekämpft wurde, auf drei Konferenzen. In Teheran vereinbarten die Alliierten im November 1943 eine zweite Front in Frankreich und damit faktisch, dass die Sowjetunion die Macht sein würde, die Osteuropa befreit. In Jalta verschoben sie im Februar 1945 Polen als Ganzes nach Westen, nahmen seine östliche Hälfte für die Sowjetunion und entschädigten es mit deutschem Land, und einigten sich auf Besatzungszonen für Deutschland. In Potsdam im Juli, mit totem Roosevelt und gerade getesteter Atombombe, war die Stimmung bereits abgekühlt. Das Bündnis hielt gerade lange genug, um den Krieg zu beenden, und löste sich dann auf: binnen zwei Jahren lief eine Linie durch Europa, die bis 1989 Bestand haben sollte. Der Zweite Weltkrieg endete mit anderen Worten damit, den nächsten einzurichten — was man im Kopf behalten sollte, wenn die Geschichte als sauberer Sieg erzählt wird."
+  ]
+ },
  "modern-23": {
   "t": "Die Weltkriege, Teil II",
   "s": "Der Zweite Weltkrieg, 1939-1945",

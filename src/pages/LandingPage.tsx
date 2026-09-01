@@ -22,7 +22,7 @@ import { Logo } from '@/components/shared/Logo';
 import { CelestialAtlas } from '@/components/shared/CelestialAtlas';
 import { streamChatResponse, LANDING_SYSTEM_PROMPT } from '@/services/aiGateway';
 import { AiErrorCard } from '@/components/shared/AiErrorCard';
-import { ERA_BACKDROPS } from '@/features/content/eraBackdrops';
+import { useEraBackdrop } from '@/components/shared/useEraBackdrop';
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
@@ -43,23 +43,14 @@ const ERA_VISUALS = [
  * Three things it has to get right, all of them about not making the page
  * worse than it was without artwork:
  *
- *  - It falls forward through the candidates and then disappears, so an era
- *    with no artwork yet looks exactly like the plain timeline did rather than
- *    showing a broken frame. Eras can be filled in one at a time.
- *  - It sits behind the text at low opacity under a scrim. The era name has to
- *    stay readable over a cave painting and over a paratroop drop alike.
- *  - Nothing renders at all for a visitor who has asked for reduced motion.
- *    Most of these are animated GIFs, and a GIF cannot be paused with CSS, so
- *    honouring that preference means not loading it.
+ * Source resolution and the reduced-motion rule live in useEraBackdrop, which
+ * the era preview pages share. What is local to this surface is the shape: a
+ * masked panel sitting behind one column of the timeline, dim enough that the
+ * era name stays readable over a cave painting and a paratroop drop alike.
  */
 function EraBackdrop({ eraId }: { eraId: string }) {
-  const backdrop = ERA_BACKDROPS[eraId];
-  // 0 = the local file, 1 = the remote fallback, 2 = give up and render nothing.
-  const [attempt, setAttempt] = useState(0);
-  const reducedMotion = useReducedMotion();
-  const candidates = [backdrop?.local, backdrop?.remote].filter(Boolean) as string[];
-  const src = candidates[attempt];
-  if (!src || reducedMotion) return null;
+  const { src, onError } = useEraBackdrop(eraId);
+  if (!src) return null;
   return (
     <div aria-hidden className="pointer-events-none absolute -inset-x-1 -inset-y-3 overflow-hidden">
       <img
@@ -68,7 +59,7 @@ function EraBackdrop({ eraId }: { eraId: string }) {
         alt=""
         loading="lazy"
         decoding="async"
-        onError={() => setAttempt(n => n + 1)}
+        onError={onError}
         // The elliptical mask dissolves all four edges. Without it each era
         // reads as a hard-edged card sitting on the timeline instead of as
         // atmosphere behind it, and the six rectangles fight the spine.
@@ -82,6 +73,18 @@ function EraBackdrop({ eraId }: { eraId: string }) {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/40 to-background" />
     </div>
   );
+}
+
+/**
+ * Fill the {n} lesson-count placeholder from the catalogue.
+ *
+ * This number was hardcoded as 132 in twelve strings across six languages while
+ * the catalogue actually held 133, and three of the six also claimed twenty
+ * lessons per era against a real twenty-two. Deriving it is the only way the
+ * copy stays true the next time a lesson is added.
+ */
+function withLessonCount(text: string): string {
+  return text.replace(/\{n\}/g, String(LESSONS.length));
 }
 
 // Live counts derived from the content catalogs — every curriculum tranche
@@ -979,8 +982,8 @@ export default function LandingPage() {
               <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200`}>
                 <Icon className={`w-5 h-5 ${color}`} />
               </div>
-              <h3 className="font-heading text-sm font-semibold mb-1.5">{L.features[i]?.t}</h3>
-              <p className="text-muted-foreground text-xs leading-relaxed">{L.features[i]?.d}</p>
+              <h3 className="font-heading text-sm font-semibold mb-1.5">{withLessonCount(L.features[i]?.t ?? '')}</h3>
+              <p className="text-muted-foreground text-xs leading-relaxed">{withLessonCount(L.features[i]?.d ?? '')}</p>
             </motion.div>
           ))}
         </HorizontalRail>
@@ -1049,7 +1052,7 @@ export default function LandingPage() {
                     <div>
                       <div className="font-semibold text-foreground/80 mb-1.5">{L.pricingOverviewLabel}</div>
                       <ul className="space-y-1">
-                        {card.ov.map(line => (
+                        {card.ov.map(withLessonCount).map(line => (
                           <li key={line} className="flex gap-1.5 text-muted-foreground">
                             <Check className="w-3.5 h-3.5 shrink-0 mt-px text-emerald-400" />{line}
                           </li>
@@ -1059,12 +1062,12 @@ export default function LandingPage() {
                     <div>
                       <div className="font-semibold text-foreground/80 mb-1.5">{L.pricingHighlightsLabel}</div>
                       <ul className="space-y-1">
-                        {card.hl.map(line => (
+                        {card.hl.map(withLessonCount).map(line => (
                           <li key={line} className="flex gap-1.5 text-muted-foreground">
                             <Check className="w-3.5 h-3.5 shrink-0 mt-px text-emerald-400" />{line}
                           </li>
                         ))}
-                        {card.out.map(line => (
+                        {card.out.map(withLessonCount).map(line => (
                           <li key={line} className="flex gap-1.5 text-muted-foreground/45 line-through decoration-muted-foreground/40">
                             <X className="w-3.5 h-3.5 shrink-0 mt-px no-underline" />{line}
                           </li>

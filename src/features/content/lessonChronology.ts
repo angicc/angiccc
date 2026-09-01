@@ -151,6 +151,7 @@ export const LESSON_START_YEAR: Record<string, number> = {
   'modern-09': 1915,  // Gandhi and Indian Independence
   'modern-08': 1917,  // The Russian Revolution and the Soviet Century
   'modern-23': 1939,  // The World Wars, Part II
+  'modern-24': 1942,  // Second World War, Part II (the war behind the headlines)
   'modern-03': 1947,  // The Cold War and Decolonization
   'modern-19': 1948,  // The Cauldron of the Modern Middle East
   'modern-17': 1949,  // China Reborn
