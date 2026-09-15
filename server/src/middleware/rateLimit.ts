@@ -35,7 +35,7 @@ export function rateLimit({ windowMs, max, scope }: Options) {
     if (arr.length >= max) {
       const retryAfterSec = Math.ceil((arr[0] + windowMs - now) / 1000);
       res.setHeader('Retry-After', String(Math.max(1, retryAfterSec)));
-      return res.status(429).json({ error: `Too many ${scope} requests — try again shortly.` });
+      return res.status(429).json({ error: `Too many ${scope} requests - try again shortly.` });
     }
     arr.push(now);
     hits.set(key, arr);

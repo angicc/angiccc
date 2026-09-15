@@ -1,5 +1,5 @@
 // Procedural, era-specific SVG backdrop for lesson banners. Rendered only
-// when every real image candidate fails — each era gets its own geometric
+// when every real image candidate fails - each era gets its own geometric
 // motif and palette so the fallback still reads as designed, not broken.
 
 interface EraStyle {

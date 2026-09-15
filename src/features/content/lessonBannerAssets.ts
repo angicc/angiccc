@@ -1,12 +1,12 @@
 // ─── Contextual banner asset router ──────────────────────────────────────────
 // Resolves the banner image candidates for a lesson as an explicit, ordered
-// chain keyed on the lesson ID — never a random pick, never a shared epoch
+// chain keyed on the lesson ID - never a random pick, never a shared epoch
 // folder. Resolution order:
 //   1. curated override for this exact lesson id (fixes weak/broken DB assets)
 //   2. the lesson's own imageUrl (its explicit content binding)
 //   3. the era's guaranteed-good hero image
 // If every candidate fails to load, the banner renders the era's procedural
-// SVG backdrop (see EraBannerBackdrop) — styled per era, never blank.
+// SVG backdrop (see EraBannerBackdrop) - styled per era, never blank.
 
 import { LESSON_GIF_BANNERS } from '@/features/content/lessonGifBanners';
 import { localLessonBanner, DEFAULT_BANNER_GIF } from '@/features/content/lessonLocalBanners';
@@ -14,14 +14,14 @@ import { localLessonBanner, DEFAULT_BANNER_GIF } from '@/features/content/lesson
 /** Curated per-lesson replacements where the dataset asset is generic or frail. */
 const LESSON_BANNER_OVERRIDES: Record<string, string> = {
   // Globalization: the dataset points at a generic city photo also used as the
-  // modern-era fallback — give the lesson its own distinct asset.
+  // modern-era fallback - give the lesson its own distinct asset.
   'modern-04': 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=60',
 };
 
-/** Era hero images — fixed, reliable, one per era. Final real-image stage. */
+/** Era hero images - fixed, reliable, one per era. Final real-image stage. */
 export const ERA_HERO_IMAGES: Record<string, string> = {
-  // Stonehenge — a famous Wikimedia file referenced via Special:FilePath, which
-  // redirects by filename (no fragile MD5 hash path) — anchors the prehistoric
+  // Stonehenge - a famous Wikimedia file referenced via Special:FilePath, which
+  // redirects by filename (no fragile MD5 hash path) - anchors the prehistoric
   // fallback chain so a prehistoric lesson banner can never render blank.
   prehistoric:    'https://commons.wikimedia.org/wiki/Special:FilePath/Stonehenge2007_07_30.jpg',
   ancient:        'https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=1200&q=60',
@@ -31,7 +31,7 @@ export const ERA_HERO_IMAGES: Record<string, string> = {
 };
 
 // ── Per-lesson animated banner (self-contained, always renders) ──────────────
-// Every lesson gets its OWN distinct animated banner — not one image/GIF shared
+// Every lesson gets its OWN distinct animated banner - not one image/GIF shared
 // across an era. It is a self-contained animated SVG data-URI (no external host,
 // so it can never fail to load), seeded by the lesson id so each lesson has a
 // unique hue shift, particle field, orbit motion and offset, and carrying the

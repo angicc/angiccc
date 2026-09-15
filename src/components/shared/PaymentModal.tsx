@@ -133,7 +133,7 @@ export function PaymentModal({ open, onClose, planName, price, onSuccess }: Prop
               {loading ? <><Loader2 className="w-4 h-4 animate-spin" />Processing…</> : <><Lock className="w-4 h-4" />Pay ${price}/month</>}
             </Button>
             <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-1">
-              <Lock className="w-3 h-3" /> Demo mode — no real charge will occur
+              <Lock className="w-3 h-3" /> Demo mode - no real charge will occur
             </p>
           </div>
         )}

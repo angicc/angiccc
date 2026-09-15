@@ -5,8 +5,8 @@ import { THEATRE_SPECS } from '@/features/imperium/imperiumProvinces';
 /**
  * Every province must be reachable from the player's capital.
  *
- * The Crusades theatre shipped as two disconnected islands — the player bloc
- * on one side, Byzantium, Cyprus, Georgia and the Fatimids on the other — so
+ * The Crusades theatre shipped as two disconnected islands - the player bloc
+ * on one side, Byzantium, Cyprus, Georgia and the Fatimids on the other - so
  * three of its four rival provinces could never be marched on and the campaign
  * was unwinnable and unplayable. Nothing threw; the map simply refused to let
  * you attack, which reads as a broken button rather than a broken graph.

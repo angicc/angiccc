@@ -6,7 +6,7 @@
 // Everything is localized through the same helpers the real bank uses, so a
 // generated question is indistinguishable from a hand-written one and honours
 // the current language. Generation is deterministic (seeded by topic id), so a
-// topic always produces the same set — stable across renders and sessions.
+// topic always produces the same set - stable across renders and sessions.
 
 import type { TerritoryTopic } from '@/features/content/timelineTerritoryData';
 import type { TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
@@ -83,7 +83,7 @@ export function generateTopicQuestions(
   for (let i = 0; i < markerSample.length; i++) {
     const correct = markerSample[i];
     const distractRaw = shuffle(foreignMarkers, rnd).slice(0, 3);
-    if (distractRaw.length < 3) break; // not enough distractors — stop generating
+    if (distractRaw.length < 3) break; // not enough distractors - stop generating
     const correctLabel = mkName(correct.name);
     const optionLabels = shuffle([correctLabel, ...distractRaw.map(mkName)], rnd);
     // De-dupe any accidental label collision after translation.

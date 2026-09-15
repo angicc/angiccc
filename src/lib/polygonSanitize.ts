@@ -8,7 +8,7 @@
 //
 // A polygon ring is "broken" if any two of its non-adjacent edges cross. The
 // only robust, data-independent way to guarantee a clean ring from an arbitrary
-// (possibly tangled) set of points is to take its CONVEX HULL — which is, by
+// (possibly tangled) set of points is to take its CONVEX HULL - which is, by
 // definition, a simple non-self-intersecting polygon. We apply this only to
 // rings that are actually broken, so well-formed shapes keep their detail.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -21,7 +21,7 @@ function cross(a: LatLng, b: LatLng, c: LatLng): number {
 }
 
 // Do segments p1→p2 and p3→p4 properly cross? (Collinear/endpoint touches are
-// intentionally ignored — those are normal for shared polygon vertices.)
+// intentionally ignored - those are normal for shared polygon vertices.)
 function segmentsCross(p1: LatLng, p2: LatLng, p3: LatLng, p4: LatLng): boolean {
   const d1 = cross(p3, p4, p1);
   const d2 = cross(p3, p4, p2);
@@ -92,7 +92,7 @@ export function sanitizeRing(ring: LatLng[]): LatLng[] {
   return isSimpleRing(ring) ? ring : convexHull(ring);
 }
 
-// Web-Mercator latitude limit — coordinates beyond it project to infinity and
+// Web-Mercator latitude limit - coordinates beyond it project to infinity and
 // draw as broken vectors shooting off the canvas.
 const MERCATOR_LAT_LIMIT = 85.05;
 const EPS = 1e-9;
@@ -182,7 +182,7 @@ export function refineRing(ring: LatLng[]): LatLng[] {
   const normalized = normalizeRing(ring);
   if (normalized.length < 3) return [];
   const simple = sanitizeRing(normalized);
-  // Dense rings come from real GIS border data and are already organic —
+  // Dense rings come from real GIS border data and are already organic -
   // interpolation would only multiply vertices. A SINGLE Chaikin pass takes
   // the hard edge off sparse rings without erasing their character; anything
   // stronger rounds low-vertex kingdom borders into featureless ovals (the

@@ -26,7 +26,7 @@ const MAX_CHARS_PER_MESSAGE = 8000;
 const MAX_SYSTEM_CHARS = 6000;
 
 /** Per-IP token bucket. Edge instances are short-lived, so this is a cheap
- *  brake on obvious abuse rather than a billing guarantee — the hard caps on
+ *  brake on obvious abuse rather than a billing guarantee - the hard caps on
  *  model, output tokens and body size are what bound the cost per request. */
 const WINDOW_MS = 60_000;
 const MAX_REQUESTS_PER_WINDOW = 20;
@@ -90,7 +90,7 @@ export default async (request: Request) => {
     ?? 'anon';
   if (rateLimited(ip)) {
     return new Response(
-      JSON.stringify({ error: { message: 'Too many requests — try again in a moment.' } }),
+      JSON.stringify({ error: { message: 'Too many requests - try again in a moment.' } }),
       { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': '60' } },
     );
   }
@@ -113,7 +113,7 @@ export default async (request: Request) => {
     return json(400, { error: { message: 'A messages array is required.' } });
   }
 
-  // Rebuild the payload from scratch — never forward client-supplied fields.
+  // Rebuild the payload from scratch - never forward client-supplied fields.
   const messages = rawMessages
     .slice(-MAX_MESSAGES)
     .filter((m): m is { role: string; content: unknown } => !!m && typeof m === 'object')

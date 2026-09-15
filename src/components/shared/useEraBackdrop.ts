@@ -5,8 +5,8 @@ import { ERA_BACKDROPS } from '@/features/content/eraBackdrops';
 /**
  * Resolve an era's backdrop artwork, falling forward until something loads.
  *
- * Two surfaces show this artwork — the landing-page era timeline and the era
- * preview pages — and they style it completely differently: a masked panel
+ * Two surfaces show this artwork - the landing-page era timeline and the era
+ * preview pages - and they style it completely differently: a masked panel
  * behind one column, and a full-bleed hero. Only the source resolution is
  * shared, so this is a hook rather than a component.
  *

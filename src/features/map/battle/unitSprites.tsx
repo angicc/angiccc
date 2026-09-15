@@ -1,6 +1,6 @@
 // ─── Era-themed battle unit sprites ──────────────────────────────────────────
 // Hand-crafted SVG soldiers for the Conquest battles: four eras × three unit
-// classes, each silhouette readable at 30px — hoplites and chariots for the
+// classes, each silhouette readable at 30px - hoplites and chariots for the
 // ancient world, knights and longbowmen for the medieval, pike-and-shot for
 // the early modern, riflemen and artillery for the modern era. Animation is
 // externalized: sprites accept a `pose` and animate between them with
@@ -20,7 +20,7 @@ export interface SpriteProps {
   scale?: number;
 }
 
-// Shared pose animation variants — every sprite plugs into the same choreography.
+// Shared pose animation variants - every sprite plugs into the same choreography.
 const POSE_VARIANTS = {
   idle: (delay: number) => ({
     y: [0, -1.5, 0],

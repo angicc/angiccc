@@ -65,7 +65,7 @@ const ERA_TEXT: Record<string, string> = {
 const FEATURES = [
   { icon: BookOpen, label: 'Rich Lessons', desc: '28 in-depth lessons across 4 historical eras', color: 'text-amber-400' },
   { icon: Layers, label: 'Flashcards', desc: 'Flip-card review to lock in key facts', color: 'text-violet-400' },
-  { icon: MessageSquare, label: 'AI Tutor — Clio', desc: 'Ask anything about history, get instant answers', color: 'text-primary' },
+  { icon: MessageSquare, label: 'AI Tutor - Clio', desc: 'Ask anything about history, get instant answers', color: 'text-primary' },
   { icon: ScrollText, label: 'Timeline', desc: '75+ historical events from 3100 BCE to today', color: 'text-emerald-400' },
   { icon: Trophy, label: 'Leaderboard', desc: 'Compete with other learners for the top spot', color: 'text-blue-400' },
   { icon: Flame, label: 'Streaks & XP', desc: 'Stay consistent and climb the level ladder', color: 'text-rose-400' },
@@ -129,7 +129,7 @@ export function OnboardingModal({ userId, onDone }: { userId: string; onDone: ()
                   </div>
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                  I'll be your guide through 5,000 years of human civilization — from the first cities of Mesopotamia to the digital age. Together we'll explore empires, revolutions, ideas, and the people who shaped the world.
+                  I'll be your guide through 5,000 years of human civilization - from the first cities of Mesopotamia to the digital age. Together we'll explore empires, revolutions, ideas, and the people who shaped the world.
                 </p>
                 <div className="grid grid-cols-3 gap-3 py-2">
                   {[[String(LESSONS.length), 'Lessons'], [`${TIMELINE_EVENTS.length}+`, 'Timeline Events'], [String(ERAS.length), 'Eras']].map(([n, l]) => (
@@ -157,7 +157,7 @@ export function OnboardingModal({ userId, onDone }: { userId: string; onDone: ()
               >
                 <div>
                   <h2 className="font-heading text-xl font-bold">Where does history excite you most?</h2>
-                  <p className="text-muted-foreground text-sm mt-1">We'll start your first lesson there — you can always explore all eras.</p>
+                  <p className="text-muted-foreground text-sm mt-1">We'll start your first lesson there - you can always explore all eras.</p>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   {ERAS.map(era => (
@@ -202,7 +202,7 @@ export function OnboardingModal({ userId, onDone }: { userId: string; onDone: ()
               >
                 <div>
                   <h2 className="font-heading text-xl font-bold">Everything at your fingertips</h2>
-                  <p className="text-muted-foreground text-sm mt-1">Historify has a lot to offer — here's a quick tour.</p>
+                  <p className="text-muted-foreground text-sm mt-1">Historify has a lot to offer - here's a quick tour.</p>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   {FEATURES.map((f, i) => (

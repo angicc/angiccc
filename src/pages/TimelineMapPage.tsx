@@ -65,7 +65,7 @@ interface CartographicStyle {
    * the difference between a slightly soft map and a blank grey one.
    */
   maxNativeZoom?: number;
-  /** Used if the provider starts erroring — see `createBaseLayer`. */
+  /** Used if the provider starts erroring - see `createBaseLayer`. */
   fallbackUrl?: string;
 }
 
@@ -75,7 +75,7 @@ const ESRI_ATTR = '&copy; <a href="https://www.esri.com/">Esri</a>';
  * Every basemap here must render without an API key.
  *
  * The dark, military and clean styles used to come from `basemaps.cartocdn.com`,
- * which now stamps "API KEY REQUIRED" across every tile — on all 30-odd
+ * which now stamps "API KEY REQUIRED" across every tile - on all 30-odd
  * timelines at once, since they share this list. Esri's public ArcGIS services
  * need no key and were already carrying the satellite style, so they are the
  * one provider in here with a working track record in this app.
@@ -139,7 +139,7 @@ const LAST_RESORT_TILES = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
  * `{s}` would have been requested against a literal "{s}." hostname there.
  *
  * The error counter is the cheap insurance a public beta wants. A provider that
- * changes its terms — exactly what CARTO just did — otherwise turns every
+ * changes its terms - exactly what CARTO just did - otherwise turns every
  * timeline black at once, with nothing in the UI to say why.
  */
 function createBaseLayer(style: CartographicStyle): L.TileLayer {
@@ -165,7 +165,7 @@ type LayerKey = 'territory' | 'capitals' | 'cities' | 'battles' | 'ports' | 'res
 
 type AnnMode = 'off' | 'pin' | 'draw';
 
-// Multi-category data filter matrix — each strategic category governs a group
+// Multi-category data filter matrix - each strategic category governs a group
 // of concrete layer toggles.
 const FILTER_MATRIX: { labelKey: 'tmap_cat_assets' | 'tmap_cat_diplomatic' | 'tmap_cat_resources' | 'tmap_cat_enemy'; keys: LayerKey[] }[] = [
   { labelKey: 'tmap_cat_assets',     keys: ['territory', 'capitals', 'cities', 'ports'] },
@@ -235,7 +235,7 @@ function getRouteName(route: TerritoryRoute, language: Language): string {
   return route.nameI18n?.[language as Exclude<Language, 'en'>] ?? getTranslatedMarkerName(route.name, language);
 }
 
-// Get fill opacity based on zoom level — calibrated for gradient fills (no glow layers)
+// Get fill opacity based on zoom level - calibrated for gradient fills (no glow layers)
 function getFillOpacityForZoom(zoom: number): number {
   if (zoom < 3) return 0.35;
   if (zoom <= 4) return 0.28;
@@ -245,14 +245,14 @@ function getFillOpacityForZoom(zoom: number): number {
 }
 
 // ── 3-tier border system + 60-30-10 colour layering ─────────────────────────
-// 60% — neutral dark canvas (the dark Carto basemap tiles).
-// 30% — structural layer: resting territory borders in calm slate tones.
-// 10% — the brightest accent (gold) is reserved STRICTLY for interaction:
+// 60% - neutral dark canvas (the dark Carto basemap tiles).
+// 30% - structural layer: resting territory borders in calm slate tones.
+// 10% - the brightest accent (gold) is reserved STRICTLY for interaction:
 //        glowing active/hovered borders, player-drawn vector paths, map pins.
-// PRIMARY:   country/empire boundaries — always visible
-// SECONDARY: province/region subdivisions — visible at zoom ≥ 5
-// TERTIARY:  internal/historical divisions — visible at zoom ≥ 7
-// All tiers use clean, solid strokes — no dashes — for crisp professional
+// PRIMARY:   country/empire boundaries - always visible
+// SECONDARY: province/region subdivisions - visible at zoom ≥ 5
+// TERTIARY:  internal/historical divisions - visible at zoom ≥ 7
+// All tiers use clean, solid strokes - no dashes - for crisp professional
 // frontiers. Tiers differ only in weight/opacity/colour by zoom level.
 const ACCENT_GOLD = '#f5d77f';
 const BORDER_STYLES = {
@@ -283,7 +283,7 @@ function formatYear(y: number, bceLabel: string, ceLabel: string): string {
 // Area-weighted polygon centroid (shoelace) in [lat,lng], plus the |signed
 // area| of the ring. The area is used to pick the most prominent sub-polygon of
 // a real MultiPolygon so a territory label is drawn ONCE, inside its largest
-// landmass — never repeated over every island / sub-ring. Degenerate
+// landmass - never repeated over every island / sub-ring. Degenerate
 // (collinear) rings fall back to the vertex mean.
 function polygonCentroid(coords: [number, number][]): { lat: number; lng: number; area: number } {
   const n = coords.length;
@@ -310,7 +310,7 @@ function polygonCentroid(coords: [number, number][]): { lat: number; lng: number
 // map is zoomed out. Larger features are placed first, so on collision the more
 // prominent label wins. Every tag is non-interactive (pointer-events:none) so it
 // never steals polygon hover/telemetry. This is the single source of territory
-// labels — replacing the old per-sub-polygon rendering that duplicated a name
+// labels - replacing the old per-sub-polygon rendering that duplicated a name
 // across every ring of a MultiPolygon.
 function renderTerritoryLabels(
   map: L.Map,
@@ -337,7 +337,7 @@ function renderTerritoryLabels(
     // erased countries: the Yugoslav Wars showed Serbia, Montenegro and
     // Macedonia but not Bosnia, Croatia or Slovenia, because their centroids
     // fell inside a fixed 96x26px box around a label already placed. Every
-    // republic was on the map and correctly coloured — three of them just had
+    // republic was on the map and correctly coloured - three of them just had
     // no name. Nudge instead, and only give up if every offset is taken.
     let spot: { x: number; y: number } | null = null;
     for (const [dx, dy] of NUDGES) {
@@ -403,7 +403,7 @@ function animateBorderDraw(pathEl: SVGPathElement, finalDash: string | undefined
     settled = true;
     pathEl.style.transition = '';
     pathEl.style.strokeDashoffset = '';
-    // Restore the intended stroke — solid for all tiers (finalDash is undefined).
+    // Restore the intended stroke - solid for all tiers (finalDash is undefined).
     pathEl.style.strokeDasharray = finalDash ?? '';
     pathEl.removeEventListener('transitionend', settle);
   };
@@ -661,14 +661,14 @@ export default function TimelineMapPage() {
   // Current zoom-based fill opacity
   const zoomOpacityRef    = useRef<number>(0.22);
   // Real historical geometry (from public/data/map-territories via the GIS
-  // pipeline) keyed by topic id — replaces the curated rings when present.
+  // pipeline) keyed by topic id - replaces the curated rings when present.
   const realGeomRef       = useRef<Record<string, RealPolygon[]>>({});
   const [geomVersion, setGeomVersion] = useState(0);
 
   // ── Init map ────────────────────────────────────────────────────────────────
   // Re-runs when the plan gate opens: if the first render early-returned the
   // UpgradePrompt (subscription still resolving), the container doesn't exist
-  // yet — a mount-once effect would fire against null and Leaflet would never
+  // yet - a mount-once effect would fire against null and Leaflet would never
   // initialize, leaving a permanently black map panel.
   const mapAllowed = canTerritoryMap();
   useEffect(() => {
@@ -707,7 +707,7 @@ export default function TimelineMapPage() {
       setAnnotations(prev => ({ ...prev, paths: [...prev.paths, committed.length >= 2 ? committed : []] .filter(p => p.length >= 2) }));
     });
 
-    // Zoom event listener — update fill opacity and border tier visibility
+    // Zoom event listener - update fill opacity and border tier visibility
     map.on('zoomend', () => {
       const zoom = map.getZoom();
       setLowZoom(zoom < 3.5);
@@ -760,7 +760,7 @@ export default function TimelineMapPage() {
   }, [styleId]);
 
   // ── Grounded semantic zoom: compose the style filter with a parchment grade
-  // that fades in smoothly on the global overview — no jarring state change.
+  // that fades in smoothly on the global overview - no jarring state change.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -855,17 +855,17 @@ export default function TimelineMapPage() {
     const territoryPolys = realGeomRef.current[selected.id] ?? selected.polygons;
     // Fog of war only applies to LAND empires that actually have polygons to
     // scout. Oceanic voyages and route/mission topics (no land polygons) reveal
-    // immediately — there is no territory to uncover, and gating them behind a
+    // immediately - there is no territory to uncover, and gating them behind a
     // polygon-click left those maps looking empty.
     const hasScoutableLand = !oceanicTopic && !!(territoryPolys && territoryPolys.length);
     const isExplored = explored.has(selected.id) || !hasScoutableLand;
     const currentZoom = map.getZoom();
     zoomOpacityRef.current = getFillOpacityForZoom(currentZoom);
 
-    // Collected here, rendered once after the loop — never per sub-polygon.
+    // Collected here, rendered once after the loop - never per sub-polygon.
     const labelCandidates = new Map<string, { lat: number; lng: number; area: number; color: string }>();
 
-    // Polygons — strict 3-tier border system, clean solid strokes.
+    // Polygons - strict 3-tier border system, clean solid strokes.
     // Unexplored territories render as fog: desaturated slate fill, details
     // withheld until the user scouts the region with a click.
     if (layers.territory && territoryPolys) {
@@ -882,7 +882,7 @@ export default function TimelineMapPage() {
           }
         }
 
-        // Oceanic topics: dashed nautical boundary corridor — stroke only, no
+        // Oceanic topics: dashed nautical boundary corridor - stroke only, no
         // filled blob / casing / glow / texture over open sea.
         if (oceanicTopic) {
           const corridor = L.polygon(latlngs, {
@@ -931,7 +931,7 @@ export default function TimelineMapPage() {
         casing.addTo(lg);
 
         // Soft inner glow in the territory's own colour between casing and
-        // crisp frontier — the layered multi-stroke look of premium atlases.
+        // crisp frontier - the layered multi-stroke look of premium atlases.
         const glow = L.polygon(latlngs, {
           color: fillColor,
           weight: strokeWeight + 4,
@@ -996,7 +996,7 @@ export default function TimelineMapPage() {
         });
         mainPoly.addTo(lg);
 
-        // Inject SVG radial gradient for subtle depth — inner area brighter, edges fade
+        // Inject SVG radial gradient for subtle depth - inner area brighter, edges fade
         requestAnimationFrame(() => {
           const pathEl = mainPoly.getElement() as SVGPathElement | null;
           if (!pathEl) return;
@@ -1059,7 +1059,7 @@ export default function TimelineMapPage() {
       renderTerritoryLabels(map, lg, labelCandidates, language);
     }
 
-    // Routes — supply networks stay hidden under fog until the region is scouted
+    // Routes - supply networks stay hidden under fog until the region is scouted
     if (layers.routes && selected.routes && isExplored) {
       selected.routes.forEach(route => {
         const color = route.type === 'trade' ? '#f59e0b' : route.type === 'military' ? '#ef4444' : '#a78bfa';
@@ -1074,14 +1074,14 @@ export default function TimelineMapPage() {
         ).addTo(lg);
       });
 
-      // Chokepoint labels reference routes by raw name — resolve each back to
+      // Chokepoint labels reference routes by raw name - resolve each back to
       // its route so the tooltip shows the localized route names.
       const localizedRouteName = (raw: string) => {
         const r = selected.routes?.find(rt => rt.name === raw);
         return r ? getRouteName(r, language) : raw;
       };
 
-      // Pulsing chokepoints where supply lines cross — tactical bottlenecks.
+      // Pulsing chokepoints where supply lines cross - tactical bottlenecks.
       computeChokepoints(selected.routes).forEach(cp => {
         const icon = L.divIcon({
           className: '',
@@ -1097,13 +1097,13 @@ export default function TimelineMapPage() {
       });
     }
 
-    // Markers — compute which labels to hide due to proximity
+    // Markers - compute which labels to hide due to proximity
     const typeVisible: Record<MarkerType, LayerKey> = {
       capital: 'capitals', city: 'cities', battle: 'battles',
       port: 'ports', resource: 'resources', landmark: 'cities',
     };
 
-    // Filter to visible markers first — all withheld while the region is fogged
+    // Filter to visible markers first - all withheld while the region is fogged
     const visibleMarkers = isExplored ? selected.markers.filter(m => layers[typeVisible[m.type]]) : [];
 
     // Determine which markers should hide their label due to proximity (within 0.5°)
@@ -1347,7 +1347,7 @@ export default function TimelineMapPage() {
         )}
 
         {/* ════════════════════════════════════════════════════
-            LEFT PANEL — static on ≥sm, slide-over on mobile
+            LEFT PANEL - static on ≥sm, slide-over on mobile
         ════════════════════════════════════════════════════ */}
         <div className={cn(
           'w-72 max-w-[85vw] sm:w-72 shrink-0 border-r border-border bg-card/95 backdrop-blur-sm flex flex-col overflow-hidden',
@@ -1719,7 +1719,7 @@ export default function TimelineMapPage() {
             </div>
           )}
 
-          {/* Story mode — no topic selected */}
+          {/* Story mode - no topic selected */}
           {mode === 'story' && !selected && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[1000]">
               <div className="bg-black/70 backdrop-blur-sm text-white text-sm px-5 py-4 rounded-2xl text-center border border-white/15 shadow-xl max-w-xs">
@@ -1948,7 +1948,7 @@ export default function TimelineMapPage() {
         .tmap-popup-custom .leaflet-popup-tip-container {
           display: none !important;
         }
-        /* Pulsing chokepoint vector — supply-line intersections */
+        /* Pulsing chokepoint vector - supply-line intersections */
         .tmap-choke {
           width: 18px; height: 18px; position: relative;
           display: flex; align-items: center; justify-content: center;

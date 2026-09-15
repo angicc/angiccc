@@ -1,11 +1,11 @@
 // ─── CHRONOS IMPERIUM · Part C: Procedural Emergent Crisis Generator ─────────
 // A background observer sweeps the campaign state after every turn, tracking
 // ownership of high-value coordinates (capitals, trade chokepoints) and army
-// well-being. When structural conditions trip — an empire polygon loses its
-// capital node, a supply corridor stays cut, defeats stack up — the generator
+// well-being. When structural conditions trip - an empire polygon loses its
+// capital node, a supply corridor stays cut, defeats stack up - the generator
 // intercepts the standard turn flow and injects a localized crisis: narrative,
 // options, and ongoing effects. Every string in the payload is a CATALOG KEY
-// (see imperiumCatalog.ts); the raw English never travels to the client UI —
+// (see imperiumCatalog.ts); the raw English never travels to the client UI -
 // that is the strict localization contract in code, not in policy.
 import type { CampaignSnapshot } from './imperiumEngine';
 import type { FactionId } from './logistics';
@@ -30,7 +30,7 @@ export interface CrisisEvent {
   id: string;
   kind: CrisisKind;
   turn: number;
-  titleKey: string;                       // catalog keys ONLY — the contract
+  titleKey: string;                       // catalog keys ONLY - the contract
   bodyKey: string;
   params: Record<string, string>;         // interpolation params (territory names resolved client-side)
   options: CrisisOption[];
@@ -44,7 +44,7 @@ export interface CrisisEvent {
 export const HIGH_VALUE_TERRITORIES: Record<string, { capitalOf: FactionId | 'contested'; weight: number }> = {
   // theatre-relative importance; the engine assigns player/rival capitals when
   // a campaign starts, so the observer reads campaign state, not this table,
-  // for ownership — the table carries strategic WEIGHT (crisis magnitude).
+  // for ownership - the table carries strategic WEIGHT (crisis magnitude).
   'roman-empire': { capitalOf: 'contested', weight: 3 },
   'byzantine-empire': { capitalOf: 'contested', weight: 3 },
   'mesopotamia': { capitalOf: 'contested', weight: 2 },
@@ -100,7 +100,7 @@ export function sweepForCrises(ctx: ObserverContext): CrisisEvent[] {
   }
 
   // 2. Trade blockade: a chokepoint territory adjacent to ≥2 friendly holdings
-  //    flipped hostile — caravans strangled until reopened.
+  //    flipped hostile - caravans strangled until reopened.
   if (previous && !active.has('trade-blockade')) {
     for (const [territory, owner] of Object.entries(snapshot.ownership.owners)) {
       const before = previous.ownership.owners[territory];

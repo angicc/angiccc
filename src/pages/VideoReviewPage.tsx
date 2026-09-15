@@ -27,7 +27,7 @@ const GRADE_SYSTEM = `You are Clio, Historify's strict but fair history educator
 
 Evaluate their review SENTENCE BY SENTENCE. Be STRICT but CONSTRUCTIVE. Reward genuine insight, penalise vague generalities.
 
-Return ONLY this JSON (no markdown, no preamble — raw JSON only):
+Return ONLY this JSON (no markdown, no preamble - raw JSON only):
 {
   "sentenceReviews": [
     { "sentence": "exact sentence from review", "comment": "your one-sentence verdict", "quality": "excellent" }
@@ -40,7 +40,7 @@ Return ONLY this JSON (no markdown, no preamble — raw JSON only):
 
 Quality values: "excellent" | "good" | "fair" | "poor"
 overallScore: 0–100
-videoXp: proportional to score — max 200 (90–100), 150 (75–89), 100 (60–74), 60 (45–59), 20 (<45)
+videoXp: proportional to score - max 200 (90–100), 150 (75–89), 100 (60–74), 60 (45–59), 20 (<45)
 letterGrade: A(90+), B(75–89), C(60–74), D(45–59), F(<45)
 
 ${MULTI_METRIC_JSON_SPEC}
@@ -48,7 +48,7 @@ ${MULTI_METRIC_JSON_SPEC}
 Grading rules:
 - excellent: precise historical detail, specific facts, clear analytical insight, correctly identifies the video's thesis
 - good: accurate and shows understanding, uses some specifics
-- fair: correct but vague — "the video talked about history" earns fair at best
+- fair: correct but vague - "the video talked about history" earns fair at best
 - poor: inaccurate, off-topic, or purely generic
 A student who correctly identifies the VIDEO's specific main motive earns a higher grade than one who writes general history facts.`;
 
@@ -59,7 +59,7 @@ interface GradeResult {
   videoXp: number;
   letterGrade: string;
   summary: string;
-  /** Multi-metric rubric — optional so older/partial AI output still renders. */
+  /** Multi-metric rubric - optional so older/partial AI output still renders. */
   metrics?: MultiMetricGrade;
 }
 
@@ -167,7 +167,7 @@ ${review}`;
         setStreamBuf(buf);
       }
 
-      // Parse the result through the repair pipeline — tolerates unescaped
+      // Parse the result through the repair pipeline - tolerates unescaped
       // quotes, trailing commas, and mid-array truncation in the AI output.
       const parsed = safeJsonParse<GradeResult>(buf);
       if (!Array.isArray(parsed.sentenceReviews) || typeof parsed.overallScore !== 'number') {
@@ -258,7 +258,7 @@ ${review}`;
           </div>
         </motion.div>
 
-        {/* Already reviewed — locked state */}
+        {/* Already reviewed - locked state */}
         {alreadyReviewed && phase === 'done' && !result && (
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <Card className="border-primary/20 bg-primary/5">
@@ -360,7 +360,7 @@ ${review}`;
               <CardContent className="pt-6 pb-6 text-center space-y-3">
                 <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto" />
                 <p className="text-sm font-medium">{t.vr_grading}</p>
-                <p className="text-xs text-muted-foreground">Reading sentence by sentence — results appear shortly</p>
+                <p className="text-xs text-muted-foreground">Reading sentence by sentence - results appear shortly</p>
               </CardContent>
             </Card>
           </motion.div>

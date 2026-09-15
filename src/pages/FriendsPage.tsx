@@ -591,7 +591,7 @@ function ActivityRow({ event, t }: { event: FriendEvent; t: Record<string, strin
       <div className="flex-1 min-w-0">
         <p className="text-sm leading-snug truncate">
           <span className="font-semibold">{event.friendName}</span>
-          <span className="text-muted-foreground"> — {t[ACT_LABEL_KEY[event.type]]}</span>
+          <span className="text-muted-foreground"> - {t[ACT_LABEL_KEY[event.type]]}</span>
           {detail && <span className="text-foreground font-medium"> {detail}</span>}
         </p>
       </div>
@@ -640,7 +640,7 @@ function ChatDrawer({ userId, friend, t, onClose, onChallenge, onMessage, onSend
     setDraft('');
     onMessage();
     // The friend replies shortly with a canned line, so the thread feels live.
-    // The pool is localised — the replies used to be English in every language.
+    // The pool is localised - the replies used to be English in every language.
     setTimeout(() => {
       const replies = [t.fr_reply_1, t.fr_reply_2, t.fr_reply_3, t.fr_reply_4, t.fr_reply_5, t.fr_reply_6, t.fr_reply_7]
         .filter(Boolean);

@@ -4,7 +4,7 @@
 //
 //     playerHeld[Math.floor(rng() * playerHeld.length)]
 //
-// — a uniformly random player province, with a 35% pull toward the capital. It
+// - a uniformly random player province, with a 35% pull toward the capital. It
 // did not look at how far the target was, what garrisoned it, how strong the
 // attacking army was, or whether the army could survive the trip. Three
 // consequences the player actually feels:
@@ -16,12 +16,12 @@
 //      campaign even when nothing opposed them.
 //   3. It threw away hurt armies. A 30-strength unsupplied army marched on a
 //      full garrison and evaporated, so the mid-game got easier the worse the
-//      rival did — exactly backwards.
+//      rival did - exactly backwards.
 //
 // The model here is deliberately simple and fully deterministic: score every
 // (army, target) pair, then assign greedily, highest score first, with a
 // concentration bonus that pulls a second army onto a target the first already
-// chose. No lookahead, no learning — those would be unpredictable to the player
+// chose. No lookahead, no learning - those would be unpredictable to the player
 // and untestable for us. Every input is a number already on the snapshot, so a
 // given (state, seed) always produces the same orders.
 
@@ -45,7 +45,7 @@ export interface StrategyInput {
   playerCapital?: string;
   rivalCapital?: string;
   graph: GeoGraph;
-  /** 0..1 — how hard the rival presses. Rises as the campaign goes on. */
+  /** 0..1 - how hard the rival presses. Rises as the campaign goes on. */
   aggression: number;
   rng: () => number;
 }
@@ -55,7 +55,7 @@ export interface StrategyChoice {
   armyId: string;
   target: string;
   score: number;
-  /** Why this move was picked — a stable key, never prose. */
+  /** Why this move was picked - a stable key, never prose. */
   motive: 'defend-capital' | 'withdraw' | 'strike-capital' | 'take-province' | 'claim-neutral' | 'hold';
 }
 
@@ -106,7 +106,7 @@ export function hopDistance(graph: GeoGraph, from: string, to: string): number {
 }
 
 /**
- * Is this province exposed — does the player already stand next to it?
+ * Is this province exposed - does the player already stand next to it?
  *
  * Used both ways: a rival province with an enemy beside it needs defending,
  * and a player province with no neighbouring defence is worth taking.
@@ -119,7 +119,7 @@ export function adjacentEnemyPower(input: StrategyInput, territoryId: string, en
 /**
  * Score one army moving on one province. Higher is better; -Infinity means
  * "never". The weights are tuned so that the ordering, not the magnitude,
- * carries the decision — every term is bounded so no single one dominates.
+ * carries the decision - every term is bounded so no single one dominates.
  */
 export function scoreMove(input: StrategyInput, army: StrategyArmy, target: string): { score: number; motive: StrategyChoice['motive'] } | null {
   const owner = input.owners[target] ?? 'neutral';
@@ -138,7 +138,7 @@ export function scoreMove(input: StrategyInput, army: StrategyArmy, target: stri
   const distancePenalty = Math.min(hops, 8) * 9;
 
   if (owner === 'neutral') {
-    // Free ground. Worth taking whenever nothing better presents itself — the
+    // Free ground. Worth taking whenever nothing better presents itself - the
     // old AI never did this once in a whole campaign.
     const base = 46 + (defence <= 0 ? 14 : 0);
     return { score: base - distancePenalty, motive: 'claim-neutral' };
@@ -149,7 +149,7 @@ export function scoreMove(input: StrategyInput, army: StrategyArmy, target: stri
 
   const isCapital = target === input.playerCapital;
   // Taking the enemy capital is the win condition, so it carries the most
-  // weight — but only once the odds justify it, which is why this sits after
+  // weight - but only once the odds justify it, which is why this sits after
   // the odds gate rather than before it.
   const capitalBonus = isCapital ? 40 + 45 * input.aggression : 0;
   const oddsBonus = Math.min(odds, 3) * 22;
@@ -200,7 +200,7 @@ export function planRivalOrders(input: StrategyInput): StrategyChoice[] {
       }
     }
 
-    // 2. Defend the capital when enemy power actually stands next to it —
+    // 2. Defend the capital when enemy power actually stands next to it -
     //    the old check only fired when a player army had already *declared* a
     //    march on it, which the rival has no way to know.
     const cap = input.rivalCapital;
@@ -224,7 +224,7 @@ export function planRivalOrders(input: StrategyInput): StrategyChoice[] {
       const already = claimed.get(target) ?? 0;
       const concentration = already === 0 ? 0 : already === 1 ? 18 : 4;
       // A small deterministic jitter breaks ties without making the AI
-      // erratic — same seed, same campaign, same decisions.
+      // erratic - same seed, same campaign, same decisions.
       const jitter = input.rng() * 4;
       const score = scored.score + concentration + jitter;
       if (!best || score > best.score) best = { armyId: army.id, target, score, motive: scored.motive };
@@ -255,7 +255,7 @@ export function rivalOrderMap(input: StrategyInput): Record<string, string> {
 export function aggressionFor(turn: number, rivalProvinces: number, totalProvinces: number): number {
   const clock = Math.min(1, turn / 24);
   const share = totalProvinces > 0 ? rivalProvinces / totalProvinces : 0.5;
-  // Losing makes it press harder, not fold — a campaign that gets easier the
+  // Losing makes it press harder, not fold - a campaign that gets easier the
   // better you do is the one failure a strategy game cannot afford.
   const desperation = Math.max(0, 0.5 - share) * 1.4;
   return Math.max(0, Math.min(1, clock * 0.7 + desperation));

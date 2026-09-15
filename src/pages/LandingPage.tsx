@@ -87,7 +87,7 @@ function withLessonCount(text: string): string {
   return text.replace(/\{n\}/g, String(LESSONS.length));
 }
 
-// Live counts derived from the content catalogs — every curriculum tranche
+// Live counts derived from the content catalogs - every curriculum tranche
 // propagates here automatically instead of via hand-edited numbers.
 const STAT_VALUES = [
   { value: LESSONS.length, suffix: '' },
@@ -461,7 +461,7 @@ function LandingChatbot() {
         )}
       </AnimatePresence>
 
-      {/* Toggle button — shows Clio avatar when closed */}
+      {/* Toggle button - shows Clio avatar when closed */}
       <motion.button
         onClick={handleOpen}
         whileHover={{ scale: 1.07 }}
@@ -740,7 +740,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden relative isolate">
-      {/* Ambient — Golden Dust of Time drifts behind the entire landing page. */}
+      {/* Ambient - Golden Dust of Time drifts behind the entire landing page. */}
       <CelestialAtlas position="fixed" zIndex={0} />
       <div className="relative z-10">
 
@@ -749,7 +749,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Logo />
           <div className="flex items-center gap-2">
-            {/* Language selector — all six UI languages, available pre-login */}
+            {/* Language selector - all six UI languages, available pre-login */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="gap-1.5">
@@ -914,7 +914,7 @@ export default function LandingPage() {
               <blockquote className="font-heading text-xl md:text-2xl font-medium text-foreground leading-relaxed mb-4">
                 &ldquo;{L.quotes[quoteIdx].text}&rdquo;
               </blockquote>
-              <cite className="text-sm text-muted-foreground not-italic">— {L.quotes[quoteIdx].author}</cite>
+              <cite className="text-sm text-muted-foreground not-italic">- {L.quotes[quoteIdx].author}</cite>
             </motion.div>
           </AnimatePresence>
           <div className="flex justify-center gap-2 mt-6">
@@ -1008,7 +1008,7 @@ export default function LandingPage() {
               { plan: 'Free',             price: '$0',     per: false, icon: BookOpen, highlight: false },
               { plan: 'Beginner Student', price: '$4.99',  per: true,  icon: Star,     highlight: false },
               { plan: 'Pro Student',      price: '$9.99',  per: true,  icon: Zap,      highlight: true  },
-              { plan: 'Master Student',   price: '$17.99', per: true,  icon: Crown,    highlight: false },
+              { plan: 'Master Student',   price: '$16.99', per: true,  icon: Crown,    highlight: false },
             ].map(({ plan, price, per, icon: Icon, highlight }, i) => {
               const card = L.pricingCards[i];
               return (

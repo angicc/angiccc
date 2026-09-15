@@ -59,7 +59,7 @@ export async function sendGift(
       const json = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) return { ok: false, error: json.error ?? `Gift failed (${res.status})` };
     } catch {
-      return { ok: false, error: 'Could not reach the server — try again.' };
+      return { ok: false, error: 'Could not reach the server - try again.' };
     }
   }
 

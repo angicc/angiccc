@@ -3,7 +3,7 @@
  * Place the curated Drive art into the repo at the paths the app expects.
  *
  * The Drive folders ("Eras and Lessons Banner GIFs", "...part 2") name their
- * files by human title — "The Baptism of the Rus.jpg" — while the app looks
+ * files by human title - "The Baptism of the Rus.jpg" - while the app looks
  * them up by lesson id under public/assets/. drive-assets.manifest.json holds
  * that resolved mapping, so this script just copies each file to its
  * destination.

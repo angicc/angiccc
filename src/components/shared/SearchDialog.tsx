@@ -25,7 +25,7 @@ export function SearchDialog({ open, onClose }: Props) {
   const q = query.toLowerCase().trim();
 
   // Search against the *localized* content so users can type in their own
-  // language — and results never show English titles inside a translated UI.
+  // language - and results never show English titles inside a translated UI.
   const localizedLessons = useMemo(() => LESSONS.map(l => getTranslatedLesson(l, language)), [language]);
   const localizedEvents  = useMemo(() => TIMELINE.map(e => getTranslatedTimelineEvent(e, language)), [language]);
 

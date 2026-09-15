@@ -5,10 +5,10 @@
  * This is the automated alternative to place_drive_assets.mjs (which expects a
  * manual Drive download you unzip yourself). It streams each file directly to
  * its destination, so it works in environments where the browser-facing Drive
- * hosts are unreachable but www.googleapis.com is not — which is the case
+ * hosts are unreachable but www.googleapis.com is not - which is the case
  * inside the Claude Code sandbox.
  *
- * Credentials — one of:
+ * Credentials - one of:
  *   --api-key KEY   (or GOOGLE_API_KEY)   requires the files be shared
  *                                          "Anyone with the link → Viewer"
  *   --token TOKEN   (or GOOGLE_OAUTH_TOKEN) an OAuth access token with
@@ -77,7 +77,7 @@ if (args.source && !manifest.sources[args.source]) {
 let assets = manifest.assets;
 if (args.only) assets = assets.filter(a => a.kind === args.only);
 // Retired folders stay in the manifest as a record of what Drive holds, but
-// nothing in the app reads them — fetching them again would just refill a
+// nothing in the app reads them - fetching them again would just refill a
 // directory no code points at. Naming the source explicitly still works.
 if (args.source) assets = assets.filter(a => a.source === args.source);
 else assets = assets.filter(a => !manifest.sources[a.source]?.retired);
@@ -152,8 +152,8 @@ process.exit(failed.length ? 1 : 0);
 /**
  * Which lesson banners the app expects but the repo does not have.
  *
- * A missing banner is invisible at runtime — the lesson quietly falls back to
- * its generic era art — so without this audit a bad path or an undelivered
+ * A missing banner is invisible at runtime - the lesson quietly falls back to
+ * its generic era art - so without this audit a bad path or an undelivered
  * drop looks exactly like a deliberate choice. Reads the banner table straight
  * out of the source rather than a copy, so the two cannot drift.
  */
@@ -178,7 +178,7 @@ function reportMissing() {
   }
   for (const [source, rows] of [...bySource].sort()) {
     const mbs = rows.reduce((s, r) => s + r.bytes, 0) / 1048576;
-    console.log(`\n${source} — ${rows.length} file(s)${mbs ? `, ${mbs.toFixed(1)} MB` : ''}`);
+    console.log(`\n${source} - ${rows.length} file(s)${mbs ? `, ${mbs.toFixed(1)} MB` : ''}`);
     if (manifest.sources[source]) console.log(`  fetch with: --source ${source}`);
     for (const r of rows) console.log(`  ${r.lesson}  ${r.dest.replace('public/assets/banners/', '')}`);
   }

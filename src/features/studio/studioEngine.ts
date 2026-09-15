@@ -1,7 +1,7 @@
 // ─── AI Content Studio: source text → validated study material ───────────────
 // One grounded AI call turns any pasted historical text (textbook chapter,
 // article, lecture notes, primary source) into a complete study kit: summary,
-// key facts, flashcards, and quiz questions — each unit independently
+// key facts, flashcards, and quiz questions - each unit independently
 // validated before it can reach the UI, so a malformed model response can only
 // ever shrink the output, never corrupt it.
 //
@@ -44,9 +44,9 @@ import { LANG_NAMES } from '@/services/aiLanguage';
 export function buildStudioPrompt(req: StudioRequest, language: string): string {
   const langName = LANG_NAMES[language] ?? 'English';
   const source = req.sourceText.slice(0, SOURCE_MAX_CHARS);
-  return `OUTPUT LANGUAGE: ${langName}. Every student-facing string you produce — title, summary, facts, flashcard fronts AND backs, question stems, all four options, explanations — MUST be written in ${langName}, even though the source text may be in a different language. Translate the material's content into ${langName}; do NOT copy source-language sentences verbatim. Proper names stay in their conventional ${langName} form.
+  return `OUTPUT LANGUAGE: ${langName}. Every student-facing string you produce - title, summary, facts, flashcard fronts AND backs, question stems, all four options, explanations - MUST be written in ${langName}, even though the source text may be in a different language. Translate the material's content into ${langName}; do NOT copy source-language sentences verbatim. Proper names stay in their conventional ${langName} form.
 
-You are a history-education content engineer. Transform the SOURCE TEXT below into study material. Every item must be answerable FROM THE SOURCE TEXT — never invent facts that are not in it. If the source contradicts common knowledge, follow the source.
+You are a history-education content engineer. Transform the SOURCE TEXT below into study material. Every item must be answerable FROM THE SOURCE TEXT - never invent facts that are not in it. If the source contradicts common knowledge, follow the source.
 ${req.focus ? `\nFOCUS: emphasize "${req.focus}" where the source allows.\n` : ''}
 SOURCE TEXT:
 """
@@ -58,18 +58,18 @@ Produce:
 - summary: a 3–4 sentence synthesis of the source's core narrative.
 - facts: 5–8 key facts, each one self-contained sentence with specifics (dates, names, numbers).
 - flashcards: EXACTLY ${req.cardCount} pairs. front = a precise question or term; back = the concise answer (max 25 words). Cover different parts of the source; no two cards about the same sentence.
-- questions: EXACTLY ${req.questionCount} multiple-choice questions. Each: question stem, EXACTLY 4 plausible options (one correct, three wrong-but-tempting drawn from the same domain), correctIndex (0-3, vary the position), explanation (1–2 sentences citing the source's logic), difficulty ("easy" | "medium" | "hard" — mix them).
+- questions: EXACTLY ${req.questionCount} multiple-choice questions. Each: question stem, EXACTLY 4 plausible options (one correct, three wrong-but-tempting drawn from the same domain), correctIndex (0-3, vary the position), explanation (1–2 sentences citing the source's logic), difficulty ("easy" | "medium" | "hard" - mix them).
 
 QUALITY RULES:
 - The correct option must never be quotable verbatim from the question stem.
 - Wrong options must be historically plausible, same category as the answer (a date vs dates, a person vs persons).
 - ALL FOUR OPTIONS MUST BE A SIMILAR LENGTH. A correct answer that is visibly longer or more detailed than the distractors can be picked out without reading the question. If the right answer needs a qualifier, give the wrong ones one too.
-- Spread the correct answers across all four positions — not mostly A and B.
+- Spread the correct answers across all four positions - not mostly A and B.
 - Do not write two questions that test the same fact.
 - Never introduce a date, name or figure that is not in the SOURCE TEXT. If the source does not give a year, do not invent one.
 - No "all of the above" / "none of the above".
 
-FINAL LANGUAGE CHECK before you answer: every string value in your JSON must be in ${langName} — if any flashcard, question, option, or explanation is not in ${langName}, rewrite it in ${langName} first. Respond ONLY with JSON, no fences:
+FINAL LANGUAGE CHECK before you answer: every string value in your JSON must be in ${langName} - if any flashcard, question, option, or explanation is not in ${langName}, rewrite it in ${langName} first. Respond ONLY with JSON, no fences:
 {
   "title": "...",
   "summary": "...",
@@ -141,7 +141,7 @@ export function parseGeneratedKit(raw: string): GeneratedKit | null {
  *
  * The repair pass tops up a kit that already has its framing, so anything else
  * the model sends back is ignored rather than allowed to overwrite a title the
- * learner may have already seen. Validation is the same as the first pass — a
+ * learner may have already seen. Validation is the same as the first pass - a
  * second call earns no leniency.
  */
 export function parseRepairBatch(raw: string): { cards: StudioFlashcard[]; questions: StudioQuestion[] } | null {

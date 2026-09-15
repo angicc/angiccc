@@ -128,7 +128,7 @@ export function createCampaign(theatre: TheatreId, seed = Date.now() & 0xffff): 
   const rivalLeader = leaders.filter(l => l.id !== playerLeader.id)[Math.floor(rng() * (leaders.length - 1))];
 
   // Two DISTINCT era-authentic rosters face off (Roman Legions vs Persian
-  // Host, Crusader Host vs Mongol Tumen…) — the matchup is part of the seed.
+  // Host, Crusader Host vs Mongol Tumen…) - the matchup is part of the seed.
   const eraRosters = ROSTERS.filter(r => r.era === era);
   const playerRoster = eraRosters[Math.floor(rng() * eraRosters.length)];
   const rivalPool = eraRosters.filter(r => r.id !== playerRoster.id);
@@ -307,7 +307,7 @@ export function resolveTurn(state: CampaignState, orders: TurnOrders): TurnResul
   }
   snap.armies = snap.armies.filter(a => a.strength > 0);
 
-  // 5. Logistics sweep — supply corridors + compounding attrition.
+  // 5. Logistics sweep - supply corridors + compounding attrition.
   const { armies: sweptArmies, reports } = runLogisticsTick(graph, snap.ownership, snap.armies);
   snap.armies = sweptArmies;
   for (const r of reports) {
@@ -324,7 +324,7 @@ export function resolveTurn(state: CampaignState, orders: TurnOrders): TurnResul
     }
   }
 
-  // 7. Crisis sweep — emergent events for next turn's council.
+  // 7. Crisis sweep - emergent events for next turn's council.
   const newCrises = sweepForCrises({ snapshot: snap, previous: state.current, recentDefeats: snap.recentDefeats });
   snap.activeCrises = [...snap.activeCrises, ...newCrises];
   for (const c of newCrises) snap.log.push({ turn, key: c.titleKey, params: c.params });

@@ -71,8 +71,8 @@ describe('landing copy tracks the catalogue', () => {
 
 /**
  * A new lesson has to be registered in four separate places. Miss one and the
- * lesson still renders — with an English body, a fallback banner, or in the
- * wrong place on the timeline — which is exactly the kind of half-landed change
+ * lesson still renders - with an English body, a fallback banner, or in the
+ * wrong place on the timeline - which is exactly the kind of half-landed change
  * that reads as "it didn't work".
  */
 describe('every lesson is fully registered', () => {

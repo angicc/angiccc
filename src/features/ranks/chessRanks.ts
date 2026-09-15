@@ -96,7 +96,7 @@ export const CHESS_RANKS: ChessRank[] = [
     color: 'text-amber-400',
     bgColor: 'bg-amber-400/10',
     borderColor: 'border-amber-400/30',
-    desc: 'God-king of historical mastery — your name will endure.',
+    desc: 'God-king of historical mastery - your name will endure.',
     historicalFigure: 'Ramesses the Great',
   },
   {
@@ -107,7 +107,7 @@ export const CHESS_RANKS: ChessRank[] = [
     color: 'text-violet-400',
     bgColor: 'bg-violet-400/10',
     borderColor: 'border-violet-400/30',
-    desc: 'Sovereign of all eras — your empire of knowledge is vast.',
+    desc: 'Sovereign of all eras - your empire of knowledge is vast.',
     historicalFigure: 'Napoleon Bonaparte',
   },
   {
@@ -118,7 +118,7 @@ export const CHESS_RANKS: ChessRank[] = [
     color: 'text-primary',
     bgColor: 'bg-primary/10',
     borderColor: 'border-primary/30',
-    desc: 'The Great — conqueror of all history, from ancient to modern.',
+    desc: 'The Great - conqueror of all history, from ancient to modern.',
     historicalFigure: 'Alexander the Great',
   },
 ];

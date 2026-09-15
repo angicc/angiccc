@@ -1,6 +1,6 @@
 // ─── CHRONOS IMPERIUM · Curated theatres ─────────────────────────────────────
 // Each theatre is a set of REAL states from one year of the historical-
-// basemaps dataset — mutually non-overlapping by construction, so the
+// basemaps dataset - mutually non-overlapping by construction, so the
 // strategic map reads like an atlas plate instead of stacked thematic layers.
 // Every province carries a catalog nameKey (localized in imperiumCatalog) and
 // an anchor: the historical capital, used as the army muster point so a
@@ -11,8 +11,8 @@
 
 export interface TheatreProvince {
   id: string;
-  nameKey: string;                 // imperiumCatalog key — localization contract
-  anchor: [number, number];        // [lat, lng] — historical capital
+  nameKey: string;                 // imperiumCatalog key - localization contract
+  anchor: [number, number];        // [lat, lng] - historical capital
   rings: [number, number][][];     // dataset polygons ([lat, lng] closed rings)
 }
 

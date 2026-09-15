@@ -1,6 +1,6 @@
 // ─── Chess rank translations ──────────────────────────────────────────────────
-// The rank shown on the Profile — its name, its one-line description and the
-// historical figure it is modelled on — rendered in English for every language
+// The rank shown on the Profile - its name, its one-line description and the
+// historical figure it is modelled on - rendered in English for every language
 // until now. English is the source of truth in chessRanks.ts; this file carries
 // the other five.
 //
@@ -32,9 +32,9 @@ const RANK_TRANS: Partial<Record<Language, Record<string, RankText>>> = {
     'centurion': { name: 'Центурион', desc: 'Командующий сотней побед в познании истории.', historicalFigure: 'Римский центурион' },
     'vizier': { name: 'Визирь', desc: 'Доверенный советник империй, хранитель хроник.', historicalFigure: 'Низам аль-Мульк' },
     'caesar': { name: 'Цезарь', desc: 'Вы перешли Рубикон исторического знания.', historicalFigure: 'Юлий Цезарь' },
-    'pharaoh': { name: 'Фараон', desc: 'Бог-царь исторического мастерства — ваше имя переживёт века.', historicalFigure: 'Рамсес Великий' },
-    'emperor': { name: 'Император', desc: 'Владыка всех эпох — ваша империя знаний огромна.', historicalFigure: 'Наполеон Бонапарт' },
-    'alexander': { name: 'Александр', desc: 'Великий — покоритель всей истории, от древней до современной.', historicalFigure: 'Александр Македонский' },
+    'pharaoh': { name: 'Фараон', desc: 'Бог-царь исторического мастерства - ваше имя переживёт века.', historicalFigure: 'Рамсес Великий' },
+    'emperor': { name: 'Император', desc: 'Владыка всех эпох - ваша империя знаний огромна.', historicalFigure: 'Наполеон Бонапарт' },
+    'alexander': { name: 'Александр', desc: 'Великий - покоритель всей истории, от древней до современной.', historicalFigure: 'Александр Македонский' },
   },
   mk: {
     'pawn': { name: 'Пешак', desc: 'Секој голем историчар почнува како љубопитен ученик.', historicalFigure: 'Почетник-научник' },
@@ -44,9 +44,9 @@ const RANK_TRANS: Partial<Record<Language, Record<string, RankText>>> = {
     'centurion': { name: 'Центурион', desc: 'Заповедник на сто победи во владеењето на историјата.', historicalFigure: 'Римски центурион' },
     'vizier': { name: 'Везир', desc: 'Доверлив советник на империите, чувар на хрониките.', historicalFigure: 'Низам ал-Мулк' },
     'caesar': { name: 'Цезар', desc: 'Го премина Рубикон на историското знаење.', historicalFigure: 'Јулиј Цезар' },
-    'pharaoh': { name: 'Фараон', desc: 'Бог-крал на историското владеење — твоето име ќе опстане.', historicalFigure: 'Рамзес Велики' },
-    'emperor': { name: 'Император', desc: 'Владетел на сите епохи — твојата империја на знаење е огромна.', historicalFigure: 'Наполеон Бонапарта' },
-    'alexander': { name: 'Александар', desc: 'Велики — освојувач на целата историја, од античка до модерна.', historicalFigure: 'Александар Македонски' },
+    'pharaoh': { name: 'Фараон', desc: 'Бог-крал на историското владеење - твоето име ќе опстане.', historicalFigure: 'Рамзес Велики' },
+    'emperor': { name: 'Император', desc: 'Владетел на сите епохи - твојата империја на знаење е огромна.', historicalFigure: 'Наполеон Бонапарта' },
+    'alexander': { name: 'Александар', desc: 'Велики - освојувач на целата историја, од античка до модерна.', historicalFigure: 'Александар Македонски' },
   },
   de: {
     'pawn': { name: 'Bauer', desc: 'Jeder große Historiker beginnt als neugieriger Lernender.', historicalFigure: 'Angehender Gelehrter' },
@@ -56,9 +56,9 @@ const RANK_TRANS: Partial<Record<Language, Record<string, RankText>>> = {
     'centurion': { name: 'Zenturio', desc: 'Befehlshaber über hundert Siege der Geschichtsbeherrschung.', historicalFigure: 'Römischer Zenturio' },
     'vizier': { name: 'Wesir', desc: 'Vertrauter Berater der Reiche, Hüter der Chroniken.', historicalFigure: 'Nizām al-Mulk' },
     'caesar': { name: 'Cäsar', desc: 'Du hast den Rubikon des historischen Wissens überschritten.', historicalFigure: 'Julius Cäsar' },
-    'pharaoh': { name: 'Pharao', desc: 'Gottkönig der Geschichtsbeherrschung — dein Name wird bleiben.', historicalFigure: 'Ramses der Große' },
-    'emperor': { name: 'Kaiser', desc: 'Herrscher aller Epochen — dein Reich des Wissens ist gewaltig.', historicalFigure: 'Napoleon Bonaparte' },
-    'alexander': { name: 'Alexander', desc: 'Der Große — Eroberer der gesamten Geschichte, von der Antike bis heute.', historicalFigure: 'Alexander der Große' },
+    'pharaoh': { name: 'Pharao', desc: 'Gottkönig der Geschichtsbeherrschung - dein Name wird bleiben.', historicalFigure: 'Ramses der Große' },
+    'emperor': { name: 'Kaiser', desc: 'Herrscher aller Epochen - dein Reich des Wissens ist gewaltig.', historicalFigure: 'Napoleon Bonaparte' },
+    'alexander': { name: 'Alexander', desc: 'Der Große - Eroberer der gesamten Geschichte, von der Antike bis heute.', historicalFigure: 'Alexander der Große' },
   },
   fr: {
     'pawn': { name: 'Pion', desc: 'Tout grand historien commence par être un apprenant curieux.', historicalFigure: 'Érudit novice' },
@@ -68,9 +68,9 @@ const RANK_TRANS: Partial<Record<Language, Record<string, RankText>>> = {
     'centurion': { name: 'Centurion', desc: 'Commandant de cent victoires dans la maîtrise de l’histoire.', historicalFigure: 'Centurion romain' },
     'vizier': { name: 'Vizir', desc: 'Conseiller de confiance des empires, gardien des chroniques.', historicalFigure: 'Nizam al-Mulk' },
     'caesar': { name: 'César', desc: 'Tu as franchi le Rubicon du savoir historique.', historicalFigure: 'Jules César' },
-    'pharaoh': { name: 'Pharaon', desc: 'Dieu-roi de la maîtrise historique — ton nom traversera les âges.', historicalFigure: 'Ramsès le Grand' },
-    'emperor': { name: 'Empereur', desc: 'Souverain de toutes les époques — ton empire du savoir est vaste.', historicalFigure: 'Napoléon Bonaparte' },
-    'alexander': { name: 'Alexandre', desc: 'Le Grand — conquérant de toute l’histoire, de l’Antiquité à nos jours.', historicalFigure: 'Alexandre le Grand' },
+    'pharaoh': { name: 'Pharaon', desc: 'Dieu-roi de la maîtrise historique - ton nom traversera les âges.', historicalFigure: 'Ramsès le Grand' },
+    'emperor': { name: 'Empereur', desc: 'Souverain de toutes les époques - ton empire du savoir est vaste.', historicalFigure: 'Napoléon Bonaparte' },
+    'alexander': { name: 'Alexandre', desc: 'Le Grand - conquérant de toute l’histoire, de l’Antiquité à nos jours.', historicalFigure: 'Alexandre le Grand' },
   },
 };
 

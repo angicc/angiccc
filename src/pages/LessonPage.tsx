@@ -33,10 +33,10 @@ import { EraBannerBackdrop } from '@/components/shared/EraBannerBackdrop';
 import { useStudyTimer } from '@/hooks/useStudyTimer';
 
 // Banner image resolution is a strict, deterministic chain routed per lesson
-// ID (see lessonBannerAssets.ts) — NO Wikipedia search, NO randomised
+// ID (see lessonBannerAssets.ts) - NO Wikipedia search, NO randomised
 // fallback array. Candidates: curated per-lesson override → the lesson's own
 // imageUrl → the era hero image. If every candidate fails to load, the banner
-// renders the era's procedural SVG backdrop, so it is styled — never blank.
+// renders the era's procedural SVG backdrop, so it is styled - never blank.
 // Because every stage is a fixed function of (lesson, era), the same lesson
 // always shows the same banner, in every language.
 function LessonBanner({
@@ -89,10 +89,10 @@ function LessonBanner({
       className="relative w-full aspect-[16/9] min-h-72 max-h-[30rem] rounded-2xl overflow-hidden mb-8 border border-border/50"
       style={{ background: theme.bannerGradient }}
     >
-      {/* Category-specific accent stripe — always 3px, consistent across all banners */}
+      {/* Category-specific accent stripe - always 3px, consistent across all banners */}
       <div className="absolute top-0 left-0 right-0 h-[3px] z-20" style={{ background: theme.accentColor }} />
 
-      {/* Subtle radial highlight — top-left glow using accent color */}
+      {/* Subtle radial highlight - top-left glow using accent color */}
       <div
         className="absolute inset-0 z-[1]"
         style={{ background: `radial-gradient(ellipse 70% 60% at 20% 30%, ${theme.accentColor}30 0%, transparent 70%)` }}
@@ -102,7 +102,7 @@ function LessonBanner({
         <div className="absolute inset-0 animate-pulse bg-white/[0.03] z-[2]" />
       )}
 
-      {/* Era-specific procedural backdrop — shown when every candidate fails */}
+      {/* Era-specific procedural backdrop - shown when every candidate fails */}
       {(imgFailed || !src) && <EraBannerBackdrop eraId={eraId} />}
 
       {src && !imgFailed && (
@@ -116,7 +116,7 @@ function LessonBanner({
           referrerPolicy="no-referrer"
           // Framed slightly above centre: on a portrait-ish plate the subject
           // (faces, a monument's crown) sits in the upper half, and dead-centre
-          // cropping cut it off. Opacity raised — the art was curated to be
+          // cropping cut it off. Opacity raised - the art was curated to be
           // looked at, and 0.6 under the contrast mask left it barely visible.
           className={`absolute inset-0 w-full h-full object-cover object-[center_38%] transition-opacity duration-700 z-[2] ${loaded ? (isGifBanner(src) ? 'opacity-90' : 'opacity-80') : 'opacity-0'} ${isGifBanner(src) ? 'scale-[1.03]' : ''}`}
           onLoad={() => setLoaded(true)}
@@ -124,7 +124,7 @@ function LessonBanner({
         />
       )}
       {/* Progressive mask: fully transparent across the top fifth, near-opaque
-          ink at the base — guarantees AA/AAA title contrast over any image,
+          ink at the base - guarantees AA/AAA title contrast over any image,
           whether its lower region is pure white marble or pitch-dark oil paint. */}
       <div
         className="absolute inset-0 z-[3]"
@@ -149,7 +149,7 @@ function LessonBanner({
         </button>
       </div>
 
-      {/* z-10 keeps the typography ABOVE the z-[3] contrast mask — without it,
+      {/* z-10 keeps the typography ABOVE the z-[3] contrast mask - without it,
           positive z-index paints over positioned z-auto siblings and the
           near-opaque mask base would dim the title it exists to protect. */}
       <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
@@ -180,12 +180,12 @@ function LessonBanner({
 // Progression-gate microcopy in all six UI languages (local to this page,
 // same pattern as DEEP_DIVE_LABEL below).
 const GATE_LABELS: Record<string, { analysisNeeded: string; submitAnalysis: string; cooldownShort: string; lockedTitle: string; lockedAnalysis: string; lockedCooldown: string; lockedSequence: string; backToEra: string }> = {
-  en: { analysisNeeded: 'Analysis required', submitAnalysis: 'Submit analysis', cooldownShort: 'Cooldown', lockedTitle: 'This lesson is still sealed', lockedAnalysis: 'Pass the written analysis of the previous lesson (grade B or better) to open it.', lockedCooldown: 'A 30-minute reflection cooldown is running before the next lesson. Pass this lesson\'s analysis to open it now.', lockedSequence: 'Complete the previous lesson first — the path through each era is walked in order.', backToEra: 'Back to eras' },
+  en: { analysisNeeded: 'Analysis required', submitAnalysis: 'Submit analysis', cooldownShort: 'Cooldown', lockedTitle: 'This lesson is still sealed', lockedAnalysis: 'Pass the written analysis of the previous lesson (grade B or better) to open it.', lockedCooldown: 'A 30-minute reflection cooldown is running before the next lesson. Pass this lesson\'s analysis to open it now.', lockedSequence: 'Complete the previous lesson first - the path through each era is walked in order.', backToEra: 'Back to eras' },
   es: { analysisNeeded: 'Análisis requerido', submitAnalysis: 'Enviar análisis', cooldownShort: 'Espera', lockedTitle: 'Esta lección sigue sellada', lockedAnalysis: 'Aprueba el análisis escrito de la lección anterior (nota B o mejor) para abrirla.', lockedCooldown: 'Corre una espera de reflexión de 30 minutos antes de la siguiente lección. Aprueba el análisis de esta lección para abrirla ya.', lockedSequence: 'Completa primero la lección anterior: el camino de cada era se recorre en orden.', backToEra: 'Volver a las eras' },
-  ru: { analysisNeeded: 'Требуется анализ', submitAnalysis: 'Отправить анализ', cooldownShort: 'Пауза', lockedTitle: 'Этот урок ещё запечатан', lockedAnalysis: 'Сдайте письменный анализ предыдущего урока (оценка B или выше), чтобы открыть его.', lockedCooldown: 'Перед следующим уроком идёт 30-минутная пауза на осмысление. Сдайте анализ этого урока, чтобы открыть его сразу.', lockedSequence: 'Сначала завершите предыдущий урок — путь по каждой эпохе проходится по порядку.', backToEra: 'К эпохам' },
-  mk: { analysisNeeded: 'Потребна е анализа', submitAnalysis: 'Испрати анализа', cooldownShort: 'Пауза', lockedTitle: 'Оваа лекција е сè уште запечатена', lockedAnalysis: 'Положи ја писмената анализа на претходната лекција (оценка B или подобра) за да ја отвориш.', lockedCooldown: 'Пред следната лекција тече 30-минутна пауза за размислување. Положи ја анализата на оваа лекција за да ја отвориш веднаш.', lockedSequence: 'Прво заврши ја претходната лекција — патот низ секоја ера се минува по ред.', backToEra: 'Назад кон ерите' },
-  de: { analysisNeeded: 'Analyse erforderlich', submitAnalysis: 'Analyse einreichen', cooldownShort: 'Wartezeit', lockedTitle: 'Diese Lektion ist noch versiegelt', lockedAnalysis: 'Bestehe die schriftliche Analyse der vorherigen Lektion (Note B oder besser), um sie zu öffnen.', lockedCooldown: 'Vor der nächsten Lektion läuft eine 30-minütige Reflexionsphase. Bestehe die Analyse dieser Lektion, um sie sofort zu öffnen.', lockedSequence: 'Schließe zuerst die vorherige Lektion ab — der Weg durch jede Epoche wird der Reihe nach gegangen.', backToEra: 'Zurück zu den Epochen' },
-  fr: { analysisNeeded: 'Analyse requise', submitAnalysis: "Soumettre l'analyse", cooldownShort: 'Attente', lockedTitle: 'Cette leçon est encore scellée', lockedAnalysis: "Réussis l'analyse écrite de la leçon précédente (note B ou mieux) pour l'ouvrir.", lockedCooldown: 'Un délai de réflexion de 30 minutes précède la leçon suivante. Réussis l’analyse de cette leçon pour l’ouvrir tout de suite.', lockedSequence: "Termine d'abord la leçon précédente — le chemin de chaque ère se parcourt dans l'ordre.", backToEra: 'Retour aux ères' },
+  ru: { analysisNeeded: 'Требуется анализ', submitAnalysis: 'Отправить анализ', cooldownShort: 'Пауза', lockedTitle: 'Этот урок ещё запечатан', lockedAnalysis: 'Сдайте письменный анализ предыдущего урока (оценка B или выше), чтобы открыть его.', lockedCooldown: 'Перед следующим уроком идёт 30-минутная пауза на осмысление. Сдайте анализ этого урока, чтобы открыть его сразу.', lockedSequence: 'Сначала завершите предыдущий урок - путь по каждой эпохе проходится по порядку.', backToEra: 'К эпохам' },
+  mk: { analysisNeeded: 'Потребна е анализа', submitAnalysis: 'Испрати анализа', cooldownShort: 'Пауза', lockedTitle: 'Оваа лекција е сè уште запечатена', lockedAnalysis: 'Положи ја писмената анализа на претходната лекција (оценка B или подобра) за да ја отвориш.', lockedCooldown: 'Пред следната лекција тече 30-минутна пауза за размислување. Положи ја анализата на оваа лекција за да ја отвориш веднаш.', lockedSequence: 'Прво заврши ја претходната лекција - патот низ секоја ера се минува по ред.', backToEra: 'Назад кон ерите' },
+  de: { analysisNeeded: 'Analyse erforderlich', submitAnalysis: 'Analyse einreichen', cooldownShort: 'Wartezeit', lockedTitle: 'Diese Lektion ist noch versiegelt', lockedAnalysis: 'Bestehe die schriftliche Analyse der vorherigen Lektion (Note B oder besser), um sie zu öffnen.', lockedCooldown: 'Vor der nächsten Lektion läuft eine 30-minütige Reflexionsphase. Bestehe die Analyse dieser Lektion, um sie sofort zu öffnen.', lockedSequence: 'Schließe zuerst die vorherige Lektion ab - der Weg durch jede Epoche wird der Reihe nach gegangen.', backToEra: 'Zurück zu den Epochen' },
+  fr: { analysisNeeded: 'Analyse requise', submitAnalysis: "Soumettre l'analyse", cooldownShort: 'Attente', lockedTitle: 'Cette leçon est encore scellée', lockedAnalysis: "Réussis l'analyse écrite de la leçon précédente (note B ou mieux) pour l'ouvrir.", lockedCooldown: 'Un délai de réflexion de 30 minutes précède la leçon suivante. Réussis l’analyse de cette leçon pour l’ouvrir tout de suite.', lockedSequence: "Termine d'abord la leçon précédente - le chemin de chaque ère se parcourt dans l'ordre.", backToEra: 'Retour aux ères' },
 };
 
 export default function LessonPage() {
@@ -265,7 +265,7 @@ export default function LessonPage() {
 
 
   // Progression gate: is THIS lesson sealed (deep link into a locked lesson)?
-  // Re-evaluated every render — the cooldown hook ticks once per second, so
+  // Re-evaluated every render - the cooldown hook ticks once per second, so
   // countdowns and lock releases surface live without a reload.
   const gl = GATE_LABELS[language] ?? GATE_LABELS.en;
   const completedIds = progress?.completedLessons ?? [];
@@ -297,7 +297,7 @@ export default function LessonPage() {
     if (!currentUser || completed || !lesson) return;
     const { newAchievements } = markLessonComplete(currentUser.id, lesson.id, lesson.title);
     // Completion opens the 30-minute reflection window and summons Clio's
-    // analysis gate — the next lesson stays sealed until a B-or-better pass.
+    // analysis gate - the next lesson stays sealed until a B-or-better pass.
     startCooldown(currentUser.id);
     refreshProgress();
     setXpAmt(lesson.xpReward);
@@ -344,7 +344,7 @@ export default function LessonPage() {
           <span className="text-foreground truncate">{lesson.title}</span>
         </div>
 
-        {/* Hero banner — the animated GIF/asset chain plus the translated
+        {/* Hero banner - the animated GIF/asset chain plus the translated
             title & subtitle (Macedonian titles come from the corrected catalog
             via getTranslatedLesson, so no separate header is needed). */}
         <LessonBanner
@@ -361,17 +361,17 @@ export default function LessonPage() {
           theme={getLessonTheme(lesson)}
         />
 
-        {/* Auto-translation status — only for non-English lessons without a
+        {/* Auto-translation status - only for non-English lessons without a
             hand-authored translation whose AI translation hasn't landed yet. */}
         {language !== 'en' && bodyXlate !== 'idle' && (() => {
           const LBL: Record<string, { working: string; failed: string; retry: string }> = {
-            es: { working: 'Traduciendo al', failed: 'No se pudo traducir automáticamente — mostrando inglés.', retry: 'Reintentar' },
-            ru: { working: 'Перевод на', failed: 'Не удалось перевести автоматически — показан английский.', retry: 'Повторить' },
-            mk: { working: 'Преведување на', failed: 'Не успеа автоматскиот превод — прикажан е англиски.', retry: 'Обиди се пак' },
-            de: { working: 'Übersetzen ins', failed: 'Automatische Übersetzung fehlgeschlagen — Englisch wird angezeigt.', retry: 'Erneut versuchen' },
-            fr: { working: 'Traduction en', failed: 'Traduction automatique impossible — anglais affiché.', retry: 'Réessayer' },
+            es: { working: 'Traduciendo al', failed: 'No se pudo traducir automáticamente - mostrando inglés.', retry: 'Reintentar' },
+            ru: { working: 'Перевод на', failed: 'Не удалось перевести автоматически - показан английский.', retry: 'Повторить' },
+            mk: { working: 'Преведување на', failed: 'Не успеа автоматскиот превод - прикажан е англиски.', retry: 'Обиди се пак' },
+            de: { working: 'Übersetzen ins', failed: 'Automatische Übersetzung fehlgeschlagen - Englisch wird angezeigt.', retry: 'Erneut versuchen' },
+            fr: { working: 'Traduction en', failed: 'Traduction automatique impossible - anglais affiché.', retry: 'Réessayer' },
           };
-          const l = LBL[language] ?? { working: 'Translating to', failed: 'Auto-translation failed — showing English.', retry: 'Retry' };
+          const l = LBL[language] ?? { working: 'Translating to', failed: 'Auto-translation failed - showing English.', retry: 'Retry' };
           return (
             <div className={`mb-4 flex items-center gap-2 rounded-lg border px-3 py-2 text-xs ${bodyXlate === 'working' ? 'border-primary/30 bg-primary/5 text-primary' : 'border-amber-500/30 bg-amber-500/5 text-amber-300'}`}>
               {bodyXlate === 'working' ? (

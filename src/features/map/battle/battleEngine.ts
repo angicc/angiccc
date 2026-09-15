@@ -1,18 +1,18 @@
 // ─── Conquest Battle Engine ───────────────────────────────────────────────────
 // Pure, deterministic-by-injection game logic for the Territory Conquest
-// battles (Master exclusive). The UI renders what the engine says — nothing
+// battles (Master exclusive). The UI renders what the engine says - nothing
 // here touches the DOM, so every rule is unit-testable and the arena can be
 // re-skinned freely.
 //
 // Battle loop per round:
-//   1. WAR COUNCIL — the player picks a tactic card; the enemy commander
+//   1. WAR COUNCIL - the player picks a tactic card; the enemy commander
 //      (a per-era AI persona) picks its own with weighted preferences.
-//   2. ORDER — the history question is the battle order. A correct answer
+//   2. ORDER - the history question is the battle order. A correct answer
 //      executes YOUR tactic; a wrong one hands the initiative to the enemy.
-//   3. RESOLUTION — damage flows through the tactic triangle
+//   3. RESOLUTION - damage flows through the tactic triangle
 //      (CHARGE ▷ VOLLEY ▷ HOLD ▷ CHARGE), morale shifts, streaks build into
 //      critical ROUT strikes, and the field state advances.
-// An army breaks at 0 HP — or earlier at 0 morale, exactly like real
+// An army breaks at 0 HP - or earlier at 0 morale, exactly like real
 // pre-modern battles, where most casualties happened after the line broke.
 import type { TerritoryTopic } from '@/features/content/timelineTerritoryData';
 
@@ -59,7 +59,7 @@ export const TACTIC_LEAD_CLASS: Record<Tactic, UnitClass> = {
 export interface EraFlavor {
   unitNames: Record<UnitClass, string>;
   commanderTitle: string;
-  /** AI tactic weights [charge, volley, hold] — era doctrine. */
+  /** AI tactic weights [charge, volley, hold] - era doctrine. */
   doctrine: [number, number, number];
   warCry: string;
 }
@@ -148,7 +148,7 @@ export function createBattle(era: EraId, totalRounds: number, legendary: boolean
 
 // ── Enemy commander AI ────────────────────────────────────────────────────────
 // Doctrine-weighted with two humanizing rules: it avoids repeating the same
-// tactic three times, and (Legendary only) it reads the player — biasing
+// tactic three times, and (Legendary only) it reads the player - biasing
 // toward the counter of the player's most-used tactic so far.
 
 export function enemyPickTactic(state: BattleState, rng: () => number = Math.random): Tactic {
@@ -159,7 +159,7 @@ export function enemyPickTactic(state: BattleState, rng: () => number = Math.ran
     hold: flavor.doctrine[2],
   };
 
-  // No triple repeats — a predictable commander is a boring one.
+  // No triple repeats - a predictable commander is a boring one.
   const recent = state.log.slice(-2).map(r => r.attacker === 'enemy' ? r.attackTactic : r.defendTactic);
   if (recent.length === 2 && recent[0] === recent[1]) weights[recent[0]] *= 0.25;
 
@@ -200,7 +200,7 @@ export function tuningFor(side: Side, legendary: boolean): DamageTuning {
 
 /**
  * Resolve one round. `playerCorrect` decides who attacks: the question is the
- * battle order — get it right and your tactic executes; get it wrong and the
+ * battle order - get it right and your tactic executes; get it wrong and the
  * enemy seizes the initiative with theirs.
  */
 export function resolveRound(
@@ -242,7 +242,7 @@ export function resolveRound(
   def.lastTactic = defendTactic;
 
   const routed = def.hp > 0 && def.morale <= 0;
-  if (routed) def.hp = 0; // the line breaks — battle over
+  if (routed) def.hp = 0; // the line breaks - battle over
 
   const resolution: RoundResolution = {
     attacker, attackTactic, defendTactic, advantage, crit,
@@ -275,7 +275,7 @@ export function resolveRound(
 /** How many sprites of a regiment are still standing at a given HP. */
 export function aliveInRegiment(spec: RegimentSpec, hp: number, regimentIndex: number): number {
   // Regiments thin out in reverse order of prestige: ranged first, then
-  // infantry, cavalry last — the veterans hold the longest.
+  // infantry, cavalry last - the veterans hold the longest.
   const order: Record<UnitClass, number> = { ranged: 0, infantry: 1, cavalry: 2 };
   const totalSprites = ARMY_COMPOSITION.reduce((a, r) => a + r.count, 0);
   const totalAlive = Math.ceil((hp / MAX_HP) * totalSprites);

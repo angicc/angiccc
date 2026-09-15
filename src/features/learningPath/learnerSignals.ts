@@ -6,7 +6,7 @@
 // The old generator read four numbers (weakest era, second weakest, that era's
 // quiz score, overall mastery) and produced the same seven-day shape for
 // everyone. A learner returning after three weeks got the same week as a daily
-// learner; a learner whose problem was retention — high coverage, low recall —
+// learner; a learner whose problem was retention - high coverage, low recall -
 // was handed more reading. These signals exist to end both of those.
 import { studyRhythm } from '@/features/progress/timeTracking';
 import type { MasterySnapshot, EraMastery } from './masteryModel';
@@ -16,18 +16,18 @@ import type { EraId } from '@/types';
 export type FocusMode = 'coverage' | 'retention' | 'balanced';
 
 export interface LearnerSignals {
-  /** The era this week should work on — see `pickFocusEra`. */
+  /** The era this week should work on - see `pickFocusEra`. */
   focusEraId: EraId;
   /** Minutes to schedule on a study day, from their real median session. */
   dailyBudgetMinutes: number;
-  /** Study days to schedule this week — never more than they can sustain. */
+  /** Study days to schedule this week - never more than they can sustain. */
   studyDays: number;
   activeDaysLast14: number;
   medianSessionMinutes: number;
   daysSinceActivity: number | null;
   /** Studied before, but has been away long enough to need a warm-up. */
   returning: boolean;
-  /** No recorded study time at all — schedule on optimistic defaults. */
+  /** No recorded study time at all - schedule on optimistic defaults. */
   fresh: boolean;
   mode: FocusMode;
   /** Plain reason for `mode`, shown to the learner and given to Clio. */
@@ -54,13 +54,13 @@ function coveragePct(era: EraMastery): number {
  * NOT simply `mastery.weakest`. An era the learner has never opened sits at 0%
  * and wins "weakest" outright, so a learner who has read eight of nine
  * Prehistory lessons and scored 48% on its quiz would be pointed at an
- * untouched era instead — and their real, diagnosed weakness would never be
+ * untouched era instead - and their real, diagnosed weakness would never be
  * addressed. Worse, the focus era would always have nothing read, so the
  * retention path below could essentially never trigger.
  *
  * A tutor finishes what the student started badly before opening a new front.
  * So: the weakest era they have actually begun and not yet consolidated;
- * failing that, the weakest overall — which is how a learner is moved onto new
+ * failing that, the weakest overall - which is how a learner is moved onto new
  * ground once their current ground is solid.
  */
 export function pickFocusEra(mastery: MasterySnapshot): EraMastery {
@@ -76,8 +76,8 @@ export function pickFocusEra(mastery: MasterySnapshot): EraMastery {
  * Coverage and recall fail differently and want opposite medicine. Someone who
  * has read two of nine lessons needs to read; someone who has read eight of
  * nine and still answers at 55% does not need a ninth lesson, they need
- * retrieval practice. Reading `adaptivePct` and `quizPct` — both already
- * computed by the mastery model and both previously ignored by the scheduler —
+ * retrieval practice. Reading `adaptivePct` and `quizPct` - both already
+ * computed by the mastery model and both previously ignored by the scheduler -
  * is what separates the two.
  */
 export function focusMode(era: EraMastery): { mode: FocusMode; reason: string } {

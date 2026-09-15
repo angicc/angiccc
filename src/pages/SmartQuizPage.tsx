@@ -190,7 +190,7 @@ export default function SmartQuizPage() {
   function advance() {
     if (qIdx + 1 >= session.length) {
       // `answers` already contains every question (submitAnswer appends before
-      // the explain phase) — appending again here double-counted the final
+      // the explain phase) - appending again here double-counted the final
       // answer and could inflate the score past 100%.
       const finalAnswers = answers.length === session.length ? answers : [...answers, selected === session[qIdx].correctIndex];
       const correct = finalAnswers.filter(Boolean).length;
@@ -232,7 +232,7 @@ export default function SmartQuizPage() {
       }
       setPhase('done');
       // Ground the study plan in the actual misses: question, chosen option,
-      // correct option, era — plus the weak-era lesson catalog.
+      // correct option, era - plus the weak-era lesson catalog.
       const finalChoices = choices.length === session.length ? choices : [...choices, selected ?? -1];
       const missed: MissedQuestion[] = session
         .map((qq, i) => ({ qq, i }))
@@ -240,7 +240,7 @@ export default function SmartQuizPage() {
         .map(({ qq, i }) => ({
           question: qq.question,
           eraName: qq.eraName,
-          chosen: qq.options[finalChoices[i]] ?? '—',
+          chosen: qq.options[finalChoices[i]] ?? '-',
           correct: qq.options[qq.correctIndex],
         }));
       const weakEraIds = Object.entries(map)
@@ -658,7 +658,7 @@ export default function SmartQuizPage() {
                     </div>
                   )}
 
-                  {/* Clio Study Plan — structured premium recommendation */}
+                  {/* Clio Study Plan - structured premium recommendation */}
                   <AnimatePresence>
                     {(clioLoading || plan || clioRec) && (
                       <motion.div

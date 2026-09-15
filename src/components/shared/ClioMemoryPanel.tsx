@@ -1,8 +1,8 @@
-// ─── "What Clio remembers about you" — visible, controllable AI memory ───────
+// ─── "What Clio remembers about you" - visible, controllable AI memory ───────
 // Renders the learner profile that personalizes Clio's tutoring: interests,
 // strengths, active misconception corrections, mastered facts, and session
 // notes. Live-updates whenever background extraction lands (profile event),
-// and gives the student a one-click "forget everything" — memory the user can
+// and gives the student a one-click "forget everything" - memory the user can
 // inspect and control, not a hidden dossier.
 import { useEffect, useState } from 'react';
 import { Brain, Sparkles, TrendingUp, AlertCircle, CheckCircle2, BookOpen, Trash2, ChevronDown } from 'lucide-react';

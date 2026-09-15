@@ -45,7 +45,7 @@ export interface UploadCheck {
  * Validate an image upload by content.
  *
  * `declaredMime` is accepted as a hint only: if it disagrees with the bytes,
- * the bytes win and the upload is refused — a mismatch is the signature of
+ * the bytes win and the upload is refused - a mismatch is the signature of
  * someone trying to smuggle one type past a check for another.
  */
 export function checkImageUpload(buf: Uint8Array, declaredMime?: string): UploadCheck {

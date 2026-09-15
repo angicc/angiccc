@@ -3,7 +3,7 @@
 // whole-blob GET/PUT pattern of sync.ts (client-authoritative, last write
 // wins); study sets are discrete rows keyed by the client-generated set id so
 // individual sets can be upserted and deleted without shipping the whole
-// library. Zod guards every write — a malformed body can never reach Postgres.
+// library. Zod guards every write - a malformed body can never reach Postgres.
 import { Router, type Request, type Response } from 'express';
 import { PrismaClient, type Prisma } from '@prisma/client';
 import { z } from 'zod';
@@ -44,7 +44,7 @@ learningRouter.put('/profile', async (req: Request, res: Response) => {
   res.json({ ok: true, updatedAt: row.updatedAt });
 });
 
-// DELETE /api/learning/profile — "forget everything" must clear the cloud too.
+// DELETE /api/learning/profile - "forget everything" must clear the cloud too.
 learningRouter.delete('/profile', async (req: Request, res: Response) => {
   await prisma.learnerProfile.deleteMany({ where: { userId: req.auth!.userId } });
   res.json({ ok: true });
@@ -74,7 +74,7 @@ learningRouter.put('/plan', async (req: Request, res: Response) => {
 const MAX_SETS_PER_USER = 30;
 
 // Structural guard for a study set as the client stores it. Content arrays are
-// size-capped but internally free-form JSON — the client validates semantics;
+// size-capped but internally free-form JSON - the client validates semantics;
 // the server enforces bounds so one user can't stuff megabytes into a row.
 const studySetSchema = z.object({
   id: z.string().uuid(),
@@ -106,7 +106,7 @@ learningRouter.get('/sets', async (req: Request, res: Response) => {
   res.json({ sets: rows.map(r => r.data), updatedAt: rows.at(-1)?.updatedAt ?? null });
 });
 
-// PUT /api/learning/sets/:id — upsert one set (create after generation, update
+// PUT /api/learning/sets/:id - upsert one set (create after generation, update
 // after each practice run).
 learningRouter.put('/sets/:id', async (req: Request, res: Response) => {
   const parsed = studySetSchema.safeParse(req.body);

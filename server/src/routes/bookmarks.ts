@@ -1,6 +1,6 @@
 // Cloud sync for lesson bookmarks. Bookmarks are just a per-user set of lesson
 // ids (mirroring the client-side bookmarkStore), so each is one row keyed by the
-// (userId, lessonId) composite primary key — add/remove are idempotent and the
+// (userId, lessonId) composite primary key - add/remove are idempotent and the
 // set can never contain a duplicate. A bulk replace endpoint lets the client
 // push its whole local set on first sign-in. Zod guards every write.
 import { Router, type Request, type Response } from 'express';
@@ -10,7 +10,7 @@ import { z } from 'zod';
 const prisma = new PrismaClient();
 export const bookmarksRouter = Router();
 
-// Lesson ids look like "byzantine-05" / "modern-22" — short, no whitespace.
+// Lesson ids look like "byzantine-05" / "modern-22" - short, no whitespace.
 const lessonId = z.string().trim().min(1).max(64).regex(/^[a-z0-9-]+$/i, 'Invalid lesson id.');
 const MAX_BOOKMARKS = 500; // a generous ceiling; the catalog is 132 lessons
 

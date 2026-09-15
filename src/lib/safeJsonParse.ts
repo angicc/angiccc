@@ -34,10 +34,10 @@ export function extractJsonBlock(raw: string): string | null {
     else if (ch === '{' || ch === '[') depth++;
     else if (ch === '}' || ch === ']') {
       depth--;
-      if (depth === 0) return source.slice(start, i + 1); // balanced — cut trailing prose
+      if (depth === 0) return source.slice(start, i + 1); // balanced - cut trailing prose
     }
   }
-  return source.slice(start).trim(); // truncated — repair pass will close it
+  return source.slice(start).trim(); // truncated - repair pass will close it
 }
 
 /**
@@ -117,7 +117,7 @@ export function repairJson(src: string): string {
   if (inStr) out.push('"'); // close a string the stream cut mid-value
 
   let repaired = out.join('').replace(/\s+$/, '');
-  // A truncation can leave `"key":` or a dangling separator — trim it so the
+  // A truncation can leave `"key":` or a dangling separator - trim it so the
   // bracket-closing below produces valid JSON.
   repaired = repaired.replace(/,\s*"[^"]*"?\s*:?\s*$/, '').replace(/[:,]\s*$/, '');
   while (stack.length) repaired += stack.pop();
@@ -127,7 +127,7 @@ export function repairJson(src: string): string {
 /**
  * Parse LLM output into a typed value. Strict parse first; on failure the
  * repaired block is parsed. Throws only when no JSON object exists at all or
- * the content is unrecoverable — callers keep their existing error fallbacks.
+ * the content is unrecoverable - callers keep their existing error fallbacks.
  */
 export function safeJsonParse<T>(raw: string): T {
   const block = extractJsonBlock(raw);

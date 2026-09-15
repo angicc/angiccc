@@ -122,7 +122,7 @@ export type CrisisNodePayload = z.infer<typeof crisisNodeSchema>;
 
 // ── Localization alignment guard ─────────────────────────────────────────────
 // A grading payload whose feedback strings are in the wrong script cannot
-// have honored the user's language preference — reject it before persistence
+// have honored the user's language preference - reject it before persistence
 // so the client re-requests rather than storing an unlocalized grade.
 
 const CYRILLIC = /[Ѐ-ӿ]/;

@@ -24,7 +24,7 @@ interface Flashcard {
 // Cards are derived from the *translated* lesson so that both the front
 // (lesson title) and back (key fact) follow the selected language. When a
 // lesson has no translation for the active language, getTranslatedLesson
-// gracefully returns the English source — no mixed/blank state.
+// gracefully returns the English source - no mixed/blank state.
 function buildFlashcards(language: Language): Flashcard[] {
   return LESSONS.flatMap(lesson => {
     const tl = getTranslatedLesson(lesson, language);
@@ -176,7 +176,7 @@ export default function FlashcardsPage() {
               </motion.div>
             </div>
 
-            {/* Action buttons — appear after flip */}
+            {/* Action buttons - appear after flip */}
             <AnimatePresence>
               {flipped && (
                 <motion.div

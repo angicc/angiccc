@@ -1,4 +1,4 @@
-// Backward-compatible façade — the real implementation lives in the unified
+// Backward-compatible façade - the real implementation lives in the unified
 // AI gateway (src/services/aiGateway.ts). Existing call sites keep importing
 // from here; new code should import from '@/services/aiGateway' directly.
 export {

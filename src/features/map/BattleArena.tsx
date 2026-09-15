@@ -1,17 +1,17 @@
 // ─── Territory Conquest: cinematic battle arena (Master exclusive) ────────────
 // A stage is a fought battle, not a worksheet. Each round has three beats:
 //
-//   WAR COUNCIL  — pick a tactic card (CHARGE ▷ VOLLEY ▷ HOLD ▷ CHARGE); the
+//   WAR COUNCIL  - pick a tactic card (CHARGE ▷ VOLLEY ▷ HOLD ▷ CHARGE); the
 //                  enemy commander picks simultaneously by era doctrine.
-//   THE ORDER    — the history question is your order to the line. Correct →
+//   THE ORDER    - the history question is your order to the line. Correct →
 //                  your tactic executes; wrong → the enemy seizes initiative.
-//   RESOLUTION   — regiments charge/volley/brace with per-class sprites and
+//   RESOLUTION   - regiments charge/volley/brace with per-class sprites and
 //                  full battlefield juice: arrow flights, slash arcs, impact
 //                  bursts, screen shake, floating damage, morale shockwaves.
 //
 // Morale is a second HP track: streaks build ROUT strikes, tactical advantage
 // bleeds enemy morale, and an army whose morale collapses breaks even with HP
-// remaining — exactly like the battles these stages teach.
+// remaining - exactly like the battles these stages teach.
 // All rules live in battle/battleEngine.ts (pure); this file only renders.
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -48,7 +48,7 @@ const ARMY: Record<EraId, { player: string; playerAccent: string; enemy: string;
 const BACKDROPS: Record<EraId, string> = {
   prehistoric: 'M0 60 L8 42 L16 60 L26 34 L36 60 L44 46 L54 60 L64 30 L76 60 L84 44 L92 60 L100 50 L100 100 L0 100 Z',
   ancient: 'M0 60 L8 42 L16 60 L26 34 L36 60 L44 46 L54 60 L64 30 L76 60 L84 44 L92 60 L100 50 L100 100 L0 100 Z',
-  // Domes of the City — Hagia Sophia silhouette between walls and towers.
+  // Domes of the City - Hagia Sophia silhouette between walls and towers.
   byzantine: 'M0 60 L8 60 L8 50 L11 44 L14 50 L14 60 L26 60 L26 46 Q34 32 42 46 L42 60 L52 60 L52 48 Q58 38 64 48 L64 60 L76 60 L76 50 L79 42 L82 50 L82 60 L100 60 L100 100 L0 100 Z',
   medieval: 'M0 60 L10 60 L10 40 L13 40 L13 34 L16 40 L19 40 L19 60 L40 60 L40 45 L44 45 L44 38 L46 32 L48 38 L48 45 L52 45 L52 60 L74 60 L74 42 L78 42 L78 36 L81 42 L84 42 L84 60 L100 60 L100 100 L0 100 Z',
   'early-modern': 'M0 60 L14 60 L18 44 L22 60 L38 60 L38 48 L42 40 L46 48 L46 60 L62 60 L66 50 L70 60 L82 60 L86 46 L90 60 L100 60 L100 100 L0 100 Z',
@@ -290,9 +290,9 @@ export function BattleArena({
               {legendary && <Crown className="w-4 h-4 text-amber-400" />}
             </div>
             <p className="text-white/60 text-xs leading-relaxed">
-              {t.tmap_battle_brief2 ?? 'Each round: choose a tactic at the war council, then answer the order. Correct — your tactic strikes. Wrong — theirs does. Charge beats volley, volley beats shield wall, shield wall beats charge. Break their army — or their morale.'}
+              {t.tmap_battle_brief2 ?? 'Each round: choose a tactic at the war council, then answer the order. Correct - your tactic strikes. Wrong - theirs does. Charge beats volley, volley beats shield wall, shield wall beats charge. Break their army - or their morale.'}
             </p>
-            {/* Order of battle — the two rosters that take the field (CampaignData) */}
+            {/* Order of battle - the two rosters that take the field (CampaignData) */}
             {campaign && (
               <div className="grid grid-cols-2 gap-3 max-w-md mx-auto pt-1">
                 {[
@@ -328,12 +328,12 @@ export function BattleArena({
           </div>
         )}
 
-        {/* War council — tactic cards */}
+        {/* War council - tactic cards */}
         {phase === 'council' && (
           <div className="max-w-2xl mx-auto">
             <p className="text-center text-[11px] font-bold uppercase tracking-widest text-white/50 mb-2.5">
               <Flag className="inline w-3.5 h-3.5 mr-1.5 -mt-0.5" />
-              {t.tmap_battle_council ?? 'War council — choose your tactic'}
+              {t.tmap_battle_council ?? 'War council - choose your tactic'}
             </p>
             <div className="grid grid-cols-3 gap-2.5">
               {TACTICS.map(tac => (
@@ -353,7 +353,7 @@ export function BattleArena({
           </div>
         )}
 
-        {/* The order — question */}
+        {/* The order - question */}
         {phase === 'order' && tq && (
           <div className="max-w-2xl mx-auto">
             <div className="flex items-center justify-center gap-2 mb-2">
@@ -386,7 +386,7 @@ export function BattleArena({
           </div>
         )}
 
-        {/* Resolution — explanation rides under the cinematic */}
+        {/* Resolution - explanation rides under the cinematic */}
         {phase === 'resolve' && tqPrev(questions, battle, language) && (
           <p className="max-w-2xl mx-auto text-[11px] text-white/55 italic leading-snug text-center break-words pt-3">
             {tqPrev(questions, battle, language)}

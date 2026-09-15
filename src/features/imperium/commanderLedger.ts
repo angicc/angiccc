@@ -2,8 +2,8 @@
 // A per-campaign record of every tactical decision the player made and how
 // history judged it. Each resolved battle appends one entry (grade, matchup,
 // ground, outcome, the historical parallel Clio cited); the ledger then
-// aggregates them into a Strategic Profile — average decision quality, counter
-// rate, doctrine tendencies — that the UI renders as an analytics drawer.
+// aggregates them into a Strategic Profile - average decision quality, counter
+// rate, doctrine tendencies - that the UI renders as an analytics drawer.
 // Persistence is localStorage keyed by campaign id, so a rollback simply keeps
 // the fuller record (the ledger is a journal, not a save file).
 import type { Tactic, TacticGrade, Weather } from './combatMatrix';
@@ -76,7 +76,7 @@ export function computeProfile(entries: LedgerEntry[]): StrategicProfile {
   return { battles: entries.length, wins, iq, counterRate: Math.round((counters / entries.length) * 100), favoriteTactic, bestGrade, worstGrade, parallelsSeen };
 }
 
-/** Rank title key for a Strategic IQ band — resolved through the imperium catalog. */
+/** Rank title key for a Strategic IQ band - resolved through the imperium catalog. */
 export function iqRankKey(iq: number): string {
   if (iq >= 85) return 'imp_ledger_rank_master';
   if (iq >= 68) return 'imp_ledger_rank_tactician';

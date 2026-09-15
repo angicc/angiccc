@@ -7,7 +7,7 @@ import path from 'path';
  *
  * The build-time i18n guard in vite.config.ts is thorough about the `T` object:
  * every key, every language, values compared rather than merely counted. Its
- * blind spot is text that never becomes a key in the first place — a sentence
+ * blind spot is text that never becomes a key in the first place - a sentence
  * written inline in a component, or returned as a string from a plain module
  * and rendered as-is.
  *
@@ -39,7 +39,7 @@ const rel = (f: string) => path.relative(ROOT, f);
 /**
  * Source with comments blanked out.
  *
- * Comments describing a bug quote the very pattern the check looks for — the
+ * Comments describing a bug quote the very pattern the check looks for - the
  * note explaining why AiTutorPage no longer branches on `reason.includes('Master')`
  * would otherwise fail the check that keeps it from coming back. Newlines are
  * preserved so nothing else shifts.
@@ -76,7 +76,7 @@ describe('translation leaks', () => {
       const file = path.join(ROOT, m);
       if (!fs.existsSync(file)) continue;
       const src = code(fs.readFileSync(file, 'utf8'));
-      // `error: 'Not logged in.'` — a property named like a message, given a
+      // `error: 'Not logged in.'` - a property named like a message, given a
       // literal containing a space (so identifiers and codes are left alone).
       for (const hit of src.matchAll(/\b(?:error|reason|notice|message)\s*:\s*(['"])([^'"]*\s[^'"]*)\1/g)) {
         offenders.push(`${m}: ${hit[0].slice(0, 60)}`);

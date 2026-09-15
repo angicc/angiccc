@@ -138,7 +138,7 @@ export default function NotesPage() {
                   <SelectValue placeholder={t.notes_select} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">—</SelectItem>
+                  <SelectItem value="none">-</SelectItem>
                   {ERAS.map(era => (
                     <div key={era.id}>
                       <div className="px-2 py-1 text-xs text-muted-foreground font-semibold">{getEraShortName(era.id, language)}</div>

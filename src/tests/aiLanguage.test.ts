@@ -11,8 +11,8 @@ const UI_LANGUAGES = Object.keys(T) as Language[];
 
 // The bug these guard against: German and French were handed two thin sentences
 // while Macedonian got seven numbered rules, and a second copy of LANG_NAMES in
-// EssayPage.tsx omitted de/fr entirely, so those students were told — in the
-// system prompt — to receive their essay feedback in English.
+// EssayPage.tsx omitted de/fr entirely, so those students were told - in the
+// system prompt - to receive their essay feedback in English.
 describe('AI language directives', () => {
   it('covers every UI language', () => {
     expect([...DIRECTIVE_LANGUAGES].sort()).toEqual([...UI_LANGUAGES].sort());
@@ -38,7 +38,7 @@ describe('AI language directives', () => {
   it('spells out numbered, checkable rules for every non-English language', () => {
     for (const lang of DIRECTIVE_LANGUAGES.filter(l => l !== 'en')) {
       const d = languageDirective(lang);
-      // At least five enumerated rules — the point is specificity the model can
+      // At least five enumerated rules - the point is specificity the model can
       // verify against, not an adjective like "write well".
       expect(d, `${lang} should enumerate its grammar rules`).toMatch(/\(5\)/);
       // fr "calque" · de "Wort-für-Wort" · es "literal" · ru "калькируй" · mk "дословната"
@@ -154,7 +154,7 @@ describe('no second copy of the language table', () => {
     };
     walk(path.join(root, 'src'));
 
-    expect(offenders, 'redeclared LANG_NAMES — import it from services/aiLanguage instead').toEqual([]);
+    expect(offenders, 'redeclared LANG_NAMES - import it from services/aiLanguage instead').toEqual([]);
   });
 });
 

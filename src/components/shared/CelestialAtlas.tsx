@@ -6,10 +6,10 @@ import { useEffect, useRef } from 'react';
  * The app's ambient background theme: a deep-space star chart as the ancients
  * drew them. Three layers on one canvas:
  *   1. A slow-drifting parallax starfield (two depths, pre-rendered sprites).
- *   2. Faint "constellation" clusters — a handful of brighter stars joined by
+ *   2. Faint "constellation" clusters - a handful of brighter stars joined by
  *      hairline chords that fade in and out over ~20s cycles, like an antique
  *      celestial map surfacing from the dark.
- *   3. A very slow aurora sweep — a soft violet-to-gold gradient blob gliding
+ *   3. A very slow aurora sweep - a soft violet-to-gold gradient blob gliding
  *      across the far field once every ~90s.
  *
  * Performance contract (same discipline as the previous Golden Dust theme):
@@ -21,7 +21,7 @@ import { useEffect, useRef } from 'react';
 
 interface Star {
   x: number; y: number;
-  depth: number;        // 0.35 (far) or 1 (near) — parallax factor
+  depth: number;        // 0.35 (far) or 1 (near) - parallax factor
   size: number;
   twinklePhase: number;
   twinkleSpeed: number;
@@ -44,11 +44,11 @@ interface Props {
 
 // A few real northern-sky shapes, roughly traced (normalized coordinates).
 const SHAPES: { x: number; y: number }[][] = [
-  // Cassiopeia — the W
+  // Cassiopeia - the W
   [{ x: 0, y: 0.55 }, { x: 0.25, y: 0.2 }, { x: 0.5, y: 0.5 }, { x: 0.75, y: 0.05 }, { x: 1, y: 0.35 }],
-  // Ursa Minor — the little dipper's ladle and handle
+  // Ursa Minor - the little dipper's ladle and handle
   [{ x: 0, y: 0.1 }, { x: 0.22, y: 0.28 }, { x: 0.42, y: 0.5 }, { x: 0.6, y: 0.72 }, { x: 0.85, y: 0.66 }, { x: 1, y: 0.9 }, { x: 0.72, y: 0.95 }],
-  // Cygnus — the northern cross
+  // Cygnus - the northern cross
   [{ x: 0.5, y: 0 }, { x: 0.5, y: 0.45 }, { x: 0.5, y: 1 }, { x: 0.5, y: 0.45 }, { x: 0, y: 0.6 }, { x: 0.5, y: 0.45 }, { x: 1, y: 0.3 }],
 ];
 
@@ -120,7 +120,7 @@ export function CelestialAtlas({ className = '', position = 'fixed', density = 1
     const draw = (t: number, dt: number) => {
       ctx.clearRect(0, 0, w, h);
 
-      // Aurora sweep — one soft blob gliding across, ~90s period.
+      // Aurora sweep - one soft blob gliding across, ~90s period.
       const sweep = (t / 90000) % 1;
       const ax = (-0.25 + sweep * 1.5) * w;
       const ay = h * (0.22 + 0.12 * Math.sin(t / 31000));
@@ -144,7 +144,7 @@ export function CelestialAtlas({ className = '', position = 'fixed', density = 1
         ctx.drawImage(sprite, s.x - d / 2, s.y - d / 2, d, d);
       }
 
-      // Constellations — chords + node stars, breathing on ~20s cycles.
+      // Constellations - chords + node stars, breathing on ~20s cycles.
       for (const c of constellations) {
         const vis = 0.5 + 0.5 * Math.sin(t / 20000 + c.phase);
         const alpha = 0.03 + vis * 0.06;

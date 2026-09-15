@@ -34,7 +34,7 @@ async function probeLocalBanner(lessonId: number): Promise<string | null> {
     const type = res.headers.get('content-type') ?? '';
     // Vite dev + most static hosts serve index.html (text/html) for misses.
     if (res.ok && !type.includes('text/html')) return localPath;
-  } catch { /* offline or blocked — treat as absent */ }
+  } catch { /* offline or blocked - treat as absent */ }
   return null;
 }
 
@@ -48,7 +48,7 @@ export async function fetchLessonBannerUrl(lessonId: number): Promise<string | n
       assetCache.set(lessonId, persisted);
       return persisted;
     }
-  } catch { /* storage unavailable — resolve fresh */ }
+  } catch { /* storage unavailable - resolve fresh */ }
 
   const lesson = LESSONS_CATALOG.find(l => l.id === lessonId);
   if (!lesson) return null;

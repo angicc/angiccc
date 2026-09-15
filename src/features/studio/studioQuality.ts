@@ -1,19 +1,19 @@
 // ─── AI Content Studio: measuring what the model actually produced ────────────
 // The Studio used to make one call, throw away whatever failed a shape check,
 // and hand over the remainder without comment. That hides four defects a shape
-// check cannot see — and every one of them was measurable all along.
+// check cannot see - and every one of them was measurable all along.
 //
 //   1. ANSWER POSITION. Nothing shuffled a generated question, and models
 //      overwhelmingly put the correct option first or second. A set where the
 //      answer is at A every time is answerable without reading it. The authored
 //      quiz bank had exactly this problem (89.5% in the middle two slots) and
 //      solved it at serve time in prepareQuestion; generated sets went through
-//      no such step. Fixed here deterministically — reordering options and
+//      no such step. Fixed here deterministically - reordering options and
 //      moving correctIndex with them needs no second opinion from a model.
 //
 //   2. LENGTH BIAS. When the correct option is conspicuously the longest, the
-//      question is answerable by shape. Cannot be repaired by shuffling — the
-//      distractors have to be rewritten — so it is measured and drives a repair
+//      question is answerable by shape. Cannot be repaired by shuffling - the
+//      distractors have to be rewritten - so it is measured and drives a repair
 //      request instead.
 //
 //   3. UNGROUNDED CONTENT. The prompt insists every item be answerable from the
@@ -51,8 +51,8 @@ function contentTokens(s: string): Set<string> {
 /**
  * Every number in the text, normalised.
  *
- * Formatting varies wildly between a source and a generated answer — "1,914"
- * and "1914", "14 July 1789" and "July 14, 1789" — so separators are dropped
+ * Formatting varies wildly between a source and a generated answer - "1,914"
+ * and "1914", "14 July 1789" and "July 14, 1789" - so separators are dropped
  * and each run of digits is kept on its own. What matters is whether the
  * FIGURE appears in the source at all, not how it was written.
  */
@@ -172,7 +172,7 @@ export function duplicateCardIndices(cards: StudioFlashcard[]): number[] {
  * Did the model answer in the language it was asked for?
  *
  * Only the script is checked, which separates the two cases that actually go
- * wrong — Russian or Macedonian coming back in Latin script, or a Latin-script
+ * wrong - Russian or Macedonian coming back in Latin script, or a Latin-script
  * language coming back in Cyrillic. Telling German from French by inspection
  * is not something a heuristic should pretend to do, so it does not try; a
  * wrong-but-Latin answer is left to the reader.
@@ -196,7 +196,7 @@ export function wrongScript(text: string, language: string): boolean {
  * favour the first two slots heavily, which makes a set guessable.
  *
  * Assignment is round-robin over a rotating start rather than random, so the
- * distribution is exactly even and the same kit always lands the same way —
+ * distribution is exactly even and the same kit always lands the same way -
  * a learner who regenerates does not get a different-feeling set from noise.
  */
 export function balanceAnswerPositions(questions: StudioQuestion[]): StudioQuestion[] {
@@ -220,7 +220,7 @@ export type IssueKind =
 
 export interface KitIssue {
   kind: IssueKind;
-  /** `drop` — the item was removed. `warn` — kept, but worth saying. */
+  /** `drop` - the item was removed. `warn` - kept, but worth saying. */
   severity: 'drop' | 'warn';
   /** Short, learner-readable. Translated at the call site by kind. */
   detail: string;
@@ -233,7 +233,7 @@ export interface KitReport {
   shortfall: { questions: number; cards: number };
   /** Share of questions where the correct option is conspicuously longest. */
   lengthBiasRate: number;
-  /** 0–100. Not shown as a grade — it decides whether to spend a repair call. */
+  /** 0–100. Not shown as a grade - it decides whether to spend a repair call. */
   score: number;
   needsRepair: boolean;
 }
@@ -244,7 +244,7 @@ const REPAIR_THRESHOLD = 80;
 /**
  * Validate, repair what can be repaired deterministically, and report the rest.
  *
- * Returns a NEW kit — the caller renders that, not the raw model output.
+ * Returns a NEW kit - the caller renders that, not the raw model output.
  */
 export function assessKit(
   kit: GeneratedKit,
@@ -315,8 +315,8 @@ export function assessKit(
     return true;
   });
 
-  // Length bias survives validation — the distractors would have to be
-  // rewritten — so it is counted and reported, never silently accepted.
+  // Length bias survives validation - the distractors would have to be
+  // rewritten - so it is counted and reported, never silently accepted.
   const biased = surviving.filter(hasLengthBias).length;
   const lengthBiasRate = surviving.length ? biased / surviving.length : 0;
   if (biased > 0) {
@@ -380,8 +380,8 @@ function scoreKit(input: {
   shortfall: { questions: number; cards: number };
 }): number {
   const { req, questions, cards, facts, lengthBiasRate, shortfall } = input;
-  // Completeness is most of it — a kit that is short is the thing a learner
-  // actually notices — with quality of what survived on top.
+  // Completeness is most of it - a kit that is short is the thing a learner
+  // actually notices - with quality of what survived on top.
   const qFill = req.questionCount ? questions.length / req.questionCount : 1;
   const cFill = req.cardCount ? cards.length / req.cardCount : 1;
   const factFill = Math.min(1, facts.length / 5);
@@ -431,14 +431,14 @@ export function buildRepairPrompt(
 
 Your previous attempt at this source text was partly rejected: ${rejections.map(r => why[r]).filter(Boolean).join('; ') || 'it was incomplete'}.
 
-Produce ONLY replacements — ${report.shortfall.questions} more multiple-choice question(s) and ${report.shortfall.cards} more flashcard(s).
+Produce ONLY replacements - ${report.shortfall.questions} more multiple-choice question(s) and ${report.shortfall.cards} more flashcard(s).
 
 SOURCE TEXT:
 """
 ${req.sourceText.slice(0, 12000)}
 """
 
-ALREADY COVERED — do not repeat any of these, or anything that tests the same fact:
+ALREADY COVERED - do not repeat any of these, or anything that tests the same fact:
 ${covered.map(c => `- ${c}`).join('\n')}
 
 RULES:
@@ -457,8 +457,8 @@ Respond ONLY with JSON, no fences:
 /**
  * Fold repair output into the kit, then re-check it.
  *
- * The top-up is validated by the same rules as the first pass — a repair call
- * has no special standing — and positions are rebalanced across the merged set
+ * The top-up is validated by the same rules as the first pass - a repair call
+ * has no special standing - and positions are rebalanced across the merged set
  * rather than the halves separately, or the joint would show as a run.
  */
 export function mergeRepair(

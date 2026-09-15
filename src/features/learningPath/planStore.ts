@@ -54,7 +54,7 @@ export function stepCompletion(userId: string, plan: WeekPlan): Record<string, b
       case 'era-quiz': {
         const era = ERAS.find(e => e.id === step.eraId);
         // A retake step counts once any score ≥70 exists, or the quiz was
-        // (re)taken after the plan started — approximated by any recorded score.
+        // (re)taken after the plan started - approximated by any recorded score.
         done[step.id] = Boolean(era && typeof prog.quizScores[era.quizId] === 'number' && prog.quizScores[era.quizId] >= 70)
           || Boolean(step.manualDone);
         break;

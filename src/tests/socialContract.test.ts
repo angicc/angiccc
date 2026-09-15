@@ -5,7 +5,7 @@
 // helper swallowed it as a boolean false, and the UI silently fell back to
 // localStorage. Nothing failed loudly enough to notice.
 //
-// Nothing in the type system connects the two halves — they are separate
+// Nothing in the type system connects the two halves - they are separate
 // tsconfigs, separate deployments, and the wire between them is untyped JSON.
 // So this reads both sources and checks they agree: for each route the client
 // calls, the keys it sends must be exactly the keys the server's zod schema

@@ -40,7 +40,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
     // The baked translations for this language are a separate chunk, so fetch
     // them first and re-render when they land. warmMetaForLanguage also awaits
-    // them, but returns without notifying when every lesson is already baked —
+    // them, but returns without notifying when every lesson is already baked -
     // which is the common case, and would otherwise leave the UI on English.
     void warmBakedTranslations(language);
 

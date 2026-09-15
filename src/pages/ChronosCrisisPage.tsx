@@ -61,7 +61,7 @@ const GRADE_STYLE: Record<LetterGrade, { text: string; ring: string; bg: string 
  *
  * The node header counted its position in the rendered list while the sidebar
  * counted decisions submitted, so the same "Turn" label showed two different
- * numbers at once — 1/6 beside the node and 2/6 in the sidebar. The engine
+ * numbers at once - 1/6 beside the node and 2/6 in the sidebar. The engine
  * echoes the step it resolved on each node, so that is the authority; the
  * render index is only a fallback for a node where the model omitted it (the
  * schema defaults that field to 0).
@@ -201,7 +201,7 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
       onAiMessage();
       const parsed = parseAssessment(acc);
       if (!parsed) throw new Error('The Tribunal returned an unreadable verdict. Retry to reconvene.');
-      // XP pays out on improvement only — reconvening cannot be farmed.
+      // XP pays out on improvement only - reconvening cannot be farmed.
       const already = assessment?.xpAwarded ?? 0;
       const runXp = assessmentXp(parsed.overallScore);
       const delta = Math.max(0, runXp - already);
@@ -227,7 +227,7 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
   // Legacy-format recovery: chats persisted by the pre-state-machine engine
   // are prose the node renderer cannot parse. Mounting with messages but zero
   // nodes means a bricked timeline (no Begin button, locked input, blank
-  // feed) — reset once so the player lands on a fresh run.
+  // feed) - reset once so the player lands on a fresh run.
   const recoveredRef = useRef(false);
   useEffect(() => {
     if (recoveredRef.current) return;
@@ -421,7 +421,7 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
               )}
               {error != null && !loading && <AiErrorCard error={error} onRetry={retry} />}
 
-              {/* ── STRATEGIC ASSESSMENT — tribunal verdict over the whole run ── */}
+              {/* ── STRATEGIC ASSESSMENT - tribunal verdict over the whole run ── */}
               {run.concluded && !loading && (() => {
                 const METRIC_LABELS: Record<AssessmentMetricKey, string> = {
                   strategicForesight: t.crisis_assess_m_foresight,
@@ -570,7 +570,7 @@ function CrisisRoom({ scenario, userId, onAiMessage }: {
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.crisis_turn}</span>
               <span className={cn('font-heading font-bold text-sm tabular-nums', es.text)}>
-                {run.concluded ? '—' : `${Math.min(run.activeStepIndex + 1, 6)}/6`}
+                {run.concluded ? '-' : `${Math.min(run.activeStepIndex + 1, 6)}/6`}
               </span>
             </div>
             {([

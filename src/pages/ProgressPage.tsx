@@ -45,7 +45,7 @@ export default function ProgressPage() {
   const tier = subscription?.tier ?? 'free';
   const isAdvanced = tier !== 'free';
 
-  // Era short names must come from the locale map, never the raw dataset —
+  // Era short names must come from the locale map, never the raw dataset -
   // otherwise English axis labels leak into translated dashboards. All six
   // eras are mapped explicitly: the old 4-era fallthrough labeled both
   // Prehistoric and Byzantine as "Modern" on the Lessons-by-Era chart.
@@ -108,20 +108,20 @@ export default function ProgressPage() {
 
   // ── New progress types ──────────────────────────────────────────────────
   // 1. Clio's Analyses: passes, average score, and best grade from the
-  //    written-analysis gate — the intellectual backbone of progression.
+  //    written-analysis gate - the intellectual backbone of progression.
   const analysisStats = useMemo(() => {
     if (!currentUser) return null;
     const s = loadAnalysisState(currentUser.id);
     const records = Object.values(s.passes);
-    if (s.attempts === 0 && records.length === 0) return { passes: 0, attempts: 0, avg: 0, best: '—' };
+    if (s.attempts === 0 && records.length === 0) return { passes: 0, attempts: 0, avg: 0, best: '-' };
     const avg = records.length ? Math.round(records.reduce((sum, r) => sum + r.score, 0) / records.length) : 0;
-    const best = records.length ? records.reduce((a, b) => (b.score > a.score ? b : a)).grade : '—';
+    const best = records.length ? records.reduce((a, b) => (b.score > a.score ? b : a)).grade : '-';
     return { passes: records.length, attempts: s.attempts, avg, best };
   }, [currentUser, progress]); // progress: re-derive after each completion
 
   // 2. Time Invested: seconds actually studied, per era.
   //
-  // This used to sum lesson.estimatedMinutes over completed lessons — the
+  // This used to sum lesson.estimatedMinutes over completed lessons - the
   // catalogue's guess at how long a lesson should take, the same for everyone
   // and unaffected by how long anyone actually spent. useStudyTimer now records
   // real seconds while a lesson is open, visible and being used.
@@ -223,7 +223,7 @@ export default function ProgressPage() {
           ))}
         </motion.div>
 
-        {/* Era lesson completion — visible to all */}
+        {/* Era lesson completion - visible to all */}
         <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}>
           <Card>
             <CardHeader className="pb-3">
@@ -255,7 +255,7 @@ export default function ProgressPage() {
 
         {/* ── New progress types: analyses, time invested, momentum ── */}
         <div className="grid md:grid-cols-3 gap-4">
-          {/* Clio's Analyses — donut ring of average score */}
+          {/* Clio's Analyses - donut ring of average score */}
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}>
             <Card className="h-full overflow-hidden relative">
               <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-violet-500/10 to-transparent pointer-events-none" />
@@ -271,7 +271,7 @@ export default function ProgressPage() {
                         "ПРОСЕЧЕН РЕЗУЛТАТ" and "PUNTUACIÓN MEDIA" ran past the
                         stroke and over the artwork. Bigger ring, and the text
                         is boxed inside the stroke so it wraps rather than
-                        spills — in every language, not just the short ones. */}
+                        spills - in every language, not just the short ones. */}
                     <div className="relative w-[118px] h-[118px] shrink-0">
                       <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
                         <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" className="text-secondary" strokeWidth="9" />
@@ -316,7 +316,7 @@ export default function ProgressPage() {
             </Card>
           </motion.div>
 
-          {/* Time Invested — labelled per-era columns */}
+          {/* Time Invested - labelled per-era columns */}
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }}>
             <Card className="h-full overflow-hidden relative">
               <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-emerald-500/10 to-transparent pointer-events-none" />
@@ -354,7 +354,7 @@ export default function ProgressPage() {
             </Card>
           </motion.div>
 
-          {/* Learning Momentum — 14-day intensity heatmap + current run */}
+          {/* Learning Momentum - 14-day intensity heatmap + current run */}
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.26 }}>
             <Card className="h-full overflow-hidden relative">
               <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-rose-500/10 to-transparent pointer-events-none" />
@@ -395,7 +395,7 @@ export default function ProgressPage() {
           </motion.div>
         </div>
 
-        {/* ── ADVANCED ANALYTICS — Pro/Master only ── */}
+        {/* ── ADVANCED ANALYTICS - Pro/Master only ── */}
         {!isAdvanced ? (
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
             <Card className="border-primary/20 bg-primary/5">
@@ -444,7 +444,7 @@ export default function ProgressPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    {/* Emptiness is decided by era quizzes actually sat — not by
+                    {/* Emptiness is decided by era quizzes actually sat - not by
                         quizScores having any key at all. Smart Quiz writes a
                         'smart-quiz' entry there, so the old check reported "has
                         data" while the chart, which only plots era quizzes,
@@ -458,7 +458,7 @@ export default function ProgressPage() {
                           <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} />
                           <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} />
                           <Tooltip contentStyle={{ background: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: 8, fontSize: 12 }} formatter={(v: number) => [`${v}%`, t.quiz_score]} />
-                          {/* Per-era colour, matching every other chart here —
+                          {/* Per-era colour, matching every other chart here -
                               eraData already carried `fill` and it went unused. */}
                           <Bar dataKey="quiz" radius={[4, 4, 0, 0]}>
                             {eraData.filter(e => e.taken).map(e => (
@@ -533,7 +533,7 @@ export default function ProgressPage() {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-amber-400" />{t.prog_achievements} — {unlockedCount}/{totalAchievements} {t.prog_unlocked}
+                    <Trophy className="w-4 h-4 text-amber-400" />{t.prog_achievements} - {unlockedCount}/{totalAchievements} {t.prog_unlocked}
                     <Badge variant="outline" className="text-[10px] text-amber-400 border-amber-400/30 ml-auto">Pro</Badge>
                   </CardTitle>
                 </CardHeader>

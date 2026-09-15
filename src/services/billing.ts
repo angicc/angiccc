@@ -2,7 +2,7 @@
 // Bridges the pricing UI to the backend's Stripe integration. When
 // VITE_API_URL points at a deployed Historify server, plan purchases go
 // through real Stripe Checkout (subscription + free trial, card up front).
-// Without it — local dev, preview builds — callers fall back to the demo
+// Without it - local dev, preview builds - callers fall back to the demo
 // payment modal so the flow stays testable end-to-end.
 
 const API_BASE = ((import.meta.env.VITE_API_URL as string | undefined) ?? '').replace(/\/$/, '');

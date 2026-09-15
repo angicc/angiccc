@@ -1,7 +1,7 @@
 // ─── Battle juice: particles, volleys, shake, banners, cinematics ─────────────
 // Every effect is a self-contained framer-motion component keyed by the round
 // counter, so replays are automatic and cleanup is free (AnimatePresence
-// unmounts them). Nothing here holds game state — the arena passes what the
+// unmounts them). Nothing here holds game state - the arena passes what the
 // engine resolved and these components make it FEEL like it happened.
 import { motion, AnimatePresence } from 'framer-motion';
 import { Crown, Star as StarIcon, Flame, Wind } from 'lucide-react';

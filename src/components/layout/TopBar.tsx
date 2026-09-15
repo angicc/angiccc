@@ -1,7 +1,7 @@
-// ─── Zone B: Fixed Top Utility Header (70px, Layer 1 — Stone Slate) ──────────
+// ─── Zone B: Fixed Top Utility Header (70px, Layer 1 - Stone Slate) ──────────
 // Left: global search (Ctrl+K) + the current page title. Right: XP mini-pill
 // with progress, notification bell, language selector, theme toggle, and the
-// account menu. Separation from Zone C comes from elevation, not hard rules —
+// account menu. Separation from Zone C comes from elevation, not hard rules -
 // the only stroke is a 1px rgba(255,255,255,0.05) hairline under the header.
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';

@@ -11,7 +11,7 @@ const BASELINE = { diplomaticCapital: 50, domesticStability: 50, militaryReadine
 
 const resetBody = z.object({ crisisId: z.string().min(1) });
 
-// POST /api/crisis/reset — transactionally drop the decision log and
+// POST /api/crisis/reset - transactionally drop the decision log and
 // re-initialize baseline metrics for a fresh, error-free timeline pool.
 crisisRouter.post('/reset', async (req: Request, res: Response) => {
   const parsed = resetBody.safeParse(req.body);
@@ -34,7 +34,7 @@ crisisRouter.post('/reset', async (req: Request, res: Response) => {
   res.json(state);
 });
 
-// GET /api/crisis/:crisisId — current run state (creates baseline if absent).
+// GET /api/crisis/:crisisId - current run state (creates baseline if absent).
 crisisRouter.get('/:crisisId', async (req: Request, res: Response) => {
   const userId = req.auth!.userId;
   const state = await prisma.crisisRoomState.upsert({
@@ -53,11 +53,11 @@ crisisRouter.get('/:crisisId', async (req: Request, res: Response) => {
 const stepBody = z.object({
   crisisId: z.string().min(1),
   decision: z.object({ step: z.number().int(), optionId: z.string(), text: z.string() }),
-  /** Raw LLM output for the turn — validated server-side before persisting. */
+  /** Raw LLM output for the turn - validated server-side before persisting. */
   rawEngineOutput: z.string().min(1),
 });
 
-// POST /api/crisis/step — validate one engine node, mutate the vector, persist.
+// POST /api/crisis/step - validate one engine node, mutate the vector, persist.
 crisisRouter.post('/step', async (req: Request, res: Response) => {
   const parsed = stepBody.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });

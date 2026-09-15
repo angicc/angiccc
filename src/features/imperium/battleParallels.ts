@@ -1,10 +1,10 @@
 // ─── Clio's Historical Parallels ─────────────────────────────────────────────
 // The intellectual heart of the battle layer: every engagement is matched to a
-// REAL battle from history whose tactical shape it echoes — chosen
+// REAL battle from history whose tactical shape it echoes - chosen
 // deterministically from the matchup (your tactic vs theirs), the ground, the
 // weather and the outcome. After the fighting, Clio's Debrief cites the
 // parallel, tells the player what happened there, and distils the transferable
-// principle — so each battle in Imperium doubles as a short
+// principle - so each battle in Imperium doubles as a short
 // history lesson. All text lives in the imperium catalog (6 languages);
 // this module only carries keys + the matching logic, which is pure and
 // testable.
@@ -97,7 +97,7 @@ export interface ParallelQuery {
 /**
  * Deterministically pick the historical battle this engagement most resembles.
  * Scoring: tactic-pair match is mandatory-ish (heavily weighted), terrain and
- * weather refine. Always returns something — history has a parallel for
+ * weather refine. Always returns something - history has a parallel for
  * every folly.
  */
 export function findParallel(q: ParallelQuery): HistoricalParallel {

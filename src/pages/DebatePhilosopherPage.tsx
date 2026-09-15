@@ -238,7 +238,7 @@ export default function DebatePhilosopherPage() {
     try {
       let acc = '';
       // Persistent debate memory: the persona remembers this student's past
-      // stances, concessions, and record — across the daily rotation.
+      // stances, concessions, and record - across the daily rotation.
       const system = buildPhilosopherSystem(currentUser?.id, philosopher.id, philosopher.systemPrompt);
       for await (const chunk of streamChatResponse(history, undefined, system)) {
         acc += chunk;

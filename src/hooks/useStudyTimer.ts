@@ -6,7 +6,7 @@ import { recordStudySeconds, IDLE_TIMEOUT_MS } from '@/features/progress/timeTra
  * visible, and the learner has interacted recently.
  *
  * Ticking once a second and writing every TICK_SECONDS keeps the accounting
- * simple and loses at most a few seconds if the tab is closed abruptly — which
+ * simple and loses at most a few seconds if the tab is closed abruptly - which
  * is why this does not rely on beforeunload/pagehide, unreliable on mobile.
  */
 const TICK_SECONDS = 5;

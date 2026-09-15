@@ -17,8 +17,8 @@ import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 
-// Everything behind them is split out. These pages carry the app's bulk — baked
-// lesson/quiz translations, map geometry, Leaflet — and a visitor needs only the
+// Everything behind them is split out. These pages carry the app's bulk - baked
+// lesson/quiz translations, map geometry, Leaflet - and a visitor needs only the
 // route they actually open, not all 24 at once.
 const PricingPage = lazy(() => import('@/pages/PricingPage'));
 const EraPreviewPage = lazy(() => import('@/pages/EraPreviewPage'));

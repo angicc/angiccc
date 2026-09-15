@@ -1,4 +1,4 @@
-// ─── CHRONOS IMPERIUM — strategic-tactical campaign (Master-only) ─────────────
+// ─── CHRONOS IMPERIUM - strategic-tactical campaign (Master-only) ─────────────
 // Rebuilt for clarity: four curated theatres of REAL, non-overlapping states
 // from the historical-basemaps dataset (no more stacked thematic layers), a
 // guided how-to-play council, named armies, an explicit objective tracker,
@@ -197,7 +197,7 @@ function BattleReplay({ battle, language, weather, onDone }: {
             </p>
           </div>
           <Badge variant="outline" className="ml-auto shrink-0 tabular-nums">
-            {tickIdx < 0 ? '—' : `${Math.min(tickIdx + 1, resolution.ticks.length)}/${resolution.ticks.length}`}
+            {tickIdx < 0 ? '-' : `${Math.min(tickIdx + 1, resolution.ticks.length)}/${resolution.ticks.length}`}
           </Badge>
         </div>
 
@@ -229,14 +229,14 @@ function BattleReplay({ battle, language, weather, onDone }: {
                   <Badge variant="destructive" className="text-[9px] px-1.5">{impText('imp_routed', language)}</Badge>
                 )}
               </div>
-              <p className="text-sm font-semibold truncate">{rosterKey ? impText(rosterKey, language) : '—'}</p>
+              <p className="text-sm font-semibold truncate">{rosterKey ? impText(rosterKey, language) : '-'}</p>
               <StatBar label={impText('imp_strength', language)} value={s} color={side === 'attacker' ? FACTION_COLOR.player : FACTION_COLOR.rival} />
               <StatBar label={impText('imp_morale', language)} value={m} color="#7aa2f7" />
             </div>
           ))}
         </div>
 
-        {/* Modifier ledger — the matrix explains its math */}
+        {/* Modifier ledger - the matrix explains its math */}
         <div className="px-4 pb-3 flex flex-wrap gap-1.5">
           {resolution.modifiers.map((m, i) => (
             <Badge key={i} variant="outline" className={cn('text-[10px]',
@@ -466,7 +466,7 @@ export default function ImperiumPage() {
     const graph = graphFor(campaign.theatre);
     const provinces = provincesFor(campaign.theatre);
 
-    // Province polygons — every dataset ring, tinted by owner.
+    // Province polygons - every dataset ring, tinted by owner.
     for (const pv of provinces) {
       const owner = (snap.ownership.owners[pv.id] ?? 'neutral') as FactionId | 'neutral';
       const color = FACTION_COLOR[owner];
@@ -590,7 +590,7 @@ export default function ImperiumPage() {
     const state = loadCampaign(userId, id);
     // A resumable campaign needs both its theatre and a current snapshot. When
     // the body is missing (storage evicted, older/partial save) the index entry
-    // is stale — remove it and tell the player, rather than leaving a dead
+    // is stale - remove it and tell the player, rather than leaving a dead
     // "Continue" button that does nothing on click.
     if (state && state.theatre && state.current) {
       setResolving(false);
@@ -632,7 +632,7 @@ export default function ImperiumPage() {
       }));
       setCampaign(result.state);
       setPendingMarches({}); setCrisisChoices({}); setSelectedArmyId(null);
-      // Only stage battles the player actually fought — the on-map theatre grades
+      // Only stage battles the player actually fought - the on-map theatre grades
       // *your* tactical move, so rival-vs-neutral skirmishes are not replayed.
       const pid = result.state.playerLeader.id;
       setBattleQueue(result.battles.filter(b =>
@@ -898,7 +898,7 @@ export default function ImperiumPage() {
                     ))}
                   </div>
 
-                  {/* ── Clio's Tactical Read — grades the chosen tactic live ── */}
+                  {/* ── Clio's Tactical Read - grades the chosen tactic live ── */}
                   {(() => {
                     const cLat = (spec.viewBounds[0][0] + spec.viewBounds[1][0]) / 2;
                     const cLng = (spec.viewBounds[0][1] + spec.viewBounds[1][1]) / 2;
@@ -1003,7 +1003,7 @@ export default function ImperiumPage() {
 
                 <div className="rounded-2xl border border-white/10 bg-layer-1 p-4 space-y-3">
                   <h3 className="font-heading font-semibold text-sm">{ti('imp_your_armies')}</h3>
-                  {playerArmies.length === 0 && <p className="text-[12px] text-muted-foreground">—</p>}
+                  {playerArmies.length === 0 && <p className="text-[12px] text-muted-foreground">-</p>}
                   {playerArmies.map(army => {
                     const marchTarget = pendingMarches[army.id] ?? army.march?.targetTerritoryId;
                     return (

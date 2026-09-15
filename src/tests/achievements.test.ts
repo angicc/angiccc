@@ -13,7 +13,7 @@ const blank = (over: Partial<UserProgress> = {}): UserProgress => ({
 
 describe('achievements', () => {
   it('translates every achievement into every content language', () => {
-    // Checked from the definitions, not from the translation table — the
+    // Checked from the definitions, not from the translation table - the
     // direction that matters. A table can be 100% complete and still miss
     // achievements that were never added to it.
     const gaps: string[] = [];

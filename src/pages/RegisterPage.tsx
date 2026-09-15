@@ -41,7 +41,7 @@ export default function RegisterPage() {
       if (r.success) {
         toast.success(t.toast_account_created);
         // Set when the server could not be reached and the account was made
-        // locally instead — the learner needs to know it is device-only.
+        // locally instead - the learner needs to know it is device-only.
         if (r.noticeKey) toast.warning(t[r.noticeKey]);
         navigate('/dashboard');
       } else {

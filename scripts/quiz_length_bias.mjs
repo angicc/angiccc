@@ -2,7 +2,7 @@
 // ─── Quiz answer-length bias: measure, and apply balancing rewrites ───────────
 //
 // A multiple-choice question leaks its answer when the correct option is
-// visibly longer than its distractors — the learner scores without knowing
+// visibly longer than its distractors - the learner scores without knowing
 // anything. Position bias is fixed at serve time by prepareQuestion; length
 // bias is a property of the authored text, so it has to be measured against
 // the source and fixed by rewriting.
@@ -19,7 +19,7 @@
 // with options in the SAME ORDER as the source so correctIndex stays valid.
 // Only the NEW text is supplied: the old text is read from the loaded modules,
 // never hand-transcribed, because a mistyped "from" silently patches nothing
-// or — worse — the wrong question. Replacement is by exact string match and
+// or - worse - the wrong question. Replacement is by exact string match and
 // refuses to run when a match is missing or ambiguous.
 import { build, transform } from 'esbuild';
 import path from 'path';
@@ -83,7 +83,7 @@ function measure(questions, lang, getTranslated) {
  * `lang` matters and used to be missing: this read q.options directly, which
  * is the ENGLISH text, so the offender list only ever described English. A
  * batch that fixed every listed offender left the other five languages
- * untouched — and the summary above kept reporting them at the old rate with
+ * untouched - and the summary above kept reporting them at the old rate with
  * nothing to say which questions were responsible.
  *
  * The gap is measured against the LONGEST distractor, not the mean: a learner
@@ -128,8 +128,8 @@ function needles(text) {
  * The regions of a file that belong to one question.
  *
  * Replacement used to search whole files, which works only while every option
- * is a distinctive phrase. It is not: distractors are routinely single words —
- * "Egypt", "India", "Morocco" — and those appear dozens of times across the
+ * is a distinctive phrase. It is not: distractors are routinely single words -
+ * "Egypt", "India", "Morocco" - and those appear dozens of times across the
  * bank, so the patcher refused them all as ambiguous. Correct, but it meant
  * exactly the questions most in need of rewriting could not be rewritten.
  *
@@ -170,9 +170,9 @@ function languageWindows(text, windows, lang) {
 /**
  * Narrow further to the `options: [ … ]` array itself.
  *
- * An option's text often appears again in the same record's explanation —
+ * An option's text often appears again in the same record's explanation -
  * "Дванаесетте таблици" is both option 0 of aq45 and a word in its
- * explanation — so a record-scoped search finds it twice and refuses. Only
+ * explanation - so a record-scoped search finds it twice and refuses. Only
  * the array is a legitimate replacement target anyway: rewriting an option
  * must never silently edit the prose that explains it.
  */
@@ -215,7 +215,7 @@ function questionWindows(text, id) {
 /**
  * Occurrences of `needle` inside any of `windows`, as absolute offsets.
  *
- * A hit only counts when the needle is a WHOLE string literal — quote
+ * A hit only counts when the needle is a WHOLE string literal - quote
  * immediately before, the same quote immediately after. Substring matching
  * alone was wrong in a way that only showed up mid-patch: replacing eq2's
  * "Флорида" with "Флорида и её побережье Мексиканского залива" put the
@@ -291,11 +291,11 @@ async function applyPatch(patchPath, questions, get) {
             }
           }
         }
-        if (found.length === 0) { problems.push(`${id}/${lang}[${i}]: not found in ${id}'s block — ${from[i].slice(0, 44)}`); continue; }
-        if (found.length > 1) { problems.push(`${id}/${lang}[${i}]: ${found.length} matches, ambiguous — ${from[i].slice(0, 44)}`); continue; }
+        if (found.length === 0) { problems.push(`${id}/${lang}[${i}]: not found in ${id}'s block - ${from[i].slice(0, 44)}`); continue; }
+        if (found.length > 1) { problems.push(`${id}/${lang}[${i}]: ${found.length} matches, ambiguous - ${from[i].slice(0, 44)}`); continue; }
         const { f, needle } = found[0];
         // Escape the replacement for the quote character that actually
-        // delimits this literal — NOT for however the old text happened to be
+        // delimits this literal - NOT for however the old text happened to be
         // escaped. An apostrophe in the new text inside a single-quoted
         // literal broke the file when the old text had none to go by.
         const { at } = found[0];
@@ -350,7 +350,7 @@ if (argv[0] === '--apply') { await applyPatch(argv[1], ALL, get); process.exit(0
  *
  * Rewriting six languages by counting characters in your head does not work.
  * --list only ranks English (it reads q.options directly), so a patch that
- * fixes English can leave the other five untouched at ~51% — which is what the
+ * fixes English can leave the other five untouched at ~51% - which is what the
  * per-language summary has been reporting all along. This closes that loop
  * before anything is written.
  */
@@ -371,7 +371,7 @@ function checkPatch(patchPath, questions, get, tolerance = 2) {
       const others = lens.filter((_, i) => i !== ci);
       const gap = lens[ci] - Math.max(...others);
       if (lens[ci] === Math.max(...lens) && new Set(lens).size > 1) {
-        // A one- or two-character lead is not a tell — nobody picks an answer
+        // A one- or two-character lead is not a tell - nobody picks an answer
         // because it is two characters longer, and where the options are
         // proper nouns ("Kamikaze" beside "Seppuku") it cannot be removed
         // without padding them into something worse. Reported, not refused.
@@ -420,7 +420,7 @@ console.log(`${ALL.length} questions · correct option longest, and its mean cha
 console.log('(25% is chance for a 4-option question)');
 for (const lang of ['en', ...LANGS]) {
   const m = measure(ALL, lang, get);
-  // Signed, because the mean can now legitimately be negative — "+-0.04" was
+  // Signed, because the mean can now legitimately be negative - "+-0.04" was
   // the old format's way of saying the correct option is on average SHORTER.
   const mean = `${m.mean >= 0 ? '+' : ''}${m.mean.toFixed(2)}`;
   console.log(`  ${lang.padEnd(3)} n=${String(m.n).padStart(3)}  longest ${m.longestPct.toFixed(1).padStart(5)}%   mean ${mean}`);

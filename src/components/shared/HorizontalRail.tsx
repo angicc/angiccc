@@ -6,7 +6,7 @@
 // keeps all 21 discoverable while the section occupies one row instead of
 // seven.
 //
-// Native scrolling does the work — `overflow-x: auto` with scroll snapping — so
+// Native scrolling does the work - `overflow-x: auto` with scroll snapping - so
 // it responds to a trackpad swipe, a shift+wheel, a touch drag and the
 // keyboard without any of that being reimplemented. The buttons only nudge
 // scrollLeft; they are an affordance over the scroller, not a replacement for

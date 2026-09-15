@@ -1,7 +1,7 @@
 // Billing: Stripe subscription checkout with a free trial on every paid plan,
 // customer portal for self-serve cancel/upgrade, and the webhook that is the
 // single source of truth for flipping `User.tier` in Postgres. The client
-// never sets its own tier — money state only ever flows Stripe → webhook → DB.
+// never sets its own tier - money state only ever flows Stripe → webhook → DB.
 import { Router, type Request, type Response } from 'express';
 import { PrismaClient, type Tier } from '@prisma/client';
 import { z } from 'zod';
@@ -36,7 +36,7 @@ function tierForPrice(priceId: string): Tier | null {
   return null;
 }
 
-// ── GET /api/billing/status — fresh tier + subscription state from the DB ────
+// ── GET /api/billing/status - fresh tier + subscription state from the DB ────
 billingRouter.get('/status', async (req: Request, res: Response) => {
   const user = await prisma.user.findUnique({
     where: { id: req.auth!.userId },
@@ -56,7 +56,7 @@ billingRouter.get('/status', async (req: Request, res: Response) => {
 
 const checkoutSchema = z.object({ plan: z.enum(['beginner', 'pro', 'master']) });
 
-// ── POST /api/billing/checkout — create a Checkout Session, return its URL ───
+// ── POST /api/billing/checkout - create a Checkout Session, return its URL ───
 billingRouter.post('/checkout', async (req: Request, res: Response) => {
   const parsed = checkoutSchema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: "plan must be 'beginner', 'pro', or 'master'." });
@@ -99,11 +99,11 @@ billingRouter.post('/checkout', async (req: Request, res: Response) => {
   }
 });
 
-// ── POST /api/billing/portal — customer portal (cancel / change plan / card) ─
+// ── POST /api/billing/portal - customer portal (cancel / change plan / card) ─
 billingRouter.post('/portal', async (req: Request, res: Response) => {
   try {
     const user = await prisma.user.findUnique({ where: { id: req.auth!.userId }, select: { stripeCustomerId: true } });
-    if (!user?.stripeCustomerId) return res.status(400).json({ error: 'No billing account yet — subscribe first.' });
+    if (!user?.stripeCustomerId) return res.status(400).json({ error: 'No billing account yet - subscribe first.' });
     const portal = await stripeRequest<{ url: string }>('/v1/billing_portal/sessions', {
       customer: user.stripeCustomerId,
       return_url: `${FRONTEND_URL}/profile`,

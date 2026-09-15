@@ -1,8 +1,8 @@
-// ─── Clio's Analysis Gate — post-lesson written-analysis modal ───────────────
+// ─── Clio's Analysis Gate - post-lesson written-analysis modal ───────────────
 // A 3D-staged overlay that appears after a lesson is completed. The learner
 // writes a 150–300-word analysis; Clio grades it strictly (AI examiner with a
 // deterministic local rubric as fallback). Grade B or better unlocks the next
-// lesson. The window is dismissible — but the next lesson stays locked until
+// lesson. The window is dismissible - but the next lesson stays locked until
 // a passing analysis is on record.
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -21,7 +21,7 @@ import { gradeAnalysis, type AnalysisVerdict } from './analysisGrader';
 const GATE_I18N = {
   en: {
     title: "Clio's Analysis Gate", sub: 'Prove your understanding to unlock the next lesson',
-    prompt: (t: string) => `Write an analysis of "${t}" — not a summary. Argue causes, consequences, and significance in your own words.`,
+    prompt: (t: string) => `Write an analysis of "${t}" - not a summary. Argue causes, consequences, and significance in your own words.`,
     words: 'words', range: '150–300 words required', tooShort: (n: number) => `${n} more words needed`, tooLong: (n: number) => `${n} words over the limit`,
     submit: 'Submit to Clio', grading: 'Clio is deliberating…', gradingSub: 'Your analysis is being weighed against the historical record.',
     passTitle: 'The gate opens', failTitle: 'Not yet, historian', minBar: 'Minimum passing grade: B',
@@ -31,7 +31,7 @@ const GATE_I18N = {
   },
   es: {
     title: 'La Puerta de Análisis de Clío', sub: 'Demuestra tu comprensión para desbloquear la siguiente lección',
-    prompt: (t: string) => `Escribe un análisis de «${t}» — no un resumen. Argumenta causas, consecuencias y significado con tus propias palabras.`,
+    prompt: (t: string) => `Escribe un análisis de «${t}» - no un resumen. Argumenta causas, consecuencias y significado con tus propias palabras.`,
     words: 'palabras', range: 'Se requieren 150–300 palabras', tooShort: (n: number) => `Faltan ${n} palabras`, tooLong: (n: number) => `${n} palabras sobre el límite`,
     submit: 'Enviar a Clío', grading: 'Clío está deliberando…', gradingSub: 'Tu análisis se está contrastando con el registro histórico.',
     passTitle: 'La puerta se abre', failTitle: 'Aún no, historiador', minBar: 'Nota mínima para aprobar: B',
@@ -41,7 +41,7 @@ const GATE_I18N = {
   },
   ru: {
     title: 'Врата анализа Клио', sub: 'Докажите понимание, чтобы открыть следующий урок',
-    prompt: (t: string) => `Напишите анализ урока «${t}» — не пересказ. Раскройте причины, следствия и значение своими словами.`,
+    prompt: (t: string) => `Напишите анализ урока «${t}» - не пересказ. Раскройте причины, следствия и значение своими словами.`,
     words: 'слов', range: 'Требуется 150–300 слов', tooShort: (n: number) => `Не хватает ${n} слов`, tooLong: (n: number) => `${n} слов сверх лимита`,
     submit: 'Отправить Клио', grading: 'Клио размышляет…', gradingSub: 'Ваш анализ сверяется с историческими источниками.',
     passTitle: 'Врата открываются', failTitle: 'Ещё нет, историк', minBar: 'Минимальная проходная оценка: B',
@@ -51,7 +51,7 @@ const GATE_I18N = {
   },
   mk: {
     title: 'Портата на анализа на Клио', sub: 'Докажи го разбирањето за да ја отклучиш следната лекција',
-    prompt: (t: string) => `Напиши анализа на „${t}“ — не резиме. Образложи ги причините, последиците и значењето со свои зборови.`,
+    prompt: (t: string) => `Напиши анализа на „${t}“ - не резиме. Образложи ги причините, последиците и значењето со свои зборови.`,
     words: 'зборови', range: 'Потребни се 150–300 зборови', tooShort: (n: number) => `Недостигаат уште ${n} зборови`, tooLong: (n: number) => `${n} зборови над лимитот`,
     submit: 'Испрати ѝ на Клио', grading: 'Клио размислува…', gradingSub: 'Твојата анализа се мери според историските извори.',
     passTitle: 'Портата се отвора', failTitle: 'Сè уште не, историчару', minBar: 'Минимална преодна оценка: B',
@@ -61,7 +61,7 @@ const GATE_I18N = {
   },
   de: {
     title: 'Klios Analyse-Tor', sub: 'Beweise dein Verständnis, um die nächste Lektion freizuschalten',
-    prompt: (t: string) => `Schreibe eine Analyse zu „${t}“ — keine Zusammenfassung. Begründe Ursachen, Folgen und Bedeutung in eigenen Worten.`,
+    prompt: (t: string) => `Schreibe eine Analyse zu „${t}“ - keine Zusammenfassung. Begründe Ursachen, Folgen und Bedeutung in eigenen Worten.`,
     words: 'Wörter', range: '150–300 Wörter erforderlich', tooShort: (n: number) => `Noch ${n} Wörter nötig`, tooLong: (n: number) => `${n} Wörter über dem Limit`,
     submit: 'An Klio senden', grading: 'Klio berät…', gradingSub: 'Deine Analyse wird an den historischen Quellen gemessen.',
     passTitle: 'Das Tor öffnet sich', failTitle: 'Noch nicht, Historiker', minBar: 'Mindestnote zum Bestehen: B',
@@ -71,7 +71,7 @@ const GATE_I18N = {
   },
   fr: {
     title: "La Porte d'Analyse de Clio", sub: 'Prouve ta compréhension pour débloquer la leçon suivante',
-    prompt: (t: string) => `Rédige une analyse de « ${t} » — pas un résumé. Argumente les causes, les conséquences et la portée avec tes propres mots.`,
+    prompt: (t: string) => `Rédige une analyse de « ${t} » - pas un résumé. Argumente les causes, les conséquences et la portée avec tes propres mots.`,
     words: 'mots', range: '150–300 mots requis', tooShort: (n: number) => `Encore ${n} mots nécessaires`, tooLong: (n: number) => `${n} mots au-dessus de la limite`,
     submit: 'Soumettre à Clio', grading: 'Clio délibère…', gradingSub: 'Ton analyse est confrontée aux sources historiques.',
     passTitle: "La porte s'ouvre", failTitle: 'Pas encore, historien', minBar: 'Note minimale pour réussir : B',
@@ -130,7 +130,7 @@ export function ClioAnalysisGate({
   const words = useMemo(() => countWords(text), [text]);
   const inRange = words >= ANALYSIS_MIN_WORDS && words <= ANALYSIS_MAX_WORDS;
 
-  // Escape closes the window (progression stays locked — that's the deal).
+  // Escape closes the window (progression stays locked - that's the deal).
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape' && phase !== 'grading') onClose(); };
@@ -167,7 +167,7 @@ export function ClioAnalysisGate({
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
           style={{ perspective: 1400 }}
         >
-          {/* Backdrop — click dismisses (the lock persists until a pass). */}
+          {/* Backdrop - click dismisses (the lock persists until a pass). */}
           <div className="absolute inset-0 bg-black/70 backdrop-blur-md" onClick={() => phase !== 'grading' && onClose()} />
 
           <motion.div

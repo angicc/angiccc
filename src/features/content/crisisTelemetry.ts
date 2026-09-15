@@ -3,7 +3,7 @@
 // Stability X/10, Legitimacy X/10, Legacy X/10", "THE VERDICT", "NN out of
 // 100"). parseCrisisTelemetry() extracts the latest values from the message
 // stream so the dashboard side-panel can render resource meters without a
-// second AI call or any state the model and UI could disagree on — the
+// second AI call or any state the model and UI could disagree on - the
 // transcript itself is the single source of truth.
 
 import type { ChatMessage } from '@/types';

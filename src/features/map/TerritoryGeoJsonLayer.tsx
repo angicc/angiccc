@@ -1,9 +1,9 @@
-// ─── <TerritoryGeoJsonLayer> — glowing historical border layer ───────────────
+// ─── <TerritoryGeoJsonLayer> - glowing historical border layer ───────────────
 // A lightweight, self-contained Leaflet overlay that dynamically loads
 // `public/data/map-territories/{topicId}.json` (produced by the GIS pipeline in
 // scripts/fetch_territory_polygons.py) and renders it as a glowing frontier:
 // a dark casing stroke, a soft coloured glow, a crisp border, and a translucent
-// fill — the layered multi-stroke look of a premium atlas.
+// fill - the layered multi-stroke look of a premium atlas.
 //
 // The app's Territory Map uses raw Leaflet, so this component takes the Leaflet
 // `map` instance directly (rather than react-leaflet's <MapContainer>). Mount it
@@ -49,7 +49,7 @@ export function TerritoryGeoJsonLayer({ map, topicId, fitBounds = false, onLoad 
       // three styled copies for the glowing frontier effect.
       const geo = fc as unknown as GeoJSON.GeoJsonObject;
 
-      // 1. Dark casing — separates the border from busy basemap detail.
+      // 1. Dark casing - separates the border from busy basemap detail.
       L.geoJSON(geo, { style: { color: '#0b1220', weight: weight + 3, opacity: 0.55, fill: false, lineJoin: 'round', lineCap: 'round' }, interactive: false }).addTo(group);
       // 2. Soft coloured glow.
       L.geoJSON(geo, { style: { color: fill, weight: weight + 6, opacity: 0.18, fill: false, lineJoin: 'round', lineCap: 'round' }, interactive: false }).addTo(group);

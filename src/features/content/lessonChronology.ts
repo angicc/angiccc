@@ -6,8 +6,8 @@
 // working top to bottom was reading the past out of sequence.
 //
 // This is the single place that decides sequence. Each lesson is stamped with
-// the year its subject BEGINS — the start of the process, not its climax, so
-// "The Crusades" sits at 1096 rather than at Hattin — and lessonsData sorts
+// the year its subject BEGINS - the start of the process, not its climax, so
+// "The Crusades" sits at 1096 rather than at Hattin - and lessonsData sorts
 // each era by that value. Ids never change, so completed-lesson records,
 // bookmarks and analysis passes all survive a resequencing.
 //

@@ -53,7 +53,7 @@ const EVENT_LESSON_OVERRIDES: Record<string, string> = {
   't-sputnik': 'modern-21', 't-gagarin': 'modern-21', 't-moon-landing': 'modern-21', 't-www': 'modern-20',
 };
 
-// The first (lowest-order) lesson in each era — the guaranteed fallback target
+// The first (lowest-order) lesson in each era - the guaranteed fallback target
 // so a directory entry always opens a lesson rather than a generic era page.
 const FIRST_LESSON_BY_ERA: Record<string, string> = (() => {
   const first: Record<string, string> = {};

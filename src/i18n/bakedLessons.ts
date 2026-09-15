@@ -10,7 +10,7 @@
 //
 // LOADING IS ASYNCHRONOUS, LOOKUP IS NOT. getCachedLessonTranslation is called
 // during render and must stay synchronous, so getBaked reads whatever has
-// landed and returns undefined otherwise — the same "not there yet" state the
+// landed and returns undefined otherwise - the same "not there yet" state the
 // runtime AI translator already produces, which the existing subscribe/notify
 // re-render path handles. Callers that would *act* on a miss (the AI translation
 // entry points) must await ensureBaked first, or they will pay to translate
@@ -55,7 +55,7 @@ export function ensureBaked(lang: GenContentLang): Promise<void> {
       loaded.set(lang, mod.default);
     })
     .catch(() => {
-      // Offline or chunk fetch failed — leave it unloaded so a later call retries.
+      // Offline or chunk fetch failed - leave it unloaded so a later call retries.
     })
     .finally(() => {
       inFlight.delete(lang);

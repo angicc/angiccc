@@ -8,7 +8,7 @@ export type LessonTheme = {
   patternClass: string;
   difficulty: 'Starter' | 'Intermediate' | 'Advanced';
   difficultyColor: string;
-  /** Unique CSS gradient per topic category — never reused across categories, never random */
+  /** Unique CSS gradient per topic category - never reused across categories, never random */
   bannerGradient: string;
 };
 

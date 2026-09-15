@@ -1,7 +1,7 @@
 // ─── CSRF protection (signed double-submit cookie) ────────────────────────────
 // Sessions are carried in a cookie, and in production that cookie is
 // SameSite=None so the SPA can call the API cross-origin. SameSite=None means
-// the browser attaches it to cross-site requests too — which is exactly the
+// the browser attaches it to cross-site requests too - which is exactly the
 // condition CSRF needs. Without a token, any page on the internet could POST
 // to our API and the browser would helpfully authenticate it.
 //
@@ -9,7 +9,7 @@
 // echoes the value in an `X-CSRF-Token` header. An attacker's page can cause
 // the cookie to be SENT but cannot READ it (that would need our origin), so it
 // cannot produce the matching header. The HMAC means a forged cookie planted
-// by a subdomain is rejected too — plain double-submit is vulnerable to that.
+// by a subdomain is rejected too - plain double-submit is vulnerable to that.
 import crypto from 'node:crypto';
 import type { Request, Response, NextFunction } from 'express';
 
@@ -58,7 +58,7 @@ function valid(token: string | undefined): boolean {
 
 /**
  * Issue the CSRF cookie when the caller does not have a valid one. Readable by
- * JavaScript BY DESIGN — the client has to echo it into a header, which is the
+ * JavaScript BY DESIGN - the client has to echo it into a header, which is the
  * half an attacker's origin cannot do.
  */
 export function issueCsrfCookie(req: Request, res: Response, next: NextFunction) {

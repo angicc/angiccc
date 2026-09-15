@@ -5,7 +5,7 @@
 // WHY THE CSRF PART EXISTS. The server protects `/api/` with a signed
 // double-submit token: a readable `csrf` cookie whose value must be echoed in
 // an `X-CSRF-Token` header. The usual client half of that is to read the cookie
-// out of `document.cookie` — which cannot work here, because the SPA is served
+// out of `document.cookie` - which cannot work here, because the SPA is served
 // from one origin and the API lives on another, so the API's cookie is simply
 // not in this document's cookie jar. Every cookie-authenticated POST from the
 // deployed app was therefore being rejected 403 by our own guard.
@@ -59,14 +59,14 @@ export function invalidateCsrfToken(): void {
 export interface RequestOptions {
   method?: string;
   body?: unknown;
-  /** Abort after this long. Defaults to 8s — long enough for a cold start. */
+  /** Abort after this long. Defaults to 8s - long enough for a cold start. */
   timeoutMs?: number;
 }
 
 /**
  * Fetch against the API with the session cookie and, when needed, a CSRF token.
  *
- * Returns the raw Response so callers can distinguish 401 from 403 from 429 —
+ * Returns the raw Response so callers can distinguish 401 from 403 from 429 -
  * those mean different things to a person ("sign in", "not allowed", "slow
  * down") and collapsing them into a boolean is what hid the last round of
  * failures. Returns null only when no backend is configured or the network is
@@ -101,7 +101,7 @@ export async function apiFetch(path: string, opts: RequestOptions = {}): Promise
 
   const res = await send(await getCsrfToken());
   // A 403 here is almost always a token that rotated out from under us (they
-  // expire after 12h). Refetch and retry exactly once — twice would loop
+  // expire after 12h). Refetch and retry exactly once - twice would loop
   // against a genuine permission failure, which also answers 403.
   if (res?.status === 403) {
     invalidateCsrfToken();

@@ -214,7 +214,7 @@ export default function AiTutorPage() {
       }
       setMessages(prev => prev.map(m => m.id === assistantMsg.id ? { ...m, isStreaming: false } : m));
       retryRef.current = null;
-      // Background memory extraction — throttled, silent, never blocks the UI.
+      // Background memory extraction - throttled, silent, never blocks the UI.
       // Flatten any image blocks to a text marker so the memory layer stays text.
       if (currentUser && acc) {
         const memHistory = [...history, { role: 'assistant' as const, content: acc }].map(m => ({
@@ -361,11 +361,11 @@ export default function AiTutorPage() {
 
         {/* The plan to offer comes from the allowance itself. It used to be
             sniffed out of the message with reason.includes('Master'), which
-            only ever matched the English text — in the five other languages
+            only ever matched the English text - in the five other languages
             the prompt silently fell back to offering Pro. */}
         {!allowed && <UpgradePrompt description={reason} requiredPlan={nextTier === 'master' ? 'master' : 'pro'} />}
 
-        {/* Persistent memory — what Clio has learned about this student */}
+        {/* Persistent memory - what Clio has learned about this student */}
         {currentUser && <div className="mb-3"><ClioMemoryPanel userId={currentUser.id} /></div>}
 
         <div className="flex-1 min-h-0 flex flex-col">

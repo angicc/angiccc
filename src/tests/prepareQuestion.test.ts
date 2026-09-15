@@ -29,8 +29,8 @@ describe('prepareQuestion', () => {
     // p<0.05 one. A genuinely uniform shuffle exceeds the 5% value once every
     // twenty runs *by definition*, which made this test fail on honest code;
     // the job here is to catch real bias, not to re-run a significance test on
-    // every commit. The regression it guards against — the correct answer
-    // pinned to B and C — scored ~196 on this statistic, so the looser
+    // every commit. The regression it guards against - the correct answer
+    // pinned to B and C - scored ~196 on this statistic, so the looser
     // threshold loses no power and drops false failures to 1 in 1000.
     expect(chiSquare).toBeLessThan(16.27);
   });

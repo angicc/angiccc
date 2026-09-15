@@ -1,6 +1,6 @@
 // ─── Flip3D: perspective card flip ────────────────────────────────────────────
 // A true 3D card flip (rotateY with preserve-3d and backface culling), shared
-// by every flashcard surface in the app. The front and back are real DOM —
+// by every flashcard surface in the app. The front and back are real DOM -
 // both stay mounted, so flipping is pure GPU transform with no content swap
 // flicker, and screen readers keep a stable tree.
 import { motion } from 'framer-motion';

@@ -6,13 +6,13 @@
 // text through the app's own AI gateway and caches the result in localStorage,
 // so each lesson is localized once per language and then served instantly from
 // cache forever after. If the AI is unreachable the UI simply keeps the English
-// source — translation can never break the page.
+// source - translation can never break the page.
 //
 // Two granularities, matched to what the user sees:
-//   • META  (title, subtitle, key facts, section headings) — shown in every
+//   • META  (title, subtitle, key facts, section headings) - shown in every
 //     lesson list, card, header and search result. Warmed in the background for
 //     the whole active language so lists stop flashing English.
-//   • BODIES (the long section paragraphs) — only visible inside an open lesson,
+//   • BODIES (the long section paragraphs) - only visible inside an open lesson,
 //     so translated on demand when that lesson is opened.
 
 import type { Language } from './translations';
@@ -47,7 +47,7 @@ const CACHE_KEY = (lang: string, id: string) => `historify:xlate:${lang}:${id}`;
 
 // ── Cache read / write ───────────────────────────────────────────────────────
 
-/** Synchronous cache read — safe to call from render. Returns null if absent.
+/** Synchronous cache read - safe to call from render. Returns null if absent.
  *  Baked translations (lessonTranslationsGenerated.ts) take priority over the
  *  runtime localStorage cache, so once a lesson is generated it needs no AI. */
 export function getCachedLessonTranslation(id: string, lang: Language): CachedLessonT | null {
@@ -66,7 +66,7 @@ function mergeCache(id: string, lang: ContentLang, patch: CachedLessonT) {
   try {
     const prev = getCachedLessonTranslation(id, lang) ?? {};
     localStorage.setItem(CACHE_KEY(lang, id), JSON.stringify({ ...prev, ...patch }));
-  } catch { /* storage full / unavailable — translation just won't persist */ }
+  } catch { /* storage full / unavailable - translation just won't persist */ }
   notify();
 }
 
@@ -94,7 +94,7 @@ function notify() {
 /**
  * Fetch the baked translations for the active language and re-render once they
  * land. Lookups are synchronous and miss until then, so lessons show English
- * for the moment the chunk is in flight — the same way an AI translation
+ * for the moment the chunk is in flight - the same way an AI translation
  * arriving late is handled. Call this whenever the language changes.
  */
 export async function warmBakedTranslations(lang: Language): Promise<void> {
@@ -109,8 +109,8 @@ export async function warmBakedTranslations(lang: Language): Promise<void> {
 
 const SYSTEM = (lang: ContentLang) =>
   `You are a professional history translator. Translate every string in the JSON array "items" into ${LANG_NAMES[lang]}. ` +
-  `Produce natural, idiomatic ${LANG_NAMES[lang]} — never a word-for-word calque. Preserve all proper nouns, numbers, dates, and meaning. ` +
-  `Return ONLY raw JSON of the exact shape {"items":[...]} with the SAME number of items in the SAME order — never merge, split, add, or drop items. No markdown, no commentary.`;
+  `Produce natural, idiomatic ${LANG_NAMES[lang]} - never a word-for-word calque. Preserve all proper nouns, numbers, dates, and meaning. ` +
+  `Return ONLY raw JSON of the exact shape {"items":[...]} with the SAME number of items in the SAME order - never merge, split, add, or drop items. No markdown, no commentary.`;
 
 /** Translate a batch of strings, preserving order and length. On any failure
  *  the originals are returned so callers can safely fall back to English. */

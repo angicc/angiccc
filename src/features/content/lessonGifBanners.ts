@@ -1,24 +1,29 @@
 // ─── Animated GIF lesson banners (Google Drive: "Historify GIFS") ────────────
 // Source of truth is the owner's Drive folder, organized in four era
-// subfolders. Each GIF is mapped to an EXPLICIT lesson id — never matched by
-// name at runtime — so the binding is deterministic and reviewable.
+// subfolders. Each GIF is mapped to an EXPLICIT lesson id - never matched by
+// name at runtime - so the binding is deterministic and reviewable.
 //
 // Serving: files are embedded via the googleusercontent image CDN, which
 // serves raw bytes (animation preserved) for any file shared as
 // "Anyone with the link can view". If a file is not public, the <img> errors
-// and the banner falls back to the lesson's static image chain — the UI can
+// and the banner falls back to the lesson's static image chain - the UI can
 // never break on a permissions change.
 //
 // NOTE ON WATERMARKS: pixel-level watermark removal is not possible in the
 // browser. The banner applies a slight cover-crop zoom to GIF sources, which
 // keeps edge/corner watermarks outside the visible frame. For a true clean
-// source, re-export the GIFs without the overlay and re-upload — the ids
+// source, re-export the GIFs without the overlay and re-upload - the ids
 // below stay valid because Drive keeps the file id on content update.
 
 const gif = (driveFileId: string) => `https://lh3.googleusercontent.com/d/${driveFileId}`;
 
 /** lessonId → animated banner URL. Grouped by Drive era subfolder. */
 export const LESSON_GIF_BANNERS: Record<string, string> = {
+  // Second World War, Part II. The curated file for this lesson has not been
+  // dropped in yet, and without an entry here it is the one lesson in the
+  // catalogue that falls all the way through to a generated placeholder.
+  // US National Archives footage, via Giphy, which the app already relies on.
+  'modern-24': 'https://media.giphy.com/media/SvRIOIvQA2fqpZ5b4P/giphy.gif',
   // ── Ancient Era ──
   'ancient-01': gif('1Jmhzo4H_kaDPYSNMmNZE4DgD7GT-EAOX'), // Ancient Mesopotamia and Egypt
   // Animated Greek-vase runners (Wikimedia Commons, public domain)
@@ -40,20 +45,20 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   'medieval-06': gif('1RJkjBSjNSK8SftVMZGSvY5xpsZbJz6-1'), // Medieval Japan
   // Animated map of the Crown of Castile growing through the Reconquista
   'medieval-08': 'https://upload.wikimedia.org/wikipedia/commons/c/c0/Crown_of_Castile_-_Map.gif',
-  // Animated map of France, 14th–15th c. — the Hundred Years' War frontiers
+  // Animated map of France, 14th–15th c. - the Hundred Years' War frontiers
   'medieval-09': 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Hundred_years_war.gif',
 
   // ── Early Modern ──
   'earlymod-01': gif('1Y3AHgo-ldZLm4rTGUVh24dh5ziQ4tYdP'), // The Renaissance
   'earlymod-03': gif('1l4llnA7Kx1oftiijriZZ-6tL0dqzabf9'), // Scientific Revolution
-  // Louis XIV's Versailles — Pierre Patel's royal view (Wikimedia Commons GIF)
+  // Louis XIV's Versailles - Pierre Patel's royal view (Wikimedia Commons GIF)
   'earlymod-04': 'https://upload.wikimedia.org/wikipedia/commons/8/8a/Palace_of_Versailles.gif',
   'earlymod-05': gif('1m46_lEkfbGYTisPX4eSeXsBQIr_o5X_H'), // Transatlantic Slave Trade
   'earlymod-06': gif('19_-qh7THn8cBMqpwGKTs8LR-FlsH4hZa'), // The Ottoman Empire
   'earlymod-07': gif('1k2gmwPIk6uLBpAP7nt6daAi7euSzBU3o'), // The Age of Revolution
   // Animated map of Mughal expansion (Wikimedia Commons)
   'earlymod-08': 'https://upload.wikimedia.org/wikipedia/commons/8/86/Mughals.gif',
-  // Kabuki theater animation — the Edo "floating world" on stage
+  // Kabuki theater animation - the Edo "floating world" on stage
   'earlymod-09': 'https://upload.wikimedia.org/wikipedia/commons/c/c4/Kabuki-theater.gif',
 
   // ── Modern Era ──
@@ -70,7 +75,7 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   // ── Prehistoric Ages ──
   // Referenced via Special:FilePath, which resolves by filename (no fragile MD5
   // hash path). Any that fail to load fall through to the lesson's static image
-  // and then the era hero — the banner can never break.
+  // and then the era hero - the banner can never break.
   // ── The Byzantine World ──
   // The classic Commons animation of the empire's borders through 11 centuries;
   // resolves by filename via Special:FilePath, falls back to statics if absent.
@@ -80,9 +85,9 @@ export const LESSON_GIF_BANNERS: Record<string, string> = {
   'prehistoric-04': fp('Spreading_homo_sapiens_ver2.gif'), // Out-of-Africa migration animation
   'prehistoric-07': fp('Mammuthus_trogontherii_-_animation.gif'), // mammoth
   // Curriculum Expansion II banners (Wikimedia Commons animated GIFs)
-  'prehistoric-21': fp('Berezovsk_stegosaur_(walking).gif'),      // walking stegosaur — Age of Dinosaurs
-  'prehistoric-22': fp('Mammuthus_trogontherii_-_animation.gif'), // woolly mammoth — the Ice Ages
-  'modern-21': fp('AnimApolloLaunch,16mm.gif'),                   // Apollo/Saturn V launch — the Space Age
+  'prehistoric-21': fp('Berezovsk_stegosaur_(walking).gif'),      // walking stegosaur - Age of Dinosaurs
+  'prehistoric-22': fp('Mammuthus_trogontherii_-_animation.gif'), // woolly mammoth - the Ice Ages
+  'modern-21': fp('AnimApolloLaunch,16mm.gif'),                   // Apollo/Saturn V launch - the Space Age
 };
 
 /** Wikimedia Special:FilePath resolves a file by name, avoiding hash-path rot. */
@@ -96,7 +101,7 @@ function fp(filename: string): string {
 // lessons rotate through several rather than all sharing one). Every URL here
 // is a real, currently-serving Wikimedia Commons animation. If any fails to
 // load in the browser, the banner falls through to the lesson's static image
-// chain — so this can only ever ADD an animation, never break a banner.
+// chain - so this can only ever ADD an animation, never break a banner.
 const ERA_GIF_POOL: Record<string, string[]> = {
   prehistoric: [
     fp('Human_evolution_scheme.gif'),
@@ -148,13 +153,13 @@ export function eraGifBanner(lessonId: string, eraId: string): string | undefine
 // cross-origin from the browser, so the media URL is resolved once per client
 // through microlink.io's public, CORS-enabled metadata API (og:image of the
 // page) and cached in localStorage. If resolution fails for any reason the
-// lesson simply falls back to its static banner chain — the UI never breaks.
+// lesson simply falls back to its static banner chain - the UI never breaks.
 export const LESSON_GIF_PAGES: Record<string, string> = {
-  // Alexander the Great (All Parts) — Ancient Macedonia lesson banner
+  // Alexander the Great (All Parts) - Ancient Macedonia lesson banner
   'ancient-07': 'https://makeagif.com/gif/alexander-the-great-all-parts-ErY-9P',
-  // Vikings raid & burn Lindisfarne — where the Viking Age lesson opens
+  // Vikings raid & burn Lindisfarne - where the Viking Age lesson opens
   'medieval-07': 'https://makeagif.com/gif/the-vikings-raid-and-burn-lindisfarne-monastery-the-vikings-season-1-sp3G_K',
-  // Macedonia — The Macedonian Struggle lesson banner (Tenor; og:image is the
+  // Macedonia - The Macedonian Struggle lesson banner (Tenor; og:image is the
   // direct media.tenor.com GIF, resolved through the same microlink path)
   'modern-07': 'https://tenor.com/view/macedonia-greece-alexander-the-great-hellas-makedonija-gif-13934090',
 };
@@ -168,7 +173,7 @@ export async function resolveGifPageBanner(lessonId: string): Promise<string | n
   try {
     const cached = localStorage.getItem(GIF_PAGE_CACHE_PREFIX + lessonId);
     if (cached) return cached;
-  } catch { /* storage unavailable — resolve fresh */ }
+  } catch { /* storage unavailable - resolve fresh */ }
   try {
     const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(page)}`);
     if (!res.ok) return null;

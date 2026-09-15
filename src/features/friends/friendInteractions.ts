@@ -104,7 +104,7 @@ export function drawDuelQuestions(count: number): DuelQuestion[] {
 }
 
 /**
- * Opponent skill 0..1 — how often the friend AI answers correctly. Scales with
+ * Opponent skill 0..1 - how often the friend AI answers correctly. Scales with
  * their XP so stronger friends are harder duels, clamped to a fair band.
  */
 export function opponentSkill(xp: number): number {

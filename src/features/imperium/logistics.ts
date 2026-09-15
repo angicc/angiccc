@@ -2,8 +2,8 @@
 // Continuous mathematical checks over every army's vector line. Each tick:
 //   1. Armies advance along their A* path by movement allowance (terrain-taxed).
 //   2. Supply corridors re-trace from each faction's supply hubs through
-//      friendly territory; any army whose corridor is bisected — an enemy
-//      polygon captured a connecting node — flips to ISOLATED.
+//      friendly territory; any army whose corridor is bisected - an enemy
+//      polygon captured a connecting node - flips to ISOLATED.
 //   3. Isolation compounds: attrition per tick grows the longer the pocket
 //      holds (starvation curves, not flat percentages), scaled by terrain.
 // Also home of the Vector State Interceptor: timeline-slider manipulations
@@ -52,7 +52,7 @@ export interface LogisticsReport {
 
 /**
  * BFS through friendly-or-neutral territories from the army's position to any
- * faction hub. An enemy-held territory is an impassable bisection — exactly
+ * faction hub. An enemy-held territory is an impassable bisection - exactly
  * the "enemy polygon captured a connecting node" isolation trigger.
  */
 export function traceSupplyCorridor(
@@ -126,7 +126,7 @@ export interface MarchStep {
 
 /**
  * Advance an army along its path by the tick allowance. Returns the march step
- * (for the animation layer) and mutates a COPY of the army — the engine owns
+ * (for the animation layer) and mutates a COPY of the army - the engine owns
  * state transitions, this function stays pure.
  */
 export function advanceMarch(graph: GeoGraph, ownership: OwnershipState, army: Army): { army: Army; step: MarchStep | null } {
@@ -175,7 +175,7 @@ export function advanceMarch(graph: GeoGraph, ownership: OwnershipState, army: A
 export function orderMarch(graph: GeoGraph, ownership: OwnershipState, army: Army, targetTerritoryId: string): Army | null {
   const enemy: FactionId = army.faction === 'player' ? 'rival' : 'player';
   const hostile = new Set(Object.entries(ownership.owners).filter(([, f]) => f === enemy).map(([t]) => t));
-  // The target itself may be hostile (that IS the invasion) — never block it.
+  // The target itself may be hostile (that IS the invasion) - never block it.
   hostile.delete(targetTerritoryId);
   const path = findTerritoryPath(graph, army.territoryId, targetTerritoryId, { hostile, hostilePenalty: 2.2, canSail: true });
   if (!path) return null;

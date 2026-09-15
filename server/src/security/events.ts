@@ -53,7 +53,7 @@ export function logSecurityEvent(
       },
     })
     .catch(err => {
-      // Still surface it somewhere durable — stdout is collected by the host.
+      // Still surface it somewhere durable - stdout is collected by the host.
       console.error('[security] failed to persist event', type, err);
     });
 }

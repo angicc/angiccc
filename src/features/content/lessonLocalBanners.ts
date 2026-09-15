@@ -11,12 +11,12 @@
 // WHY KEY BY LESSON ID, NOT TITLE: the source payload was authored with
 // Macedonian lesson titles, but banners must be identical in every UI language.
 // Matching was resolved ONCE here (title → lessonKey), so lookup at runtime is
-// language-independent and deterministic — never a fragile runtime title match.
+// language-independent and deterministic - never a fragile runtime title match.
 //
 // PRECEDENCE + SAFETY: when a file exists at the mapped path it becomes the
 // lesson's banner (highest priority). If the asset is absent or fails to load,
 // the <img onError> chain falls through to the app's existing animated-banner
-// system, and finally the gradient — so a missing GIF can only ADD art, never
+// system, and finally the gradient - so a missing GIF can only ADD art, never
 // break a banner. Drop the .gif files into public/assets/banners/ to light them
 // up; no code change required.
 

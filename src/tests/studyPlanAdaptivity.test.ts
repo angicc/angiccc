@@ -38,7 +38,7 @@ const signals = (o: Partial<LearnerSignals> = {}): LearnerSignals => ({
 const lessons = (eraId: EraId, n: number) =>
   Array.from({ length: n }, (_, i) => ({ id: `${eraId}-${i}`, eraId, estimatedMinutes: 15 }));
 
-describe('pickFocusEra — finish what you started before opening a new front', () => {
+describe('pickFocusEra - finish what you started before opening a new front', () => {
   it('targets a begun-but-unconsolidated era over an untouched one at 0%', () => {
     // The case that made retention mode unreachable: 8/9 read and scoring 48%
     // is the real, diagnosed weakness, but an era never opened sits at 0% and
@@ -78,7 +78,7 @@ describe('pickFocusEra — finish what you started before opening a new front', 
   });
 });
 
-describe('focusMode — reading and recall want opposite medicine', () => {
+describe('focusMode - reading and recall want opposite medicine', () => {
   it('calls for coverage when most of the era is unread', () => {
     expect(focusMode(era({ eraId: 'ancient', lessonsDone: 2, lessonsTotal: 10 })).mode).toBe('coverage');
   });
@@ -89,7 +89,7 @@ describe('focusMode — reading and recall want opposite medicine', () => {
   });
 
   it('does not call for retention just because coverage is low', () => {
-    // Low coverage AND low recall is still a reading problem — there is barely
+    // Low coverage AND low recall is still a reading problem - there is barely
     // anything read to retain.
     expect(focusMode(era({ eraId: 'ancient', lessonsDone: 1, lessonsTotal: 10, adaptivePct: 40 })).mode)
       .not.toBe('coverage');
@@ -100,7 +100,7 @@ describe('focusMode — reading and recall want opposite medicine', () => {
   });
 });
 
-describe('generateWeekPlan — responds to the learner, not a template', () => {
+describe('generateWeekPlan - responds to the learner, not a template', () => {
   const mastery = snapshot([
     era({ eraId: 'ancient', lessonsDone: 1, lessonsTotal: 10, mastery: 10 }),
     era({ eraId: 'modern', lessonsDone: 8, lessonsTotal: 10, mastery: 80 }),
@@ -171,7 +171,7 @@ describe('generateWeekPlan — responds to the learner, not a template', () => {
     const plan = generateWeekPlan(mastery, signals({ mode: 'coverage', studyDays: 7 }), pool);
     const ids = plan.steps.filter(s => s.lessonId).map(s => s.lessonId!);
     expect(new Set(ids).size).toBe(ids.length);
-    // Lessons must be drawn in order from the weakest era's pool — no gaps.
+    // Lessons must be drawn in order from the weakest era's pool - no gaps.
     const ancient = ids.filter(i => i.startsWith('ancient-')).map(i => Number(i.split('-')[1]));
     expect(ancient).toEqual([...ancient].sort((a, b) => a - b));
     expect(ancient[0]).toBe(0);
@@ -209,7 +209,7 @@ describe('generateWeekPlan — responds to the learner, not a template', () => {
   });
 });
 
-describe('planHealth — a saved plan is a snapshot, and learners move', () => {
+describe('planHealth - a saved plan is a snapshot, and learners move', () => {
   const base = (o: Partial<WeekPlan> = {}): WeekPlan => ({
     id: 'p1', createdAt: new Date().toISOString(), focusEraId: 'ancient',
     steps: [
@@ -255,7 +255,7 @@ describe('planHealth — a saved plan is a snapshot, and learners move', () => {
   });
 });
 
-describe('studyRhythm — pacing from measured behaviour', () => {
+describe('studyRhythm - pacing from measured behaviour', () => {
   beforeEach(() => localStorage.clear());
 
   it('reports nothing for a learner with no recorded time', () => {
@@ -289,7 +289,7 @@ describe('studyRhythm — pacing from measured behaviour', () => {
   });
 });
 
-describe('computeLearnerSignals — end to end from stored time', () => {
+describe('computeLearnerSignals - end to end from stored time', () => {
   beforeEach(() => localStorage.clear());
 
   const mastery = snapshot(

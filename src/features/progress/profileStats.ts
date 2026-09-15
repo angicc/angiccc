@@ -11,7 +11,7 @@ export interface HeatmapDay {
   /** `YYYY-MM-DD`, local. */
   date: string;
   seconds: number;
-  /** 0 (nothing) to 4 (a long session) — drives the colour ramp. */
+  /** 0 (nothing) to 4 (a long session) - drives the colour ramp. */
   level: 0 | 1 | 2 | 3 | 4;
 }
 
@@ -76,7 +76,7 @@ export function personalRecords(userId: string, p: UserProgress): PersonalRecord
     .filter(([d]) => d >= from)
     .reduce((a, [, s]) => a + s, 0);
 
-  // Only real eras count as a "favourite" — `other` is unattributed time.
+  // Only real eras count as a "favourite" - `other` is unattributed time.
   const eraEntries = Object.entries(spent.byEra).filter(([id, s]) => s > 0 && ERAS.some(e => e.id === id));
   const favourite = eraEntries.sort((a, b) => b[1] - a[1])[0];
 
@@ -127,7 +127,7 @@ export function nextMilestones(p: UserProgress, limit = 4): NextMilestone[] {
       return { achievement: a, current, target: prog.target, pct: (current / prog.target) * 100 };
     })
     .filter((m): m is NextMilestone => m !== null)
-    // Closest first, but ignore the ones not yet begun — "0 of 5,000 XP" is
+    // Closest first, but ignore the ones not yet begun - "0 of 5,000 XP" is
     // not a milestone anyone is approaching.
     .filter(m => m.pct > 0 && m.pct < 100)
     .sort((a, b) => b.pct - a.pct)

@@ -1,4 +1,4 @@
-// Historify backend — production server runtime (Express + Socket.io).
+// Historify backend - production server runtime (Express + Socket.io).
 // Run: npm run build && npm start   (or npm run dev for tsx watch mode)
 import express, { type Request, type Response, type NextFunction } from 'express';
 import { createServer } from 'node:http';
@@ -91,7 +91,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 // Stripe webhook needs the raw request bytes for signature verification, so it
-// is mounted BEFORE the JSON body parser (and takes no session auth — the HMAC
+// is mounted BEFORE the JSON body parser (and takes no session auth - the HMAC
 // signature is its authentication).
 app.post('/api/billing/webhook', express.raw({ type: 'application/json' }), stripeWebhookHandler);
 
@@ -117,8 +117,8 @@ function authenticate(req: Request, res: Response, next: NextFunction) {
 /**
  * Reject sessions minted before the account's current tokenVersion.
  *
- * A password change bumps that counter, so every token issued earlier — an
- * attacker's included — stops working. Runs after `authenticate` on the
+ * A password change bumps that counter, so every token issued earlier - an
+ * attacker's included - stops working. Runs after `authenticate` on the
  * routes that touch stored data; the DB read is the price of being able to
  * revoke a session at all, which a stateless JWT otherwise cannot do.
  */
@@ -131,7 +131,7 @@ async function requireCurrentSession(req: Request, res: Response, next: NextFunc
     });
     if (!user) return res.status(401).json({ error: 'Account no longer exists.' });
     if ((req.auth.ver ?? 0) !== user.tokenVersion) {
-      return res.status(401).json({ error: 'Session ended — please sign in again.' });
+      return res.status(401).json({ error: 'Session ended - please sign in again.' });
     }
     next();
   } catch {
@@ -142,7 +142,7 @@ async function requireCurrentSession(req: Request, res: Response, next: NextFunc
 // ── Tier gating (server-side twin of the client PlanGate HOC) ────────────────
 // The JWT carries the tier it had at login, so a user who upgrades mid-session
 // still holds a FREE-tier token. When the claim is insufficient, re-check the
-// database before denying — a Stripe upgrade takes effect immediately without
+// database before denying - a Stripe upgrade takes effect immediately without
 // forcing a re-login, while the cheap JWT pass still handles the common case.
 function requireTier(tier: 'PRO' | 'MASTER') {
   const rank = { FREE: 0, BEGINNER: 1, PRO: 2, MASTER: 3 } as const;
@@ -179,7 +179,7 @@ app.use('/api/auth/password', rateLimit({ windowMs: 15 * 60_000, max: 10, scope:
 app.use(issueCsrfCookie);
 app.use('/api/', requireCsrf(req => logSecurityEvent(req, 'csrf_rejected')));
 
-// GET /api/csrf — hand the SPA its token in a readable body.
+// GET /api/csrf - hand the SPA its token in a readable body.
 //
 // The double-submit scheme needs the client to echo the cookie value in a
 // header, and the usual way is to read it back out of document.cookie. That
@@ -189,8 +189,8 @@ app.use('/api/', requireCsrf(req => logSecurityEvent(req, 'csrf_rejected')));
 // deployed app is rejected 403 by our own CSRF guard.
 //
 // Handing it back over CORS does not weaken the scheme. An attacker's page can
-// still make the browser SEND the cookie, but it cannot READ this response —
-// the CORS allowlist means the fetch fails for any origin we did not name — so
+// still make the browser SEND the cookie, but it cannot READ this response -
+// the CORS allowlist means the fetch fails for any origin we did not name - so
 // it still cannot produce the matching header.
 app.get('/api/csrf', (req, res) => {
   res.json({ token: (req.cookies?.csrf as string | undefined) ?? null });
@@ -198,7 +198,7 @@ app.get('/api/csrf', (req, res) => {
 
 // ── Routes ───────────────────────────────────────────────────────────────────
 app.get('/healthz', (_req, res) => res.json({ ok: true }));
-// register / login / logout / password-reset are public by necessity — they
+// register / login / logout / password-reset are public by necessity - they
 // run before a session exists. Everything else on the auth router acts on the
 // signed-in account, so it needs both a valid session and a CURRENT one:
 // changing your password must not be reachable with a token the change was
@@ -215,7 +215,7 @@ app.use('/api/auth/logout', (req, res, next) => {
     try {
       const payload = jwt.verify(token, JWT_SECRET) as { sub: string; tier: Request['auth'] extends undefined ? never : 'FREE' | 'BEGINNER' | 'PRO' | 'MASTER' };
       req.auth = { userId: payload.sub, tier: payload.tier };
-    } catch { /* expired or invalid — still clear the cookie below */ }
+    } catch { /* expired or invalid - still clear the cookie below */ }
   }
   next();
 });
@@ -223,7 +223,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/sync', authenticate, requireCurrentSession, syncRouter);
 app.use('/api/social', authenticate, requireCurrentSession, socialRouter);
 // Learner memory / study plan / study sets. Tier-free by design: these sync
-// existing client state — the AI calls that CREATE the content are the gated
+// existing client state - the AI calls that CREATE the content are the gated
 // resource (clio proxy is PRO+), so a downgraded user keeps read/write access
 // to material they already generated.
 app.use('/api/learning', authenticate, requireCurrentSession, learningRouter);
@@ -239,10 +239,10 @@ app.use('/api/clio', authenticate, requireCurrentSession, requireTier('PRO'), cl
 app.put('/api/reviews', authenticate, submitReviewHandler);
 app.use('/api/reviews', reviewsPublicRouter);
 
-// Lightweight global presence stat (no auth) — for status pages / health.
+// Lightweight global presence stat (no auth) - for status pages / health.
 app.get('/api/presence/count', (_req, res) => res.json({ online: presence.onlineCount() }));
 
-// Central error handler — no stack traces in production responses.
+// Central error handler - no stack traces in production responses.
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err);
   res.status(500).json({ error: NODE_ENV === 'production' ? 'Internal server error.' : err.message });
@@ -297,7 +297,7 @@ io.use((socket, next) => {
 // into a user's room without importing this module back.
 registerRealtime(io);
 
-/** Cap anything relayed between clients — the server never trusts frame size. */
+/** Cap anything relayed between clients - the server never trusts frame size. */
 const MAX_RELAY_CHARS = 16 * 1024;
 function tooLarge(payload: unknown): boolean {
   try { return JSON.stringify(payload ?? null).length > MAX_RELAY_CHARS; } catch { return true; }
@@ -317,7 +317,7 @@ async function broadcastPresence(userId: string, online: boolean) {
 
 io.on('connection', socket => {
   const userId = socket.data.userId as string;
-  // Each user gets a private room — the sync fan-out + direct-delivery target.
+  // Each user gets a private room - the sync fan-out + direct-delivery target.
   const room = `user:${userId}`;
   void socket.join(room);
 
@@ -383,7 +383,7 @@ httpServer.listen(Number(PORT), () => {
 // Prevents dropped in-flight requests and socket leaks on rolling deploys.
 for (const signal of ['SIGTERM', 'SIGINT'] as const) {
   process.on(signal, () => {
-    console.log(`${signal} received — draining connections`);
+    console.log(`${signal} received - draining connections`);
     io.close(() => {
       httpServer.close(() => process.exit(0));
     });

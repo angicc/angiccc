@@ -8,7 +8,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 /** Seconds before a transient failure triggers an automatic reconnection. */
 const AUTO_RECONNECT_SECONDS = 8;
 
-/** Error kinds that self-heal (connectivity blips, 5xx) — safe to auto-retry. */
+/** Error kinds that self-heal (connectivity blips, 5xx) - safe to auto-retry. */
 const TRANSIENT_KINDS: ReadonlySet<AiErrorKind> = new Set(['network', 'server']);
 
 const KIND_ICON: Record<AiErrorKind, typeof CloudOff> = {

@@ -3,7 +3,7 @@
 // study targeted at the weakest era, and lets Clio decorate the plan with a
 // theme, coach note, per-day rationale and (Master) a deep pattern analysis.
 // Steps deep-link into the real surfaces and check themselves off as the
-// underlying activity completes — the page is a live dashboard, not a to-do
+// underlying activity completes - the page is a live dashboard, not a to-do
 // list that rots.
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -57,11 +57,11 @@ export default function StudyPlanPage() {
   const [plan, setPlan] = useState<WeekPlan | null>(() => (currentUser ? loadWeekPlan(currentUser.id) : null));
   const [enhancing, setEnhancing] = useState(false);
   const [error, setError] = useState<unknown>(null);
-  // A spent AI allowance is a limit, not an error — its own state, its own UI.
+  // A spent AI allowance is a limit, not an error - its own state, its own UI.
   const [quota, setQuota] = useState<string | null>(null);
   // Bumped by the Refresh button and on window focus: mastery + step completion
   // read quiz scores and analysis passes straight from localStorage, which the
-  // AuthContext `progress` object doesn't always track — without this tick,
+  // AuthContext `progress` object doesn't always track - without this tick,
   // Era Mastery could sit stale until a full reload.
   const [refreshTick, setRefreshTick] = useState(0);
   // Short-lived flag that spins the Refresh icon so the click always reads as
@@ -82,7 +82,7 @@ export default function StudyPlanPage() {
     [currentUser, plan, progress, refreshTick],
   );
 
-  // How the learner actually studies — measured cadence, session length, and
+  // How the learner actually studies - measured cadence, session length, and
   // whether the weakest era needs reading or recall. The plan is built from
   // these, not from a fixed seven-day template.
   const signals: LearnerSignals | null = useMemo(
@@ -136,7 +136,7 @@ export default function StudyPlanPage() {
     if (!currentUser || !mastery || !plan || enhancing) return;
     const allowance = canAI();
     if (!allowance.allowed) {
-      // Say why, in the reader's language, instead of failing silently — and
+      // Say why, in the reader's language, instead of failing silently - and
       // not via AiErrorCard, which drops a plain string and would present a
       // spent allowance as a crash.
       setQuota(aiAllowanceMessage(allowance, t) ?? null);
@@ -204,7 +204,7 @@ export default function StudyPlanPage() {
                 {mastery.eras.map(em => {
                   const era = ERAS.find(e => e.id === em.eraId)!;
                   // Mark the era the plan actually works on, not simply the
-                  // lowest number — those differ whenever an era the learner
+                  // lowest number - those differ whenever an era the learner
                   // has begun still needs finishing before a new one starts.
                   const isWeakest = em.eraId === (signals?.focusEraId ?? mastery.weakest.eraId);
                   return (
@@ -256,7 +256,7 @@ export default function StudyPlanPage() {
         {quota && <UpgradePrompt compact description={quota} />}
         {error != null && <AiErrorCard error={error} onRetry={enhance} />}
 
-        {/* Why the week is shaped the way it is — measured, not templated. */}
+        {/* Why the week is shaped the way it is - measured, not templated. */}
         {plan && signals && (
           <Card className="border-border/70 bg-muted/20">
             <CardContent className="p-4 space-y-2.5">
@@ -292,7 +292,7 @@ export default function StudyPlanPage() {
           </Card>
         )}
 
-        {/* The plan has stopped matching the learner — say so, don't serve it silently. */}
+        {/* The plan has stopped matching the learner - say so, don't serve it silently. */}
         {plan && health?.stale && (
           <Card className="border-amber-400/40 bg-amber-400/5">
             <CardContent className="p-4 flex items-start gap-3 flex-wrap">
@@ -399,7 +399,7 @@ function StepRow({ step, done, onGo, onToggle, language }: {
   const label = lesson
     ? getTranslatedLesson(lesson, language as never).title
     : era && (step.kind === 'era-quiz' || step.kind === 'timeline-map')
-    ? `${kindLabel[step.kind]} — ${getTranslatedEra(era, language as never).shortName}`
+    ? `${kindLabel[step.kind]} - ${getTranslatedEra(era, language as never).shortName}`
     : kindLabel[step.kind];
 
   return (

@@ -6,7 +6,7 @@ export const XP_REWARDS = { LESSON_COMPLETE: 100, QUIZ_CORRECT: 20, QUIZ_PERFECT
 
 // ── Progressive level curve ─────────────────────────────────────────────────
 // Sized for the 120-lesson world: early levels come fast (500 XP), the middle
-// band demands 750, and the long tail 1000 — so max-curriculum learners keep
+// band demands 750, and the long tail 1000 - so max-curriculum learners keep
 // levelling instead of outrunning a flat curve. Level is always derived from
 // total XP, so existing users migrate automatically.
 function levelStep(level: number): number {
@@ -31,10 +31,10 @@ export function xpToNextLevel(xp: number) {
 }
 
 // Lesson ids are prefixed per era ('ancient-01', 'medieval-03', …) while two
-// era ids differ from their prefix — resolve through this map everywhere.
+// era ids differ from their prefix - resolve through this map everywhere.
 const ERA_ID_PREFIX: Record<string, string> = { 'middle-ages': 'medieval', 'early-modern': 'earlymod' };
 const eraPrefix = (eraId: string) => ERA_ID_PREFIX[eraId] ?? eraId;
-/** Live lesson count per era — era-mastery achievements scale with the curriculum. */
+/** Live lesson count per era - era-mastery achievements scale with the curriculum. */
 const eraLessonCount = (eraId: string) => LESSONS.filter(l => l.eraId === eraId).length;
 
 export const ACHIEVEMENTS: Achievement[] = [

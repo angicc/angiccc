@@ -1,13 +1,13 @@
 // ─── CHRONOS IMPERIUM · On-Map 3D Battle Theatre ─────────────────────────────
 // When two armies collide, the battle plays out RIGHT ON THE LEAFLET MAP at
-// the contested province's coordinates — now as a true CSS-3D diorama. A
+// the contested province's coordinates - now as a true CSS-3D diorama. A
 // perspective ground plane is projected onto the map; each side fields ranks
 // of upright soldier sprites (counter-rotated billboards standing on the
-// receding plane) that march, loose volleys, lock shields, clash and — as
-// strength drains — fall and stay down. Above the arena Clio grades the
+// receding plane) that march, loose volleys, lock shields, clash and - as
+// strength drains - fall and stay down. Above the arena Clio grades the
 // player's tactical read live, and when the dust settles her DEBRIEF opens:
 // the real historical battle this engagement echoed (Hastings, Agincourt,
-// Cannae…), what happened there, and the transferable principle — so every
+// Cannae…), what happened there, and the transferable principle - so every
 // battle is simultaneously a game moment and a history lesson. The debrief
 // feeds the Commander's Ledger for long-run decision analytics.
 // All motion respects prefers-reduced-motion; geometry clamps to the map.
@@ -43,7 +43,7 @@ export interface TheaterReport {
 interface Props {
   battle: TheaterBattle;
   map: LeafletMap | null;
-  /** Leader id of the human player — identifies which BattleSide is theirs. */
+  /** Leader id of the human player - identifies which BattleSide is theirs. */
   playerLeaderId: string;
   weather: Weather;
   language: Language;
@@ -94,7 +94,7 @@ function ClioBadge({ size = 15 }: { size?: number }) {
 
 // ── One soldier: an upright billboard standing on the 3D ground plane ─────────
 // The ground is rotated ~56° away from the camera; each soldier counter-rotates
-// -56° around its feet so it stands vertically on the receding plane — the
+// -56° around its feet so it stands vertically on the receding plane - the
 // classic CSS diorama. Fallen soldiers stay down as dimmed bodies.
 const GROUND_TILT = 56;
 
@@ -507,7 +507,7 @@ export function MapBattleTheater({
             {impText('imp_theater_clash', language, { territory: provinceName(pending.territoryId) })}
           </span>
           <span className="rounded bg-black/70 px-1.5 py-0.5 tabular-nums text-muted-foreground backdrop-blur">
-            {impText('imp_theater_round', language)} {tickIdx < 0 ? '—' : `${Math.min(tickIdx + 1, resolution.ticks.length)}/${resolution.ticks.length}`}
+            {impText('imp_theater_round', language)} {tickIdx < 0 ? '-' : `${Math.min(tickIdx + 1, resolution.ticks.length)}/${resolution.ticks.length}`}
           </span>
         </div>
 
@@ -517,7 +517,7 @@ export function MapBattleTheater({
           <SideBar label={impText('imp_theater_enemy', language)} align="right" color={ENEMY_COLOR} strength={enemyS} morale={enemyM} />
         </div>
 
-        {/* outcome banner (brief — the debrief takes over) */}
+        {/* outcome banner (brief - the debrief takes over) */}
         <AnimatePresence>
           {done && !showDebrief && (
             <motion.div

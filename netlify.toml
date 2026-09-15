@@ -3,7 +3,7 @@
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
 # SPA fallback — all routes serve index.html
 # Edge functions run before this, so /api/chat is handled server-side first

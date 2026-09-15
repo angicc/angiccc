@@ -13,7 +13,7 @@ interface SubCtx {
   canTerritoryMap(): boolean;
   /** Eras whose Conquest Campaign is playable on the current plan. */
   campaignEras(): CampaignEraId[];
-  /** Legendary campaign mode (flawless conquests, 2× XP) — Master exclusive. */
+  /** Legendary campaign mode (flawless conquests, 2× XP) - Master exclusive. */
   canLegendary(): boolean;
   refreshSubscription(): void;
 }
@@ -22,7 +22,7 @@ const SubContext = createContext<SubCtx | null>(null);
 export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
   const { currentUser } = useAuth();
   // Hydrate synchronously: a paying user must never see a first render as
-  // 'free' — plan-gated pages early-return on that flash, and any mount-once
+  // 'free' - plan-gated pages early-return on that flash, and any mount-once
   // effect behind the gate (e.g. the Territory Map's Leaflet init) would
   // silently never run.
   const [subscription, setSubscription] = useState<UserSubscription | null>(

@@ -6,7 +6,7 @@ const STRONG2 = 'Pq7Wz2Nx9Kd4Rb8Tv1Gm5Jc3Hy6Le0Us';
 
 /**
  * The old gate was `if (!JWT_SECRET) throw`, which accepts "secret". A
- * guessable signing key is not a weaker version of a good one — it is total
+ * guessable signing key is not a weaker version of a good one - it is total
  * compromise: anyone can brute-force it offline from one issued token and then
  * mint sessions for any account at any tier, and nothing in the logs shows it.
  */

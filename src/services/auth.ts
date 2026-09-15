@@ -1,7 +1,7 @@
 // ─── Server-backed accounts ──────────────────────────────────────────────────
 // The client kept its entire user table in localStorage: accounts, and an
 // unsalted SHA-256 of the password, in the browser. Nothing ever called the
-// server's /api/auth/* routes — which have bcrypt, account lockout, session
+// server's /api/auth/* routes - which have bcrypt, account lockout, session
 // revocation and reset tokens sitting unused behind them.
 //
 // That is why the social layer could not be online. Every /api/social/* route
@@ -10,8 +10,8 @@
 //
 // This module is the seam. When `VITE_API_URL` is configured, accounts live on
 // the server and the session is an httpOnly cookie the page cannot read (so an
-// XSS cannot steal it). When it is not configured — local dev, preview builds,
-// the offline demo — `serverAuthConfigured()` is false and AuthContext keeps
+// XSS cannot steal it). When it is not configured - local dev, preview builds,
+// the offline demo - `serverAuthConfigured()` is false and AuthContext keeps
 // its local accounts, unchanged.
 //
 // Passwords are never stored, hashed or transformed here: they go to the
@@ -37,7 +37,7 @@ export type AuthOutcome =
   | { ok: true; user: ServerAccount }
   /** The server answered, and said no. `error` is safe to show the learner. */
   | { ok: false; error: string; status: number }
-  /** No backend configured, or it could not be reached — fall back to local. */
+  /** No backend configured, or it could not be reached - fall back to local. */
   | { ok: false; unavailable: true };
 
 const UNAVAILABLE: AuthOutcome = { ok: false, unavailable: true };
@@ -53,7 +53,7 @@ async function outcome(res: Response | null): Promise<AuthOutcome> {
     const user = (data as { user?: ServerAccount }).user;
     return user ? { ok: true, user } : UNAVAILABLE;
   }
-  // 5xx is the server failing, not the learner being wrong — treat it as
+  // 5xx is the server failing, not the learner being wrong - treat it as
   // unavailable so the caller can fall back rather than showing "try again"
   // for something the learner cannot fix.
   if (res.status >= 500) return UNAVAILABLE;
@@ -79,7 +79,7 @@ export async function serverLogin(email: string, password: string): Promise<Auth
 /**
  * Register.
  *
- * The server answers 202 with no user for an email that already exists — it
+ * The server answers 202 with no user for an email that already exists - it
  * refuses to confirm membership, so this endpoint cannot be used to test an
  * email list. That is deliberate on the server side, and it means "registered
  * successfully" and "that address is taken" are indistinguishable here. Say

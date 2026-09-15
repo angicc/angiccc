@@ -42,7 +42,7 @@ describe('quiz score recording', () => {
   it('keeps Smart Quiz out of the era-quiz set', () => {
     recordQuizAttempt('u1', attempt('smart-quiz', 73), 'Smart Quiz');
     const p = loadProgress('u1');
-    // It is recorded, but it is not an era quiz — the Progress chart decides
+    // It is recorded, but it is not an era quiz - the Progress chart decides
     // emptiness from era quizzes, so this alone must not imply "has data".
     expect('smart-quiz' in p.quizScores).toBe(true);
     const eraQuizIds = ['quiz-prehistoric','quiz-ancient','quiz-byzantine'];

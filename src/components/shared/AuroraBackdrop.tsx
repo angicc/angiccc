@@ -1,7 +1,7 @@
 // ─── Gilded Aurora backdrop ──────────────────────────────────────────────────
 // A slow, low-opacity wash of drifting gilded/violet nebulae that sits beneath
 // the app's content (above the base canvas, below the star chart and particles).
-// Pure CSS animation — no canvas, no JS loop — and fully disabled under
+// Pure CSS animation - no canvas, no JS loop - and fully disabled under
 // prefers-reduced-motion via the keyframe guards in index.css.
 
 export function AuroraBackdrop({ zIndex = 0 }: { zIndex?: number }) {

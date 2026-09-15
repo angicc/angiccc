@@ -1,8 +1,8 @@
 // ─── CHRONOS IMPERIUM · The War Council (the intellectual spine) ─────────────
 // The brief: a ruler wins two-thirds by wisdom, one-third by the sword. This
 // module turns Chronos Imperium from a pure wargame into a majority-intellectual
-// campaign by scoring the player's *judgment* — the crises they resolve and the
-// tactical reasoning they show — and blending it 65/35 with battlefield control
+// campaign by scoring the player's *judgment* - the crises they resolve and the
+// tactical reasoning they show - and blending it 65/35 with battlefield control
 // into a single Campaign Standing.
 //
 // It reads only signals the engine already produces (and that are already fully
@@ -17,7 +17,7 @@ export interface DoctrineState {
   intellectPoints: number;
   /** The maximum wisdom that was on offer across those same decisions. */
   intellectMax: number;
-  /** Count of council decisions taken — feeds the "engaged ruler" read. */
+  /** Count of council decisions taken - feeds the "engaged ruler" read. */
   decisions: number;
 }
 

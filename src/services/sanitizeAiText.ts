@@ -1,7 +1,7 @@
 // ─── Repair obviously corrupt characters in generated text ───────────────────
 //
 // The fast model occasionally emitted a stray CJK character in the middle of a
-// Cyrillic word — "историјата живее во絀细", "четири絀 области", "22% масперон".
+// Cyrillic word - "историјата живее во絀细", "четири絀 области", "22% масперон".
 // It reached the reader inside Smart Quiz verdicts, Study Plan analyses and
 // Crisis Room assessments, where it reads as a rendering fault in the app
 // rather than a model slip.
@@ -12,8 +12,8 @@
 // by the reader.
 //
 // The rule is deliberately narrow: only a CJK character that is WELDED INTO a
-// run of another script is removed. A deliberate one — a kanji quoted in a
-// lesson about Japan, standing on its own or between spaces or brackets — is
+// run of another script is removed. A deliberate one - a kanji quoted in a
+// lesson about Japan, standing on its own or between spaces or brackets - is
 // left alone, because that is content rather than corruption and this module
 // has no business guessing at it.
 
@@ -37,7 +37,7 @@ export function stripWeldedScripts(text: string): string {
   if (!text) return text;
   let out = text.replace(WELDED_AFTER, '$1').replace(WELDED_BEFORE, '$1');
   // One pass can leave a character welded on the far side of a run it just
-  // shortened ("во絀细四области"), so settle it — bounded, never open-ended.
+  // shortened ("во絀细四области"), so settle it - bounded, never open-ended.
   for (let i = 0; i < 3 && WELDED_AFTER.test(out); i++) {
     WELDED_AFTER.lastIndex = 0;
     out = out.replace(WELDED_AFTER, '$1').replace(WELDED_BEFORE, '$1');
@@ -46,7 +46,7 @@ export function stripWeldedScripts(text: string): string {
   return out;
 }
 
-/** True when the text carries a script weld — used by tests and diagnostics. */
+/** True when the text carries a script weld - used by tests and diagnostics. */
 export function hasWeldedScripts(text: string): boolean {
   WELDED_AFTER.lastIndex = 0;
   WELDED_BEFORE.lastIndex = 0;

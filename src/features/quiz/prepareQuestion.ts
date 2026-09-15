@@ -2,14 +2,14 @@
 // Two problems this fixes, both invisible until the data is measured.
 //
 // 1. ANSWER POSITION. Across the 210 authored questions the correct answer sat
-//    at B 64.3% of the time and C 25.2% — 89.5% in the middle two slots, with A
+//    at B 64.3% of the time and C 25.2% - 89.5% in the middle two slots, with A
 //    at 7.6% and D at 2.9% (chi-square 196 against the 7.8 that chance would
 //    explain). A learner who never reads the question and always picks B scores
 //    ~64%. Shuffling per session removes the tell without touching the authored
 //    data, and covers every question added later.
 //
 // 2. LANGUAGE. Smart Quiz rendered the raw English question and options in
-//    every language — it never called the translation layer that QuizPage uses.
+//    every language - it never called the translation layer that QuizPage uses.
 //
 // Both belong at the same point: the moment a question is handed to a session.
 // Shuffling here rather than at render also means the order is stable for the
@@ -17,7 +17,7 @@
 // learner between selecting and seeing the explanation.
 //
 // Safe to shuffle: no explanation in the bank refers to an option by letter
-// (checked — zero occurrences of "option A/B/C/D" across both quiz files), so
+// (checked - zero occurrences of "option A/B/C/D" across both quiz files), so
 // reordering cannot orphan a reference.
 
 import type { Language } from '@/i18n/translations';

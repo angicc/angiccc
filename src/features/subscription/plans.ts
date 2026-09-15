@@ -10,7 +10,7 @@ export const PLANS: SubscriptionPlan[] = [
   { id: 'pro', name: 'Pro Student', price: 9.99, description: 'Unlock the full curriculum.', badge: 'Most Popular', color: 'border-primary',
     features: ['Everything in Beginner', 'All lessons across 6 eras', 'AI Tutor – 50 messages/month', 'Smart Quiz (adaptive AI)', 'Study Plan – weekly learning path', 'AI Content Studio – study kits from any text', 'Personal notes & bookmarks', 'Progress analytics & leaderboard', 'Debate a Philosopher (resets every 12 hours)', 'Territory Map – interactive historical borders & markers'],
     limits: { lessonsPerEra: 'unlimited', quizExplanations: true, aiMessagesPerMonth: 50, timelineFilter: true, advancedStats: true, downloadableNotes: false } },
-  { id: 'master', name: 'Master Student', price: 17.99, description: 'The complete Historify experience.', color: 'border-amber-400',
+  { id: 'master', name: 'Master Student', price: 16.99, description: 'The complete Historify experience.', color: 'border-amber-400',
     features: ['Everything in Pro Student', 'Chronos Crisis Room (exclusive)', 'AI Essay Challenge (exclusive)', 'Video Review Challenge (exclusive)', 'Conquest Campaign – animated battles, all four eras + Legendary Mode (2× XP)', 'Study Plan – "Enhance with Clio" coaching', 'AI Tutor – 100 messages/month', 'Downloadable lesson notes', 'Advanced analytics & skills radar', 'Historical Chess Ranks (Video XP)', 'Master badge on profile'],
     limits: { lessonsPerEra: 'unlimited', quizExplanations: true, aiMessagesPerMonth: 100, timelineFilter: true, advancedStats: true, downloadableNotes: true } },
 ];

@@ -1,6 +1,6 @@
 // ─── TiltCard: premium 3D tilt/parallax wrapper ──────────────────────────────
 // Pointer-tracked perspective tilt with spring physics and a moving specular
-// glare, built on CSS 3D transforms + Framer Motion springs — hardware
+// glare, built on CSS 3D transforms + Framer Motion springs - hardware
 // accelerated, zero WebGL overhead, zero new dependencies, and inert under
 // prefers-reduced-motion. Wrap any card; children keep their own layout.
 import { type ReactNode, useRef } from 'react';

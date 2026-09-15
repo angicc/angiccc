@@ -168,7 +168,7 @@ describe('achievementProgress', () => {
     }
   });
 
-  it('agrees with the unlock check — a full bar means it actually unlocks', () => {
+  it('agrees with the unlock check - a full bar means it actually unlocks', () => {
     // The bar and the unlock rule are separate code paths reading the same
     // fields; if they disagree a learner sees 5/5 on something still locked.
     const p = progress({

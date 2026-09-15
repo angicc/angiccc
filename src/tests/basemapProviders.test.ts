@@ -8,7 +8,7 @@ import path from 'path';
  * CARTO began requiring registration for `basemaps.cartocdn.com`, and because
  * one `CART_STYLES` list feeds all thirty-odd territory timelines, three of the
  * five styles started serving tiles stamped "API KEY REQUIRED" everywhere at
- * once — plus the Imperium campaign map, which had its own hardcoded copy of
+ * once - plus the Imperium campaign map, which had its own hardcoded copy of
  * the same URL.
  *
  * A tile URL is easy to paste in from a tutorial and impossible to notice in
@@ -65,7 +65,7 @@ describe('basemap tile providers', () => {
   it('finds the tile URLs it is meant to be checking', () => {
     // Guards the regex itself: if a refactor moves these into a JSON file or
     // template literals, this test would otherwise pass by inspecting nothing.
-    expect(urls.length, 'no tile URLs found — has the check gone blind?').toBeGreaterThanOrEqual(5);
+    expect(urls.length, 'no tile URLs found - has the check gone blind?').toBeGreaterThanOrEqual(5);
   });
 
   it('requests no tiles from a provider that requires an API key', () => {

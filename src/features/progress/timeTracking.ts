@@ -1,6 +1,6 @@
 // ─── Live study-time tracking ────────────────────────────────────────────────
 // "Time Invested" on the Progress page used to sum lesson.estimatedMinutes over
-// completed lessons — the catalogue's guess at how long a lesson *should* take,
+// completed lessons - the catalogue's guess at how long a lesson *should* take,
 // identical for every learner and unchanged by how long anyone actually read.
 // A learner who skimmed a 15-minute lesson in two minutes was credited 15.
 //
@@ -11,7 +11,7 @@
 // overnight would report eight hours. Time accrues only while the document is
 // visible AND the learner has interacted within IDLE_TIMEOUT_MS. That
 // under-counts someone reading a long passage without touching anything, which
-// is the safer direction to be wrong in — an inflated number is worthless.
+// is the safer direction to be wrong in - an inflated number is worthless.
 //
 // Seconds are flushed to storage as they accrue rather than on unload, because
 // pagehide/beforeunload are unreliable on mobile.
@@ -62,7 +62,7 @@ export function recordStudySeconds(userId: string, eraId: string | null, seconds
   try {
     localStorage.setItem(KEY(userId), JSON.stringify(spent));
   } catch {
-    /* storage full or unavailable — the tally just stops growing */
+    /* storage full or unavailable - the tally just stops growing */
   }
 }
 
@@ -76,7 +76,7 @@ export interface StudyRhythm {
   activeDays: number;
   /** Length of the window examined, in days. */
   windowDays: number;
-  /** Median seconds on the days they DID study — 0 when they never have. */
+  /** Median seconds on the days they DID study - 0 when they never have. */
   medianActiveSeconds: number;
   /** Seconds studied in the window. */
   totalSeconds: number;
@@ -121,7 +121,7 @@ export function totalStudySeconds(userId: string): number {
   return Object.values(spent.byEra).reduce((a, b) => a + b, 0) + spent.other;
 }
 
-/** `2h 05m` / `12m 30s` / `45s` — never an empty string. */
+/** `2h 05m` / `12m 30s` / `45s` - never an empty string. */
 export function formatDuration(seconds: number): string {
   const s = Math.max(0, Math.round(seconds));
   const h = Math.floor(s / 3600);

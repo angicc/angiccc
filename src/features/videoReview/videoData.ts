@@ -9,7 +9,7 @@ export interface HistoryVideo {
   description: string;
 }
 
-// All YouTube IDs verified via web search — do not modify without re-verifying
+// All YouTube IDs verified via web search - do not modify without re-verifying
 export const HISTORY_VIDEOS: HistoryVideo[] = [
   // ── HISTORY VS. SERIES (TED-Ed) ──────────────────────────────────────────
   {
@@ -40,7 +40,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Ancient',
     topic: 'Roman Empire',
     durationSec: 315,
-    description: 'Augustus transformed Rome from republic to empire — was he a visionary leader or a ruthless autocrat who crushed the republic? You decide.',
+    description: 'Augustus transformed Rome from republic to empire - was he a visionary leader or a ruthless autocrat who crushed the republic? You decide.',
   },
   {
     id: 'v-hvs-genghis',
@@ -122,7 +122,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Ancient',
     topic: 'Mesopotamia',
     durationSec: 325,
-    description: "The Sumerian Empire built humanity's first cities, invented writing, and created the wheel — so why did it collapse? Soraya Field Fiorio explains.",
+    description: "The Sumerian Empire built humanity's first cities, invented writing, and created the wheel - so why did it collapse? Soraya Field Fiorio explains.",
   },
   {
     id: 'v-rf-ottoman',
@@ -132,7 +132,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Early Modern',
     topic: 'Ottoman Empire',
     durationSec: 345,
-    description: 'How did a small Turkish principality become one of the most powerful empires in history — and what led to its collapse after 600 years?',
+    description: 'How did a small Turkish principality become one of the most powerful empires in history - and what led to its collapse after 600 years?',
   },
   {
     id: 'v-rf-byzantine',
@@ -142,7 +142,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Medieval',
     topic: 'Byzantine Empire',
     durationSec: 340,
-    description: 'The Roman Empire never truly fell — it survived as Byzantium for another thousand years. Leonora Neville traces its remarkable story.',
+    description: 'The Roman Empire never truly fell - it survived as Byzantium for another thousand years. Leonora Neville traces its remarkable story.',
   },
   {
     id: 'v-rf-inca',
@@ -172,7 +172,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Modern',
     topic: 'Cold War',
     durationSec: 320,
-    description: 'For 28 years, a concrete barrier divided a city and symbolized the Cold War. Konrad H. Jarausch examines how it was built — and why it fell.',
+    description: 'For 28 years, a concrete barrier divided a city and symbolized the Cold War. Konrad H. Jarausch examines how it was built - and why it fell.',
   },
   {
     id: 'v-rf-lakota',
@@ -182,7 +182,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Modern',
     topic: 'Native American History',
     durationSec: 315,
-    description: 'For centuries the Lakota Sioux dominated the Great Plains. Pekka Hämäläinen explains how they built a powerful empire — and what destroyed it.',
+    description: 'For centuries the Lakota Sioux dominated the Great Plains. Pekka Hämäläinen explains how they built a powerful empire - and what destroyed it.',
   },
 
   // ── A DAY IN THE LIFE SERIES (TED-Ed) ─────────────────────────────────────
@@ -224,7 +224,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Ancient',
     topic: 'Ancient Egypt',
     durationSec: 265,
-    description: 'Elizabeth Cox explores the surprisingly advanced medical knowledge of ancient Egypt — from herbal treatments to surgical instruments — through one doctor\'s day.',
+    description: 'Elizabeth Cox explores the surprisingly advanced medical knowledge of ancient Egypt - from herbal treatments to surgical instruments - through one doctor\'s day.',
   },
   {
     id: 'v-life-aztec',
@@ -256,7 +256,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Early Modern',
     topic: 'Slavery & Colonialism',
     durationSec: 295,
-    description: 'Anthony Hazard uncovers the scale, mechanics, and lasting consequences of the Atlantic slave trade — a story too often reduced to a footnote.',
+    description: 'Anthony Hazard uncovers the scale, mechanics, and lasting consequences of the Atlantic slave trade - a story too often reduced to a footnote.',
   },
 
   // ── DISEASE & SOCIETY ──────────────────────────────────────────────────────
@@ -268,7 +268,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Medieval',
     topic: 'Black Death',
     durationSec: 315,
-    description: "Sharon N. DeWitte investigates the plague that killed a third of Europe's population — and explains why the bacterium still exists today.",
+    description: "Sharon N. DeWitte investigates the plague that killed a third of Europe's population - and explains why the bacterium still exists today.",
   },
 
   // ── WORLD HISTORY ──────────────────────────────────────────────────────────
@@ -280,7 +280,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Ancient',
     topic: 'Human Civilization',
     durationSec: 305,
-    description: 'Eva-Maria Geigl traces how cats and humans formed one of history\'s most enduring partnerships — from ancient Egypt\'s grain stores to the internet.',
+    description: 'Eva-Maria Geigl traces how cats and humans formed one of history\'s most enduring partnerships - from ancient Egypt\'s grain stores to the internet.',
   },
 
   // ── ADDITIONAL CONFIRMED VIDEOS ────────────────────────────────────────────
@@ -295,7 +295,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Medieval',
     topic: 'The Crusades',
     durationSec: 300,
-    description: 'A concise overview of the nine Crusades — why Christian Europe launched holy wars to recapture Jerusalem, and what the lasting consequences were.',
+    description: 'A concise overview of the nine Crusades - why Christian Europe launched holy wars to recapture Jerusalem, and what the lasting consequences were.',
   },
 
   // TED-Ed - more confirmed below
@@ -367,7 +367,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Modern',
     topic: 'Cold War',
     durationSec: 580,
-    description: 'John Green traces the ideological standoff between the United States and Soviet Union from 1945 to 1991 — and how close it came to nuclear catastrophe.',
+    description: 'John Green traces the ideological standoff between the United States and Soviet Union from 1945 to 1991 - and how close it came to nuclear catastrophe.',
   },
   {
     id: 'v-renaissance',
@@ -407,7 +407,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Ancient',
     topic: 'Democracy',
     durationSec: 300,
-    description: 'Democracy was born in Athens around 507 BCE — but how different was it from our own? This lesson traces the idea of popular self-government from antiquity to today.',
+    description: 'Democracy was born in Athens around 507 BCE - but how different was it from our own? This lesson traces the idea of popular self-government from antiquity to today.',
   },
   {
     id: 'v-printing-press',
@@ -417,7 +417,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Early Modern',
     topic: 'Printing Press',
     durationSec: 295,
-    description: 'Johann Gutenberg\'s movable type press in 1440 didn\'t just print books — it launched the Reformation, the Scientific Revolution, and the modern world.',
+    description: 'Johann Gutenberg\'s movable type press in 1440 didn\'t just print books - it launched the Reformation, the Scientific Revolution, and the modern world.',
   },
   {
     id: 'v-black-death-society',
@@ -467,7 +467,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Ancient',
     topic: 'Ancient Greece',
     durationSec: 295,
-    description: 'Spartan women could own property, exercise in public, and debate politics — radically different from other Greek women. Why, and what happened to these rights?',
+    description: 'Spartan women could own property, exercise in public, and debate politics - radically different from other Greek women. Why, and what happened to these rights?',
   },
   {
     id: 'v-mongol-empire',
@@ -487,7 +487,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Early Modern',
     topic: 'American Revolution',
     durationSec: 570,
-    description: 'John Green traces the causes and consequences of the American Revolution — from taxation without representation to the world\'s first modern republic.',
+    description: 'John Green traces the causes and consequences of the American Revolution - from taxation without representation to the world\'s first modern republic.',
   },
   {
     id: 'v-decolonization',
@@ -577,7 +577,7 @@ export const HISTORY_VIDEOS: HistoryVideo[] = [
     era: 'Medieval',
     topic: 'English History',
     durationSec: 295,
-    description: 'James Gillespie examines the 1215 charter that limited royal power and established that no one — not even the king — is above the law.',
+    description: 'James Gillespie examines the 1215 charter that limited royal power and established that no one - not even the king - is above the law.',
   },
   {
     id: 'v-ottoman-rise',

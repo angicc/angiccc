@@ -47,7 +47,7 @@ giftsRouter.post('/', async (req: Request, res: Response) => {
       const created = await tx.giftSubscription.create({
         data: { gifterId, recipientId: recipient.id, tier: giftTier, expiresAt },
       });
-      // Upgrade only if the gift outranks the recipient's current tier —
+      // Upgrade only if the gift outranks the recipient's current tier -
       // never downgrade someone's paid subscription with a lesser gift.
       if (RANK[giftTier] > RANK[recipient.tier]) {
         await tx.user.update({
@@ -62,11 +62,11 @@ giftsRouter.post('/', async (req: Request, res: Response) => {
     res.json({ ok: true, giftId: gift.id, recipient: recipient.username, tier: giftTier, expiresAt, rewardPct: 50 });
   } catch (err) {
     console.error('gift failed', err);
-    res.status(500).json({ error: 'Gift could not be completed — nothing was charged or changed.' });
+    res.status(500).json({ error: 'Gift could not be completed - nothing was charged or changed.' });
   }
 });
 
-// GET /api/gifts — the caller's sent + received gifts, and their pending reward.
+// GET /api/gifts - the caller's sent + received gifts, and their pending reward.
 giftsRouter.get('/', async (req: Request, res: Response) => {
   const userId = req.auth!.userId;
   const [sent, received, me] = await Promise.all([

@@ -18,7 +18,7 @@ const SESSION_DAYS = 30;
 const isProd = process.env.NODE_ENV === 'production';
 
 /** Account lockout: throttles guessing against ONE account, which per-IP
- *  limits cannot do — an attacker with a botnet has many IPs but still only
+ *  limits cannot do - an attacker with a botnet has many IPs but still only
  *  one target account. */
 const MAX_FAILED_LOGINS = 8;
 const LOCKOUT_MINUTES = 15;
@@ -34,7 +34,7 @@ const credentialsSchema = z.object({
 const registerSchema = credentialsSchema.extend({
   username: z.string().trim().min(2).max(32),
   // de and fr were missing, so German and French users could not register in
-  // their own language — the enum rejected it.
+  // their own language - the enum rejected it.
   language: z.enum(['en', 'es', 'ru', 'mk', 'de', 'fr']).optional(),
 });
 
@@ -152,14 +152,14 @@ authRouter.post('/logout', (req: Request, res: Response) => {
   res.json({ ok: true });
 });
 
-// GET /api/auth/me — requires the authenticate middleware upstream.
+// GET /api/auth/me - requires the authenticate middleware upstream.
 authRouter.get('/me', async (req: Request, res: Response) => {
   const user = await prisma.user.findUnique({ where: { id: req.auth!.userId } });
   if (!user) return res.status(404).json({ error: 'Account no longer exists.' });
   res.json({ user: publicUser(user) });
 });
 
-// POST /api/auth/password — change password for the signed-in user.
+// POST /api/auth/password - change password for the signed-in user.
 const changeSchema = z.object({
   currentPassword: z.string().min(1).max(128),
   newPassword: z.string().min(8).max(128),
@@ -197,7 +197,7 @@ authRouter.post('/password', async (req: Request, res: Response) => {
   res.json({ ok: true, token });
 });
 
-// POST /api/auth/sessions/revoke — sign out everywhere.
+// POST /api/auth/sessions/revoke - sign out everywhere.
 authRouter.post('/sessions/revoke', async (req: Request, res: Response) => {
   const updated = await prisma.user.update({
     where: { id: req.auth!.userId },
@@ -211,7 +211,7 @@ authRouter.post('/sessions/revoke', async (req: Request, res: Response) => {
 // POST /api/auth/password-reset/request
 authRouter.post('/password-reset/request', async (req: Request, res: Response) => {
   const parsed = z.object({ email: z.string().trim().toLowerCase().email().max(254) }).safeParse(req.body);
-  // Even a malformed address gets the neutral answer — a 400 here would still
+  // Even a malformed address gets the neutral answer - a 400 here would still
   // separate "not an email" from "email we do not have".
   const neutral = { ok: true, message: 'If that account exists, a reset link is on its way.' };
   if (!parsed.success) return res.json(neutral);
@@ -258,7 +258,7 @@ authRouter.post('/password-reset/confirm', async (req: Request, res: Response) =
     include: { user: true },
   });
 
-  // One message for every failure mode — expired, already used, never existed.
+  // One message for every failure mode - expired, already used, never existed.
   // Distinguishing them tells an attacker which guesses were close.
   const rejected = () => {
     logSecurityEvent(req, 'password_reset_invalid', { userId: record?.userId });

@@ -122,7 +122,7 @@ function getTranslatedTopic(topic: string, lang: string): string {
 
 // Imported, not redeclared. The local copy here listed only en/es/ru/mk, so a
 // German or French student's essay was graded under an explicit "write ALL text
-// fields in English" instruction — which then collided with the German/French
+// fields in English" instruction - which then collided with the German/French
 // OUTPUT LANGUAGE block the gateway appends. One prompt, two contradictory
 // language orders, and feedback that came back in the wrong language.
 function makeEssaySystem(lang: string): string {
@@ -320,7 +320,7 @@ export default function EssayPage() {
               <Card>
                 <CardContent className="pt-4 pb-4 text-center">
                   <p className={`text-2xl font-heading font-bold ${GRADE_COLOR[essayStats.bestGrade] ?? 'text-foreground'}`}>
-                    {essayStats.bestGrade || '—'}
+                    {essayStats.bestGrade || '-'}
                   </p>
                   <p className="text-xs text-muted-foreground mt-0.5">Best Grade</p>
                 </CardContent>

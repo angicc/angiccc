@@ -4,8 +4,8 @@
 // "accepted" by a timer, and the one server call it made sent a field name the
 // API does not read. Nothing left the browser.
 //
-// This hook is the seam. It answers the same questions either way — who are my
-// friends, who is online, what is waiting on me — and the page renders the
+// This hook is the seam. It answers the same questions either way - who are my
+// friends, who is online, what is waiting on me - and the page renders the
 // answer without caring which world produced it.
 //
 //   ONLINE          real accounts over /api/social, live over a socket.
@@ -15,7 +15,7 @@
 //   OFFLINE         no backend. The local fixtures, unchanged, and labelled.
 //
 // Everything the server pushes is a notification about state that is already
-// durable, so handlers refresh rather than patching a local cache — a dropped
+// durable, so handlers refresh rather than patching a local cache - a dropped
 // frame costs an update, never data.
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -110,7 +110,7 @@ function loadJSON<T>(key: string, fallback: T): T {
 }
 
 function saveJSON<T>(key: string, data: T): void {
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch { /* quota — best effort */ }
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch { /* quota - best effort */ }
 }
 
 /** Sent requests were once a bare id list; keep those readable. */
@@ -211,7 +211,7 @@ export function useSocialGraph(userId: string, currentUsername: string): SocialG
 
     // Offline / unauthenticated: local fixtures. An unauthenticated session
     // still shows the local set rather than an empty page, but the caller
-    // labels it — see `mode`.
+    // labels it - see `mode`.
     const local = loadJSON<LocalFriend[]>(storageKey('friends', userId), []);
     const received = loadJSON<ReceivedEntry[]>(storageKey('received', userId), []);
     const sent = normaliseSent(loadJSON<unknown>(storageKey('sent', userId), []));

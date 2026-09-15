@@ -12,7 +12,7 @@ const CONTENT_LANGS: Exclude<Language, 'en'>[] = ['es', 'ru', 'mk', 'de', 'fr'];
 /**
  * The Territory Map's own copy is CONTENT, not UI keys, so the build's
  * translation-coverage check never looked at it. Every topic title, and every
- * trade/campaign route name, is authored inline on the topic — and 39 route
+ * trade/campaign route name, is authored inline on the topic - and 39 route
  * names carried only es/ru/mk, rendering English on the German and French maps
  * while the rest of the page was translated.
  *
@@ -79,14 +79,14 @@ describe('Territory Map content translations', () => {
   });
 
   /**
-   * The names in public/data/map-territories/*.json — the layer that actually
+   * The names in public/data/map-territories/*.json - the layer that actually
    * renders.
    *
    * The map prefers this generated GeoJSON over the TypeScript polygons
    * (TimelineMapPage: `realGeomRef.current[selected.id] ?? selected.polygons`),
    * so for the 32 topics that have a file, the TS labels below are never drawn
-   * at all. Checking only those left 25 rendered names — "World War I",
-   * "Roman Empire (c. 200 CE)" — with no translation and nothing to say so.
+   * at all. Checking only those left 25 rendered names - "World War I",
+   * "Roman Empire (c. 200 CE)" - with no translation and nothing to say so.
    */
   function runtimeEntityNames(): string[] {
     const dir = path.resolve(__dirname, '../../public/data/map-territories');
@@ -117,8 +117,8 @@ describe('Territory Map content translations', () => {
 
   it('has a translation entry for every polygon label the map draws', () => {
     // Checked by ENTRY PRESENCE, not by "differs from English". Plenty of
-    // labels are proper nouns that are legitimately identical — Afghanistan is
-    // Afghanistan in German and French — so a value-comparison check reports
+    // labels are proper nouns that are legitimately identical - Afghanistan is
+    // Afghanistan in German and French - so a value-comparison check reports
     // those as missing and hides the ones that really are.
     const labels = new Set(
       TERRITORY_TOPICS.flatMap(t => (t.polygons ?? []).map(p => p.label).filter(Boolean) as string[]),
@@ -135,7 +135,7 @@ describe('Territory Map content translations', () => {
   /**
    * Every pin the map plants, in every language.
    *
-   * Marker names and notes are NOT read from the topic data — they go through
+   * Marker names and notes are NOT read from the topic data - they go through
    * the lookup tables, which fall back to the English string when a key is
    * absent. That fallback is silent, so 78 place names and 68 pin notes
    * rendered in English on an otherwise Macedonian map, in almost every era:
@@ -168,7 +168,7 @@ describe('Territory Map content translations', () => {
 
 /**
  * A duplicate key in these tables is a TypeScript error (TS1117), so it fails
- * `tsc -b` — but vitest does not run tsc, so a green test suite said nothing
+ * `tsc -b` - but vitest does not run tsc, so a green test suite said nothing
  * about it and a broken build reached a push. The second entry also silently
  * wins at runtime, which is how a correct translation gets shadowed by a worse
  * one. Cheap to check here, where it is caught in seconds.
@@ -187,6 +187,6 @@ describe('territory translation tables', () => {
         seen.add(k[1]);
       }
     }
-    expect(dupes, 'duplicate key — the later entry silently wins').toEqual([]);
+    expect(dupes, 'duplicate key - the later entry silently wins').toEqual([]);
   });
 });

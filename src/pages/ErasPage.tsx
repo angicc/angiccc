@@ -174,7 +174,7 @@ export default function ErasPage() {
                       onClick={() => navigate(`/eras/${era.id}/quiz`)}
                     >
                       <HelpCircle className="w-4 h-4" />
-                      {quizDone ? `${t.eras_quiz_label} — ${progress?.quizScores[era.quizId] ?? 0}%` : t.eras_take_quiz}
+                      {quizDone ? `${t.eras_quiz_label} - ${progress?.quizScores[era.quizId] ?? 0}%` : t.eras_take_quiz}
                     </Button>
                   </CardContent>
                 </Card>

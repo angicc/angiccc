@@ -3,7 +3,7 @@
 // (Roman legions to Renaissance tercios to riflemen), a conditional modifier
 // evaluator combining player tactics (Charge / Volley / Shield Wall) with
 // geographic modifiers pulled from the macro map (river crossings, high
-// ground, desert heat), weather, and leader trait profiles — then a
+// ground, desert heat), weather, and leader trait profiles - then a
 // deterministic tick-based resolver that converts the whole matrix into
 // precise animation triggers the frontend timeline can replay frame by frame.
 //
@@ -15,7 +15,7 @@ export type Tactic = 'charge' | 'volley' | 'hold';
 export type Weather = 'clear' | 'rain' | 'storm' | 'heat' | 'snow';
 export type UnitClass = 'infantry' | 'ranged' | 'cavalry';
 
-// ── Deterministic RNG (mulberry32) — battles replay identically per seed ─────
+// ── Deterministic RNG (mulberry32) - battles replay identically per seed ─────
 export function seededRng(seed: number): () => number {
   let s = seed >>> 0;
   return () => {
@@ -31,7 +31,7 @@ export function seededRng(seed: number): () => number {
 
 export interface UnitProfile {
   cls: UnitClass;
-  nameKey: string;          // localization catalog key — NEVER raw English in payloads
+  nameKey: string;          // localization catalog key - NEVER raw English in payloads
   attack: number;           // 1–10
   defense: number;          // 1–10
   shock: number;            // charge impetus 1–10
@@ -163,7 +163,7 @@ export function rosterFor(era: ArmyRoster['era'], preferredId?: string): ArmyRos
 export interface LeaderProfile {
   id: string;
   nameKey: string;
-  /** Tactic the leader excels at — executing it gains the bonus. */
+  /** Tactic the leader excels at - executing it gains the bonus. */
   signature: Tactic;
   attackBonus: number;      // flat modifier on attack rolls
   moraleAura: number;       // flat morale resilience for the army
@@ -183,7 +183,7 @@ export const LEADERS: LeaderProfile[] = [
 // The full conditional matrix: tactic triangle × terrain × river crossing ×
 // high ground × weather × leader signature × unit-class affinity. Each rule
 // contributes a labelled modifier so the UI can EXPLAIN the math to the player
-// — a combat log that teaches, in keeping with the rest of the app.
+// - a combat log that teaches, in keeping with the rest of the app.
 
 export interface CombatContext {
   attackerTactic: Tactic;
@@ -199,7 +199,7 @@ export interface CombatContext {
 }
 
 export interface Modifier {
-  labelKey: string;         // catalog key — localization contract
+  labelKey: string;         // catalog key - localization contract
   side: 'attacker' | 'defender';
   value: number;            // additive percentage points on damage
 }
@@ -277,7 +277,7 @@ export interface BattleSide {
 export interface AnimationTrigger {
   tick: number;
   // 'brace' is the Shield Wall (hold) signature: the line locks, raises shields
-  // and deflects the incoming blow — its own distinct motion, not a melee jab.
+  // and deflects the incoming blow - its own distinct motion, not a melee jab.
   kind: 'volley' | 'melee' | 'charge' | 'brace' | 'shatter' | 'waver' | 'rally' | 'rout';
   side: 'attacker' | 'defender';
   leadClass: UnitClass;
@@ -315,7 +315,7 @@ function tacticKind(t: Tactic): AnimationTrigger['kind'] {
 // A deterministic, explainable evaluation of the player's chosen tactic against
 // the coming engagement. This is the "intellectual" spine of Chronos Imperium:
 // the player is not rolling dice, they are reasoning about a counter-triangle,
-// terrain, weather and the enemy's doctrine — and Clio grades that reasoning.
+// terrain, weather and the enemy's doctrine - and Clio grades that reasoning.
 
 export type TacticGrade = 'S' | 'A' | 'B' | 'C' | 'D';
 
@@ -361,7 +361,7 @@ export function rateTactic(input: TacticReadInput): TacticRead {
   const reasons: TacticReason[] = [];
   let score = 0;
 
-  // 1. The counter-triangle — the heart of the decision.
+  // 1. The counter-triangle - the heart of the decision.
   if (tacticBeats(tactic, enemyTactic)) {
     reasons.push({ key: 'imp_read_triangle_win', delta: 30 });
     score += 30;
@@ -381,7 +381,7 @@ export function rateTactic(input: TacticReadInput): TacticRead {
   } else if (tactic === 'volley') {
     if (terrain === 'plain' || terrain === 'desert') { reasons.push({ key: 'imp_read_volley_fields', delta: 12 }); score += 12; }
     if (terrain === 'mountain') { reasons.push({ key: 'imp_read_volley_cover', delta: -10 }); score -= 10; }
-  } else { // hold — Shield Wall
+  } else { // hold - Shield Wall
     if (terrain === 'mountain' || input.attackerUphill) { reasons.push({ key: 'imp_read_hold_highground', delta: 18 }); score += 18; }
     if (terrain === 'river' || input.crossingRiver) { reasons.push({ key: 'imp_read_hold_chokepoint', delta: 15 }); score += 15; }
     if (terrain === 'plain') { reasons.push({ key: 'imp_read_hold_exposed', delta: -6 }); score -= 6; }
@@ -401,7 +401,7 @@ export function rateTactic(input: TacticReadInput): TacticRead {
     reasons.push({ key: 'imp_read_hold_weather', delta: 8 }); score += 8;
   }
 
-  // 4. Leader doctrine — fighting to your marshal's strength.
+  // 4. Leader doctrine - fighting to your marshal's strength.
   if (input.leaderSignature && input.leaderSignature === tactic) {
     reasons.push({ key: 'imp_read_leader_signature', delta: 12 }); score += 12;
   }
@@ -505,7 +505,7 @@ export function resolveBattle(
     if (a.morale <= 25 && a.morale > 0) triggers.push({ tick, kind: 'waver', side: 'attacker', leadClass: 'infantry', magnitude: 0.5 });
     if (d.morale <= 25 && d.morale > 0) triggers.push({ tick, kind: 'waver', side: 'defender', leadClass: 'infantry', magnitude: 0.5 });
 
-    // Morale collapse: the line breaks with strength remaining — a rout.
+    // Morale collapse: the line breaks with strength remaining - a rout.
     if (a.morale <= 0 || d.morale <= 0) {
       const broken = a.morale <= 0 ? 'attacker' : 'defender';
       triggers.push({ tick, kind: 'rout', side: broken, leadClass: 'infantry', magnitude: 1 });

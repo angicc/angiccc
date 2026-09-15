@@ -5,7 +5,7 @@
 // shared frontiers (detected by minimum inter-ring vertex distance), and over
 // sea lanes (higher traversal cost, storm-risk weighting). A modified A* runs
 // over this geographic space with a haversine heuristic and terrain-weighted
-// edge costs — mountains slow columns, rivers tax crossings, open sea demands
+// edge costs - mountains slow columns, rivers tax crossings, open sea demands
 // fleets. The graph is rebuilt deterministically from the same territory data
 // the map renders, so strategy and cartography can never disagree.
 import { TERRITORY_TOPICS, type TerritoryTopic } from '@/features/content/timelineTerritoryData';
@@ -52,7 +52,7 @@ export function haversineKm(aLat: number, aLng: number, bLat: number, bLng: numb
   return 2 * EARTH_R * Math.asin(Math.min(1, Math.sqrt(s)));
 }
 
-/** Arithmetic centroid of a lat/lng ring — adequate at territory scale. */
+/** Arithmetic centroid of a lat/lng ring - adequate at territory scale. */
 export function ringCentroid(ring: [number, number][]): [number, number] {
   let lat = 0, lng = 0;
   for (const [la, ln] of ring) { lat += la; lng += ln; }
@@ -62,7 +62,7 @@ export function ringCentroid(ring: [number, number][]): [number, number] {
 /** Minimum vertex-to-vertex distance between two rings (frontier detector). */
 function minRingDistance(a: [number, number][], b: [number, number][]): number {
   let min = Infinity;
-  // Sample rings (every 3rd vertex) — exactness is unnecessary for adjacency.
+  // Sample rings (every 3rd vertex) - exactness is unnecessary for adjacency.
   for (let i = 0; i < a.length; i += 3) {
     for (let j = 0; j < b.length; j += 3) {
       const d = haversineKm(a[i][0], a[i][1], b[j][0], b[j][1]);
@@ -159,7 +159,7 @@ export interface GraphOptions {
 export function buildGeoGraph(opts: GraphOptions = {}): GeoGraph {
   const { adjacencyKm = 260, waypointsPerRing = 6, era, provinces } = opts;
   // Source territories: a curated province list (largest ring is the body,
-  // the anchor — the historical capital — becomes the centroid node), or the
+  // the anchor - the historical capital - becomes the centroid node), or the
   // Territory Map's topics filtered by era.
   const topics: { id: string; ring: [number, number][]; anchor?: [number, number] }[] = provinces
     ? provinces.map(pv => ({ id: pv.id, ring: pv.rings[0], anchor: pv.anchor }))
@@ -239,9 +239,9 @@ export function buildGeoGraph(opts: GraphOptions = {}): GeoGraph {
   // 3. Stitch the components together.
   //
   // Steps 1–2 connect neighbours, which is not the same as connecting the map.
-  // The Crusades theatre came out as two islands — France, the Empire, Anjou,
+  // The Crusades theatre came out as two islands - France, the Empire, Anjou,
   // Hungary, Poland and the Almohads in one; Byzantium, Cyprus, Georgia and
-  // the Fatimids in the other — with no edge between them. Three of the four
+  // the Fatimids in the other - with no edge between them. Three of the four
   // rival provinces were unreachable, so the campaign named for crossing the
   // Mediterranean could not cross it, and the player could never attack.
   //
@@ -249,7 +249,7 @@ export function buildGeoGraph(opts: GraphOptions = {}): GeoGraph {
   // province geometry against a fixed 260 km threshold. Rather than tune that
   // number until this one map works, join whatever components remain by their
   // closest pair. Crossing open water yields a sea edge, which the existing
-  // pathfinder already gates behind `canSail` — so the crusader host sails,
+  // pathfinder already gates behind `canSail` - so the crusader host sails,
   // as it historically did, rather than teleporting.
   stitchComponents();
 
@@ -310,7 +310,7 @@ export function buildGeoGraph(opts: GraphOptions = {}): GeoGraph {
 // ── Modified A* over geographic space ─────────────────────────────────────────
 
 export interface PathOptions {
-  /** Territories hostile to the mover — entering costs extra; blocked if true. */
+  /** Territories hostile to the mover - entering costs extra; blocked if true. */
   hostile?: Set<string>;
   /** Hard-block hostile territory instead of taxing it. */
   blockHostile?: boolean;

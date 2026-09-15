@@ -141,7 +141,7 @@ describe('answer positions', () => {
     expect(new Set(balanced[1].options)).toEqual(new Set(original.options));
   });
 
-  it('is deterministic — the same kit balances the same way twice', () => {
+  it('is deterministic - the same kit balances the same way twice', () => {
     const all = Array.from({ length: 6 }, (_, i) => q({ id: `q${i}`, correctIndex: 1 }));
     expect(balanceAnswerPositions(all).map(x => x.correctIndex))
       .toEqual(balanceAnswerPositions(all).map(x => x.correctIndex));

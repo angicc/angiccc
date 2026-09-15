@@ -1,7 +1,7 @@
 // ─── "What this philosopher remembers about you" ─────────────────────────────
 // Debate-side twin of the Clio memory panel: shows the head-to-head record
 // against today's philosopher, the stances the student argued, points they
-// conceded, and their strongest arguments — the dossier the persona debates
+// conceded, and their strongest arguments - the dossier the persona debates
 // from. Live-updates on background extraction and offers a one-click reset.
 import { useEffect, useState } from 'react';
 import { Brain, Swords, Trophy, Flag, Zap, Trash2, ChevronDown } from 'lucide-react';

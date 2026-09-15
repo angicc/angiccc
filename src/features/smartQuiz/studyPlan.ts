@@ -1,7 +1,7 @@
 // ─── Clio Study Plan: premium post-session recommendation engine ──────────────
 // Replaces the free-text recommendation with a structured, grounded plan: the
 // model sees the student's ACTUAL missed questions and the real lesson catalog
-// for their weak eras, and must answer in strict JSON — a diagnosis, a
+// for their weak eras, and must answer in strict JSON - a diagnosis, a
 // three-step plan pointing at real lessons (rendered as clickable chips), a
 // score forecast, and (Master only) a misconception analysis of the error
 // pattern. Every field is validated before rendering.
@@ -45,14 +45,14 @@ export function buildStudyPlanPrompt(args: {
     .map(l => `- id "${l.id}": ${l.title} (${l.estimatedMinutes} min)`)
     .join('\n');
   const missedLines = missed.slice(0, 8)
-    .map(m => `- [${m.eraName}] "${m.question}" — answered "${m.chosen}", correct was "${m.correct}"`)
+    .map(m => `- [${m.eraName}] "${m.question}" - answered "${m.chosen}", correct was "${m.correct}"`)
     .join('\n');
   return `You are Clio, an expert history mentor producing a personalized study plan after an adaptive quiz session.
 
 SESSION SCORE: ${score}%.
 ERA BREAKDOWN: ${breakdown.map(e => `${e.name} ${e.correct}/${e.total}`).join(', ')}.
 MISSED QUESTIONS:
-${missedLines || '(none — a flawless session)'}
+${missedLines || '(none - a flawless session)'}
 AVAILABLE LESSONS (recommend ONLY from this catalog, using exact ids):
 ${catalog}
 
@@ -63,7 +63,7 @@ Produce:
 - steps: EXACTLY 3 study steps. Each { "action": one imperative sentence, "lessonId": an exact id from the catalog when the step is a lesson (omit otherwise), "lessonTitle": its title, "minutes": realistic integer }. At least 2 steps must reference catalog lessons.
 - forecast: one sentence predicting their realistic next-session score range if they follow the plan.
 - mentorInsight: one closing sentence connecting their weak area to why it matters historically.${master ? `
-- masterAnalysis: a short paragraph (3–4 sentences) dissecting the misconception pattern across their wrong answers — what they consistently confuse and the mental model that fixes it.` : ''}
+- masterAnalysis: a short paragraph (3–4 sentences) dissecting the misconception pattern across their wrong answers - what they consistently confuse and the mental model that fixes it.` : ''}
 
 IMPORTANT: Write ALL text fields in ${langName}. Plain text only, no markdown.
 

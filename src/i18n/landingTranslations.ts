@@ -1,8 +1,8 @@
-// ─── Landing page copy — fully localized, all six languages ──────────────────
+// ─── Landing page copy - fully localized, all six languages ──────────────────
 // Every visible string on the public landing page lives here. Feature and
 // pricing cards are parallel arrays: visuals (icons/colors) stay in the page,
 // text comes from the active language's catalog. Lesson titles inside the
-// era showcase are NOT here — they resolve through getTranslatedLesson so the
+// era showcase are NOT here - they resolve through getTranslatedLesson so the
 // showcase always mirrors the real curriculum.
 import type { Language } from './translations';
 

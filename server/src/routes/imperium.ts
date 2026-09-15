@@ -2,7 +2,7 @@
 // The server-side spine of the campaign engine. The client resolves turns
 // locally (the engine is deterministic), then ships the resulting snapshot
 // here per turn block; the server stores the FULL snapshot state so any turn
-// can be restored exactly — no replay required, no partial reconstruction.
+// can be restored exactly - no replay required, no partial reconstruction.
 //
 // Rollback is the delicate part: it touches two tables (campaign head +
 // snapshot log) and must never leave the head pointing at a pruned turn.
@@ -23,7 +23,7 @@ const MAX_CAMPAIGNS_PER_USER = 8;        // oldest is evicted when exceeded
 const SNAPSHOT_RING = 60;                // turns retained per campaign
 
 /**
- * FNV-1a over the canonical JSON string — cheap, dependency-free integrity
+ * FNV-1a over the canonical JSON string - cheap, dependency-free integrity
  * signature. Not a cryptographic MAC (the row is already inside our trust
  * boundary); it exists to catch truncation/corruption before a restore.
  */
@@ -51,7 +51,7 @@ interface TurnPayload {
   turn: number;
   over?: boolean;
   playerWon?: boolean;
-  state: unknown;          // full CampaignSnapshot — opaque to the server
+  state: unknown;          // full CampaignSnapshot - opaque to the server
   checksum?: string;       // client-computed; recomputed + compared when present
 }
 
@@ -75,13 +75,13 @@ function parseTurnPayload(body: unknown, res: Response): TurnPayload | null {
     return null;
   }
   if (typeof p.checksum === 'string' && p.checksum !== snapshotChecksum(json)) {
-    res.status(422).json({ error: 'Snapshot checksum mismatch — state corrupted in transit.' });
+    res.status(422).json({ error: 'Snapshot checksum mismatch - state corrupted in transit.' });
     return null;
   }
   return p as TurnPayload;
 }
 
-// ── GET /api/imperium/campaigns — the player's campaign shelf ────────────────
+// ── GET /api/imperium/campaigns - the player's campaign shelf ────────────────
 
 imperiumRouter.get('/campaigns', async (req: Request, res: Response) => {
   const rows = await prisma.imperiumCampaign.findMany({
@@ -96,9 +96,9 @@ imperiumRouter.get('/campaigns', async (req: Request, res: Response) => {
   res.json({ campaigns: rows });
 });
 
-// ── GET /api/imperium/campaigns/:id — head snapshot + turn index ─────────────
+// ── GET /api/imperium/campaigns/:id - head snapshot + turn index ─────────────
 // Restores a campaign on a new device: campaign meta, the CURRENT turn's full
-// state, and the list of turns available for rollback (numbers only — full
+// state, and the list of turns available for rollback (numbers only - full
 // states are fetched per-turn on demand to keep the payload lean).
 
 imperiumRouter.get('/campaigns/:id', async (req: Request, res: Response) => {
@@ -124,7 +124,7 @@ imperiumRouter.get('/campaigns/:id', async (req: Request, res: Response) => {
   res.json({ campaign, head: head?.state ?? null, turns });
 });
 
-// ── GET /api/imperium/campaigns/:id/turns/:turn — one stored turn block ──────
+// ── GET /api/imperium/campaigns/:id/turns/:turn - one stored turn block ──────
 
 imperiumRouter.get('/campaigns/:id/turns/:turn', async (req: Request, res: Response) => {
   const turn = Number(req.params.turn);
@@ -144,9 +144,9 @@ imperiumRouter.get('/campaigns/:id/turns/:turn', async (req: Request, res: Respo
   res.json({ turn: snap.turn, state: snap.state, checksum: snap.checksum });
 });
 
-// ── PUT /api/imperium/campaigns/:id/turn — append a resolved turn block ──────
+// ── PUT /api/imperium/campaigns/:id/turn - append a resolved turn block ──────
 // One transaction: upsert the campaign head, write the snapshot row, prune
-// the ring tail. Campaign row first, snapshots second — the global ordering
+// the ring tail. Campaign row first, snapshots second - the global ordering
 // rule that keeps concurrent writers deadlock-free.
 
 imperiumRouter.put('/campaigns/:id/turn', async (req: Request, res: Response) => {
@@ -201,8 +201,8 @@ imperiumRouter.put('/campaigns/:id/turn', async (req: Request, res: Response) =>
         update: { state: payload.state as Prisma.InputJsonValue, checksum },
       });
 
-      // 3. Ring pruning: keep the newest SNAPSHOT_RING turns (turn 0 — the
-      //    campaign genesis — is always retained as the ultimate rollback).
+      // 3. Ring pruning: keep the newest SNAPSHOT_RING turns (turn 0 - the
+      //    campaign genesis - is always retained as the ultimate rollback).
       const cutoff = payload.turn - SNAPSHOT_RING;
       if (cutoff > 0) {
         await tx.imperiumTurnSnapshot.deleteMany({
@@ -212,7 +212,7 @@ imperiumRouter.put('/campaigns/:id/turn', async (req: Request, res: Response) =>
       return campaign;
     });
 
-    // Campaign-shelf eviction (outside the hot transaction — best effort).
+    // Campaign-shelf eviction (outside the hot transaction - best effort).
     const count = await prisma.imperiumCampaign.count({ where: { userId } });
     if (count > MAX_CAMPAIGNS_PER_USER) {
       const oldest = await prisma.imperiumCampaign.findMany({
@@ -231,7 +231,7 @@ imperiumRouter.put('/campaigns/:id/turn', async (req: Request, res: Response) =>
   }
 });
 
-// ── POST /api/imperium/campaigns/:id/rollback — transactional time travel ────
+// ── POST /api/imperium/campaigns/:id/rollback - transactional time travel ────
 // { turn } → restore the campaign head to that stored turn. The multi-table
 // rollback runs as ONE transaction: verify target exists → move the head →
 // prune every snapshot above it. If any step fails the whole thing unwinds and
@@ -257,7 +257,7 @@ imperiumRouter.post('/campaigns/:id/rollback', async (req: Request, res: Respons
       if (snapshotChecksum(JSON.stringify(target.state)) !== target.checksum) {
         throw new RollbackError(500, 'Stored snapshot failed integrity check.');
       }
-      // Campaign first, snapshots second — same ordering as the append path.
+      // Campaign first, snapshots second - same ordering as the append path.
       await tx.imperiumCampaign.update({
         where: { id: campaign.id },
         data: { currentTurn: turn, over: false, playerWon: false },
@@ -271,7 +271,7 @@ imperiumRouter.post('/campaigns/:id/rollback', async (req: Request, res: Respons
   } catch (err) {
     if (err instanceof RollbackError) return res.status(err.status).json({ error: err.message });
     console.error('imperium rollback failed', err);
-    res.status(500).json({ error: 'Rollback failed — campaign state unchanged.' });
+    res.status(500).json({ error: 'Rollback failed - campaign state unchanged.' });
   }
 });
 
@@ -279,7 +279,7 @@ class RollbackError extends Error {
   constructor(public status: number, message: string) { super(message); }
 }
 
-// ── DELETE /api/imperium/campaigns/:id — abandon a campaign ──────────────────
+// ── DELETE /api/imperium/campaigns/:id - abandon a campaign ──────────────────
 // Snapshot rows cascade with the campaign (onDelete: Cascade).
 
 imperiumRouter.delete('/campaigns/:id', async (req: Request, res: Response) => {

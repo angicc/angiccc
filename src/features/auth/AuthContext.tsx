@@ -7,12 +7,12 @@
 // /api/social route needs that session, so before this existed friends could
 // only ever be local fixtures no matter what the server offered.
 //
-// LOCAL ACCOUNTS, when it is not — local dev, preview builds, the offline
+// LOCAL ACCOUNTS, when it is not - local dev, preview builds, the offline
 // demo. Unchanged from before: users in localStorage, digest computed in the
 // browser. Fine for a single-device demo, and clearly labelled as such.
 //
 // The server path is preferred whenever it answers. It falls back to local
-// only when the backend is unreachable — never when the server actively says
+// only when the backend is unreachable - never when the server actively says
 // no, because "wrong password" must not quietly succeed against a stale local
 // copy of the same account.
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
@@ -62,7 +62,7 @@ function cacheSession(user: User | null) {
   try {
     if (user) localStorage.setItem(SESSION_KEY, JSON.stringify(user));
     else localStorage.removeItem(SESSION_KEY);
-  } catch { /* private mode — the /me call still resolves it */ }
+  } catch { /* private mode - the /me call still resolves it */ }
 }
 
 function readCachedSession(): User | null {
@@ -174,7 +174,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (serverAuthConfigured()) {
       const result = await serverLogin(email, password);
       if (result.ok) { adopt(toUser(result.user), true); return { success: true }; }
-      // A refusal is final — do NOT retry against localStorage, or a wrong
+      // A refusal is final - do NOT retry against localStorage, or a wrong
       // password would still sign the learner in from a stale local account.
       if (!('unavailable' in result)) return { success: false, error: result.error };
     }

@@ -109,7 +109,7 @@ export default function ProfilePage() {
   async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    // Checked by CONTENT, not by name or the browser-reported type — both are
+    // Checked by CONTENT, not by name or the browser-reported type - both are
     // caller-controlled. The old check was file.size alone, so any file at all
     // was accepted, stored, and rendered back through an <img src>.
     const check = await checkImageFile(file);
@@ -340,7 +340,7 @@ export default function ProfilePage() {
                         {heatmap.map(d => (
                           <div
                             key={d.date}
-                            title={`${d.date} — ${formatDuration(d.seconds)}`}
+                            title={`${d.date} - ${formatDuration(d.seconds)}`}
                             className={`w-3 h-3 rounded-[3px] ${HEAT[d.level]}`}
                           />
                         ))}
@@ -369,17 +369,17 @@ export default function ProfilePage() {
                 <RecordStat label={t.prof_rec_longest_streak} value={`${records.longestStreak} ${t.prof_rec_days}`} />
                 <RecordStat
                   label={t.prof_rec_best_quiz}
-                  value={records.bestQuizScore === null ? '—' : `${records.bestQuizScore}%`}
+                  value={records.bestQuizScore === null ? '-' : `${records.bestQuizScore}%`}
                 />
                 <RecordStat
                   label={t.prof_rec_favourite_era}
-                  value={favouriteEra ? getTranslatedEra(favouriteEra, language).shortName : '—'}
+                  value={favouriteEra ? getTranslatedEra(favouriteEra, language).shortName : '-'}
                   sub={records.favouriteEraSeconds > 0 ? formatDuration(records.favouriteEraSeconds) : undefined}
                 />
                 <RecordStat label={t.prof_rec_perfect_quizzes} value={String(records.perfectQuizzes)} />
                 <RecordStat
                   label={t.prof_rec_best_day}
-                  value={records.bestDay ? formatDuration(records.bestDay.seconds) : '—'}
+                  value={records.bestDay ? formatDuration(records.bestDay.seconds) : '-'}
                   sub={records.bestDay ? new Date(records.bestDay.date + 'T12:00:00').toLocaleDateString() : undefined}
                 />
               </CardContent>

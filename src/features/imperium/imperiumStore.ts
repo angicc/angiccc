@@ -3,7 +3,7 @@
 // backend is configured (VITE_API_URL) every resolved turn block is shipped to
 // the server's snapshot store and rollbacks run through the transactional
 // rollback controller, so a campaign survives devices, reinstalls and tabs.
-// All sync is fire-and-forget from the UI's perspective — the local copy is
+// All sync is fire-and-forget from the UI's perspective - the local copy is
 // authoritative for play, the server copy for durability.
 import type { CampaignState, CampaignSnapshot } from './imperiumEngine';
 
@@ -65,7 +65,7 @@ export function saveCampaign(userId: string, state: CampaignState): void {
       updatedAt: Date.now(),
     });
     localStorage.setItem(INDEX_KEY(userId), JSON.stringify(index.slice(0, 8)));
-  } catch { /* storage full — play continues in memory */ }
+  } catch { /* storage full - play continues in memory */ }
 }
 
 export function deleteCampaign(userId: string, campaignId: string): void {

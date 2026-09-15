@@ -2,7 +2,7 @@
 // Paste any historical text → Clio engineers it into a validated study kit
 // (summary, key facts, flashcards, quiz questions). The student reviews each
 // generated item, discards what they don't want, names the set, and it joins
-// their personal library — practicable forever via the built-in flashcard
+// their personal library - practicable forever via the built-in flashcard
 // reviewer and quiz runner, with per-set best scores and XP rewards.
 import { useCallback, useMemo, useState } from 'react';
 import { Wand2, FileText, Layers, HelpCircle, Sparkles, Trash2, Play, RotateCcw, CheckCircle2, XCircle, ChevronRight, BookOpen, Trophy, ArrowLeft, Star, Check } from 'lucide-react';
@@ -134,7 +134,7 @@ function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, t
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [failed, setFailed] = useState(false);
-  // A spent AI allowance is a limit, not an error — its own state, its own UI.
+  // A spent AI allowance is a limit, not an error - its own state, its own UI.
   const [quota, setQuota] = useState<string | null>(null);
   // Which pass is running, so the button can say "checking" rather than
   // appearing to hang for a second time with the same label.
@@ -163,8 +163,8 @@ function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, t
    *
    * The old flow was one call and a shape check: whatever failed validation was
    * dropped without a word, so asking for 10 questions and receiving 6 looked
-   * identical to a source that only supported 6. Now the kit is assessed —
-   * grounding against the source, duplicates, answer positions, length bias —
+   * identical to a source that only supported 6. Now the kit is assessed -
+   * grounding against the source, duplicates, answer positions, length bias -
    * and a SECOND call is spent only on the shortfall, told what was rejected
    * and what is already covered. The learner sees the verdict either way.
    */
@@ -174,7 +174,7 @@ function CreateView({ onGenerated, sets, onPractice, onCards, onDelete, canAI, t
     if (!allowance.allowed) {
       // Previously a bare `return`: the Generate button simply did nothing and
       // the learner had no way to tell a spent allowance from a broken app.
-      // Not routed through AiErrorCard — that card discards a plain string and
+      // Not routed through AiErrorCard - that card discards a plain string and
       // renders a generic red failure, which would misreport a spent allowance
       // as a crash.
       setQuota(aiAllowanceMessage(allowance, t) ?? null);

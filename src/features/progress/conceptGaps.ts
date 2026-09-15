@@ -1,10 +1,10 @@
 // ─── Concept-gap tracker: the Clio ↔ Smart Quiz personalization loop ─────────
 // Every miss anywhere in the app (era quiz, smart quiz, territory quiz) is
 // recorded as a decaying gap signal keyed by era + concept. Consumers:
-//   1. Smart Quiz — multiplies its era weighting by the live gap factor, so
+//   1. Smart Quiz - multiplies its era weighting by the live gap factor, so
 //      question selection homes in on the student's ACTIVE struggles rather
 //      than only their historical era averages.
-//   2. Clio — getGapSummary() is injected into the tutor's lesson context so
+//   2. Clio - getGapSummary() is injected into the tutor's lesson context so
 //      the AI knows what the student keeps missing and can steer Socratic
 //      questions there without being asked.
 // Signals decay with a half-life so a gap closed weeks ago stops steering.

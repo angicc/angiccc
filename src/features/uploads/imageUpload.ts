@@ -1,6 +1,6 @@
 // ─── Client-side image upload validation ──────────────────────────────────────
-// The avatar picker used to check only file.size. Any file at all — a PDF, an
-// HTML document, an SVG carrying script — was accepted, base64'd and stored,
+// The avatar picker used to check only file.size. Any file at all - a PDF, an
+// HTML document, an SVG carrying script - was accepted, base64'd and stored,
 // then rendered back through an <img src>. Browsers do sniff content, so
 // "it's only in localStorage" is not a defence.
 //

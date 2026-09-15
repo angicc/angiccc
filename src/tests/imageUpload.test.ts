@@ -29,11 +29,11 @@ describe('sniffImageMime', () => {
   it('rejects formats that are not on the allowlist', () => {
     // %PDF
     expect(sniffImageMime(bytes(0x25, 0x50, 0x44, 0x46, 0x2d))).toBeNull();
-    // <svg — script-bearing, and deliberately NOT allowed
+    // <svg - script-bearing, and deliberately NOT allowed
     expect(sniffImageMime(bytes(0x3c, 0x73, 0x76, 0x67))).toBeNull();
     // <!DOCTYPE html
     expect(sniffImageMime(bytes(0x3c, 0x21, 0x44, 0x4f, 0x43))).toBeNull();
-    // PK — a zip/office document
+    // PK - a zip/office document
     expect(sniffImageMime(bytes(0x50, 0x4b, 0x03, 0x04))).toBeNull();
   });
 
@@ -43,7 +43,7 @@ describe('sniffImageMime', () => {
   });
 
   it('requires the WEBP tag, not just a RIFF container', () => {
-    // RIFF....AVI  — a RIFF file that is not a WEBP
+    // RIFF....AVI  - a RIFF file that is not a WEBP
     expect(sniffImageMime(bytes(0x52, 0x49, 0x46, 0x46, 1, 2, 3, 4, 0x41, 0x56, 0x49, 0x20))).toBeNull();
   });
 });
@@ -54,7 +54,7 @@ describe('checkImageFile', () => {
   });
 
   it('rejects a file renamed to look like an image', async () => {
-    // A PDF claiming to be a PNG — the bytes decide, not the declared type.
+    // A PDF claiming to be a PNG - the bytes decide, not the declared type.
     const pdf = bytes(0x25, 0x50, 0x44, 0x46, 0x2d, 0x31);
     expect(await checkImageFile(fakeFile(pdf, 'image/png'))).toEqual({ ok: false, reason: 'not-an-image' });
   });

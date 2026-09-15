@@ -1,18 +1,18 @@
 // ─── Clio Learner Memory: persistent per-student profile ─────────────────────
 // Makes Clio remember the student across sessions. Two feeds build the
 // profile:
-//   1. AI extraction — after enough new tutor exchanges, a background call
+//   1. AI extraction - after enough new tutor exchanges, a background call
 //      distills the conversation into structured memory (interests, strengths,
 //      weaknesses, misconceptions with corrections, mastered facts, a rolling
 //      summary, and the student's preferred learning style).
-//   2. Deterministic signals — quiz misses recorded by the quiz surfaces and a
+//   2. Deterministic signals - quiz misses recorded by the quiz surfaces and a
 //      live performance snapshot computed from progress + Smart Quiz history
 //      at prompt-build time (never stored stale).
 //
 // The profile is injected into Clio's system prompt as a compact MEMORY block
 // with strict personalization rules, so the model references prior learning
 // naturally instead of reciting a dossier. Everything is capped, deduped, and
-// clearable by the student — memory they can see and control.
+// clearable by the student - memory they can see and control.
 import { safeJsonParse } from '@/lib/safeJsonParse';
 import { streamChatResponse } from '@/services/aiGateway';
 import { loadProgress } from '@/features/progress/progressStore';
@@ -75,7 +75,7 @@ export function saveLearnerProfile(p: LearnerProfile) {
   try {
     localStorage.setItem(KEY(p.userId), JSON.stringify(p));
     window.dispatchEvent(new CustomEvent(PROFILE_UPDATED_EVENT, { detail: { userId: p.userId } }));
-  } catch { /* quota — memory is best-effort */ }
+  } catch { /* quota - memory is best-effort */ }
 }
 
 export function clearLearnerProfile(userId: string) {
@@ -167,7 +167,7 @@ Guidelines:
 - Connect events across time periods when relevant
 - End with a thought-provoking question to encourage curiosity
 - If asked off-topic, gently redirect to history
-- Write in plain prose only — no markdown, no ## headers, no ** bold, no bullet asterisks`;
+- Write in plain prose only - no markdown, no ## headers, no ** bold, no bullet asterisks`;
 
 /**
  * Clio's full system prompt with the student's persistent memory injected.
@@ -192,7 +192,7 @@ export function buildMemoryAwareSystem(userId: string, username?: string): strin
   if (p.preferredStyle) lines.push(`Learning style: ${p.preferredStyle}.`);
   if (p.misconceptions.length) {
     lines.push('Known misconceptions (correct gently WHEN the topic comes up, never as a list):');
-    for (const m of p.misconceptions.slice(-8)) lines.push(`  • believes "${m.belief}" — actually: ${m.correction}`);
+    for (const m of p.misconceptions.slice(-8)) lines.push(`  • believes "${m.belief}" - actually: ${m.correction}`);
   }
   if (p.quizMisses.length) {
     lines.push('Recently missed quiz questions (weave quick checks on these into relevant answers):');
@@ -208,13 +208,13 @@ export function buildMemoryAwareSystem(userId: string, username?: string): strin
 
   return `${TUTOR_BASE_PROMPT}
 
-STUDENT MEMORY (persistent across sessions — you genuinely remember this student):
+STUDENT MEMORY (persistent across sessions - you genuinely remember this student):
 ${lines.join('\n')}
 
 PERSONALIZATION RULES:
-- Reference prior learning naturally when relevant ("as you discovered when we discussed...") — never dump this memory as a list.
+- Reference prior learning naturally when relevant ("as you discovered when we discussed...") - never dump this memory as a list.
 - Pitch difficulty to their level: lean on strengths, scaffold the weak eras.
-- When a topic touches a known misconception or a missed quiz question, address it — one gentle check per answer at most.
+- When a topic touches a known misconception or a missed quiz question, address it - one gentle check per answer at most.
 - Never claim to remember anything not present in this memory block.`;
 }
 
@@ -247,7 +247,7 @@ Respond ONLY with JSON, no fences, exactly this shape (empty arrays where nothin
   "style": "one short phrase for their preferred learning style, or empty string"
 }
 
-Rules: be conservative — omit anything speculative. Keep every string under 15 words. Maximum 3 items per array. English only for these internal notes.`;
+Rules: be conservative - omit anything speculative. Keep every string under 15 words. Maximum 3 items per array. English only for these internal notes.`;
 
 async function extractProfileFromConversation(userId: string, messages: Turn[]) {
   const transcript = messages

@@ -95,7 +95,7 @@ describe('Clio sample dialogues', () => {
     // build guard sweeps `src`, but these strings are worth naming explicitly.
     //
     // The range is written in escapes on purpose: spelling it with literal
-    // characters puts CJK into this file, and the build guard — correctly —
+    // characters puts CJK into this file, and the build guard - correctly -
     // refuses to compile a tree that contains any.
     const CJK = /[\u3040-\u30FF\u3400-\u4DBF\u4E00-\u9FFF]/;
     for (const d of CLIO_SAMPLE_DIALOGUES) {

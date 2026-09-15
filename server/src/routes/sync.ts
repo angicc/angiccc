@@ -90,7 +90,7 @@ syncRouter.put('/philosopher-memory', async (req: Request, res: Response) => {
   res.json({ ok: true, updatedAt: row.updatedAt });
 });
 
-// DELETE /api/sync/philosopher-memory — mirror of the client "erase rivalry".
+// DELETE /api/sync/philosopher-memory - mirror of the client "erase rivalry".
 syncRouter.delete('/philosopher-memory', async (req: Request, res: Response) => {
   await prisma.philosopherMemoryRecord.deleteMany({ where: { userId: req.auth!.userId } });
   res.json({ ok: true });

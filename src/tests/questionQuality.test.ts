@@ -22,7 +22,7 @@ function optionsFor(q: (typeof ALL)[number], lang: Language): string[] | null {
  * without the learner knowing anything.
  *
  * Position bias is handled at serve time by prepareQuestion (see
- * prepareQuestion.test.ts). Length bias cannot be — it is a property of the
+ * prepareQuestion.test.ts). Length bias cannot be - it is a property of the
  * authored text, so it has to be caught here.
  *
  * Checked in EVERY language, not just English. The bank is translated into
@@ -32,7 +32,7 @@ function optionsFor(q: (typeof ALL)[number], lang: Language): string[] | null {
  *
  * The debt is now paid. Across 300 questions the correct option is the longest
  * in 22-27% of them depending on language, against 25% by chance, and its mean
- * character advantage is within a character of zero — down from ~59% and +4.5
+ * character advantage is within a character of zero - down from ~59% and +4.5
  * when this guard was first written. Not one question is left where the
  * correct option both leads and leads by six characters or more.
  *
@@ -51,7 +51,7 @@ describe('question quality', () => {
       const opts = optionsFor(q, lang);
       if (!opts) continue;
       const lens = opts.map(o => o.length);
-      if (new Set(lens).size === 1) continue; // all equal — no signal
+      if (new Set(lens).size === 1) continue; // all equal - no signal
       comparable++;
       if (lens[q.correctIndex] === Math.max(...lens)) longest++;
     }
@@ -93,7 +93,7 @@ describe('question quality', () => {
    *
    * The share and mean tests above are aggregate: a handful of egregious
    * questions can hide inside a healthy average. This is the per-question
-   * floor, and it is the measure the rewriting worked to — zero questions,
+   * floor, and it is the measure the rewriting worked to - zero questions,
    * in any language, where the correct option is both the longest AND at
    * least six characters clear of the next.
    */

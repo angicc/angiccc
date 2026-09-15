@@ -22,7 +22,7 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     ru: {
       question: 'Какую систему письма разработали шумеры около 3100 года до н.э.?',
       options: ['Иероглифы', 'Клинопись', 'Линейное письмо Б', 'Финикийский алфавит'],
-      explanation: 'Клинопись (знаки в форме клиньев) выдавливалась на глиняных табличках тростниковым стилусом. Иероглифы — египетское письмо; линейное письмо Б — микенское греческое.',
+      explanation: 'Клинопись (знаки в форме клиньев) выдавливалась на глиняных табличках тростниковым стилусом. Иероглифы - египетское письмо; линейное письмо Б - микенское греческое.',
     },
     mk: {
       question: 'Каков систем на пишување го развиле Сумерите околу 3100 г.п.н.е.?',
@@ -76,7 +76,7 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     ru: {
       question: 'В какую дату был убит Юлий Цезарь в 44 году до н.э.?',
       options: ['1 января', '15 марта', '4 июля', '25 декабря'],
-      explanation: '«Иды марта» (15 марта) — день, когда группа сенаторов во главе с Брутом и Кассием убила Цезаря в Сенате.',
+      explanation: '«Иды марта» (15 марта) - день, когда группа сенаторов во главе с Брутом и Кассием убила Цезаря в Сенате.',
     },
     mk: {
       question: 'На кој датум бил убиен Јулиј Цезар во 44 г.п.н.е.?',
@@ -92,14 +92,14 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
       explanation: 'La Pax Romana ("Paz Romana") duró aproximadamente 200 años, desde Augusto en el 27 a.C. hasta la muerte de Marco Aurelio en el 180 d.C.',
     },
     ru: {
-      question: '«Pax Romana» — это период римского мира, длившийся приблизительно сколько лет?',
+      question: '«Pax Romana» - это период римского мира, длившийся приблизительно сколько лет?',
       options: ['50 лет', '100 лет', '200 лет', '400 лет'],
-      explanation: '«Pax Romana» («Римский мир») длился примерно 200 лет — от Августа в 27 году до н.э. до смерти Марка Аврелия в 180 году н.э.',
+      explanation: '«Pax Romana» («Римский мир») длился примерно 200 лет - от Августа в 27 году до н.э. до смерти Марка Аврелия в 180 году н.э.',
     },
     mk: {
       question: 'Pax Romana се однесува на период на римски мир кој траел приближно колку долго?',
       options: ['50 години', '100 години', '200 години', '400 години'],
-      explanation: 'Pax Romana („Римски мир") траел приближно 200 години — од Август во 27 г.п.н.е. до смртта на Марко Аурелиј во 180 г.н.е.',
+      explanation: 'Pax Romana („Римски мир") траел приближно 200 години - од Август во 27 г.п.н.е. до смртта на Марко Аурелиј во 180 г.н.е.',
     },
   },
 
@@ -184,7 +184,7 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     ru: {
       question: 'В чём заключалось значение Кодекса Хаммурапи (~1754 г. до н.э.)?',
       options: ['Первая демократическая конституция', 'Первый письменный свод законов в истории', 'Первое международное торговое соглашение', 'Первый монотеистический религиозный текст'],
-      explanation: 'Кодекс Хаммурапи — один из древнейших и наиболее полных письменных сводов законов, охватывающий преступления, торговлю и общественные отношения.',
+      explanation: 'Кодекс Хаммурапи - один из древнейших и наиболее полных письменных сводов законов, охватывающий преступления, торговлю и общественные отношения.',
     },
     mk: {
       question: 'Која беше важноста на Законикот на Хамурапи (~1754 г.п.н.е.)?',
@@ -202,7 +202,7 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     ru: {
       question: 'В какой битве Александр Великий решительно разгромил персидского царя Дария III, фактически уничтожив державу Ахеменидов?',
       options: ['Битва при Иссе', 'Битва при Гавгамелах', 'Битва при Гранике', 'Битва при Гидаспе'],
-      explanation: 'Гавгамелы (331 г. до н.э.) — решающая битва, в которой новаторская тактика конницы Александра сокрушила численно превосходящую персидскую армию, открыв путь в сердце Персии.',
+      explanation: 'Гавгамелы (331 г. до н.э.) - решающая битва, в которой новаторская тактика конницы Александра сокрушила численно превосходящую персидскую армию, открыв путь в сердце Персии.',
     },
     mk: {
       question: 'Во која битка Александар Македонски го поразил одлучувачки персискиот крал Дариј III, ставајќи крај на Ахеменидската империја?',
@@ -238,12 +238,12 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     ru: {
       question: 'Какое древнее чудо света, возвышавшееся более 130 метров, оставалось самым высоким рукотворным сооружением почти 4 000 лет?',
       options: ['Колосс Родосский', 'Александрийский маяк', 'Великая пирамида Гизы', 'Храм Артемиды'],
-      explanation: 'Великая пирамида Хеопса в Гизе (~2560 г. до н.э.) удерживала рекорд самого высокого сооружения в мире вплоть до постройки Линкольнского собора в 1311 году н.э. — почти 3 800 лет.',
+      explanation: 'Великая пирамида Хеопса в Гизе (~2560 г. до н.э.) удерживала рекорд самого высокого сооружения в мире вплоть до постройки Линкольнского собора в 1311 году н.э. - почти 3 800 лет.',
     },
     mk: {
       question: 'Кое древно чудо на светот, повисоко од 130 метри, останало највисока рачно изградена конструкција речиси 4 000 години?',
       options: ['Колосот на Родос', 'Светилникот на Александрија', 'Големата Пирамида во Гиза', 'Храмот на Артемида'],
-      explanation: 'Големата Пирамида на Кеопс во Гиза (~2560 г.п.н.е.) го држела рекордот за највисока градба на светот се до Линколнската катедрала во 1311 г.н.е. — речиси 3 800 години.',
+      explanation: 'Големата Пирамида на Кеопс во Гиза (~2560 г.п.н.е.) го држела рекордот за највисока градба на светот се до Линколнската катедрала во 1311 г.н.е. - речиси 3 800 години.',
     },
   },
 
@@ -289,17 +289,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     es: {
       question: '¿En qué año perdió el poder el último emperador romano de Occidente, marcando la caída del Imperio Romano de Occidente?',
       options: ['410 d.C.', '455 d.C.', '476 d.C.', '500 d.C.'],
-      explanation: 'En el 476 d.C., el caudillo germánico Odoacro depuso a Rómulo Augústulo — la fecha convencional del fin del Imperio Romano de Occidente.',
+      explanation: 'En el 476 d.C., el caudillo germánico Odoacro depuso a Rómulo Augústulo - la fecha convencional del fin del Imperio Romano de Occidente.',
     },
     ru: {
       question: 'В каком году последний западноримский император потерял власть, ознаменовав падение Западной Римской империи?',
       options: ['410 г. н.э.', '455 г. н.э.', '476 г. н.э.', '500 г. н.э.'],
-      explanation: 'В 476 году н.э. германский вождь Одоакр сверг Ромула Августула — традиционная дата конца Западной Римской империи.',
+      explanation: 'В 476 году н.э. германский вождь Одоакр сверг Ромула Августула - традиционная дата конца Западной Римской империи.',
     },
     mk: {
       question: 'Во која година последниот западноримски император ја изгубил власта, означувајќи го падот на Западната Римска империја?',
       options: ['410 г.н.е.', '455 г.н.е.', '476 г.н.е.', '500 г.н.е.'],
-      explanation: 'Во 476 г.н.е. германскиот поглавар Одоакар го симнал Ромул Августул — вообичаениот датум за крај на Западната Римска империја.',
+      explanation: 'Во 476 г.н.е. германскиот поглавар Одоакар го симнал Ромул Августул - вообичаениот датум за крај на Западната Римска империја.',
     },
   },
 
@@ -366,7 +366,7 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     ru: {
       question: 'Салах ад-Дин, отвоевавший Иерусалим в 1187 году, был султаном какого региона?',
       options: ['Персии и Иранского нагорья', 'Турции и анатолийского побережья', 'Египта и Сирии', 'Багдада и Месопотамии'],
-      explanation: 'Салах ад-Дин — курдский основатель династии Айюбидов и правитель Египта и Сирии. Его рыцарство уважали даже крестоносцы.',
+      explanation: 'Салах ад-Дин - курдский основатель династии Айюбидов и правитель Египта и Сирии. Его рыцарство уважали даже крестоносцы.',
     },
     mk: {
       question: 'Саладин, кој ја вратил Ерусалим во 1187 година, бил султан на кој регион?',
@@ -474,12 +474,12 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     ru: {
       question: 'Великий раскол 1054 года навсегда разделил христианство на какие две крупные ветви?',
       options: ['Католическую и Англиканскую церкви', 'Католическую и Протестантскую лютеранскую церкви', 'Римско-католическую и Восточно-православную', 'Коптскую и Римско-католическую церкви'],
-      explanation: 'Великий раскол разделил христианскую церковь на Римско-католическую (под руководством Папы в Риме) и Восточно-православную (под руководством Патриарха Константинополя) — разделение, сохраняющееся по сей день.',
+      explanation: 'Великий раскол разделил христианскую церковь на Римско-католическую (под руководством Папы в Риме) и Восточно-православную (под руководством Патриарха Константинополя) - разделение, сохраняющееся по сей день.',
     },
     mk: {
       question: 'Големата Шизма од 1054 година трајно го поделила христијанството на кои две главни гранки?',
       options: ['Католичка и Англиканска црква', 'Католичка и Протестантска лутеранска црква', 'Римокатоличка и Источноправославна', 'Коптска и Римокатоличка црква'],
-      explanation: 'Големата Шизма ја поделила христијанската Црква на Римокатоличката (предводена од Папата во Рим) и Источноправославната (предводена од Патријархот на Константинопол) — поделба која постои до денес.',
+      explanation: 'Големата Шизма ја поделила христијанската Црква на Римокатоличката (предводена од Папата во Рим) и Источноправославната (предводена од Патријархот на Константинопол) - поделба која постои до денес.',
     },
   },
 
@@ -487,17 +487,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     es: {
       question: 'La "Summa Theologica" de Tomás de Aquino fue un intento fundamental de reconciliar cuáles dos tradiciones intelectuales?',
       options: ['Teología cristiana y filosofía platónica', 'Teología cristiana y filosofía aristotélica', 'Filosofía islámica y teología mística cristiana', 'Derecho romano antiguo y ética cristiana'],
-      explanation: 'Aquino sintetizó la lógica y filosofía aristotélica con la doctrina cristiana, argumentando que la fe y la razón eran complementarias, no contradictorias — un texto fundamental del escolasticismo.',
+      explanation: 'Aquino sintetizó la lógica y filosofía aristotélica con la doctrina cristiana, argumentando que la fe y la razón eran complementarias, no contradictorias - un texto fundamental del escolasticismo.',
     },
     ru: {
       question: '«Сумма теологии» Фомы Аквинского была новаторской попыткой примирить какие две интеллектуальные традиции?',
       options: ['Христианское богословие и платоновскую философию', 'Христианское богословие и аристотелевскую философию', 'Исламскую философию и христианское мистическое богословие', 'Древнеримское право и христианскую этику'],
-      explanation: 'Аквинский синтезировал аристотелевскую логику и философию с христианским учением, доказывая, что вера и разум дополняют, а не противоречат друг другу — основополагающий текст схоластики.',
+      explanation: 'Аквинский синтезировал аристотелевскую логику и философию с христианским учением, доказывая, что вера и разум дополняют, а не противоречат друг другу - основополагающий текст схоластики.',
     },
     mk: {
       question: '„Сума Теолошка" на Тома Аквински беше пресврт во обид да се помират кои две интелектуални традиции?',
       options: ['Христијанска теологија и платонска филозофија', 'Христијанска теологија и аристотеловска филозофија', 'Исламска филозофија и христијанска мистична теологија', 'Античко римско право и христијанска етика'],
-      explanation: 'Аквински ги синтетизирал аристотеловата логика и филозофија со христијанската доктрина, тврдејќи дека верата и разумот се дополнувачки, а не спротивставени — основополагачки текст на схоластицизмот.',
+      explanation: 'Аквински ги синтетизирал аристотеловата логика и филозофија со христијанската доктрина, тврдејќи дека верата и разумот се дополнувачки, а не спротивставени - основополагачки текст на схоластицизмот.',
     },
   },
 
@@ -528,12 +528,12 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     ru: {
       question: 'Военная кампания Жанны д\'Арк, переломившая ход Столетней войны, началась со снятия осады с какого осаждённого французского города в 1429 году?',
       options: ['Париж', 'Руан', 'Кале', 'Орлеан'],
-      explanation: 'Жанна возглавила французские войска, снявшие английскую осаду Орлеана в мае 1429 года, — её самое знаменитое военное достижение. Эта победа изменила боевой дух французов и начала обращение английского господства вспять.',
+      explanation: 'Жанна возглавила французские войска, снявшие английскую осаду Орлеана в мае 1429 года, - её самое знаменитое военное достижение. Эта победа изменила боевой дух французов и начала обращение английского господства вспять.',
     },
     mk: {
       question: 'Воената кампања на Жана д\'Арк која ја пресврти Стогодишната војна почнала со ослободувањето на кој опколен француски град во 1429 година?',
       options: ['Париз', 'Руан', 'Кале', 'Орлеан'],
-      explanation: 'Жана ги предводела француските сили за да ја кренат англиската опсада на Орлеан во мај 1429 година — нејзиното најпрославено воено достигнување. Оваа победа ја трансформирала француската морала и почнала да го враќа англиската доминација.',
+      explanation: 'Жана ги предводела француските сили за да ја кренат англиската опсада на Орлеан во мај 1429 година - нејзиното најпрославено воено достигнување. Оваа победа ја трансформирала француската морала и почнала да го враќа англиската доминација.',
     },
   },
 
@@ -600,14 +600,14 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
       explanation: 'El Intercambio Colombino trajo caballos, ganado y enfermedades mortales a América; y devolvió papas, tomates y maíz a Europa, transformando ambos hemisferios.',
     },
     ru: {
-      question: '«Колумбов обмен» — это какое явление?',
+      question: '«Колумбов обмен» - это какое явление?',
       options: ['Колумб менял золото на пряности в Индиях', 'Перенос растений, животных и болезней', 'Торговое соглашение между Испанией и Португалией', 'Колумб обменивался картами с коренными народами'],
-      explanation: 'Колумбов обмен принёс лошадей, крупный рогатый скот и смертоносные болезни в Америку, а в Европу вернулся картофель, томаты и кукуруза — преобразив оба полушария.',
+      explanation: 'Колумбов обмен принёс лошадей, крупный рогатый скот и смертоносные болезни в Америку, а в Европу вернулся картофель, томаты и кукуруза - преобразив оба полушария.',
     },
     mk: {
       question: '„Колумбовата размена" се однесува на кој феномен?',
       options: ['Колумб тргувал злато за зачини во Индиите', 'Преносот на растенија, животни и болести', 'Трговски договор меѓу Шпанија и Португалија', 'Колумб разменувал мапи со домородните народи'],
-      explanation: 'Колумбовата размена донела коњи, говеда и смртоносни болести во Америките; и вратила компири, домати и пченка во Европа — трансформирајќи ги двете хемисфери.',
+      explanation: 'Колумбовата размена донела коњи, говеда и смртоносни болести во Америките; и вратила компири, домати и пченка во Европа - трансформирајќи ги двете хемисфери.',
     },
   },
 
@@ -633,17 +633,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     es: {
       question: 'La Paz de Westfalia (1648) estableció cuál principio clave del orden internacional moderno?',
       options: ['El libre comercio entre todas las naciones', 'La supremacía del Papa sobre los príncipes', 'La soberanía nacional y la no interferencia', 'Los derechos de las minorías religiosas en todas partes'],
-      explanation: 'Westfalia estableció que los gobernantes podían determinar la religión de sus territorios y que potencias externas no debían interferir — la base del sistema moderno de Estados-nación.',
+      explanation: 'Westfalia estableció que los gobernantes podían determinar la religión de sus territorios y que potencias externas no debían interferir - la base del sistema moderno de Estados-nación.',
     },
     ru: {
       question: 'Вестфальский мир (1648) утвердил какой ключевой принцип современного международного порядка?',
       options: ['Свободная торговля между всеми европейскими нациями', 'Верховенство Папы над государями', 'Национальный суверенитет и невмешательство', 'Права религиозных меньшинств повсюду'],
-      explanation: 'Вестфальский мир установил, что правители могут определять религию своих территорий и что внешние силы не должны вмешиваться — основа современной системы национальных государств.',
+      explanation: 'Вестфальский мир установил, что правители могут определять религию своих территорий и что внешние силы не должны вмешиваться - основа современной системы национальных государств.',
     },
     mk: {
       question: 'Вестфалскиот мир (1648) воспоставил кој клучен принцип на современиот меѓународен поредок?',
       options: ['Слободна трговија меѓу сите европски нации', 'Надмоќ на Папата над владетелите', 'Национален суверенитет и ненамешување', 'Права на верските малцинства насекаде'],
-      explanation: 'Вестфалија воспоставила дека владетелите можат да ја одредуваат религијата на своите територии и дека надворешните сили не треба да се мешаат — основата на современиот систем на национални држави.',
+      explanation: 'Вестфалија воспоставила дека владетелите можат да ја одредуваат религијата на своите територии и дека надворешните сили не треба да се мешаат - основата на современиот систем на национални држави.',
     },
   },
 
@@ -674,12 +674,12 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     ru: {
       question: '«Математические начала натуральной философии» Исаака Ньютона (1687) установили законы, управляющие какими явлениями?',
       options: ['Электричество и магнетизм', 'Движение и гравитация', 'Свет и оптика', 'Химия и атомы'],
-      explanation: '«Начала» описали три закона движения и всемирное тяготение — показав, что та же сила, что заставляет яблоко падать, удерживает Луну на орбите.',
+      explanation: '«Начала» описали три закона движения и всемирное тяготение - показав, что та же сила, что заставляет яблоко падать, удерживает Луну на орбите.',
     },
     mk: {
       question: 'Principia Mathematica на Исак Њутн (1687) воспоставиле закони кои управуваат со кои феномени?',
       options: ['Електрицитет и магнетизам', 'Движење и гравитација', 'Светлина и оптика', 'Хемија и атоми'],
-      explanation: 'Principia ги опишале трите закони на движење и универзалната гравитација — покажувајќи дека истата сила која предизвикува паѓање на јаболко ја одржува Месечината на орбита.',
+      explanation: 'Principia ги опишале трите закони на движење и универзалната гравитација - покажувајќи дека истата сила која предизвикува паѓање на јаболко ја одржува Месечината на орбита.',
     },
   },
 
@@ -705,17 +705,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     es: {
       question: '¿Qué pensador ilustrado escribió "El Contrato Social" (1762) argumentando que la legitimidad del gobierno proviene del pueblo?',
       options: ['François-Marie Arouet, llamado Voltaire', 'Charles-Louis de Secondat, Montesquieu', 'John Locke, el médico inglés', 'Jean-Jacques Rousseau'],
-      explanation: 'El Contrato Social de Rousseau argumentó que el gobierno legítimo deriva del consentimiento popular — una influencia directa tanto en la Revolución Americana como en la Francesa.',
+      explanation: 'El Contrato Social de Rousseau argumentó que el gobierno legítimo deriva del consentimiento popular - una influencia directa tanto en la Revolución Americana como en la Francesa.',
     },
     ru: {
       question: 'Какой мыслитель Просвещения написал «Общественный договор» (1762), утверждая, что легитимность правительства исходит от народа?',
       options: ['Франсуа-Мари Аруэ, он же Вольтер', 'Шарль-Луи де Секонда, Монтескьё', 'Джон Локк, английский врач', 'Жан-Жак Руссо'],
-      explanation: '«Общественный договор» Руссо утверждал, что законная власть строится на народном согласии — прямое влияние на Американскую и Французскую революции.',
+      explanation: '«Общественный договор» Руссо утверждал, что законная власть строится на народном согласии - прямое влияние на Американскую и Французскую революции.',
     },
     mk: {
       question: 'Кој просветителски мислител го напишал „Општествениот Договор" (1762) тврдејќи дека легитимноста на власта произлегува од народот?',
       options: ['Франсоа-Мари Аруе, наречен Волтер', 'Шарл-Луј де Секонда, Монтескје', 'Џон Лок, англискиот лекар', 'Жан-Жак Русо'],
-      explanation: 'Општествениот Договор на Русо тврдел дека легитимната власт произлегува од народниот консензус — директно влијание и врз Американската и врз Француската револуција.',
+      explanation: 'Општествениот Договор на Русо тврдел дека легитимната власт произлегува од народниот консензус - директно влијание и врз Американската и врз Француската револуција.',
     },
   },
 
@@ -739,19 +739,19 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
 
   'eq11': {
     es: {
-      question: 'La "Defenestración de Praga" (1618) — el incidente que desencadenó la Guerra de los Treinta Años — implicó que nobles protestantes hicieran ¿qué?',
+      question: 'La "Defenestración de Praga" (1618) - el incidente que desencadenó la Guerra de los Treinta Años - implicó que nobles protestantes hicieran ¿qué?',
       options: ['Quemar iglesias católicas por toda la ciudad de Praga', 'Arrojar funcionarios reales por una ventana', 'Asesinar al Sacro Emperador Romano en Viena', 'Bloquear las rutas comerciales de Praga hacia el Danubio'],
-      explanation: 'Los nobles bohemios protestantes arrojaron a dos gobernadores reales católicos y a su secretario por una ventana del Castillo de Praga — un acto deliberado de desafío. Los tres sobrevivieron a la caída de 17 metros (los católicos afirmaron que ángeles los amortiguaron).',
+      explanation: 'Los nobles bohemios protestantes arrojaron a dos gobernadores reales católicos y a su secretario por una ventana del Castillo de Praga - un acto deliberado de desafío. Los tres sobrevivieron a la caída de 17 metros (los católicos afirmaron que ángeles los amortiguaron).',
     },
     ru: {
-      question: '«Пражская дефенестрация» (1618) — инцидент, спровоцировавший Тридцатилетнюю войну, — заключалась в том, что протестантские дворяне сделали что?',
+      question: '«Пражская дефенестрация» (1618) - инцидент, спровоцировавший Тридцатилетнюю войну, - заключалась в том, что протестантские дворяне сделали что?',
       options: ['Сожгли католические церкви по всей Праге', 'Выбросили чиновников из окна замка', 'Убили Священного римского императора в Вене', 'Заблокировали торговые пути Праги к Дунаю'],
-      explanation: 'Протестантские богемские дворяне выбросили из окна Пражского замка двух католических королевских губернаторов и их секретаря — намеренный акт неповиновения. Все трое выжили после падения с 17-метровой высоты (католики утверждали, что их смягчили ангелы).',
+      explanation: 'Протестантские богемские дворяне выбросили из окна Пражского замка двух католических королевских губернаторов и их секретаря - намеренный акт неповиновения. Все трое выжили после падения с 17-метровой высоты (католики утверждали, что их смягчили ангелы).',
     },
     mk: {
-      question: '„Дефенестрацијата на Прага" (1618) — инцидентот кој ја предизвикал Триесетгодишната војна — вклучувал протестантски благородници кои направиле што?',
+      question: '„Дефенестрацијата на Прага" (1618) - инцидентот кој ја предизвикал Триесетгодишната војна - вклучувал протестантски благородници кои направиле што?',
       options: ['Запалиле католички цркви низ целиот град Прага', 'Фрлиле службеници низ прозорец на замокот', 'Убиле го Светиот Римски Цар во Виена', 'Ги блокирале трговските рути на Прага кон Дунав'],
-      explanation: 'Протестантски бохемски благородници фрлиле двајца католички кралски гувернери и нивниот секретар низ прозорец на Прашкиот Замок — намерен акт на непослушност. Тројцата преживеале пад од 17 метри (Католиците тврделе дека ангели ги омекнале).',
+      explanation: 'Протестантски бохемски благородници фрлиле двајца католички кралски гувернери и нивниот секретар низ прозорец на Прашкиот Замок - намерен акт на непослушност. Тројцата преживеале пад од 17 метри (Католиците тврделе дека ангели ги омекнале).',
     },
   },
 
@@ -777,17 +777,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     es: {
       question: '¿Qué emperador azteca recibió inicialmente a Hernán Cortés y su pequeña fuerza española cuando llegaron a México en 1519?',
       options: ['Cuauhtémoc', 'Itzcoatl', 'Moctezuma II', 'Ahuitzotl'],
-      explanation: 'Moctezuma II recibió a Cortés con regalos extraordinarios, posiblemente influenciado por profecías sobre un dios que regresaba. Su hospitalidad permitió a los españoles entrar en Tenochtitlan, la capital azteca — una fatídica equivocación.',
+      explanation: 'Moctezuma II recibió a Cortés con regalos extraordinarios, posiblemente influenciado por profecías sobre un dios que regresaba. Su hospitalidad permitió a los españoles entrar en Tenochtitlan, la capital azteca - una fatídica equivocación.',
     },
     ru: {
       question: 'Какой правитель ацтеков поначалу приветствовал Эрнана Кортеса и его небольшой испанский отряд, когда они прибыли в Мексику в 1519 году?',
       options: ['Куаутемок', 'Ицкоатль', 'Монтесума II', 'Ауицотль'],
-      explanation: 'Монтесума II встретил Кортеса с щедрыми дарами, возможно, под влиянием пророчеств о возвращающемся боге. Его гостеприимство позволило испанцам войти в Теночтитлан, столицу ацтеков, — роковой просчёт.',
+      explanation: 'Монтесума II встретил Кортеса с щедрыми дарами, возможно, под влиянием пророчеств о возвращающемся боге. Его гостеприимство позволило испанцам войти в Теночтитлан, столицу ацтеков, - роковой просчёт.',
     },
     mk: {
       question: 'Кој ацтечки цар иницијално го пречекал Ернан Кортес и неговата мала шпанска сила кога пристигнале во Мексико во 1519 г.?',
       options: ['Куаутемок', 'Ицкоатл', 'Монтесума II', 'Ауицотл'],
-      explanation: 'Монтесума II го пречекал Кортес со извонредни подароци, можеби под влијание на пророштвата за враќање на бог. Неговото гостопримство им овозможило на Шпанците да влезат во Теночтитлан, ацтечката главнина — погубна грешка.',
+      explanation: 'Монтесума II го пречекал Кортес со извонредни подароци, можеби под влијание на пророштвата за враќање на бог. Неговото гостопримство им овозможило на Шпанците да влезат во Теночтитлан, ацтечката главнина - погубна грешка.',
     },
   },
 
@@ -887,17 +887,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     es: {
       question: 'El Holocausto fue el genocidio nazi perpetrado principalmente contra ¿qué grupo, entre otros?',
       options: ['Los pueblos eslavos', 'El pueblo romaní', 'El pueblo judío', 'Los opositores políticos'],
-      explanation: 'Seis millones de judíos — dos tercios de los judíos europeos — fueron asesinados sistemáticamente. Millones de otras personas (romaníes, discapacitados, LGBTQ+, presos políticos) también fueron asesinados.',
+      explanation: 'Seis millones de judíos - dos tercios de los judíos europeos - fueron asesinados sistemáticamente. Millones de otras personas (romaníes, discapacitados, LGBTQ+, presos políticos) también fueron asesinados.',
     },
     ru: {
-      question: 'Холокост — это нацистский геноцид, направленный прежде всего против какой группы, помимо других?',
+      question: 'Холокост - это нацистский геноцид, направленный прежде всего против какой группы, помимо других?',
       options: ['Славянские народы', 'Цыганский народ', 'Еврейский народ', 'Политические оппоненты'],
-      explanation: 'Шесть миллионов евреев — две трети европейского еврейства — были систематически уничтожены. Миллионы других (цыгане, инвалиды, ЛГБТК+, политические заключённые) также были убиты.',
+      explanation: 'Шесть миллионов евреев - две трети европейского еврейства - были систематически уничтожены. Миллионы других (цыгане, инвалиды, ЛГБТК+, политические заключённые) также были убиты.',
     },
     mk: {
       question: 'Холокаустот беше нацистички геноцид насочен пред сè против која група, меѓу другите?',
       options: ['Словенски народи', 'Ромскиот народ', 'Еврејскиот народ', 'Политички противници'],
-      explanation: 'Шест милиони Евреи — две третини од европското еврејство — биле систематски убиени. Милиони других (Роми, лица со попреченост, ЛГБТК+, политички затвореници) исто така биле убиени.',
+      explanation: 'Шест милиони Евреи - две третини од европското еврејство - биле систематски убиени. Милиони других (Роми, лица со попреченост, ЛГБТК+, политички затвореници) исто така биле убиени.',
     },
   },
 
@@ -921,17 +921,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
 
   'mod6': {
     es: {
-      question: 'La Crisis de los Misiles de Cuba de 1962 — ¿cuál fue la justificación soviética para colocar misiles en Cuba?',
+      question: 'La Crisis de los Misiles de Cuba de 1962 - ¿cuál fue la justificación soviética para colocar misiles en Cuba?',
       options: ['Proteger a Cuba de otra invasión estadounidense', 'Los EE.UU. tenían misiles apuntando a la URSS desde Turquía', 'Cuba solicitó protección nuclear soviética', 'La URSS quería una base naval en el Caribe'],
       explanation: 'Aunque los misiles Júpiter estadounidenses en Turquía también fueron un factor en las negociaciones, la justificación declarada de los soviéticos fue proteger a Cuba tras el fracasado intento de invasión respaldado por la CIA en la Bahía de Cochinos en 1961.',
     },
     ru: {
-      question: 'Карибский кризис 1962 года — каким было советское обоснование размещения ракет на Кубе?',
+      question: 'Карибский кризис 1962 года - каким было советское обоснование размещения ракет на Кубе?',
       options: ['Защита Кубы от нового вторжения США', 'У США были ракеты, нацеленные на СССР из Турции', 'Куба попросила советской ядерной защиты', 'СССР хотел военно-морскую базу в Карибском море'],
       explanation: 'Хотя американские ракеты «Юпитер» в Турции также играли роль в переговорах, официальным советским обоснованием была защита Кубы после провалившейся поддержанной ЦРУ высадки в заливе Свиней в 1961 году.',
     },
     mk: {
-      question: 'Кубанската Ракетна Криза од 1962 г. — која беше советската оправданост за поставување ракети во Куба?',
+      question: 'Кубанската Ракетна Криза од 1962 г. - која беше советската оправданост за поставување ракети во Куба?',
       options: ['Да ја заштитат Куба од нова инвазија', 'САД имале ракети насочени кон СССР од Турција', 'Куба побарала советска нуклеарна заштита', 'СССР сакал поморска база во Карибите'],
       explanation: 'Иако американските ракети „Јупитер" во Турција исто така биле фактор во преговорите, официјалното советско оправдување беше заштита на Куба по неуспешниот обид за инвазија поддржан од ЦИА во Заливот на Прасиња во 1961 г.',
     },
@@ -959,17 +959,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
     es: {
       question: '¿En qué año cayó el Muro de Berlín, simbolizando el fin de la Guerra Fría?',
       options: ['1985', '1987', '1989', '1991'],
-      explanation: 'El Muro cayó el 9 de noviembre de 1989, tras el anuncio del gobierno de Alemania Oriental de que los ciudadanos podían cruzar libremente — esa noche las multitudes lo desmantelaron.',
+      explanation: 'El Muro cayó el 9 de noviembre de 1989, tras el anuncio del gobierno de Alemania Oriental de que los ciudadanos podían cruzar libremente - esa noche las multitudes lo desmantelaron.',
     },
     ru: {
       question: 'В каком году пал Берлинский стена, символизируя окончание Холодной войны?',
       options: ['1985', '1987', '1989', '1991'],
-      explanation: 'Стена рухнула 9 ноября 1989 года после того, как правительство ГДР объявило, что граждане могут свободно пересекать границу — в ту же ночь толпы начали её разбирать.',
+      explanation: 'Стена рухнула 9 ноября 1989 года после того, как правительство ГДР объявило, что граждане могут свободно пересекать границу - в ту же ночь толпы начали её разбирать.',
     },
     mk: {
       question: 'Во која година паднал Берлинскиот Ѕид, симболизирајќи го крајот на Студената војна?',
       options: ['1985', '1987', '1989', '1991'],
-      explanation: 'Ѕидот паднал на 9 ноември 1989 г. откако источногерманската влада објавила дека граѓаните можат слободно да поминуваат — истата вечер масите почнале да го разурнуваат.',
+      explanation: 'Ѕидот паднал на 9 ноември 1989 г. откако источногерманската влада објавила дека граѓаните можат слободно да поминуваат - истата вечер масите почнале да го разурнуваат.',
     },
   },
 
@@ -1052,9 +1052,9 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
       explanation: '"Paz, Tierra y Pan" fue el poderoso eslogan de los bolcheviques que abordaba lo que los rusos más deseaban: el fin de la Primera Guerra Mundial, la redistribución de la tierra de los nobles a los campesinos y alimento para la población hambrienta.',
     },
     ru: {
-      question: 'Большевики Ленина пришли к власти в России в 1917 году, частично пообещав русскому народу три вещи — какие именно?',
+      question: 'Большевики Ленина пришли к власти в России в 1917 году, частично пообещав русскому народу три вещи - какие именно?',
       options: ['Свобода, равенство и хлеб', 'Демократия, земля и процветание', 'Мир, земля и хлеб', 'Равенство, справедливость и труд'],
-      explanation: '«Мир, земля и хлеб» — мощный лозунг большевиков, отвечавший на то, чего русские хотели больше всего: конца Первой мировой войны, раздела земли от дворян крестьянам и пропитания для голодающего населения.',
+      explanation: '«Мир, земля и хлеб» - мощный лозунг большевиков, отвечавший на то, чего русские хотели больше всего: конца Первой мировой войны, раздела земли от дворян крестьянам и пропитания для голодающего населения.',
     },
     mk: {
       question: 'Болшевиците на Ленин дошле на власт во Русија во 1917 г. делумно ветувајќи му на рускиот народ кои три нешта?',
@@ -1065,17 +1065,17 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
 
   'mod14': {
     es: {
-      question: 'La "teoría del dominó" estadounidense — usada para justificar la intervención en Vietnam — argumentaba que…',
+      question: 'La "teoría del dominó" estadounidense - usada para justificar la intervención en Vietnam - argumentaba que…',
       options: ['Los países comunistas colapsarían como fichas de dominó', 'Si un país caía, los vecinos le seguirían', 'El desarrollo económico prevenía la expansión del comunismo', 'Las alianzas militares eran como fichas de dominó cayendo'],
       explanation: 'La teoría del dominó, popularizada por el presidente Eisenhower en 1954, sostenía que si un país caía bajo el comunismo (como Vietnam), los países vecinos caerían en secuencia. Este pensamiento impulsó el involucramiento estadounidense en el Sudeste Asiático.',
     },
     ru: {
-      question: 'Американская «теория домино» — использовавшаяся для обоснования вмешательства во Вьетнаме — утверждала, что…',
+      question: 'Американская «теория домино» - использовавшаяся для обоснования вмешательства во Вьетнаме - утверждала, что…',
       options: ['Коммунистические страны рухнут, как костяшки домино', 'Если падёт одна страна, за ней последуют соседние', 'Экономическое развитие предотвращает распространение коммунизма', 'Военные союзы подобны ряду падающих костяшек домино'],
       explanation: 'Теория домино, популяризированная президентом Эйзенхауэром в 1954 году, гласила: если одна страна падёт под власть коммунизма (как Вьетнам), соседние страны последуют одна за другой. Эта концепция определяла участие США в Юго-Восточной Азии.',
     },
     mk: {
-      question: 'Американската „теорија на доминото" — употребена за оправдување на интервенцијата во Виетнам — тврдела дека…',
+      question: 'Американската „теорија на доминото" - употребена за оправдување на интервенцијата во Виетнам - тврдела дека…',
       options: ['Комунистичките земји ќе пропаднат како доминото', 'Ако паднела една земја, соседните ќе следеле', 'Економскиот развој го спречувал ширењето на комунизмот', 'Воените сојузи биле како низа паѓачки плочки домино'],
       explanation: 'Теоријата на доминото, популаризирана од претседателот Ајзенхауер во 1954 г., тврдела дека ако една земја падне под комунизам (како Виетнам), соседните земји ќе паднат во секвенца. Ова размислување го поттикнало американското вклучување во Југоисточна Азија.',
     },
@@ -1083,19 +1083,19 @@ export const QUIZ_TRANS: Record<string, Partial<Record<ContentLang, QuizQuestion
 
   'mod15': {
     es: {
-      question: '¿Qué política exterior estadounidense de 1947 — comprometiéndose a apoyar a los pueblos libres que resistían la subyugación comunista — se convirtió en una piedra angular de la estrategia de la Guerra Fría?',
+      question: '¿Qué política exterior estadounidense de 1947 - comprometiéndose a apoyar a los pueblos libres que resistían la subyugación comunista - se convirtió en una piedra angular de la estrategia de la Guerra Fría?',
       options: ['La Doctrina Monroe', 'El Plan Marshall', 'La Doctrina Truman', 'La Política de Contención'],
-      explanation: 'La Doctrina Truman, anunciada en marzo de 1947, solicitó 400 millones de dólares para ayudar a Grecia y Turquía a resistir la presión comunista. Se convirtió en la doctrina más amplia de contener la expansión soviética en todo el mundo — la estrategia definitoria de la Guerra Fría.',
+      explanation: 'La Doctrina Truman, anunciada en marzo de 1947, solicitó 400 millones de dólares para ayudar a Grecia y Turquía a resistir la presión comunista. Se convirtió en la doctrina más amplia de contener la expansión soviética en todo el mundo - la estrategia definitoria de la Guerra Fría.',
     },
     ru: {
-      question: 'Какая американская внешнеполитическая доктрина 1947 года — обязывавшая поддерживать свободные народы, сопротивляющиеся коммунистическому порабощению, — стала краеугольным камнем стратегии Холодной войны?',
+      question: 'Какая американская внешнеполитическая доктрина 1947 года - обязывавшая поддерживать свободные народы, сопротивляющиеся коммунистическому порабощению, - стала краеугольным камнем стратегии Холодной войны?',
       options: ['Доктрина Монро', 'План Маршалла', 'Доктрина Трумэна', 'Политика сдерживания'],
-      explanation: 'Доктрина Трумэна, провозглашённая в марте 1947 года, запросила 400 миллионов долларов на помощь Греции и Турции в противодействии коммунистическому давлению. Она стала более широкой доктриной сдерживания советской экспансии по всему миру — определяющей стратегией Холодной войны.',
+      explanation: 'Доктрина Трумэна, провозглашённая в марте 1947 года, запросила 400 миллионов долларов на помощь Греции и Турции в противодействии коммунистическому давлению. Она стала более широкой доктриной сдерживания советской экспансии по всему миру - определяющей стратегией Холодной войны.',
     },
     mk: {
-      question: 'Која американска надворешна политика од 1947 г. — посветена на поддршка на слободни народи кои се спротивставуваат на комунистичката поробеност — стана темел на стратегијата на Студената војна?',
+      question: 'Која американска надворешна политика од 1947 г. - посветена на поддршка на слободни народи кои се спротивставуваат на комунистичката поробеност - стана темел на стратегијата на Студената војна?',
       options: ['Монроовата Доктрина', 'Маршаловиот План', 'Труманова Доктрина', 'Политиката на задржување'],
-      explanation: 'Труманова Доктрина, објавена во март 1947 г., побарала 400 милиони долари за помош на Грција и Турција во отпорот на комунистичкиот притисок. Стана поширока доктрина за задржување на советската експанзија низ целиот свет — одредувачката стратегија на Студената војна.',
+      explanation: 'Труманова Доктрина, објавена во март 1947 г., побарала 400 милиони долари за помош на Грција и Турција во отпорот на комунистичкиот притисок. Стана поширока доктрина за задржување на советската експанзија низ целиот свет - одредувачката стратегија на Студената војна.',
     },
   },
 

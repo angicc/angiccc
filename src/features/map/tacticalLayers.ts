@@ -1,11 +1,11 @@
 // ─── Tactical map layers: chokepoints, telemetry, fog of war, textures ───────
 // Pure geometry/data helpers for the Interactive Territory Map. Everything here
-// is deterministic — derived from the territory dataset, never randomized — so
+// is deterministic - derived from the territory dataset, never randomized - so
 // the map renders identically on every visit.
 import type { TerritoryTopic, TerritoryPolygon, TerritoryRoute } from '@/features/content/timelineTerritoryData';
 
 // ── Route chokepoint detection ───────────────────────────────────────────────
-// A chokepoint is where two supply/trade/military lines cross — the classic
+// A chokepoint is where two supply/trade/military lines cross - the classic
 // strategic bottleneck. Computed with a standard segment-intersection test.
 
 type Pt = [number, number]; // [lat, lng]
@@ -28,7 +28,7 @@ export interface Chokepoint {
   routeB: string;
 }
 
-/** Intersections between distinct routes — strategic bottlenecks worth pulsing. */
+/** Intersections between distinct routes - strategic bottlenecks worth pulsing. */
 export function computeChokepoints(routes: TerritoryRoute[] | undefined): Chokepoint[] {
   if (!routes || routes.length < 2) return [];
   const found: Chokepoint[] = [];

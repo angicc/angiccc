@@ -1,7 +1,7 @@
 // ─── Global leaderboard ───────────────────────────────────────────────────────
 // Ranks users by the XP inside their synced ProgressSnapshot blob. The XP
 // lives in JSON (client-authoritative sync), so ranking extracts it with
-// Postgres JSON operators via a parameter-free raw query — no user input
+// Postgres JSON operators via a parameter-free raw query - no user input
 // reaches the SQL. Results are cached for a minute: leaderboards tolerate
 // staleness far better than they tolerate a full-table JSON scan per request.
 import { Router, type Request, type Response } from 'express';
@@ -34,13 +34,13 @@ async function topRows(): Promise<Row[]> {
   return rows;
 }
 
-// GET /api/leaderboard — top 100 by XP.
+// GET /api/leaderboard - top 100 by XP.
 leaderboardRouter.get('/', async (_req: Request, res: Response) => {
   const rows = await topRows();
   res.json({ leaderboard: rows.map((r, i) => ({ rank: i + 1, ...r })) });
 });
 
-// GET /api/leaderboard/me — the caller's global rank (exact, uncached count).
+// GET /api/leaderboard/me - the caller's global rank (exact, uncached count).
 leaderboardRouter.get('/me', async (req: Request, res: Response) => {
   const userId = req.auth!.userId;
   const mine = await prisma.progressSnapshot.findUnique({ where: { userId } });

@@ -3,8 +3,8 @@
 // champions face the same history question: answer correctly and your champion
 // strikes; miss and you take the blow. The opponent (a friend) is answered by
 // an XP-scaled AI so the duel plays out live even when the friend is offline.
-// Clio heralds the arena and calls the blows. First to break the other's HP —
-// or the higher HP after the final round — wins.
+// Clio heralds the arena and calls the blows. First to break the other's HP -
+// or the higher HP after the final round - wins.
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Swords, Shield, Heart, Play, Trophy, RotateCcw, X, Sparkles } from 'lucide-react';
@@ -26,7 +26,7 @@ const ERA_PAL: Record<Battlefield['era'], { you: string; foe: string; sky: strin
 const MAX_HP = 100;
 const ROUNDS = 7;
 
-// A stylised champion — banner-coloured figure holding sword & shield.
+// A stylised champion - banner-coloured figure holding sword & shield.
 function Champion({ color, facing, striking, hurt, dead }: {
   color: string; facing: 1 | -1; striking: boolean; hurt: boolean; dead: boolean;
 }) {
@@ -134,7 +134,7 @@ export function DuelArena({ userId, playerName, opponent, language, t, onClose, 
 
     if (youCorrect && !foeCorrect) { setStrike('you'); setCall(t.fr_duel_youhit ?? 'You strike true!'); }
     else if (!youCorrect && foeCorrect) { setStrike('foe'); setCall(t.fr_duel_foehit ?? `${opponent.username} lands a blow!`); }
-    else if (youCorrect && foeCorrect) { setStrike('you'); setCall(t.fr_duel_clash ?? 'Blades clash — both wounded!'); }
+    else if (youCorrect && foeCorrect) { setStrike('you'); setCall(t.fr_duel_clash ?? 'Blades clash - both wounded!'); }
     else { setStrike(null); setCall(t.fr_duel_miss ?? 'Both swings go wide!'); }
   }, [q, youHP, foeHP, skill, opponent.username, t]);
 

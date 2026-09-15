@@ -1,7 +1,7 @@
 // ─── CHRONOS IMPERIUM · 3D battlefield ────────────────────────────────────────
 // A CSS-3D diorama that replays the combat matrix tick by tick: a perspective
 // ground plane, unit blocks standing on it as billboards, and every
-// AnimationTrigger from the resolver driving a real motion — cavalry lunges on
+// AnimationTrigger from the resolver driving a real motion - cavalry lunges on
 // a charge, projectile arcs on a volley, blocks toppling when a formation
 // shatters, and a full flight from the field on a rout. No WebGL: pure
 // perspective/rotate/translate transforms, so it runs everywhere Leaflet does.
@@ -77,7 +77,7 @@ export function Battle3D({ ticks, tickIdx, attackerStrength, defenderStrength, w
     const dir = side === 'attacker' ? -1 : 1; // attacker pushes "up" the field
     if (routedSide === side) return { y: dir * -140, opacity: 0.15, transition: { duration: 1.4 } };
     if (has(side, 'charge')) return { y: [0, dir * 46, dir * 18], transition: { duration: 0.65, times: [0, 0.55, 1] } };
-    // Shield Wall (brace): the line does NOT lunge — it plants, shocks backward a
+    // Shield Wall (brace): the line does NOT lunge - it plants, shocks backward a
     // hair as the blow lands, then re-sets. A held, immovable posture.
     if (has(side, 'brace')) return { y: [0, dir * -6, dir * -2, 0], scale: [1, 0.985, 1], transition: { duration: 0.7, times: [0, 0.3, 0.6, 1] } };
     if (has(side, 'melee')) return { y: [0, dir * 14, 0], transition: { duration: 0.5 } };
@@ -116,7 +116,7 @@ export function Battle3D({ ticks, tickIdx, attackerStrength, defenderStrength, w
           ))}
         </motion.div>
 
-        {/* Shield Wall barriers — a locked wall of raised shields that slams up
+        {/* Shield Wall barriers - a locked wall of raised shields that slams up
             in front of the bracing line, shimmers with a metallic parry, and
             holds. This is the Shield Wall's own distinct, dynamic signature. */}
         <AnimatePresence>
@@ -240,7 +240,7 @@ export function Battle3D({ ticks, tickIdx, attackerStrength, defenderStrength, w
         }
         .imp3d-arrow { position: absolute; z-index: 5; font-size: 15px; color: #e8d9a0;
           text-shadow: 0 0 6px rgba(232,217,160,.8); pointer-events: none; }
-        /* Shield Wall — a locked, gleaming barrier of interlocked shields. */
+        /* Shield Wall - a locked, gleaming barrier of interlocked shields. */
         .imp3d-wall { position: absolute; left: 50%; width: 250px; margin-left: -125px; height: 22px; z-index: 4;
           border-radius: 6px; pointer-events: none; transform-origin: 50% 50%;
           background: linear-gradient(180deg, rgba(60,66,84,.96), rgba(30,34,46,.96));
@@ -290,7 +290,7 @@ function UnitBlock({ spec, side, shattered, shatterNow }: {
   shatterNow: boolean;
 }) {
   // Rear rows sit "deeper" in the scene: smaller + higher for the defender,
-  // larger + lower for the attacker — cheap parallax that sells the depth.
+  // larger + lower for the attacker - cheap parallax that sells the depth.
   const depth = side === 'attacker' ? spec.row : 2 - spec.row;
   const scale = 0.82 + depth * 0.11;
   return (

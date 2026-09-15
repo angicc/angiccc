@@ -35,7 +35,7 @@ export default function LoginPage() {
     if (r.success) {
       toast.success(t.toast_welcome_back);
       // Set when the server was unreachable and a local account answered
-      // instead — this session will not see online friends.
+      // instead - this session will not see online friends.
       if (r.noticeKey) toast.warning(t[r.noticeKey]);
       setShowLoader(true);
       setTimeout(() => navigate('/dashboard'), 1800);
@@ -43,7 +43,7 @@ export default function LoginPage() {
     }
     setLoading(false);
     // A locally-determined failure names its own translation key. Anything
-    // else came from the server and is already a sentence worth reading —
+    // else came from the server and is already a sentence worth reading -
     // "this account is temporarily locked", "too many attempts". Collapsing
     // those into a generic "login failed" tells the learner nothing about what
     // to do. This used to compare r.error against the English sentence itself,

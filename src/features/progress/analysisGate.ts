@@ -1,4 +1,4 @@
-// ─── Post-Lesson Analysis Gate — state, cooldown, and lock resolution ────────
+// ─── Post-Lesson Analysis Gate - state, cooldown, and lock resolution ────────
 // After completing a lesson the learner must write a 150–300-word analysis
 // that Clio grades strictly; a grade of B or better unlocks the next lesson.
 // Completion also starts a 30-minute reflection cooldown before any new
@@ -13,7 +13,7 @@ export const ANALYSIS_MAX_WORDS = 300;
 export const COOLDOWN_MS = 30 * 60 * 1000;
 
 /**
- * MASTER UNLOCK — when true, EVERY lesson is open regardless of sequence,
+ * MASTER UNLOCK - when true, EVERY lesson is open regardless of sequence,
  * cooldown, or analysis state, so the whole curriculum can be walked end-to-end
  * to inspect content, translations, GIF banners, and layout for glitches.
  * The analysis popup + cooldown machinery still runs (nothing below is removed);
@@ -21,7 +21,7 @@ export const COOLDOWN_MS = 30 * 60 * 1000;
  * to restore the strict sequential + 30-minute reflection gate.
  */
 export const UNLOCK_ALL_LESSONS = true;
-/** Score (0–100) at which a grade counts as a B — the minimum passing bar. */
+/** Score (0–100) at which a grade counts as a B - the minimum passing bar. */
 export const PASS_SCORE = 80;
 
 export type AnalysisGrade = 'A+' | 'A' | 'A-' | 'B+' | 'B' | 'C+' | 'C' | 'D' | 'F';
@@ -38,7 +38,7 @@ interface AnalysisState {
   passes: Record<string, AnalysisRecord>;
   /** Epoch ms until which starting a new lesson is blocked. */
   cooldownUntil: number;
-  /** Lifetime submissions (pass or fail) — feeds achievements. */
+  /** Lifetime submissions (pass or fail) - feeds achievements. */
   attempts: number;
 }
 
@@ -79,7 +79,7 @@ export function recordAnalysisPass(userId: string, lessonId: string, grade: Anal
   saveAnalysisState(userId, s);
 }
 
-/** Count of lessons with a passing analysis on record — feeds achievements. */
+/** Count of lessons with a passing analysis on record - feeds achievements. */
 export function countAnalysisPasses(userId: string): number {
   return Object.keys(loadAnalysisState(userId).passes).length;
 }
@@ -116,7 +116,7 @@ export function endCooldown(userId: string) {
  * Resolve the progression lock for a lesson. Rules (identical on EVERY plan):
  *  - Completed lessons are always open (revisiting is free).
  *  - A lesson whose predecessor in the era is NOT completed → locked
- *    ('sequence') — no skipping ahead.
+ *    ('sequence') - no skipping ahead.
  *  - Predecessor completed: a 30-minute reflection cooldown gates the next
  *    lesson ('cooldown'). Passing the predecessor's written analysis ENDS the
  *    cooldown immediately, so the learner can either wait it out or reflect
@@ -143,7 +143,7 @@ export function getLessonLock(userId: string, lesson: Lesson, completedLessons: 
   return { locked: false, reason: null };
 }
 
-/** Live countdown hook — re-renders each second while the cooldown runs. */
+/** Live countdown hook - re-renders each second while the cooldown runs. */
 export function useCooldownRemaining(userId: string | undefined): number {
   const [remaining, setRemaining] = useState(() => (userId ? getCooldownRemaining(userId) : 0));
   useEffect(() => {

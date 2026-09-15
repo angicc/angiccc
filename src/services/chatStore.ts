@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ChatMessage } from '@/types';
 
 const PREFIX = 'historify:chat';
-const MAX_PERSISTED = 200; // generous cap — a long tutoring session must survive intact
+const MAX_PERSISTED = 200; // generous cap - a long tutoring session must survive intact
 
 function storageKey(module: string, userId?: string) {
   return userId ? `${PREFIX}:${module}:${userId}` : `${PREFIX}:${module}`;
@@ -46,11 +46,11 @@ export function usePersistentChat(module: string, userId?: string) {
   }, [key]);
 
   useEffect(() => {
-    if (state.key !== key) return; // stale state from the previous key — never persist it
+    if (state.key !== key) return; // stale state from the previous key - never persist it
     try {
       if (state.messages.length === 0) localStorage.removeItem(key);
       else localStorage.setItem(key, JSON.stringify(state.messages.slice(-MAX_PERSISTED)));
-    } catch { /* quota exceeded — persistence is best-effort */ }
+    } catch { /* quota exceeded - persistence is best-effort */ }
   }, [state, key]);
 
   const keyRef = useRef(key);
@@ -78,7 +78,7 @@ export function usePersistentChat(module: string, userId?: string) {
 // `<module>:t:<threadId>`; the registry stores only metadata. Continuity
 // pipeline: when the user reopens a thread, its full persisted slice hydrates
 // into state and the trailing MAX_HISTORY turns are injected back into the
-// LLM context window on the next exchange — the model resumes with the same
+// LLM context window on the next exchange - the model resumes with the same
 // working memory it ended with. (Client-only app: dynamic window re-injection
 // stands in for server-side vectorization; the interface is the same.)
 

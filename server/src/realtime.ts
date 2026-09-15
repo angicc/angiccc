@@ -1,14 +1,14 @@
 // ─── REST → socket bridge ─────────────────────────────────────────────────────
 // Socket.io lives in index.ts, but the events worth pushing live are decided in
-// the route handlers — a friend request is only a friend request once it has
+// the route handlers - a friend request is only a friend request once it has
 // been written. Rather than importing index.ts from a route (a cycle: index
 // mounts the routers), index registers its `io` here once at boot and the
 // routes emit through this seam.
 //
 // Emitting is FIRE-AND-FORGET and never authoritative. Everything pushed here
 // is already durable in Postgres and re-fetchable on connect, so a dropped
-// frame — recipient offline, socket layer not started, a test importing the
-// router on its own — costs a notification, never data.
+// frame - recipient offline, socket layer not started, a test importing the
+// router on its own - costs a notification, never data.
 
 type Emitter = { to(room: string): { emit(event: string, payload: unknown): unknown } };
 

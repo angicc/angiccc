@@ -1,7 +1,7 @@
 // ─── Public app reviews ───────────────────────────────────────────────────────
 // The landing page's testimonials are real: any signed-in user can leave one
 // review (rating 1–5 + short text), revisable at any time. The listing is
-// public and cached briefly — landing pages tolerate a minute of staleness.
+// public and cached briefly - landing pages tolerate a minute of staleness.
 import { Router, type Request, type Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 

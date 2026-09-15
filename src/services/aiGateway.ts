@@ -23,7 +23,7 @@ import { promptDirectives, FORMAT_RULE } from './aiLanguage';
  *
  * DEEP exists because the fast model does not hold a language well enough for
  * long-form generated prose. Given an English scenario, an English JSON schema
- * and one instruction to write Macedonian, it writes English — or writes
+ * and one instruction to write Macedonian, it writes English - or writes
  * Macedonian with agreement and article errors bad enough to read as comic.
  * That is tolerable in a chat reply the student can re-ask; it is not
  * tolerable in the Crisis Room, where the generated text IS the product and a
@@ -62,8 +62,8 @@ type EnvMap = Record<string, string | undefined>;
 
 /**
  * Resolve an env var across every runtime this module can execute in:
- *   1. `import.meta.env` — Vite statically inlines `VITE_*` keys at build time.
- *   2. `globalThis.process.env` — serverless functions / SSR / test runners,
+ *   1. `import.meta.env` - Vite statically inlines `VITE_*` keys at build time.
+ *   2. `globalThis.process.env` - serverless functions / SSR / test runners,
  *      where Vite's static binding does not apply. Accessed via `globalThis`
  *      so browser bundles (no `process` global) never throw a ReferenceError.
  */
@@ -96,7 +96,7 @@ function classifyHttpError(status: number, apiMsg: string, mode: GatewayMode): A
       false
     );
   }
-  if (status === 429)  return new AiGatewayError('rate_limit', 'Rate limit reached — wait a moment and retry.', true);
+  if (status === 429)  return new AiGatewayError('rate_limit', 'Rate limit reached - wait a moment and retry.', true);
   if (status === 404 && mode === 'proxy') {
     return new AiGatewayError('config', 'The /api/chat proxy is unavailable. For a client-side setup, set VITE_ANTHROPIC_API_KEY in .env.local and rebuild.', false);
   }
@@ -104,12 +104,12 @@ function classifyHttpError(status: number, apiMsg: string, mode: GatewayMode): A
   return new AiGatewayError('unknown', apiMsg || `API error ${status}`, true);
 }
 
-export const LANDING_SYSTEM_PROMPT = `You are the Historify assistant — a friendly, knowledgeable guide for the Historify history learning app.
+export const LANDING_SYSTEM_PROMPT = `You are the Historify assistant - a friendly, knowledgeable guide for the Historify history learning app.
 Answer questions about Historify's features, pricing, content, and how the app works.
 You can also answer general history questions to showcase the app's focus.
 Keep answers concise (2–4 sentences) and always be encouraging about learning history.
 If asked about lessons, mention specific eras: Ancient World, Middle Ages, Early Modern, Modern Era.
-Plans: Free ($0 / 4 lessons), Beginner Student ($4.99/mo / full timeline + flashcards + 10 AI messages/day), Pro Student ($9.99/mo / all lessons, Smart Quiz, Study Plan, AI Studio, Territory Map), Master Student ($17.99/mo / Crisis Room, Essay & Video challenges, animated Conquest Campaign, 300 AI messages/mo + downloads).`;
+Plans: Free ($0 / 4 lessons), Beginner Student ($4.99/mo / full timeline + flashcards + 10 AI messages/day), Pro Student ($9.99/mo / all lessons, Smart Quiz, Study Plan, AI Studio, Territory Map), Master Student ($16.99/mo / Crisis Room, Essay & Video challenges, animated Conquest Campaign, 300 AI messages/mo + downloads).`;
 
 const TUTOR_SYSTEM_PROMPT = `You are Clio, an expert history tutor for the Historify learning app.
 You help students learn world history across four eras: Ancient (~3000 BCE–500 CE), Middle Ages (~500–1500 CE), Early Modern (~1500–1800 CE), and Modern (~1800–present).
@@ -119,13 +119,13 @@ Guidelines:
 - Connect events across time periods when relevant
 - End with a thought-provoking question to encourage curiosity
 - If asked off-topic, gently redirect to history
-- Write in plain prose only — no markdown, no ## headers, no ** bold, no bullet asterisks`;
+- Write in plain prose only - no markdown, no ## headers, no ** bold, no bullet asterisks`;
 
 // ── Multi-language output directive ─────────────────────────────────────────
 // The rules themselves live in services/aiLanguage.ts, which is the single
 // source of truth for every AI feature. They used to be duplicated here, and
 // the copy that lived here was the only one German and French were ever given
-// in full — the other copy handed them two thin sentences while Macedonian got
+// in full - the other copy handed them two thin sentences while Macedonian got
 // seven numbered rules, which is precisely why de/fr output read worst.
 
 /** The interface language, or null when it has never been chosen. */
@@ -141,7 +141,7 @@ function activeLanguage(): string | null {
  * Which model to use when the caller does not insist.
  *
  * Any language other than English gets the deep model. This is not a
- * preference — the fast model does not hold a non-English language across a
+ * preference - the fast model does not hold a non-English language across a
  * long generated answer. In Macedonian it produced agreement and article
  * errors severe enough to read as comic, and it emitted stray CJK characters
  * mid-word ("во絀细", "четири絀") in verdicts and study plans. English output
@@ -169,7 +169,7 @@ function localeDirective(): string {
   }
 }
 
-/** A single content block — plain text, or an image (Anthropic vision format). */
+/** A single content block - plain text, or an image (Anthropic vision format). */
 export type AiContentBlock =
   | { type: 'text'; text: string }
   | { type: 'image'; source: { type: 'base64'; media_type: string; data: string } };

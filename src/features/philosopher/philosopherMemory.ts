@@ -1,15 +1,15 @@
 // ─── Philosopher Debate Memory ────────────────────────────────────────────────
 // The debate twin of Clio's learner memory: each philosopher remembers every
 // student individually across the daily rotation. Two feeds:
-//   1. Deterministic — win/loss record and debate counts, written at the
+//   1. Deterministic - win/loss record and debate counts, written at the
 //      moment they happen (no AI involved, can never hallucinate).
-//   2. AI extraction — after enough new exchanges, a background call distills
+//   2. AI extraction - after enough new exchanges, a background call distills
 //      the debate into structured rhetoric memory: the stances the student
 //      argued, points they conceded, their strongest arguments, and their
 //      rhetorical style.
 // The active philosopher's system prompt then carries this dossier with rules
 // to wield it like a real recurring sparring partner: "when we last debated,
-// you conceded that..." — and to escalate difficulty as the student's record
+// you conceded that..." - and to escalate difficulty as the student's record
 // improves. Everything is capped, deduped, per-philosopher, and clearable.
 import { safeJsonParse } from '@/lib/safeJsonParse';
 import { streamChatResponse } from '@/services/aiGateway';
@@ -92,7 +92,7 @@ export function recordDebateEngagement(userId: string, philosopherId: string, ph
   save(mem);
 }
 
-/** Deterministic: the philosopher conceded — the student won. */
+/** Deterministic: the philosopher conceded - the student won. */
 export function recordDebateVictory(userId: string, philosopherId: string, philosopherName: string) {
   const mem = loadPhilosopherMemory(userId);
   const rec = getRecord(mem, philosopherId, philosopherName);
@@ -153,7 +153,7 @@ DEBATE MEMORY (you genuinely remember this student from previous encounters):
 ${lines.join('\n')}
 
 MEMORY RULES:
-- Reference past debates naturally and sparingly ("When we last spoke, you argued...", "You once conceded that...") — never recite this dossier.
+- Reference past debates naturally and sparingly ("When we last spoke, you argued...", "You once conceded that...") - never recite this dossier.
 - If they contradict a stance they previously argued, seize on it as a real dialectician would.
 - Scale your rigor to their record: a student who has won concessions from you gets your sharpest arguments, not repetition of ones they already defeated.
 - Never invent memories not present in this dossier.`;
@@ -189,7 +189,7 @@ Respond ONLY with JSON, no fences, exactly this shape (empty arrays where nothin
   "style": "one short phrase describing their rhetorical style, or empty string"
 }
 
-Rules: be conservative — omit anything speculative. Keep every string under 14 words. Maximum 3 items per array. English only for these internal notes.`;
+Rules: be conservative - omit anything speculative. Keep every string under 14 words. Maximum 3 items per array. English only for these internal notes.`;
 
 async function extractDebateMemory(userId: string, philosopherId: string, philosopherName: string, messages: Turn[]) {
   const transcript = messages

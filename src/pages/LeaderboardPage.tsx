@@ -112,7 +112,7 @@ export default function LeaderboardPage() {
   const [avatarUrl] = useState(() => (avatarKey ? localStorage.getItem(avatarKey) ?? '' : ''));
 
   // Real players only: the global board when a server is configured, plus
-  // every account registered on this device — no demo users.
+  // every account registered on this device - no demo users.
   const [serverBoard, setServerBoard] = useState<{ id: string; username: string; xp: number; streak: number; videoXp: number }[] | null>(null);
   useEffect(() => { void fetchServerBoard().then(setServerBoard); }, []);
 

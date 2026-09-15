@@ -34,7 +34,7 @@ function persist(userId: string, sets: StudySet[]) {
   try {
     localStorage.setItem(KEY(userId), JSON.stringify(sets.slice(-MAX_SETS)));
     window.dispatchEvent(new CustomEvent(STUDY_SETS_UPDATED_EVENT));
-  } catch { /* quota — best-effort */ }
+  } catch { /* quota - best-effort */ }
 }
 
 export function saveStudySet(userId: string, kit: GeneratedKit, name: string, sourceText: string): StudySet {

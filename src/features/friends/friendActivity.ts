@@ -3,11 +3,11 @@
 // them and duel them, and none of it left a trace you could look back at.
 //
 // Two things feed this timeline:
-//   • REAL events, recorded as they happen — a friend accepted, a duel resolved,
+//   • REAL events, recorded as they happen - a friend accepted, a duel resolved,
 //     a gift sent, a message exchanged. These are the learner's own history and
 //     are persisted.
 //   • FRIEND-SIDE events, derived from each friend's stats. Friends are local
-//     fixtures with no server behind them, so their activity is synthesised —
+//     fixtures with no server behind them, so their activity is synthesised -
 //     but deterministically, seeded by friend id and calendar day, so the feed
 //     is stable across renders and reloads instead of reshuffling every paint.
 //
@@ -99,7 +99,7 @@ export function simulateFriendActivity(friend: ActivityFriend, days = 7, now = D
 
   // Minutes of today that have actually happened. Today's entries are drawn
   // from this window rather than from the 8–19 band, so one can never be
-  // stamped later than the moment it is read — at 00:39 every hour in that
+  // stamped later than the moment it is read - at 00:39 every hour in that
   // band is still ahead of the clock.
   const startOfToday = new Date(now);
   startOfToday.setHours(0, 0, 0, 0);
@@ -115,7 +115,7 @@ export function simulateFriendActivity(friend: ActivityFriend, days = 7, now = D
 
     // Shift UNSIGNED. `seed >> n` coerces to int32, so any seed at or above
     // 2^31 came back negative and `1 + (neg % 3)` produced counts of 0 and
-    // quiz scores below the intended floor — "completed a lesson ×0" and
+    // quiz scores below the intended floor - "completed a lesson ×0" and
     // "scored 20%" against a 60–100 range. A negative hour would also have
     // rolled the entry into the previous day.
     const bits = (n: number) => (seed >>> n);
@@ -127,7 +127,7 @@ export function simulateFriendActivity(friend: ActivityFriend, days = 7, now = D
       // The earlier version clamped a future timestamp down to Date.now(),
       // which was worse than the bug it fixed: every one of today's entries
       // collapsed onto the same instant, and the function stopped being a
-      // function — two calls a millisecond apart returned different data. It
+      // function - two calls a millisecond apart returned different data. It
       // is quantised to the minute here so the result is stable for anyone
       // reading it, and `now` is a parameter so callers can pin it outright.
       const offset = bits(8) % elapsedMinutes;
@@ -176,7 +176,7 @@ export function buildActivityFeed(
     .slice(0, limit);
 }
 
-/** `just now` / `3h` / `2d` — compact relative age for a feed row. */
+/** `just now` / `3h` / `2d` - compact relative age for a feed row. */
 export function relativeAge(iso: string, now = Date.now()): { value: number; unit: 'now' | 'm' | 'h' | 'd' } {
   const diff = Math.max(0, now - Date.parse(iso));
   const mins = Math.floor(diff / 60000);

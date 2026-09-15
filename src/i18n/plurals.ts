@@ -1,7 +1,7 @@
 // ─── Plural forms ─────────────────────────────────────────────────────────────
 // "3 day{s}" works in English and breaks in Russian and Macedonian, which have
 // three and two forms respectively and pick between them by the LAST DIGIT, not
-// by whether the number is 1. Appending an -s (or nothing) produces "3 день" —
+// by whether the number is 1. Appending an -s (or nothing) produces "3 день" -
 // wrong in a way a reader notices immediately.
 import type { Language, TranslationKeys } from './translations';
 

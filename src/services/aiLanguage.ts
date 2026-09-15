@@ -1,7 +1,7 @@
 // ─── Per-language output directive for AI prompts ────────────────────────────
 //
-// Every AI feature — Clio, the Crisis Tribunal, essay and video grading, the
-// debate room, the Studio, the study planner — tells the model which language
+// Every AI feature - Clio, the Crisis Tribunal, essay and video grading, the
+// debate room, the Studio, the study planner - tells the model which language
 // to answer in. This module is the ONE place that decides how.
 //
 // It used to be two places. `aiGateway.ts` carried a rich LOCALE_DIRECTIVES map
@@ -21,7 +21,7 @@ export type PromptLanguage = 'en' | 'es' | 'ru' | 'mk' | 'de' | 'fr';
 
 // Declared strictly, exported loosely. The strict type is what matters: a copy
 // of this map typed `Record<string, string>` sat in EssayPage.tsx listing only
-// en/es/ru/mk, and nothing complained — German and French silently fell through
+// en/es/ru/mk, and nothing complained - German and French silently fell through
 // to English and the grader was told to write its feedback in the wrong
 // language. Typed this way, dropping a language fails the build instead.
 // The loose export is only so callers can index it with a plain `string`.
@@ -32,7 +32,7 @@ export const LANG_NAMES: Record<string, string> = LANG_NAMES_STRICT;
 
 /** Never a wall of text, in any language. */
 export const COMPACTION_RULE =
-  'COMPACTNESS: every dynamic feedback or narrative block stays under 150–200 words, OR exactly 3 sharp, impact-driven points — never both, never more.';
+  'COMPACTNESS: every dynamic feedback or narrative block stays under 150–200 words, OR exactly 3 sharp, impact-driven points - never both, never more.';
 
 /** The locale ask outranks whatever language the student happens to type in. */
 const PRECEDENCE_RULE =
@@ -40,7 +40,7 @@ const PRECEDENCE_RULE =
 
 /** The UI renders plain text; markdown control characters corrupt the display. */
 export const FORMAT_RULE =
-  'OUTPUT FORMAT: plain prose only. NEVER emit markdown syntax — no # headers, no ** bold, no * or - bullet markers, no backticks — unless this prompt explicitly demands raw JSON. Violating this corrupts the display.';
+  'OUTPUT FORMAT: plain prose only. NEVER emit markdown syntax - no # headers, no ** bold, no * or - bullet markers, no backticks - unless this prompt explicitly demands raw JSON. Violating this corrupts the display.';
 
 /** Applies to every string the model returns, not just the visible prose. */
 const SCOPE = 'EVERY string you produce, including options, labels, verdicts, and JSON string values.';
@@ -50,18 +50,18 @@ const SCOPE = 'EVERY string you produce, including options, labels, verdicts, an
 // capitalised?") changes output; an adjective ("write well") does not.
 const RULES: Record<PromptLanguage, string> = {
   en: [
-    `OUTPUT LANGUAGE: English — ${SCOPE}`,
+    `OUTPUT LANGUAGE: English - ${SCOPE}`,
     'Write clear, idiomatic English prose. Use BCE/CE for dates.',
     'In multi-word historical names follow established English usage (the French Revolution, the Second World War).',
   ].join(' '),
 
   de: [
-    `OUTPUT LANGUAGE: German — ${SCOPE}`,
-    'Schreibe natürliches, idiomatisches Deutsch — niemals eine Wort-für-Wort-Übertragung englischer Satzstruktur.',
+    `OUTPUT LANGUAGE: German - ${SCOPE}`,
+    'Schreibe natürliches, idiomatisches Deutsch - niemals eine Wort-für-Wort-Übertragung englischer Satzstruktur.',
     'Beachte streng:',
     '(1) ALLE Substantive werden großgeschrieben, auch in zusammengesetzten Begriffen;',
     '(2) Komposita werden zusammengeschrieben (Völkerwanderung, Reichstagsgebäude), nicht getrennt wie im Englischen;',
-    '(3) korrekte Kasusrektion — Nominativ, Akkusativ, Dativ und Genitiv richten sich nach dem deutschen Verb oder der deutschen Präposition, nicht nach der englischen Vorlage;',
+    '(3) korrekte Kasusrektion - Nominativ, Akkusativ, Dativ und Genitiv richten sich nach dem deutschen Verb oder der deutschen Präposition, nicht nach der englischen Vorlage;',
     '(4) Verbzweitstellung im Hauptsatz und Verbletztstellung im Nebensatz; trennbare Verben stehen am Satzende;',
     '(5) korrekte Adjektivdeklination (starke, schwache und gemischte Formen) nach Artikel, Genus, Numerus und Kasus;',
     '(6) ß nach langem Vokal und Diphthong (Straße, groß), ss nach kurzem Vokal (Schloss);',
@@ -71,13 +71,13 @@ const RULES: Record<PromptLanguage, string> = {
   ].join(' '),
 
   fr: [
-    `OUTPUT LANGUAGE: French — ${SCOPE}`,
-    'Rédige un français naturel et idiomatique — jamais un calque mot à mot de l’anglais.',
+    `OUTPUT LANGUAGE: French - ${SCOPE}`,
+    'Rédige un français naturel et idiomatique - jamais un calque mot à mot de l’anglais.',
     'Respecte strictement :',
-    '(1) TOUS les accents et signes diacritiques (é, è, ê, à, ù, î, ô, ç) — un accent omis est une faute, pas une variante ;',
+    '(1) TOUS les accents et signes diacritiques (é, è, ê, à, ù, î, ô, ç) - un accent omis est une faute, pas une variante ;',
     '(2) l’élision et l’apostrophe typographique (l’Empire, d’Athènes, qu’il), avec l’apostrophe courbe ’ ;',
     '(3) l’accord en genre et en nombre des adjectifs, et l’accord du participe passé (être : avec le sujet ; avoir : avec le COD antéposé) ;',
-    '(4) la majuscule à la française — les gentilés adjectivaux, les mois et les jours restent en minuscules (la Révolution française, l’Empire romain d’Orient) ;',
+    '(4) la majuscule à la française - les gentilés adjectivaux, les mois et les jours restent en minuscules (la Révolution française, l’Empire romain d’Orient) ;',
     '(5) les guillemets français « … » et l’espace insécable avant : ; ! ? ;',
     '(6) av. J.-C. et apr. J.-C. pour les dates ;',
     '(7) la virgule décimale et l’espace comme séparateur de milliers (1 453, 3,14).',
@@ -85,22 +85,22 @@ const RULES: Record<PromptLanguage, string> = {
   ].join(' '),
 
   es: [
-    `OUTPUT LANGUAGE: Spanish — ${SCOPE}`,
-    'Escribe un español natural e idiomático — nunca una traducción literal de la estructura inglesa.',
+    `OUTPUT LANGUAGE: Spanish - ${SCOPE}`,
+    'Escribe un español natural e idiomático - nunca una traducción literal de la estructura inglesa.',
     'Sigue estrictamente la ortografía de la RAE:',
     '(1) todas las tildes y la ñ, incluidas las mayúsculas acentuadas;',
     '(2) los signos de apertura ¿ y ¡ en toda pregunta y exclamación;',
-    '(3) capitalización de tipo oración — solo la primera palabra y los nombres propios; los adjetivos de los nombres históricos van en minúscula (Revolución francesa, Imperio romano);',
+    '(3) capitalización de tipo oración - solo la primera palabra y los nombres propios; los adjetivos de los nombres históricos van en minúscula (Revolución francesa, Imperio romano);',
     '(4) concordancia de género y número entre sustantivos, adjetivos y participios;',
     '(5) uso correcto de ser y estar, y del pretérito indefinido frente al imperfecto en la narración histórica;',
     '(6) a. C. y d. C. para las fechas.',
   ].join(' '),
 
   ru: [
-    `OUTPUT LANGUAGE: Russian — ${SCOPE}`,
-    'Пиши естественным, идиоматичным русским языком — никогда не калькируй английский порядок слов.',
+    `OUTPUT LANGUAGE: Russian - ${SCOPE}`,
+    'Пиши естественным, идиоматичным русским языком - никогда не калькируй английский порядок слов.',
     'Строго соблюдай:',
-    '(1) правильное падежное управление глаголов и предлогов — падеж определяется русским глаголом, а не английским оригиналом;',
+    '(1) правильное падежное управление глаголов и предлогов - падеж определяется русским глаголом, а не английским оригиналом;',
     '(2) согласование прилагательных и причастий с существительным в роде, числе и падеже;',
     '(3) правильный вид глагола (совершенный/несовершенный) в историческом повествовании;',
     '(4) склонение имён собственных и числительных;',
@@ -110,14 +110,14 @@ const RULES: Record<PromptLanguage, string> = {
   ].join(' '),
 
   mk: [
-    `OUTPUT LANGUAGE: Macedonian — ${SCOPE}`,
-    'Пиши на природен, стандарден литературен македонски јазик со кирилско писмо — дословната замена на англиската структура е ЗАБРАНЕТА.',
+    `OUTPUT LANGUAGE: Macedonian - ${SCOPE}`,
+    'Пиши на природен, стандарден литературен македонски јазик со кирилско писмо - дословната замена на англиската структура е ЗАБРАНЕТА.',
     'Строго спроведувај:',
     '(1) точни членски наставки (-от/-ов/-он, -та/-ва/-на, -то/-во/-но, -те/-ве/-не) според род и број;',
     '(2) целосна родова и бројна согласност меѓу придавките, именките и глаголите, вклучително и кај историските поими;',
-    '(3) правилни минати времиња — аорист и имперфект за раскажување, перфект со „сум" каде што е потребно — и правилен глаголски вид (свршен/несвршен);',
+    '(3) правилни минати времиња - аорист и имперфект за раскажување, перфект со „сум" каде што е потребно - и правилен глаголски вид (свршен/несвршен);',
     '(4) правилен редослед на кратките заменски форми (ми/ти/му/ѝ, ме/те/го/ја) и нивната положба во однос на глаголот;',
-    '(5) реченична голема буква — во повеќезборните имиња со голема буква се пишува само првиот збор и сопствените имиња („Втора светска војна", никогаш „Втора Светска Војна");',
+    '(5) реченична голема буква - во повеќезборните имиња со голема буква се пишува само првиот збор и сопствените имиња („Втора светска војна", никогаш „Втора Светска Војна");',
     '(6) природен ред на зборовите во именските синтагми („династиите Цин и Хан", а не „Цин и Хан династии");',
     '(7) п.н.е. и н.е. за датумите.',
     'Прочитај ја секоја реченица повторно заради согласност и членување пред да ја вратиш.',
@@ -144,5 +144,5 @@ export function promptDirectives(language: string): string {
   return `\n\n${FORMAT_RULE}\n\n${languageDirective(language)}`;
 }
 
-/** The language codes that carry a directive — used by the build-time guard. */
+/** The language codes that carry a directive - used by the build-time guard. */
 export const DIRECTIVE_LANGUAGES = Object.keys(RULES) as PromptLanguage[];

@@ -1,5 +1,5 @@
-// ─── Master Layout Template — the global 3-zone shell ────────────────────────
-// Zone A: 240px sidebar on Layer 0 (Deep Obsidian) — the deepest surface.
+// ─── Master Layout Template - the global 3-zone shell ────────────────────────
+// Zone A: 240px sidebar on Layer 0 (Deep Obsidian) - the deepest surface.
 // Zone B: 70px utility header on Layer 1 (Stone Slate).
 // Zone C: fluid main content on Layer 1 with comfortable p-8 padding.
 // Hierarchy is expressed through color elevation (nearer = lighter), never
@@ -35,9 +35,9 @@ export function AppShell({ children, compact }: { children: React.ReactNode; com
       <AuroraBackdrop zIndex={0} />
       <CelestialAtlas position="fixed" zIndex={0} />
       <ParticleCanvas />
-      {/* Zone A — sidebar (Layer 0, blends into the base canvas) */}
+      {/* Zone A - sidebar (Layer 0, blends into the base canvas) */}
       <Sidebar className="hidden lg:flex relative z-10" />
-      {/* Zones B + C — the raised content panel (Layer 1) */}
+      {/* Zones B + C - the raised content panel (Layer 1) */}
       <div className="flex flex-col flex-1 min-w-0 relative z-10 overflow-hidden bg-layer-0 lg:rounded-tl-2xl">
         <TopBar />
         <main ref={mainRef} className={cn(

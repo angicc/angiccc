@@ -12,7 +12,7 @@
 //      refused unless an accepted friendship exists. Previously any authenticated
 //      user could DM any user id in the database.
 //   3. THE FEED IS REAL. Activity is read back out of the rows that recorded it
-//      — friendships, messages, duels — never synthesised. The client keeps a
+//      - friendships, messages, duels - never synthesised. The client keeps a
 //      simulated feed for offline use and marks it as such; nothing invented
 //      reaches this endpoint.
 import { Router, type Request, type Response } from 'express';
@@ -46,7 +46,7 @@ const PUBLIC_USER = { id: true, username: true, tier: true, lastSeenAt: true } a
 
 // ── Friends ───────────────────────────────────────────────────────────────────
 
-// GET /api/social/friends — friends with live presence + basic profile.
+// GET /api/social/friends - friends with live presence + basic profile.
 socialRouter.get('/friends', async (req: Request, res: Response) => {
   const me = req.auth!.userId;
   const ids = await friendIdsOf(me);
@@ -61,7 +61,7 @@ socialRouter.get('/friends', async (req: Request, res: Response) => {
     }),
     // The friends list shows XP and streak beside each name. Those live in the
     // progress snapshot, not on User, so without this the online list would
-    // render every friend at 0 XP — strictly less informative than the offline
+    // render every friend at 0 XP - strictly less informative than the offline
     // fixtures it replaces.
     prisma.progressSnapshot.findMany({ where: { userId: { in: ids } }, select: { userId: true, data: true } }),
   ]);
@@ -83,7 +83,7 @@ socialRouter.get('/friends', async (req: Request, res: Response) => {
   res.json({ friends, onlineCount: presence.onlineCount() });
 });
 
-// GET /api/social/online — which of my friends are online right now.
+// GET /api/social/online - which of my friends are online right now.
 socialRouter.get('/online', async (req: Request, res: Response) => {
   const ids = await friendIdsOf(req.auth!.userId);
   res.json({ online: presence.onlineAmong(ids), onlineCount: presence.onlineCount() });
@@ -91,7 +91,7 @@ socialRouter.get('/online', async (req: Request, res: Response) => {
 
 const searchSchema = z.object({ q: z.string().trim().min(2).max(40) });
 
-// GET /api/social/search?q= — find learners to add.
+// GET /api/social/search?q= - find learners to add.
 //
 // Excludes me, my existing friends and anyone with a live request either way,
 // so the result is only people the Add button can actually act on. Capped at 20
@@ -121,7 +121,7 @@ socialRouter.get('/search', async (req: Request, res: Response) => {
   res.json({ results: users.map(u => ({ ...u, online: presence.isOnline(u.id) })) });
 });
 
-// DELETE /api/social/friends/:friendId — unfriend, both directions at once.
+// DELETE /api/social/friends/:friendId - unfriend, both directions at once.
 socialRouter.delete('/friends/:friendId', async (req: Request, res: Response) => {
   const me = req.auth!.userId;
   const [aId, bId] = pair(me, req.params.friendId);
@@ -140,7 +140,7 @@ socialRouter.delete('/friends/:friendId', async (req: Request, res: Response) =>
 
 const requestSchema = z.object({ toId: z.string().min(1) });
 
-// POST /api/social/requests — ask to be someone's friend.
+// POST /api/social/requests - ask to be someone's friend.
 socialRouter.post(
   '/requests',
   rateLimit({ windowMs: 60 * 60 * 1000, max: 40, scope: 'friend request' }),
@@ -165,7 +165,7 @@ socialRouter.post(
       return res.json({ status: 'friends', mutual: true });
     }
 
-    // A declined request may be sent again — people change their minds — so the
+    // A declined request may be sent again - people change their minds - so the
     // upsert resets the row rather than leaving it stuck on `declined`.
     await prisma.friendRequest.upsert({
       where: { fromId_toId: { fromId: me, toId: other } },
@@ -177,7 +177,7 @@ socialRouter.post(
   },
 );
 
-// GET /api/social/requests — what is waiting on me, and what I am waiting on.
+// GET /api/social/requests - what is waiting on me, and what I am waiting on.
 socialRouter.get('/requests', async (req: Request, res: Response) => {
   const me = req.auth!.userId;
   const rows = await prisma.friendRequest.findMany({
@@ -206,14 +206,14 @@ async function acceptRequest(requestId: string, fromId: string, toId: string): P
 
 const respondRequestSchema = z.object({ id: z.string().min(1), accept: z.boolean() });
 
-// POST /api/social/requests/respond — accept or decline one waiting on me.
+// POST /api/social/requests/respond - accept or decline one waiting on me.
 socialRouter.post('/requests/respond', async (req: Request, res: Response) => {
   const parsed = respondRequestSchema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: 'Invalid response.' });
   const me = req.auth!.userId;
 
   // Scoped to `toId: me`, so you can only answer a request actually addressed
-  // to you — not accept one on someone else's behalf by guessing an id.
+  // to you - not accept one on someone else's behalf by guessing an id.
   const request = await prisma.friendRequest.findFirst({
     where: { id: parsed.data.id, toId: me, status: 'pending' },
   });
@@ -231,7 +231,7 @@ socialRouter.post('/requests/respond', async (req: Request, res: Response) => {
   res.json({ status: 'declined' });
 });
 
-// POST /api/social/requests/cancel — withdraw a request I sent.
+// POST /api/social/requests/cancel - withdraw a request I sent.
 socialRouter.post('/requests/cancel', async (req: Request, res: Response) => {
   const parsed = requestSchema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: 'toId required.' });
@@ -244,7 +244,7 @@ socialRouter.post('/requests/cancel', async (req: Request, res: Response) => {
 
 // ── Direct messages ───────────────────────────────────────────────────────────
 
-// GET /api/social/messages/:friendId — durable thread (oldest first).
+// GET /api/social/messages/:friendId - durable thread (oldest first).
 socialRouter.get('/messages/:friendId', async (req: Request, res: Response) => {
   const me = req.auth!.userId;
   const other = req.params.friendId;
@@ -264,7 +264,7 @@ socialRouter.get('/messages/:friendId', async (req: Request, res: Response) => {
 
 const sendSchema = z.object({ toId: z.string().min(1), text: z.string().trim().min(1).max(2000) });
 
-// POST /api/social/messages — persist a message (socket layer relays it live).
+// POST /api/social/messages - persist a message (socket layer relays it live).
 socialRouter.post(
   '/messages',
   rateLimit({ windowMs: 60_000, max: 60, scope: 'message' }),
@@ -281,7 +281,7 @@ socialRouter.post(
   },
 );
 
-// GET /api/social/unread — unread count per friend, for the sidebar badges.
+// GET /api/social/unread - unread count per friend, for the sidebar badges.
 socialRouter.get('/unread', async (req: Request, res: Response) => {
   const rows = await prisma.directMessage.groupBy({
     by: ['fromId'],
@@ -298,7 +298,7 @@ socialRouter.get('/unread', async (req: Request, res: Response) => {
 
 const duelSchema = z.object({ toId: z.string().min(1) });
 
-// POST /api/social/duel/challenge — record a pending duel challenge.
+// POST /api/social/duel/challenge - record a pending duel challenge.
 socialRouter.post(
   '/duel/challenge',
   rateLimit({ windowMs: 60_000, max: 20, scope: 'duel' }),
@@ -321,7 +321,7 @@ socialRouter.post(
   },
 );
 
-// GET /api/social/duel/pending — challenges awaiting my response.
+// GET /api/social/duel/pending - challenges awaiting my response.
 socialRouter.get('/duel/pending', async (req: Request, res: Response) => {
   const pending = await prisma.duelChallenge.findMany({
     where: { toId: req.auth!.userId, status: 'pending' },
@@ -333,7 +333,7 @@ socialRouter.get('/duel/pending', async (req: Request, res: Response) => {
 
 const respondSchema = z.object({ id: z.string().min(1), accept: z.boolean() });
 
-// POST /api/social/duel/respond — accept or decline a challenge.
+// POST /api/social/duel/respond - accept or decline a challenge.
 socialRouter.post('/duel/respond', async (req: Request, res: Response) => {
   const parsed = respondSchema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: 'Invalid response.' });
@@ -354,12 +354,12 @@ socialRouter.post('/duel/respond', async (req: Request, res: Response) => {
 // ── Activity ──────────────────────────────────────────────────────────────────
 
 /**
- * GET /api/social/activity — what actually happened, newest first.
+ * GET /api/social/activity - what actually happened, newest first.
  *
  * Read back out of the durable rows rather than stored as a separate log: a
  * friendship row IS "you became friends", a duel row IS "you were challenged".
  * A dedicated events table would be a second copy of the same truth, free to
- * drift from it — and would need backfilling for everything that already
+ * drift from it - and would need backfilling for everything that already
  * happened.
  */
 socialRouter.get('/activity', async (req: Request, res: Response) => {
@@ -407,7 +407,7 @@ socialRouter.get('/activity', async (req: Request, res: Response) => {
       ...named(other(m.fromId, m.toId)), at: m.createdAt.toISOString(),
       meta: { outgoing: m.fromId === me },
     })),
-    // A challenge being accepted is not a win — nothing here knows who scored
+    // A challenge being accepted is not a win - nothing here knows who scored
     // higher, because the duel itself is played client-side. Reporting these as
     // duel_win/duel_loss would put fictional results in a feed whose whole
     // point is that it only carries real ones.

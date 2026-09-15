@@ -2,8 +2,8 @@
 /**
  * Pull the Drive banner art at build time, on the build machine's network.
  *
- * Runs automatically as npm's `prebuild` step, so `npm run build` — locally or
- * on Netlify — lands the art before Vite copies `public/` into `dist/`.
+ * Runs automatically as npm's `prebuild` step, so `npm run build` - locally or
+ * on Netlify - lands the art before Vite copies `public/` into `dist/`.
  *
  * Why this exists: banner art is committed once it has been landed, but the
  * environments where the app is *authored* often cannot reach Drive at all, so
@@ -11,7 +11,7 @@
  * not restricted. Give the build a credential and the remaining banners appear
  * in `dist/`; give it nothing and the build is exactly as it was before.
  *
- * Art fetched here is not committed back — each deploy re-fetches what git does
+ * Art fetched here is not committed back - each deploy re-fetches what git does
  * not already carry. Commit a file and this step skips it from then on.
  *
  * Credentials, read from the environment (set them in Netlify → Site
@@ -27,7 +27,7 @@
  *                        one-off local run and useless as a build variable.
  *
  * This step must never fail a deploy. A missing credential, a revoked key, a
- * Drive outage — none of them are reasons to refuse to ship the app, because a
+ * Drive outage - none of them are reasons to refuse to ship the app, because a
  * banner that fails to load is already a handled case: the lesson falls back to
  * its built-in animated banner.
  *
@@ -35,7 +35,7 @@
  * rejected key looked identical from the outside, and a deploy that fetched
  * nothing looked exactly like one that fetched everything, because the fallback
  * art is indistinguishable at a glance. So this writes
- * `public/banner-status.json` on every run — it ships with the site, so
+ * `public/banner-status.json` on every run - it ships with the site, so
  * `https://<your-site>/banner-status.json` answers "did it work, and if not,
  * why" without anyone reading a build log. It records names, counts and HTTP
  * statuses only; no credential value is ever written to it.
@@ -60,7 +60,7 @@ const TAG = '[banners]';
  *
  * GOOGLE_API_KEY is the documented name. The others are here because they are
  * what a person actually types when setting this up, and a near-miss produced
- * no error at all — the build just quietly skipped the fetch and shipped the
+ * no error at all - the build just quietly skipped the fetch and shipped the
  * fallback art. Matching the intent is worth more than insisting on the spelling.
  */
 const CREDENTIAL_VARS = {
@@ -75,7 +75,7 @@ const found = (names) => names.find(n => (process.env[n] ?? '').trim().length > 
  * internet can GET.
  *
  * Google's error bodies do not echo the key today, and nothing here puts it on
- * a command line — but this file is published, and "today's error format does
+ * a command line - but this file is published, and "today's error format does
  * not include the secret" is not a property worth betting a credential on.
  * Belt and braces: the live key value itself, then the general shape.
  */
@@ -117,7 +117,7 @@ function audit() {
 }
 
 if (process.env.SKIP_BANNER_FETCH === '1') {
-  console.log(`${TAG} SKIP_BANNER_FETCH=1 — not fetching.`);
+  console.log(`${TAG} SKIP_BANNER_FETCH=1 - not fetching.`);
   writeStatus({ ran: false, reason: 'SKIP_BANNER_FETCH=1', ...audit() });
   process.exit(0);
 }
@@ -127,9 +127,9 @@ const tokenVar = found(CREDENTIAL_VARS.token);
 
 if (!keyVar && !tokenVar) {
   // Not an error. Whatever art is committed still ships; the rest falls back.
-  console.log(`${TAG} NO CREDENTIAL FOUND — using only the art already in the repo.`);
+  console.log(`${TAG} NO CREDENTIAL FOUND - using only the art already in the repo.`);
   console.log(`${TAG} Set one of these in Netlify → Environment variables: ${CREDENTIAL_VARS.key.join(', ')}`);
-  console.log(`${TAG} Scope it to ALL deploy contexts — a Production-only value is invisible to a branch deploy.`);
+  console.log(`${TAG} Scope it to ALL deploy contexts - a Production-only value is invisible to a branch deploy.`);
   const before = audit();
   run(['--missing']);
   writeStatus({
@@ -147,7 +147,7 @@ if (keyVar && !process.env.GOOGLE_API_KEY) process.env.GOOGLE_API_KEY = process.
 if (tokenVar && !process.env.GOOGLE_OAUTH_TOKEN) process.env.GOOGLE_OAUTH_TOKEN = process.env[tokenVar];
 
 const usedVar = tokenVar ?? keyVar;
-console.log(`${TAG} credential found in ${usedVar} — fetching missing banner art…`);
+console.log(`${TAG} credential found in ${usedVar} - fetching missing banner art…`);
 
 const before = audit();
 // The fetcher skips anything already on disk, so this pulls only what is absent.
@@ -159,14 +159,14 @@ console.log(`${TAG} ${fetched} file(s) fetched this build; ${after.present}/${af
 
 if (result.status !== 0) {
   console.log(`${TAG} some art could not be fetched (fetcher exit ${result.status}).`);
-  console.log(`${TAG} A 403 means the key has no access — enable the Google Drive API on it and`);
+  console.log(`${TAG} A 403 means the key has no access - enable the Google Drive API on it and`);
   console.log(`${TAG} confirm the Drive folder is shared "Anyone with the link → Viewer".`);
   console.log(`${TAG} The build continues; affected lessons fall back to their built-in banners.`);
 }
 
 writeStatus({
   ran: true,
-  credentialVariable: usedVar,   // the NAME only — never the value
+  credentialVariable: usedVar,   // the NAME only - never the value
   fetcherExitCode: result.status,
   fetchedThisBuild: fetched,
   failures: parseFailures(result.stdout),
@@ -177,7 +177,7 @@ process.exit(0);
 
 /**
  * The fetcher prints `  ✔ path` per success and a `failed: N` block listing each
- * name and reason. Pull the reasons out so the status file can carry them —
+ * name and reason. Pull the reasons out so the status file can carry them -
  * an HTTP status is the difference between "wrong key" and "wrong sharing",
  * and that distinction is the whole point of this file existing.
  */

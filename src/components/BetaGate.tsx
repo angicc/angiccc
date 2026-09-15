@@ -6,12 +6,12 @@ const BETA_CODE = 'HISTORIFY2026';
 // BetaGate wraps the app *above* the LanguageProvider, so it localizes itself
 // by reading the stored language directly rather than via useLanguage().
 const GATE_COPY: Record<string, { title: string; subtitle: string; placeholder: string; unlock: string; error: string; footer: string }> = {
-  en: { title: 'Historify Beta', subtitle: 'Enter your access code to continue', placeholder: 'Access code', unlock: 'Unlock', error: 'Incorrect code. Try again.', footer: 'Beta testers only — contact the developer for your code' },
-  es: { title: 'Historify Beta', subtitle: 'Introduce tu código de acceso para continuar', placeholder: 'Código de acceso', unlock: 'Desbloquear', error: 'Código incorrecto. Inténtalo de nuevo.', footer: 'Solo para beta testers — contacta al desarrollador para tu código' },
-  ru: { title: 'Historify Beta', subtitle: 'Введите код доступа, чтобы продолжить', placeholder: 'Код доступа', unlock: 'Разблокировать', error: 'Неверный код. Попробуйте снова.', footer: 'Только для бета-тестеров — запросите код у разработчика' },
-  mk: { title: 'Historify Beta', subtitle: 'Внесете го вашиот код за пристап за да продолжите', placeholder: 'Код за пристап', unlock: 'Отклучи', error: 'Погрешен код. Обидете се повторно.', footer: 'Само за бета-тестери — контактирајте го развивачот за вашиот код' },
-  de: { title: 'Historify Beta', subtitle: 'Gib deinen Zugangscode ein, um fortzufahren', placeholder: 'Zugangscode', unlock: 'Freischalten', error: 'Falscher Code. Bitte erneut versuchen.', footer: 'Nur für Betatester — kontaktiere den Entwickler für deinen Code' },
-  fr: { title: 'Historify Beta', subtitle: 'Saisissez votre code d’accès pour continuer', placeholder: 'Code d’accès', unlock: 'Déverrouiller', error: 'Code incorrect. Réessayez.', footer: 'Réservé aux bêta-testeurs — contactez le développeur pour votre code' },
+  en: { title: 'Historify Beta', subtitle: 'Enter your access code to continue', placeholder: 'Access code', unlock: 'Unlock', error: 'Incorrect code. Try again.', footer: 'Beta testers only - contact the developer for your code' },
+  es: { title: 'Historify Beta', subtitle: 'Introduce tu código de acceso para continuar', placeholder: 'Código de acceso', unlock: 'Desbloquear', error: 'Código incorrecto. Inténtalo de nuevo.', footer: 'Solo para beta testers - contacta al desarrollador para tu código' },
+  ru: { title: 'Historify Beta', subtitle: 'Введите код доступа, чтобы продолжить', placeholder: 'Код доступа', unlock: 'Разблокировать', error: 'Неверный код. Попробуйте снова.', footer: 'Только для бета-тестеров - запросите код у разработчика' },
+  mk: { title: 'Historify Beta', subtitle: 'Внесете го вашиот код за пристап за да продолжите', placeholder: 'Код за пристап', unlock: 'Отклучи', error: 'Погрешен код. Обидете се повторно.', footer: 'Само за бета-тестери - контактирајте го развивачот за вашиот код' },
+  de: { title: 'Historify Beta', subtitle: 'Gib deinen Zugangscode ein, um fortzufahren', placeholder: 'Zugangscode', unlock: 'Freischalten', error: 'Falscher Code. Bitte erneut versuchen.', footer: 'Nur für Betatester - kontaktiere den Entwickler für deinen Code' },
+  fr: { title: 'Historify Beta', subtitle: 'Saisissez votre code d’accès pour continuer', placeholder: 'Code d’accès', unlock: 'Déverrouiller', error: 'Code incorrect. Réessayez.', footer: 'Réservé aux bêta-testeurs - contactez le développeur pour votre code' },
 };
 
 function gateCopy() {

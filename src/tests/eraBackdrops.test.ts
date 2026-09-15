@@ -23,7 +23,7 @@ describe('era backdrops', () => {
   });
 
   it('keeps the folder present so the build audit has somewhere to look', () => {
-    // assetPathPlugin errors on a mapped path whose *directory* is missing —
+    // assetPathPlugin errors on a mapped path whose *directory* is missing -
     // that is how a typo'd path gets caught rather than silently 404ing.
     expect(fs.existsSync(path.join(ROOT, 'public/assets/eras'))).toBe(true);
   });

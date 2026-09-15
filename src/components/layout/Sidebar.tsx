@@ -1,7 +1,7 @@
-// ─── Zone A: Left Sidebar (240px fixed, Layer 0 — Deep Obsidian) ─────────────
+// ─── Zone A: Left Sidebar (240px fixed, Layer 0 - Deep Obsidian) ─────────────
 // Borderless elevation hierarchy: the sidebar is the darkest surface in the
 // app; the content panel beside it reads as "nearer" purely through its
-// lighter backing — no hard divider lines. Navigation is grouped under small
+// lighter backing - no hard divider lines. Navigation is grouped under small
 // muted uppercase headers; the active route is marked with a thin vertical
 // gold bar on the left edge, and hovering an item shifts its text toward gold.
 import { useState } from 'react';
@@ -148,7 +148,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
                   )}>
                   {({ isActive }) => (
                     <>
-                      {/* thin vertical gold bar — the active-route marker */}
+                      {/* thin vertical gold bar - the active-route marker */}
                       <span className={cn(
                         'absolute left-0 top-1/2 -translate-y-1/2 w-[2px] rounded-full bg-primary transition-all duration-200',
                         isActive ? 'h-4 opacity-100' : 'h-0 opacity-0',

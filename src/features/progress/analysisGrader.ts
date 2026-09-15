@@ -2,7 +2,7 @@
 // Grades a learner's 150–300-word lesson analysis. Primary path: the AI
 // gateway with a strict-rubric JSON prompt. Fallback path: a deterministic
 // local rubric (term coverage, analytical reasoning, specificity, structure)
-// so the progression gate keeps working with no network/key — the gate must
+// so the progression gate keeps working with no network/key - the gate must
 // never brick the learner's path forward.
 import type { Lesson } from '@/types';
 import { streamChatResponse } from '@/services/aiGateway';
@@ -37,10 +37,10 @@ Lesson key facts: ${lesson.keyFacts.join(' | ')}
 Lesson sections: ${lesson.sections.map(s => s.heading).join(' | ')}
 
 Grade the analysis STRICTLY on four criteria (25 points each, total 0-100):
-1. UNDERSTANDING — does it accurately engage the lesson's actual content (people, dates, events, ideas)?
-2. ANALYSIS — does it explain causes, consequences, and significance rather than merely summarize?
-3. SPECIFICITY — concrete names, dates, places, and examples from the lesson?
-4. CLARITY — coherent structure and precise language?
+1. UNDERSTANDING - does it accurately engage the lesson's actual content (people, dates, events, ideas)?
+2. ANALYSIS - does it explain causes, consequences, and significance rather than merely summarize?
+3. SPECIFICITY - concrete names, dates, places, and examples from the lesson?
+4. CLARITY - coherent structure and precise language?
 
 Be a demanding examiner: a generic summary with no analytical reasoning must score below 80. Reserve 90+ for genuinely insightful work. Factually wrong claims cost points.
 
@@ -56,7 +56,7 @@ async function gradeWithAi(text: string, lesson: Lesson): Promise<AnalysisVerdic
     [{ role: 'user', content: `Student analysis (${countWords(text)} words):\n\n${text}` }],
     undefined,
     GRADER_SYSTEM(lesson),
-    2048, // {score, feedback, strengths[], improvements[]} — the same JSON shape
+    2048, // {score, feedback, strengths[], improvements[]} - the same JSON shape
           // that truncated in the Crisis tribunal; runs long in Macedonian.
   )) full += chunk;
   // Shared repair-tolerant parser: handles the student's own quoted text echoed
@@ -77,7 +77,7 @@ async function gradeWithAi(text: string, lesson: Lesson): Promise<AnalysisVerdic
 
 // ── Deterministic local rubric ──────────────────────────────────────────────
 
-// Analytical connectives across the app's six content languages — evidence
+// Analytical connectives across the app's six content languages - evidence
 // the student is reasoning about causes/consequences, not just retelling.
 const ANALYTICAL_MARKERS = [
   // en
@@ -108,21 +108,21 @@ export function gradeLocally(text: string, lesson: Lesson): AnalysisVerdict {
   const lower = text.toLowerCase();
   const words = countWords(text);
 
-  // 1. Understanding / coverage — fraction of lesson terms the analysis engages.
+  // 1. Understanding / coverage - fraction of lesson terms the analysis engages.
   const terms = lessonTerms(lesson);
   const hits = terms.filter(t => lower.includes(t)).length;
   const coverageNeeded = Math.min(10, Math.max(4, Math.round(terms.length * 0.08)));
   const coverage = Math.min(1, hits / coverageNeeded);
 
-  // 2. Analysis — distinct analytical connectives used (strict: wants 4+).
+  // 2. Analysis - distinct analytical connectives used (strict: wants 4+).
   const markersUsed = ANALYTICAL_MARKERS.filter(m => lower.includes(m)).length;
   const reasoning = Math.min(1, markersUsed / 4);
 
-  // 3. Specificity — dates/numbers mentioned (wants 2+).
+  // 3. Specificity - dates/numbers mentioned (wants 2+).
   const numbers = (text.match(/\b\d{3,4}\b/g) ?? []).length;
   const specificity = Math.min(1, numbers / 2);
 
-  // 4. Clarity/structure — sentence count and average sentence length in a readable band.
+  // 4. Clarity/structure - sentence count and average sentence length in a readable band.
   const sentences = text.split(/[.!?…]+/).map(s => s.trim()).filter(s => s.length > 8);
   const avgLen = sentences.length ? words / sentences.length : 99;
   const structure = (sentences.length >= 7 ? 0.5 : sentences.length / 14) + (avgLen >= 9 && avgLen <= 32 ? 0.5 : 0.2);
@@ -134,7 +134,7 @@ export function gradeLocally(text: string, lesson: Lesson): AnalysisVerdict {
   if (coverage >= 0.7) strengths.push('Engages the lesson\'s actual people, places, and events.');
   else improvements.push('Anchor your points in more of the lesson\'s specific people, places, and events.');
   if (reasoning >= 0.75) strengths.push('Reasons about causes and consequences, not just summary.');
-  else improvements.push('Explain WHY events happened and what followed — use cause-and-effect reasoning.');
+  else improvements.push('Explain WHY events happened and what followed - use cause-and-effect reasoning.');
   if (specificity >= 1) strengths.push('Cites concrete dates and figures.');
   else improvements.push('Cite at least two concrete dates or figures from the lesson.');
   if (Math.min(1, structure) >= 0.9) strengths.push('Clear, well-paced sentence structure.');
@@ -147,7 +147,7 @@ export function gradeLocally(text: string, lesson: Lesson): AnalysisVerdict {
     passed,
     feedback: passed
       ? 'A disciplined analysis: you engage the material directly and reason about its significance. The path forward is open.'
-      : 'Not yet at the bar. Clio demands analysis, not retelling — engage the lesson\'s specifics and argue their significance, then resubmit.',
+      : 'Not yet at the bar. Clio demands analysis, not retelling - engage the lesson\'s specifics and argue their significance, then resubmit.',
     strengths,
     improvements,
     source: 'local',

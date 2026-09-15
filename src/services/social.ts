@@ -5,7 +5,7 @@
 // TWO MODES, ONE UI. When `VITE_API_URL` points at a deployed server and the
 // learner has a server session, friends are real accounts: requests need
 // consent, DMs are durable and cross-device, presence is live over a socket.
-// When it is unset — local dev, a preview build, the offline demo — every call
+// When it is unset - local dev, a preview build, the offline demo - every call
 // here resolves to null quickly and FriendsPage keeps working from
 // localStorage against its fixture friends.
 //
@@ -14,7 +14,7 @@
 // fixtures off as people.
 //
 // WHY THIS FILE WAS REWRITTEN: every write helper here used to send a field
-// name the server does not read — `{ username }` where it wanted `{ toId }`,
+// name the server does not read - `{ username }` where it wanted `{ toId }`,
 // `{ friendId, text }` where it wanted `{ toId, text }`. Each call 400'd, the
 // helper swallowed it as `false`, and the UI silently fell back to
 // localStorage. With a server deployed and a user logged in, adding a friend
@@ -38,7 +38,7 @@ export interface ApiError { status: number; error: string }
  * Errors are returned rather than thrown because every call site here is a UI
  * action: "Not friends." and "Too many messages" are things the learner needs
  * to read, not exceptions to swallow. `null` means "no backend configured" and
- * is the signal to fall back to local behaviour — distinct from a real failure.
+ * is the signal to fall back to local behaviour - distinct from a real failure.
  */
 async function api<T>(
   path: string,
@@ -89,12 +89,12 @@ export type SocialMode = 'offline' | 'unauthenticated' | 'online';
 /**
  * Which world the Friends page is in.
  *
- * `offline`         — no backend configured; fixtures and localStorage.
- * `unauthenticated` — backend reachable, but this browser has no session, so
+ * `offline`         - no backend configured; fixtures and localStorage.
+ * `unauthenticated` - backend reachable, but this browser has no session, so
  *                     every /api/social call would 401. The UI must say so
  *                     rather than showing an empty friends list as if the
  *                     learner simply has no friends.
- * `online`          — real accounts, real messages.
+ * `online`          - real accounts, real messages.
  */
 export async function socialMode(): Promise<SocialMode> {
   if (!socialApiConfigured()) return 'offline';
@@ -155,7 +155,7 @@ export function removeFriend(friendId: string) {
 /**
  * Ask to be someone's friend.
  *
- * Resolves to `friends` rather than `pending` when they had already asked you —
+ * Resolves to `friends` rather than `pending` when they had already asked you -
  * the server treats the crossing requests as a mutual yes.
  */
 export function sendFriendRequest(toId: string) {
@@ -223,7 +223,7 @@ export async function fetchServerActivity(limit = 40): Promise<ServerActivityEve
 /**
  * Events the server pushes into this user's private room.
  *
- * All of them are notifications about state that is ALREADY durable — the
+ * All of them are notifications about state that is ALREADY durable - the
  * request is in the database before `friend:request` is emitted. So a dropped
  * frame costs a live update, never data: the next fetch has the same truth.
  * Handlers should refresh, not mutate a local cache as if the frame were the
@@ -246,7 +246,7 @@ let socket: Socket | null = null;
  *
  * Authenticates with the httpOnly session cookie via `withCredentials`, so no
  * JWT is ever held in JavaScript where an XSS could read it. Returns null when
- * no backend is configured — callers treat that as "no live layer" and rely on
+ * no backend is configured - callers treat that as "no live layer" and rely on
  * polling, which is also what happens if the socket cannot connect.
  */
 export function connectSocial(): Socket | null {

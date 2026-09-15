@@ -2,7 +2,7 @@
 // Declarative monetization guardrails. `PlanGate` renders its children only
 // when the active subscription meets the required tier; otherwise it renders
 // the standard UpgradePrompt. `withPlanGate` is the HOC form for gating whole
-// pages. Gating is enforced at render time on every mount — there is no
+// pages. Gating is enforced at render time on every mount - there is no
 // client-side cache a user can flip to bypass it, and the AI gateway's own
 // per-plan message limits (canAI) remain the second, independent layer.
 import type { ComponentType, ReactNode } from 'react';

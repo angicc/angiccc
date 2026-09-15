@@ -94,7 +94,7 @@ export default function DashboardPage() {
             { label: t.dash_total_xp, value: progress.xp.toLocaleString(), icon: Star, color:'text-primary', chip:'bg-primary/10 border-primary/20' },
             { label: t.dash_level, value: progress.level, icon: Flame, color:'text-orange-400', chip:'bg-orange-400/10 border-orange-400/20' },
             { label: t.dash_lessons_done, value:`${progress.completedLessons.length} / ${LESSONS.length}`, icon: BookOpen, color:'text-emerald-400', chip:'bg-emerald-400/10 border-emerald-400/20' },
-            { label: t.dash_quiz_avg, value: avgScore > 0 ? `${avgScore}%` : '—', icon: HelpCircle, color:'text-blue-400', chip:'bg-blue-400/10 border-blue-400/20' },
+            { label: t.dash_quiz_avg, value: avgScore > 0 ? `${avgScore}%` : '-', icon: HelpCircle, color:'text-blue-400', chip:'bg-blue-400/10 border-blue-400/20' },
           ].map(({ label, value, icon: Icon, color, chip }) => (
             <motion.div key={label} variants={fadeUp} whileHover={{ y: -3 }}>
               <Card className="relative overflow-hidden hover:shadow-lg hover:shadow-black/20 transition-all duration-200">

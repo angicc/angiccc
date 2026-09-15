@@ -21,8 +21,8 @@ const run = {
 
 /**
  * The Crisis Room shipped its verdict and its turn-by-turn narration in English
- * to readers of every language. Not because the language directive was absent —
- * it was there — but because everything around it was English: the scenario was
+ * to readers of every language. Not because the language directive was absent -
+ * it was there - but because everything around it was English: the scenario was
  * seeded from the English fields, and in the tribunal prompt a large English
  * JSON schema came *after* the directive, so the last thing the model read was
  * a page of English. These tests pin the two fixes.
@@ -59,7 +59,7 @@ describe('Chronos Crisis Room prompt language', () => {
       const directive = languageDirective(lang);
       expect(prompt, `${lang} tribunal prompt lost its language directive`).toContain(directive);
       const after = prompt.slice(prompt.indexOf(directive) + directive.length);
-      // Nothing of substance may follow it — a closing backtick at most.
+      // Nothing of substance may follow it - a closing backtick at most.
       expect(after.trim().length, `${lang}: ${after.trim().length} chars follow the directive`)
         .toBeLessThan(8);
     }

@@ -6,7 +6,7 @@ import { z } from 'zod';
 const prisma = new PrismaClient();
 export const clioRouter = Router();
 
-// GET /api/clio/history — session tree for the sidebar (newest first).
+// GET /api/clio/history - session tree for the sidebar (newest first).
 clioRouter.get('/history', async (req: Request, res: Response) => {
   const sessions = await prisma.clioChatSession.findMany({
     where: { userId: req.auth!.userId },
@@ -17,7 +17,7 @@ clioRouter.get('/history', async (req: Request, res: Response) => {
   res.json(sessions);
 });
 
-// GET /api/clio/history/:sessionId — full thread for continuation. The client
+// GET /api/clio/history/:sessionId - full thread for continuation. The client
 // injects the trailing window of these messages back into the LLM context.
 clioRouter.get('/history/:sessionId', async (req: Request, res: Response) => {
   const session = await prisma.clioChatSession.findFirst({
@@ -35,7 +35,7 @@ const messageBody = z.object({
   text: z.string().min(1).max(8000),
 });
 
-// POST /api/clio/message — append a turn; auto-creates and auto-titles sessions.
+// POST /api/clio/message - append a turn; auto-creates and auto-titles sessions.
 clioRouter.post('/message', async (req: Request, res: Response) => {
   const parsed = messageBody.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });

@@ -6,7 +6,7 @@
 // unlock sequentially, conquered regions accumulate into a commander rank, and
 // Master subscribers can raise the stakes with Legendary mode (flawless
 // conquests only, double XP). Everything here is deterministic and
-// storage-backed — no randomness beyond question sampling.
+// storage-backed - no randomness beyond question sampling.
 import { TERRITORY_TOPICS, type TerritoryTopic } from '@/features/content/timelineTerritoryData';
 import { getQuestionsForTopic, type TerritoryQuizQuestion } from '@/i18n/territoryMapQuizData';
 
@@ -61,7 +61,7 @@ export function saveCampaign(state: CampaignState, userId?: string) {
 
 /**
  * Stars for a finished run. Standard mode: conquer at ≥60% (1★), ≥80% (2★),
- * perfect (3★). Legendary mode: only a flawless run conquers — straight to 3★.
+ * perfect (3★). Legendary mode: only a flawless run conquers - straight to 3★.
  */
 export function starsForScore(correct: number, total: number, legendary: boolean): 0 | 1 | 2 | 3 {
   if (total <= 0) return 0;
@@ -141,7 +141,7 @@ export function totalStars(state: CampaignState): number {
   return Object.values(state.stages).reduce((s, r) => s + (r?.stars ?? 0), 0);
 }
 
-/** Commander rank thresholds — translation keys resolved by the page. */
+/** Commander rank thresholds - translation keys resolved by the page. */
 const RANKS: { minStars: number; key: 'tmap_camp_rank_1' | 'tmap_camp_rank_2' | 'tmap_camp_rank_3' | 'tmap_camp_rank_4' | 'tmap_camp_rank_5' }[] = [
   { minStars: 45, key: 'tmap_camp_rank_5' },
   { minStars: 30, key: 'tmap_camp_rank_4' },

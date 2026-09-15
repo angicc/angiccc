@@ -1,6 +1,6 @@
 // ─── Learning-path plan engine ────────────────────────────────────────────────
-// Two-layer design: a DETERMINISTIC generator builds the week — real lesson
-// ids, real routes, sensible pacing driven by the mastery model — and the AI
+// Two-layer design: a DETERMINISTIC generator builds the week - real lesson
+// ids, real routes, sensible pacing driven by the mastery model - and the AI
 // layer only decorates it (coach note, weekly theme, per-day rationale,
 // Master-tier deep analysis). The plan a student follows can therefore never
 // point at a hallucinated lesson or a broken route, even if the AI response is
@@ -37,7 +37,7 @@ export interface WeekPlan {
   createdAt: string;
   steps: PlanStep[];
   aiNotes?: AiPlanNotes;
-  /** Era the week was built around — lets us notice when it stops being the weakest. */
+  /** Era the week was built around - lets us notice when it stops being the weakest. */
   focusEraId?: EraId;
   /** Study days scheduled (3–7), sized to the learner's real rhythm. */
   days?: number;
@@ -48,7 +48,7 @@ export interface WeekPlan {
   modeReason?: string;
 }
 
-/** Route for a step — every kind maps to a real app destination. */
+/** Route for a step - every kind maps to a real app destination. */
 export function stepRoute(step: PlanStep): string {
   switch (step.kind) {
     case 'lesson': return `/eras/${step.eraId}/lessons/${step.lessonId}`;
@@ -120,7 +120,7 @@ function buildCandidates(mastery: MasterySnapshot, signals: LearnerSignals, less
       break;
     case 'retention':
       // Read but not retained: retrieval practice first, and only a little new
-      // material — another lesson is not what is missing here.
+      // material - another lesson is not what is missing here.
       push(flashcards()); push(smartQuiz());
       if (eraQuizWorthwhile) push(eraQuiz());
       push(lesson()); push(flashcards()); push(smartQuiz());
@@ -134,7 +134,7 @@ function buildCandidates(mastery: MasterySnapshot, signals: LearnerSignals, less
       break;
   }
 
-  // One immersive day so the week is not all reading and testing — but only
+  // One immersive day so the week is not all reading and testing - but only
   // when there is room for it.
   if (signals.mode !== 'balanced' && signals.studyDays >= 5) push(immersive());
 
@@ -159,7 +159,7 @@ export function generateWeekPlan(
   uncompletedByEra: (eraId: EraId) => LessonRef[],
 ): WeekPlan {
   const byWeakness = [...mastery.eras].sort((a, b) => a.mastery - b.mastery);
-  // Focus era first, then broaden by weakness — one flat pool, so the week
+  // Focus era first, then broaden by weakness - one flat pool, so the week
   // keeps finding real lessons instead of quietly running dry.
   const order = [
     ...mastery.eras.filter(e => e.eraId === signals.focusEraId),
@@ -197,7 +197,7 @@ export function generateWeekPlan(
     onThisDay += 1;
   }
 
-  // The closing measurement is never trimmed — it goes on its own day when
+  // The closing measurement is never trimmed - it goes on its own day when
   // there is room, otherwise onto the last day of the week.
   const lastDay = steps.length > 0 ? steps[steps.length - 1].day : 1;
   const closingDay = lastDay < maxDays && steps.length > 0 ? lastDay + 1 : lastDay;
@@ -224,7 +224,7 @@ export interface PlanHealth {
   ageDays: number;
   doneCount: number;
   totalCount: number;
-  /** Era the plan targets — recovered from the steps for plans saved earlier. */
+  /** Era the plan targets - recovered from the steps for plans saved earlier. */
   focusEraId: EraId | null;
   /** Where the focus has moved to, when it has. */
   currentFocusEraId: EraId;
@@ -269,7 +269,7 @@ const KIND_LABEL: Record<StepKind, string> = {
 
 const MODE_BRIEF: Record<FocusMode, string> = {
   coverage: 'The week is weighted towards new lessons because most of the focus era is still unread.',
-  retention: 'The week is weighted towards retrieval practice — flashcards and quizzes — because the material has been read but is not being recalled. Do NOT tell them to read more.',
+  retention: 'The week is weighted towards retrieval practice - flashcards and quizzes - because the material has been read but is not being recalled. Do NOT tell them to read more.',
   balanced: 'Reading and recall are roughly in step, so the week alternates between the two.',
 };
 
@@ -288,18 +288,18 @@ export function buildPlanNotesPrompt(
   const stepLines = plan.steps
     .map(s => {
       const lesson = s.lessonId ? LESSONS.find(l => l.id === s.lessonId) : undefined;
-      return `- day ${s.day}: ${KIND_LABEL[s.kind]}${lesson ? ` — "${lesson.title}"` : s.eraId ? ` (${eraName(s.eraId)})` : ''} (${s.minutes} min)`;
+      return `- day ${s.day}: ${KIND_LABEL[s.kind]}${lesson ? ` - "${lesson.title}"` : s.eraId ? ` (${eraName(s.eraId)})` : ''} (${s.minutes} min)`;
     })
     .join('\n');
-  return `OUTPUT LANGUAGE: ${langName}. Every string you produce — weekTheme, coachNote, every dayNote${master ? ', deepAnalysis' : ''} — MUST be written in natural, idiomatic ${langName}. This applies even though this prompt and the data below are in English.
+  return `OUTPUT LANGUAGE: ${langName}. Every string you produce - weekTheme, coachNote, every dayNote${master ? ', deepAnalysis' : ''} - MUST be written in natural, idiomatic ${langName}. This applies even though this prompt and the data below are in English.
 
-You are Clio, an expert history mentor. A student's week of study has already been scheduled by the app. Your job is ONLY to motivate and explain it — do not propose different activities.
+You are Clio, an expert history mentor. A student's week of study has already been scheduled by the app. Your job is ONLY to motivate and explain it - do not propose different activities.
 
 STUDENT MASTERY:
 ${masteryLines}
 Overall: ${mastery.overall}%. Streak: ${mastery.streak} days.
 ${signals ? `
-HOW THIS STUDENT ACTUALLY STUDIES (measured, not estimated — use these numbers, do not invent others):
+HOW THIS STUDENT ACTUALLY STUDIES (measured, not estimated - use these numbers, do not invent others):
 - Studied on ${signals.activeDaysLast14} of the last 14 days.
 - Typical session: ${signals.fresh ? 'no sessions recorded yet' : `about ${signals.medianSessionMinutes} minutes`}.
 - ${signals.daysSinceActivity === null ? 'No activity recorded yet.' : `Last active ${signals.daysSinceActivity} day(s) ago.`}
@@ -314,9 +314,9 @@ Produce:
 - weekTheme: a 3–6 word motto for this week's focus.
 - coachNote: 2–3 sentences: why this week targets what it targets, tied to their actual numbers.
 - dayNotes: for each scheduled day, ONE short sentence of rationale or a concrete tip for that day's activity.${master ? `
-- deepAnalysis: a paragraph (4–5 sentences) reading the pattern in their mastery data — which signal lags (coverage vs quizzes vs adaptive accuracy), what that says about how they study${signals ? ', how their measured study cadence above reinforces or fights that pattern' : ''}, and the single highest-leverage habit change.` : ''}
+- deepAnalysis: a paragraph (4–5 sentences) reading the pattern in their mastery data - which signal lags (coverage vs quizzes vs adaptive accuracy), what that says about how they study${signals ? ', how their measured study cadence above reinforces or fights that pattern' : ''}, and the single highest-leverage habit change.` : ''}
 
-FINAL LANGUAGE CHECK: every JSON string value must be in ${langName} — rewrite any that is not before answering. Plain text only, no markdown. Respond ONLY with JSON, no fences:
+FINAL LANGUAGE CHECK: every JSON string value must be in ${langName} - rewrite any that is not before answering. Plain text only, no markdown. Respond ONLY with JSON, no fences:
 { "weekTheme": "...", "coachNote": "...", "dayNotes": { "1": "...", "2": "..." }${master ? ', "deepAnalysis": "..."' : ''} }`;
 }
 

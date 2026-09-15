@@ -63,7 +63,7 @@ describe('friend activity log', () => {
 });
 
 describe('simulated friend activity', () => {
-  it('is deterministic — the same friend yields the same feed twice', () => {
+  it('is deterministic - the same friend yields the same feed twice', () => {
     // `now` is pinned: the feed places today's entries inside the part of the
     // day that has elapsed, so it is a function of the clock as well as the
     // seed. Passing the same instant is what makes "same input, same output"
@@ -122,7 +122,7 @@ describe('simulated friend activity', () => {
     expect(busy.length).toBeGreaterThan(idle.length);
   });
 
-  it('only claims a streak for today — a streak is a running total', () => {
+  it('only claims a streak for today - a streak is a running total', () => {
     const streaks = simulateFriendActivity(friend(), 14).filter(e => e.type === 'friend_streak');
     expect(streaks.length).toBeLessThanOrEqual(1);
   });

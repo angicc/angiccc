@@ -10,7 +10,7 @@ export function Logo({ className, iconOnly = false }: { className?: string; icon
         <rect x="21" y="4" width="5" height="20" rx="2.5" fill="hsl(var(--primary))" fillOpacity="0.7" />
         {/* Timeline crossbar */}
         <line x1="7" y1="14" x2="21" y2="14" stroke="hsl(var(--primary))" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.35" />
-        {/* Era dots — amber (ancient), primary (middle), emerald (early-modern), rose (modern) */}
+        {/* Era dots - amber (ancient), primary (middle), emerald (early-modern), rose (modern) */}
         <circle cx="9.5" cy="14" r="2.2" fill="#f59e0b" />
         <circle cx="14" cy="14" r="2.2" fill="hsl(var(--primary))" />
         <circle cx="18.5" cy="14" r="2.2" fill="#10b981" />

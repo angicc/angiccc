@@ -9,7 +9,7 @@ interface Props { title?: string; description?: string; requiredPlan?: 'beginner
 /**
  * The paywall card, on 21 screens.
  *
- * Everything visible here used to be an English string literal — the title, the
+ * Everything visible here used to be an English string literal - the title, the
  * fallback description, the "Upgrade" button and the plan label. Callers that
  * passed a translated title and description therefore still rendered an English
  * button beneath them, and the ones that passed neither were English top to

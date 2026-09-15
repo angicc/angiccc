@@ -2,9 +2,9 @@
 // Computes a 0–100 mastery score for each era from three independent signals,
 // re-weighted when a signal is missing so a new student is never punished for
 // data they can't have yet:
-//   • lesson coverage (40%) — share of the era's lessons completed
-//   • era quiz score  (35%) — best score on the era's summative quiz
-//   • adaptive accuracy (25%) — per-era accuracy across recent Smart Quiz runs
+//   • lesson coverage (40%) - share of the era's lessons completed
+//   • era quiz score  (35%) - best score on the era's summative quiz
+//   • adaptive accuracy (25%) - per-era accuracy across recent Smart Quiz runs
 // Pure functions over existing stores; nothing here is cached or persisted, so
 // the numbers can never drift from the underlying progress data.
 import { loadProgress } from '@/features/progress/progressStore';
@@ -53,7 +53,7 @@ export function computeMastery(userId: string): MasterySnapshot {
     // Quiz + adaptive only count once the learner has actually STARTED the era
     // (≥1 completed lesson). Without this gate, a high Smart-Quiz accuracy could
     // show an era the learner hasn't touched (0 lessons) as more "mastered" than
-    // one they've studied — the counterintuitive glitch on the Study Plan card.
+    // one they've studied - the counterintuitive glitch on the Study Plan card.
     const started = lessonsDone >= 1;
     const quizPct = started && typeof prog.quizScores[era.quizId] === 'number' ? prog.quizScores[era.quizId] : null;
     const acc = eraAcc[era.id];

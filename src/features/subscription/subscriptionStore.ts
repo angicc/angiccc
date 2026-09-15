@@ -38,7 +38,7 @@ function resetIfNeeded(s: UserSubscription): boolean {
 export const canAccessLesson = (tier: SubscriptionTier, order: number) =>
   tier === 'free' || tier === 'beginner' ? order <= 1 : true;
 /**
- * Whether this plan may spend another AI message, and — when it may not — the
+ * Whether this plan may spend another AI message, and - when it may not - the
  * translation key that says why.
  *
  * It returns a key rather than a sentence on purpose. These reasons used to be

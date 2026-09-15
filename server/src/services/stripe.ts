@@ -1,6 +1,6 @@
 // ─── Minimal Stripe client ────────────────────────────────────────────────────
 // Talks to the Stripe REST API directly (form-encoded over HTTPS) and verifies
-// webhook signatures with node:crypto — no SDK dependency, nothing to install,
+// webhook signatures with node:crypto - no SDK dependency, nothing to install,
 // and the full request surface stays visible in this one file. The endpoints
 // used (Checkout Sessions, Billing Portal, Subscriptions) are stable v1 APIs.
 import { createHmac, timingSafeEqual } from 'node:crypto';
