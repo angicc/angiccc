@@ -6,6 +6,8 @@ type MT = Partial<Record<ContentLang, string>>;
 
 // ── Territory polygon label translations ─────────────────────────────────────
 export const POLY_LABEL_I18N: Record<string, MT> = {
+  'French Empire (1812)': { es: 'Imperio francés (1812)', ru: 'Французская империя (1812)', mk: 'Француската империја (1812)', de: 'Französisches Kaiserreich (1812)', fr: 'Empire français (1812)' },
+  'French Satellite States (1812)': { es: 'Estados satélite franceses (1812)', ru: 'Французские сателлитные государства (1812)', mk: 'Француски сателитски држави (1812)', de: 'Französische Satellitenstaaten (1812)', fr: 'États satellites français (1812)' },
   // Entity names emitted by scripts/fetch_territory_polygons.py into
   // public/data/map-territories/*.json - the layer the map actually draws.
   // These went untranslated because the i18n guard only read the TS polygons.
