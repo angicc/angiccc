@@ -6,7 +6,7 @@
 // gold bar on the left edge, and hovering an item shifts its text toward gold.
 import { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film, Users, Scale, Globe2, Hourglass, Wand2, Route, Swords } from 'lucide-react';
+import { LayoutDashboard, BookOpen, ScrollText, MessageSquare, User, LogOut, Crown, Trophy, Layers, PenLine, BarChart2, Flame, Sparkles, HelpCircle, AlertTriangle, FileEdit, Film, Users, Scale, Globe2, Hourglass, Wand2, Route, Swords, Compass } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -37,6 +37,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/eras',         key: 'nav_eras',         icon: BookOpen },
       { to: '/timeline',     key: 'nav_timeline',     icon: ScrollText },
       { to: '/timeline-map', key: 'nav_timeline_map', icon: Globe2 },
+      { to: '/atlas',        key: 'nav_atlas',        icon: Compass },
     ],
   },
   {

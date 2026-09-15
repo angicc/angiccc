@@ -29,6 +29,8 @@ import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { resolveBannerCandidates } from '@/features/content/lessonBannerAssets';
 import { isGifBanner, resolveGifPageBanner } from '@/features/content/lessonGifBanners';
+import { decisionPointFor } from '@/features/atlas/decisionPoints';
+import { DecisionPointCard } from '@/features/atlas/DecisionPointCard';
 import { EraBannerBackdrop } from '@/components/shared/EraBannerBackdrop';
 import { useStudyTimer } from '@/hooks/useStudyTimer';
 
@@ -423,6 +425,12 @@ export default function LessonPage() {
                   <div className="text-muted-foreground leading-relaxed">
                     {s.body.split('\n\n').map((p, j) => <p key={j} className="mb-4 text-[0.95rem]">{p}</p>)}
                   </div>
+                  {/* A decision point sits after the section that sets it up, so
+                      the reader commits before the next section gives it away. */}
+                  {(() => {
+                    const dp = decisionPointFor(lesson.id, i);
+                    return dp ? <DecisionPointCard point={dp} /> : null;
+                  })()}
                 </motion.div>
               );
             })}

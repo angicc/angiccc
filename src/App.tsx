@@ -41,6 +41,7 @@ const VideoReviewPage = lazy(() => import('@/pages/VideoReviewPage'));
 const FriendsPage = lazy(() => import('@/pages/FriendsPage'));
 const DebatePhilosopherPage = lazy(() => import('@/pages/DebatePhilosopherPage'));
 const TimelineMapPage = lazy(() => import('@/pages/TimelineMapPage'));
+const AtlasPage = lazy(() => import('@/pages/AtlasPage'));
 const ChronosCrisisPage = lazy(() => import('@/pages/ChronosCrisisPage'));
 const ImperiumPage = lazy(() => import('@/pages/ImperiumPage'));
 const StudioPage = lazy(() => import('@/pages/StudioPage'));
@@ -87,6 +88,7 @@ function AppRoutes() {
       <Route path="/friends" element={<ProtectedRoute><FriendsPage /></ProtectedRoute>} />
       <Route path="/debate" element={<ProtectedRoute><DebatePhilosopherPage /></ProtectedRoute>} />
       <Route path="/timeline-map" element={<ProtectedRoute><TimelineMapPage /></ProtectedRoute>} />
+      <Route path="/atlas" element={<ProtectedRoute><AtlasPage /></ProtectedRoute>} />
       <Route path="/crisis" element={<ProtectedRoute><ChronosCrisisPage /></ProtectedRoute>} />
       <Route path="/imperium" element={<ProtectedRoute><ImperiumPage /></ProtectedRoute>} />
       <Route path="/studio" element={<ProtectedRoute><StudioPage /></ProtectedRoute>} />

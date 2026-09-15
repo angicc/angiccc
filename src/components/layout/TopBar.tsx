@@ -24,6 +24,7 @@ import { LANGUAGE_LABELS, type Language, type TranslationKeys } from '@/i18n/tra
 // keep more specific prefixes above shorter ones.
 const PAGE_TITLES: [string, keyof TranslationKeys][] = [
   ['/timeline-map', 'nav_timeline_map'],
+  ['/atlas', 'nav_atlas'],
   ['/dashboard',    'nav_dashboard'],
   ['/eras',         'nav_eras'],
   ['/timeline',     'nav_timeline'],
