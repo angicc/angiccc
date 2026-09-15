@@ -9,11 +9,11 @@
 #   1. Push this file (it is already on the branch).
 #   2. render.com → New → Blueprint → pick this repository.
 #   3. Set CORS_ORIGIN to your Netlify URL, e.g. https://historify.netlify.app
-#      (comma-separated if you have more than one — no trailing slash).
+#      (comma-separated if you have more than one - no trailing slash).
 #   4. Deploy. Copy the service URL Render gives you.
 #   5. In Netlify, set VITE_API_URL to that URL and redeploy the front end.
 #
-# The server refuses to start on a weak configuration — see
+# The server refuses to start on a weak configuration - see
 # server/src/security/bootChecks.ts. `generateValue: true` produces a random
 # secret that satisfies it; typing your own short one will (correctly) fail the
 # boot rather than silently run on a guessable signing key.
@@ -34,7 +34,7 @@ services:
     rootDir: server
     # `prisma db push` rather than `migrate deploy`: this schema has no
     # migration history, so push is the honest command for it. Swap to
-    # `prisma migrate deploy` the moment you start generating migrations —
+    # `prisma migrate deploy` the moment you start generating migrations -
     # push is destructive to columns it does not know about.
     buildCommand: npm ci && npx prisma generate && npx prisma db push && npm run build
     startCommand: npm run start
@@ -61,3 +61,19 @@ services:
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
+      # One Stripe Price id per paid plan. Checkout answers 503 without them,
+      # so a deploy that has the secret key but not these looks configured and
+      # still cannot take money.
+      - key: STRIPE_PRICE_BEGINNER
+        sync: false
+      - key: STRIPE_PRICE_PRO
+        sync: false
+      - key: STRIPE_PRICE_MASTER
+        sync: false
+      # Where Stripe sends the customer back after paying. Without it the
+      # success and cancel URLs point at localhost.
+      - key: FRONTEND_URL
+        sync: false
+      # Free-trial length in days. Clamped to 0-14 by the server.
+      - key: TRIAL_DAYS
+        value: "5"
