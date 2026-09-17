@@ -15,11 +15,7 @@ export type Philosopher = {
   fallbackImageUrl?: string;
   knownPositions: string[];
   starterArguments: string[];
-  starterArgumentsI18n?: {
-    es?: string[];
-    ru?: string[];
-    mk?: string[];
-  };
+  starterArgumentsI18n?: Partial<Record<'es' | 'ru' | 'mk' | 'de' | 'fr', string[]>>;
   systemPrompt: string;
 };
 
@@ -60,6 +56,16 @@ export const PHILOSOPHERS: Philosopher[] = [
         'Крутите хиерархии го потиснуваат човечкиот потенцијал наместо да го развиваат',
         'Ритуалната пристојност без внатрешно убедување е само лицемерство',
         'Влада која зависи само од добродетелта на владетелот е по природа нестабилна',
+      ],
+      de: [
+        'Starre Hierarchien unterdrücken das menschliche Potenzial, statt es zu entfalten',
+        'Rituelle Schicklichkeit ohne innere Überzeugung ist bloße Heuchelei',
+        'Eine Regierung, die allein von der Tugend des Herrschers abhängt, ist von Natur aus instabil',
+      ],
+      fr: [
+        'Des hiérarchies rigides étouffent le potentiel humain au lieu de le cultiver',
+        'La bienséance rituelle sans conviction intérieure n\'est qu\'hypocrisie',
+        'Un gouvernement qui repose sur la seule vertu du souverain est instable par nature',
       ],
     },
     systemPrompt: `You are Confucius (Kong Qiu, 551–479 BCE), the great Chinese philosopher and teacher. You speak with measured wisdom, use analogies, and reference virtue, ritual, and the Way (Dao) frequently. You believe deeply in the transformative power of education, ritual propriety (li), and benevolence (ren).
@@ -112,6 +118,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human makes
         'Ако умот и телото се сосема различни, како воопшто комуницираат?',
         'Твојот онтолошки аргумент докажува само дека можеме да замислиме совршено суштество, не дека навистина постои',
       ],
+      de: [
+        'Das Cogito ist zirkulär - es setzt ein denkendes "Ich" voraus, um die Existenz eines denkenden "Ich" zu beweisen',
+        'Wenn Geist und Körper völlig verschieden sind, wie wirken sie überhaupt aufeinander?',
+        'Dein ontologischer Gottesbeweis zeigt nur, dass wir ein vollkommenes Wesen denken können, nicht dass eines existiert',
+      ],
+      fr: [
+        'Le cogito est circulaire : il suppose un "je" pensant pour prouver l’existence d’un "je" pensant',
+        'Si l’âme et le corps sont entièrement distincts, comment interagissent-ils ?',
+        'Ton argument ontologique prouve seulement que nous pouvons concevoir un être parfait, non qu’il existe',
+      ],
     },
     systemPrompt: `You are René Descartes (1596–1650), French mathematician and father of modern philosophy. You speak with calm, methodical precision. You are confident in reason's power and the mathematical method applied to philosophy.
 
@@ -162,6 +178,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human succe
         'Ако доблеста е знаење, зошто образованите луѓе постојано прават зло?',
         'Твојот метод само ги уништува позициите - никогаш не воспоставува што е вистински добро',
         'Тврдењето дека не знаеш ништо додека постојано поучуваш е само по себе противречност',
+      ],
+      de: [
+        'Wenn Tugend Wissen ist, warum tun wissende Menschen beständig Böses?',
+        'Deine Methode zerstört nur Positionen - sie begründet nie, was wirklich gut ist',
+        'Nichts zu wissen zu behaupten und zugleich unablässig zu lehren, widerspricht sich selbst',
+      ],
+      fr: [
+        'Si la vertu est savoir, pourquoi des gens savants font-ils constamment le mal ?',
+        'Ta méthode ne fait que détruire des positions : elle n’établit jamais ce qui est vraiment bien',
+        'Prétendre ne rien savoir tout en enseignant sans cesse se contredit',
       ],
     },
     systemPrompt: `You are Socrates of Athens (470–399 BCE), the great gadfly of democracy. You debate through relentless questioning - the elenchus - exposing contradictions. You have never written anything down; you speak in conversation alone.
@@ -214,6 +240,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human uses 
         'Филозофите-кралеви немаа стимул да го напуштат светот на контемплација за да управуваат',
         'Твојата алегорија за пештерата претпоставува дека луѓето во неа не можат сами да ја откријат реалноста',
       ],
+      de: [
+        'Wenn die Ideen vollkommene Urbilder sind, was erklärt dann die Idee der Ideen - das Problem des dritten Menschen?',
+        'Philosophenkönige hätten keinen Anreiz, die Welt der Betrachtung zum Regieren zu verlassen',
+        'Dein Höhlengleichnis setzt voraus, dass die Gefesselten die Wirklichkeit nicht selbst durchschauen können',
+      ],
+      fr: [
+        'Si les Formes sont des originaux parfaits, qu’est-ce qui explique la Forme des Formes - le problème du troisième homme ?',
+        'Les rois-philosophes n’auraient aucune raison de quitter la contemplation pour gouverner',
+        'Ton allégorie de la caverne suppose que les prisonniers ne peuvent découvrir seuls la réalité',
+      ],
     },
     systemPrompt: `You are Plato (428–348 BCE), Athenian philosopher, student of Socrates, and founder of the Academy. You write in dialogues, believe in transcendent Forms, and argue for the philosopher-king.
 
@@ -262,8 +298,18 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces an argumen
       ],
       mk: [
         'Твојата „златна средина" не нуди принципиелен начин за одредување на средината во конкретна ситуација',
-        'Ако полисот е природен, kako го оправдуваш ропството инаку освен како погодна фикција?',
+        'Ако полисот е природен, како го оправдуваш ропството инаку освен како погодна фикција?',
         'Твоите четири причини тивко воведуваат телеологија во природата без оправдување',
+      ],
+      de: [
+        'Deine "goldene Mitte" gibt kein begründetes Verfahren an, die Mitte in einer konkreten Lage zu finden',
+        'Wenn die Polis natürlich ist, wie rechtfertigst du die Sklaverei als etwas anderes als eine bequeme Fiktion?',
+        'Deine vier Ursachen schmuggeln Teleologie in die Natur, ohne sie zu begründen',
+      ],
+      fr: [
+        'Ton "juste milieu" ne donne aucun moyen fondé de situer le milieu dans une situation donnée',
+        'Si la cité est naturelle, comment justifies-tu l’esclavage autrement que comme une fiction commode ?',
+        'Tes quatre causes introduisent subrepticement la finalité dans la nature, sans la justifier',
       ],
     },
     systemPrompt: `You are Aristotle (384–322 BCE), the Stagirite - student of Plato, tutor of Alexander the Great, founder of the Lyceum. You are encyclopedic, empirical, and confident in reason's ability to systematize all knowledge.
@@ -316,6 +362,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human dismantles Aristotl
         'Натчовекот е толку нејасен концепт що може да оправда секоја злосторба кога ја присвои власта',
         'Прогласувањето на Бога за мртов не го решава проблемот на смислата - само го влошува',
       ],
+      de: [
+        'Wenn alle Werte vom Willen zur Macht geschaffen sind, hat deine eigene Philosophie keine Autorität über andere',
+        'Der Übermensch ist ein so vager Begriff, dass er jede Gräueltat rechtfertigen kann, sobald die Macht ihn vereinnahmt',
+        'Gott für tot zu erklären löst das Sinnproblem nicht - es verschärft es nur',
+      ],
+      fr: [
+        'Si toutes les valeurs sont créées par la volonté de puissance, ta propre philosophie n’a aucune autorité sur autrui',
+        'Le surhomme est une notion si vague qu’elle peut justifier n’importe quelle atrocité une fois récupérée par le pouvoir',
+        'Déclarer Dieu mort ne résout pas le problème du sens : cela ne fait que l’aggraver',
+      ],
     },
     systemPrompt: `You are Friedrich Nietzsche (1844–1900), the hammer of morality and prophet of the Übermensch. You write with fire, aphorisms, and a hammer. You are provocative, radical, and deeply earnest beneath the bravado.
 
@@ -367,6 +423,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human catches you in a ge
         'Ноуменалниот свет е дефиниран како несознатлив, а сепак тврдиш дека знаеш дека постои - противречност',
         'Засновувањето на моралот исклучиво на разумот ги игнорира емоционалните основи кои ја прават етиката можна',
       ],
+      de: [
+        'Der kategorische Imperativ gibt widersprüchliche Antworten, wenn Pflichten kollidieren - etwa bei der Lüge, die ein Leben rettet',
+        'Die noumenale Welt gilt als unerkennbar, und doch behauptest du zu wissen, dass sie existiert - ein Widerspruch',
+        'Moral allein auf Vernunft zu gründen übergeht die emotionalen Grundlagen, die Ethik überhaupt möglich machen',
+      ],
+      fr: [
+        'L’impératif catégorique donne des réponses contradictoires quand les devoirs s’opposent - mentir pour sauver une vie, par exemple',
+        'Le monde nouménal est défini comme inconnaissable, et pourtant tu prétends savoir qu’il existe : c’est une contradiction',
+        'Fonder la morale sur la seule raison ignore les bases affectives qui rendent l’éthique possible',
+      ],
     },
     systemPrompt: `You are Immanuel Kant (1724–1804), the philosopher of Königsberg who achieved the "Copernican Revolution" in philosophy. You are systematic, precise, and uncompromising in your demands for rational consistency.
 
@@ -417,6 +483,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human constructs a truly 
         'Твојата дијалектика може да оправда буквално сè со означување на противречностите како „неопходни моменти"',
         'Ако историјата нужно се движи кон слободата, како ги објаснуваш историските катастрофи и назадувања?',
         'Идејата дека Државата е отелотворување на Апсолутниот Дух опасно ги подредува индивидуалните права на политичката моќ',
+      ],
+      de: [
+        'Deine Dialektik lässt sich benutzen, um buchstäblich alles zu rechtfertigen, indem man Widersprüche zu "notwendigen Momenten" erklärt',
+        'Wenn die Geschichte notwendig auf Freiheit zuläuft, wie erklärst du historische Katastrophen und Rückschritte?',
+        'Der Gedanke, der Staat sei die Verkörperung des absoluten Geistes, ordnet individuelle Rechte gefährlich der politischen Macht unter',
+      ],
+      fr: [
+        'Ta dialectique permet de justifier littéralement n’importe quoi en qualifiant les contradictions de "moments nécessaires"',
+        'Si l’histoire va nécessairement vers la liberté, comment expliques-tu les catastrophes et les reculs ?',
+        'L’idée que l’État incarne l’Esprit absolu subordonne dangereusement les droits individuels au pouvoir politique',
       ],
     },
     systemPrompt: `You are Georg Wilhelm Friedrich Hegel (1770–1831), the supreme architect of German Idealism and the philosopher of history, spirit, and dialectical development. You are bold, systematic, and utterly convinced that reason is not merely a tool for understanding reality but is the very substance of reality itself.
@@ -470,6 +546,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end of a response if the human produ
         'Твојот материјалистички детерминизам не остава простор за вистинска човечка слобода на волјата или морален избор',
         'Капитализмот демонстративно го подигна животниот стандард на милијарди - твоето предвидување за неговиот колапс е погрешно веќе 170 години',
       ],
+      de: [
+        'Jeder Versuch des 20. Jahrhunderts, den Kommunismus umzusetzen, brachte Totalitarismus hervor, nicht Befreiung - deine Theorie ist im Kern fehlerhaft',
+        'Dein materialistischer Determinismus lässt keinen Raum für echte menschliche Handlungsfreiheit oder moralische Wahl',
+        'Der Kapitalismus hat den Lebensstandard von Milliarden nachweislich gehoben - deine Prognose seines Zusammenbruchs ist seit 170 Jahren falsch',
+      ],
+      fr: [
+        'Chaque tentative du XXe siècle d’instaurer le communisme a produit le totalitarisme, non la libération : ta théorie est fatalement viciée',
+        'Ton déterminisme matérialiste ne laisse aucune place à une véritable liberté d’agir ni au choix moral',
+        'Le capitalisme a manifestement élevé le niveau de vie de milliards de personnes : ta prédiction de son effondrement est fausse depuis 170 ans',
+      ],
     },
     systemPrompt: `You are Karl Marx (1818–1883), German philosopher, economist, historian, and revolutionary. You are the author of Capital and the Communist Manifesto. You are intellectually ferocious, deeply versed in Hegel (whom you stood on his head), classical economics (Smith, Ricardo), and the history of class struggle. You speak with the confidence of someone who believes they have finally discovered the scientific laws of social development.
 
@@ -522,6 +608,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human demonstrates an irr
         'Општата волја може да се користи за тоталитарно потиснување на малцинствата во името на колективот',
         'Романтизирањето на природната невиност е самопротивречно - ја користеше истата цивилизација која ја осудуваш за да ја напишеш и објавиш својата критика',
       ],
+      de: [
+        'Der "edle Wilde" ist ein romantischer Mythos - die Anthropologie zeigt, dass vorzivilisatorisches Leben oft gewaltsam und brutal war',
+        'Der Gemeinwille lässt sich benutzen, um die totalitäre Unterdrückung von Minderheiten im Namen des Ganzen zu rechtfertigen',
+        'Natürliche Unschuld zu romantisieren widerspricht sich selbst - du hast genau die Zivilisation genutzt, die du verurteilst, um deine Kritik zu schreiben und zu drucken',
+      ],
+      fr: [
+        'Le "bon sauvage" est un mythe romantique : l’anthropologie montre que la vie avant la civilisation était souvent violente et brutale',
+        'La volonté générale peut servir à justifier l’écrasement totalitaire des minorités au nom du collectif',
+        'Idéaliser l’innocence naturelle se contredit : tu as utilisé la civilisation même que tu condamnes pour écrire et publier ta critique',
+      ],
     },
     systemPrompt: `You are Jean-Jacques Rousseau (1712–1778), the Genevan-French philosopher, writer, and political theorist who transformed Enlightenment thought with your passionate defense of natural goodness and your fierce critique of civilization's corrupting influence. You are emotionally intense, deeply sincere, often self-contradictory by your own admission, and utterly convinced that modern society has gone profoundly wrong.
 
@@ -573,6 +669,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human demonstrates - with
         'Сатирата и духовитоста, колку и да се блескави, не градат - само уриваат; не оставаш ништо на местото на она што го исмеваш',
         'Твојата толеранција имаше граници - бил нетолерантен кон самата нетолеранција, и жестоко презирлив кон Русо и другите со кои не се сложувал',
       ],
+      de: [
+        'Dein Deismus ist ein instabiles Zwischenhaus - greift Gott nicht ein, leistet der Gottesbegriff philosophisch nichts',
+        'Satire und Witz, so brillant sie sind, bauen nichts auf - sie zerstören nur; du setzt nichts an die Stelle dessen, was du verspottest',
+        'Deine Toleranz hatte Grenzen - gegen die Intoleranz warst du intolerant, und Rousseau und andere Andersdenkende hast du schroff abgetan',
+      ],
+      fr: [
+        'Ton déisme est un entre-deux instable : si Dieu n’intervient pas, la notion de Dieu ne fait aucun travail philosophique',
+        'La satire et l’esprit, si brillants soient-ils, ne construisent rien : ils ne font que détruire ; tu ne mets rien à la place de ce que tu railles',
+        'Ta tolérance avait des limites : tu étais intolérant envers l’intolérance, et fort méprisant envers Rousseau et ceux qui te contredisaient',
+      ],
     },
     systemPrompt: `You are Voltaire (François-Marie Arouet, 1694–1778), the supreme wit of the French Enlightenment, polemicist, playwright, historian, and the most widely read philosopher of the 18th century. You are razor-sharp, irreverent, deeply committed to reason and tolerance, and you have weaponized irony and satire into philosophical instruments of the first order. Your battle cry is "Écrasez l'infâme!" - Crush the infamous thing (fanaticism, superstition, religious tyranny).
 
@@ -623,6 +729,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a genuinel
         'Твојата теорија на трудот за сопственоста нема принципиелна горна граница - може да оправда неограничено акумулирање и колонијална кражба на земјиште',
         'Ако сите идеи доаѓаат од искуство, како ги објаснуваш логичките и математичките вистини кои изгледа дека го надминуваат искуството?',
         '„Согласноста на управуваните" е фиктивна за мнозинството луѓе низ историјата - молчливата согласност не е вистинска согласност',
+      ],
+      de: [
+        'Deine Arbeitstheorie des Eigentums kennt keine begründete Obergrenze - sie kann unbegrenzte Anhäufung und koloniale Enteignung rechtfertigen',
+        'Wenn alle Ideen aus Erfahrung stammen, wie erklärst du logische und mathematische Wahrheiten, die Erfahrung zu übersteigen scheinen?',
+        'Die "Zustimmung der Regierten" ist für die meisten Menschen der Geschichte eine Fiktion - stillschweigende Zustimmung ist keine echte Zustimmung',
+      ],
+      fr: [
+        'Ta théorie de la propriété par le travail n’a aucune limite fondée : elle peut justifier l’accumulation illimitée et la dépossession coloniale',
+        'Si toutes les idées viennent de l’expérience, comment rends-tu compte des vérités logiques et mathématiques qui semblent la dépasser ?',
+        'Le "consentement des gouvernés" est une fiction pour la plupart des gens à travers l’histoire : un consentement tacite n’est pas un vrai consentement',
       ],
     },
     systemPrompt: `You are John Locke (1632–1704), English physician and philosopher, the father of classical liberalism and one of the most influential political thinkers in the history of Western thought. You are measured, empirical, deeply committed to individual rights, religious toleration, and constitutional government. Your ideas provided the intellectual foundation for the American Revolution, the Declaration of Independence, and modern liberal democracy.
@@ -676,6 +792,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human demonstrates an irr
         'Твојот песимистичен поглед на човечката природа ги игнорира вековите на соработка, алтруизам и морален развој',
         'Ако општествениот договор му дава на суверенот апсолутна моќ, граѓаните немаат правен лек кога суверенот е неправеден',
       ],
+      de: [
+        'Ein absoluter Souverän ohne Kontrolle ist ebenso gefährlich wie der Naturzustand - die Tyrannei ist ihr eigener Krieg aller gegen alle',
+        'Deine pessimistische Sicht der menschlichen Natur übergeht Jahrhunderte der Zusammenarbeit, des Altruismus und der moralischen Entwicklung',
+        'Wenn der Gesellschaftsvertrag dem Souverän absolute Macht gibt, haben die Bürger kein Mittel, wenn der Souverän ungerecht ist',
+      ],
+      fr: [
+        'Un souverain absolu sans contrepoids est aussi dangereux que l’état de nature : la tyrannie est sa propre guerre de tous contre tous',
+        'Ta vision pessimiste de la nature humaine ignore des siècles de coopération, d’altruisme et de progrès moral',
+        'Si le contrat social donne au souverain un pouvoir absolu, les citoyens n’ont aucun recours quand il est injuste',
+      ],
     },
     systemPrompt: `You are Thomas Hobbes (1588–1679), English philosopher and the author of Leviathan - the most systematic and uncompromising defense of absolute political sovereignty in the history of political thought. You lived through the English Civil War, witnessed the chaos of regicide and revolution, and drew from that experience the conviction that security and order are the preconditions of all human goods. You are blunt, materialist, geometrically precise in your reasoning, and utterly unsentimental about human nature.
 
@@ -726,6 +852,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human constructs a genuin
         'Твојот скептицизам во врска со индукцијата ја поткопува самата наука - а сепак изгледа дека ги прифаќаш научните заклучоци без двоумење',
         'Ако јазот е само сноп на перцепции, што го врзува снопот заедно и кој ги забележува?',
         'Твојата јаз помеѓу „е" и „треба" ја прави етиката невозможна - ако разумот не може да ја потпре моралноста, ни остануваат само чувство и културна предрасуда',
+      ],
+      de: [
+        'Deine Skepsis gegenüber der Induktion untergräbt die Wissenschaft selbst - und doch nimmst du wissenschaftliche Ergebnisse ohne Zögern an',
+        'Wenn das Selbst nur ein Bündel von Wahrnehmungen ist, was hält das Bündel zusammen und wer bemerkt es?',
+        'Dein Sein-Sollen-Graben macht Ethik unmöglich - kann die Vernunft die Moral nicht begründen, bleibt uns nur Gefühl und kulturelles Vorurteil',
+      ],
+      fr: [
+        'Ton scepticisme sur l’induction sape la science elle-même, et pourtant tu acceptes sans hésiter ses conclusions',
+        'Si le moi n’est qu’un faisceau de perceptions, qu’est-ce qui lie le faisceau et qui fait ce constat ?',
+        'Ton hiatus entre l’être et le devoir-être rend l’éthique impossible : si la raison ne fonde pas la morale, il ne reste que le sentiment et le préjugé culturel',
       ],
     },
     systemPrompt: `You are David Hume (1711–1776), Scottish philosopher, historian, and essayist - arguably the most important philosopher to write in the English language and certainly the most radical empiricist. You are relentlessly analytical, deeply skeptical about the pretensions of reason, and yet personally cheerful and sociable - your philosophical skepticism does not lead you to despair but to a kind of serene naturalistic acceptance. Kant credited you with waking him from his "dogmatic slumber."
@@ -779,6 +915,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a genuinel
         '„Принцот" опишува како да се освои власта, не како добро да се управува - тоа се фундаментално различни проблеми',
         'Историјата покажува дека владетелите кои управувале само со страв - без вистинска легитимност - на крај паднале пред револуцијата',
       ],
+      de: [
+        'Deine Trennung von Politik und Moral legitimiert am Ende Gräueltaten - jeder Tyrann kann seine Grausamkeit "notwendig" nennen',
+        'Der Fürst beschreibt, wie man Macht ergreift, nicht wie man gut regiert - das sind grundverschiedene Probleme',
+        'Die Geschichte zeigt, dass Herrscher, die allein durch Furcht regierten, ohne echte Legitimität, am Ende von Revolutionen gestürzt wurden',
+      ],
+      fr: [
+        'Ta séparation de la politique et de la morale finit par légitimer l’atrocité : tout tyran peut dire sa cruauté "nécessaire"',
+        'Le Prince décrit comment prendre le pouvoir, non comment bien gouverner : ce sont deux problèmes fondamentalement distincts',
+        'L’histoire montre que les princes qui ont gouverné par la seule peur, sans légitimité réelle, ont fini par tomber devant la révolution',
+      ],
     },
     systemPrompt: `You are Niccolò Machiavelli (1469–1527), Florentine statesman, diplomat, historian, and the founder of modern political science. You served the Florentine Republic for fourteen years as secretary and diplomat before being imprisoned, tortured, and exiled when the Medici returned to power. You wrote The Prince in the hope of winning Medici patronage - and in the process produced the most notorious, most misunderstood, and arguably most honest book ever written about political power. You are not an advocate of evil; you are an unsparing analyst of political reality.
 
@@ -830,6 +976,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a compelli
         'Животот на повлекување и мир е совет на очај - вистинскиот човечки процут бара ангажман со светот, не повлекување од него',
         'Твоето елиминирање на стравот од смртта преку атомистичкиот материјализам едноставно тврди она што треба да го докаже - распаѓањето на душата при смртта',
         'Давањето приоритет на личниот мир над правдата и политичкиот ангажман е форма на морален себичност кој ги напушта оние на кои им треба помош',
+      ],
+      de: [
+        'Ein Leben des Rückzugs und der Gelassenheit ist ein Rat der Verzweiflung - wahres menschliches Aufblühen verlangt Beteiligung an der Welt, nicht Flucht vor ihr',
+        'Deine Beseitigung der Todesfurcht durch atomistischen Materialismus behauptet einfach, was sie beweisen müsste - die Auflösung der Seele im Tod',
+        'Persönliche Gelassenheit über Gerechtigkeit und politisches Engagement zu stellen ist eine Form moralischer Selbstsucht, die jene im Stich lässt, die Hilfe brauchen',
+      ],
+      fr: [
+        'Une vie de retrait et de tranquillité est un conseil de désespoir : le véritable épanouissement humain demande de s’engager dans le monde, non de le fuir',
+        'Ta suppression de la peur de la mort par le matérialisme atomiste affirme simplement ce qu’elle devrait prouver : la dissolution de l’âme à la mort',
+        'Faire passer sa tranquillité avant la justice et l’engagement politique est une forme d’égoïsme moral qui abandonne ceux qui ont besoin d’aide',
       ],
     },
     systemPrompt: `You are Epicurus (341–270 BCE), Greek philosopher, founder of the Epicurean school, and one of the most misunderstood thinkers in the history of philosophy. You are not the crude pleasure-seeker your enemies portrayed; you lived simply, ate bread and water, found joy in friendship and philosophical conversation, and taught in your garden (the Kepos) in Athens. You are gentle, warm, deeply concerned with human suffering, and philosophically precise in your analysis of what actually makes life worth living.
@@ -884,6 +1040,16 @@ IMPORTANT: Only add <<CONCEDE>> at the very end if the human produces a genuinel
         '„Медитациите" беа напишани од цар кој имаше огромна моќ да го промени светот - а сепак советуваш внатрешно повлекување наместо системска реформа',
         'Ако сè е управувано со Логос и се случува нужно, моралната пофалба и осуда стануваат некохерентни - никој не заслужува заслуга или одговорност за своите постапки',
       ],
+      de: [
+        'Stoische Annahme des Leidens kann zur Rechtfertigung der Untätigkeit gegenüber einem Unrecht werden, dem man sich aktiv widersetzen sollte',
+        'Die Selbstbetrachtungen schrieb ein Kaiser mit ungeheurer Macht, die Welt zu ändern - und doch rätst du zum inneren Rückzug statt zur systemischen Reform',
+        'Wenn alles vom Logos gelenkt wird und notwendig geschieht, werden moralisches Lob und Tadel unverständlich - niemand verdient Anerkennung oder Verantwortung für sein Handeln',
+      ],
+      fr: [
+        'L’acceptation stoïcienne de la souffrance peut devenir une justification de la passivité devant une injustice qu’il faudrait activement combattre',
+        'Les Pensées ont été écrites par un empereur qui avait un pouvoir immense de changer le monde, et pourtant tu conseilles le retrait intérieur plutôt que la réforme systémique',
+        'Si tout est régi par le Logos et arrive nécessairement, l’éloge et le blâme moraux perdent leur sens : nul ne mérite ni crédit ni responsabilité pour ses actes',
+      ],
     },
     systemPrompt: `You are Marcus Aurelius (121–180 CE), Roman Emperor and Stoic philosopher - perhaps the most remarkable individual in the history of philosophy, a man who wielded more worldly power than almost any human being who ever lived and chose to use that power guided by rigorous philosophical self-discipline. Your Meditations were not written for publication but as private notes to yourself, a daily practice of philosophical self-examination. You are thoughtful, honest about your own failures, deeply committed to duty, and possessed of a serene but hard-won acceptance of the human condition.
 
@@ -932,26 +1098,33 @@ export function recordDebateWin(userId: string, philosopherId: string, xpEarned:
 }
 
 // ── Philosopher Era & Tagline Translations ──────────────────────────────────
-type PhilosopherLang = 'es' | 'ru' | 'mk';
+/**
+ * The content languages a philosopher is translated into.
+ *
+ * This union used to stop at 'mk', and the debate screen cast to the same three
+ * inline. A French reader therefore got French chrome around English opening
+ * arguments, an English era label and an English quote.
+ */
+export type PhilosopherLang = 'es' | 'ru' | 'mk' | 'de' | 'fr';
 
 export const PHILOSOPHER_ERA_I18N: Record<string, Partial<Record<PhilosopherLang, string>>> = {
-  'confucius':      { es: 'China Antigua', ru: 'Древний Китай', mk: 'Антички Кина' },
-  'descartes':      { es: 'Europa Moderna Temprana', ru: 'Раннее Новое Время в Европе', mk: 'Рана Модерна Европа' },
-  'socrates':       { es: 'Atenas Clásica', ru: 'Классические Афины', mk: 'Класична Атина' },
-  'plato':          { es: 'Atenas Clásica', ru: 'Классические Афины', mk: 'Класична Атина' },
-  'aristotle':      { es: 'Grecia Clásica', ru: 'Классическая Греция', mk: 'Класична Грција' },
-  'nietzsche':      { es: 'Alemania Moderna', ru: 'Современная Германия', mk: 'Модерна Германија' },
-  'kant':           { es: 'Alemania Ilustrada', ru: 'Германское Просвещение', mk: 'Просветителска Германија' },
-  'hegel':          { es: 'Idealismo Alemán', ru: 'Немецкий Идеализм', mk: 'Германски Идеализам' },
-  'marx':           { es: 'Alemania Moderna', ru: 'Современная Германия', mk: 'Модерна Германија' },
-  'rousseau':       { es: 'Francia Ilustrada', ru: 'Французское Просвещение', mk: 'Просветителска Франција' },
-  'voltaire':       { es: 'Francia Ilustrada', ru: 'Французское Просвещение', mk: 'Просветителска Франција' },
-  'locke':          { es: 'Ilustración Inglesa', ru: 'Английское Просвещение', mk: 'Англиско Просветителство' },
-  'hobbes':         { es: 'Era de la Guerra Civil Inglesa', ru: 'Эпоха Английской Гражданской Войны', mk: 'Ера на Англиската Граѓанска Војна' },
-  'hume':           { es: 'Ilustración Escocesa', ru: 'Шотландское Просвещение', mk: 'Шкотско Просветителство' },
-  'machiavelli':    { es: 'Italia Renacentista', ru: 'Ренессансная Италия', mk: 'Ренесансна Италија' },
-  'epicurus':       { es: 'Grecia Helenística', ru: 'Эллинистическая Греция', mk: 'Хеленистичка Грција' },
-  'marcus-aurelius':{ es: 'Estoicismo Romano', ru: 'Римский Стоицизм', mk: 'Римски Стоицизам' },
+  'confucius':      { es: 'China Antigua', ru: 'Древний Китай', mk: 'Антички Кина', de: 'Antikes China', fr: 'Chine antique' },
+  'descartes':      { es: 'Europa Moderna Temprana', ru: 'Раннее Новое Время в Европе', mk: 'Рана Модерна Европа', de: 'Frühneuzeitliches Europa', fr: 'Europe moderne' },
+  'socrates':       { es: 'Atenas Clásica', ru: 'Классические Афины', mk: 'Класична Атина', de: 'Klassisches Athen', fr: 'Athènes classique' },
+  'plato':          { es: 'Atenas Clásica', ru: 'Классические Афины', mk: 'Класична Атина', de: 'Klassisches Athen', fr: 'Athènes classique' },
+  'aristotle':      { es: 'Grecia Clásica', ru: 'Классическая Греция', mk: 'Класична Грција', de: 'Klassisches Griechenland', fr: 'Grèce classique' },
+  'nietzsche':      { es: 'Alemania Moderna', ru: 'Современная Германия', mk: 'Модерна Германија', de: 'Modernes Deutschland', fr: 'Allemagne moderne' },
+  'kant':           { es: 'Alemania Ilustrada', ru: 'Германское Просвещение', mk: 'Просветителска Германија', de: 'Deutschland der Aufklärung', fr: 'Allemagne des Lumières' },
+  'hegel':          { es: 'Idealismo Alemán', ru: 'Немецкий Идеализм', mk: 'Германски Идеализам', de: 'Deutscher Idealismus', fr: 'Idéalisme allemand' },
+  'marx':           { es: 'Alemania Moderna', ru: 'Современная Германия', mk: 'Модерна Германија', de: 'Modernes Deutschland', fr: 'Allemagne moderne' },
+  'rousseau':       { es: 'Francia Ilustrada', ru: 'Французское Просвещение', mk: 'Просветителска Франција', de: 'Frankreich der Aufklärung', fr: 'France des Lumières' },
+  'voltaire':       { es: 'Francia Ilustrada', ru: 'Французское Просвещение', mk: 'Просветителска Франција', de: 'Frankreich der Aufklärung', fr: 'France des Lumières' },
+  'locke':          { es: 'Ilustración Inglesa', ru: 'Английское Просвещение', mk: 'Англиско Просветителство', de: 'Englische Aufklärung', fr: 'Lumières anglaises' },
+  'hobbes':         { es: 'Era de la Guerra Civil Inglesa', ru: 'Эпоха Английской Гражданской Войны', mk: 'Ера на Англиската Граѓанска Војна', de: 'Zeit des Englischen Bürgerkriegs', fr: 'Époque de la guerre civile anglaise' },
+  'hume':           { es: 'Ilustración Escocesa', ru: 'Шотландское Просвещение', mk: 'Шкотско Просветителство', de: 'Schottische Aufklärung', fr: 'Lumières écossaises' },
+  'machiavelli':    { es: 'Italia Renacentista', ru: 'Ренессансная Италия', mk: 'Ренесансна Италија', de: 'Renaissance-Italien', fr: 'Italie de la Renaissance' },
+  'epicurus':       { es: 'Grecia Helenística', ru: 'Эллинистическая Греция', mk: 'Хеленистичка Грција', de: 'Hellenistisches Griechenland', fr: 'Grèce hellénistique' },
+  'marcus-aurelius':{ es: 'Estoicismo Romano', ru: 'Римский Стоицизм', mk: 'Римски Стоицизам', de: 'Römische Stoa', fr: 'Stoïcisme romain' },
 };
 
 export const PHILOSOPHER_TAGLINE_I18N: Record<string, Partial<Record<PhilosopherLang, string>>> = {
@@ -959,88 +1132,145 @@ export const PHILOSOPHER_TAGLINE_I18N: Record<string, Partial<Record<Philosopher
     es: 'Por tres métodos podemos aprender sabiduría',
     ru: 'Тремя путями можно прийти к мудрости',
     mk: 'Со три методи можеме да научиме мудрост',
+    de: 'Auf dreierlei Wegen können wir Weisheit erlangen',
+    fr: 'Par trois méthodes nous pouvons acquérir la sagesse',
   },
   'descartes': {
     es: 'Cogito, ergo sum - Pienso, luego existo',
     ru: 'Cogito, ergo sum - Я мыслю, следовательно, я существую',
     mk: 'Cogito, ergo sum - Мислам, значи постојам',
+    de: 'Cogito, ergo sum - ich denke, also bin ich',
+    fr: 'Cogito, ergo sum - je pense, donc je suis',
   },
   'socrates': {
     es: 'La vida no examinada no merece ser vivida',
     ru: 'Непрожитая жизнь - не стоит того, чтобы её жить',
     mk: 'Неиспитаниот живот не вреди да се живее',
+    de: 'Ein ungeprüftes Leben ist nicht lebenswert',
+    fr: 'Une vie sans examen ne vaut pas la peine d’être vécue',
   },
   'plato': {
     es: 'El mundo de las Formas es más real que el mundo de las sombras',
     ru: 'Мир Форм реальнее мира теней',
     mk: 'Светот на Формите е поверодостоен од светот на сенките',
+    de: 'Die Welt der Ideen ist wirklicher als die Welt der Schatten',
+    fr: 'Le monde des Formes est plus réel que le monde des ombres',
   },
   'aristotle': {
     es: 'Somos lo que repetidamente hacemos - la excelencia es un hábito',
     ru: 'Мы есть то, что мы делаем регулярно - совершенство есть привычка',
     mk: 'Ние сме тоа што постојано го правиме - извонредноста е навика',
+    de: 'Wir sind, was wir wiederholt tun - Vortrefflichkeit ist eine Gewohnheit',
+    fr: 'Nous sommes ce que nous faisons de manière répétée - l’excellence est une habitude',
   },
   'nietzsche': {
     es: 'Dios ha muerto - y nosotros lo hemos matado',
     ru: 'Бог мёртв - и мы его убили',
     mk: 'Бог е мртов - и ние го убивме',
+    de: 'Gott ist tot - und wir haben ihn getötet',
+    fr: 'Dieu est mort - et c’est nous qui l’avons tué',
   },
   'kant': {
     es: 'Actúa solo según máximas que podrías querer que fueran leyes universales',
     ru: 'Поступай только согласно таким максимам, которые ты мог бы желать видеть всеобщим законом',
     mk: 'Постапувај само според максими кои би сакал да бидат универзални закони',
+    de: 'Handle nur nach Maximen, von denen du wollen kannst, dass sie allgemeine Gesetze werden',
+    fr: 'Agis seulement selon des maximes dont tu pourrais vouloir qu’elles deviennent des lois universelles',
   },
   'hegel': {
     es: 'Lo real es racional y lo racional es real',
     ru: 'Всё разумное действительно, всё действительное разумно',
     mk: 'Она што е реално е рационално, а она што е рационално е реално',
+    de: 'Das Wirkliche ist vernünftig und das Vernünftige ist wirklich',
+    fr: 'Le réel est rationnel et le rationnel est réel',
   },
   'marx': {
     es: 'Trabajadores del mundo, ¡uníos! - no tenéis nada que perder salvo vuestras cadenas',
     ru: 'Пролетарии всех стран, соединяйтесь! - вам нечего терять, кроме своих цепей',
     mk: 'Работници на светот, обединете се - немате ништо за изгубете освен вашите синџири',
+    de: 'Proletarier aller Länder, vereinigt euch - ihr habt nichts zu verlieren als eure Ketten',
+    fr: 'Prolétaires de tous les pays, unissez-vous - vous n’avez que vos chaînes à perdre',
   },
   'rousseau': {
     es: 'El hombre nace libre, y en todas partes se encuentra encadenado',
     ru: 'Человек рождается свободным, но всюду он в оковах',
     mk: 'Човекот се раѓа слободен, а насекаде е во синџири',
+    de: 'Der Mensch wird frei geboren, und überall liegt er in Ketten',
+    fr: 'L’homme naît libre, et partout il est dans les fers',
   },
   'voltaire': {
     es: 'Si Dios no existiera, habría que inventarlo',
     ru: 'Если бы Бога не было, его следовало бы выдумать',
     mk: 'Ако Бог не постоеше, треба да се измисли',
+    de: 'Wenn Gott nicht existierte, müsste man ihn erfinden',
+    fr: 'Si Dieu n’existait pas, il faudrait l’inventer',
   },
   'locke': {
     es: 'La mente es una hoja en blanco - todo conocimiento viene de la experiencia',
     ru: 'Разум - это чистая доска; всё знание приходит из опыта',
     mk: 'Умот е чиста страница - целото знаење доаѓа од искуството',
+    de: 'Der Geist ist ein unbeschriebenes Blatt - alles Wissen stammt aus Erfahrung',
+    fr: 'L’esprit est une page blanche - tout savoir vient de l’expérience',
   },
   'hobbes': {
     es: 'La vida en estado de naturaleza es solitaria, pobre, desagradable, brutal y corta',
     ru: 'Жизнь в естественном состоянии одинока, бедна, отвратительна, жестока и коротка',
     mk: 'Животот во природна состојба е осамен, сиромашен, непријатен, бруталски и краток',
+    de: 'Das Leben im Naturzustand ist einsam, armselig, ekelhaft, tierisch und kurz',
+    fr: 'La vie à l’état de nature est solitaire, misérable, pénible, quasi animale et brève',
   },
   'hume': {
     es: 'La razón es y debe ser solo la esclava de las pasiones',
     ru: 'Разум есть и должен быть рабом страстей',
     mk: 'Разумот е и треба да биде само слуга на страстите',
+    de: 'Die Vernunft ist und soll nur die Sklavin der Leidenschaften sein',
+    fr: 'La raison est et ne doit être que l’esclave des passions',
   },
   'machiavelli': {
     es: 'Es mejor ser temido que amado, si no puedes ser ambos',
-    ru: 'Лучше быть feared, чем любимым, если нельзя сочетать и то, и другое',
+    ru: 'Лучше внушать страх, чем любовь, если нельзя совместить и то, и другое',
     mk: 'Подобро е да се биде плашен отколку сакан, ако не можеш да бидеш и двете',
+    de: 'Es ist besser, gefürchtet als geliebt zu werden, wenn beides nicht möglich ist',
+    fr: 'Il vaut mieux être craint qu’aimé, si l’on ne peut être les deux',
   },
   'epicurus': {
     es: 'El placer es el principio y el fin de la vida dichosa',
     ru: 'Удовольствие есть начало и конец блаженной жизни',
     mk: 'Задоволството е почетокот и целта на блажениот живот',
+    de: 'Die Lust ist Anfang und Ziel des glückseligen Lebens',
+    fr: 'Le plaisir est le commencement et le but de la vie bienheureuse',
   },
   'marcus-aurelius': {
     es: 'El obstáculo para la acción avanza la acción - lo que se interpone en el camino se convierte en el camino',
     ru: 'Препятствие для действия продвигает действие - то, что стоит на пути, становится путём',
     mk: 'Пречката за дејството го унапредува дејството - она што стои на патот станува патот',
+    de: 'Das Hindernis für das Handeln fördert das Handeln - was im Weg steht, wird zum Weg',
+    fr: 'L’obstacle à l’action fait avancer l’action - ce qui barre la route devient la route',
   },
 };
+
+
+/**
+ * The lifespan with its era suffix in the reader's language.
+ *
+ * `lifespan` is stored as "341-270 BCE". Everything around it on the card was
+ * translated while this stayed English, which is the kind of single stray word
+ * that makes a whole screen look untranslated.
+ */
+const ERA_SUFFIX: Record<string, { bce: string; ce: string }> = {
+  es: { bce: 'a. C.', ce: 'd. C.' },
+  ru: { bce: 'до н. э.', ce: 'н. э.' },
+  mk: { bce: 'пр. н. е.', ce: 'н. е.' },
+  de: { bce: 'v. Chr.', ce: 'n. Chr.' },
+  fr: { bce: 'av. J.-C.', ce: 'apr. J.-C.' },
+};
+
+export function getPhilosopherLifespan(p: Philosopher, lang: string): string {
+  const suffix = ERA_SUFFIX[lang];
+  if (!suffix) return p.lifespan;
+  // BCE first: replacing CE first would rewrite the "CE" inside "BCE".
+  return p.lifespan.replace(/\bBCE\b/g, suffix.bce).replace(/\bCE\b/g, suffix.ce);
+}
 
 export function getTranslatedPhilosopherEra(philosopher: Philosopher, lang: string): string {
   if (lang === 'en') return philosopher.era;
