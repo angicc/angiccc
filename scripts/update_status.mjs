@@ -18,6 +18,16 @@
  * back to English at render time rather than showing an empty card, and the
  * --check mode reports which translations are still missing so they can be
  * filled in properly rather than forgotten.
+ *
+ * Two surfaces read this file:
+ *   - the app itself, at /status, which fetches public/status.json directly;
+ *   - a published mirror for people who cannot reach the app at all, at
+ *     https://claude.ai/artifact/6KRbGVqxNHSVFojBkYonQc
+ *
+ * The mirror carries a copy of this document inline, because a status page that
+ * depends on the thing it reports on is useless exactly when it is needed. So
+ * after changing this file, republish the mirror to that same URL rather than
+ * publishing a second one - a second status page is a second answer.
  */
 
 import fs from 'fs';
