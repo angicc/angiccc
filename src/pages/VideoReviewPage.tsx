@@ -20,7 +20,8 @@ import {
   getVideoReviewCount,
 } from '@/features/videoReview/videoReviewStore';
 import { getChessRank, getNextRank, getXpToNextRank } from '@/features/ranks/chessRanks';
-import type { HistoryVideo } from '@/features/videoReview/videoData';
+import { isVideoAvailable, firstAvailable, replacementOrder } from '@/features/videoReview/videoAvailability';
+import { HISTORY_VIDEOS, type HistoryVideo } from '@/features/videoReview/videoData';
 
 // ── Grading system prompt ─────────────────────────────────────────────────────
 const GRADE_SYSTEM = `You are Clio, Historify's strict but fair history educator. A student watched a short educational history video and wrote a review identifying its main motive/argument.
@@ -119,7 +120,26 @@ export default function VideoReviewPage() {
 function VideoReviewInner({ userId }: { userId: string }) {
   const { t } = useLanguage();
   const countdown = useCountdown();
-  const [video] = useState<HistoryVideo>(() => getCurrentVideo());
+  const [video, setVideo] = useState<HistoryVideo>(() => getCurrentVideo());
+  // Set when the day's video turned out to be gone and a stand-in took over.
+  const [swappedFrom, setSwappedFrom] = useState<string | null>(null);
+
+  // A removed, private or region-blocked video does not fail the iframe - it
+  // renders YouTube's own "Video unavailable" page inside it, and the day's
+  // task becomes a black rectangle with no error to catch. Probe the thumbnail
+  // and swap in a working video rather than leaving the viewer stuck.
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      if (await isVideoAvailable(video.youtubeId)) return;
+      const stand = await firstAvailable(replacementOrder(HISTORY_VIDEOS, video));
+      if (!alive || !stand) return;
+      setSwappedFrom(video.title);
+      setVideo(stand);
+    })();
+    return () => { alive = false; };
+  }, [video]);
+
   const [alreadyReviewed] = useState(() => hasReviewedCurrentVideo(userId));
   const [videoXp, setVideoXp]     = useState(() => getVideoXp(userId));
   const [reviewCount, setReviewCount] = useState(() => getVideoReviewCount(userId));
@@ -301,6 +321,11 @@ ${review}`;
                     <div className="min-w-0">
                       <h2 className="font-heading font-bold text-base leading-snug">{video.title}</h2>
                       <p className="text-xs text-muted-foreground mt-1">{video.channel} · {video.era} Era · {formatDuration(video.durationSec)}</p>
+                      {swappedFrom && (
+                        <p className="mt-1.5 text-[11px] text-amber-400/90">
+                          {t.video_swapped}
+                        </p>
+                      )}
                       <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{video.description}</p>
                     </div>
                     <Badge variant="outline" className={`text-xs shrink-0 ${
