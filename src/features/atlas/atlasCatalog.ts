@@ -8,6 +8,15 @@ import type { Language } from '@/i18n/translations';
 type Entry = Partial<Record<Language, string>> & { en: string };
 
 const CATALOG: Record<string, Entry> = {
+  atlas_coming_soon: { en: 'Coming soon', es: 'Próximamente', ru: 'Скоро', mk: 'Наскоро', de: 'Demnächst', fr: 'Bientôt' },
+  atlas_coming_soon_body: {
+    en: 'The Atlas is still being built, so it is open to everyone for now. Territory is drawn from the era maps rather than from each lesson, so some years share a shape. It will sharpen as the per-lesson geometry lands.',
+    es: 'El Atlas aún se está construyendo, así que por ahora está abierto a todos. El territorio se dibuja a partir de los mapas de época y no de cada lección, por lo que algunos años comparten forma. Se irá afinando conforme llegue la geometría por lección.',
+    ru: 'Атлас ещё строится, поэтому пока открыт для всех. Территория берётся из карт эпохи, а не из каждого урока, поэтому некоторые годы делят одну форму. Он станет точнее, когда появится геометрия для каждого урока.',
+    mk: 'Атласот сè уште се гради, па засега е отворен за сите. Територијата се црта од картите на епохата, а не од секоја лекција, па некои години делат иста форма. Ќе се изостри кога ќе пристигне геометријата по лекција.',
+    de: 'Der Atlas wird noch gebaut und steht deshalb vorerst allen offen. Das Gebiet stammt aus den Epochenkarten statt aus jeder Lektion, daher teilen sich manche Jahre eine Form. Er wird schärfer, sobald die Geometrie je Lektion vorliegt.',
+    fr: "L'Atlas est encore en construction, il est donc ouvert à tous pour l'instant. Le territoire provient des cartes d'ère et non de chaque leçon, si bien que certaines années partagent une forme. Il s'affinera quand la géométrie par leçon arrivera.",
+  },
   atlas_title: { en: 'The Atlas', es: 'El Atlas', ru: 'Атлас', mk: 'Атласот', de: 'Der Atlas', fr: "L'Atlas" },
   atlas_subtitle: {
     en: 'The map you uncover by reading. Every lesson you finish lights up its own year.',

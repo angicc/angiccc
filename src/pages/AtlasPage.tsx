@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Square, Lock, ArrowRight, Compass, MapPin } from 'lucide-react';
+import { Play, Square, Lock, ArrowRight, Compass, MapPin, Hammer } from 'lucide-react';
 import { AppShell } from '@/components/layout/AppShell';
-import { PlanGate } from '@/features/subscription/planGate';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -307,12 +306,25 @@ export default function AtlasPage() {
     <AppShell>
       <div className="mx-auto max-w-7xl space-y-5">
         <div>
-          <h1 className="font-heading text-2xl font-bold">{atlasText('atlas_title', language)}</h1>
+          <h1 className="flex items-center gap-2.5 font-heading text-2xl font-bold">
+            {atlasText('atlas_title', language)}
+            <span className="rounded-full border border-amber-400/40 bg-amber-400/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-amber-400">
+              {atlasText('atlas_coming_soon', language)}
+            </span>
+          </h1>
           <p className="text-sm text-muted-foreground">{atlasText('atlas_subtitle', language)}</p>
         </div>
-        <PlanGate plan="master" description={atlasText('atlas_gate', language)}>
-          <AtlasInner />
-        </PlanGate>
+        <div className="flex items-start gap-2.5 rounded-xl border border-amber-400/30 bg-amber-400/[0.06] px-4 py-3">
+          <Hammer className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+          <p className="text-[13px] leading-relaxed text-amber-200/90">
+            {atlasText('atlas_coming_soon_body', language)}
+          </p>
+        </div>
+        {/* Open to every plan while it is being built. The Master gate goes
+            back on when the per-lesson geometry lands and the feature is worth
+            charging for; until then a paywall on something unfinished is a
+            worse deal than no paywall. */}
+        <AtlasInner />
       </div>
     </AppShell>
   );

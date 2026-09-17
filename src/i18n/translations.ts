@@ -369,6 +369,7 @@ export type TranslationKeys = {
   // Timeline Territory Map
   nav_timeline_map: string;
   nav_atlas: string;
+  badge_soon: string;
   tmap_title: string;
   tmap_subtitle: string;
   tmap_select_topic: string;
@@ -904,6 +905,7 @@ const EN: TranslationKeys = {
     map_zoom_hint: 'Scroll to zoom · Drag to pan',
     nav_timeline_map: 'Territory Map',
     nav_atlas: 'The Atlas',
+    badge_soon: 'Soon',
     tmap_title: 'Timeline Territory Map',
     tmap_subtitle: 'Explore real geographic territories for each historical period',
     tmap_select_topic: 'Select a topic to view its territory',
@@ -1439,6 +1441,7 @@ export const T: Translations = {
     map_zoom_hint: 'Desplaza para zoom · Arrastra para mover',
     nav_timeline_map: 'Mapa de Territorios',
     nav_atlas: 'El Atlas',
+    badge_soon: 'Pronto',
     tmap_title: 'Mapa de territorios históricos',
     tmap_subtitle: 'Explora territorios geográficos reales de cada período histórico',
     tmap_select_topic: 'Selecciona un tema para ver su territorio',
@@ -1972,6 +1975,7 @@ export const T: Translations = {
     map_zoom_hint: 'Прокрутите для масштаба · Перетащите для перемещения',
     nav_timeline_map: 'Карта Территорий',
     nav_atlas: 'Атлас',
+    badge_soon: 'Скоро',
     tmap_title: 'Карта исторических территорий',
     tmap_subtitle: 'Исследуйте реальные географические территории каждого исторического периода',
     tmap_select_topic: 'Выберите тему, чтобы увидеть её территорию',
@@ -2505,6 +2509,7 @@ export const T: Translations = {
     map_zoom_hint: 'Скролувај за зум · Влечи за движење',
     nav_timeline_map: 'Карта на Територии',
     nav_atlas: 'Атласот',
+    badge_soon: 'Наскоро',
     tmap_title: 'Карта на историски територии',
     tmap_subtitle: 'Истражи реални географски територии за секој историски период',
     tmap_select_topic: 'Избери тема за да ја видиш нејзината територија',

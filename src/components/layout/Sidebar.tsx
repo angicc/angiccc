@@ -24,7 +24,7 @@ type NavKey = keyof TranslationKeys;
 
 interface NavGroup {
   headerKey: NavKey;
-  items: { to: string; key: NavKey; icon: React.ComponentType<{ className?: string }> }[];
+  items: { to: string; key: NavKey; icon: React.ComponentType<{ className?: string }>; soon?: boolean }[];
 }
 
 // Three canonical blocks from the design spec (CHRONICLES / ACADEMY / LEDGER)
@@ -37,7 +37,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/eras',         key: 'nav_eras',         icon: BookOpen },
       { to: '/timeline',     key: 'nav_timeline',     icon: ScrollText },
       { to: '/timeline-map', key: 'nav_timeline_map', icon: Globe2 },
-      { to: '/atlas',        key: 'nav_atlas',        icon: Compass },
+      { to: '/atlas',        key: 'nav_atlas',        icon: Compass, soon: true },
     ],
   },
   {
@@ -139,7 +139,7 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
               {t[group.headerKey]}
             </p>
             <div className="space-y-0.5">
-              {group.items.map(({ to, key, icon: Icon }) => (
+              {group.items.map(({ to, key, icon: Icon, soon }) => (
                 <NavLink key={to} to={to} onClick={onNavigate}
                   className={({ isActive }) => cn(
                     'group relative flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200',
@@ -156,6 +156,11 @@ export function Sidebar({ className, onNavigate }: { className?: string; onNavig
                       )} />
                       <Icon className="w-4 h-4 shrink-0" />
                       <span className="truncate">{t[key]}</span>
+                      {soon && (
+                        <span className="ml-auto shrink-0 rounded-full border border-amber-400/40 bg-amber-400/10 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wide text-amber-400">
+                          {t.badge_soon}
+                        </span>
+                      )}
                     </>
                   )}
                 </NavLink>
