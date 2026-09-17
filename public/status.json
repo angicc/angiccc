@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "updatedAt": "2026-09-17T16:20:00Z",
+  "summary": {
+    "en": "Lessons, quizzes, maps and Clio are all working. Accounts and payments are not live yet, so your progress is saved in this browser only.",
+    "es": "Las lecciones, los cuestionarios, los mapas y Clío funcionan. Las cuentas y los pagos aún no están activos, así que tu progreso se guarda solo en este navegador.",
+    "ru": "Уроки, викторины, карты и Клио работают. Аккаунты и платежи ещё не запущены, поэтому прогресс сохраняется только в этом браузере.",
+    "mk": "Лекциите, квизовите, картите и Клио работат. Сметките и плаќањата сè уште не се активни, па твојот напредок се чува само во овој прелистувач.",
+    "de": "Lektionen, Quiz, Karten und Clio funktionieren. Konten und Zahlungen sind noch nicht aktiv, dein Fortschritt wird daher nur in diesem Browser gespeichert.",
+    "fr": "Les leçons, les quiz, les cartes et Clio fonctionnent. Les comptes et les paiements ne sont pas encore actifs, ta progression est donc enregistrée uniquement dans ce navigateur."
+  },
+  "components": [
+    {
+      "id": "app",
+      "status": "operational"
+    },
+    {
+      "id": "lessons",
+      "status": "operational"
+    },
+    {
+      "id": "ai",
+      "status": "operational"
+    },
+    {
+      "id": "maps",
+      "status": "operational"
+    },
+    {
+      "id": "accounts",
+      "status": "degraded"
+    },
+    {
+      "id": "billing",
+      "status": "degraded"
+    }
+  ],
+  "entries": [
+    {
+      "id": "2026-09-17-atlas",
+      "kind": "release",
+      "at": "2026-09-17T16:00:00Z",
+      "title": {
+        "en": "The Atlas, account deletion, and a video fallback",
+        "es": "El Atlas, eliminación de cuenta y respaldo de vídeo",
+        "ru": "Атлас, удаление аккаунта и подмена видео",
+        "mk": "Атласот, бришење сметка и резервно видео",
+        "de": "Der Atlas, Kontolöschung und ein Video-Ersatz",
+        "fr": "L'Atlas, la suppression de compte et un remplacement vidéo"
+      },
+      "body": {
+        "en": "The Atlas is open to everyone while it is being built. You can now delete your account from your profile. Video Review detects an unavailable clip and swaps in a working one. Debate a Philosopher is fully translated into German and French.",
+        "es": "El Atlas está abierto a todos mientras se construye. Ya puedes eliminar tu cuenta desde tu perfil. Análisis de vídeo detecta un clip no disponible y lo sustituye por otro. Debate con un filósofo está totalmente traducido al alemán y al francés.",
+        "ru": "Атлас открыт для всех, пока он строится. Теперь вы можете удалить аккаунт в профиле. Видеоразбор определяет недоступный ролик и подставляет рабочий. Дебаты с философом полностью переведены на немецкий и французский.",
+        "mk": "Атласот е отворен за сите додека се гради. Сега можеш да ја избришеш сметката од твојот профил. Видео-анализата открива недостапен клип и става друг што работи. Дебата со филозоф е целосно преведена на германски и француски.",
+        "de": "Der Atlas steht allen offen, solange er gebaut wird. Du kannst dein Konto jetzt im Profil löschen. Die Videoanalyse erkennt einen nicht verfügbaren Clip und ersetzt ihn. Debatte mit einem Philosophen ist vollständig ins Deutsche und Französische übersetzt.",
+        "fr": "L'Atlas est ouvert à tous pendant sa construction. Tu peux désormais supprimer ton compte depuis ton profil. L'analyse vidéo détecte un clip indisponible et le remplace. Débat philosophique est entièrement traduit en allemand et en français."
+      }
+    },
+    {
+      "id": "2026-09-17-accounts",
+      "kind": "known-issue",
+      "at": "2026-09-17T16:00:00Z",
+      "title": {
+        "en": "Accounts and payments are not live yet",
+        "es": "Las cuentas y los pagos aún no están activos",
+        "ru": "Аккаунты и платежи ещё не запущены",
+        "mk": "Сметките и плаќањата сè уште не се активни",
+        "de": "Konten und Zahlungen sind noch nicht aktiv",
+        "fr": "Les comptes et les paiements ne sont pas encore actifs"
+      },
+      "body": {
+        "en": "Historify is running without a server during the beta, so your account lives only in this browser. Friends, direct messages and the leaderboard cannot see other people yet, and paid plans cannot be purchased. Your progress is saved locally and is not lost.",
+        "es": "Historify funciona sin servidor durante la beta, así que tu cuenta solo existe en este navegador. Los amigos, los mensajes directos y el ranking todavía no ven a otras personas, y los planes de pago no se pueden comprar. Tu progreso se guarda localmente y no se pierde.",
+        "ru": "Во время беты Historify работает без сервера, поэтому ваш аккаунт существует только в этом браузере. Друзья, личные сообщения и рейтинг пока не видят других людей, а платные планы купить нельзя. Ваш прогресс сохраняется локально и не теряется.",
+        "mk": "За време на бетата Historify работи без сервер, па твојата сметка постои само во овој прелистувач. Пријателите, пораките и ранг-листата сè уште не гледаат други луѓе, а платените планови не можат да се купат. Твојот напредок се чува локално и не се губи.",
+        "de": "Historify läuft in der Beta ohne Server, dein Konto existiert also nur in diesem Browser. Freunde, Direktnachrichten und die Bestenliste sehen noch keine anderen Personen, und kostenpflichtige Pläne lassen sich nicht kaufen. Dein Fortschritt wird lokal gespeichert und geht nicht verloren.",
+        "fr": "Pendant la bêta, Historify fonctionne sans serveur : ton compte n'existe que dans ce navigateur. Les amis, les messages privés et le classement ne voient pas encore d'autres personnes, et les offres payantes ne peuvent pas être achetées. Ta progression est enregistrée localement et n'est pas perdue."
+      }
+    }
+  ]
+}

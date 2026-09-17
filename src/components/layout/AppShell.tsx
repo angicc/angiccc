@@ -6,15 +6,18 @@
 // hard borders; the sole permitted separator is a 1px rgba(255,255,255,0.05)
 // hairline. Feature pages mount into Zone C via `children`.
 import { useLayoutEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { ParticleCanvas } from '@/components/shared/ParticleCanvas';
 import { CelestialAtlas } from '@/components/shared/CelestialAtlas';
 import { AuroraBackdrop } from '@/components/shared/AuroraBackdrop';
 import { cn } from '@/lib/utils';
+import { StatusBanner } from '@/features/status/StatusBanner';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export function AppShell({ children, compact }: { children: React.ReactNode; compact?: boolean }) {
+  const { t } = useLanguage();
   const { pathname } = useLocation();
   const mainRef = useRef<HTMLElement>(null);
 
@@ -40,12 +43,18 @@ export function AppShell({ children, compact }: { children: React.ReactNode; com
       {/* Zones B + C - the raised content panel (Layer 1) */}
       <div className="flex flex-col flex-1 min-w-0 relative z-10 overflow-hidden bg-layer-0 lg:rounded-tl-2xl">
         <TopBar />
+        {/* Only renders when something is actually wrong. */}
+        <StatusBanner />
         <main ref={mainRef} className={cn(
           'flex-1 animate-fade-in scroll-smooth',
           compact ? 'overflow-hidden' : 'p-4 sm:p-6 lg:p-8 overflow-y-auto',
         )}>{children}</main>
         <div className="shrink-0 px-4 py-1.5 text-center text-[10px] text-muted-foreground/40 select-none">
           © {new Date().getFullYear()} Historify. All rights reserved.
+          {' · '}
+          <Link to="/status" className="hover:text-muted-foreground/70 underline-offset-2 hover:underline">
+            {t.status_link}
+          </Link>
         </div>
       </div>
     </div>

@@ -370,6 +370,7 @@ export type TranslationKeys = {
   nav_timeline_map: string;
   nav_atlas: string;
   video_swapped: string;
+  status_link: string;
   delete_zone_title: string;
   delete_zone_body: string;
   delete_start: string;
@@ -924,6 +925,7 @@ const EN: TranslationKeys = {
     nav_timeline_map: 'Territory Map',
     nav_atlas: 'The Atlas',
     video_swapped: 'The scheduled video is unavailable, so today uses this one instead.',
+    status_link: 'App status',
     delete_zone_title: 'Danger zone',
     delete_zone_body: 'Deleting your account removes it permanently. There is no way to restore it afterwards.',
     delete_start: 'Delete my account',
@@ -1478,6 +1480,7 @@ export const T: Translations = {
     nav_timeline_map: 'Mapa de Territorios',
     nav_atlas: 'El Atlas',
     video_swapped: 'El vídeo programado no está disponible, así que hoy se usa este otro.',
+    status_link: 'Estado de la app',
     delete_zone_title: 'Zona de peligro',
     delete_zone_body: 'Eliminar tu cuenta la borra de forma permanente. Después no hay manera de restaurarla.',
     delete_start: 'Eliminar mi cuenta',
@@ -2030,6 +2033,7 @@ export const T: Translations = {
     nav_timeline_map: 'Карта Территорий',
     nav_atlas: 'Атлас',
     video_swapped: 'Запланированное видео недоступно, поэтому сегодня используется другое.',
+    status_link: 'Состояние приложения',
     delete_zone_title: 'Опасная зона',
     delete_zone_body: 'Удаление аккаунта необратимо. Восстановить его потом будет нельзя.',
     delete_start: 'Удалить мой аккаунт',
@@ -2582,6 +2586,7 @@ export const T: Translations = {
     nav_timeline_map: 'Карта на Територии',
     nav_atlas: 'Атласот',
     video_swapped: 'Закажаното видео е недостапно, па денес се користи ова наместо него.',
+    status_link: 'Состојба на апликацијата',
     delete_zone_title: 'Опасна зона',
     delete_zone_body: 'Бришењето на сметката е трајно. Потоа нема начин да се врати.',
     delete_start: 'Избриши ја мојата сметка',

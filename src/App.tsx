@@ -42,6 +42,7 @@ const FriendsPage = lazy(() => import('@/pages/FriendsPage'));
 const DebatePhilosopherPage = lazy(() => import('@/pages/DebatePhilosopherPage'));
 const TimelineMapPage = lazy(() => import('@/pages/TimelineMapPage'));
 const AtlasPage = lazy(() => import('@/pages/AtlasPage'));
+const StatusPage = lazy(() => import('@/pages/StatusPage'));
 const ChronosCrisisPage = lazy(() => import('@/pages/ChronosCrisisPage'));
 const ImperiumPage = lazy(() => import('@/pages/ImperiumPage'));
 const StudioPage = lazy(() => import('@/pages/StudioPage'));
@@ -60,6 +61,9 @@ function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/pricing" element={<PricingPage />} />
+      {/* Public on purpose: the moment someone needs this page is the moment
+          the app may not be letting them in. */}
+      <Route path="/status" element={<StatusPage />} />
       {/* Public era pages. Deliberately outside ProtectedRoute: /eras needs an
           account, so a visitor could not see the curriculum they were being
           asked to sign up for. */}
