@@ -9,6 +9,7 @@ import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { logSecurityEvent, clientIp } from '../security/events';
+import { stripeConfigured, stripeRequest } from '../services/stripe';
 
 const prisma = new PrismaClient();
 export const authRouter = Router();
@@ -26,6 +27,17 @@ const LOCKOUT_MINUTES = 15;
 /** Reset links are short-lived; a link sitting in an inbox for a week is a
  *  standing key to the account. */
 const RESET_TTL_MINUTES = 30;
+
+/**
+ * Deleting an account is irreversible, so it asks for the password again. A
+ * session alone is not enough: an unattended laptop should not be able to
+ * destroy someone's history with one click.
+ */
+const deleteSchema = z.object({
+  password: z.string().min(1).max(200),
+  /** The account's own username, typed back. Guards against a misclick. */
+  confirm: z.string().min(1).max(100),
+});
 
 const credentialsSchema = z.object({
   email: z.string().trim().toLowerCase().email().max(254),
@@ -149,6 +161,60 @@ authRouter.post('/login', async (req: Request, res: Response) => {
 authRouter.post('/logout', (req: Request, res: Response) => {
   res.clearCookie('session', cookieOpts);
   if (req.auth?.userId) logSecurityEvent(req, 'logout', { userId: req.auth.userId });
+  res.json({ ok: true });
+});
+
+
+/**
+ * DELETE /api/auth/account - erase the account and everything attached to it.
+ *
+ * This exists because GDPR gives people the right to erasure, and because an
+ * app that can be signed up for should be leaveable. It is a real delete, not a
+ * flag: every relation on User cascades, so progress, chats, crisis runs,
+ * campaigns, friendships, messages and gifts go with it.
+ *
+ * The subscription is cancelled first, and the account is not deleted if that
+ * fails. Deleting the row while Stripe keeps billing the card is the single
+ * worst outcome here - the customer has no account, no way to log in, and a
+ * recurring charge they cannot see or stop.
+ */
+authRouter.delete('/account', async (req: Request, res: Response) => {
+  const parsed = deleteSchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: 'Invalid deletion payload.' });
+
+  const user = await prisma.user.findUnique({ where: { id: req.auth!.userId } });
+  if (!user) return res.status(404).json({ error: 'Account no longer exists.' });
+
+  if (!(await bcrypt.compare(parsed.data.password, user.passwordHash))) {
+    logSecurityEvent(req, 'login_failed', { userId: user.id, detail: 'wrong password on account deletion' });
+    return res.status(401).json({ error: 'Password is incorrect.' });
+  }
+  if (parsed.data.confirm.trim().toLowerCase() !== user.username.trim().toLowerCase()) {
+    return res.status(400).json({ error: 'Typed name does not match the account.' });
+  }
+
+  if (user.subscriptionId && stripeConfigured()) {
+    try {
+      await stripeRequest(`/subscriptions/${encodeURIComponent(user.subscriptionId)}`, undefined, 'DELETE');
+      logSecurityEvent(req, 'subscription_cancelled', { userId: user.id, detail: user.subscriptionId });
+    } catch (err) {
+      // Refusing is the safe failure. The alternative bills a deleted account.
+      logSecurityEvent(req, 'account_delete_failed', {
+        userId: user.id,
+        detail: `stripe cancel failed: ${err instanceof Error ? err.message : String(err)}`,
+      });
+      return res.status(502).json({
+        error: 'Could not cancel the active subscription, so the account was not deleted. Try again shortly.',
+      });
+    }
+  }
+
+  // Logged BEFORE the delete: the security-event row references the user, so
+  // writing it afterwards would either fail or resurrect the id.
+  logSecurityEvent(req, 'account_deleted', { userId: user.id, email: user.email });
+  await prisma.user.delete({ where: { id: user.id } });
+
+  res.clearCookie('session', cookieOpts);
   res.json({ ok: true });
 });
 

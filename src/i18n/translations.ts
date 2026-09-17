@@ -370,6 +370,23 @@ export type TranslationKeys = {
   nav_timeline_map: string;
   nav_atlas: string;
   video_swapped: string;
+  delete_zone_title: string;
+  delete_zone_body: string;
+  delete_start: string;
+  delete_warning_title: string;
+  delete_warning_progress: string;
+  delete_warning_social: string;
+  delete_warning_billing: string;
+  delete_warning_final: string;
+  delete_password_label: string;
+  delete_confirm_label: string;
+  delete_confirm_button: string;
+  delete_cancel: string;
+  delete_working: string;
+  delete_done: string;
+  delete_wrong_password: string;
+  delete_name_mismatch: string;
+  delete_failed: string;
   badge_soon: string;
   tmap_title: string;
   tmap_subtitle: string;
@@ -907,6 +924,23 @@ const EN: TranslationKeys = {
     nav_timeline_map: 'Territory Map',
     nav_atlas: 'The Atlas',
     video_swapped: 'The scheduled video is unavailable, so today uses this one instead.',
+    delete_zone_title: 'Danger zone',
+    delete_zone_body: 'Deleting your account removes it permanently. There is no way to restore it afterwards.',
+    delete_start: 'Delete my account',
+    delete_warning_title: 'This cannot be undone.',
+    delete_warning_progress: 'All your lessons, XP, notes, quiz results and campaigns are erased.',
+    delete_warning_social: 'Your friends, messages and leaderboard entry are removed.',
+    delete_warning_billing: 'Any active subscription is cancelled before the account is deleted.',
+    delete_warning_final: 'You will be signed out immediately and cannot sign back in.',
+    delete_password_label: 'Confirm your password',
+    delete_confirm_label: 'Type {name} to confirm',
+    delete_confirm_button: 'Permanently delete',
+    delete_cancel: 'Cancel',
+    delete_working: 'Deleting...',
+    delete_done: 'Your account has been deleted.',
+    delete_wrong_password: 'That password is not correct.',
+    delete_name_mismatch: 'The name you typed does not match your account.',
+    delete_failed: 'Could not delete the account. Nothing was changed - please try again.',
     badge_soon: 'Soon',
     tmap_title: 'Timeline Territory Map',
     tmap_subtitle: 'Explore real geographic territories for each historical period',
@@ -1444,6 +1478,23 @@ export const T: Translations = {
     nav_timeline_map: 'Mapa de Territorios',
     nav_atlas: 'El Atlas',
     video_swapped: 'El vídeo programado no está disponible, así que hoy se usa este otro.',
+    delete_zone_title: 'Zona de peligro',
+    delete_zone_body: 'Eliminar tu cuenta la borra de forma permanente. Después no hay manera de restaurarla.',
+    delete_start: 'Eliminar mi cuenta',
+    delete_warning_title: 'Esto no se puede deshacer.',
+    delete_warning_progress: 'Se borran todas tus lecciones, XP, notas, resultados de quiz y campañas.',
+    delete_warning_social: 'Se eliminan tus amigos, mensajes y tu entrada en el ranking.',
+    delete_warning_billing: 'Cualquier suscripción activa se cancela antes de eliminar la cuenta.',
+    delete_warning_final: 'Se cerrará tu sesión de inmediato y no podrás volver a entrar.',
+    delete_password_label: 'Confirma tu contraseña',
+    delete_confirm_label: 'Escribe {name} para confirmar',
+    delete_confirm_button: 'Eliminar permanentemente',
+    delete_cancel: 'Cancelar',
+    delete_working: 'Eliminando...',
+    delete_done: 'Tu cuenta ha sido eliminada.',
+    delete_wrong_password: 'Esa contraseña no es correcta.',
+    delete_name_mismatch: 'El nombre que escribiste no coincide con tu cuenta.',
+    delete_failed: 'No se pudo eliminar la cuenta. No se cambió nada, inténtalo de nuevo.',
     badge_soon: 'Pronto',
     tmap_title: 'Mapa de territorios históricos',
     tmap_subtitle: 'Explora territorios geográficos reales de cada período histórico',
@@ -1979,6 +2030,23 @@ export const T: Translations = {
     nav_timeline_map: 'Карта Территорий',
     nav_atlas: 'Атлас',
     video_swapped: 'Запланированное видео недоступно, поэтому сегодня используется другое.',
+    delete_zone_title: 'Опасная зона',
+    delete_zone_body: 'Удаление аккаунта необратимо. Восстановить его потом будет нельзя.',
+    delete_start: 'Удалить мой аккаунт',
+    delete_warning_title: 'Это нельзя отменить.',
+    delete_warning_progress: 'Все ваши уроки, опыт, заметки, результаты викторин и кампании будут стёрты.',
+    delete_warning_social: 'Друзья, сообщения и позиция в рейтинге будут удалены.',
+    delete_warning_billing: 'Активная подписка будет отменена перед удалением аккаунта.',
+    delete_warning_final: 'Вы сразу выйдете из системы и больше не сможете войти.',
+    delete_password_label: 'Подтвердите пароль',
+    delete_confirm_label: 'Введите {name} для подтверждения',
+    delete_confirm_button: 'Удалить навсегда',
+    delete_cancel: 'Отмена',
+    delete_working: 'Удаление...',
+    delete_done: 'Ваш аккаунт удалён.',
+    delete_wrong_password: 'Неверный пароль.',
+    delete_name_mismatch: 'Введённое имя не совпадает с вашим аккаунтом.',
+    delete_failed: 'Не удалось удалить аккаунт. Ничего не изменено, попробуйте снова.',
     badge_soon: 'Скоро',
     tmap_title: 'Карта исторических территорий',
     tmap_subtitle: 'Исследуйте реальные географические территории каждого исторического периода',
@@ -2514,6 +2582,23 @@ export const T: Translations = {
     nav_timeline_map: 'Карта на Територии',
     nav_atlas: 'Атласот',
     video_swapped: 'Закажаното видео е недостапно, па денес се користи ова наместо него.',
+    delete_zone_title: 'Опасна зона',
+    delete_zone_body: 'Бришењето на сметката е трајно. Потоа нема начин да се врати.',
+    delete_start: 'Избриши ја мојата сметка',
+    delete_warning_title: 'Ова не може да се врати назад.',
+    delete_warning_progress: 'Сите твои лекции, XP, белешки, резултати од квизови и кампањи се бришат.',
+    delete_warning_social: 'Твоите пријатели, пораки и место на ранг-листата се отстрануваат.',
+    delete_warning_billing: 'Секоја активна претплата се откажува пред бришењето на сметката.',
+    delete_warning_final: 'Веднаш ќе бидеш одјавен/а и нема да можеш повторно да се најавиш.',
+    delete_password_label: 'Потврди ја лозинката',
+    delete_confirm_label: 'Впиши {name} за потврда',
+    delete_confirm_button: 'Избриши трајно',
+    delete_cancel: 'Откажи',
+    delete_working: 'Се брише...',
+    delete_done: 'Твојата сметка е избришана.',
+    delete_wrong_password: 'Лозинката не е точна.',
+    delete_name_mismatch: 'Впишаното име не се совпаѓа со твојата сметка.',
+    delete_failed: 'Сметката не можеше да се избрише. Ништо не е променето, обиди се повторно.',
     badge_soon: 'Наскоро',
     tmap_title: 'Карта на историски територии',
     tmap_subtitle: 'Истражи реални географски територии за секој историски период',

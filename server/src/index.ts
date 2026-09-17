@@ -172,6 +172,7 @@ app.use('/api/auth/register', rateLimit({ windowMs: 60 * 60_000, max: 10, scope:
 app.use('/api/auth/password-reset/request', rateLimit({ windowMs: 60 * 60_000, max: 5, scope: 'password reset' }));
 app.use('/api/auth/password-reset/confirm', rateLimit({ windowMs: 15 * 60_000, max: 10, scope: 'password reset' }));
 app.use('/api/auth/password', rateLimit({ windowMs: 15 * 60_000, max: 10, scope: 'password change' }));
+app.use('/api/auth/account', rateLimit({ windowMs: 60 * 60_000, max: 5, scope: 'account deletion' }));
 
 // ── CSRF ─────────────────────────────────────────────────────────────────────
 // Hand out the token to anyone, require it on every state-changing cookie-auth
@@ -205,6 +206,7 @@ app.get('/healthz', (_req, res) => res.json({ ok: true }));
 // meant to revoke.
 app.use('/api/auth/me', authenticate);
 app.use('/api/auth/password', authenticate, requireCurrentSession);
+app.use('/api/auth/account', authenticate, requireCurrentSession);
 app.use('/api/auth/sessions', authenticate, requireCurrentSession);
 app.use('/api/auth/logout', (req, res, next) => {
   // Best-effort identification for the audit log; logging out with an expired

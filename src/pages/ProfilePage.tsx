@@ -4,6 +4,7 @@ import { Crown, Download, Bookmark, Shield, Bell, Mail, KeyRound, Smartphone, Ey
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DeleteAccountCard } from '@/features/auth/DeleteAccountCard';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -612,6 +613,11 @@ export default function ProfilePage() {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+
+            {/* Leaving has to be as available as joining. */}
+            <div className="mt-6">
+              <DeleteAccountCard />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
