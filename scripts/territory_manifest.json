@@ -21,12 +21,42 @@
       "stroke_color": "#fde047",
       "entities": [
         {
+          "entity_name": "Sumer (Ur)",
+          "match": [
+            "Ur"
+          ],
+          "exact": true,
+          "year": "bc2000",
+          "year_start": -2900,
+          "year_end": -2000,
+          "fill_color": "#f43f5e",
+          "stroke_color": "#fb7185",
+          "tolerance": 0.004
+        },
+        {
           "entity_name": "Ancient Egypt",
           "match": [
             "Egypt"
           ],
+          "exact": true,
+          "year": "bc2000",
+          "year_start": -3100,
+          "year_end": -2000,
           "fill_color": "#facc15",
           "stroke_color": "#fde047",
+          "tolerance": 0.004
+        },
+        {
+          "entity_name": "Elam",
+          "match": [
+            "Elam"
+          ],
+          "exact": true,
+          "year": "bc2000",
+          "year_start": -2700,
+          "year_end": -2000,
+          "fill_color": "#fb923c",
+          "stroke_color": "#fdba74",
           "tolerance": 0.004
         },
         {
@@ -34,6 +64,10 @@
           "match": [
             "Assyria"
           ],
+          "exact": true,
+          "year": "bc1000",
+          "year_start": -1360,
+          "year_end": -609,
           "fill_color": "#22c55e",
           "stroke_color": "#4ade80",
           "tolerance": 0.004
@@ -43,17 +77,12 @@
           "match": [
             "Babylonia"
           ],
+          "exact": true,
+          "year": "bc1000",
+          "year_start": -1894,
+          "year_end": -539,
           "fill_color": "#e879f9",
           "stroke_color": "#f0abfc",
-          "tolerance": 0.004
-        },
-        {
-          "entity_name": "Elam",
-          "match": [
-            "Elam"
-          ],
-          "fill_color": "#fb923c",
-          "stroke_color": "#fdba74",
           "tolerance": 0.004
         }
       ]
@@ -61,15 +90,44 @@
     {
       "topic_id": "classical-greece",
       "lesson_id": 2,
-      "entity_name": "Classical Greece",
+      "entity_name": "The Greek World",
       "year": "bc400",
       "year_start": -800,
       "year_end": -323,
-      "match": [
-        "Greek city-states"
-      ],
       "fill_color": "#3b82f6",
-      "stroke_color": "#60a5fa"
+      "stroke_color": "#60a5fa",
+      "entities": [
+        {
+          "entity_name": "Greek city-states",
+          "match": [
+            "Greek city-states"
+          ],
+          "exact": true,
+          "fill_color": "#3b82f6",
+          "stroke_color": "#60a5fa",
+          "tolerance": 0.012
+        },
+        {
+          "entity_name": "Greek colonies",
+          "match": [
+            "Greek colonies"
+          ],
+          "exact": true,
+          "fill_color": "#06b6d4",
+          "stroke_color": "#67e8f9",
+          "tolerance": 0.012
+        },
+        {
+          "entity_name": "Achaemenid Empire",
+          "match": [
+            "Achaemenid Empire"
+          ],
+          "exact": true,
+          "fill_color": "#a855f7",
+          "stroke_color": "#c084fc",
+          "tolerance": 0.03
+        }
+      ]
     },
     {
       "topic_id": "ancient-macedonia",
@@ -416,7 +474,8 @@
           ],
           "fill_color": "#dc2626",
           "stroke_color": "#f87171",
-          "exact": true
+          "exact": true,
+          "tolerance": 0.012
         },
         {
           "entity_name": "Safavid Persia",
@@ -425,7 +484,8 @@
           ],
           "fill_color": "#16a34a",
           "stroke_color": "#4ade80",
-          "exact": true
+          "exact": true,
+          "tolerance": 0.02
         },
         {
           "entity_name": "Holy Roman Empire",
@@ -434,7 +494,8 @@
           ],
           "fill_color": "#8b5cf6",
           "stroke_color": "#a78bfa",
-          "exact": true
+          "exact": true,
+          "tolerance": 0.02
         },
         {
           "entity_name": "Republic of Venice",
@@ -448,11 +509,12 @@
         {
           "entity_name": "Poland-Lithuania",
           "match": [
-            "Poland-Llituania"
+            "Poland-Lithuania"
           ],
           "fill_color": "#65a30d",
           "stroke_color": "#a3e635",
-          "exact": true
+          "exact": true,
+          "tolerance": 0.012
         },
         {
           "entity_name": "Tsardom of Muscovy",
@@ -494,7 +556,7 @@
           ],
           "fill_color": "#22c55e",
           "stroke_color": "#4ade80",
-          "tolerance": 0.02
+          "tolerance": 0.008
         },
         {
           "entity_name": "Mali",
@@ -503,7 +565,7 @@
           ],
           "fill_color": "#facc15",
           "stroke_color": "#fde047",
-          "tolerance": 0.02
+          "tolerance": 0.008
         },
         {
           "entity_name": "Hausa city-states",
@@ -512,16 +574,17 @@
           ],
           "fill_color": "#38bdf8",
           "stroke_color": "#7dd3fc",
-          "tolerance": 0.02
+          "tolerance": 0.008
         },
         {
           "entity_name": "Kanem-Bornu",
           "match": [
-            "Bornu-Kanem"
+            "Kanem-Bornu"
           ],
           "fill_color": "#a855f7",
           "stroke_color": "#c084fc",
-          "tolerance": 0.02
+          "tolerance": 0.008,
+          "exact": true
         }
       ]
     },
@@ -1206,7 +1269,8 @@
           ],
           "fill_color": "#dc2626",
           "stroke_color": "#f87171",
-          "exact": true
+          "exact": true,
+          "tolerance": 0.012
         },
         {
           "entity_name": "Bulgaria",
@@ -1215,7 +1279,8 @@
           ],
           "fill_color": "#16a34a",
           "stroke_color": "#4ade80",
-          "exact": true
+          "exact": true,
+          "tolerance": 0.012
         },
         {
           "entity_name": "Serbia",
@@ -1224,7 +1289,8 @@
           ],
           "fill_color": "#2563eb",
           "stroke_color": "#60a5fa",
-          "exact": true
+          "exact": true,
+          "tolerance": 0.012
         },
         {
           "entity_name": "Greece",
@@ -1233,7 +1299,8 @@
           ],
           "fill_color": "#0891b2",
           "stroke_color": "#22d3ee",
-          "exact": true
+          "exact": true,
+          "tolerance": 0.012
         },
         {
           "entity_name": "Montenegro",
@@ -1242,7 +1309,8 @@
           ],
           "fill_color": "#a855f7",
           "stroke_color": "#c084fc",
-          "exact": true
+          "exact": true,
+          "tolerance": 0.012
         },
         {
           "entity_name": "Romania",
@@ -1251,7 +1319,18 @@
           ],
           "fill_color": "#f59e0b",
           "stroke_color": "#fbbf24",
-          "exact": true
+          "exact": true,
+          "tolerance": 0.012
+        },
+        {
+          "entity_name": "Austria-Hungary",
+          "match": [
+            "Austria Hungary"
+          ],
+          "exact": true,
+          "fill_color": "#8b5cf6",
+          "stroke_color": "#a78bfa",
+          "tolerance": 0.012
         }
       ]
     },
@@ -1342,11 +1421,12 @@
         {
           "entity_name": "Poland-Lithuania",
           "match": [
-            "Poland-Llituania"
+            "Poland-Lithuania"
           ],
           "fill_color": "#65a30d",
           "stroke_color": "#a3e635",
-          "exact": true
+          "exact": true,
+          "tolerance": 0.012
         },
         {
           "entity_name": "Habsburg Netherlands",

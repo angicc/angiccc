@@ -55,8 +55,6 @@ import sys
 import unicodedata
 from pathlib import Path
 
-import requests
-
 # ── optional geometry stack ──────────────────────────────────────────────────
 try:
     from shapely.geometry import shape, mapping, MultiPolygon, Polygon
@@ -90,6 +88,17 @@ def fetch_year(base: str, year: str) -> dict:
     cached = CACHE_DIR / f"world_{year}.geojson"
     if cached.exists():
         return json.loads(cached.read_text())
+    # Imported here, not at module scope: a run whose snapshots are all cached
+    # needs no network, and should not fail to start because the HTTP library
+    # is missing from the environment.
+    try:
+        import requests
+    except ImportError as e:  # pragma: no cover - environment-dependent
+        raise RuntimeError(
+            f"world_{year}.geojson is not cached and `requests` is unavailable, "
+            f"so it cannot be downloaded. Either install requests or place the "
+            f"file at {cached}."
+        ) from e
     url = f"{base}/world_{year}.geojson"
     print(f"    ↓ {url}")
     r = requests.get(url, timeout=90)
@@ -212,10 +221,12 @@ def _feature(entry: dict, spec: dict, geom: dict) -> dict:
             "lesson_id": entry.get("lesson_id"),
             "topic_id": tid,
             "entity_name": spec["entity_name"],
-            "year_start": entry["year_start"],
-            "year_end": entry["year_end"],
+            # A polity drawn from its own snapshot states its own dates, so a
+            # plate spanning millennia never implies every shape coexisted.
+            "year_start": spec.get("year_start", entry["year_start"]),
+            "year_end": spec.get("year_end", entry["year_end"]),
             "source": "aourednik/historical-basemaps",
-            "source_snapshot": f"world_{entry['year']}",
+            "source_snapshot": f"world_{spec.get('year', entry['year'])}",
             "fill_color": spec.get("fill_color", entry.get("fill_color", "#f59e0b")),
             "stroke_color": spec.get(
                 "stroke_color",
@@ -254,6 +265,9 @@ def build_topic(entry: dict, base: str, tol: float) -> dict | None:
     """
     tid = entry["topic_id"]
     fc = fetch_year(base, entry["year"])
+    # Snapshots are cached per year, so a topic that draws from more than one
+    # costs at most one extra download.
+    fc_cache = {entry["year"]: fc}
 
     specs = entry.get("entities")
     if not specs:
@@ -268,8 +282,18 @@ def build_topic(entry: dict, base: str, tol: float) -> dict | None:
 
     features = []
     for spec in specs:
+        # A polity may need a different snapshot from the rest of its topic.
+        # "The First Civilizations" spans 3100-500 BC, and no single snapshot
+        # holds both Sumer and the Assyrian empire that replaced it: Ur exists
+        # in bc2000 and is long gone by bc1000. Pinning the snapshot per polity
+        # lets one plate show each at the date it actually existed, which the
+        # per-feature year labels below then state outright.
+        spec_year = spec.get("year", entry["year"])
+        if spec_year not in fc_cache:
+            fc_cache[spec_year] = fetch_year(base, spec_year)
+        source_fc = fc_cache[spec_year]
         feats = select_features(
-            fc, spec["match"],
+            source_fc, spec["match"],
             spec.get("exact", entry.get("exact", False)),
             spec.get("exclude", entry.get("exclude")),
         )

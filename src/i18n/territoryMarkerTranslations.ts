@@ -182,6 +182,9 @@ export const POLY_LABEL_I18N: Record<string, MT> = {
   // Realms drawn by the rebuilt Ottoman, Hellenistic and Olmec maps.
   'Kingdom of Lysimachus': { es: 'Reino de Lisímaco', ru: 'Царство Лисимаха', mk: 'Кралство на Лизимах', de: 'Reich des Lysimachos', fr: 'Royaume de Lysimaque' },
   'Kingdom of Kassander': { es: 'Reino de Casandro', ru: 'Царство Кассандра', mk: 'Кралство на Касандар', de: 'Reich des Kassandros', fr: 'Royaume de Cassandre' },
+  'Greek colonies': { es: 'Colonias griegas', ru: 'Греческие колонии', mk: 'Грчки колонии', de: "Griechische Kolonien", fr: "Colonies grecques"  },
+  'Achaemenid Empire': { es: 'Imperio aqueménida', ru: 'Держава Ахеменидов', mk: 'Ахеменидско Царство', de: "Achämenidenreich", fr: "Empire achéménide"  },
+  'Sumer (Ur)': { es: 'Sumeria (Ur)', ru: 'Шумер (Ур)', mk: 'Сумер (Ур)', de: "Sumer (Ur)", fr: "Sumer (Our)"  },
   'Greek city-states': { es: 'Ciudades-estado griegas', ru: 'Греческие полисы', mk: 'Грчки градови-држави', de: 'Griechische Stadtstaaten', fr: 'Cités-États grecques' },
   'Roman Republic': { es: 'República romana', ru: 'Римская республика', mk: 'Римска Република', de: 'Römische Republik', fr: 'République romaine' },
   'Mauryan Empire': { es: 'Imperio maurya', ru: 'Империя Маурьев', mk: 'Мауријанска Империја', de: 'Maurya-Reich', fr: 'Empire maurya' },
