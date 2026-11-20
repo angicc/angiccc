@@ -1,6 +1,7 @@
 // ─── Clio's Analysis Gate - post-lesson written-analysis modal ───────────────
 // A 3D-staged overlay that appears after a lesson is completed. The learner
-// writes a 150–300-word analysis; Clio grades it strictly (AI examiner with a
+// writes an analysis of 100–300 words (short lessons) or 150–300 (longer ones);
+// Clio grades it strictly (AI examiner with a
 // deterministic local rubric as fallback). Grade B or better unlocks the next
 // lesson. The window is dismissible - but the next lesson stays locked until
 // a passing analysis is on record.
@@ -13,7 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import type { Lesson } from '@/types';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
-  ANALYSIS_MIN_WORDS, ANALYSIS_MAX_WORDS, countWords,
+  analysisWordRange, countWords,
   recordAnalysisAttempt, recordAnalysisPass,
 } from './analysisGate';
 import { gradeAnalysis, type AnalysisVerdict } from './analysisGrader';
@@ -22,7 +23,7 @@ const GATE_I18N = {
   en: {
     title: "Clio's Analysis Gate", sub: 'Prove your understanding to unlock the next lesson',
     prompt: (t: string) => `Write an analysis of "${t}" - not a summary. Argue causes, consequences, and significance in your own words.`,
-    words: 'words', range: '150–300 words required', tooShort: (n: number) => `${n} more words needed`, tooLong: (n: number) => `${n} words over the limit`,
+    words: 'words', range: (a: number, b: number) => `${a}–${b} words required`, tooShort: (n: number) => `${n} more words needed`, tooLong: (n: number) => `${n} words over the limit`,
     submit: 'Submit to Clio', grading: 'Clio is deliberating…', gradingSub: 'Your analysis is being weighed against the historical record.',
     passTitle: 'The gate opens', failTitle: 'Not yet, historian', minBar: 'Minimum passing grade: B',
     strengths: 'Strengths', improvements: 'To improve', retry: 'Revise & resubmit', continueBtn: 'Continue',
@@ -32,7 +33,7 @@ const GATE_I18N = {
   es: {
     title: 'La Puerta de Análisis de Clío', sub: 'Demuestra tu comprensión para desbloquear la siguiente lección',
     prompt: (t: string) => `Escribe un análisis de «${t}» - no un resumen. Argumenta causas, consecuencias y significado con tus propias palabras.`,
-    words: 'palabras', range: 'Se requieren 150–300 palabras', tooShort: (n: number) => `Faltan ${n} palabras`, tooLong: (n: number) => `${n} palabras sobre el límite`,
+    words: 'palabras', range: (a: number, b: number) => `Se requieren ${a}–${b} palabras`, tooShort: (n: number) => `Faltan ${n} palabras`, tooLong: (n: number) => `${n} palabras sobre el límite`,
     submit: 'Enviar a Clío', grading: 'Clío está deliberando…', gradingSub: 'Tu análisis se está contrastando con el registro histórico.',
     passTitle: 'La puerta se abre', failTitle: 'Aún no, historiador', minBar: 'Nota mínima para aprobar: B',
     strengths: 'Fortalezas', improvements: 'Para mejorar', retry: 'Revisar y reenviar', continueBtn: 'Continuar',
@@ -42,7 +43,7 @@ const GATE_I18N = {
   ru: {
     title: 'Врата анализа Клио', sub: 'Докажите понимание, чтобы открыть следующий урок',
     prompt: (t: string) => `Напишите анализ урока «${t}» - не пересказ. Раскройте причины, следствия и значение своими словами.`,
-    words: 'слов', range: 'Требуется 150–300 слов', tooShort: (n: number) => `Не хватает ${n} слов`, tooLong: (n: number) => `${n} слов сверх лимита`,
+    words: 'слов', range: (a: number, b: number) => `Требуется ${a}–${b} слов`, tooShort: (n: number) => `Не хватает ${n} слов`, tooLong: (n: number) => `${n} слов сверх лимита`,
     submit: 'Отправить Клио', grading: 'Клио размышляет…', gradingSub: 'Ваш анализ сверяется с историческими источниками.',
     passTitle: 'Врата открываются', failTitle: 'Ещё нет, историк', minBar: 'Минимальная проходная оценка: B',
     strengths: 'Сильные стороны', improvements: 'Что улучшить', retry: 'Доработать и отправить', continueBtn: 'Продолжить',
@@ -52,7 +53,7 @@ const GATE_I18N = {
   mk: {
     title: 'Портата на анализа на Клио', sub: 'Докажи го разбирањето за да ја отклучиш следната лекција',
     prompt: (t: string) => `Напиши анализа на „${t}“ - не резиме. Образложи ги причините, последиците и значењето со свои зборови.`,
-    words: 'зборови', range: 'Потребни се 150–300 зборови', tooShort: (n: number) => `Недостигаат уште ${n} зборови`, tooLong: (n: number) => `${n} зборови над лимитот`,
+    words: 'зборови', range: (a: number, b: number) => `Потребни се ${a}–${b} зборови`, tooShort: (n: number) => `Недостигаат уште ${n} зборови`, tooLong: (n: number) => `${n} зборови над лимитот`,
     submit: 'Испрати ѝ на Клио', grading: 'Клио размислува…', gradingSub: 'Твојата анализа се мери според историските извори.',
     passTitle: 'Портата се отвора', failTitle: 'Сè уште не, историчару', minBar: 'Минимална преодна оценка: B',
     strengths: 'Силни страни', improvements: 'За подобрување', retry: 'Доработи и испрати повторно', continueBtn: 'Продолжи',
@@ -62,7 +63,7 @@ const GATE_I18N = {
   de: {
     title: 'Klios Analyse-Tor', sub: 'Beweise dein Verständnis, um die nächste Lektion freizuschalten',
     prompt: (t: string) => `Schreibe eine Analyse zu „${t}“ - keine Zusammenfassung. Begründe Ursachen, Folgen und Bedeutung in eigenen Worten.`,
-    words: 'Wörter', range: '150–300 Wörter erforderlich', tooShort: (n: number) => `Noch ${n} Wörter nötig`, tooLong: (n: number) => `${n} Wörter über dem Limit`,
+    words: 'Wörter', range: (a: number, b: number) => `${a}–${b} Wörter erforderlich`, tooShort: (n: number) => `Noch ${n} Wörter nötig`, tooLong: (n: number) => `${n} Wörter über dem Limit`,
     submit: 'An Klio senden', grading: 'Klio berät…', gradingSub: 'Deine Analyse wird an den historischen Quellen gemessen.',
     passTitle: 'Das Tor öffnet sich', failTitle: 'Noch nicht, Historiker', minBar: 'Mindestnote zum Bestehen: B',
     strengths: 'Stärken', improvements: 'Zu verbessern', retry: 'Überarbeiten & erneut senden', continueBtn: 'Weiter',
@@ -72,7 +73,7 @@ const GATE_I18N = {
   fr: {
     title: "La Porte d'Analyse de Clio", sub: 'Prouve ta compréhension pour débloquer la leçon suivante',
     prompt: (t: string) => `Rédige une analyse de « ${t} » - pas un résumé. Argumente les causes, les conséquences et la portée avec tes propres mots.`,
-    words: 'mots', range: '150–300 mots requis', tooShort: (n: number) => `Encore ${n} mots nécessaires`, tooLong: (n: number) => `${n} mots au-dessus de la limite`,
+    words: 'mots', range: (a: number, b: number) => `${a}–${b} mots requis`, tooShort: (n: number) => `Encore ${n} mots nécessaires`, tooLong: (n: number) => `${n} mots au-dessus de la limite`,
     submit: 'Soumettre à Clio', grading: 'Clio délibère…', gradingSub: 'Ton analyse est confrontée aux sources historiques.',
     passTitle: "La porte s'ouvre", failTitle: 'Pas encore, historien', minBar: 'Note minimale pour réussir : B',
     strengths: 'Points forts', improvements: 'À améliorer', retry: 'Réviser et resoumettre', continueBtn: 'Continuer',
@@ -128,7 +129,9 @@ export function ClioAnalysisGate({
   const [verdict, setVerdict] = useState<AnalysisVerdict | null>(null);
 
   const words = useMemo(() => countWords(text), [text]);
-  const inRange = words >= ANALYSIS_MIN_WORDS && words <= ANALYSIS_MAX_WORDS;
+  // Short lessons (4-5 sections) ask for 100 words, longer ones for 150.
+  const { min: minWords, max: maxWords } = useMemo(() => analysisWordRange(lesson), [lesson]);
+  const inRange = words >= minWords && words <= maxWords;
 
   // Escape closes the window (progression stays locked - that's the deal).
   useEffect(() => {
@@ -156,8 +159,8 @@ export function ClioAnalysisGate({
   }
 
   const counterColor = words === 0 ? 'text-muted-foreground'
-    : words < ANALYSIS_MIN_WORDS ? 'text-amber-400'
-    : words <= ANALYSIS_MAX_WORDS ? 'text-emerald-400' : 'text-red-400';
+    : words < minWords ? 'text-amber-400'
+    : words <= maxWords ? 'text-emerald-400' : 'text-red-400';
 
   return (
     <AnimatePresence>
@@ -211,8 +214,8 @@ export function ClioAnalysisGate({
                       <span className={`font-semibold tabular-nums ${counterColor}`}>{words} {g.words}</span>
                       <span className="text-white/40">·</span>
                       <span className="text-white/50">
-                        {words < ANALYSIS_MIN_WORDS ? (words === 0 ? g.range : g.tooShort(ANALYSIS_MIN_WORDS - words))
-                          : words > ANALYSIS_MAX_WORDS ? g.tooLong(words - ANALYSIS_MAX_WORDS) : g.range}
+                        {words < minWords ? (words === 0 ? g.range(minWords, maxWords) : g.tooShort(minWords - words))
+                          : words > maxWords ? g.tooLong(words - maxWords) : g.range(minWords, maxWords)}
                       </span>
                     </div>
                     <Button onClick={submit} disabled={!inRange} className="gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-semibold">

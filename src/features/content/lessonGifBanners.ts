@@ -135,6 +135,51 @@ const ERA_GIF_POOL: Record<string, string[]> = {
   ],
 };
 
+// ─── Self-hosted animated banners ───────────────────────────────────────────
+// These nineteen were hotlinked out of the owner's Drive via
+// lh3.googleusercontent.com/d/<fileId>. Google does not serve that endpoint
+// reliably for hotlinked animation - it rate-limits it and answers with HTML
+// rather than image bytes - so the <img> errored, fell through the static
+// chain, and landed on the era's procedural SVG backdrop. That flat gradient
+// readers were seeing was the last stage of a failing chain, not a design.
+//
+// The bytes now ship with the app as same-origin static assets. There is no
+// resolution step, no permission to revoke and nothing to fall back to: if the
+// app is up, the banner is up.
+//
+// Format is H.264 MP4 rather than GIF - identical looping silent animation,
+// 4.1 MB for all nineteen against 26 MB as GIFs, where the World Wars banner
+// alone was 6.8 MB. Re-encoding them as GIFs made them LARGER, because the
+// sources already use optimised inter-frame compression, so the format had to
+// change to get the weight down. Played muted and inline, which is what lets
+// autoplay run on mobile, and held on the opening frame under reduced motion.
+export const LESSON_BANNER_VIDEOS: Record<string, string> = {
+  'ancient-01': '/banners/ancient-01.mp4',
+  'ancient-04': '/banners/ancient-04.mp4',
+  'ancient-06': '/banners/ancient-06.mp4',
+  'medieval-01': '/banners/medieval-01.mp4',
+  'medieval-02': '/banners/medieval-02.mp4',
+  'medieval-03': '/banners/medieval-03.mp4',
+  'medieval-05': '/banners/medieval-05.mp4',
+  'medieval-06': '/banners/medieval-06.mp4',
+  'earlymod-01': '/banners/earlymod-01.mp4',
+  'earlymod-03': '/banners/earlymod-03.mp4',
+  'earlymod-05': '/banners/earlymod-05.mp4',
+  'earlymod-06': '/banners/earlymod-06.mp4',
+  'earlymod-07': '/banners/earlymod-07.mp4',
+  'modern-01': '/banners/modern-01.mp4',
+  'modern-02': '/banners/modern-02.mp4',
+  'modern-03': '/banners/modern-03.mp4',
+  'modern-04': '/banners/modern-04.mp4',
+  'modern-05': '/banners/modern-05.mp4',
+  'modern-06': '/banners/modern-06.mp4',
+};
+
+/** The self-hosted looping banner for a lesson, if it has one. */
+export function lessonBannerVideo(lessonId: string): string | undefined {
+  return LESSON_BANNER_VIDEOS[lessonId];
+}
+
 /** An animated GIF for any lesson: its explicit banner if mapped, else a
  *  deterministic pick from its era's pool. Guarantees every lesson is animated. */
 export function eraGifBanner(lessonId: string, eraId: string): string | undefined {

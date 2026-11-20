@@ -28,7 +28,7 @@ import { toggleBookmark, isBookmarked } from '@/features/bookmarks/bookmarkStore
 import { toast } from 'sonner';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { resolveBannerCandidates } from '@/features/content/lessonBannerAssets';
-import { isGifBanner, resolveGifPageBanner } from '@/features/content/lessonGifBanners';
+import { isGifBanner, resolveGifPageBanner, lessonBannerVideo } from '@/features/content/lessonGifBanners';
 import { decisionPointFor } from '@/features/atlas/decisionPoints';
 import { DecisionPointCard } from '@/features/atlas/DecisionPointCard';
 import { EraBannerBackdrop } from '@/components/shared/EraBannerBackdrop';
@@ -57,6 +57,11 @@ function LessonBanner({
   // lesson id in the parent, so each lesson gets a fresh, correctly-seeded
   // chain rather than inheriting the previously-viewed lesson's state).
   const [candidates, setCandidates] = useState(() => resolveBannerCandidates(lessonId, eraId, imageUrl, theme.categoryIcon));
+
+  // A self-hosted looping banner short-circuits the whole chain. It is a
+  // same-origin static asset, so there is nothing for it to fall back TO and
+  // nothing that could revoke it - the image chain is not consulted at all.
+  const bannerVideo = lessonBannerVideo(lessonId);
   const [candidateIdx, setCandidateIdx] = useState(0);
 
   // Lessons whose animated banner lives behind a gallery page (makeagif.com)
@@ -64,6 +69,8 @@ function LessonBanner({
   // of the chain. The static candidates keep the banner filled meanwhile, and
   // a failed resolution simply leaves the static chain untouched.
   useEffect(() => {
+    // Lessons with a self-hosted banner never touch the third-party resolver.
+    if (bannerVideo) return;
     let alive = true;
     resolveGifPageBanner(lessonId).then(url => {
       if (!alive || !url) return;
@@ -72,7 +79,7 @@ function LessonBanner({
       setLoaded(false);
     });
     return () => { alive = false; };
-  }, [lessonId]);
+  }, [lessonId, bannerVideo]);
 
   const src = candidates[candidateIdx] ?? '';
   const imgFailed = candidateIdx >= candidates.length;
@@ -104,10 +111,34 @@ function LessonBanner({
         <div className="absolute inset-0 animate-pulse bg-white/[0.03] z-[2]" />
       )}
 
-      {/* Era-specific procedural backdrop - shown when every candidate fails */}
-      {(imgFailed || !src) && <EraBannerBackdrop eraId={eraId} />}
+      {/* Self-hosted looping banner. Same origin as the app, so it has no
+          failure mode short of the app being down - no error handler, no
+          candidate chain, no procedural backdrop behind it. muted and
+          playsInline are what let autoplay run at all on mobile Safari. */}
+      {bannerVideo && (
+        <video
+          key={bannerVideo}
+          src={bannerVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden
+          tabIndex={-1}
+          ref={el => {
+            // Readers who ask for reduced motion get the opening frame, held.
+            if (el && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) el.pause();
+          }}
+          className={`absolute inset-0 w-full h-full object-cover object-[center_38%] transition-opacity duration-700 z-[2] scale-[1.03] ${loaded ? 'opacity-90' : 'opacity-0'}`}
+          onLoadedData={() => setLoaded(true)}
+        />
+      )}
 
-      {src && !imgFailed && (
+      {/* Era-specific procedural backdrop - shown when every candidate fails */}
+      {!bannerVideo && (imgFailed || !src) && <EraBannerBackdrop eraId={eraId} />}
+
+      {!bannerVideo && src && !imgFailed && (
         <img
           key={src}
           src={src}

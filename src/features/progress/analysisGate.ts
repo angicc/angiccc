@@ -8,8 +8,37 @@ import { useEffect, useState } from 'react';
 import type { Lesson } from '@/types';
 import { getEraLessons } from '@/features/content/lessonsData';
 
-export const ANALYSIS_MIN_WORDS = 150;
+/**
+ * The written analysis is scaled to how much lesson there is to analyse.
+ *
+ * A lesson is measured in SECTIONS - the headed blocks a reader actually scrolls
+ * past - not in prose paragraphs. Every lesson in the curriculum splits into at
+ * least seven `\n\n` paragraphs, so that measure separates nothing; sections run
+ * 4, 5, 6 or 7 and divide the set cleanly. Short lessons (4-5 sections, 54 of
+ * them) ask for 100 words, longer ones (6-7 sections, 80 of them) keep 150.
+ * Asking for 150 words on a four-section lesson is asking the reader to pad.
+ *
+ * The ceiling is 300 either way: the limit on a good analysis is the reader's
+ * thinking, not the lesson's length.
+ */
+export const SHORT_LESSON_MAX_SECTIONS = 5;
+export const ANALYSIS_MIN_WORDS_SHORT = 100;
+export const ANALYSIS_MIN_WORDS_LONG = 150;
 export const ANALYSIS_MAX_WORDS = 300;
+
+/** Default floor, for callers with no lesson in hand. Prefer analysisWordRange. */
+export const ANALYSIS_MIN_WORDS = ANALYSIS_MIN_WORDS_LONG;
+
+export interface AnalysisWordRange { min: number; max: number }
+
+/** The word range this particular lesson's analysis must fall inside. */
+export function analysisWordRange(lesson: Pick<Lesson, 'sections'> | undefined | null): AnalysisWordRange {
+  const sections = lesson?.sections?.length ?? 0;
+  // A lesson that failed to load must not be easier than the real thing.
+  const short = sections > 0 && sections <= SHORT_LESSON_MAX_SECTIONS;
+  return { min: short ? ANALYSIS_MIN_WORDS_SHORT : ANALYSIS_MIN_WORDS_LONG, max: ANALYSIS_MAX_WORDS };
+}
+
 export const COOLDOWN_MS = 30 * 60 * 1000;
 
 /**

@@ -1,5 +1,6 @@
 // ─── Clio's Strict Analysis Grader ───────────────────────────────────────────
-// Grades a learner's 150–300-word lesson analysis. Primary path: the AI
+// Grades a learner's lesson analysis (100–300 words for short lessons,
+// 150–300 for longer ones). Primary path: the AI
 // gateway with a strict-rubric JSON prompt. Fallback path: a deterministic
 // local rubric (term coverage, analytical reasoning, specificity, structure)
 // so the progression gate keeps working with no network/key - the gate must
@@ -7,7 +8,7 @@
 import type { Lesson } from '@/types';
 import { streamChatResponse } from '@/services/aiGateway';
 import { safeJsonParse } from '@/lib/safeJsonParse';
-import { type AnalysisGrade, PASS_SCORE, countWords } from './analysisGate';
+import { type AnalysisGrade, PASS_SCORE, countWords, analysisWordRange } from './analysisGate';
 
 export interface AnalysisVerdict {
   grade: AnalysisGrade;
@@ -35,6 +36,8 @@ const GRADER_SYSTEM = (lesson: Lesson) => `You are Clio, the strict historical-a
 The student just finished the lesson "${lesson.title}" (${lesson.subtitle}) and submitted a written analysis of it.
 Lesson key facts: ${lesson.keyFacts.join(' | ')}
 Lesson sections: ${lesson.sections.map(s => s.heading).join(' | ')}
+
+This lesson has ${lesson.sections.length} sections, so the required length is ${analysisWordRange(lesson).min}–${analysisWordRange(lesson).max} words. Judge the analysis against THAT length: a tight analysis at the bottom of the range is not "too short" and must not lose points for brevity. Depth of reasoning is what you are marking, not word count.
 
 Grade the analysis STRICTLY on four criteria (25 points each, total 0-100):
 1. UNDERSTANDING - does it accurately engage the lesson's actual content (people, dates, events, ideas)?
@@ -125,7 +128,12 @@ export function gradeLocally(text: string, lesson: Lesson): AnalysisVerdict {
   // 4. Clarity/structure - sentence count and average sentence length in a readable band.
   const sentences = text.split(/[.!?…]+/).map(s => s.trim()).filter(s => s.length > 8);
   const avgLen = sentences.length ? words / sentences.length : 99;
-  const structure = (sentences.length >= 7 ? 0.5 : sentences.length / 14) + (avgLen >= 9 && avgLen <= 32 ? 0.5 : 0.2);
+  // Expected sentence count tracks the lesson's own floor: a 100-word analysis
+  // of a four-section lesson cannot contain as many sentences as a 150-word one
+  // and must not be marked down for it. ~20 words per sentence.
+  const wantSentences = Math.max(4, Math.round(analysisWordRange(lesson).min / 20));
+  const structure = (sentences.length >= wantSentences ? 0.5 : sentences.length / (wantSentences * 2))
+    + (avgLen >= 9 && avgLen <= 32 ? 0.5 : 0.2);
 
   const score = Math.round(coverage * 30 + reasoning * 30 + specificity * 20 + Math.min(1, structure) * 20);
 

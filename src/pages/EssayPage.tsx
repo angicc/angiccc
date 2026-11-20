@@ -27,22 +27,89 @@ interface EssayStats {
   bestGrade: string;
 }
 
+/**
+ * Every grade the grader can return, best first.
+ *
+ * The system prompt asks for "A / B / C / D / F", but it is a language model
+ * and returns "A+" and "B-" all the same. The old table held only the five
+ * bare letters, so indexOf answered -1 for every modified grade and could not
+ * order them at all - C+ beat A-.
+ */
+const GRADE_ORDER = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'] as const;
+
+/** Canonical form of whatever the model wrote, or '' if it is not a grade. */
+function normalizeGrade(raw: string): string {
+  const g = (raw ?? '').trim().toUpperCase().replace(/\s+/g, '');
+  return (GRADE_ORDER as readonly string[]).includes(g) ? g : '';
+}
+
+/** Lower rank is better; an unknown grade sorts last rather than first. */
+function gradeRank(grade: string): number {
+  const i = (GRADE_ORDER as readonly string[]).indexOf(grade);
+  return i === -1 ? Number.POSITIVE_INFINITY : i;
+}
+
+/** Base letter, for the colour tables which are keyed A-F. */
+function gradeBase(grade: string): string {
+  return (grade || '').charAt(0).toUpperCase();
+}
+
+/**
+ * The best grade in a tally.
+ *
+ * Derived from the histogram rather than carried forward, which is what fixes
+ * the bug for people who already have stats saved. The old code replaced
+ * bestGrade when the new grade compared better OR when `!stats.bestGrade` -
+ * and a stats row written before that field existed has it undefined, so the
+ * second condition fired on every submission and overwrote the field with
+ * whatever had just been graded. That is why five essays peaking at A+ showed
+ * the fifth essay's grade. Recomputing from the tally is self-healing: the
+ * next submission repairs the stored value from the full history.
+ */
+function bestGradeOf(grades: Record<string, number>): string {
+  let best = '';
+  for (const [grade, count] of Object.entries(grades)) {
+    if (!count || count <= 0) continue;
+    const g = normalizeGrade(grade);
+    if (!g) continue;
+    if (!best || gradeRank(g) < gradeRank(best)) best = g;
+  }
+  return best;
+}
+
+const EMPTY_STATS: EssayStats = { totalSubmitted: 0, grades: {}, totalScore: 0, bestGrade: '' };
+
 function getEssayStats(userId: string): EssayStats {
-  const raw = localStorage.getItem(ESSAY_STATS_KEY + userId);
-  if (raw) return JSON.parse(raw) as EssayStats;
-  return { totalSubmitted: 0, grades: {}, totalScore: 0, bestGrade: '' };
+  let parsed: Partial<EssayStats> | null = null;
+  try {
+    const raw = localStorage.getItem(ESSAY_STATS_KEY + userId);
+    // Unparseable or hand-edited storage must not take the page down with it.
+    if (raw) parsed = JSON.parse(raw) as Partial<EssayStats>;
+  } catch { /* fall through to a clean slate */ }
+  if (!parsed || typeof parsed !== 'object') return { ...EMPTY_STATS };
+
+  const grades = (parsed.grades && typeof parsed.grades === 'object') ? parsed.grades : {};
+  return {
+    totalSubmitted: Number(parsed.totalSubmitted) || 0,
+    grades,
+    totalScore: Number(parsed.totalScore) || 0,
+    // Always recomputed, never trusted - this repairs legacy and corrupt rows.
+    bestGrade: bestGradeOf(grades),
+  };
 }
 
 function recordEssayResult(userId: string, grade: string, score: number): void {
+  const g = normalizeGrade(grade);
   const stats = getEssayStats(userId);
   stats.totalSubmitted += 1;
-  stats.grades[grade] = (stats.grades[grade] ?? 0) + 1;
   stats.totalScore += score;
-  const ORDER = ['A', 'B', 'C', 'D', 'F'];
-  const currentIdx = ORDER.indexOf(stats.bestGrade);
-  const newIdx = ORDER.indexOf(grade);
-  if (!stats.bestGrade || newIdx < currentIdx) stats.bestGrade = grade;
-  localStorage.setItem(ESSAY_STATS_KEY + userId, JSON.stringify(stats));
+  // An unrecognised grade still counts as a submission and still scores; it
+  // just cannot win "best", because there is no way to rank it.
+  if (g) stats.grades[g] = (stats.grades[g] ?? 0) + 1;
+  stats.bestGrade = bestGradeOf(stats.grades);
+  try {
+    localStorage.setItem(ESSAY_STATS_KEY + userId, JSON.stringify(stats));
+  } catch { /* storage full or blocked - the in-memory stats still update */ }
 }
 
 const TOPICS = [
@@ -319,7 +386,7 @@ export default function EssayPage() {
               </Card>
               <Card>
                 <CardContent className="pt-4 pb-4 text-center">
-                  <p className={`text-2xl font-heading font-bold ${GRADE_COLOR[essayStats.bestGrade] ?? 'text-foreground'}`}>
+                  <p className={`text-2xl font-heading font-bold ${GRADE_COLOR[gradeBase(essayStats.bestGrade)] ?? 'text-foreground'}`}>
                     {essayStats.bestGrade || '-'}
                   </p>
                   <p className="text-xs text-muted-foreground mt-0.5">Best Grade</p>
@@ -452,9 +519,9 @@ export default function EssayPage() {
         ) : (
           <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} className="space-y-5">
             {/* Grade header */}
-            <Card className={`border ${GRADE_BG[result.grade] ?? 'border-border'}`}>
+            <Card className={`border ${GRADE_BG[gradeBase(result.grade)] ?? 'border-border'}`}>
               <CardContent className="pt-6 pb-5 text-center space-y-2">
-                <div className={`font-heading text-6xl font-bold ${GRADE_COLOR[result.grade] ?? 'text-foreground'}`}>
+                <div className={`font-heading text-6xl font-bold ${GRADE_COLOR[gradeBase(result.grade)] ?? 'text-foreground'}`}>
                   {result.grade}
                 </div>
                 <p className="text-muted-foreground text-sm max-w-md mx-auto">{result.gradeSummary}</p>

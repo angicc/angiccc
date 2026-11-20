@@ -228,19 +228,48 @@ export async function* streamChatResponse(
 
   const reader = res.body!.getReader();
   const dec    = new TextDecoder();
+  // Carries the tail of a chunk that ended mid-line into the next read.
+  //
+  // Network chunk boundaries fall wherever TCP puts them, not on SSE frame
+  // boundaries, so `data: {...}` frequently arrives split in two. Decoding and
+  // splitting each chunk on its own turned both halves into unparseable frames
+  // that the catch below silently dropped. Losing a word from a chat reply
+  // reads as terseness; losing one from a JSON payload makes the whole
+  // response unparseable, which is how the Crisis Room and the analysis
+  // grader failed.
+  let buf = '';
   try {
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      for (const line of dec.decode(value).split('\n')) {
-        if (!line.startsWith('data: ')) continue;
-        const data = line.slice(6);
+      // `stream: true` holds a multi-byte character that straddles a chunk
+      // boundary until its remaining bytes arrive. Without it each one decodes
+      // to U+FFFD - nearly invisible in English, ruinous in Macedonian and
+      // Russian where most characters are multi-byte.
+      buf += dec.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      // The last element is whatever followed the final newline: '' or a
+      // partial line. Either way it is not ready to parse yet.
+      buf = lines.pop() ?? '';
+      for (const line of lines) {
+        const trimmed = line.trimEnd();          // tolerate CRLF framing
+        if (!trimmed.startsWith('data: ')) continue;
+        const data = trimmed.slice(6);
         if (data === '[DONE]') return;
         try {
           const parsed = JSON.parse(data);
           if (parsed.type === 'content_block_delta' && parsed.delta?.text) yield parsed.delta.text;
         } catch { /* skip malformed SSE frame */ }
       }
+    }
+    // Flush the decoder and handle a final frame with no trailing newline.
+    buf += dec.decode();
+    const tail = buf.trimEnd();
+    if (tail.startsWith('data: ') && tail.slice(6) !== '[DONE]') {
+      try {
+        const parsed = JSON.parse(tail.slice(6));
+        if (parsed.type === 'content_block_delta' && parsed.delta?.text) yield parsed.delta.text;
+      } catch { /* incomplete final frame - nothing recoverable */ }
     }
   } catch {
     // Stream aborted mid-flight (network drop, timeout). Whatever text was
